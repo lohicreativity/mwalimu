@@ -678,6 +678,9 @@ class ApplicationController extends Controller
         if(!$request->get('program_level_id')){
             return redirect()->back()->with('error','Please select program level first');
         }
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
+        
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
         $headers = [
@@ -736,9 +739,6 @@ class ApplicationController extends Controller
             ->get();
          }       
 
-              # add headers for each column in the CSV download
-              // array_unshift($list, array_keys($list[0]));
-
              $callback = function() use ($list) 
               {
                 $firstChoice        = null; 
@@ -749,19 +749,19 @@ class ApplicationController extends Controller
                 $a_level_schools    = null;
                 
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','SEX', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
+                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','SEX', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'PROGRAMME SELECTED', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
 
                     foreach($applicant->selections as $option){
             
                         if($option->order == 1){
-                            $firstChoice = !empty($option->campusProgram->code)? $option->campusProgram->code : "N/A";
+                            $firstChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
                         }elseif($option->order == 2){
-                            $secondChoice = !empty($option->campusProgram->code)? $option->campusProgram->code : "N/A";
+                            $secondChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
                         }elseif($option->order == 3){
-                            $thirdChoice = !empty($option->campusProgram->code)? $option->campusProgram->code : "N/A";
+                            $thirdChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
                         }elseif($option->order == 4){
-                            $fourthChoice = !empty($option->campusProgram->code)? $option->campusProgram->code : "N/A";
+                            $fourthChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
                         }
                     }
             
@@ -772,23 +772,36 @@ class ApplicationController extends Controller
                             $confirm = 'Not Confirmed';
                         }
 
+                        $selected_programme = null;
                         foreach ($applicant->selections as $selection) {
 
                             if($applicant->program_level_id == 1){
                                 if($selection->campusProgram->campus_id == 1) {
                                     $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                    $selected_programme = $selection->campusProgram->code;
+
                                 }elseif($selection->campusProgram->campus_id == 2){
                                     $institution_code = substr($selection->campusProgram->code, 0, 3);
+                                    $selected_programme = $selection->campusProgram->code;
+
                                 }elseif($selection->campusProgram->campus_id == 3){
                                     $institution_code = substr($selection->campusProgram->code, 0, 3);
+                                    $selected_programme = $selection->campusProgram->code;
+
                                 }
                             }else{
                                 if($selection->campusProgram->campus_id == 1) {
                                     $institution_code = substr($selection->campusProgram->code, 0, 1);
+                                    $selected_programme = $selection->campusProgram->code;
+
                                 }elseif($selection->campusProgram->campus_id == 2){
                                     $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                    $selected_programme = $selection->campusProgram->code;
+
                                 }elseif($selection->campusProgram->campus_id == 3){
                                     $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                    $selected_programme = $selection->campusProgram->code;
+
                                 }
                             }
 
@@ -798,6 +811,31 @@ class ApplicationController extends Controller
                             }  
 
                         }
+
+
+                        $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
+                        
+                        $exam_year = null;
+                        foreach($applicant->nectaResultDetails as $detail) {
+                           if($detail->exam_id == 2 && $detail->verified == 1){
+                               $index_number = $detail->index_number;
+                               if(str_contains($index_number,'EQ')){
+                                  $exam_year = explode('/',$index_number)[1];
+                               }else{
+                                  $exam_year = explode('/', $index_number)[2];
+                               }
+                               break;
+                           }
+                        }
+
+                        $a_level_grades = [];
+                        if($exam_year < 2014 || $exam_year > 2015){
+                            $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
+
+                        }else{
+                            $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
+                        }
+
 
             
                       $o_level_points = null;
@@ -810,7 +848,8 @@ class ApplicationController extends Controller
                                 $o_level_schools = $detail->center_name;
                                 $o_level_points = $detail->points;
                                 foreach($detail->results as $result){
-                                    $o_level_results[] = $result->subject_name.'-'.$result->grade;
+                                    //$a_level_results[] = $result->subject_name.'-'.$result->grade.'('.$a_level_grades[$result->grade].')';
+                                    $o_level_results[] = $result->subject_name.'-'.$result->grade.' ';
                                 }
                           }
                       }
@@ -821,12 +860,13 @@ class ApplicationController extends Controller
                       $a_level_schools = [];
                       $a_level_index = [];
 
-                        foreach($applicant->nectaResultDetails as $detail){
+                      foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2 && $detail->verified == 1){
                                 $a_level_schools    =  $detail->center_name;
                                 $a_level_index      =  $detail->index_number;
                                 foreach($detail->results as $result){
-                                    $a_level_results[] = $result->subject_name.'-'.$result->grade;
+                                    //$a_level_results[] = $result->subject_name.'-'.$result->grade.'('.$a_level_grades[$result->grade].')';
+                                    $a_level_results[] = $result->subject_name.'-'.$result->grade.' ';
                                 }
                                 $a_level_points = $detail->points;
                             } else {
@@ -848,7 +888,7 @@ class ApplicationController extends Controller
                                 $avn                    = $nacte_results->avn;
 
                                 foreach ($nacte_results->results as $result) {
-                                    $diploma_results[] = $result->subject.'-'.$result->grade;
+                                    $diploma_results[] = $result->subject.'-'.$result->grade.' ';
                                 }
 
                             }
@@ -863,7 +903,7 @@ class ApplicationController extends Controller
                                 $a_level_index  = $out_results->reg_no;
 
                                 foreach($out_results->results as $result){ 
-                                    $open_results[] = $result->subject_name.'-'.$result->grade;
+                                    $open_results[] = $result->subject_name.'-'.$result->grade.' ';
                                 }
                             }
                         }
@@ -897,7 +937,7 @@ class ApplicationController extends Controller
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
+                      $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $selected_programme, $institution_code, 
                       $applicant->entry_mode, 'OPTS', $o_level_results, 'APTS / GPA', $a_level_results, 
                       $out_gpa, $open_results, $status, $applicant->created_at, $phone, $applicant->email, $next_of_kin_phone, 
                       $applicant->district->name, $applicant->region->name, $confirm, 1, 
