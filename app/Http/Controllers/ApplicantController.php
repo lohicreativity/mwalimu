@@ -665,6 +665,39 @@ class ApplicantController extends Controller
         return view('dashboard.application.edit-basic-information',$data)->withTitle('Edit Basic Information');
     }
 
+
+    public function sendKarumeApplicants(Request $request){
+
+      $applicants = Applicant::where('program_level_id',4)->where('campus_id', 2)
+                       ->where('is_tcu_verified',null)->get(); 
+  
+      //Applicant::where('program_level_id',4)->where('campus_id', 2)->where('is_tcu_verified',1)->update(['is_tcu_verified'=>null]);
+  
+      foreach($applicants as $applicant){
+  
+  
+          $url='http://api.tcu.go.tz/applicants/checkStatus';
+          $fullindex=str_replace('-','/',$applicant->index_number);
+          $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
+              <Request>
+                  <UsernameToken> 
+                      <Username>'.config('constants.TCU_USERNAME_KARUME').'</Username>
+                      <SessionToken>'.config('constants.TCU_TOKEN_KARUME').'</SessionToken>
+                  </UsernameToken>
+                  <RequestParameters>
+                  <f4indexno>'.$fullindex.'</f4indexno>
+                  </RequestParameters>
+              </Request>';
+          $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+          $json = json_encode($xml_response);
+          $array = json_decode($json,TRUE);
+          
+          if(isset($array['Response'])){
+          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 2 : 0;
+          $applicant->save();
+          }
+      }
+  }
     /**
      * Send XML over POST
      */

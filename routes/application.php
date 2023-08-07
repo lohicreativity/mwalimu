@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('dashboard',[ApplicantController::class,'dashboard']);
 	Route::get('basic-information',[ApplicantController::class,'editBasicInfo']);
+    Route::get('send-karume-applicants',[ApplicantController::class,'sendKarumeApplicants']);
 	Route::get('next-of-kin',[ApplicantController::class,'editNextOfKin']);
 	Route::get('payments',[ApplicantController::class,'payments']);
 	Route::get('results',[ApplicantController::class,'requestResults']);
