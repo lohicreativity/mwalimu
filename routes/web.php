@@ -44,18 +44,16 @@ Route::get('send-applicants', function (Request $request) {
 
     Applicant::where('program_level_id',4)->where('campus_id', 2)->where('is_tcu_verified',1)->update(['is_tcu_verified'=>null]);
 
-
     foreach($applicants as $applicant){
-        $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
-        $tcu_token = config('constants.TCU_TOKEN_KARUME');
-        
+
+
         $url='http://api.tcu.go.tz/applicants/checkStatus';
         $fullindex=str_replace('-','/',$applicant->index_number);
         $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
             <Request>
                 <UsernameToken> 
-                    <Username>'.$tcu_username.'</Username>
-                <SessionToken>'.$tcu_token.'</SessionToken>
+                    <Username>'.config('constants.TCU_USERNAME_KARUME').'</Username>
+                    <SessionToken>'.config('constants.TCU_TOKEN_KARUME').'</SessionToken>
                 </UsernameToken>
                 <RequestParameters>
                 <f4indexno>'.$fullindex.'</f4indexno>
