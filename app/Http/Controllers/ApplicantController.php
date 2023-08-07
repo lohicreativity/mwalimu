@@ -542,13 +542,24 @@ class ApplicantController extends Controller
 				
         if(str_contains(strtolower($applicant->programLevel->name),'degree') && ($applicant->is_tcu_verified === null || $applicant->is_tcu_verified == 0)){
           // && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_tcu_verified == 0){
+
+            if($applicant->campus_id == 1){
+               $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+               $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+      
+            }elseif($applicant->campus_id == 2){
+                  $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+                  $tcu_token = config('constants.TCU_TOKEN_KARUME');
+      
+            }
+
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
                   <Request>
                     <UsernameToken> 
-                       <Username>'.config('constants.TCU_USERNAME').'</Username>
-                      <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                       <Username>'.$tcu_username.'</Username>
+                      <SessionToken>'.$tcu_token.'</SessionToken>
                     </UsernameToken>
                     <RequestParameters>
                       <f4indexno>'.$fullindex.'</f4indexno>

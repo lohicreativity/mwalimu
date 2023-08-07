@@ -34,6 +34,47 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 |
 */
 
+
+Route::get('send-applicants', function (Request $request) {{
+
+    if($applicant->campus_id == 1){
+        $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+        $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+     }elseif($applicant->campus_id == 2){
+           $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+           $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+     }
+
+     $applicants = Applicant::where('program_level_id',4)->where('campus_id', 2)
+							->where('is_tcu_verified',1)->get(); 
+
+    foreach($applicants as $applicant){
+        $applicant->is_tcu_verified = null;
+
+        $url='http://api.tcu.go.tz/applicants/checkStatus';
+        $fullindex=str_replace('-','/',Auth::user()->username);
+        $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
+            <Request>
+                <UsernameToken> 
+                    <Username>'.$tcu_username.'</Username>
+                <SessionToken>'.$tcu_token.'</SessionToken>
+                </UsernameToken>
+                <RequestParameters>
+                <f4indexno>'.$fullindex.'</f4indexno>
+                </RequestParameters>
+            </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+        
+        if(isset($array['Response'])){
+        $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
+        $applicant->save();
+        }
+    }
+}
 Route::get('batch-processing', function (Request $request) {
     //$applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))
 	//						->where('program_level_id',$request->get('program_level_id'))->first(); // from API
