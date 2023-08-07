@@ -791,15 +791,15 @@ class ApplicationController extends Controller
                                 }
                             }else{
                                 if($selection->campusProgram->campus_id == 1) {
-                                    $institution_code = substr($selection->campusProgram->code, 0, 1);
+                                    $institution_code = substr($selection->campusProgram->code, 0, 2);
                                     $selected_programme = $selection->campusProgram->code;
 
                                 }elseif($selection->campusProgram->campus_id == 2){
-                                    $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                    $institution_code = substr($selection->campusProgram->code, 0, 3);
                                     $selected_programme = $selection->campusProgram->code;
 
                                 }elseif($selection->campusProgram->campus_id == 3){
-                                    $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                    $institution_code = substr($selection->campusProgram->code, 0, 3);
                                     $selected_programme = $selection->campusProgram->code;
 
                                 }
