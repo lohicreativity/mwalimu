@@ -974,6 +974,9 @@ class ApplicationController extends Controller
      */
     public function submitSelectedApplicants(Request $request)
     {
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
+
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
         $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
@@ -991,6 +994,7 @@ class ApplicationController extends Controller
         }elseif($window->campus_id == 3){
 
         }
+        
         $previous_batch = null;
         if($batch->batch_no > 1){
             $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
@@ -1004,15 +1008,22 @@ class ApplicationController extends Controller
 
         if($selection_status){
 
-            $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program.ntaLevel','nectaResultDetails','intake'])
-                            ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                            ->where('batch_id',$previous_batch->id)->get();
-
             if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff,$previous_batch){
-                 $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$previous_batch->id);
-            })->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count() == 0){
-                 return redirect()->back()->with('error','Applicants selection has not been run yet');
-            }
+                $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$previous_batch->id);
+           })->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count() == 0){
+                return redirect()->back()->with('error','Applicants selection has not been run yet');
+           }
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
+                                            'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date')
+                                    ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'));})
+                                    ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)
+                                    ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])
+                                    ->with(['nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake','selections.campusProgram.program.ntaLevel',
+                                            'nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
+                                            'outResultDetails:id,applicant_id,verified','disabilityStatus:id,name','selections:id,status,campus_program_id,applicant_id','selections.campusProgram:id,regulator_code'])->get();
+
+            //return $applicants;
 
             foreach($applicants as $applicant){
 
@@ -1033,6 +1044,7 @@ class ApplicationController extends Controller
                                 $selected_programs[] = $selection->campusProgram->regulator_code;
                                 if($selection->status == 'APPROVING'){
                                     $approving_selection = $selection;
+                                    break;
                                 }
                             }
 
@@ -1040,7 +1052,30 @@ class ApplicationController extends Controller
                             foreach ($applicant->nectaResultDetails as $detail) {
                                 if($detail->exam_id == 2 && $detail->verified == 1){
                                     $f6indexno = $detail->index_number;
+                                    break;
                                 }
+                            }
+
+                            $otherf4indexno = [];
+                            foreach($applicant->nectaResultDetails as $detail) {
+                                if($detail->exam_id == 1 && $detail->verified == 1 && $detail->index_number != $applicant->index_number){
+                                    $otherf4indexno[]= $detail->index_number;
+                                }
+                            }                            
+
+                            $otherf6indexno = [];
+                            foreach($applicant->nectaResultDetails as $detail) {
+                                if($detail->exam_id == 2 && $detail->verified == 1 && $detail->index_number != $f6indexno){
+                                    $otherf6indexno = $detail->index_number;
+                                }
+                            }
+
+                            if(is_array($otherf4indexno)){
+                                $otherf4indexno=implode(', ',$otherf4indexno);
+                            }
+
+                            if(is_array($otherf6indexno)){
+                                $otherf6indexno=implode(', ',$otherf6indexno);
                             }
 
                             $category = null;
@@ -1048,21 +1083,19 @@ class ApplicationController extends Controller
                                 $category = 'A';
 
                             }else{
-                                if($f6indexno){
-                                    foreach($applicant->nacteResultDetail as $detail){
+                                // Open university
+                                if($applicant->outResultDetails){
+                                    foreach($applicant->outResultDetails as $detail){
                                         if($detail->verified == 1){
-                                            $category = 'D';
+                                            $category = 'F';
                                             break;
                                         }
                                     }
-                                    foreach($applicant->outResultDetail as $detail){
-                                        if($detail->verified == 1){
-                                            $category = 'FD';
-                                            break;
-                                        }
-                                    }
-                                }else{
-                                    foreach($applicant->nacteResultDetail as $detail){
+                                }
+
+                                // Diploma holders
+                                if($applicant->nacteResultDetails){
+                                    foreach($applicant->nacteResultDetails as $detail){
                                         if($detail->verified == 1){
                                             $category = 'D';
                                             break;
@@ -1079,11 +1112,11 @@ class ApplicationController extends Controller
                                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
                                 <UsernameToken>
-                                <Username>'.$tcu_usernane.'</Username>
+                                <Username>'.$tcu_username.'</Username>
                                 <SessionToken>'.$tcu_token.'</SessionToken>
                                 </UsernameToken>
                                 <RequestParameters>
-                                <f4indexno>'.$applicant->index_number.'</f4indexno >
+                                <f4indexno>'.$applicant->index_number.'</f4indexno>
                                 <f6indexno>'.$f6indexno.'</f6indexno>
                                 <Gender>'.$applicant->gender.'</Gender>
                                 <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
@@ -1094,12 +1127,12 @@ class ApplicationController extends Controller
                                 <AdmissionStatus>provisional admission</AdmissionStatus>
                                 <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
                                 <Reason>eligible</Reason>
-                                <Nationality >'.$applicant->nationality.'</Nationality>
+                                <Nationality>'.$applicant->nationality.'</Nationality>
                                 <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
                                 <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
                                 <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                                <Otherf4indexno></Otherf4indexno>
-                                <Otherf6indexno></Otherf6indexno>
+                                <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+                                <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
                                 </RequestParameters>
                                 </Request>';
 
@@ -1108,7 +1141,7 @@ class ApplicationController extends Controller
                                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
                                 <UsernameToken>
-                                <Username>'.$tcu_usernane.'</Username>
+                                <Username>'.$tcu_username.'</Username>
                                 <SessionToken>'.$tcu_token.'</SessionToken>
                                 </UsernameToken>
                                 <RequestParameters>
@@ -1132,7 +1165,7 @@ class ApplicationController extends Controller
                                 </RequestParameters>
                                 </Request>';
                             }
-
+return $xml_request;
                             $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                             $json = json_encode($xml_response);
                             $array = json_decode($json,TRUE);           
