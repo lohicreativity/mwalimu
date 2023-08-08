@@ -715,7 +715,7 @@ class ApplicantController extends Controller
           $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
 
       }elseif($staff->campus_id == 2){
-          $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+          $tcu_username = config('constants.TCU_USERNAME_KARUME');
           $tcu_token = config('constants.TCU_TOKEN_KARUME');
           $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
 
@@ -726,9 +726,9 @@ class ApplicantController extends Controller
       $count = 0;
 
       $applicants = Applicant::select('id','index_number','gender','entry_mode')
-                              ->where('program_level_id',4)->where('campus_id',1)
-                              ->where('status',null)->whereNull('tcu_added')
-                              ->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
+                              ->where('program_level_id',4)->where('campus_id',$staff->campus_id)
+                              ->where('status',null)->whereNull('is_tcu_added')
+                              ->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,avn',
                                     'outResultDetails:id,applicant_id,verified'])->get(); 
 
       foreach($applicants as $applicant){ 
@@ -766,7 +766,7 @@ class ApplicantController extends Controller
          }
 
          $category = null;
-         if($applicant->entry_mode == 'DIRECT ENTRY'){
+         if($applicant->entry_mode == 'DIRECT'){
             $category = 'A';
 
          }else{
@@ -784,6 +784,7 @@ class ApplicantController extends Controller
             if($applicant->nacteResultDetails){
                   foreach($applicant->nacteResultDetails as $detail){
                      if($detail->verified == 1){
+                        $f6indexno = $f6indexno == null? $detail->avn : $f6indexno;
                         $category = 'D';
                         break;
                      }
