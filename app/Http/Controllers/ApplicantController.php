@@ -734,7 +734,7 @@ class ApplicantController extends Controller
       foreach($applicants as $applicant){ 
 
          $url='https://api.tcu.go.tz/applicants/add';
-
+         
          $f6indexno = null;
          foreach ($applicant->nectaResultDetails as $detail) {
             if($detail->exam_id == 2 && $detail->verified == 1){

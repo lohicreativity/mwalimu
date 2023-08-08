@@ -137,6 +137,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('run-selection',[ApplicationController::class,'showRunSelection']);
 	Route::post('run-applicants-selection',[ApplicationController::class,'runSelection']);
+	Route::post('run-applicants-selection',[ApplicationController::class,'runSelection']);
 	Route::get('run-selection-program',[ApplicationController::class,'showRunSelectionByProgram']);
 	Route::post('run-applicants-selection-program',[ApplicationController::class,'runSelectionByProgram']);
 
