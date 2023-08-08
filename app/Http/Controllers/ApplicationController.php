@@ -567,7 +567,27 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-        $campus_id = $staff->campus_id;
+        $batch_id = $batch_no = 0;
+        if(!empty($request->get('program_level_id'))){
+            $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
+                                        ->where('program_level_id',$request->get('program_level_id'))->latest()->first();
+            
+            if($batch->batch_no > 1){
+                $previous_batch = null;
+                if($batch->batch_no > 1){
+                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
+                                                        ->where('batch_no', $batch->batch_no - 1)->first();
+                    $batch_id = $previous_batch->id;
+                    $batch_no = $previous_batch->batch_no;
+                }
+                
+            }else{
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;              
+            }
+
+        }
+
 
         if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
 
@@ -589,15 +609,18 @@ class ApplicationController extends Controller
 
        // } else if (Auth::user()->hasRole('admission-officer')) {
         } else{
-            $applicants = Applicant::where('campus_id', $campus_id)->where('programs_complete_status', 1)->orwhere('teacher_certificate_status', 1)
-            ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4')->orWhere('avn_no_results', 1)
-            ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query){$query->where('verified', 1);}])->get();
+            $applicants = Applicant::where('campus_id', $staff->campus_id)->where('programs_complete_status', 1)
+                                    /*- >whereHas('selections', function($query) use($request, $batch_id){$query->whereNotIn('status',['APPROVING','SELECTED'])
+                                    ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch_id);}) */
+                                    ->where(function($query) {$query->where('teacher_certificate_status', 1)
+                                    ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4')->orWhere('avn_no_results', 1);})
+                                    ->where('application_window_id',$request->get('application_window_id'))->where('status',null)
+                                    ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query){$query->where('verified', 1);}])->get();
 
         }
-        $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
-
+        
         $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
-        ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch->id)->count(); 
+        ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch_id)->count(); 
 
 /* 
         foreach ($applicants as $applicant) {
@@ -978,62 +1001,65 @@ class ApplicationController extends Controller
         set_time_limit(120);
 
         $staff = User::find(Auth::user()->id)->staff;
-        $award = Award::find($request->get('program_level_id'));
-        $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
-        $window = ApplicationWindow::where('id',$request->get('application_window_id'))->first();
+        $award = Award::select('id','name')->find($request->get('program_level_id'));
+        $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id',$request->get('application_window_id'))
+                                 ->where('program_level_id',$award->id)->latest()->first();
         
         $tcu_username = $tcu_token = null;
-        if($window->campus_id == 1){
+        if($staff->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
             $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+            $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
 
-        }elseif($window->campus_id == 2){
+        }elseif($staff->campus_id == 2){
             $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
             $tcu_token = config('constants.TCU_TOKEN_KARUME');
+            $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
 
-        }elseif($window->campus_id == 3){
-
+        }elseif($staff->campus_id == 3){
+            $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
         }
         
         $previous_batch = null;
         if($batch->batch_no > 1){
-            $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
+            $previous_batch = ApplicationBatch::select('id')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
         }
 
         $selection_status = false;
         if($previous_batch){
             $selection_status = Applicant::where('program_level_id',$award->id)->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$previous_batch->id)
-            ->where('status','SELECTED')->first()? true : false;
+            ->where('status','SELECTED')->count() > 0 ? true : false;
         }
 
+        $count = 0;
         if($selection_status){
 
             if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff,$previous_batch){
-                $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$previous_batch->id);
-           })->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count() == 0){
+                $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$previous_batch->id)
+                      ->where('application_window_id',$request->get('application_window_id'));})->where('status','APPROVING')->count() == 0){
                 return redirect()->back()->with('error','Applicants selection has not been run yet');
            }
 
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
                                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date')
-                                    ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'));})
+                                    ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('status','APPROVING');})
                                     ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)
                                     ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])
                                     ->with(['nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake','selections.campusProgram.program.ntaLevel',
                                             'nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
                                             'outResultDetails:id,applicant_id,verified','disabilityStatus:id,name','selections:id,status,campus_program_id,applicant_id','selections.campusProgram:id,regulator_code'])->get();
 
-            //return $applicants;
-
             foreach($applicants as $applicant){
 
                 if($request->get('applicant_'.$applicant->id) == $applicant->id){
                     
-                    if (str_contains($award->name,'Bachelor')) {
+                    if (str_contains(strtolower($award->name),'bachelor')) {
 
                         //$url='https://api.tcu.go.tz/applicants/submitProgramme';
                     
-                        if (ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0) {
+                        if (ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))
+                                                    ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$applicant->batch_id)->count() == 0) {
 
                             $url='http://41.59.90.200/applicants/submitProgramme';
                     
@@ -1136,7 +1162,7 @@ class ApplicationController extends Controller
                                 </RequestParameters>
                                 </Request>';
 
-                            } else {
+                            }else{
 
                                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
@@ -1165,24 +1191,25 @@ class ApplicationController extends Controller
                                 </RequestParameters>
                                 </Request>';
                             }
-return $xml_request;
+
                             $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                             $json = json_encode($xml_response);
-                            $array = json_decode($json,TRUE);           
-                
-                            if ($array['Response']['ResponseParameters']['StatusCode'] == 200) {
-                                
+                            $array = json_decode($json,TRUE);  
+
+                            if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
+                                $count++;
                                 Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
                                 $log = new ApplicantSubmissionLog;
                                 $log->applicant_id = $applicant->id;
                                 $log->program_level_id = $request->get('program_level_id');
                                 $log->application_window_id = $request->get('application_window_id');
+                                $log->batch_id = $applicant->batch_id;
                                 $log->submitted = 1;
                                 $log->save();
 
                             }
-                            }
+                        }
                         //}
 
                     } elseif (str_contains(strtolower($award->name),'diploma') || str_contains(strtolower($award->name),'basic')) {
@@ -1194,15 +1221,16 @@ return $xml_request;
                             return redirect()->back()->with('error','No payment set for this campus');
                         }
 
-                        $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('constants.NACTE_API_SECRET'));
+                        $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nacte_secret_key);
                     
                         if(empty(json_decode($result)->params)){
                             return redirect()->back()->with('error','Invalid call to NACTVET account balance. Please try again.');
                         }elseif((json_decode($result)->params[0]->balance/5000) < count($applicants)) {
-                            return redirect()->back()->with('error','No sufficient NACTE payment balance');
+                            return redirect()->back()->with('error','No sufficient NACTVET payment balance');
                         }
 
-                        if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0) {
+                        if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))
+                        ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$applicant->batch_id)->count() == 0) {
 
                             $f6indexno = null;
                             foreach ($applicant->nectaResultDetails as $detail) {
@@ -1326,7 +1354,8 @@ return $xml_request;
 
                                         Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
                                         if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count() == 0){
-                    
+                                            $count++;
+                                            
                                             $log = new ApplicantSubmissionLog;
                                             $log->applicant_id = $applicant->id;
                                             $log->program_level_id = $request->get('program_level_id');
@@ -1350,7 +1379,7 @@ return $xml_request;
         }else{
             return redirect()->back()->with('error','Selection has not been done for this level');
         }
-        return redirect()->back()->with('message','Applicants submitted successfully');
+        return redirect()->back()->with('message',$count.' applicants have been successfully submitted.');
     }
 
     /**

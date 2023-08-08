@@ -699,6 +699,138 @@ class ApplicantController extends Controller
           }
       }
   }
+
+
+  public function addApplicantTCU(Request $request)
+  {
+      ini_set('memory_limit', '-1');
+      set_time_limit(120);
+
+      $staff = User::find(Auth::user()->id)->staff;
+      
+      $tcu_username = $tcu_token = null;
+      if($staff->campus_id == 1){
+          $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+          $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+          $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+
+      }elseif($staff->campus_id == 2){
+          $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+          $tcu_token = config('constants.TCU_TOKEN_KARUME');
+          $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+
+      }elseif($staff->campus_id == 3){
+          $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+      }
+      
+      $count = 0;
+
+      $applicants = Applicant::select('id','index_number','gender','entry_mode')
+                              ->where('program_level_id',4)->where('campus_id',1)
+                              ->where('status',null)->whereNull('tcu_added')
+                              ->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
+                                    'outResultDetails:id,applicant_id,verified'])->get(); 
+
+      foreach($applicants as $applicant){ 
+
+         $url='https://api.tcu.go.tz/applicants/add';
+
+         $f6indexno = null;
+         foreach ($applicant->nectaResultDetails as $detail) {
+            if($detail->exam_id == 2 && $detail->verified == 1){
+                  $f6indexno = $detail->index_number;
+                  break;
+            }
+         }
+
+         $otherf4indexno = [];
+         foreach($applicant->nectaResultDetails as $detail) {
+            if($detail->exam_id == 1 && $detail->verified == 1 && $detail->index_number != $applicant->index_number){
+                  $otherf4indexno[]= $detail->index_number;
+            }
+         }                            
+
+         $otherf6indexno = [];
+         foreach($applicant->nectaResultDetails as $detail) {
+            if($detail->exam_id == 2 && $detail->verified == 1 && $detail->index_number != $f6indexno){
+                  $otherf6indexno = $detail->index_number;
+            }
+         }
+
+         if(is_array($otherf4indexno)){
+            $otherf4indexno=implode(', ',$otherf4indexno);
+         }
+
+         if(is_array($otherf6indexno)){
+            $otherf6indexno=implode(', ',$otherf6indexno);
+         }
+
+         $category = null;
+         if($applicant->entry_mode == 'DIRECT ENTRY'){
+            $category = 'A';
+
+         }else{
+            // Open university
+            if($applicant->outResultDetails){
+                  foreach($applicant->outResultDetails as $detail){
+                     if($detail->verified == 1){
+                        $category = 'F';
+                        break;
+                     }
+                  }
+            }
+
+            // Diploma holders
+            if($applicant->nacteResultDetails){
+                  foreach($applicant->nacteResultDetails as $detail){
+                     if($detail->verified == 1){
+                        $category = 'D';
+                        break;
+                     }
+                  }
+            }
+         }
+
+
+         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+         <Request>
+            <UsernameToken>
+               <Username>'.$tcu_username.'</Username>
+               <SessionToken>'.$tcu_token.'</SessionToken>
+            </UsernameToken>
+            <RequestParameters>
+               <f4indexno>'.$applicant->index_number.'</f4indexno>
+               <f6indexno>'.$f6indexno.'</f6indexno>
+               <Gender>'.$applicant->gender.'</Gender>
+               <Category>'.$category.'</Category>
+               <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+               <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
+            </RequestParameters>
+         </Request>';
+
+         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+         $json = json_encode($xml_response);
+         $array = json_decode($json,TRUE);  
+
+         if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
+            $count++;
+            Applicant::where('id',$applicant->id)->update(['tcu_added'=>1]);
+
+         }
+      }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Send XML over POST
      */
