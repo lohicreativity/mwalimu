@@ -549,7 +549,7 @@ class ApplicantController extends Controller
                $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
       
             }elseif($applicant->campus_id == 2){
-                  $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+                  $tcu_username = config('constants.TCU_USERNAME_KARUME');
                   $tcu_token = config('constants.TCU_TOKEN_KARUME');
       
             }
@@ -813,11 +813,16 @@ class ApplicantController extends Controller
          $json = json_encode($xml_response);
          $array = json_decode($json,TRUE);  
 
+         if(isset($array['Response'])){
+            Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0]);
+            
+          }
+/* 
          if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
             $count++;
             Applicant::where('id',$applicant->id)->update(['tcu_added'=>1]);
 
-         }
+         } */
       }
 
   }
