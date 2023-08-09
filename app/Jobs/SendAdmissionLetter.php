@@ -96,13 +96,13 @@ class SendAdmissionLetter implements ShouldQueue
                   })->first();
                }else{
                   $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NACTE%');
+                   $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
                   })->first();
                }
                
 
                if(!$nacte_quality_assurance_fee){
-                   $this->response = ['message'=>'NACTE fee not defined','status'=>'error']; //redirect()->back()->with('error','NACTE fee not defined');
+                   $this->response = ['message'=>'NACTVET Quality Assurance fee not defined','status'=>'error']; //redirect()->back()->with('error','NACTE fee not defined');
                }
 
                $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -114,8 +114,8 @@ class SendAdmissionLetter implements ShouldQueue
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%');
-               })->first();
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%')
+                   ->orWhere('name','LIKE','%Students Union%');})->first();
 
                if(!$students_union_fee){
                    $this->response = ['message'=>'Students union fee not defined','status'=>'error']; //redirect()->back()->with('error','Students union fee not defined');
@@ -146,11 +146,11 @@ class SendAdmissionLetter implements ShouldQueue
                }
 
                $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Identity Card%');
+                   $query->where('name','LIKE','%New ID Card%');
                })->first();
 
                if(!$identity_card_fee){
-                   $this->response = ['message'=>'Identity card fee not defined','status'=>'error']; //redirect()->back()->with('error','Identity card fee not defined');
+                   $this->response = ['message'=>'ID card fee for new students not defined','status'=>'error']; //redirect()->back()->with('error','Identity card fee not defined');
                }
 
                $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){

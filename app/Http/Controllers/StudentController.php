@@ -634,16 +634,16 @@ class StudentController extends Controller
 
             }else{
                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-                  $query->where('name','LIKE','%NACTE%');
+                  $query->where('name','LIKE','%NACTVET%');
                })->where('study_academic_year_id',$study_academic_year->id)->first();
 
             }
             
             $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
-              $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+              $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','NOT LIKE','%TCU%');
             })->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_tzs');
             $other_fees_usd = FeeAmount::whereHas('feeItem',function($query){
-              $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+              $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','NOT LIKE','%TCU%');
             })->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_usd');
 
             $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
@@ -699,7 +699,7 @@ class StudentController extends Controller
             } 
         }elseif($request->get('fee_type') == 'LOST ID'){
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){
-                  $query->where('name','LIKE','%Identity Card%');
+                  $query->where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%');
                })->where('study_academic_year_id',$study_academic_year->id)->first();
 
 
@@ -711,10 +711,10 @@ class StudentController extends Controller
               $currency = 'TZS';//'USD';
             }
 
-            $feeType = FeeType::where('name','LIKE','%Identity Card%')->first();
+            $feeType = FeeType::where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%')->first();
 
             if(!$feeType){
-                return redirect()->back()->with('error','Identity card fee type has not been set');
+                return redirect()->back()->with('error','ID card fee type for continue students has not been set');
             }
 
             if($amount != 0.00){
