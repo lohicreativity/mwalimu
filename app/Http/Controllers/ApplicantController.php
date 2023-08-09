@@ -2565,6 +2565,7 @@ class ApplicantController extends Controller
            }
         }
 
+        $staff = User::find(Auth::user()->id)->staff;
         $applicant = Applicant::find($request->get('applicant_id'));
         if(Applicant::hasConfirmedResults($applicant) && $request->get('index_number') != $applicant->index_number){
             return redirect()->back()->with('error','The action cannot be performed');
@@ -2587,36 +2588,37 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
 
-        $user = User::where('id',$applicant->user_id)->first();
-        if($user->username != $request->get('index_number')){
-         $user->username = $request->get('index_number');
-         $user->save();
-
-        }
-
-        $mode_before = $applicant->entry_mode;
-        $level_before = $applicant->program_level_id;
-        $applicant->birth_date = DateMaker::toDBDate($request->get('dob'));
-        $applicant->index_number = $request->get('index_number');
-        $applicant->nationality = $request->get('nationality');		
-        $applicant->phone = $request->get('phone');
-        $applicant->email = $request->get('email');
-        $applicant->entry_mode = $request->get('entry_mode');
-        $applicant->program_level_id = $request->get('program_level_id');
-        $applicant->save();
-
-        if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
-            ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
-            Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
-
-            if($level_before != $applicant->program_level_id){
-               $batch = ApplicationBatch::where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)
-                        ->latest()->first();
-               Applicant::where('id',$applicant->id)->update(['batch_id'=>$batch->id]);
+        if($staff->campus_id == $applicant->campus_id || Auth::user()->hasRole('administrator')){
+            $user = User::where('id',$applicant->user_id)->first();
+            if($user->username != $request->get('index_number')){
+               $user->username = $request->get('index_number');
+               $user->save();
             }
+
+            $mode_before = $applicant->entry_mode;
+            $level_before = $applicant->program_level_id;
+            $applicant->birth_date = DateMaker::toDBDate($request->get('dob'));
+            $applicant->index_number = $request->get('index_number');
+            $applicant->nationality = $request->get('nationality');		
+            $applicant->phone = $request->get('phone');
+            $applicant->email = $request->get('email');
+            $applicant->entry_mode = $request->get('entry_mode');
+            $applicant->program_level_id = $request->get('program_level_id');
+            $applicant->save();
+   
+            if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
+               ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+               Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
+   
+               if($level_before != $applicant->program_level_id){
+                  $batch = ApplicationBatch::where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)
+                           ->latest()->first();
+                  Applicant::where('id',$applicant->id)->update(['batch_id'=>$batch->id]);
+               }
+            }
+            return redirect()->to('application/edit-applicant-details')->with('message','Applicant details updated successfully');
+            //return redirect()->back()->with('message','Applicant details updated successfully');
         }
-        return redirect()->to('application/edit-applicant-details')->with('message','Applicant details updated successfully');
-        //return redirect()->back()->with('message','Applicant details updated successfully');
     }
 
     /**

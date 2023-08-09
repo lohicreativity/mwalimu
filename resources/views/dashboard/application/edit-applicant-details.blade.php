@@ -83,7 +83,7 @@
                       $index_number = [
                          'placeholder'=>'Form IV Index Number',
                          'class'=>'form-control',
-                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'readonly'=> !Auth::user()->hasRole('administrator') && App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
                          'required'=>true
                       ];
 

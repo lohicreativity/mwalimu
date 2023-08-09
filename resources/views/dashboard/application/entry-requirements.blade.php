@@ -468,6 +468,8 @@
                        <option value="Social Work">Social Work</option>
                        <option value="Development Planning">Development Planning</option>
                        <option value="Local Government">Local Government</option>
+                       <option value="Crop Production">Crop Production</option>
+                       <option value="Agricultural Production">Agricultural Production</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -817,6 +819,8 @@
                        <option value="Social Work">Social Work</option>
                        <option value="Development Planning">Development Planning</option>
                        <option value="Local Government">Local Government</option>
+                       <option value="Crop Production">Crop Production</option>
+                       <option value="Agricultural Production">Agricultural Production</option>
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
@@ -1403,6 +1407,8 @@
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
                                                <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
                                                <option value="Local Government" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Local Government',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Local Government</option>
+                                               <option value="Crop Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Crop Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Crop Production</option>
+                                               <option value="Agricultural Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Agricultural Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Agricultural Production</option>
                                              </select>
                                         </div>
                                         <div class="form-group col-3">
@@ -1709,6 +1715,8 @@
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
                                                <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
                                                <option value="Local Government" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Local Government',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Local Government</option>
+                                               <option value="Crop Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Crop Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Crop Production</option>
+                                               <option value="Agricultural Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Agricultural Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Agricultural Production</option>
                                              </select>
                                           </div>
                                           <div class="form-group col-3">
@@ -2262,6 +2270,8 @@
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
                                                <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
                                                <option value="Local Government" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Local Government',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Local Government</option>
+                                               <option value="Crop Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Crop Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Crop Production</option>
+                                               <option value="Agricultural Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Agricultural Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Agricultural Production</option>
                                              </select>
                                         </div>
                                         <div class="form-group col-3">
@@ -2571,6 +2581,8 @@
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
                                                <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
                                                <option value="Local Government" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Local Government',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Local Government</option>
+                                               <option value="Crop Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Crop Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Crop Production</option>
+                                               <option value="Agricultural Production" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Agricultural Production',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Agricultural Production</option>
                                              </select>
                                           </div>
                                           <div class="form-group col-3">
