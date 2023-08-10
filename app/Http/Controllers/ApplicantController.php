@@ -816,7 +816,6 @@ class ApplicantController extends Controller
             //return $array['Response']['ResponseParameters']['StatusDescription'];
             Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
                                                          'is_tcu_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
-            return 1;
           }
 /* 
          if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
