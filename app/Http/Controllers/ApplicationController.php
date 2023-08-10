@@ -2925,7 +2925,7 @@ class ApplicationController extends Controller
      * Run application selection
      */
     public function runSelectionByProgram(Request $request)
-    {
+    { 
         ini_set('memory_limit', '-1');
         set_time_limit(120);
 
@@ -2940,20 +2940,64 @@ class ApplicationController extends Controller
             $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('msc_end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first();
         }
 
-
-
         if($open_window){
              return redirect()->back()->with('error','Application window not closed yet');
         }
      
-        $batch = ApplicationBatch::where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$prog->program->award_id)->latest()->first();
+        $batch_id = $batch_no = 0;
+        if(!empty($request->get('campus_program_id'))){
+            $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
+                                        ->where('program_level_id',$prog->program->award_id)->latest()->first();
+            if($batch->batch_no > 1){
+                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
+                             ->where('program_level_id',$prog->program->award_id)->where('batch_id',$batch->id)->count() == 0){
+                    $batch_id = $batch->id;
+                    $batch_no = $batch->batch_no;
 
-        if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$prog){
+                }else{
+                    $previous_batch = null;
+                    if($batch->batch_no > 1){
+                        $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$prog->program->award_id)
+                                                            ->where('batch_no', $batch->batch_no - 1)->first();
+                        $batch_id = $previous_batch->id;
+                        $batch_no = $previous_batch->batch_no;
+                    }
+                }
+            }else{
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;              
+            }
+
+        }
+
+        if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$prog,){
             $query->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$prog->program->award_id);
-        })->where('status','APPROVING')->where('batch_id',$batch->id)->count() == 0){
+        })->where('status','APPROVING')->where('batch_id',$batch_id)->count() == 0){
             return redirect()->back()->with('error','You cannot run selection by programme before running by NTA level');
         }
+
+        $program = CampusProgram::select('id','program_id')
+        ->whereHas('applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
+        ->whereHas('program',function($query) use($request){ $query->where('award_id',$request->get('award_id'));})
+        ->whereHas('entryRequirements', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'));})
+        ->with(['program:id,name','entryrequirements:id,max_capacity,campus_program_id'])->where('id',$request->get('campus_program_id'))->first();
+
+        $count = ApplicantProgramSelection::where('campus_program_id', $program->id)->where('batch_id',$batch_id)->whereIn('status',['APPROVING','SELECTED'])->count();
+
+        if (Auth::user()->hasRole('admission-officer')) {
+
+            $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','entry_mode','teacher_certificate_status','batch_id')
+                                    ->whereHas('selections',function($query) use($request, $batch_id){$query->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('batch_id',$batch_id)->whereNotIn('status',['APPROVING','SELECTED'])->where('campus_program_id',$request->get('campus_program_id'));})
+                                    ->with(['selections:id,order,batch_id,campus_program_id,status,applicant_id','nacteResultDetails:id,applicant_id',
+                                    'nacteResultDetails.results:id,nacte_result_detail_id'])->where('status',null)->whereNull('is_tamisemi')->get();
+
+        }else{
+            return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
+
+        }
         // Phase I
+/*         
         $campus_programs = CampusProgram::whereHas('applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
         })->with(['program','entryRequirements'=>function($query) use($request){
@@ -2975,15 +3019,15 @@ class ApplicationController extends Controller
             $applicants = Applicant::whereHas('selections',function($query) use($request, $batch){
                 $query->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch->id);
             })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
-        }
+        } */
 
         
         // Phase II
         $choices = array(1,2,3,4);
 
-        $applicants = Applicant::with(['selections'=>function($query) use($batch){$query->where('batch_id',$batch->id);},'nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$prog->program->award_id)
+/*         $applicants = Applicant::with(['selections'=>function($query) use($batch){$query->where('batch_id',$batch->id);},'nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$prog->program->award_id)
                         ->whereHas('selections',function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'));})->get();
-
+ */
         for($i = 0; $i < count($applicants); $i++){
             for($j = $i + 1; $j < count($applicants); $j++){
                if($applicants[$i]->rank_points < $applicants[$j]->rank_points){
@@ -2993,61 +3037,68 @@ class ApplicationController extends Controller
                }
             }
         }
-        
+/*         
         $selected_program = [];
         foreach ($applicants as $applicant) {
           $selected_program[$applicant->id] = false;
         }
+ */
+        $selection_status = false;
         foreach($choices as $choice){   
-            foreach ($campus_programs as $program) {
+            //foreach ($campus_programs as $program) {
 
-                if(count($program->entryRequirements) == 0){
+/*                 if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
                 }
 
                 if($program->entryRequirements[0]->max_capacity == null){
                      return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
-                }
+                } */
 
                 if(isset($program->entryRequirements[0])){
-                foreach($applicants as $applicant){
-				  $has_results = true;
-                  if($applicant->teacher_certificate_status != 1){
-					  if(count($applicant->nacteResultDetails) != 0 && $applicant->program_level_id !=2){
-						  if(count($applicant->nacteResultDetails[0]->results) == 0){
-							  $has_results = false;
-						  }
-					  }
+                    foreach($applicants as $applicant){
+                        $has_results = true;
+                        if($applicant->teacher_certificate_status !== 1){
+                            if(count($applicant->nacteResultDetails) != 0 && $applicant->program_level_id !=2){
+                                if(count($applicant->nacteResultDetails[0]->results) == 0){
+                                    $has_results = false;
+                                }
+                            }
 
-					  if($has_results){
-						  foreach($applicant->selections as $selection){
+                            if($has_results){
+                                foreach($applicant->selections as $selection){
 
-                            if($selection->order == $choice && $selection->batch_id == $batch->id && $selection->campus_program_id == $program->id){
-                            if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
-                                if(ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->where('batch_id',$batch->id)->count() == 0 && 
-                                    ($applicant->avn_no_results !== 1 || $applicant->teacher_diploma_certificate == null)){
-                                    $select = ApplicantProgramSelection::find($selection->id);
-                                    $select->status = 'APPROVING';
-                                    $select->status_changed_at = now();
-                                    $select->save();
+                                    if($selection->order == $choice && $selection->batch_id == $batch_id && $selection->campus_program_id == $program->id){
+                                        if($count < $program->entryRequirements[0]->max_capacity){
+                                            if((ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->where('batch_id',$batch_id)->count() == 0) && 
+                                            $applicant->avn_no_results !== 1 || ($applicant->avn_no_results == 1 && $applicant->entry_mode == 'DIRECT')){
+                                                $select = ApplicantProgramSelection::find($selection->id);
+                                                $select->status = 'APPROVING';
+                                                $select->status_changed_at = now();
+                                                $select->save();
 
-									   Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
+                                                Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
+                                                
+                                                $selection_status = true; 
+                                                $selected_program[$applicant->id] = true;
 
-									   $selected_program[$applicant->id] = true;
-
-									   $count[$program->id]++;
-								   }
-								}
-							 }
-						  }
-					  }
-				  }
+                                                $count++;
+                                        }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-           }
+           //}
         }
 
-        return redirect()->back()->with('message','Selection run successfully');
+        if($selection_status){
+            return redirect()->back()->with('message','Selection run successfully');
+        }else{
+            return redirect()->back()->with('error','Selection has not been successfully. Please try again.'); 
+        }
     }
 
     /**

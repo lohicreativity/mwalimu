@@ -724,7 +724,6 @@ class ApplicantController extends Controller
       }
       
       $count = 0;
-
       $applicants = Applicant::select('id','index_number','gender','entry_mode')
                               ->where('program_level_id',4)->where('campus_id',$staff->campus_id)
                               ->where('status',null)->whereNull('is_tcu_added')
@@ -733,8 +732,9 @@ class ApplicantController extends Controller
 
       foreach($applicants as $applicant){ 
 
-         $url='https://api.tcu.go.tz/applicants/add';
-         
+         //$url='https://api.tcu.go.tz/applicants/add';
+         $url='http://api.tcu.go.tz/applicants/add';
+
          $f6indexno = null;
          foreach ($applicant->nectaResultDetails as $detail) {
             if($detail->exam_id == 2 && $detail->verified == 1){
@@ -792,7 +792,6 @@ class ApplicantController extends Controller
             }
          }
 
-
          $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
          <Request>
             <UsernameToken>
@@ -814,7 +813,8 @@ class ApplicantController extends Controller
          $array = json_decode($json,TRUE);  
 
          if(isset($array['Response'])){
-            Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0]);
+            return $array['Response']['ResponseParameters']['StatusDescription'];
+            Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 3]);
             
           }
 /* 
