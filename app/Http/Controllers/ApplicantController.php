@@ -813,9 +813,10 @@ class ApplicantController extends Controller
          $array = json_decode($json,TRUE);  
 
          if(isset($array['Response'])){
-            return $array['Response']['ResponseParameters']['StatusDescription'];
-            Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 3]);
-            
+            //return $array['Response']['ResponseParameters']['StatusDescription'];
+            Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
+                                                         'is_tcu_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
+            return 1;
           }
 /* 
          if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
