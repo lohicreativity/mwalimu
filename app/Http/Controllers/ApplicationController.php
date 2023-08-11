@@ -7641,13 +7641,13 @@ class ApplicationController extends Controller
                     $applicantFeedBackCorrections->application_window_id = session('active_window_id');
                     $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
                     $applicantFeedBackCorrections->programme_id = $res['programme_id'];
-                    $applicantFeedBackCorrections->remarks = $res['remarks'];
+                    $applicantFeedBackCorrections->remarks = substr($res['remarks'],0-9);
                     $applicantFeedBackCorrections->save();
 
                 }else{
                     $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
                     $applicantFeedBackCorrections->programme_id = $res['programme_id'];
-                    $applicantFeedBackCorrections->remarks = $res['remarks'];
+                    $applicantFeedBackCorrections->remarks = substr($res['remarks'],0-9);
                     $applicantFeedBackCorrections->save();
 
                 }
