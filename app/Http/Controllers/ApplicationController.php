@@ -7586,7 +7586,7 @@ class ApplicationController extends Controller
     /**
      * Get applicants submitted to NACTVET with errors
      */
-    public function getFeedbackCorrectionListNACTE(Request $request)
+    public function getFeedbackCorrectionListNACTVET(Request $request)
     {
         if(!empty($request->get('program_level_id'))){
             $campus_programs = CampusProgram::whereHas('program',function($query) use($request){

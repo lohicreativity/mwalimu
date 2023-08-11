@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('summary',[ApplicationController::class,'downloadSummary']);
 
 	Route::get('regulator-failed-cases',[ApplicationController::class,'showRegulatorFailedCases']);
-    Route::get('nactvet-error-cases',[ApplicationController::class,'getVerifiedApplicantsNACTVET']);
+    Route::get('nactvet-error-cases',[ApplicationController::class,'getFeedbackCorrectionListNACTVET']);
 
 	Route::get('application-windows', [ApplicationWindowController::class,'index']);
 	Route::post('application-window/store', [ApplicationWindowController::class,'store']);
