@@ -67,6 +67,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('submit-application',[ApplicationController::class,'submitApplication']);
 	Route::get('summary',[ApplicationController::class,'downloadSummary']);
 
+	Route::get('regulator-failed-cases',[ApplicationController::class,'showRegulatorFailedCases']);
 
 	Route::get('application-windows', [ApplicationWindowController::class,'index']);
 	Route::post('application-window/store', [ApplicationWindowController::class,'store']);

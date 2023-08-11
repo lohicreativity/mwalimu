@@ -726,7 +726,7 @@ class ApplicantController extends Controller
       $count = 0;
       $applicants = Applicant::select('id','index_number','gender','entry_mode')
                               ->where('program_level_id',4)->where('campus_id',$staff->campus_id)
-                              ->whereIn('status',['SELECTED',null])->whereNull('is_tcu_added')->where('programs_complete_status',1)
+                              ->whereIn('status',['SELECTED',null])->where(function($query){$query->where('is_tcu_added','is',null)->orWhere('is_tcu_added',0);})->where('programs_complete_status',1)
                               ->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,avn',
                                     'outResultDetails:id,applicant_id,verified'])->get(); 
 

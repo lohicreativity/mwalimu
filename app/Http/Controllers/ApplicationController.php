@@ -64,6 +64,8 @@ use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Application\Models\ApplicationBatch;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\NacteResult;
+use App\Domain\Application\Models\ApplicantVerificationResult;
+use App\Domain\Application\Models\ApplicantFeedBackCorrection;
 
 class ApplicationController extends Controller
 {
@@ -1412,7 +1414,8 @@ class ApplicationController extends Controller
      */
     public function selectProgram(Request $request)
     {   
-		$applicant = Applicant::find($request->get('applicant_id'));
+		$applicant = Applicant::where('id',$request->get('applicant_id'))->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,avn',
+        'outResultDetails:id,applicant_id,verified'])->first();
 
 		$window = $applicant->applicationWindow;	
         $batch = ApplicationBatch::where('application_window_id',$window->id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
@@ -1477,10 +1480,110 @@ class ApplicationController extends Controller
                 if($request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
                     $applicant->programs_complete_status = 1;
-                    if($applicant->entry_mode == 'DIRECT' && !str_contains($applicant->programLevel->name,'Masters')){
+                    if($applicant->entry_mode == 'DIRECT' && !str_contains(strtolower($applicant->programLevel->name),'masters')){
                         $applicant->documents_complete_status = 1;
                     }
                     $applicant->save();
+                }
+      
+                if($applicant->is_pushed == null && str_contains(strtolower($applicant->programLevel->name),'bachelor')){
+                    $tcu_username = $tcu_token = null;  
+                    if(session('applicant_campus_id') == 1){
+                        $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+                        $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+                        $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+              
+                    }elseif(session('applicant_campus_id') == 2){
+                        $tcu_username = config('constants.TCU_USERNAME_KARUME');
+                        $tcu_token = config('constants.TCU_TOKEN_KARUME');
+                        $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+              
+                    }
+              
+                    $url='http://api.tcu.go.tz/applicants/add';
+            
+                    $f6indexno = null;
+                    foreach ($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 2 && $detail->verified == 1){
+                            $f6indexno = $detail->index_number;
+                            break;
+                        }
+                    }
+            
+                    $otherf4indexno = [];
+                    foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 1 && $detail->verified == 1 && $detail->index_number != $applicant->index_number){
+                            $otherf4indexno[]= $detail->index_number;
+                        }
+                    }                            
+            
+                    $otherf6indexno = [];
+                    foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 2 && $detail->verified == 1 && $detail->index_number != $f6indexno){
+                            $otherf6indexno = $detail->index_number;
+                        }
+                    }
+            
+                    if(is_array($otherf4indexno)){
+                        $otherf4indexno=implode(', ',$otherf4indexno);
+                    }
+            
+                    if(is_array($otherf6indexno)){
+                        $otherf6indexno=implode(', ',$otherf6indexno);
+                    }
+            
+                    $category = null;
+                    if($applicant->entry_mode == 'DIRECT'){
+                        $category = 'A';
+            
+                    }else{
+                        // Open university
+                        if($applicant->outResultDetails){
+                            foreach($applicant->outResultDetails as $detail){
+                                if($detail->verified == 1){
+                                    $category = 'F';
+                                    break;
+                                }
+                            }
+                        }
+            
+                        // Diploma holders
+                        if($applicant->nacteResultDetails){
+                            foreach($applicant->nacteResultDetails as $detail){
+                                if($detail->verified == 1){
+                                    $f6indexno = $f6indexno == null? $detail->avn : $f6indexno;
+                                    $category = 'D';
+                                    break;
+                                }
+                            }
+                        }
+                    }
+            
+                    $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                    <Request>
+                        <UsernameToken>
+                            <Username>'.$tcu_username.'</Username>
+                            <SessionToken>'.$tcu_token.'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                            <f4indexno>'.$applicant->index_number.'</f4indexno>
+                            <f6indexno>'.$f6indexno.'</f6indexno>
+                            <Gender>'.$applicant->gender.'</Gender>
+                            <Category>'.$category.'</Category>
+                            <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+                            <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
+                        </RequestParameters>
+                    </Request>';
+            
+                    $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                    $json = json_encode($xml_response);
+                    $array = json_decode($json,TRUE);  
+            
+                    if(isset($array['Response'])){
+                        //return $array['Response']['ResponseParameters']['StatusDescription'];
+                        Applicant::where('id',$applicant->id)->update(['is_pushed'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
+                                                                    'pushed_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
+                    }
                 }
 
                 return redirect()->back()->with('message','Programme selected successfully');
@@ -1489,6 +1592,32 @@ class ApplicationController extends Controller
            return redirect()->back()->with('error','Programme already selected');
         }
     }
+
+
+    /**
+     * Show Failed Applicants' Submissions to NACTVET and TCU
+     */
+    public function showRegulatorFailedCases(Request $request)
+    { 
+/*         $data = [
+            'applicants'=>Applicant::where('is_pushed',0)->where('campus_id',$request->get('staff_campus_id'))->where('program_level_id',4)->get(),
+            'program_level'=>Award::find($request->get('program_level_id')),
+            'selected_applicants'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
+            'request'=>$request
+        ]; */
+        $data = [
+            'staff'=> User::find(Auth::user()->id)->staff,
+            'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),
+            'nta_levels'=>NTALevel::all(),
+            'departments'=>Department::all(),
+            'campus_programs'=>CampusProgram::with('program')->get(),
+            'applicants'=>Applicant::where('is_pushed',0)->where('campus_id',$request->get('campus_id'))->where('program_level_id',4)->get(),
+            'request'=>$request,
+            'batches'=>ApplicationBatch::all()
+        ];
+        return view('dashboard.application.regulator-failed-submissions',$data)->withTitle('Regulator Failed Submissions');
+    }
+
 
     /**
      * Reset program selection 
@@ -7397,21 +7526,121 @@ class ApplicationController extends Controller
          $campus_programs = CampusProgram::whereHas('program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));
          })->get();
          $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
+
+         $verification_key = null;
+         if($staff->campus_id==1){
+            $verification_key = config('constants.NACTVET_VERIFICATION_KEY_KIVUKONI');
+        
+        }elseif($staff->campus_id==2){
+            $verification_key = config('constants.NACTVET_VERIFICATION_KEY_KARUME');
+                    
+        }elseif($staff->campus_id==3){
+            $verification_key = config('constants.NACTVET_VERIFICATION_KEY_PEMBA');
+
+        }else{
+            return redirect()->back()->with('message','campus key is unknown');
+        }
+
          foreach($campus_programs as $program){
-            $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.config('constants.NACTE_API_KEY'));
+            $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$verification_key);
 
             if($result['code'] == 200){
                 foreach ($result['params'] as $res) {
-                    $applicant = Applicant::where('index_number',$res['username'])->first();
-                    $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
-                    $applicant->save();
+                    //if(str_contains(strtolower($res['verification_status'].'approved')){
+                        $applicant = Applicant::where('index_number',$res['username'])->first();
+                        $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
+                        $applicant->save();
+    
+                        ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
 
-                    ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+                        $applicantVerificationResults = ApplicantVerificationResult::where('index_number',$res['username'])->first();
+                        if(!$applicantVerificationResults){
+                            $applicantVerificationResults = new ApplicantVerificationResult;
+                            $applicantVerificationResults->index_number=$res['username'];
+                            $applicantVerificationResults->user_id=$res['user_id'];
+                            $applicantVerificationResults->verification_status=$res['verification_status'];
+                            $applicantVerificationResults->multiple_selection=$res['multiple_selection'];
+                            $applicantVerificationResults->academic_year=$res['academic_year'];
+                            $applicantVerificationResults->intake=$res['intake'];
+                            $applicantVerificationResults->eligibility=$res['eligibility'];
+                            $applicantVerificationResults->remarks=$res['remarks'];
+                            $applicantVerificationResults->save();
+                        }else{
+                            ApplicantVerificationResult::where('index_number',$res['username'])->update(['verification_status'=>$res['verification_status'],'multiple_selection'=>$res['multiple_selection'],'eligibility'=>$res['eligibility'],'remarks'=>$res['remarks']]);
+                        }    
+                    /* }else{
+                        
+                    } */
+
                 }
+            }else{
+                return redirect()->back()->with('message','error occured when sending request to NACTVET');
             }
          }
 
          return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
+    }
+
+
+    /**
+     * Get applicants submitted to NACTVET with errors
+     */
+    public function getFeedbackCorrectionListNACTE(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
+            $query->where('award_id',$request->get('program_level_id'));
+        })->where('campus_id',$staff->campus_id)->get();
+
+        $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
+
+
+        foreach($campus_programs as $program){
+
+            $nacte_get_feedbackcorrection_key=null;
+            if($program->campus_id==1){
+                //get verification results for kivukoni campus
+                $nacte_get_feedbackcorrection_key='cd30b814dfefeba5.280d4beb0ab4d4a76523fbf8fad180ec77101b0d5a07584b7ca955763104e652.d3c2a28064d439e42cf0e03bb8531caf0fda5c38';
+            }elseif($program->campus_id==2){
+                //get verification results for karume campus
+                $nacte_get_feedbackcorrection_key='bca6e756c0e90f43.1ce421f7a7c9ceabbd7f7afbeba8670b94e69293ed7e63e677c277a94155f889.b0b23a2d56127336598a601b7950190f264452e9';
+            }elseif($program->campus_id==3){
+                //get verification results for pemba campus
+                $nacte_get_feedbackcorrection_key='EFa0412170f86b54.e644abed80536c1219d8149010448eecd00b45f78ff70d7f52060adfe126f626.0c2a7b9c30ce3fc82a22cbb144c09e651d2d41e4';
+            }else{
+                return redirect()->back()->with('message','campus key is unknown');
+            }
+
+
+            $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/feedbackcorrection/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$nacte_get_feedbackcorrection_key);
+            if($result['code'] == 200){
+                foreach ($result['params'] as $res) {
+                    $applicant = Applicant::select('id')->where('index_number',$res['user_id'])->where('campus_id',$program->campus_id)
+                                                        ->where('application_window_id',$request->get('application_window_id'))->first();
+                    //save pushed list
+                    $applicantFeedBackCorrections = ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->first();
+                    if(!$applicantFeedBackCorrections){
+                        $applicantFeedBackCorrections = new ApplicantFeedBackCorrection;
+                        $applicantFeedBackCorrections->applicant_id = $applicant->id;
+                        $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
+                        $applicantFeedBackCorrections->programme_id = $res['programme_id'];
+                        $applicantFeedBackCorrections->remarks = $res['remarks'];
+                        $applicantFeedBackCorrections->save();
+
+                    }else{
+                        $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
+                        $applicantFeedBackCorrections->programme_id = $res['programme_id'];
+                        $applicantFeedBackCorrections->remarks = $res['remarks'];
+                        $applicantFeedBackCorrections->save();
+
+                    }
+                }
+            }else{
+                return redirect()->back()->with('message','error occured when sending request to NACTVET');
+            }
+        }
+
+        return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
     }
 
     /**
