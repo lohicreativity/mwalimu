@@ -1615,7 +1615,7 @@ class ApplicationController extends Controller
             'request'=>$request,
             'batches'=>ApplicationBatch::all()
         ];
-        return view('dashboard.application.regulator-failed-submissions',$data)->withTitle('Regulator Failed Submissions');
+        return view('dashboard.application.tcu-failed-submissions',$data)->withTitle('TCU Failed Submissions');
     }
 
 
@@ -7520,15 +7520,16 @@ class ApplicationController extends Controller
     /**
      * Get verified students from NACTE
      */
-    public function getVerifiedApplicantsNACTE(Request $request)
+    public function getVerifiedApplicantsNACTVET(Request $request)
     {        
-         $staff = User::find(Auth::user()->id)->staff;
-         $campus_programs = CampusProgram::whereHas('program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));
-         })->get();
-         $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
+        $staff = User::find(Auth::user()->id)->staff;
 
-         $verification_key = null;
-         if($staff->campus_id==1){
+        $campus_programs = CampusProgram::whereHas('program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));
+        })->get();
+        $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
+
+        $verification_key = null;
+        if($staff->campus_id==1){
             $verification_key = config('constants.NACTVET_VERIFICATION_KEY_KIVUKONI');
         
         }elseif($staff->campus_id==2){
@@ -7540,8 +7541,8 @@ class ApplicationController extends Controller
         }else{
             return redirect()->back()->with('message','campus key is unknown');
         }
-
-         foreach($campus_programs as $program){
+   
+        foreach($campus_programs as $program){
             $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$verification_key);
 
             if($result['code'] == 200){
@@ -7576,9 +7577,9 @@ class ApplicationController extends Controller
             }else{
                 return redirect()->back()->with('message','error occured when sending request to NACTVET');
             }
-         }
+        }
+            return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
 
-         return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
     }
 
 
@@ -7587,60 +7588,76 @@ class ApplicationController extends Controller
      */
     public function getFeedbackCorrectionListNACTE(Request $request)
     {
-        $staff = User::find(Auth::user()->id)->staff;
-        $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
-            $query->where('award_id',$request->get('program_level_id'));
-        })->where('campus_id',$staff->campus_id)->get();
+        if(!empty($request->get('program_level_id'))){
+            $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
+                $query->where('award_id',$request->get('program_level_id'));
+            })->where('campus_id',$request->get('campus_id'))->get();
 
-        $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
-
-
-        foreach($campus_programs as $program){
-
-            $nacte_get_feedbackcorrection_key=null;
-            if($program->campus_id==1){
-                //get verification results for kivukoni campus
-                $nacte_get_feedbackcorrection_key='cd30b814dfefeba5.280d4beb0ab4d4a76523fbf8fad180ec77101b0d5a07584b7ca955763104e652.d3c2a28064d439e42cf0e03bb8531caf0fda5c38';
-            }elseif($program->campus_id==2){
-                //get verification results for karume campus
-                $nacte_get_feedbackcorrection_key='bca6e756c0e90f43.1ce421f7a7c9ceabbd7f7afbeba8670b94e69293ed7e63e677c277a94155f889.b0b23a2d56127336598a601b7950190f264452e9';
-            }elseif($program->campus_id==3){
-                //get verification results for pemba campus
-                $nacte_get_feedbackcorrection_key='EFa0412170f86b54.e644abed80536c1219d8149010448eecd00b45f78ff70d7f52060adfe126f626.0c2a7b9c30ce3fc82a22cbb144c09e651d2d41e4';
-            }else{
-                return redirect()->back()->with('message','campus key is unknown');
-            }
+            $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
 
 
-            $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/feedbackcorrection/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$nacte_get_feedbackcorrection_key);
-            if($result['code'] == 200){
-                foreach ($result['params'] as $res) {
-                    $applicant = Applicant::select('id')->where('index_number',$res['user_id'])->where('campus_id',$program->campus_id)
-                                                        ->where('application_window_id',$request->get('application_window_id'))->first();
-                    //save pushed list
-                    $applicantFeedBackCorrections = ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->first();
-                    if(!$applicantFeedBackCorrections){
-                        $applicantFeedBackCorrections = new ApplicantFeedBackCorrection;
-                        $applicantFeedBackCorrections->applicant_id = $applicant->id;
-                        $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
-                        $applicantFeedBackCorrections->programme_id = $res['programme_id'];
-                        $applicantFeedBackCorrections->remarks = $res['remarks'];
-                        $applicantFeedBackCorrections->save();
+            foreach($campus_programs as $program){
 
-                    }else{
-                        $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
-                        $applicantFeedBackCorrections->programme_id = $res['programme_id'];
-                        $applicantFeedBackCorrections->remarks = $res['remarks'];
-                        $applicantFeedBackCorrections->save();
-
-                    }
+                $nacte_get_feedbackcorrection_key=null;
+                if($program->campus_id==1){
+                    //get verification results for kivukoni campus
+                    $nacte_get_feedbackcorrection_key='cd30b814dfefeba5.280d4beb0ab4d4a76523fbf8fad180ec77101b0d5a07584b7ca955763104e652.d3c2a28064d439e42cf0e03bb8531caf0fda5c38';
+                }elseif($program->campus_id==2){
+                    //get verification results for karume campus
+                    $nacte_get_feedbackcorrection_key='bca6e756c0e90f43.1ce421f7a7c9ceabbd7f7afbeba8670b94e69293ed7e63e677c277a94155f889.b0b23a2d56127336598a601b7950190f264452e9';
+                }elseif($program->campus_id==3){
+                    //get verification results for pemba campus
+                    $nacte_get_feedbackcorrection_key='EFa0412170f86b54.e644abed80536c1219d8149010448eecd00b45f78ff70d7f52060adfe126f626.0c2a7b9c30ce3fc82a22cbb144c09e651d2d41e4';
+                }else{
+                    return redirect()->back()->with('message','campus key is unknown');
                 }
-            }else{
-                return redirect()->back()->with('message','error occured when sending request to NACTVET');
+
+
+                $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/feedbackcorrection/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$nacte_get_feedbackcorrection_key);
+                if($result['code'] == 200){
+                    foreach ($result['params'] as $res) {
+                        $applicant = Applicant::select('id')->where('index_number',$res['user_id'])->where('campus_id',$program->campus_id)
+                                                            ->where('application_window_id',$request->get('application_window_id'))->first();
+                        //save pushed list
+                        $applicantFeedBackCorrections = ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->first();
+                        if(!$applicantFeedBackCorrections){
+                            $applicantFeedBackCorrections = new ApplicantFeedBackCorrection;
+                            $applicantFeedBackCorrections->applicant_id = $applicant->id;
+                            $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
+                            $applicantFeedBackCorrections->programme_id = $res['programme_id'];
+                            $applicantFeedBackCorrections->remarks = $res['remarks'];
+                            $applicantFeedBackCorrections->save();
+
+                        }else{
+                            $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
+                            $applicantFeedBackCorrections->programme_id = $res['programme_id'];
+                            $applicantFeedBackCorrections->remarks = $res['remarks'];
+                            $applicantFeedBackCorrections->save();
+
+                        }
+                    }
+                }else{
+                    return redirect()->back()->with('message','error occured when sending request to NACTVET');
+                }
             }
+
+                return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
+
+        }
+         
+        $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->get();
+        $applicants = [];
+        foreach($errors as $error){
+            $applicants = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
+                                    ->with(['selections:id,campus_program_id','selections.campusProgram:id,code','programLevel:id,name'])->first();
         }
 
-        return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
+        $data = [
+        'applicants'=>$applicants,
+        'errors' => $errors,
+        'awards' => Award::all(),
+        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get()
+        ];
     }
 
     /**

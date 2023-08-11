@@ -378,7 +378,7 @@
             <ul class="nav nav-treeview">
               @can('view-edit-applicant-details')
               <li class="nav-item">
-                <a href="{{ url('application/regulator-failed-cases') }}" class="nav-link">
+                <a href="{{ url('application/get-nactvet-error-cases'.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>NACTVET Failed Cases</p>
                 </a>
