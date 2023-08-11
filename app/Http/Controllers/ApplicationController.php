@@ -7592,14 +7592,13 @@ class ApplicationController extends Controller
         $applicants = [];
         foreach($errors as $error){
             $applicants[] = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
-                                    ->with(['selections:id,campus_program_id,applicant_id,campus_program_id','selections.campusProgram:id,code','programLevel:id,name'])->first();
+                                    ->with('programLevel:id,name')->first();
         }
 
         $data = [
         'applicants'=>$applicants,
         'errors' => $errors,
         'awards' => Award::all(),
-        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
         'request' => $request
         ];
 

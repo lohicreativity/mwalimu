@@ -94,7 +94,6 @@
 							<th>Index Number</th>
 							<th>Phone</th>
                             <th>Award</th>            
-							<th>Programme</th>
                             <th>Reason</th>            
 							<th>Action</th>
 						 </tr>
@@ -108,7 +107,6 @@
 							<td>{{ $applicant->index_number }}</td>
                             <td>{{ $applicant->phone }}</td>
                             <td>{{ $applicant->programLevel->name }}</td>
-							<td>{{ $applicant->selections->campusProgram->code }}</td>
                             <td>{{ $error->remark }}</td>
 							<td> Hii bado </td>
 
