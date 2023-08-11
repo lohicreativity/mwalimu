@@ -7586,9 +7586,32 @@ class ApplicationController extends Controller
     /**
      * Get applicants submitted to NACTVET with errors
      */
-    public function getFeedbackCorrectionListNACTVET(Request $request)
-    {
+    public function showNACTVETFeedbackCorrectionList(Request $request)
+    {    
+        $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->get();
+        $applicants = [];
+        foreach($errors as $error){
+            $applicants = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
+                                    ->with(['selections:id,campus_program_id','selections.campusProgram:id,code','programLevel:id,name'])->first();
+        }
+
+        $data = [
+        'applicants'=>$applicants,
+        'errors' => $errors,
+        'awards' => Award::all(),
+        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
+        'request' => $request
+        ];
+
+        return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Submissions');
+    }
+
+
+
+    public function getNACTVETFeedbackCorrectionList(Request $request){
+        
         if(!empty($request->get('program_level_id'))){
+            return $request;
             $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
                 $query->where('award_id',$request->get('program_level_id'));
             })->where('campus_id',$request->get('campus_id'))->get();
@@ -7641,27 +7664,9 @@ class ApplicationController extends Controller
                     return redirect()->back()->with('message','error occured when sending request to NACTVET');
                 }
             }
-
                 return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
 
         }
-         
-        $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->get();
-        $applicants = [];
-        foreach($errors as $error){
-            $applicants = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
-                                    ->with(['selections:id,campus_program_id','selections.campusProgram:id,code','programLevel:id,name'])->first();
-        }
-
-        $data = [
-        'applicants'=>$applicants,
-        'errors' => $errors,
-        'awards' => Award::all(),
-        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
-        'request' => $request
-        ];
-
-        return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Submissions');
     }
 
     /**
