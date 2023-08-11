@@ -7591,8 +7591,8 @@ class ApplicationController extends Controller
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->get();
         $applicants = [];
         foreach($errors as $error){
-            $applicants = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
-                                    ->with(['selections:id,campus_program_id','selections.campusProgram:id,code','programLevel:id,name'])->first();
+            $applicants[] = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
+                                    ->with(['selections:id,campus_program_id,applicant_id,campus_program_id','selections.campusProgram:id,code','programLevel:id,name'])->first();
         }
 
         $data = [

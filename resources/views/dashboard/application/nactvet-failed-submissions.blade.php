@@ -108,7 +108,7 @@
 							<td>{{ $applicant->index_number }}</td>
                             <td>{{ $applicant->phone }}</td>
                             <td>{{ $applicant->programLevel->name }}</td>
-							<td>{{ $applicant->campusProgram->code }}</td>
+							<td>{{ $applicant->selections->campusProgram->code }}</td>
                             <td>{{ $error->remark }}</td>
 							<td> Hii bado </td>
 
