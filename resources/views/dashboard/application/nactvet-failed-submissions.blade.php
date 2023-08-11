@@ -46,14 +46,16 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/nactvet-error-cases','class'=>'ss-form-processing']) !!}
+                  {!! Form::open(['url'=>'application/nactvet-error-cases','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Programme Level') !!}
                      <select name="programme_level_id" class="form-control" required>
                         <option value="">Select Programme Level</option>
                         @foreach($awards as $award)
-                        <option value="{{ $award->id }}" @if($request->get('programme_level_id') == $award->id) selected="selected" @endif>{{ $award->name }} </option>
+                            @if($award->id <= 2)
+                                <option value="{{ $award->id }}" @if($request->get('programme_level_id') == $award->id) selected="selected" @endif>{{ $award->name }} </option>
+                            @endif
                         @endforeach
                      </select>
                    </div>
