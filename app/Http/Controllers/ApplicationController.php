@@ -7623,6 +7623,7 @@ class ApplicationController extends Controller
                         if(!$applicantFeedBackCorrections){
                             $applicantFeedBackCorrections = new ApplicantFeedBackCorrection;
                             $applicantFeedBackCorrections->applicant_id = $applicant->id;
+                            $applicantFeedBackCorrections->application_window_id = $request->get('application_window_id');
                             $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
                             $applicantFeedBackCorrections->programme_id = $res['programme_id'];
                             $applicantFeedBackCorrections->remarks = $res['remarks'];
@@ -7656,7 +7657,8 @@ class ApplicationController extends Controller
         'applicants'=>$applicants,
         'errors' => $errors,
         'awards' => Award::all(),
-        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get()
+        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
+        'request' => $request
         ];
 
         return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Submissions');
