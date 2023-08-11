@@ -7631,7 +7631,7 @@ class ApplicationController extends Controller
         $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/feedbackcorrection/'.$campus_program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$nacte_get_feedbackcorrection_key);
         if($result['code'] == 200){
             foreach ($result['params'] as $res) {
-                $applicant = Applicant::select('id')->where('index_number',$res['user_id'])->where('campus_id',session('staff_campus_id'))
+                $applicant = Applicant::select('id')->where('index_number',$res['form_four_indexnumber'])->where('campus_id',session('staff_campus_id'))
                                                     ->where('application_window_id',session('active_window_id'))->first();
                 //save pushed list
                 $applicantFeedBackCorrections = ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->first();
