@@ -7612,7 +7612,7 @@ class ApplicationController extends Controller
 
         $campus_program = CampusProgram::select('id','regulator_code')->where('id',$request->get('campus_program_id'))->first();
 
-        $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
+        $intake = ApplicationWindow::find(session('active_window_id'))->intake;
 
         $nacte_get_feedbackcorrection_key=null;
         if(session('staff_campus_id') == 1){
@@ -7632,13 +7632,13 @@ class ApplicationController extends Controller
         if($result['code'] == 200){
             foreach ($result['params'] as $res) {
                 $applicant = Applicant::select('id')->where('index_number',$res['user_id'])->where('campus_id',session('staff_campus_id'))
-                                                    ->where('application_window_id',$request->get('application_window_id'))->first();
+                                                    ->where('application_window_id',session('active_window_id'))->first();
                 //save pushed list
                 $applicantFeedBackCorrections = ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->first();
                 if(!$applicantFeedBackCorrections){
                     $applicantFeedBackCorrections = new ApplicantFeedBackCorrection;
                     $applicantFeedBackCorrections->applicant_id = $applicant->id;
-                    $applicantFeedBackCorrections->application_window_id = $request->get('application_window_id');
+                    $applicantFeedBackCorrections->application_window_id = session('active_window_id');
                     $applicantFeedBackCorrections->verification_id = $res['student_verification_id'];
                     $applicantFeedBackCorrections->programme_id = $res['programme_id'];
                     $applicantFeedBackCorrections->remarks = $res['remarks'];
