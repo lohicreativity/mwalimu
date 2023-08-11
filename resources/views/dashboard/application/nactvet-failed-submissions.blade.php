@@ -107,7 +107,14 @@
 							<td>{{ $applicant->index_number }}</td>
                             <td>{{ $applicant->phone }}</td>
                             <td>{{ $applicant->programLevel->name }}</td>
-                            <td>{{ $error->remark }}</td>
+                            <td>
+                                @foreach($errors as $error) 
+                                    @if($error->applicant_id == $applicant->id)
+                                        {{ $error->remark }}
+                                        @break
+                                    @endif
+                                @endforeach
+                            </td>
 							<td> Hii bado </td>
 
 						 </tr>
