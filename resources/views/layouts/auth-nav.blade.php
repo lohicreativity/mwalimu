@@ -369,33 +369,6 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-exclamation-circle"></i>
-              <p>
-                {{ __('Regulator Submissions') }}
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              @can('view-edit-applicant-details')
-              <li class="nav-item">
-                <a href="{{ url('application/nactvet-error-cases'.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>NACTVET Failed Cases</p>
-                </a>
-              </li>
-              @endcan
-              @can('view-edit-applicant-details')
-              <li class="nav-item">
-                <a href="{{ url('application/regulator-failed-cases?application_window_id='.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>TCU Failed Cases</p>
-                </a>
-              </li>
-              @endcan
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 {{ __('Selection') }}
@@ -448,6 +421,22 @@
                 <a href="{{ url('application/admin-fetch-results') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fetch Results</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-edit-applicant-details')
+              <li class="nav-item">
+                <a href="{{ url('application/nactvet-error-cases'.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>NACTVET Failed Cases</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-edit-applicant-details')
+              <li class="nav-item">
+                <a href="{{ url('application/regulator-failed-cases?application_window_id='.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>TCU Failed Cases</p>
                 </a>
               </li>
               @endcan
