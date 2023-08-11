@@ -50,7 +50,7 @@
                     <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Programme Level') !!}
-                     <select name="programme_level_id" class="form-control" required>
+                     <select name="program_level_id" class="form-control" required>
                         <option value="">Select Programme Level</option>
                         @foreach($awards as $award)
                             @if($award->id <= 2)
