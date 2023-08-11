@@ -7599,6 +7599,7 @@ class ApplicationController extends Controller
         'applicants'=>$applicants,
         'errors' => $errors,
         'awards' => Award::all(),
+        'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
         'request' => $request
         ];
 
