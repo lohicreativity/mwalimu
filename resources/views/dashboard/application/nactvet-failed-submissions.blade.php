@@ -110,7 +110,7 @@
                             <td>
                                 @foreach($errors as $error) 
                                     @if($error->applicant_id == $applicant->id)
-                                        {{ $error->remark }}
+                                        {{ $error->remarks }}
                                         @break
                                     @endif
                                 @endforeach
