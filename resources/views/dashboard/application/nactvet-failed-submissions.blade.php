@@ -46,7 +46,7 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/get-nactvet-error-cases','class'=>'ss-form-processing']) !!}
+                  {!! Form::open(['url'=>'application/nactvet-error-cases','class'=>'ss-form-processing']) !!}
                     <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Programme Level') !!}

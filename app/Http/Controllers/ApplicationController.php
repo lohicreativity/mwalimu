@@ -7658,6 +7658,8 @@ class ApplicationController extends Controller
         'awards' => Award::all(),
         'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get()
         ];
+
+        return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Submissions');
     }
 
     /**
