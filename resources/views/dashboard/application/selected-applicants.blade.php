@@ -8,7 +8,7 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
   </div>
-
+  <script src="{{ asset('js/script.js') }}"></script>
   @include('layouts.auth-header')
 
   @include('layouts.sidebar')
@@ -32,7 +32,6 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -283,7 +282,7 @@
                   </div> -->
                   {!! Form::close() !!}
 
-                  <table class="table table-bordered ss-margin-top ss-paginated-table">
+                  <table id="hello" class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
                           <th>SN</th>

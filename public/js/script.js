@@ -21,13 +21,25 @@ $('document').ready(function(){
     // Fix content height
     fixContentHeight('.ss-fixed-min-height');
 
-    $('#ss-submit-selected-applicants').DataTable();
+    $('#ss-submit-selected-applicants').DataTable(
+      {
+        "lengthMenu": [ 200, 400, 600, 800, 1000 ]
+        }
+    );
 
     $('#ss-transfers').DataTable();
 
     $('.ss-paginated-table').DataTable();
 
 
+
+//    $(document).ready( function() {
+// $('#hello').DataTable(
+ // {
+//"lengthMenu": [ 10, 25, 50, 75, 500 ]
+//} );
+                
+//} );
 
     // Pop signup modal
     // if(localStorage.getItem('signup-modal-set') != '1'){
