@@ -226,9 +226,9 @@
                       </td>
                       <td>
                         @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
-                        {!! Form::checkbox('applicant_ids[]',null,['disabled'=>'disabled']) !!}
+                        {!! Form::checkbox('applicant_ids[]',$applicant->id,null,['disabled'=>'disabled']) !!}
                         @else
-                        {!! Form::checkbox('applicant_ids[]',true) !!}
+                        {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
                         @endif
                       </td>
                    </tr>
