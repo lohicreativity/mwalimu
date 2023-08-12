@@ -1005,7 +1005,7 @@ class ApplicationController extends Controller
      * Submit selected applicants
      */
     public function submitSelectedApplicants(Request $request)
-    {
+    {return $request;
         ini_set('memory_limit', '-1');
         set_time_limit(120);
 
@@ -1014,19 +1014,19 @@ class ApplicationController extends Controller
         $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id',$request->get('application_window_id'))
                                  ->where('program_level_id',$award->id)->latest()->first();
         
-        $tcu_username = $tcu_token = null;
+        $tcu_username = $tcu_token = $nactvet_authorization_key = null;
         if($staff->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
             $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
-            $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
 
         }elseif($staff->campus_id == 2){
             $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
             $tcu_token = config('constants.TCU_TOKEN_KARUME');
-            $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
 
         }elseif($staff->campus_id == 3){
-            $nacte_secret_key = config('constants.NACTE_API_SECRET_KIVUKONI');
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
         }
         
         $previous_batch = null;
@@ -1051,14 +1051,14 @@ class ApplicationController extends Controller
 
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
                                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date')
-                                    ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))
+/*                                     ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))
                                     ->where('status','APPROVING');})
-                                    ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)
-                                    ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])
+                                    ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id) */
+                                    ->whereIn('id',$request->get('applicant_ids'))
                                     ->with(['nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake','selections.campusProgram.program.ntaLevel',
                                             'nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
                                             'outResultDetails:id,applicant_id,verified','disabilityStatus:id,name','selections:id,status,campus_program_id,applicant_id','selections.campusProgram:id,regulator_code'])->get();
-
+return $applicants;
             foreach($applicants as $applicant){
 
                 if($request->get('applicant_'.$applicant->id) == $applicant->id){
@@ -1224,18 +1224,18 @@ class ApplicationController extends Controller
                     } elseif (str_contains(strtolower($award->name),'diploma') || str_contains(strtolower($award->name),'basic')) {
 
 
-                        $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
+                        $payment = NactePayment::select('reference_no')->where('campus_id', $staff->campus_id)->latest()->first();
 
                         if(!$payment){
-                            return redirect()->back()->with('error','No payment set for this campus');
+                            return redirect()->back()->with('error','No NACTVET payment set for this campus');
                         }
 
-                        $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nacte_secret_key);
+                        $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_authorization_key); //crosscheck the key
                     
                         if(empty(json_decode($result)->params)){
                             return redirect()->back()->with('error','Invalid call to NACTVET account balance. Please try again.');
-                        }elseif((json_decode($result)->params[0]->balance/5000) < count($applicants)) {
-                            return redirect()->back()->with('error','No sufficient NACTVET payment balance');
+                        }elseif((json_decode($result)->params[0]->balance) < count($applicants)*5000) { // Needs to crosscheck this
+                            return redirect()->back()->with('error','Insufficient balance. A top up of'.count($applicants)*5000 - json_decode($result)->params[0]->balance.' is required');
                         }
 
                         if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))
@@ -1243,13 +1243,12 @@ class ApplicationController extends Controller
 
                             $f6indexno = null;
                             foreach ($applicant->nectaResultDetails as $detail) {
-                                if($detail->exam_id == 2){
+                                if($detail->exam_id == 2 && $detail->verified == 1){
                                 $f6indexno = $detail->index_number;
                                 }
                             }
 
-                            $approving_selection = null;
-                            $regulator_programme_id = null;
+                            $approving_selection = $regulator_programme_id = null;
                             foreach($applicant->selections as $selection){
                                 if($selection->status == 'APPROVING'){
                                     $approving_selection = $selection;
@@ -1257,7 +1256,6 @@ class ApplicationController extends Controller
                                     break;
                                 }
                             }
-
                     
                             if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count() == 0 && $approving_selection != null){
                     
@@ -1277,25 +1275,29 @@ class ApplicationController extends Controller
                                 $string = $approving_selection->campusProgram->program->ntaLevel->name;
                                 $last_character = (strlen($string) - 1);
 
-                                $f4_exam_year = null;
+                                $f4indexno = $f4_exam_year = null;
                                 if(str_contains(strtolower($applicant->index_number),'eq')){
-                                    $f4_exam_year = explode('/',$index_number)[1];
+                                    $f4_exam_year = explode('/',$applicant->index_number)[1];
+                                    $f4indexno = explode('/',$applicant->index_number)[0];
                                 }else{
-                                    $f4_exam_year = explode('/', $index_number)[2];
+                                    $f4_exam_year = explode('/', $applicant->index_number)[2];
+                                    $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
                                 }
 
                                 $f6_exam_year = null;
                                 if(!empty($f6indexno)){
                                     if(str_contains(strtolower($f6indexno),'eq')){
                                         $f6_exam_year = explode('/',$f6indexno)[1];
+                                        $f6indexno = explode('/',$f6indexno)[0];
                                     }else{
                                         $f6_exam_year = explode('/', $f6indexno)[2];
+                                        $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
                                     }
                                 }
 
                                 $data = array(
                                     'heading' => array(
-                                        'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
+                                        'authorization' => $nactvet_authorization_key, 
                                         'intake' => strtoupper($applicant->intake->name),
                                         'programme_id' => $regulator_programme_id,
                                         'application_year' => date('Y'),
@@ -1310,7 +1312,7 @@ class ApplicationController extends Controller
                                                 'DOB' => DateMaker::toStandardDate($applicant->birth_date),
                                                 'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
                                                 'impairement' => $applicant->disabilityStatus->name,
-                                                'form_four_indexnumber' => $applicant->index_number,
+                                                'form_four_indexnumber' => $f4indexno,
                                                 'form_four_year' => $f4_exam_year,
                                                 'form_six_indexnumber' => $f6indexno? $f6indexno : '',
                                                 'form_six_year' => $f6indexno? $f6_exam_year : '',
@@ -1319,15 +1321,15 @@ class ApplicationController extends Controller
                                                 'NTA5_reg' => '',
                                                 'NTA5_grad_year' => '',
                                                 'email_address' => $applicant->email,
-                                                'mobile_number' => str_replace('-', '',$applicant->phone),
+                                                'mobile_number' => str_replace('255', '0',$applicant->phone),
                                                 'address' => $applicant->address,
                                                 'region' => $applicant->region->name,
                                                 'district' => $applicant->district->name,
                                                 'nationality' => $applicant->nationality,
                                                 'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
                                                 'next_kin_address' => $applicant->nextOfKin->address,
-                                                'next_kin_email_address' => '',
-                                                'next_kin_phone' => $applicant->nextOfKin->phone,
+                                                'next_kin_email_address' => $applicant->nextOfKin->email? $applicant->nextOfKin->email : '',
+                                                'next_kin_phone' => str_replace('255', '0',$applicant->nextOfKin->phone),
                                                 'next_kin_region' => $applicant->nextOfKin->region->name,
                                                 'next_kin_relation' => $applicant->nextOfKin->relationship
                                             
