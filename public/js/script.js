@@ -23,7 +23,7 @@ $('document').ready(function(){
 
     $('#ss-submit-selected-applicants').DataTable(
       {
-        "lengthMenu": [ 200, 400, 600, 800, 1000 ]
+        "lengthMenu": [ 100, 200, 300, 400, 500 ]
         }
     );
 
