@@ -8,8 +8,7 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
   </div>
-  <script src="{{ asset('js/script.js') }}"></script>
-  @include('layouts.auth-header')
+    @include('layouts.auth-header')
 
   @include('layouts.sidebar')
 

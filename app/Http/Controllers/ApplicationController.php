@@ -1005,7 +1005,7 @@ class ApplicationController extends Controller
      * Submit selected applicants
      */
     public function submitSelectedApplicants(Request $request)
-    {return $request;
+    {
         ini_set('memory_limit', '-1');
         set_time_limit(120);
 
