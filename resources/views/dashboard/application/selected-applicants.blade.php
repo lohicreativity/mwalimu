@@ -202,38 +202,36 @@
                     <tbody>
                   
                  @foreach($selected_applicants as $applicant)
-                      @if($applicant->status == 'SELECTED')
-                        <tr>
-                            <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                            <td>{{ $applicant->gender }}</td>
-                            <td>@foreach($applicant->selections as $selection)
-                                @if($selection->status == 'APPROVING')
-                                {{ $selection->campusProgram->code }}
-                                @endif
-                                @endforeach
-                            </td>
-                            <td> @foreach($batches as $batch)
-                                    @if($batch->id == $applicant->batch_id)
-                                        {{ $batch->batch_no}}
-                                        @break
-                                    @endif
-                                  @endforeach
-                            </td>
-                            <td>@if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
-                              <span class="badge badge-success">Submitted</span>
-                            @else
-                              <span class="badge badge-warning">Not Submitted</span>
-                            @endif
-                            </td>
-                            <td>
-                              @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
-                              {!! Form::checkbox('applicant_ids[]',null,['disabled'=>'disabled']) !!}
-                              @else
-                              {!! Form::checkbox('applicant_ids[]',true) !!}
+                   <tr>
+                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                      <td>{{ $applicant->gender }}</td>
+                      <td>@foreach($applicant->selections as $selection)
+                           @if($selection->status == 'APPROVING')
+                           {{ $selection->campusProgram->code }}
+                           @endif
+                          @endforeach
+                      </td>
+                      <td> @foreach($batches as $batch)
+                              @if($batch->id == $applicant->batch_id)
+                                  {{ $batch->batch_no}}
+                                  @break
                               @endif
-                            </td>
-                        </tr>
+                            @endforeach
+                      </td>
+                      <td>@if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
+                        <span class="badge badge-success">Submitted</span>
+                      @else
+                        <span class="badge badge-warning">Not Submitted</span>
                       @endif
+                      </td>
+                      <td>
+                        @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
+                        {!! Form::checkbox('applicant_ids[]',null,['disabled'=>'disabled']) !!}
+                        @else
+                        {!! Form::checkbox('applicant_ids[]',true) !!}
+                        @endif
+                      </td>
+                   </tr>
                  @endforeach
                    
                    </tbody>
