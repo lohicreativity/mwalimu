@@ -804,36 +804,43 @@ class ApplicationController extends Controller
                             $confirm = 'Not Confirmed';
                         }
 
-                        $selected_programme = null;
+                        $institution_code = $selected_programme = null;
                         foreach ($applicant->selections as $selection) {
 
                             if($applicant->program_level_id == 1){
                                 if($selection->campusProgram->campus_id == 1) {
-                                    $institution_code = substr($selection->campusProgram->code, 0, 2);
-                                    $selected_programme = $selection->campusProgram->code;
-
+                                    if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                        $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                        $selected_programme = $selection->campusProgram->code;
+                                    }
                                 }elseif($selection->campusProgram->campus_id == 2){
-                                    $institution_code = substr($selection->campusProgram->code, 0, 3);
-                                    $selected_programme = $selection->campusProgram->code;
-
+                                    if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                        $institution_code = substr($selection->campusProgram->code, 0, 3);
+                                        $selected_programme = $selection->campusProgram->code;
+                                    }
                                 }elseif($selection->campusProgram->campus_id == 3){
-                                    $institution_code = substr($selection->campusProgram->code, 0, 3);
-                                    $selected_programme = $selection->campusProgram->code;
-
+                                    if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                        $institution_code = substr($selection->campusProgram->code, 0, 3);
+                                        $selected_programme = $selection->campusProgram->code;
+                                    }
                                 }
                             }else{
                                 if($selection->campusProgram->campus_id == 1) {
-                                    $institution_code = substr($selection->campusProgram->code, 0, 2);
-                                    $selected_programme = $selection->campusProgram->code;
-
+                                    if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                        $institution_code = substr($selection->campusProgram->code, 0, 2);
+                                        $selected_programme = $selection->campusProgram->code;
+                                    }
                                 }elseif($selection->campusProgram->campus_id == 2){
-                                    $institution_code = substr($selection->campusProgram->code, 0, 3);
-                                    $selected_programme = $selection->campusProgram->code;
+                                    if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                        $institution_code = substr($selection->campusProgram->code, 0, 3);
+                                        $selected_programme = $selection->campusProgram->code;
+                                    }
 
                                 }elseif($selection->campusProgram->campus_id == 3){
-                                    $institution_code = substr($selection->campusProgram->code, 0, 3);
-                                    $selected_programme = $selection->campusProgram->code;
-
+                                    if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                        $institution_code = substr($selection->campusProgram->code, 0, 3);
+                                        $selected_programme = $selection->campusProgram->code;
+                                    }
                                 }
                             }
 
