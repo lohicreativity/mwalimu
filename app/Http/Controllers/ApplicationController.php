@@ -1068,7 +1068,7 @@ class ApplicationController extends Controller
                                             'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                                             ->where('verified',1);},
                                             'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
-                                            'nextOfKin:id,first_name,surname,region_id,relation,address','region:id,name','district:id,name','intake:id,name'])->get();
+                                            'nextOfKin:id,first_name,surname,region_id,relationship,address','region:id,name','district:id,name','intake:id,name'])->get();
 
             $count = 0;
             if(str_contains(strtolower($award->name),'bachelor')){
