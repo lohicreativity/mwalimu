@@ -1067,7 +1067,7 @@ class ApplicationController extends Controller
                                             'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                             'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                                             ->where('verified',1);},
-                                            'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},
+                                            'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
                                             'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
 
             $count = 0;
@@ -1208,7 +1208,7 @@ class ApplicationController extends Controller
                                 </RequestParameters>
                             </Request>';
                         }
-return $xml_request;
+                        return $xml_request;
                         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                         $json = json_encode($xml_response);
                         $array = json_decode($json,TRUE);  
@@ -1369,6 +1369,8 @@ return $xml_request;
                                 
                             )
                         );
+
+                return $data;
 
                         $payload = json_encode(array($data));
 
