@@ -1067,8 +1067,8 @@ class ApplicationController extends Controller
                                             'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                             'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                                             ->where('verified',1);},
-                                            'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
-                                            'nextOfKin:id,first_name,surname,region_id,relationship,address','region:id,name','district:id,name','intake:id,name'])->get();
+                                            'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},
+                                            'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
 
             $count = 0;
             if(str_contains(strtolower($award->name),'bachelor')){
@@ -1313,6 +1313,19 @@ class ApplicationController extends Controller
                             }
                         }
 
+                        $impairment = null;
+                        if($applicant->disability_status_id == 1){
+                            $impairment = 'None';
+                        }elseif($applicant->disability_status_id == 2 || $applicant->disability_status_id == 7){
+                            $impairment = 'Physical Impairments';
+                        }elseif($applicant->disability_status_id == 3 || $applicant->disability_status_id == 4){
+                            $impairment = 'Sensory Impairments';
+                        }elseif($applicant->disability_status_id == 8 || $applicant->disability_status_id == 9){
+                            $impairment = 'Cognitive Impairments';
+                        }elseif($applicant->disability_status_id == 10){
+                            $impairment = 'Learning Difficulties';
+                        }
+
                         $data = array(
                             'heading' => array(
                                 'authorization' => $nactvet_authorization_key, 
@@ -1329,7 +1342,7 @@ class ApplicationController extends Controller
                                         'surname' => $applicant->surname,
                                         'DOB' => DateMaker::toStandardDate($applicant->birth_date),
                                         'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
-                                        'impairement' => $applicant->disabilityStatus->name,
+                                        'impairement' => $impairment,
                                         'form_four_indexnumber' => $f4indexno,
                                         'form_four_year' => $f4_exam_year,
                                         'form_six_indexnumber' => $f6indexno? $f6indexno : '',
