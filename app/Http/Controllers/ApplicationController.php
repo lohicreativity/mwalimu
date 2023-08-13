@@ -1068,7 +1068,7 @@ class ApplicationController extends Controller
                                             'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                                             ->where('verified',1);},
                                             'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
-                                            'nextOfKin:id,first_name,surname,region_id','region:id,name','district:id,name','intake:id,name'])->get();
+                                            'nextOfKin:id,first_name,surname,region_id,relation,address','region:id,name','district:id,name','intake:id,name'])->get();
 
             $count = 0;
             if(str_contains(strtolower($award->name),'bachelor')){
@@ -1335,9 +1335,9 @@ class ApplicationController extends Controller
                                         'form_six_indexnumber' => $f6indexno? $f6indexno : '',
                                         'form_six_year' => $f6indexno? $f6_exam_year : '',
                                         'NTA4_reg' => $nta4_reg_no,
-                                        'NTA4_grad_year' => $nta4_graduation_year,
+                                        'NTA4_grad_year' => explode('/',$nta4_graduation_year)[1],
                                         'NTA5_reg' => $nta5_reg_no,
-                                        'NTA5_grad_year' => $nta5_graduation_year,
+                                        'NTA5_grad_year' => explode('/',$nta5_graduation_year)[1],
                                         'email_address' => $applicant->email,
                                         'mobile_number' => str_replace('255', '0',$applicant->phone),
                                         'address' => $applicant->address,
