@@ -1035,7 +1035,7 @@ class ApplicationController extends Controller
         }elseif($staff->campus_id == 3){
             $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
         }
-        
+ /*        
         $previous_batch = null;
         if($batch->batch_no > 1){
             $previous_batch = ApplicationBatch::select('id')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
@@ -1055,178 +1055,342 @@ class ApplicationController extends Controller
                       ->where('application_window_id',$request->get('application_window_id'));})->where('status','APPROVING')->count() == 0){
                 return redirect()->back()->with('error','Applicants selection has not been run yet');
            }
-
-            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
+       */ 
+        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
                                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id')
   /*                                    ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');})
                                    ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id) */
                                     ->whereIn('id',$request->get('applicant_ids'))
-                                    ->with(['selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','APPROVING');},
-                                            'selections.campusProgram:id,regulator_code','nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                    ->with(['selections:id,status,campus_program_id,applicant_id',
+                                            'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
+                                            'selections.campusProgram.program.ntaLevel:id,name',
+                                            'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                             'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year')->where('verified',1);},
                                             'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
-                                            'nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake'])->get();
-return $applicants;
-            foreach($applicants as $applicant){
+                                            'nextOfKin:id,first_name,surname,region_id','region:id,name','district:id,name','intake:id,name'])->get();
 
-                if($request->get('applicant_'.$applicant->id) == $applicant->id){
-                    
-                    if (str_contains(strtolower($award->name),'bachelor')) {
+            $count = 0;
+            if(str_contains(strtolower($award->name),'bachelor')){
+                foreach($applicants as $applicant){
+                    if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
+                                             ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->count() == 0){
 
                         //$url='https://api.tcu.go.tz/applicants/submitProgramme';
-                    
-                        if (ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))
-                                                    ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$applicant->batch_id)->count() == 0) {
+                        $url='http://41.59.90.200/applicants/submitProgramme';
 
-                            $url='http://41.59.90.200/applicants/submitProgramme';
-                    
-                            $selected_programs = array();
-                            $approving_selection = null;
+                        $selected_programs = array();
+                        $approving_selection = null;
 
-                            foreach($applicant->selections as $selection){
-                                $selected_programs[] = $selection->campusProgram->regulator_code;
-                                if($selection->status == 'APPROVING'){
-                                    $approving_selection = $selection;
-                                    break;
-                                }
+                        foreach($applicant->selections as $selection){
+                            $selected_programs[] = $selection->campusProgram->regulator_code;
+                            if($selection->status == 'APPROVING'){
+                                $approving_selection = $selection;
+                                
                             }
+                        }
 
-                            $f6indexno = null;
-                            foreach ($applicant->nectaResultDetails as $detail) {
-                                if($detail->exam_id == 2 && $detail->verified == 1){
+                        $f6indexno = null;
+                        $otherf4indexno = $otherf6indexno = [];
+                        foreach ($applicant->nectaResultDetails as $detail) {
+                            if($detail->exam_id == 2){
+                                if($f6indexno != null && $f6indexno != $detail->index_number){
+                                    $otherf6indexno[] = $detail->index_number;
+                                }else{
                                     $f6indexno = $detail->index_number;
-                                    break;
                                 }
                             }
+                        }
 
-                            $otherf4indexno = [];
-                            foreach($applicant->nectaResultDetails as $detail) {
-                                if($detail->exam_id == 1 && $detail->verified == 1 && $detail->index_number != $applicant->index_number){
-                                    $otherf4indexno[]= $detail->index_number;
-                                }
-                            }                            
+                        foreach($applicant->nectaResultDetails as $detail) {
+                            if($detail->exam_id == 1 && $detail->index_number != $applicant->index_number){
+                                $otherf4indexno[]= $detail->index_number;
+                            }
+                        }                            
+                        
+/*                         foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 2 && $detail->verified == 1 && $detail->index_number != $f6indexno){
+                            $otherf6indexno = $detail->index_number;
+                        }
+                        } */
+                        if(is_array($selected_programs)){
+                            $selected_programs=implode(', ',$selected_programs);
+                        }
 
-                            $otherf6indexno = [];
-                            foreach($applicant->nectaResultDetails as $detail) {
-                                if($detail->exam_id == 2 && $detail->verified == 1 && $detail->index_number != $f6indexno){
-                                    $otherf6indexno = $detail->index_number;
-                                }
+                        if(is_array($otherf4indexno)){
+                        $otherf4indexno=implode(', ',$otherf4indexno);
+                        }
+
+                        if(is_array($otherf6indexno)){
+                        $otherf6indexno=implode(', ',$otherf6indexno);
+                        }
+
+                        $category = null;
+                        if($applicant->entry_mode == 'DIRECT'){
+                            $category = 'A';
+
+                        }else{
+                            // Open university
+                            if($applicant->outResultDetails){
+                                $category = 'F';
+
                             }
 
-                            if(is_array($otherf4indexno)){
-                                $otherf4indexno=implode(', ',$otherf4indexno);
-                            }
-
-                            if(is_array($otherf6indexno)){
-                                $otherf6indexno=implode(', ',$otherf6indexno);
-                            }
-
-                            $category = null;
-                            if($applicant->entry_mode == 'DIRECT'){
-                                $category = 'A';
-
-                            }else{
-                                // Open university
-                                if($applicant->outResultDetails){
-                                    foreach($applicant->outResultDetails as $detail){
-                                        if($detail->verified == 1){
-                                            $category = 'F';
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                // Diploma holders
-                                if($applicant->nacteResultDetails){
-                                    foreach($applicant->nacteResultDetails as $detail){
-                                        if($detail->verified == 1){
-                                            $category = 'D';
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-
-
-                            //if($f6indexno){
-
-                            if($approving_selection){
-
-                                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                                <Request>
-                                <UsernameToken>
-                                <Username>'.$tcu_username.'</Username>
-                                <SessionToken>'.$tcu_token.'</SessionToken>
-                                </UsernameToken>
-                                <RequestParameters>
-                                <f4indexno>'.$applicant->index_number.'</f4indexno>
-                                <f6indexno>'.$f6indexno.'</f6indexno>
-                                <Gender>'.$applicant->gender.'</Gender>
-                                <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                                <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                                <OtherMobileNumber></OtherMobileNumber>
-                                <EmailAddress>'.$applicant->email.'</EmailAddress>
-                                <Category>'.$category.'</Category>
-                                <AdmissionStatus>provisional admission</AdmissionStatus>
-                                <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
-                                <Reason>eligible</Reason>
-                                <Nationality>'.$applicant->nationality.'</Nationality>
-                                <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                                <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                                <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                                <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
-                                <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
-                                </RequestParameters>
-                                </Request>';
-
-                            }else{
-
-                                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                                <Request>
-                                <UsernameToken>
-                                <Username>'.$tcu_username.'</Username>
-                                <SessionToken>'.$tcu_token.'</SessionToken>
-                                </UsernameToken>
-                                <RequestParameters>
-                                <f4indexno>'.$applicant->index_number.'</f4indexno >
-                                <f6indexno>'.$f6indexno.'</f6indexno>
-                                <Gender>'.$applicant->gender.'</Gender>
-                                <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                                <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                                <OtherMobileNumber></OtherMobileNumber>
-                                <EmailAddress>'.$applicant->email.'</EmailAddress>
-                                <Category>'.$category.'</Category>
-                                <AdmissionStatus>not selected</AdmissionStatus>
-                                <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
-                                <Reason>max capacity</Reason>
-                                <Nationality >'.$applicant->nationality.'</Nationality>
-                                <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                                <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                                <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                                <Otherf4indexno></Otherf4indexno>
-                                <Otherf6indexno></Otherf6indexno>
-                                </RequestParameters>
-                                </Request>';
-                            }
-
-                            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-                            $json = json_encode($xml_response);
-                            $array = json_decode($json,TRUE);  
-
-                            if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
-                                $count++;
-                                Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-
-                                $log = new ApplicantSubmissionLog;
-                                $log->applicant_id = $applicant->id;
-                                $log->program_level_id = $request->get('program_level_id');
-                                $log->application_window_id = $request->get('application_window_id');
-                                $log->batch_id = $applicant->batch_id;
-                                $log->submitted = 1;
-                                $log->save();
+                            // Diploma holders
+                            if($applicant->nacteResultDetails){
+                                $category = 'D';
 
                             }
                         }
+
+                        if($approving_selection){
+
+                            $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                            <Request>
+                                <UsernameToken>
+                                    <Username>'.$tcu_username.'</Username>
+                                    <SessionToken>'.$tcu_token.'</SessionToken>
+                                </UsernameToken>
+                                <RequestParameters>
+                                    <f4indexno>'.$applicant->index_number.'</f4indexno>
+                                    <f6indexno>'.$f6indexno.'</f6indexno>
+                                    <Gender>'.$applicant->gender.'</Gender>
+                                    <SelectedProgrammes>'.$selected_programs.'</SelectedProgrammes>
+                                    <MobileNumber>'.str_replace('255', '0', $applicant->phone).'</MobileNumber>
+                                    <OtherMobileNumber></OtherMobileNumber>
+                                    <EmailAddress>'.$applicant->email.'</EmailAddress>
+                                    <Category>'.$category.'</Category>
+                                    <AdmissionStatus>provisional admission</AdmissionStatus>
+                                    <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                                    <Reason>eligible</Reason>
+                                    <Nationality>'.$applicant->nationality.'</Nationality>
+                                    <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                                    <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                                    <NationalIdNumber></NationalIdNumber>
+                                    <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+                                    <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
+                                </RequestParameters>
+                            </Request>';
+
+                        }else{
+
+                            $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                            <Request>
+                                <UsernameToken>
+                                    <Username>'.$tcu_username.'</Username>
+                                    <SessionToken>'.$tcu_token.'</SessionToken>
+                                </UsernameToken>
+                                <RequestParameters>
+                                    <f4indexno>'.$applicant->index_number.'</f4indexno >
+                                    <f6indexno>'.$f6indexno.'</f6indexno>
+                                    <Gender>'.$applicant->gender.'</Gender>
+                                    <SelectedProgrammes>'.$selected_programs.'</SelectedProgrammes>
+                                    <MobileNumber>'.str_replace('255', '0', $applicant->phone).'</MobileNumber>
+                                    <OtherMobileNumber></OtherMobileNumber>
+                                    <EmailAddress>'.$applicant->email.'</EmailAddress>
+                                    <Category>'.$category.'</Category>
+                                    <AdmissionStatus>not selected</AdmissionStatus>
+                                    <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
+                                    <Reason>max capacity</Reason>
+                                    <Nationality>'.$applicant->nationality.'</Nationality>
+                                    <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                                    <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                                    <NationalIdNumber></NationalIdNumber>
+                                    <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+                                    <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
+                                </RequestParameters>
+                            </Request>';
+                        }
+
+                        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                        $json = json_encode($xml_response);
+                        $array = json_decode($json,TRUE);  
+
+                        if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
+                        $count++;
+                        Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+
+                        $log = new ApplicantSubmissionLog;
+                        $log->applicant_id = $applicant->id;
+                        $log->program_level_id = $request->get('program_level_id');
+                        $log->application_window_id = $request->get('application_window_id');
+                        $log->batch_id = $applicant->batch_id;
+                        $log->submitted = 1;
+                        $log->save();
+
+                        }
+                    }
+                }
+            }elseif(str_contains(strtolower($award->name),'diploma') || str_contains(strtolower($award->name),'basic')){
+                $payment = NactePayment::select('reference_no')->where('campus_id', $staff->campus_id)->latest()->first();
+
+                if(!$payment){
+                    return redirect()->back()->with('error','No NACTVET payment set for this campus');
+                }
+
+                $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_authorization_key); //crosscheck the key
+            
+/*                 if(empty(json_decode($result)->params)){
+                    return redirect()->back()->with('error','Invalid call to NACTVET account balance. Please try again.');
+                }elseif((json_decode($result)->params[0]->balance) < count($applicants)*5000) { // Needs to crosscheck this
+                    return redirect()->back()->with('error','Insufficient balance. Please top up TZS '.count($applicants)*5000 - json_decode($result)->params[0]->balance.' to proceed.');
+                } */
+
+                foreach($applicants as $applicant){
+                    if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
+                                             ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->count() == 0){
+
+                        $f6indexno = null;
+                        foreach ($applicant->nectaResultDetails as $detail) {
+                            if($detail->exam_id == 2 && $detail->verified == 1){
+                            $f6indexno = $detail->index_number;
+                            }
+                        }
+
+                        $selected_programs = array();
+                        $approving_selection = $regulator_programme_id = null;
+                        foreach($applicant->selections as $selection){
+                            $selected_programs[] = $selection->campusProgram->regulator_code;
+                            if($selection->status == 'APPROVING'){
+                                $approving_selection = $selection;
+                                $regulator_programme_id = $selection->campusProgram->regulator_code;
+
+                            }
+                        }
+
+                
+                            // Commented on 01/08/2023
+/*                             $regulator_programme_id = null;
+                        foreach($applicant->selections as $selection){
+                            
+                            if($selection->status == 'APPROVING'){
+                                $regulator_programme_id = $selection->campusProgram->regulator_code;
+                            }
+                        } */
+                            //API URL
+                        $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
+
+                        $ch = curl_init($url);
+
+                        $string = $approving_selection->campusProgram->program->ntaLevel->name;
+                        $last_character = (strlen($string) - 1);
+
+                        $f4indexno = $f4_exam_year = null;
+                        if(str_contains(strtolower($applicant->index_number),'eq')){
+                            $f4_exam_year = explode('/',$applicant->index_number)[1];
+                            $f4indexno = explode('/',$applicant->index_number)[0];
+                        }else{
+                            $f4_exam_year = explode('/', $applicant->index_number)[2];
+                            $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
+                        }
+
+                        $f6_exam_year = null;
+                        if(!empty($f6indexno)){
+                            if(str_contains(strtolower($f6indexno),'eq')){
+                                $f6_exam_year = explode('/',$f6indexno)[1];
+                                $f6indexno = explode('/',$f6indexno)[0];
+                            }else{
+                                $f6_exam_year = explode('/', $f6indexno)[2];
+                                $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
+                            }
+                        }
+
+                        $data = array(
+                            'heading' => array(
+                                'authorization' => $nactvet_authorization_key, 
+                                'intake' => strtoupper($applicant->intake->name),
+                                'programme_id' => $regulator_programme_id,
+                                'application_year' => date('Y'),
+                                'level' => substr($string, $last_character),
+                                'payment_reference_number' => $payment->reference_no,
+                            ),
+                            'students' => array(
+                                ['particulars' => array(
+                                        'firstname' => $applicant->first_name,
+                                        'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
+                                        'surname' => $applicant->surname,
+                                        'DOB' => DateMaker::toStandardDate($applicant->birth_date),
+                                        'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
+                                        'impairement' => $applicant->disabilityStatus->name,
+                                        'form_four_indexnumber' => $f4indexno,
+                                        'form_four_year' => $f4_exam_year,
+                                        'form_six_indexnumber' => $f6indexno? $f6indexno : '',
+                                        'form_six_year' => $f6indexno? $f6_exam_year : '',
+                                        'NTA4_reg' => $applicant->nacte_reg_no != null? $applicant->nacte_reg_no : '',
+                                        'NTA4_grad_year' => '',
+                                        'NTA5_reg' => '',
+                                        'NTA5_grad_year' => '',
+                                        'email_address' => $applicant->email,
+                                        'mobile_number' => str_replace('255', '0',$applicant->phone),
+                                        'address' => $applicant->address,
+                                        'region' => $applicant->region->name,
+                                        'district' => $applicant->district->name,
+                                        'nationality' => $applicant->nationality,
+                                        'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
+                                        'next_kin_address' => $applicant->nextOfKin->address,
+                                        'next_kin_email_address' => $applicant->nextOfKin->email? $applicant->nextOfKin->email : '',
+                                        'next_kin_phone' => str_replace('255', '0',$applicant->nextOfKin->phone),
+                                        'next_kin_region' => $applicant->nextOfKin->region->name,
+                                        'next_kin_relation' => $applicant->nextOfKin->relationship
+                                    
+                                    )
+                                ],
+                                
+                            )
+                        );
+
+                return $data;
+
+                        $payload = json_encode(array($data));
+
+                        //attach encoded JSON string to the POST fields
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+                        //set the content type to application/json
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+
+                        //return response instead of outputting
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                        //execute the POST request
+                        $result = curl_exec($ch);
+
+                        //close cURL resource
+                        curl_close($ch);
+
+            
+                        if(isset(json_decode($result)->code)){
+
+                            if(json_decode($result)->code == 200){ 
+
+                                Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+                                if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count() == 0){
+                                    $count++;
+                                    
+                                    $log = new ApplicantSubmissionLog;
+                                    $log->applicant_id = $applicant->id;
+                                    $log->program_level_id = $request->get('program_level_id');
+                                    $log->application_window_id = $request->get('application_window_id');
+                                    $log->batch_id = $applicant->batch_id;
+                                    $log->submitted = 1;
+                                    $log->save();
+                                }
+                            } // Need to store failed cases
+                        }
+
+                        
+
+                    }                      
+                }
+            }
+/*             foreach($applicants as $applicant){
+
+                if($request->get('applicant_'.$applicant->id) == $applicant->id){
+                    
+                    if(str_contains(strtolower($award->name),'bachelor')){
+
+                        //$url='https://api.tcu.go.tz/applicants/submitProgramme';
+                    
+
                         //}
 
                     } elseif (str_contains(strtolower($award->name),'diploma') || str_contains(strtolower($award->name),'basic')) {
@@ -1246,158 +1410,14 @@ return $applicants;
                             return redirect()->back()->with('error','Insufficient balance. A top up of'.count($applicants)*5000 - json_decode($result)->params[0]->balance.' is required');
                         }
 
-                        if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))
-                        ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$applicant->batch_id)->count() == 0) {
-
-                            $f6indexno = null;
-                            foreach ($applicant->nectaResultDetails as $detail) {
-                                if($detail->exam_id == 2 && $detail->verified == 1){
-                                $f6indexno = $detail->index_number;
-                                }
-                            }
-
-                            $approving_selection = $regulator_programme_id = null;
-                            foreach($applicant->selections as $selection){
-                                if($selection->status == 'APPROVING'){
-                                    $approving_selection = $selection;
-                                    $regulator_programme_id = $selection->campusProgram->regulator_code;
-                                    break;
-                                }
-                            }
-                    
-                            if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count() == 0 && $approving_selection != null){
-                    
-                                // Commented on 01/08/2023
-/*                             $regulator_programme_id = null;
-                            foreach($applicant->selections as $selection){
-                                
-                                if($selection->status == 'APPROVING'){
-                                    $regulator_programme_id = $selection->campusProgram->regulator_code;
-                                }
-                            } */
-                                //API URL
-                                $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
-
-                                $ch = curl_init($url);
-
-                                $string = $approving_selection->campusProgram->program->ntaLevel->name;
-                                $last_character = (strlen($string) - 1);
-
-                                $f4indexno = $f4_exam_year = null;
-                                if(str_contains(strtolower($applicant->index_number),'eq')){
-                                    $f4_exam_year = explode('/',$applicant->index_number)[1];
-                                    $f4indexno = explode('/',$applicant->index_number)[0];
-                                }else{
-                                    $f4_exam_year = explode('/', $applicant->index_number)[2];
-                                    $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
-                                }
-
-                                $f6_exam_year = null;
-                                if(!empty($f6indexno)){
-                                    if(str_contains(strtolower($f6indexno),'eq')){
-                                        $f6_exam_year = explode('/',$f6indexno)[1];
-                                        $f6indexno = explode('/',$f6indexno)[0];
-                                    }else{
-                                        $f6_exam_year = explode('/', $f6indexno)[2];
-                                        $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
-                                    }
-                                }
-
-                                $data = array(
-                                    'heading' => array(
-                                        'authorization' => $nactvet_authorization_key, 
-                                        'intake' => strtoupper($applicant->intake->name),
-                                        'programme_id' => $regulator_programme_id,
-                                        'application_year' => date('Y'),
-                                        'level' => substr($string, $last_character),
-                                        'payment_reference_number' => $payment->reference_no,
-                                    ),
-                                    'students' => array(
-                                        ['particulars' => array(
-                                                'firstname' => $applicant->first_name,
-                                                'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
-                                                'surname' => $applicant->surname,
-                                                'DOB' => DateMaker::toStandardDate($applicant->birth_date),
-                                                'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
-                                                'impairement' => $applicant->disabilityStatus->name,
-                                                'form_four_indexnumber' => $f4indexno,
-                                                'form_four_year' => $f4_exam_year,
-                                                'form_six_indexnumber' => $f6indexno? $f6indexno : '',
-                                                'form_six_year' => $f6indexno? $f6_exam_year : '',
-                                                'NTA4_reg' => $applicant->nacte_reg_no != null? $applicant->nacte_reg_no : '',
-                                                'NTA4_grad_year' => '',
-                                                'NTA5_reg' => '',
-                                                'NTA5_grad_year' => '',
-                                                'email_address' => $applicant->email,
-                                                'mobile_number' => str_replace('255', '0',$applicant->phone),
-                                                'address' => $applicant->address,
-                                                'region' => $applicant->region->name,
-                                                'district' => $applicant->district->name,
-                                                'nationality' => $applicant->nationality,
-                                                'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
-                                                'next_kin_address' => $applicant->nextOfKin->address,
-                                                'next_kin_email_address' => $applicant->nextOfKin->email? $applicant->nextOfKin->email : '',
-                                                'next_kin_phone' => str_replace('255', '0',$applicant->nextOfKin->phone),
-                                                'next_kin_region' => $applicant->nextOfKin->region->name,
-                                                'next_kin_relation' => $applicant->nextOfKin->relationship
-                                            
-                                            )
-                                        ],
-                                        
-                                    )
-                                );
-
-                        
-
-                                $payload = json_encode(array($data));
-
-                                //attach encoded JSON string to the POST fields
-                                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-                                //set the content type to application/json
-                                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-
-                                //return response instead of outputting
-                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                                //execute the POST request
-                                $result = curl_exec($ch);
-
-                                //close cURL resource
-                                curl_close($ch);
-
-                    
-                                if(isset(json_decode($result)->code)){
-
-                                    if(json_decode($result)->code == 200){
-
-                                        Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-                                        if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count() == 0){
-                                            $count++;
-                                            
-                                            $log = new ApplicantSubmissionLog;
-                                            $log->applicant_id = $applicant->id;
-                                            $log->program_level_id = $request->get('program_level_id');
-                                            $log->application_window_id = $request->get('application_window_id');
-                                            $log->batch_id = $applicant->batch_id;
-                                            $log->submitted = 1;
-                                            $log->save();
-                                        }
-                                    }
-                                }
-
-                            }
-
-                        }                  
+                
 
                     }
 
                 }  
 
-            }
-        }else{
-            return redirect()->back()->with('error','Selection has not been done for this level');
-        }
+            } */
+  
         return redirect()->back()->with('message',$count.' applicants have been successfully submitted.');
     }
 
