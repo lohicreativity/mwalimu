@@ -1208,7 +1208,7 @@ class ApplicationController extends Controller
                                 </RequestParameters>
                             </Request>';
                         }
-
+return $xml_request;
                         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                         $json = json_encode($xml_response);
                         $array = json_decode($json,TRUE);  
@@ -1237,11 +1237,11 @@ class ApplicationController extends Controller
 
                 $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_authorization_key); //crosscheck the key
             
-/*                 if(empty(json_decode($result)->params)){
+                if(empty(json_decode($result)->params)){
                     return redirect()->back()->with('error','Invalid call to NACTVET account balance. Please try again.');
                 }elseif((json_decode($result)->params[0]->balance) < count($applicants)*5000) { // Needs to crosscheck this
                     return redirect()->back()->with('error','Insufficient balance. Please top up TZS '.count($applicants)*5000 - json_decode($result)->params[0]->balance.' to proceed.');
-                } */
+                }
 
                 foreach($applicants as $applicant){
                     if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
@@ -1369,8 +1369,6 @@ class ApplicationController extends Controller
                                 
                             )
                         );
-
-                return $data;
 
                         $payload = json_encode(array($data));
 
