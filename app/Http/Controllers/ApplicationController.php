@@ -1058,13 +1058,13 @@ class ApplicationController extends Controller
 
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
                                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date')
-                                     ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');})
- /*                                   ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id) */
+  /*                                    ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');})
+                                   ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id) */
                                     ->whereIn('id',$request->get('applicant_ids'))
-                                    ->with(['nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake','selections.campusProgram.program.ntaLevel',
+                                    ->with(['selections:id,status,campus_program_id,applicant_id'=>function($query){$query->where('status','APPROVING');},'selections.campusProgram.program.ntaLevel',
                                             'nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
-                                            'outResultDetails:id,applicant_id,verified','disabilityStatus:id,name','selections:id,status,campus_program_id,applicant_id',
-                                            'selections.campusProgram:id,regulator_code'])->where('status','SELECTED')->get();
+                                            'outResultDetails:id,applicant_id,verified','disabilityStatus:id,name','nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake',
+                                            'selections.campusProgram:id,regulator_code'])->get();
 return $applicants;
             foreach($applicants as $applicant){
 
