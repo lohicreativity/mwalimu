@@ -1065,7 +1065,8 @@ class ApplicationController extends Controller
                                             'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
                                             'selections.campusProgram.program.ntaLevel:id,name',
                                             'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                                            'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year')->where('verified',1);},
+                                            'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
+                                            ->where('verified',1);},
                                             'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
                                             'nextOfKin:id,first_name,surname,region_id','region:id,name','district:id,name','intake:id,name'])->get();
 
