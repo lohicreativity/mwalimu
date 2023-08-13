@@ -1091,13 +1091,20 @@ class ApplicationController extends Controller
 
                         $f6indexno = null;
                         $otherf4indexno = $otherf6indexno = [];
-                        foreach ($applicant->nectaResultDetails as $detail) {
+                        foreach($applicant->nectaResultDetails as $detail) {
                             if($detail->exam_id == 2){
                                 if($f6indexno != null && $f6indexno != $detail->index_number){
                                     $otherf6indexno[] = $detail->index_number;
                                 }else{
                                     $f6indexno = $detail->index_number;
                                 }
+                            }
+                        }
+
+                        foreach($applicant->nacteResultDetails as $detail){
+                            if($f6indexno == null){
+                                $f6indexno = $detail->registration_number;
+                                break;
                             }
                         }
 
@@ -1246,6 +1253,12 @@ class ApplicationController extends Controller
                             }
                         }
 
+                        foreach($applicant->nacteResultDetails as $detail){
+                            if($f6indexno == null){
+                                $f6indexno = $detail->registration_number;
+                                break;
+                            }
+                        }
                         $selected_programs = array();
                         $approving_selection = $regulator_programme_id = null;
                         foreach($applicant->selections as $selection){
