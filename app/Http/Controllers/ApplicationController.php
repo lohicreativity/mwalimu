@@ -1062,7 +1062,7 @@ class ApplicationController extends Controller
                                    ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id) */
                                     ->whereIn('id',$request->get('applicant_ids'))
                                     ->with(['selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','APPROVING');},
-                                            'selections.campusProgram:id,regulator_code','selections.campusProgram.program.ntaLevel',
+                                            'selections.campusProgram:id,regulator_code',
                                             'nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,registration_number,diploma_graduation_year',
                                             'outResultDetails:id,applicant_id,verified','disabilityStatus:id,name','nextOfKin:id,first_name,surname','region:id,name','district:id,name','intake'])->get();
 return $applicants;
