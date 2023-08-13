@@ -1253,10 +1253,15 @@ class ApplicationController extends Controller
                             }
                         }
 
+                        $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
                         foreach($applicant->nacteResultDetails as $detail){
-                            if($f6indexno == null){
-                                $f6indexno = $detail->registration_number;
-                                break;
+                            if(str_contains(strtolower($detail->programme),'basic')){
+                                $nta4_reg_no = $detail->registration_number;
+                                $nta4_graduation_year = $detail->diploma_graduation_year;
+
+                            }elseif(str_contains(strtolower($detail->programme),'diploma')){
+                                $nta5_reg_no = $detail->registration_number;
+                                $nta5_graduation_year = $detail->diploma_graduation_year;
                             }
                         }
                         $selected_programs = array();
@@ -1328,10 +1333,10 @@ class ApplicationController extends Controller
                                         'form_four_year' => $f4_exam_year,
                                         'form_six_indexnumber' => $f6indexno? $f6indexno : '',
                                         'form_six_year' => $f6indexno? $f6_exam_year : '',
-                                        'NTA4_reg' => $applicant->nacte_reg_no != null? $applicant->nacte_reg_no : '',
-                                        'NTA4_grad_year' => '',
-                                        'NTA5_reg' => '',
-                                        'NTA5_grad_year' => '',
+                                        'NTA4_reg' => $nta4_reg_no,
+                                        'NTA4_grad_year' => $nta4_graduation_year,
+                                        'NTA5_reg' => $nta5_reg_no,
+                                        'NTA5_grad_year' => $nta5_graduation_year,
                                         'email_address' => $applicant->email,
                                         'mobile_number' => str_replace('255', '0',$applicant->phone),
                                         'address' => $applicant->address,
