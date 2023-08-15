@@ -616,7 +616,7 @@ class ApplicationController extends Controller
        // } else if (Auth::user()->hasRole('admission-officer')) {
         } else{
 
-            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number','status')
+            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number','status','program_level_id')
                                     ->where('campus_id', $staff->campus_id)->where('programs_complete_status', 1)
                                     /*- >whereHas('selections', function($query) use($request, $batch_id){$query->whereNotIn('status',['APPROVING','SELECTED'])
                                     ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch_id);}) */
@@ -625,7 +625,7 @@ class ApplicationController extends Controller
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->where(function($query){$query->whereNull('status')->orWhere('status','NOT SELECTED');})
                                     ->with(['intake','selections:id,applicant_id,campus_program_id','selections.campusProgram:id,code', 'nacteResultDetails:id,applicant_id,exam_id,verified', 
-                                            'nacteResultDetails:id,applicant_id,verified,avn'])->get();
+                                            'nacteResultDetails:id,applicant_id,verified,avn','programLevel:id,code'])->get();
 
         }
 

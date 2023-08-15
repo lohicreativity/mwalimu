@@ -58,6 +58,7 @@
                                 <th>Sex</th>
                                 <th>Form IV Index#</th>
                                 <th>Form VI Index#/AVN</th>
+                                <th>Award</th>
                                 <th>Programme</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -84,6 +85,7 @@
                                       @endif
                                     @endforeach
                                   </td>
+                                  <td>{{ $applicant->programLevel->code }}</td>
                                   <td>
 
                                     @if(count($applicant->selections) > 0)
