@@ -615,18 +615,20 @@ class ApplicationController extends Controller
 
        // } else if (Auth::user()->hasRole('admission-officer')) {
         } else{
-            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number')
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number','status')
                                     ->where('campus_id', $staff->campus_id)->where('programs_complete_status', 1)
                                     /*- >whereHas('selections', function($query) use($request, $batch_id){$query->whereNotIn('status',['APPROVING','SELECTED'])
                                     ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch_id);}) */
                                     ->where(function($query) {$query->where('teacher_certificate_status', 1)
                                     ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4')->orWhere('avn_no_results', 1);})
-                                    ->where('application_window_id',$request->get('application_window_id'))->where('status',null)
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->where(function($query){$query->whereNull('status')->orWhere('status','NOT SELECTED');})
                                     ->with(['intake','selections:id,applicant_id,campus_program_id','selections.campusProgram:id,code', 'nacteResultDetails:id,applicant_id,exam_id,verified', 
                                             'nacteResultDetails:id,applicant_id,verified,avn'])->get();
 
         }
-        
+
         $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
         ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch_id)->count(); 
 
@@ -646,6 +648,15 @@ class ApplicationController extends Controller
         ];
         
         return view('dashboard.admission.other-applicants', $data)->withTitle('Other Applicants');
+    }
+
+    /**
+     * Reject manual selection
+     */
+    public function rejectOtherApplicants(Request $request){
+        Applicant::where('id',$request->get('applicant_id'))->update(['status'=>'NOT SELECTED']);
+
+        return redirect()->to('application/other-applicants')->with('message','Application declined successfully');
     }
 
     public function viewApplicantDocuments(Request $request)

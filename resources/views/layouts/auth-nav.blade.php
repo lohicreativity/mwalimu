@@ -412,7 +412,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/other-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>MSc & Other Applicants</p>
+                  <p>Manual Selection</p>
                 </a>
               </li>
               @endif
