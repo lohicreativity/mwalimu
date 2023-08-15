@@ -1041,7 +1041,7 @@ class ApplicationController extends Controller
             $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
 
         }elseif($staff->campus_id == 2){
-            $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
             $tcu_token = config('constants.TCU_TOKEN_KARUME');
             $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
 
@@ -1090,7 +1090,7 @@ class ApplicationController extends Controller
                                              ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->count() == 0){
 
                         //$url='https://api.tcu.go.tz/applicants/submitProgramme';
-                        $url='http://41.59.90.200/applicants/submitProgramme';
+                        $url='http://api.tcu.go.tz/applicants/submitProgramme';
 
                         $selected_programs = array();
                         $approving_selection = null;
@@ -1227,17 +1227,25 @@ class ApplicationController extends Controller
                         $array = json_decode($json,TRUE);  
 
                         if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
-                        $count++;
-                        Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+                            $count++;
+                            Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
-                        $log = new ApplicantSubmissionLog;
-                        $log->applicant_id = $applicant->id;
-                        $log->program_level_id = $request->get('program_level_id');
-                        $log->application_window_id = $request->get('application_window_id');
-                        $log->batch_id = $applicant->batch_id;
-                        $log->submitted = 1;
-                        $log->save();
+                            $log = new ApplicantSubmissionLog;
+                            $log->applicant_id = $applicant->id;
+                            $log->program_level_id = $request->get('program_level_id');
+                            $log->application_window_id = $request->get('application_window_id');
+                            $log->batch_id = $applicant->batch_id;
+                            $log->submitted = 1;
+                            $log->save();
 
+                        }else{
+                            $error_log = new ApplicantFeedBackCorrection;
+                            $error_log->applicant_id = $applicant->id;
+                            $error_log->application_window_id = $applicant->application_window_id;
+                            $error_log->programme_id = $approving_selection? $approving_selection->campusProgram->regulator_code : 'BD';
+                            $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                            $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
+                            $error_log->save();
                         }
                     }
                 }
