@@ -77,20 +77,37 @@
              </div>
              <!-- /.card -->
             @if(count($applicants)>0)
+            @php
+              $submission_status = false;
+              foreach($applicants as $applicant){
+                if($applicant->status == 'SUBMITTED'){
+                  $submission_status = true;
+                  break;
+                }
+              }
+            @endphp
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br><br>
-                 <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download Selected Applicants</a>
-
+                 @if(count($selected_applicants) > 0)
+                    <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download Selected Applicants</a>
+                 @endif
                  <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
                  @if(Auth::user()->hasRole('admission-officer'))
                     @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Applicants to TCU</a>
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a>
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
+                      @if($submission_status) 
+                        <a href="{{ url('application/submit-selected-applicants-tcu/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Submitted Applicants</a> 
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> 
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
+                      @endif
                     @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTE</a>
-                    <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
+                      @if(count($selected_applicants) > 0)
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTVET</a>
+                      @endif
+                      @if($submission_status)
+                        <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
+                      @endif
                     @endif
                  @endif
                </div>
@@ -191,10 +208,10 @@
                     <thead>
                         <tr>
                           <th>Name</th>
-                          <th>Gender</th>
+                          <th>Sex</th>
+                          <th>Index#</th>
                           <th>Programme</th>
                           <th>Batch#</th>
-                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                     </thead>
@@ -202,8 +219,9 @@
                   
                  @foreach($selected_applicants as $applicant)
                    <tr>
-                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                      <td>{{ $applicant->first_name }} {{ substr($applicant->middle_name,0,1) }}. {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
+                      <td>{{ $applicant->index_number }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
                            {{ $selection->campusProgram->code }}
@@ -216,12 +234,6 @@
                                   @break
                               @endif
                             @endforeach
-                      </td>
-                      <td>@if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
-                        <span class="badge badge-success">Submitted</span>
-                      @else
-                        <span class="badge badge-warning">Not Submitted</span>
-                      @endif
                       </td>
                       <td>
                         @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
@@ -357,15 +369,22 @@
                               
                               </td>
                               <td>
-                                @if($applicant->status == 'SELECTED')
+                                @if($applicant->status == 'SELECTED' || $applicant->status == 'SUBMITTED')
                                   @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
                                       @if($selection->status == 'SELECTED')
-                                        <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)* @endif </span>
+                                        <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)* @endif </span> <br>
+                                        <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
                                       @else
-                                        <span class="badge badge-warning"> PRE-SELECTED </span>
+                                        <span class="badge badge-warning"> PRE-SELECTED </span> <br>
+                                        @if($applicant->status == 'SUBMITTED')
+                                          <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
+                                        @else
+                                          <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                        @endif
                                       @endif
                                   @else
-                                      <span class="badge badge-danger"> NOT APPROVED </span>                                     
+                                      <span class="badge badge-danger"> NOT APPROVED </span> <br>   
+                                      <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>                                 
                                   @endif  
                                 @endif
                               </td>
@@ -402,7 +421,7 @@
                                   @endif
                               </td>
                               @endif
-                              <td>{{ $applicant->batch->batch_no }}</td>
+                              <td>@foreach($batches as $batch) @if($batch->id == $applicant->batch_id){{ $batch->batch_no }} @break @endif @endforeach</td>
                               <td>{{ $applicant->phone }}</td>
                               <td>{{ $applicant->gender }}</td>
                               <td>     
@@ -435,7 +454,7 @@
                                 @endif
 
                         </td>
-                        <td><span class="badge badge-warning">WAITING</span>  </td>
+                        <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
                     </tr>
                           
                         

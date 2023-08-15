@@ -133,6 +133,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('selected-applicants',[ApplicationController::class,'selectedApplicants']);
 	Route::get('selected-applicants/download',[ApplicationController::class,'downloadSelectedApplicants']);
 	Route::post('submit-selected-applicants-tcu',[ApplicationController::class,'submitSelectedApplicants']);
+    Route::get('submit-selected-applicants-tcu/download',[ApplicationController::class,'downloadSubmittedApplicants']);
 
 	Route::get('window/{id}/activate',[ApplicationWindowController::class,'activate']);
 	Route::get('window/{id}/deactivate',[ApplicationWindowController::class,'deactivate']);
