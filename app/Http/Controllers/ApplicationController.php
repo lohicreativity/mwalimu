@@ -573,53 +573,12 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-        $batch_id = $batch_no = 0;
-        if(!empty($request->get('program_level_id'))){
-            $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
-                                        ->where('program_level_id',$request->get('program_level_id'))->latest()->first();
-            
-            if($batch->batch_no > 1){
-                $previous_batch = null;
-                if($batch->batch_no > 1){
-                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
-                                                        ->where('batch_no', $batch->batch_no - 1)->first();
-                    $batch_id = $previous_batch->id;
-                    $batch_no = $previous_batch->batch_no;
-                }
-                
-            }else{
-                $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;              
-            }
-
-        }
 
 
-        if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
-
-            $applicants = Applicant::where('programs_complete_status', 1)
-            ->where(function($query) {
-                $query->where('teacher_certificate_status', 1)
-                      ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4');
-            })
-            ->orWhere(function($query) {
-                $query->where('avn_no_results', 1)
-                ->whereNotNull('diploma_certificate');
-            })  
-            ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails' => function($query) {
-                $query->where('verified', 1);
-            }])
-            ->get();
-
-            
-
-       // } else if (Auth::user()->hasRole('admission-officer')) {
-        } else{
+        if(Auth::user()->hasRole('admission-officer')){
 
             $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number','status','program_level_id')
                                     ->where('campus_id', $staff->campus_id)->where('programs_complete_status', 1)
-                                    /*- >whereHas('selections', function($query) use($request, $batch_id){$query->whereNotIn('status',['APPROVING','SELECTED'])
-                                    ->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch_id);}) */
                                     ->where(function($query) {$query->where('teacher_certificate_status', 1)
                                     ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4')->orWhere('avn_no_results', 1);})
                                     ->where('application_window_id',$request->get('application_window_id'))
@@ -627,10 +586,12 @@ class ApplicationController extends Controller
                                     ->with(['intake','selections:id,applicant_id,campus_program_id','selections.campusProgram:id,code', 'nacteResultDetails:id,applicant_id,exam_id,verified', 
                                             'nacteResultDetails:id,applicant_id,verified,avn','programLevel:id,code'])->get();
 
+        }else{
+            return redirect()->back()->with('error','This operation can only be done by an Admission Officer');           
         }
 
-        $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
-        ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch_id)->count(); 
+/*         $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
+        ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch_id)->count();  */
 
 /* 
         foreach ($applicants as $applicant) {
@@ -643,7 +604,6 @@ class ApplicationController extends Controller
  */
         $data = [
             'applicants' => $applicants,
-            'selection_status'=> $selection_status > 0? false : true,
             'batches'=>ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get()
         ];
         
