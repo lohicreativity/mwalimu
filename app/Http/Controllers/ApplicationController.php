@@ -573,11 +573,9 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-
-
         if(Auth::user()->hasRole('admission-officer')){
 
-            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number','status','program_level_id')
+            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','index_number','status','program_level_id','batch_id')
                                     ->where('campus_id', $staff->campus_id)->where('programs_complete_status', 1)
                                     ->where(function($query) {$query->where('teacher_certificate_status', 1)
                                     ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4')->orWhere('avn_no_results', 1);})
@@ -590,6 +588,12 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','This operation can only be done by an Admission Officer');           
         }
 
+        $batchids = [];
+        foreach($applicants as $applicant){
+            if(!in_array($applicant->batch_id,$batchids)){
+                $batchids[] = $applicant->batch_id;
+            }
+        }
 /*         $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
         ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch_id)->count();  */
 
@@ -604,7 +608,7 @@ class ApplicationController extends Controller
  */
         $data = [
             'applicants' => $applicants,
-            'batches'=>ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get()
+            'batches'=>ApplicationBatch::select('id','batch_no')->whereIn('id',$batchids)->get()
         ];
         
         return view('dashboard.admission.other-applicants', $data)->withTitle('Other Applicants');
