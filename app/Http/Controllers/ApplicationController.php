@@ -1216,7 +1216,7 @@ class ApplicationController extends Controller
                         }else{
                             $error_log = new ApplicantFeedBackCorrection;
                             $error_log->applicant_id = $applicant->id;
-                            $error_log->application_window_id = $applicant->application_window_id;
+                            $error_log->application_window_id = $request->get('application_window_id');
                             $error_log->programme_id = $approving_selection? $approving_selection->campusProgram->regulator_code : 'BD';
                             $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
                             $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
@@ -2988,6 +2988,7 @@ class ApplicationController extends Controller
                                                                     ->where('application_window_id', $application_window_id)->update(['status' => 'SELECTED']):
                                           ApplicantProgramSelection::where('campus_program_id',$campus_program->id)->where('applicant_id', $applicant_id)
                                           ->where('application_window_id', $application_window_id)->update(['status' => 'APPROVING']);
+                                          return 1;
 
         $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$applicant->program_level_id)->latest()->first();
 
