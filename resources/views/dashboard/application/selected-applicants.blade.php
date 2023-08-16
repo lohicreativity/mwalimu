@@ -99,7 +99,9 @@
                       @if($submission_status) 
                         <a href="{{ url('application/submit-selected-applicants-tcu/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Submitted Applicants</a> 
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> 
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
+                        @if($confirmed_campus_programs)
+                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
+                        @endif
                       @endif
                     @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
                       @if(count($selected_applicants) > 0)
@@ -207,6 +209,7 @@
                     <table id="ss-submit-selected-applicants" class="table table-bordered ss-margin-top">
                     <thead>
                         <tr>
+                          <th>SN</th>
                           <th>Name</th>
                           <th>Sex</th>
                           <th>Index#</th>
@@ -217,8 +220,9 @@
                     </thead>
                     <tbody>
                   
-                 @foreach($selected_applicants as $applicant)
+                 @foreach($selected_applicants as $key=>$applicant)
                    <tr>
+                      <td>{{ ($key+1) }}</td>
                       <td>{{ $applicant->first_name }} {{ substr($applicant->middle_name,0,1) }}. {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>{{ $applicant->index_number }}</td>
