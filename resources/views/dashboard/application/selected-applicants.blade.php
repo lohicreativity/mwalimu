@@ -228,8 +228,8 @@
                       <td>{{ $applicant->index_number }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
-                           {{ $selection->campusProgram->code }}
-                           @else  N/A
+                           {{ $selection->campusProgram->code }} @break
+                           @else  N/A @break
                            @endif
                           @endforeach
                       </td>
