@@ -463,7 +463,7 @@ class ApplicationController extends Controller
         }
         
         // Ready to be sent to regulators i.e. NACTVET and TCU
-        $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number')->doesntHave('student')
+        $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
                                         //->whereHas('selections',function($query){$query->where('status','APPROVING');})
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))                                        
