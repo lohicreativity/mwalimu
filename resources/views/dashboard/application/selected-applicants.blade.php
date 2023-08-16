@@ -229,7 +229,7 @@
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
                            {{ $selection->campusProgram->code }} @break
-                           @else  N/A @break
+                           @else  N/A
                            @endif
                           @endforeach
                       </td>

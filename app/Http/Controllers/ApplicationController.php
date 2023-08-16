@@ -1574,7 +1574,7 @@ class ApplicationController extends Controller
                     fputcsv($file_handle, 
                     [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, $applicant->gender , $applicant->nationality, $phone, $applicant->email, 
                     $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->district->name, $applicant->region->name, $applicant->index_number, 
-                    $a_level_index, $avn, $selected_programme, $institution_code, $applicant->entry_mode, $batch_number, $applicant->status
+                    $a_level_index, $avn, empty($selected_programme)? 'N/A' : $selected_programme, $institution_code, $applicant->entry_mode, $batch_number, $applicant->status
                     ]);
                 }
                 fclose($file_handle);
