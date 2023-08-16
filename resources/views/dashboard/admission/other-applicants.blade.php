@@ -60,6 +60,7 @@
                                 <th>Form VI Index#/AVN</th>
                                 <th>Award</th>
                                 <th>Programme</th>
+                                <th>Batch#</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -115,7 +116,7 @@
                                               @endif
                                       @endforeach
                                   @endif
-
+                                  <td>@foreach($batches as $batch)@if($batch->id==$applicant->batch_id) {{ $batch->batch_no }} @break @endif @endforeach</td>
                                   </td>
                                   <td>@if($applicant->status == 'SELECTED')  <span class="badge badge-success"> Selected </span> 
                                       @elseif($applicant->status == null) <span class="badge badge-warning"> Pending </span> 

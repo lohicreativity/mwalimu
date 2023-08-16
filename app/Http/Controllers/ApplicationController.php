@@ -402,7 +402,7 @@ class ApplicationController extends Controller
 
            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
-                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED']);})
+                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
@@ -424,7 +424,7 @@ class ApplicationController extends Controller
            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED']);})
+                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
@@ -441,7 +441,7 @@ class ApplicationController extends Controller
         }else{
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
-                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED']);})
+                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
@@ -464,10 +464,10 @@ class ApplicationController extends Controller
         
         // Ready to be sent to regulators i.e. NACTVET and TCU
         $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number')->doesntHave('student')
-                                        ->whereHas('selections',function($query){$query->where('status','APPROVING');})
+                                        //->whereHas('selections',function($query){$query->where('status','APPROVING');})
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))                                        
-                                        ->where('status','SELECTED')->get();
+                                        ->whereIn('status',['SELECTED','NOT SELECTED'])->get();
 
 /*         if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
             return redirect()->back()->with('error','No selected applicant in this programme level');

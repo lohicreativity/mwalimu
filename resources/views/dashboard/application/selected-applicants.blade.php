@@ -390,7 +390,7 @@
                               </td>
                           </tr>
 
-                        @elseif($applicant->status == null)
+                        @elseif($applicant->status == null || $applicant->status == "NOT SELECTED")
                         <tr>
                               <td>{{ $counter }}</td>
                               <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
@@ -454,7 +454,18 @@
                                 @endif
 
                         </td>
-                        <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
+                        @if($applicant->status == null)
+                          <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
+                        @else
+                          <td>
+                            <span class="badge badge-warning">NOT SELECTED</span>  <br>
+                            @if($applicant->status == 'SUBMITTED')
+                              <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
+                            @else
+                              <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                            @endif
+                          </td>
+                        @endif
                     </tr>
                           
                         
