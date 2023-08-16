@@ -229,9 +229,9 @@
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
                            {{ $selection->campusProgram->code }} @break
-                           @else  N/A
                            @endif
                           @endforeach
+                          @if($applicant->status == 'NOT SELECTED') N/A @endif
                       </td>
                       <td> @foreach($batches as $batch)
                               @if($batch->id == $applicant->batch_id)
