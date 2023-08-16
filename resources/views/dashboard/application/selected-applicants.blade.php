@@ -99,7 +99,7 @@
                       @if($submission_status) 
                         <a href="{{ url('application/submit-selected-applicants-tcu/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Submitted Applicants</a> 
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> 
-                        @if($confirmed_campus_programs)
+                        @if(count($confirmed_campus_programs) > 0)
                           <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
                         @endif
                       @endif
