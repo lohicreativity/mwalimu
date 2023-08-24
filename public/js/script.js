@@ -1180,9 +1180,65 @@ $('.ss-form-processing-nacte-admin').submit(function(e){
          $($(e.target).find('input[name=results_container]').val()).html(element);
          $($(e.target).find('input[name=display_modal]').val()).modal('show');
          
-         $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.details.id);
+         // $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.details.id);
          }
      });
+});
+
+// Display NACTVET Registration Number 
+$('.ss-form-processing-nacte-reg-no-admin').submit(function(e){
+  e.preventDefault();
+  var resultsContainer = $(e.target).data('results-container');
+  var submitText = $(e.target).find('button[type=submit]').text();
+  var id = $(e.target).attr('id');
+  $(e.target).find('button[type=submit]').text('Processing...');
+  $(e.target).find('button[type=submit]').addClass('disabled');
+
+  var percentComplete = 100;
+  var element = '';
+   element += '<p class="ss-bold">Please wait...</p>';
+   element += '<div class="progress progress-striped active">';
+   element += '<div class="progress-bar progress-bar-warning role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="'+percentComplete+'" style="width: 100%"><span class="sr-only"></span></div>';
+   element += '</div>';
+  if(resultsContainer != null){
+      $(resultsContainer).html(element).slideDown();
+  }
+  if(id == null){
+      $(e.target).find('.ss-ajax-messages').html(element).slideDown();
+  }else{
+      $(e.target).find('#'+id+' .ss-ajax-messages').html(element).slideDown();
+  }
+
+  $.ajax({
+     url:'/application/fetch-nacte-details-admin/'+$(e.target).find('input[name=nacte_reg_no]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+     method:'GET',
+  }).done(function(data,success){
+      if(data.error){
+         alert(data.error);
+      }else{
+      $(e.target).find('button[type=submit]').text(submitText);
+      $(e.target).find('button[type=submit]').removeClass('disabled');
+
+      console.log(data);
+
+      var element = '<table class="table table-bordered">';
+      element += '<tr><td>Institution:</td><td>'+data.response.params[0].institution_name+'</td></tr>';
+      element += '<tr><td>Programme:</td><td>'+data.response.params[0].programme_name+'</td></tr>'
+      element += '<tr><td>First Name:</td><td>'+data.response.params[0].firstname+'</td></tr>';
+      element += '<tr><td>Middle Name:</td><td>'+data.response.params[0].middle_name+'</td></tr>';
+      element += '<tr><td>Surname:</td><td>'+data.response.params[0].surname+'</td></tr>';
+      element += '<tr><td>Gender:</td><td>'+data.response.params[0].sex+'</td></tr>';
+      element += '<tr><td>Birth Date:</td><td>'+data.response.params[0].DOB+'</td></tr>';
+      element += '<tr><td>Graduation Year:</td><td>'+data.response.params[0].accademic_year.split('/')[1]+'</td></tr>';
+      element += '<tr><td>Registration Number:</td><td>'+data.response.params[0].registration_number+'</td></tr>';
+      element += '<tr><td>Diploma GPA:</td><td>'+data.response.params[0].GPA+'</td></tr>';
+      element += '</table>';
+
+      $($(e.target).find('input[name=results_container]').val()).html(element);
+      $($(e.target).find('input[name=display_modal]').val()).modal('show');
+      
+      }
+  });
 });
 
 // Display form processing

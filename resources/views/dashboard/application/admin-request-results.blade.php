@@ -175,7 +175,7 @@
 
               <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Get NACTE Results') }}</h3>
+                <h3 class="card-title">{{ __('Get NACTVET-AVN Results') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -209,11 +209,53 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Get NACTE Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Get NACTVET Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Confirm NACTVET Registration Number') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              @php
+                  $nacte_reg_no = [
+                     'placeholder'=>'NS0001/0002/2001',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+              @endphp
+              {!! Form::open(['url'=>'application/get-nacte-details','class'=>'ss-form-processing-nacte-reg-no-admin']) !!}
+              <div class="card-body">
+
+
+                  <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','NACTVET Reg mumber') !!}
+                    {!! Form::text('nacte_reg_no', null, $nacte_reg_no) !!}
+                  </div>
+                  <div class="form-group col-4">
+
+                    {!! Form::input('hidden','display_modal','#ss-confirm-nacte-results') !!}
+
+                    {!! Form::input('hidden','results_container','#ss-nacte-results-container') !!}
+
+                    {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{ __('Get NACTVET Details') }}</button>
+              </div>
+              {!! Form::close() !!}
+            </div>
+            <!-- /.card -->
+
 
             <div class="card card-default">
               <div class="card-header">

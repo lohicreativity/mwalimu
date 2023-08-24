@@ -94,6 +94,7 @@
                  @endif
                  <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
                  @if(Auth::user()->hasRole('admission-officer'))
+                 
                     @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
                     <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
                       @if($submission_status) 
@@ -221,33 +222,35 @@
                     <tbody>
                   
                  @foreach($selected_applicants as $key=>$applicant)
-                   <tr>
-                      <td>{{ ($key+1) }}</td>
-                      <td>{{ $applicant->first_name }} {{ substr($applicant->middle_name,0,1) }}. {{ $applicant->surname }}</td>
-                      <td>{{ $applicant->gender }}</td>
-                      <td>{{ $applicant->index_number }}</td>
-                      <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'APPROVING')
-                           {{ $selection->campusProgram->code }} @break
-                           @endif
-                          @endforeach
-                          @if($applicant->status == 'NOT SELECTED') N/A @endif
-                      </td>
-                      <td> @foreach($batches as $batch)
-                              @if($batch->id == $applicant->batch_id)
-                                  {{ $batch->batch_no}}
-                                  @break
+                    @if($applicant->status != 'SUBMITTED')
+                      <tr>
+                          <td>{{ ($key+1) }}</td>
+                          <td>{{ $applicant->first_name }} {{ substr($applicant->middle_name,0,1) }}. {{ $applicant->surname }}</td>
+                          <td>{{ $applicant->gender }}</td>
+                          <td>{{ $applicant->index_number }}</td>
+                          <td>@foreach($applicant->selections as $selection)
+                              @if($selection->status == 'APPROVING')
+                              {{ $selection->campusProgram->code }} @break
                               @endif
-                            @endforeach
-                      </td>
-                      <td>
-                        @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
-                        {!! Form::checkbox('applicant_ids[]',$applicant->id,null,['disabled'=>'disabled']) !!}
-                        @else
-                        {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
-                        @endif
-                      </td>
-                   </tr>
+                              @endforeach
+                              @if($applicant->status == 'NOT SELECTED') N/A @endif
+                          </td>
+                          <td> @foreach($batches as $batch)
+                                  @if($batch->id == $applicant->batch_id)
+                                      {{ $batch->batch_no}}
+                                      @break
+                                  @endif
+                                @endforeach
+                          </td>
+                          <td>
+                            @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
+                            {!! Form::checkbox('applicant_ids[]',$applicant->id,null,['disabled'=>'disabled']) !!}
+                            @else
+                            {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
+                            @endif
+                          </td>
+                      </tr>
+                    @endif
                  @endforeach
                    
                    </tbody>
@@ -388,8 +391,8 @@
                                         @endif
                                       @endif
                                   @else
-                                      <span class="badge badge-danger"> NOT APPROVED </span> <br>   
-                                      <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>                                 
+                                      <span class="badge badge-danger"> AWAITING APPROVAL </span> <br>   
+                                      <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>                                 
                                   @endif  
                                 @endif
                               </td>

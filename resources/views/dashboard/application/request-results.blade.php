@@ -256,7 +256,7 @@
                 @if(str_contains(strtolower($applicant->programLevel->name),'master'))
                   <div class="card card-default">
                     <div class="card-header">
-                      <h3 class="card-title">{{ __('Add NACTE Registration Number (If Applicable)') }}</h3>
+                      <h3 class="card-title">{{ __('Add NACTVET Registration Number (If Applicable)') }}</h3>
                     </div>
                     <!-- /.card-header -->
                     @php
@@ -284,7 +284,7 @@
 
                   <div class="row">
                   <div class="form-group col-4">
-                    {!! Form::label('','NACTE Reg mumber') !!}
+                    {!! Form::label('','NACTVET Reg mumber') !!}
                     {!! Form::text('nacte_reg_no', $nacte_reg_no, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
@@ -303,7 +303,7 @@
                  </div>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTE Registration Number') }}</button>
+             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
                       </div>
@@ -311,7 +311,7 @@
 
               <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">@if($applicant->entry_mode == 'EQUIVALENT') {{ __('Add NACTE Results (If Applicable)') }} @else {{ __('Add NACTE Results') }} @endif </h3>
+                <h3 class="card-title">@if($applicant->entry_mode == 'EQUIVALENT') {{ __('Add NACTVET Results (If Applicable)') }} @else {{ __('Add NACTVET Results') }} @endif </h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -367,7 +367,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTE Results') }}</button>
+                  <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTVET Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -449,7 +449,7 @@
             @if(str_contains(strtolower($applicant->programLevel->name),'diploma'))
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('NACTE Registration Number') }}</h3>
+                <h3 class="card-title">{{ __('NACTVET Registration Number') }}</h3>
               </div>
               <!-- /.card-header -->
               @php
@@ -476,7 +476,7 @@
 
                   <div class="row">
                   <div class="form-group col-4">
-                    {!! Form::label('','NACTE Reg mumber') !!}
+                    {!! Form::label('','NACTVET Reg mumber') !!}
                     {!! Form::text('nacte_reg_no', $nacte_reg_no, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
@@ -496,7 +496,7 @@
                  </div>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTE Registration Number') }}</button>
+             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
