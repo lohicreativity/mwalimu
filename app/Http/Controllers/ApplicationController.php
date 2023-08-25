@@ -5188,9 +5188,21 @@ class ApplicationController extends Controller
      */
     public function showConfirmAdmission(Request $request)
     {
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        
+        $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
+        ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
+        ->orWhere('status', 'PENDING');})
+        ->where('application_window_id', $applicant->application_window_id)
+        ->where('intake_id', $applicant->intake_id)
+        ->count();	
+
+        $regulator_selection = $regulator_status != 0 ? true : false;
+
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
-           'campus'=>Campus::find(session('applicant_campus_id'))
+           'applicant'=>$applicant,
+           'campus'=>Campus::find(session('applicant_campus_id')),
+           'regulator_selection'=>$regulator_selection
         ];
         return view('dashboard.admission.admission-confirmation',$data)->withTitle('Admission Confirmation');
     }
