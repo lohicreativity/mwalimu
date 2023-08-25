@@ -1670,7 +1670,7 @@ class ApplicationController extends Controller
                     $applicant->save();
                 }
       
-                if($applicant->is_pushed == null && str_contains(strtolower($applicant->programLevel->name),'bachelor')){
+                if(($applicant->is_tcu_added == null || $applicant->is_tcu_added == 0) && str_contains(strtolower($applicant->programLevel->name),'bachelor')){
                     $tcu_username = $tcu_token = null;  
                     if(session('applicant_campus_id') == 1){
                         $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
@@ -1758,15 +1758,16 @@ class ApplicationController extends Controller
                             <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
                         </RequestParameters>
                     </Request>';
-            
+                    
+                    return $xml_request;
                     $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                     $json = json_encode($xml_response);
                     $array = json_decode($json,TRUE);  
             
                     if(isset($array['Response'])){
                         //return $array['Response']['ResponseParameters']['StatusDescription'];
-                        Applicant::where('id',$applicant->id)->update(['is_pushed'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
-                                                                    'pushed_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
+                        Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
+                                                                       'is_tcu_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
                     }
                 }
 
@@ -1784,7 +1785,7 @@ class ApplicationController extends Controller
     public function showRegulatorFailedCases(Request $request)
     { 
 /*         $data = [
-            'applicants'=>Applicant::where('is_pushed',0)->where('campus_id',$request->get('staff_campus_id'))->where('program_level_id',4)->get(),
+            'applicants'=>Applicant::where('is_tcu_added',0)->where('campus_id',$request->get('staff_campus_id'))->where('program_level_id',4)->get(),
             'program_level'=>Award::find($request->get('program_level_id')),
             'selected_applicants'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
             'request'=>$request
@@ -1795,7 +1796,7 @@ class ApplicationController extends Controller
             'nta_levels'=>NTALevel::all(),
             'departments'=>Department::all(),
             'campus_programs'=>CampusProgram::with('program')->get(),
-            'applicants'=>Applicant::where('is_pushed',0)->where('campus_id',$request->get('campus_id'))->where('program_level_id',4)->get(),
+            'applicants'=>Applicant::where('is_tcu_added',0)->where('campus_id',$request->get('campus_id'))->where('program_level_id',4)->get(),
             'request'=>$request,
             'batches'=>ApplicationBatch::all()
         ];
