@@ -5354,7 +5354,7 @@ class ApplicationController extends Controller
                         <Request>
                         <UsernameToken>
                         <Username>'.$tcu_username.'</Username>
-                        <SessionToken>'.$$tcu_token.'</SessionToken>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
@@ -5397,7 +5397,7 @@ class ApplicationController extends Controller
                         <Request>
                         <UsernameToken>
                         <Username>'.$tcu_username.'</Username>
-                        <SessionToken>'.$$tcu_token.'</SessionToken>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
