@@ -1018,7 +1018,7 @@ class ApplicantController extends Controller
            }
            
            foreach($applicant->nectaResultDetails as $detail) {
-              if($detail->exam_id == 2){
+              if($detail->exam_id == 2 && $detail->verified == 1){
                   $index_number = $detail->index_number;
                   if(str_contains($index_number,'EQ')){
                      $exam_year = explode('/',$index_number)[1];
@@ -1060,7 +1060,7 @@ class ApplicantController extends Controller
 					   $o_level_other_pass_count = 0;
                        $o_level_must_pass_count = 0;
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                         if($detail->exam_id == 1){
+                         if($detail->exam_id == 1 && $detail->verified == 1){
                            $other_must_subject_ready = false;
                            foreach ($detail->results as $key => $result) {
                               
@@ -1165,7 +1165,7 @@ class ApplicantController extends Controller
                        $a_level_subsidiary_pass_count = 0;
                        $diploma_major_pass_count = 0;
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                         if($detail->exam_id == 1){
+                         if($detail->exam_id == 1 && $detail->verified == 1){
                            $other_must_subject_ready = false;
                            foreach ($detail->results as $key => $result) {
 
@@ -1238,7 +1238,7 @@ class ApplicantController extends Controller
 						   }
 						   }						   
                            
-                         }elseif($detail->exam_id === 2){
+                         }elseif($detail->exam_id === 2 && $detail->verified == 1){
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
@@ -1420,7 +1420,7 @@ class ApplicantController extends Controller
                        $diploma_pass_count = 0;
                        
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                         if($detail->exam_id == 1){
+                         if($detail->exam_id == 1 && $detail->verified == 1){
                            $other_must_subject_ready = false;
                            foreach ($detail->results as $key => $result) {
 
@@ -1521,7 +1521,7 @@ class ApplicantController extends Controller
                                 }
                               }
                            }
-                         }elseif($detail->exam_id == 2){
+                         }elseif($detail->exam_id == 2 && $detail->verified == 1){
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            $other_out_advance_must_subject_ready = false;
@@ -1686,17 +1686,17 @@ class ApplicantController extends Controller
                        //     }
                        //  }
 
-                       $has_major = false;
-                       $equivalent_must_subjects_count = 0;
-                       $nacte_gpa = null;
-                       $out_gpa = null;
-                       $has_nacte_results = false;
+                        $has_major = false;
+                        $equivalent_must_subjects_count = 0;
+                        $nacte_gpa = null;
+                        $out_gpa = null;
+                        $has_nacte_results = false;
 
-                       foreach($applicant->nacteResultDetails as $detail){
-                             if(count($detail->results) == 0){
-                                $has_nacte_results = true;
-                             }
-                            $nacte_gpa = $detail->diploma_gpa;
+                        foreach($applicant->nacteResultDetails as $detail){
+                           if(count($detail->results) == 0 && $detail->verified == 1){
+                              $has_nacte_results = true;
+                           }
+                           $nacte_gpa = $detail->diploma_gpa;
                         }
                         
                         if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_nacte_results && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
@@ -1704,43 +1704,49 @@ class ApplicantController extends Controller
                             $programs[] = $program;
                         }
 
-                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && !$has_nacte_results){
+                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && !$has_nacte_results){
 
                            foreach($applicant->nacteResultDetails as $detail){
-                             foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
+                              if($detail->verified == 1){
+                                 foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
 
-                               if(str_contains(strtolower($detail->programme),strtolower($sub))){
-
-                                   $has_major = true;
-                               }
-                             }
-                             $nacte_gpa = $detail->diploma_gpa;
-                           }
-                       }else{
-                          if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
-                              foreach($applicant->nacteResultDetails as $detail){
-                                  foreach($detail->results as $result){
-                                      foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
-                                          if(str_contains(strtolower($result->subject),strtolower($sub))){
-                                              $equivalent_must_subjects_count += 1;
-                                          }
-                                      }
+                                    if(str_contains(strtolower($detail->programme),strtolower($sub))){
+     
+                                        $has_major = true;
+                                    }
                                   }
                                   $nacte_gpa = $detail->diploma_gpa;
                               }
-                          }
-                       }
+                           }
+
+                        }else{
+                           if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
+                              foreach($applicant->nacteResultDetails as $detail){
+                                 if($detail->verified == 1){ 
+                                    foreach($detail->results as $result){
+                                       foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                             if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                                $equivalent_must_subjects_count += 1;
+                                             }
+                                       }
+                                    }
+                                    $nacte_gpa = $detail->diploma_gpa;
+                                 }
+                              }
+                           }
+                        }
+
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && !$has_nacte_results){
                            // return $has_major.'-'.$o_level_pass_count.'-'.$nacte_gpa.'-'.$program->entryRequirements[0]->equivalent_gpa;
                             if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
-                                
+                                return 1;
                                $programs[] = $program;
                             }
                         }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
-                            if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
-                                
-                               $programs[] = $program;
-                            }
+                           if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
+                              return 2;
+                              $programs[] = $program;
+                           }
                         }
 
                         $out_pass_subjects_count = 0;
@@ -1777,21 +1783,21 @@ class ApplicantController extends Controller
 
 
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
-                                $programs[] = $program;
+                        return 3;        $programs[] = $program;
                         }
                             
                         if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                             if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa) || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa)){
-                                    $programs[] = $program;
+                            return 4;        $programs[] = $program;
                             }
                         }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if(($o_level_pass_count+$o_level_other_pass_count) >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $has_major && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
-                                    $programs[] = $program;
+                            return 5;        $programs[] = $program;
                             }
                         }
 
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_certificate_status === 1){
-                              $programs[] = $program;
+                           return 6;   $programs[] = $program;
                         }
                }
             if($subject_count != 0){
