@@ -969,7 +969,7 @@ class ApplicantController extends Controller
 			$applicant->submission_complete_status = 0;
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_id = $batch->id;
-            $applicant->status = null;
+         $applicant->status = null;
 			$applicant->save();
 		}
 		
