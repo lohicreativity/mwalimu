@@ -100,7 +100,7 @@ class ApplicantController extends Controller
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',0)->first();
 
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$request->get('campus_id'))->where(function($query){
-             $query->where('status','SELECTED')->orWhereIn('status',['ADMITTED','SUBMITTED'])->orWhereNull('status');
+             $query->where('status','SELECTED')->orWhereIn('status',['ADMITTED','SUBMITTED','NOT SELECTED'])->orWhereNull('status');
         })->first();
 
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
@@ -960,9 +960,10 @@ class ApplicantController extends Controller
     public function selectPrograms(Request $request)
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
-
-		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id','!=',$batch->id)->first() : null;
+      
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id','!=',$batch->id)->first() : null;
+
       if(!empty($second_attempt_applicant) && $applicant->batch_id != $batch->id){
 			$applicant = Applicant::where('id',$applicant->id)->first();
 			$applicant->submission_complete_status = 0;
@@ -985,10 +986,10 @@ class ApplicantController extends Controller
       // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
 
       if($applicant->results_complete_status == 0){
-         return redirect()->to('application/results')->with('error','You must first complete results section');
+         return redirect()->to('application/results')->with('error','You must complete results section first');
       }
 
-      if(!str_contains($applicant->programLevel->name,'Masters')){
+      if(!str_contains(strtolower($applicant->programLevel->name),'master')){
         $window = $applicant->applicationWindow;
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
