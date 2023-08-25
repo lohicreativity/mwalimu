@@ -17,7 +17,8 @@ class NectaResultController extends Controller
      */
     public function confirm(Request $request)
     {   
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
@@ -26,7 +27,6 @@ class NectaResultController extends Controller
         $detail->save();
         $o_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',1)->where('verified',1)->first()? true : false;
         $a_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',2)->where('verified',1)->first()? true : false;
-        $applicant  = Applicant::find($request->get('applicant_id'));
         $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
 
         // if(count($non_details) != 0){
@@ -65,7 +65,8 @@ class NectaResultController extends Controller
      */
     public function destroy(Request $request)
     {
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
         
@@ -83,7 +84,8 @@ class NectaResultController extends Controller
      */
     public function nullify(Request $request)
     {
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
         

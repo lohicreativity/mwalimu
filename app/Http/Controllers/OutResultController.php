@@ -16,14 +16,14 @@ class OutResultController extends Controller
      */
     public function confirm(Request $request)
     {
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
         $detail = OutResultDetail::find($request->get('out_result_detail_id'));
         $detail->verified = 1;
         $detail->save();
-        $applicant  = Applicant::find($request->get('applicant_id'));
         if(strtoupper($applicant->index_number) != strtoupper($detail->index_number)){
             return redirect()->to('application/nullify-out-results?detail_id='.$request->get('out_result_detail_id'));
         }
@@ -38,7 +38,8 @@ class OutResultController extends Controller
      */
     public function destroy(Request $request)
     {
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
@@ -56,7 +57,8 @@ class OutResultController extends Controller
      */
     public function nullify(Request $request)
     {
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 

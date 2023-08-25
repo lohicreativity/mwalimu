@@ -967,6 +967,7 @@ class ApplicantController extends Controller
       if(!empty($second_attempt_applicant) && $applicant->batch_id != $batch->id){
 			$applicant = Applicant::where('id',$applicant->id)->first();
 			$applicant->submission_complete_status = 0;
+         $applicant->results_complete_status = 0;
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_id = $batch->id;
          $applicant->status = null;

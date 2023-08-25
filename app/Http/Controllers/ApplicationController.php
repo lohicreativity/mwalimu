@@ -8674,11 +8674,11 @@ class ApplicationController extends Controller
            }
         }
 
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
         
-        $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->teacher_certificate_status = $request->get('teacher_certificate_status');
         $applicant->save();
 
