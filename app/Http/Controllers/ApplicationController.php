@@ -5155,13 +5155,26 @@ class ApplicationController extends Controller
         if(ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','SELECTED')->count() == 0){
             return redirect()->back()->with('error','No applicants not retrieved from TCU');
         }
-        $url = 'http://41.59.90.200/applicants/getConfirmed';
+
+        $staff = User::find(Auth::user()->id)->staff;
+        $tcu_username = $tcu_token = null;       
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
+
+        $url = 'http://api.tcu.go.tz/applicants/getConfirmed';
         $campus_program = CampusProgram::find($request->get('campus_program_id'));
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <ProgrammeCode>'.$campus_program->regulator_code.'</ProgrammeCode>
@@ -5225,13 +5238,24 @@ class ApplicationController extends Controller
            }
         }
         $applicant = Applicant::find($request->get('applicant_id'));
+
+        $tcu_username = $tcu_token = null;       
+        if($applicant->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($applicant->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
         
-        $url = 'http://41.59.90.200/admission/confirm';
+        $url = 'http://api.tcu.go.tz/admission/confirm';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
@@ -5270,12 +5294,23 @@ class ApplicationController extends Controller
         }
         $applicant = Applicant::find($request->get('applicant_id'));
         
-        $url = 'http://41.59.90.200/admission/unconfirm';
+        $tcu_username = $tcu_token = null;       
+        if($applicant->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($applicant->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
+
+        $url = 'http://api.tcu.go.tz/admission/unconfirm';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
@@ -5303,12 +5338,23 @@ class ApplicationController extends Controller
     {
         $applicant = Applicant::find($request->get('applicant_id'));
         
-        $url = 'http://41.59.90.200/admission/requestConfirmationCode';
+        $tcu_username = $tcu_token = null;
+        if($applicant->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($applicant->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
+
+        $url = 'http://api.tcu.go.tz/admission/requestConfirmationCode';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
@@ -5334,13 +5380,24 @@ class ApplicationController extends Controller
     public function cancelAdmission(Request $request)
     {
         $applicant = Applicant::find($request->get('applicant_id'));
-        
-        $url = 'http://41.59.90.200/admission/reject';
+       
+        $tcu_username = $tcu_token = null;
+        if($applicant->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($applicant->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
+
+        $url = 'http://api.tcu.go.tz/admission/reject';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
@@ -5365,6 +5422,17 @@ class ApplicationController extends Controller
     public function restoreCancelledAdmission(Request $request)
     {
         $applicant = Applicant::with(['selections.campusProgram'])->find($request->get('applicant_id'));
+        
+        $tcu_username = $tcu_token = null;       
+        if($applicant->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($applicant->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
 
         $admitted_program = null;
         foreach($applicant->selections as $selection){
@@ -5373,12 +5441,12 @@ class ApplicationController extends Controller
             }
         }
         
-        $url = 'http://41.59.90.200/admission/restoreCancelledAdmission';
+        $url = 'http://api.tcu.go.tz/admission/restoreCancelledAdmission';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
@@ -8703,13 +8771,13 @@ class ApplicationController extends Controller
            }
         }
 
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+        $applicant = Applicant::find($request->get('applicant_id'))->with('programLevel')->first();
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
         
         $o_level_result_count = NectaResultDetail::where('applicant_id',$request->get('applicant_id'))->where('exam_id',1)->count();
 
-        $applicant = Applicant::where('id',$request->get('applicant_id'))->with('programLevel')->first();
         $applicant->veta_status = $request->get('veta_certificate_status');
 		if(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT' && $o_level_result_count != 0 
 			&& $request->get('veta_certificate_status') == 1){
