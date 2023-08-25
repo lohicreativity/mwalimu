@@ -146,11 +146,11 @@
                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                 </div>
                 <div class="card-footer">
-                  <button @if($applicant->multiple_admissions === 0) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Cancel Admission') }}</button>
+                  <button @if($applicant->multiple_admissions == 0) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Cancel Admission') }}</button>
                 </div>
               {!! Form::close() !!}
               </div>
-              
+
               @elseif($applicant->confirmation_status == 'CANCELLED')
               <div class="card card-default">
               <div class="card-header">
