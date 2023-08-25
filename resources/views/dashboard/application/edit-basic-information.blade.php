@@ -40,7 +40,7 @@
           <div class="col-12">
 
             <!-- Need to add a filter to prevent applicants from viewing selection status after applicants have been retrieved from a regulator -->
-            @if($regulator_selection && $selection_released_status == 1)
+            @if($regulator_selection && $selection_released_status->selection_released == 1)
 
               @if($check_selected_applicant)
                   @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED')
