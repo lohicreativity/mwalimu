@@ -719,7 +719,7 @@ class ApplicantController extends Controller
       $count = 0;
       $applicants = Applicant::select('id','index_number','gender','entry_mode')
                               ->where('program_level_id',4)->where('campus_id',$staff->campus_id)
-                              ->whereIn('status',['SELECTED',null])->where(function($query){$query->where('is_pushed','is',null)->orWhere('is_pushed',0);})->where('programs_complete_status',1)
+                              ->whereIn('status',['SELECTED',null])->where(function($query){$query->where('is_tcu_added',null)->orWhere('is_tcu_added',0);})->where('programs_complete_status',1)
                               ->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,avn',
                                     'outResultDetails:id,applicant_id,verified'])->get(); 
 
@@ -807,8 +807,8 @@ class ApplicantController extends Controller
 
          if(isset($array['Response'])){
             //return $array['Response']['ResponseParameters']['StatusDescription'];
-            Applicant::where('id',$applicant->id)->update(['is_pushed'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
-                                                         'pushed_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
+            Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
+                                                         'is_tcu_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
           }
 /* 
          if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
@@ -931,7 +931,7 @@ class ApplicantController extends Controller
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
       $index_number = $applicant->index_number;
       
-      $selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->count();
+      $selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count();
 		if($applicant->is_transfered != 1){
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
              return redirect()->to('application/submission')->with('error','Application window already closed');
