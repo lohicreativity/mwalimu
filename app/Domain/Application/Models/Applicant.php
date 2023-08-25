@@ -142,7 +142,7 @@ class Applicant extends Model
     public function freshSelections()
     {   
         //return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_id',7);
-        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_id','!=',$this->batch_id);
+        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_id',$this->batch_id);
     }
 	
     /**
