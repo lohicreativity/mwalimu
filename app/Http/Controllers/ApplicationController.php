@@ -400,7 +400,7 @@ class ApplicationController extends Controller
                      ->orWhereNull('status');
            })->get(); */ 
 
-           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
@@ -421,7 +421,7 @@ class ApplicationController extends Controller
            ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
            ->where(function($query) {$query->where('status','SELECTED')->orWhereNull('status');})->get(); */
 
-           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
                                     ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
@@ -439,7 +439,7 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch)->count();   
  */
         }else{
-            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
@@ -737,17 +737,17 @@ class ApplicationController extends Controller
             ->get(); */
 
             $list = Applicant::select('id','first_name','middle_name','surname','index_number','gender','birth_date','batch_id','nationality','entry_mode','phone',
-                                            'email','status','confirmation_status','country_id','region_id','district_id','disability_status_id','created_at','next_of_kin_id')
-                                    ->doesntHave('student')
-                                    ->where(function($query){$query->where('status', 'SELECTED')->orWhere('status','SUBMITTED');})->where('application_window_id', $request->get('application_window_id'))
-                                    ->where('program_level_id', $request->get('program_level_id'))
-            ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code,campus_id','selections.campusProgram.program:id,name',
-            'nectaResultDetails:id,applicant_id,index_number,verified,center_name,points,exam_id',
-            'nectaResultDetails.results:id,necta_result_detail_id,subject_name,grade','nacteResultDetails:id,applicant_id,avn,verified,diploma_gpa,programme,institution',
-            'nacteResultDetails.results:id,nacte_result_detail_id,subject,grade','region:id,name', 'district:id,name', 'disabilityStatus:id,name',
-            'outResultDetails','outResultDetails:id,gpa,reg_no,applicant_id','outResultDetails.results:id,subject_name,grade,out_result_detail_id',
-            'nextOfKin:id,phone'])->where('application_window_id',$request->get('application_window_id'))
-            ->get();
+                                            'email','status','confirmation_status','country_id','region_id','district_id','disability_status_id','created_at','next_of_kin_id','multiple_admissions')
+                                ->doesntHave('student')
+                                ->where(function($query){$query->where('status', 'SELECTED')->orWhere('status','SUBMITTED');})->where('application_window_id', $request->get('application_window_id'))
+                                ->where('program_level_id', $request->get('program_level_id'))
+                                ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code,campus_id','selections.campusProgram.program:id,name',
+                                'nectaResultDetails:id,applicant_id,index_number,verified,center_name,points,exam_id',
+                                'nectaResultDetails.results:id,necta_result_detail_id,subject_name,grade','nacteResultDetails:id,applicant_id,avn,verified,diploma_gpa,programme,institution',
+                                'nacteResultDetails.results:id,nacte_result_detail_id,subject,grade','region:id,name', 'district:id,name', 'disabilityStatus:id,name',
+                                'outResultDetails','outResultDetails:id,gpa,reg_no,applicant_id','outResultDetails.results:id,subject_name,grade,out_result_detail_id',
+                                'nextOfKin:id,phone'])->where('application_window_id',$request->get('application_window_id'))
+                                ->get();
          }       
 
         
@@ -763,7 +763,7 @@ class ApplicationController extends Controller
         $a_level_schools    = null;
         
             $file_handle = fopen('php://output', 'w');
-            fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','SEX', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'PROGRAMME SELECTED', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
+            fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','SEX', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'PROGRAMME SELECTED', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'MULTIPLE', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
             foreach ($list as $key => $applicant) { 
 
             $batch_number = null;
@@ -956,6 +956,11 @@ class ApplicationController extends Controller
                     }
                 }
 
+                $multipe_admission_status = null;
+                if($status == 'Selected'){
+                    $multipe_admission_status = $applicant->multiple_admissions == 1? 'Yes' : 'No';
+                }
+
                 if(is_array($a_level_index)){
                     $a_level_index=implode (',',$a_level_index);
                     }
@@ -986,7 +991,7 @@ class ApplicationController extends Controller
                 $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
                 $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $selected_programme, $institution_code, 
                 $applicant->entry_mode, 'OPTS', $o_level_results, 'APTS / GPA', $a_level_results, 
-                $out_gpa, $open_results, $status, $applicant->created_at, $phone, $applicant->email, $next_of_kin_phone, 
+                $out_gpa, $open_results, $status, $multipe_admission_status, $applicant->created_at, $phone, $applicant->email, $next_of_kin_phone, 
                 $applicant->district->name, $applicant->region->name, $confirm, $batch_number, 
                 $diploma_institution, $programme, $diploma_gpa, $diploma_results, $o_level_schools, 
                 $o_level_points, $a_level_schools, $a_level_points, $applicant->status
@@ -5122,7 +5127,7 @@ class ApplicationController extends Controller
                    $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
                    $applicant->save();
 
-                   ApplicantProgramSelection::where('applicant_id',$applicant)->whereIn('status',['APPROVING','PENDING'])->update(['status'=>'SELECTED']);
+                   ApplicantProgramSelection::where('applicant_id',$applicant->id)->whereIn('status',['APPROVING','PENDING'])->update(['status'=>'SELECTED']);
                    $no_of_applicants++;
                 }
             }

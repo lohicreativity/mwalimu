@@ -160,36 +160,49 @@
                     <td> {{ $ba->end_date }} </td>
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <td>
+                      @php
+                      $have_results = 0;
+                      foreach($batch_ids as $batch){
+                        if($batch->batch_id == $ba->id){
+                          $have_results = 1;
+
+                        }
+                      }
+
+                    @endphp
+                      @if($ba->selection_released == 1)
+                      <a class="btn btn-danger btn-sm" href="{{ url('application/application-batches-selection?status=0&batch_id='.$ba->id) }}">
+                             <i class="fas fa-ban">
+                             </i>
+                             Hide Selection Results
+                      </a>
+                     @else
+                      <a class="btn btn-info btn-sm" @if($have_results == 1) href="{{ url('application/application-batches-selection?status=1&batch_id='.$ba->id) }}" @else disabled="disabled" @endif>
+                             <i class="fas fa-check-circle">
+                             </i>
+                             Show Selection Results
+                      </a>
+                     @endif
  
                       @can('delete-application-window')
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-batch-{{ $ba->id }}">
-                              <i class="fas fa-trash">
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
                               </i>
-                              Delete
-                       </a>
-                       @endcan
+                              Edit
+                      </a>
+                      @endcan
 
-                       <div class="modal fade" id="ss-delete-batch-{{ $ba->id }}">
+                      <div class="modal fade" id="ss-edit-batch-{{ $ba->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                              <h4 class="modal-title"> Edit Batch</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              <div class="row">
-                                <div class="col-12">
-                                    <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this batch?</p>
-                                       <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('application/application-batch/'.$ba->id.'/destroy') }}" class="btn btn-danger">Delete</a>
-                                         </div><!-- end of ss-form-controls -->
-                                      </div><!-- end of ss-confirmation-container -->
-                                  </div><!-- end of col-md-12 -->
-                               </div><!-- end of row -->
+
                             </div>
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

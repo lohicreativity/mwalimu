@@ -39,10 +39,11 @@
         <div class="row">
           <div class="col-12">
 
-            @if($regulator_selection)
+            <!-- Need to add a filter to prevent applicants from viewing selection status after applicants have been retrieved from a regulator -->
+            @if($regulator_selection && $selection_released_status == 1)
 
               @if($check_selected_applicant)
-                  @if($check_selected_applicant->selections[0]->status == 'PENDING')
+                  @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED')
                     <div class="alert alert-danger">
                       <h3 class="text-white" style="font-size: 18px!important;">
                         <i class="fa fa-times-circle"></i> 
@@ -66,14 +67,12 @@
                       </div>                
                   @endif
               @else
-                  @if($applicant->batch_no > 0)
-                    <div class="alert alert-danger">
+                  <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
                       Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
                     </h3>
-                    </div> 					  
-                  @endif 
+                  </div> 					   
               @endif
             @elseif($applicant->status == 'SUBMITTED')
             <div class="alert alert-success">

@@ -43,6 +43,14 @@ class ApplicationBatchController extends Controller
 
             $batches[] = ApplicationBatch::where('application_window_id',$window->id)->get();
         }
+
+        $batch_ids = [];
+        foreach($batches as $batch){
+            foreach($batch as $ba){
+                $batch_ids[] = $ba->id;
+            }
+        }
+        $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
         //return $batches;
     	$data = [
            'windows'=>$windows,
@@ -51,7 +59,8 @@ class ApplicationBatchController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request,
            'awards'=>Award::all(),
-           'batches'=>$batches
+           'batches'=>$batches,
+           'batch_ids'=>$batch_ids
     	];
     	return view('dashboard.application.application-batches',$data)->withTitle('Application Batches');
     }
@@ -96,6 +105,11 @@ class ApplicationBatchController extends Controller
         return Util::requestResponse($request,'Application batch created successfully');
     }
 
+    public function edit(Request $request){
+        
+        ApplicationBatch::where('id', $request->get('batch_id'))->update(['selection_released'=>$request->get('status')]);
+        return redirect()->back();
+    }
     /**
      * Update specified award
      */

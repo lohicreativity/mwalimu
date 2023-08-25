@@ -380,7 +380,7 @@
                                 @if($applicant->status == 'SELECTED' || $applicant->status == 'SUBMITTED')
                                   @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
                                       @if($selection->status == 'SELECTED')
-                                        <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)* @endif </span> <br>
+                                        <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)** @endif </span> <br>
                                         <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
                                       @else
                                         <span class="badge badge-warning"> PRE-SELECTED </span> <br>
