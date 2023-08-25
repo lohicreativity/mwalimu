@@ -626,7 +626,7 @@ class ApplicantController extends Controller
 				}							
 			}
 		}
-
+return ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first();
       $data = [
          'applicant'=>$applicant,
          'student' => $payment_status? $student : [],

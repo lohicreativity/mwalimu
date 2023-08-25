@@ -106,8 +106,14 @@ class ApplicationBatchController extends Controller
     }
 
     public function edit(Request $request){
-        
+        $batch = ApplicationBatch::where('id', $request->get('batch_id'))->first();
         ApplicationBatch::where('id', $request->get('batch_id'))->update(['selection_released'=>$request->get('status')]);
+        if($request->get('status') == 1){
+            Applicant::whereHas('selections', function($query) use($batch){$query->where('batch_id',$batch->id)->where('status','SELECTED');})->update(['status'=>'SELECTED']);
+            Applicant::whereHas('selections', function($query) use($batch){$query->where('batch_id',$batch->id)->where('status','PENDING');})->update(['status'=>'NOT SELECTED']);
+        }
+        $batch->selection_released = $request->get('status');
+        $batch->save();
         return redirect()->back();
     }
     /**
