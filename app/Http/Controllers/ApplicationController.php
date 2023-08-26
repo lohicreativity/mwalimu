@@ -368,7 +368,10 @@ class ApplicationController extends Controller
      */
     public function selectedApplicants(Request $request)
     {
-         $staff = User::find(Auth::user()->id)->staff;
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
+
+        $staff = User::find(Auth::user()->id)->staff;
         
         //  $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
         //          $query->where('id',$request->get('application_window_id'));
@@ -380,13 +383,28 @@ class ApplicationController extends Controller
         //               ->orWhereNull('status');
         //     })->get();
 
-        $batch = 0;
+        $batch_id = $batch_no = 0;
+
+        $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
         if(!empty($request->get('program_level_id'))){
-            $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
-            if(!$batch){
-                return redirect()->back()->with('error','No batch created for this program level.');
+            if($batch->batch_no > 1){
+                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
+                ->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$batch->id)->count() == 0){
+                    $batch_id = $batch->id;
+                    $batch_no = $batch->batch_no;
+
+                }else{
+                    $previous_batch = null;
+
+                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('batch_no', $batch->batch_no - 1)->first();
+                    $batch_id = $previous_batch->id;
+                    $batch_no = $previous_batch->batch_no;
+
+                }
+            }else{
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;
             }
-            $batch = $batch->id;
         }
 
         if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) { 
@@ -468,6 +486,15 @@ class ApplicationController extends Controller
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))                                        
                                         ->whereIn('status',['SELECTED','NOT SELECTED','SUBMITTED'])->get();
+
+        $selected_applicants = [];
+        if(!ApplicantProgramSelection::whereIn('status',['SELECTED','PENDING'])->where('batch_id',$batch_id)->first()){
+            $selected_applicants[] = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
+                                        ->whereHas('selections',function($query){$query->whereNotIn('status',['SELECTED','PENDING']);})
+                                        ->where('application_window_id',$request->get('application_window_id'))
+                                        ->where('program_level_id',$request->get('program_level_id'))
+                                        ->where('programs_complete_status',1)->get();
+        }
 
 /*         if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
             return redirect()->back()->with('error','No selected applicant in this programme level');
@@ -5265,7 +5292,7 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+        if($array['Response']['ResponseParameters']['StatusCode'] == 212){
             $applicant->confirmation_status = 'CONFIRMED';
             $applicant->save();
 
@@ -5320,7 +5347,7 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+        if($array['Response']['ResponseParameters']['StatusCode'] == 218){
             $applicant->confirmation_status = 'UNCONFIRMED';
             $applicant->save();
             

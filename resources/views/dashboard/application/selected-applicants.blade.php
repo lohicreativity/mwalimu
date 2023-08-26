@@ -89,14 +89,13 @@
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br><br>
-                 @if(count($selected_applicants) > 0)
+                 @if(count($applicants) > 0)
                     <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download Selected Applicants</a>
                  @endif
-                 <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
                  @if(Auth::user()->hasRole('admission-officer'))
                  
-                    @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
+                    @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1 && count($selected_applicants) > 0) 
+                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
                       @if($submission_status) 
                         <a href="{{ url('application/submit-selected-applicants-tcu/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Submitted Applicants</a> 
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> 
@@ -104,10 +103,9 @@
                           <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
                         @endif
                       @endif
-                    @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
-                      @if(count($selected_applicants) > 0)
+                    @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1 && count($selected_applicants) > 0)
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTVET</a>
-                      @endif
+                      
                       @if($submission_status)
                         <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
                       @endif
