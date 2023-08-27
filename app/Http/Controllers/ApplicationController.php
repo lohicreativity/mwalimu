@@ -765,7 +765,7 @@ class ApplicationController extends Controller
             ->get(); */
 
             $list = Applicant::select('id','first_name','middle_name','surname','index_number','gender','birth_date','batch_id','nationality','entry_mode','phone',
-                                            'email','status','confirmation_status','country_id','region_id','district_id','disability_status_id','created_at','next_of_kin_id','multiple_admissions')
+                                            'email','status','confirmation_status','admission_confirmation_status','country_id','region_id','district_id','disability_status_id','created_at','next_of_kin_id','multiple_admissions')
                                 ->doesntHave('student')
                                 ->where(function($query){$query->where('status', 'SELECTED')->orWhere('status','SUBMITTED');})->where('application_window_id', $request->get('application_window_id'))
                                 ->where('program_level_id', $request->get('program_level_id'))
