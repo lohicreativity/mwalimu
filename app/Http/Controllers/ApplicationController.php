@@ -488,7 +488,7 @@ class ApplicationController extends Controller
 
         $selected_applicants = [];
         if(!ApplicantProgramSelection::whereIn('status',['SELECTED','PENDING'])->where('batch_id',$batch_id)->first()){
-            $selected_applicants[] = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
+            $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
                                         ->whereHas('selections',function($query){$query->whereNotIn('status',['SELECTED','PENDING']);})
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))
