@@ -383,7 +383,7 @@ class ApplicationController extends Controller
         //               ->orWhereNull('status');
         //     })->get();
 
-        $batch_id = $batch_no = 0;
+        $batch_id = 0;
 
         $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
         if(!empty($request->get('program_level_id'))){
@@ -391,19 +391,15 @@ class ApplicationController extends Controller
                 if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
                 ->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$batch->id)->count() == 0){
                     $batch_id = $batch->id;
-                    $batch_no = $batch->batch_no;
 
                 }else{
                     $previous_batch = null;
 
                     $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('batch_no', $batch->batch_no - 1)->first();
                     $batch_id = $previous_batch->id;
-                    $batch_no = $previous_batch->batch_no;
-
                 }
             }else{
                 $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;
             }
         }
 
@@ -418,7 +414,8 @@ class ApplicationController extends Controller
                      ->orWhereNull('status');
            })->get(); */ 
 
-           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions')->doesntHave('student')
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
@@ -439,7 +436,8 @@ class ApplicationController extends Controller
            ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
            ->where(function($query) {$query->where('status','SELECTED')->orWhereNull('status');})->get(); */
 
-           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions')->doesntHave('student')
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
                                     ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
@@ -457,7 +455,8 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch)->count();   
  */
         }else{
-            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions')->doesntHave('student')
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
                                     ->where('program_level_id',$request->get('program_level_id'))
@@ -512,8 +511,8 @@ class ApplicationController extends Controller
             })->whereHas('program',function($query) use($request){
                   $query->where('award_id',$request->get('program_level_id'));
             })->with('program')->get(),
-            'confirmed_campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
-                  $query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');
+            'confirmed_campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request,$batch_id){
+                  $query->where('application_window_id',$request->get('application_window_id'))->where('status','SELECTED')->where('batch_id',$batch_id);
             })->whereHas('selections.applicant',function($query){
                  $query->where('multiple_admissions',1);
             })->whereHas('program',function($query) use($request){
@@ -523,7 +522,8 @@ class ApplicationController extends Controller
             'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
             'request'=>$request,
             //'selection_status'=> $selection_status > 0? false : true,
-            'batches'=> ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get()
+            'batches'=> ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
+            'confirmation_status'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('multiple_admissions     ',1)->whereIn('confirmation_status',['CONFIRMED','NOT CONFIRMED'])->count()>0? true : false
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
@@ -983,8 +983,18 @@ class ApplicationController extends Controller
                     }
                 }
 
-                $multipe_admission_status = null;
+                $multipe_admission_status = $confirmation_status = null;
                 if($status == 'Selected'){
+                    if($applicant->multiple_admissions == 1){
+                        $multipe_admission_status = 'Yes';
+                        if($applicant->confirmation_status == 'CONFIRMED' || $applicant->admission_confirmation_status == 'CONFIRMED'){
+                            $confirmation_status = 'Confirmed';
+                        }elseif(str_contains($applicant->confirmation_status, 'OTHER') || str_contains($applicant->admission_confirmation_status, 'OTHER')){
+                            $confirmation_status = 'Confirmed Elsewhere';
+                        }
+                    }else{
+                        $multipe_admission_status = 'No';
+                    }
                     $multipe_admission_status = $applicant->multiple_admissions == 1? 'Yes' : 'No';
                 }
 
@@ -1019,7 +1029,7 @@ class ApplicationController extends Controller
                 $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $selected_programme, $institution_code, 
                 $applicant->entry_mode, 'OPTS', $o_level_results, 'APTS / GPA', $a_level_results, 
                 $out_gpa, $open_results, $status, $multipe_admission_status, $applicant->created_at, $phone, $applicant->email, $next_of_kin_phone, 
-                $applicant->district->name, $applicant->region->name, $confirm, $batch_number, 
+                $applicant->district->name, $applicant->region->name, $confirmation_status, $batch_number, 
                 $diploma_institution, $programme, $diploma_gpa, $diploma_results, $o_level_schools, 
                 $o_level_points, $a_level_schools, $a_level_points, $applicant->status
                 ]);
@@ -5215,7 +5225,11 @@ class ApplicationController extends Controller
         foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
             $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
             if($applicant){
-               $applicant->admission_confirmation_status = $data['ConfirmationStatusCode'] == 233? 'CONFIRMED' : 'NOT CONFIRMED';
+               if($data['ConfirmationStatusCode'] == 233)
+                    $applicant->admission_confirmation_status = 'CONFIRMED';
+               elseif($data['ConfirmationStatusCode'] == 234){
+                    $applicant->admission_confirmation_status = 'CONFIRMED TO OTHER';
+               }
                $applicant->save();
             }
         }
@@ -5292,7 +5306,7 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 212){
+        if($array['Response']['ResponseParameters']['StatusCode'] == 212 || $array['Response']['ResponseParameters']['StatusCode'] == 214){
             $applicant->confirmation_status = 'CONFIRMED';
             $applicant->save();
 

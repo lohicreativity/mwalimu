@@ -94,12 +94,12 @@
                  @endif
                  @if(Auth::user()->hasRole('admission-officer'))
                  
-                    @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1 && count($selected_applicants) > 0) 
-                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
+                    @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
+                    @if(count($selected_applicants) > 0) <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a> @endif
                       @if($submission_status) 
                         <a href="{{ url('application/submit-selected-applicants-tcu/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Submitted Applicants</a> 
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> 
-                        @if(count($confirmed_campus_programs) > 0)
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> @endif
+                        @if($confirmation_status)
                           <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
                         @endif
                       @endif
@@ -379,7 +379,13 @@
                                   @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
                                       @if($selection->status == 'SELECTED')
                                         <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)** @endif </span> <br>
-                                        <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
+                                        @if($applicant->admission_confirmation_status == 'CONFIRMED' || $applicant->confirmation_status == 'CONFIRMED')
+                                          <span style="font-style: italic; font-color:green">Confirmed</span>
+                                        @elseif(str($applicant->admission_confirmation_status, 'OTHER') || str($applicant->confirmation_status, 'OTHER'))
+                                          <span style="font-style: italic; font-color:green">Confirmed Elsewhere</span>
+                                        @else
+                                          <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
+                                        @endif
                                       @else
                                         <span class="badge badge-warning"> PRE-SELECTED </span> <br>
                                         @if($applicant->status == 'SUBMITTED')
