@@ -523,7 +523,8 @@ class ApplicationController extends Controller
             'request'=>$request,
             //'selection_status'=> $selection_status > 0? false : true,
             'batches'=> ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
-            'confirmation_status'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('multiple_admissions     ',1)->whereIn('confirmation_status',['CONFIRMED','NOT CONFIRMED'])->count()>0? true : false
+            'confirmation_status'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
+                                            ->where('multiple_admissions',1)->whereIn('confirmation_status',['CONFIRMED','NOT CONFIRMED'])->count()>0? true : false
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
