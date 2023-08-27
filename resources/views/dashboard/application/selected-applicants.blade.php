@@ -381,7 +381,7 @@
                                         <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)** @endif </span> <br>
                                         @if($applicant->admission_confirmation_status == 'CONFIRMED' || $applicant->confirmation_status == 'CONFIRMED')
                                           <span style="font-style: italic; font-color:green">Confirmed</span>
-                                        @elseif(str($applicant->admission_confirmation_status, 'OTHER') || str($applicant->confirmation_status, 'OTHER'))
+                                        @elseif(str_contains($applicant->admission_confirmation_status, 'OTHER') || str_contains($applicant->confirmation_status, 'OTHER'))
                                           <span style="font-style: italic; font-color:green">Confirmed Elsewhere</span>
                                         @else
                                           <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
