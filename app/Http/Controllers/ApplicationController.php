@@ -4545,12 +4545,12 @@ class ApplicationController extends Controller
                 $query->where('status','SELECTED');
            },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();  
         } elseif(Auth::user()->hasRole('admission-officer')){
-            $applicants = Applicant::whereHas('selections',function($query) use($request){$query->where('status','SELECTED');})
+            $applicants = Applicant::whereHas('selections',function($query){$query->where('status','SELECTED');})
                                    ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program',
                                            'applicationWindow','country','selections.campusProgram.campus'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                    ->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                   ->whereNull('confirmation_status')->get();
+                                   ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
                                    //->whereNotIn('confirmation_status',['CANCELLED','TRANSFERED','NOT CONFIRMED','SUBMITTED'])->get();
                                   // ->where(function($query) {$query->where('multiple_admissions',0)->orWhereIn('confirmation_status',['CONFIRMED','SUBMITTED']);})->get();  
 
