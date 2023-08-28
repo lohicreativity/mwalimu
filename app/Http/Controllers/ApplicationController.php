@@ -4559,12 +4559,12 @@ class ApplicationController extends Controller
 
         $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->first();
-
+return $orientation_date;
         if(!$orientation_date){
-            return redirect()->back()->with('error','Orientation date has not been defined');
+            return redirect()->back()->with('error','Orientation date for has not been defined');
         }else{
             if(!in_array($applicants[0]->selections[0]->campusProgram->program->award, unserialize($orientation_date->applicable_levels))){
-                return redirect()->back()->with('error','Orientation date has not been defined');
+                return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award.' has not been defined');
             }
         }
 return 10;
