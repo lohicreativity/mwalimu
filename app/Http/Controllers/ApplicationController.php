@@ -3034,7 +3034,6 @@ class ApplicationController extends Controller
                                                                     ->where('application_window_id', $application_window_id)->update(['status' => 'SELECTED']):
                                           ApplicantProgramSelection::where('campus_program_id',$campus_program->id)->where('applicant_id', $applicant_id)
                                           ->where('application_window_id', $application_window_id)->update(['status' => 'APPROVING']);
-                                          return 1;
 
         $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$applicant->program_level_id)->latest()->first();
 
@@ -4551,12 +4550,13 @@ class ApplicationController extends Controller
                                            'applicationWindow','country','selections.campusProgram.campus'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                    ->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                   ->whereNotIn('confirmation_status',['CANCELLED','TRANSFERED','NOT CONFIRMED','SUBMITTED'])->get();
+                                   ->whereNull('confirmation_status')->get();
+                                   //->whereNotIn('confirmation_status',['CANCELLED','TRANSFERED','NOT CONFIRMED','SUBMITTED'])->get();
                                   // ->where(function($query) {$query->where('multiple_admissions',0)->orWhereIn('confirmation_status',['CONFIRMED','SUBMITTED']);})->get();  
 
                                   // $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
         }  
-
+return $applicants;
    	   // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
         // })->whereHas('selections',function($query) use($request){
