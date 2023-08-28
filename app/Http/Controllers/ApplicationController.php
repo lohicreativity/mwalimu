@@ -4556,7 +4556,7 @@ class ApplicationController extends Controller
         if(!$study_academic_year){
             return redirect()->back()->with('error','Study academic year has not been created');
         }
-        $level_orientation_date = null;
+
         $orientation_dates = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->get();
 
@@ -4566,9 +4566,6 @@ class ApplicationController extends Controller
             foreach($orientation_dates as $orientation_date){
                 if(!in_array($applicants[0]->selections[0]->campusProgram->program->award, unserialize($orientation_date->applicable_levels))){
                     return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award->name.' has not been defined');
-                }else{
-                    $level_orientation_date = $orientation_date;
-                    break;
                 }
             }
         }

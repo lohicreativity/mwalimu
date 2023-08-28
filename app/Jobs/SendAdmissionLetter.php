@@ -67,6 +67,17 @@ class SendAdmissionLetter implements ShouldQueue
         $study_academic_year = StudyAcademicYear::select('id','academic_year_id')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
             ->with('academicYear:id,year')->first();
 
+        $level_orientation_date = null;
+        $orientation_dates = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->get();
+
+        foreach($orientation_dates as $orientation_date){
+            if(in_array($applicants[0]->selections[0]->campusProgram->program->award, unserialize($orientation_date->applicable_levels))){
+                $level_orientation_date = $orientation_date;
+                break;
+            }
+        }
+        
         // Checks for Masters
         if($request->get('program_level_id') == 5){
 
@@ -87,7 +98,7 @@ class SendAdmissionLetter implements ShouldQueue
             }else{
                 $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->first();
-        
+
                 $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                     ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
@@ -234,13 +245,22 @@ class SendAdmissionLetter implements ShouldQueue
                    return redirect()->back()->with('error','Orientation date not defined');
                } */
 
+               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
+
+               $practical_training_fee = null;
+               if(str_contains(strtolower($applicant->selections->campusProgram->program->name),'education')){
+                    $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                                        ->where('name','LIKE','%Practical%'); })->first();
+
+                }  
                $numberToWords = new NumberToWords();
                $numberTransformer = $numberToWords->getNumberTransformer('en');
 
                $data = [
                  'applicant'=>$applicant,
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
-                 'orientation_date'=>$orientation_date,
+                 'orientation_date'=>$level_orientation_date,
                  'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$request->reference_number,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
