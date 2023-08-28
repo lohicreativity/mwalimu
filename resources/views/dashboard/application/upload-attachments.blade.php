@@ -108,7 +108,7 @@
               {!! Form::close() !!}
             </div>
             
-
+            @if(count($attachments) > 0)
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Uploaded Attachments') }}</h3>
@@ -148,6 +148,7 @@
                 </div>
               </div>
           </div>
+          @endif
         </div>
         
       </div><!-- /.container-fluid -->
