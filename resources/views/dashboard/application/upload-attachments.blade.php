@@ -51,15 +51,25 @@
                 <div class="card-body">
                   <div class="row">
                     @if(Auth::user()->hasRole('administrator'))
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                       {!! Form::label('','Attachment name') !!}
                       {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Attachment name','required'=>true]) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                       {!! Form::label('','Upload attachment') !!}
                       {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
+                      {!! Form::label('','Applicable Levels') !!}
+                      <select name="applicable_level[]" class="form-control ss-select-tags" required multiple="multiple">
+                        @foreach($awards as $award)
+                          @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                          <option value="{{ $award->name }}" @if($request->get('applicable_level') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                          @endif
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-3">
                      {!! Form::label('','Campus') !!}
                      <select name="campus_id" class="form-control" required>
                         <option value="">Select campus</option>
@@ -69,13 +79,23 @@
                      </select>
                     </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       {!! Form::label('','Attachment name') !!}
                       {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Attachment name','required'=>true]) !!}
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       {!! Form::label('','Upload attachment') !!}
                       {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Applicable Levels') !!}
+                      <select name="applicable_level[]" class="form-control ss-select-tags" required multiple="multiple">
+                        @foreach($awards as $award)
+                          @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                          <option value="{{ $award->name }}" @if($request->get('applicable_level') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                          @endif
+                        @endforeach
+                      </select>
                     </div>
                     <input type="hidden" name="campus_id" value="{{ $campus_id }}">
                     @endif
@@ -100,6 +120,7 @@
                     <thead>
                        <tr>
                          <th>Document</th>
+                         <th>Applicable Levels</th>
                          @if(Auth::user()->hasRole('administrator'))
                          <th>Campus</th>
                          @endif
@@ -110,6 +131,7 @@
                       @foreach($attachments as $attachment)
                       <tr>
                         <td><a href="{{ url('application/download-attachment?id='.$attachment->id) }}">{{ $attachment->name }}</a></td>
+                        <td>{{ implode(', ',unserialize($attachment->applicable_levels)) }} </td>
                         @if(Auth::user()->hasRole('administrator'))
                         <td>
                           {{ $attachment->campus->name }}
