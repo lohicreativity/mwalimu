@@ -4565,7 +4565,7 @@ class ApplicationController extends Controller
         }else{
             foreach($orientation_dates as $orientation_date){
                 if(!in_array($applicants[0]->selections[0]->campusProgram->program->award, unserialize($orientation_date->applicable_levels))){
-                    return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award.' has not been defined');
+                    return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award->name.' has not been defined');
                 }else{
                     $level_orientation_date = $orientation_date;
                     break;
