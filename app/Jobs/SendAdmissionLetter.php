@@ -17,7 +17,7 @@ use NumberToWords\NumberToWords;
 use Illuminate\Http\Request;
 use App\Mail\AdmissionLetterCreated;
 use App\Models\User;
-use Mail, PDF;
+use Mail, PDF, Auth;
 
 class SendAdmissionLetter implements ShouldQueue
 {
@@ -51,12 +51,21 @@ class SendAdmissionLetter implements ShouldQueue
         ini_set('memory_limit', '-1');
 
         $request = $this->request;
+        $staff = User::find(Auth::user()->id)->staff;
 
         $applicants = Applicant::whereHas('selections',function($query) use($request){
              $query->where('status','SELECTED');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','SELECTED');
         },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->program_level_id)->where('status','SELECTED')->where('application_window_id',$request->application_window_id)->get();
+
+        $applicants = Applicant::select('id','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+                                   ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
+                                           'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name,award_id,min_duration','awards:id,name',
+                                           'applicationWindow:id,end_date'])
+                                   ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
+                                   ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
+                                   ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
 
         // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
@@ -175,7 +184,7 @@ class SendAdmissionLetter implements ShouldQueue
                  'applicant'=>$applicant,
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
                  'orientation_date'=>$orientation_date,
-                 'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
+                 //'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$request->reference_number,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
