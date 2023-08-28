@@ -4543,16 +4543,16 @@ class ApplicationController extends Controller
                 $query->where('status','SELECTED');
            })->with(['nextOfKin','intake','selections'=>function($query){
                 $query->where('status','SELECTED');
-           },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();  
+           },'selections.campusProgram.program','applicationWindow:id,end_date','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();  
         } elseif(Auth::user()->hasRole('admission-officer')){
-            $applicants = Applicant::whereHas('selections',function($query){$query->where('status','SELECTED');})
-                                   ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program',
-                                           'applicationWindow','country','selections.campusProgram.campus'])
+            $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+                                   ->with(['intake:id,name','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram:id','selections.campusProgram.program:id,name',
+                                           'applicationWindow'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                    ->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))
                                    ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
         }  
-        //return $applicants;
+        return $applicants;
         
         $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
         $ac_year += 1;
@@ -4560,12 +4560,34 @@ class ApplicationController extends Controller
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
             ->with('academicYear')->first();
 
-            if(!$study_academic_year){
+        if(!$study_academic_year){
             return redirect()->back()->with('error','Study academic year not created');
-            }
+        }
 
+        $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->first();
+
+        if(!$orientation_date){
+            return redirect()->back()->with('error','Orientation date not defined');
+        }
+
+        // Checks for Masters
         if($request->get('program_level_id') == 5){
-            return 1;
+
+
+
+
+
+
+            $research_supervion = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                            ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                            ->where('name','LIKE','%Research%');})->first(); 
+
+            if(!$research_supervion){
+                return redirect()->back()->with('error','Research supervision fee has not been defined');
+            } 
+   
+        // Checks for Undergraduates
         }else{
             $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
@@ -4633,54 +4655,31 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Late registration fee not defined');
             }
 
-            return 2;
+            if($request->get('program_level_id') == 4){
+                $quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                                        ->where('name','LIKE','%TCU%');})->first();
+                $message = 'TCU fee not defined';
+             }else{
+                $quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                                        ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
+                $message = 'NACTVET qualtity assurance fee not defined';
+             }
+             
+             if(!$quality_assurance_fee){
+                 return redirect()->back()->with('error',$message);
+             }
         }
 
-
         foreach($applicants as $applicant){
+            $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
+                                    ->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
-              // $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-              // $ac_year += 1;
-
-
-               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
-                                        ->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
-
-               if(!$program_fee){
-                   return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
-               }
-               
-               if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name),'bachelor')){
-                  $quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                          ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                          ->where('name','LIKE','%TCU%');})->first();
-                  $message = 'TCU fee not defined';
-               }else{
-                  $quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                          ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                          ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
-                  $message = 'NACTVET qualtity assurance fee not defined';
-               }
-               
-               if(!$quality_assurance_fee){
-                   return redirect()->back()->with('error',$message);
-               }
-
-               $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
-                                              ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->first();
-
-               if(!$orientation_date){
-                   return redirect()->back()->with('error','Orientation date not defined');
-               }
-               if($applicant->program_level_id == 5){
-                $research_supervion = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                               ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                               ->where('name','LIKE','%Research%');})->first(); 
-    
-                if(!$research_supervion){
-                    return redirect()->back()->with('error','Research supervision fee has not been defined');
-                }           
-            }    
+            if(!$program_fee){
+                return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
+            }
+                
         }
         
         dispatch(new SendAdmissionLetter($request->all()));
