@@ -53,7 +53,7 @@ class SendAdmissionLetter implements ShouldQueue
         $request = $this->request;
         $staff = User::find(Auth::user()->id)->staff;
 
-        $applicants = Applicant::select('id','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+        $applicants = Applicant::select('id','first_name','surname','email','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date'])
@@ -170,7 +170,7 @@ class SendAdmissionLetter implements ShouldQueue
                  'applicant'=>$applicant,
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
                  'orientation_date'=>$orientation_date,
-                 //'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
+                 'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$request->reference_number,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
