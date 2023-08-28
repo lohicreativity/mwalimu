@@ -378,7 +378,11 @@
                                 @if($applicant->status == 'SELECTED' || $applicant->status == 'SUBMITTED')
                                   @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
                                       @if($selection->status == 'SELECTED')
-                                        <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)** @endif </span> <br>
+                                        @if(!str_contains($applicant->admission_confirmation_status, 'OTHER'))
+                                          <span class="badge badge-success"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)** @endif </span> <br>
+                                        @else
+                                          <span class="badge badge-danger"> {{ $selection->status }} @if($applicant->multiple_admissions == 1)** @endif </span> <br>
+                                        @endif
                                         @if($applicant->admission_confirmation_status == 'CONFIRMED' || $applicant->confirmation_status == 'CONFIRMED')
                                           <span style="font-style: italic; font-color:green">Confirmed</span>
                                         @elseif(str_contains($applicant->admission_confirmation_status, 'OTHER') || str_contains($applicant->confirmation_status, 'OTHER'))
