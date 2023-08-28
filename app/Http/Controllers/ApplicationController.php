@@ -4546,7 +4546,7 @@ class ApplicationController extends Controller
            },'selections.campusProgram.program','applicationWindow:id,end_date','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();  
         } elseif(Auth::user()->hasRole('admission-officer')){
             $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
-                                   ->with(['intake:id,name','selections:id,status,campus_program_id'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
+                                   ->with(['intake:id,name','selections'=>function($query){$query->select('id','status,campus_program_id')->where('status','SELECTED');},'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
                                            'applicationWindow:id,end_date'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                    ->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))
