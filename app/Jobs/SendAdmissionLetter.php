@@ -96,8 +96,8 @@ class SendAdmissionLetter implements ShouldQueue
         
             // Checks for Undergraduates
             }else{
-                $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
-        ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->first();
+/*                 $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->first(); */
 
                 $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
@@ -248,7 +248,7 @@ class SendAdmissionLetter implements ShouldQueue
                $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
                $practical_training_fee = null;
-               if(str_contains(strtolower($applicant->selections->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections->campusProgram->program->name),'education')){
+               if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
                     $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                                         ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                                                         ->where('name','LIKE','%Practical%'); })->first();
@@ -260,7 +260,7 @@ class SendAdmissionLetter implements ShouldQueue
                $data = [
                  'applicant'=>$applicant,
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
-                 'orientation_date'=>$level_orientation_date,
+                 //'orientation_date'=>$level_orientation_date,
                  'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$request->reference_number,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,

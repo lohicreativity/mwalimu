@@ -4805,11 +4805,11 @@ class ApplicationController extends Controller
 
             $numberToWords = new NumberToWords();
             $numberTransformer = $numberToWords->getNumberTransformer('en');
-return $applicant->selections[0]->campusProgram->campus->name.$level_orientation_date.$applicant->first_name.' '.$applicant->surname;
+return $request->reference_number.$applicant->selections[0]->campusProgram->program->name.$applicant->selections[0]->campusProgram->program->award->name;
             $data = [
               'applicant'=>$applicant,
               'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
-              'orientation_date'=>$level_orientation_date,
+              //'orientation_date'=>$level_orientation_date,
               'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
               'reference_number'=>$request->reference_number,
               'program_name'=>$applicant->selections[0]->campusProgram->program->name,
