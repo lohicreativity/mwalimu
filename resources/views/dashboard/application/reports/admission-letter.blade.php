@@ -267,10 +267,10 @@
               <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
-        <div style="position:relative; top:20px; width:20%" class="text-right">{{ now()->format('jS F Y') }}</div>
+        <div style="position:relative; top:20px; width:20%; " class="text-right">{{ now()->format('jS F Y') }}</div>
         <!-- end of row -->
         
-        <div class="row">
+        <div class="row" style="clear:left">
            <div class="col-md-12">
               <h4>RE: ADMISSION INTO {{ strtoupper($program_code_name) }} PROGRAMME IN THE ACADEMIC YEAR {{ $study_year }}</h4>
 
