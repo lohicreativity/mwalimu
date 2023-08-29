@@ -4765,7 +4765,7 @@ class ApplicationController extends Controller
 
                 $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%Registration%');})->first();
+                ->where('name','LIKE','%Registration%')->where('name','NOT LIKE','%Late%');})->first();
 
                 $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
@@ -4805,7 +4805,7 @@ class ApplicationController extends Controller
 
             $numberToWords = new NumberToWords();
             $numberTransformer = $numberToWords->getNumberTransformer('en');
-return str_contains($applicant->nationality,'Tanzania')? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd;
+return str_contains($applicant->nationality,'Tanzania')? $registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd;
             $data = [
               'applicant'=>$applicant,
               'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
