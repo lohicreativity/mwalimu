@@ -4776,7 +4776,7 @@ class ApplicationController extends Controller
 
                 $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%');})->first();
+                    ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
 
                 if($request->get('program_level_id') == 4){
                     $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
@@ -4838,7 +4838,7 @@ class ApplicationController extends Controller
               'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
               'welfare_emergence_fund'=>str_contains($applicant->nationality,'Tanzania')? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
             ];
-            return 1;
+            //return 1;
             return $data;
         }catch(\Exception $e){
             //$this->response = ['message'=>$e->getMessage(),'status'=>'error'];

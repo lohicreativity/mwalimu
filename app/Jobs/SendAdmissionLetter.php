@@ -129,7 +129,7 @@ class SendAdmissionLetter implements ShouldQueue
 
                 $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%');})->first();
+                    ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
 
                 if($request->get('program_level_id') == 4){
                     $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
