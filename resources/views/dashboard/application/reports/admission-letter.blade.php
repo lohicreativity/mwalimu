@@ -191,7 +191,7 @@
        width: 120px;
      }
      .ss-logo{
-       width: 100px;
+       width: 110px;
        height: auto;
      }
      .ss-signature{
@@ -263,8 +263,8 @@
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
               <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br>
-              <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ $applicant->address }}</span> <br>
-              <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
+              <span>{{ $applicant->address }}</span> <br>
+              <span>{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
         <div style="position:relative; top:20px; width:20%; " class="text-right">{{ now()->format('jS F Y') }}</div>
