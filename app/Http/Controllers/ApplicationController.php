@@ -4805,7 +4805,7 @@ class ApplicationController extends Controller
 
             $numberToWords = new NumberToWords();
             $numberTransformer = $numberToWords->getNumberTransformer('en');
-
+return 3;
             $data = [
               'applicant'=>$applicant,
               'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
@@ -4832,7 +4832,7 @@ class ApplicationController extends Controller
               'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
               'welfare_emergence_fund'=>str_contains($applicant->nationality,'Tanzania')? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
             ];
-
+            return 1;
             return $data;
         }catch(\Exception $e){
             //$this->response = ['message'=>$e->getMessage(),'status'=>'error'];
