@@ -4688,7 +4688,7 @@ class ApplicationController extends Controller
 
         $numberToWords = new NumberToWords();
         $numberTransformer = $numberToWords->getNumberTransformer('en');
-
+return $applicant->selections[0]->campusProgram->campus->name;
         $data = [
          'applicant'=>$applicant,
          'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
