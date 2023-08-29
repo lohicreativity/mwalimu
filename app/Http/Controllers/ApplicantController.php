@@ -2571,22 +2571,17 @@ class ApplicantController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $applicant = Applicant::find($request->get('applicant_id'));
         if(Applicant::hasConfirmedResults($applicant) && $request->get('index_number') != $applicant->index_number && !Auth::user()->hasRole('administrator')){
-         return 1;
             return redirect()->back()->with('error','The action cannot be performed');
         }
 
-        if((Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) && $applicant->status != null && ($applicant->index_number != $request->get('index_number') || 
-        $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-        $request->get('citizenship') != $applicant->nationality || $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
+        if(Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1){
             if($request->get('nationality') != $applicant->nationality || (!empty($request->get('citizenship')) && $request->get('citizenship') != $applicant->nationality)){
-               return 2; return redirect()->back()->with('error','The action cannot be performed');
+               return redirect()->back()->with('error','The action cannot be performed');
             }
         }
         
-        if($applicant->status != null && $applicant->status != null && ($applicant->index_number != $request->get('index_number') || 
-        $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-        $request->get('citizenship') != $applicant->nationality || $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
-         return 3; return redirect()->back()->with('error','The action cannot be performed');
+        if($applicant->status != null && ($request->get('entry_mode') != $applicant->entry_mode || $request->get('program_level_id') != $applicant->program_level_id)){
+         return redirect()->back()->with('error','The action cannot be performed');
         }
 
         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
@@ -2594,7 +2589,7 @@ class ApplicantController extends Controller
         }
         if($applicant->submission_complete_status == 1 &&  ($applicant->index_number != $request->get('index_number') || 
            $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-           $request->get('citizenship') != $applicant->nationality || $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
+           $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
 
