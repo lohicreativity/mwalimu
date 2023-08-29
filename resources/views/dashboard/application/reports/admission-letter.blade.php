@@ -267,7 +267,7 @@
               <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
-        <div style="position:relative; top:20px; width:20%; " class="text-right">{{ now()->format('jS F Y') }}</div>
+        <div style="position:relative; top:20px; width:20%; " class="text-right ss-right">{{ now()->format('jS F Y') }}</div>
         <!-- end of row -->
         
         <div class="row" style="clear:left">
@@ -327,11 +327,11 @@
     from your system account <strong>two weeks</strong> before commencement of the academic year.</li>
 
 </ol>
-<p>I am looking forward to your registration and a successful period of study at the Academy.</p>
+<p>I am looking forward to your registration and a successful period of study at the Academy.</p> <br>
 
 <div class="ss-center">
   <span>Yours Sincerely,</span>
-  <p class="ss-signature" > <img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" width="20%"> </p>
+  <p class="ss-center" > <img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" width="20%"> </p>
   <span class="ss-center">Prof. Richard Y.M. Kangalawe</span><br>
   <span class="ss-center ss-bold">DEPUTY RECTOR - ACADEMIC, RESEARCH AND CONSULTANCY</span>
 </div>
