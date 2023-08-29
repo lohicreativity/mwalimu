@@ -4805,7 +4805,7 @@ class ApplicationController extends Controller
 
             $numberToWords = new NumberToWords();
             $numberTransformer = $numberToWords->getNumberTransformer('en');
-return $request->reference_number.$applicant->selections[0]->campusProgram->program->name.$applicant->selections[0]->campusProgram->program->award->name;
+return $study_academic_year->academicYear->year.$applicant->selections[0]->campusProgram->program->min_duration.$study_academic_year->begin_date;
             $data = [
               'applicant'=>$applicant,
               'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
