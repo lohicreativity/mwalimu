@@ -4596,8 +4596,7 @@ class ApplicationController extends Controller
 
             $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Students Organization%')
-                ->orWhere('name','LIKE','%Students Union%')->orWhere('name','LIKE','%MASO%');})->first();
+                ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
 
             if(!$students_union_fee){
             return redirect()->back()->with('error','Students union fee has not been defined');
