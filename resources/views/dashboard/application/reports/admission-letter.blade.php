@@ -272,7 +272,7 @@
               <h4>RE: ADMISSION INTO {{ strtoupper($program_code_name) }} PROGRAMME IN THE ACADEMIC YEAR {{ $study_year }}</h4>
 
               <p>Dear <strong>{{ $applicant_name }}</strong> (of index number <strong>{{ $applicant->index_number}})</strong>, I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} 
-                @if(number_format($program_duration) > 1) years @else year @endif pursuing <strong>{{ $program_name }}</strong> at the <strong>{{ $campus_name }}</strong>. 
+                @if($program_duration_no > 1) years @else year @endif pursuing <strong>{{ $program_name }}</strong> at the <strong>{{ $campus_name }}</strong>. 
                 You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong> ready for registration and a <strong> one-week Orientation 
                 Programme that will commence on {{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong>. Please note that all First Year students are required 
                 to attend the Orientation Programme. Classes will commence on <strong>{{ Carbon\Carbon::parse($commencement_date)->addDays(7)->format('l jS F Y') }}</strong>.</p>
