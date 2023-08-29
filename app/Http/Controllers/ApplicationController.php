@@ -4666,7 +4666,7 @@ class ApplicationController extends Controller
                  return redirect()->back()->with('error',$message);
              }
         }
-return 1;
+
         foreach($applicants as $applicant){
             $program_fee = ProgramFee::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
                                     ->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
