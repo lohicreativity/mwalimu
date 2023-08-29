@@ -216,7 +216,7 @@
      .footer-text {
       font-size: 12px;
       border-top: 2px solid #000;
-      text-align: justify;
+      text-align: center;
       padding-bottom: 20px;
      }
      p, li{
@@ -262,9 +262,9 @@
         <div class="row">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
-              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}
-              <p>{{ $applicant->address }}</p>
-              <span>{{ ucwords(strtolower($applicant->region->name)) }}</span>    
+              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br><br>
+              <span style="width: 10%; border-bottom-width: 1cm; border-bottom-style: dotted;">{{ $applicant->address }}</span>
+              <span style="width: 10%; border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
         <!-- end of row -->
@@ -327,8 +327,8 @@
 
 </ol>
 <p>I am looking forward to your registration and a successful period of study at the Academy.</p>
-<span class="ss-center">Yours Sincerely,</span>
-<img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" class="ss-signature ss-center" width="60%">
+<p class="ss-center">Yours Sincerely,</p>
+<p class="ss-signature ss-center" > <img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" width="20%"> </p>
 <div class="ss-center">
   <span class="ss-center">Prof. Richard Y.M. Kangalawe</span><br>
   <span class="ss-center ss-bold">DEPUTY RECTOR - ACADEMIC, RESEARCH AND CONSULTANCY</span>
