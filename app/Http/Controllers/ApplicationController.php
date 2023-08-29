@@ -4696,9 +4696,9 @@ class ApplicationController extends Controller
                     return redirect()->back()->with('error','Practical training fee not defined');
                 }
             }
-
-            $practical_training_fee = str_contains($applicant->nationality,'Tanzania')? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd;
-
+            if($practical_training_fee){
+                $practical_training_fee = str_contains($applicant->nationality,'Tanzania')? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd;
+            }
         
         }
 
