@@ -2554,7 +2554,7 @@ class ApplicantController extends Controller
      * Update applicant details
      */
     public function updateApplicantDetails(Request $request)
-    { return $request;
+    {
         $validation = Validator::make($request->all(),[
             'phone'=>'required|min:12|max:12',
             'email'=>'required|email'
@@ -2571,17 +2571,18 @@ class ApplicantController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $applicant = Applicant::find($request->get('applicant_id'));
         if(Applicant::hasConfirmedResults($applicant) && $request->get('index_number') != $applicant->index_number && !Auth::user()->hasRole('administrator')){
+         return 1;
             return redirect()->back()->with('error','The action cannot be performed');
         }
 
         if(Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1){
             if($request->get('nationality') != $applicant->nationality || (!empty($request->get('citizenship')) && $request->get('citizenship') != $applicant->nationality)){
-               return redirect()->back()->with('error','The action cannot be performed');
+               return 2; return redirect()->back()->with('error','The action cannot be performed');
             }
         }
         
         if($applicant->status != null && ($request->get('entry_mode') != $applicant->entry_mode || $request->get('program_level_id') != $applicant->program_level_id)){
-         return redirect()->back()->with('error','The action cannot be performed');
+         return 3; return redirect()->back()->with('error','The action cannot be performed');
         }
 
         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
