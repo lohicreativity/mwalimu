@@ -261,7 +261,7 @@
         <div class="row" style="float:left; width: 80%">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
-              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br>
+              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br><br>
               <span>{{ $applicant->address }}</span> <br>
               <span>{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
