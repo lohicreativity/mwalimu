@@ -4545,11 +4545,6 @@ class ApplicationController extends Controller
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }  
-return Applicant::whereHas('selections',function($query) use($request){
-    $query->where('status','SELECTED');
-})->with(['nextOfKin','intake','selections'=>function($query){
-    $query->where('status','SELECTED');
-},'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->program_level_id)->where('status','SELECTED')->where('application_window_id',$request->application_window_id)->get();
 
         $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
         $ac_year += 1;
