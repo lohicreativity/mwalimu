@@ -215,7 +215,7 @@
      }
      .footer-text {
       font-size: 12px;
-      border-top: 2px solid #000;
+      border-top: 2px solid #222;
       text-align: center;
       padding-bottom: 20px;
      }
@@ -243,7 +243,7 @@
               </div>
           </div>
         </div>
-        <div class="row" style="border-bottom: 4px double #000;">
+        <div class="row" style="border-bottom: 4px double #222;">
           <div class="col-md-3 ss-center">
              <img src="{{ public_path('/img/coa-tz.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
