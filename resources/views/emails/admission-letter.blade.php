@@ -13,7 +13,7 @@
                <table class="container" align="center" bgcolor="#ddd" width="640" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #ddd;">
                  <tr bgcolor="#ffffff" style="border-bottom: 1px solid #C0C0C0;">
                    <td class="logo" valign="top" style="padding: 40px 20px 20px 20px; text-align: center;" width="100%">
-                      <a href="{{ config('constants.SITE_URL') }}" target="_blank"><img src="{{ config('constants.SITE_URL') }}/dist/img/logo.png" border="0" width"auto" height="50" alt="{{ config('constants.SITE_NAME') }}"></a>
+                      <a href="{{ config('constants.SITE_URL') }}" target="_blank"><img src="{{ public_path('/dist/img/logo.png') }}" border="0" width"auto" height="50" alt="{{ config('constants.SITE_NAME') }}"></a>
                    </td>
                  </tr>
 

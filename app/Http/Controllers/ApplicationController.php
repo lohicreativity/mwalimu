@@ -4533,7 +4533,6 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-
         $staff = User::find(Auth::user()->id)->staff;
 
         if(Auth::user()->hasRole('admission-officer')){
@@ -4677,7 +4676,7 @@ return 1;
                 return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
             }
 
-            if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
+            if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
                 $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                 ->where('name','LIKE','%Practical%'); })->first();

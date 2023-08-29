@@ -90,6 +90,7 @@
                       $dob = [
                         'placeholder'=>'Date of Birth',
                         'class'=>'form-control ss-datepicker',
+                        'readonly'=> !Auth::user()->hasRole('administrator') && $applicant->submission_complete_status = 1? true : null,
                         'required'=>true					  
                       ];
                       $nationality = [
@@ -110,7 +111,6 @@
                    @endphp
 
               {!! Form::open(['url'=>'application/update-applicant-details','class'=>'ss-form-processing']) !!}
-
                    <div class="row">
                    <div class="form-group col-3">
                        {!! Form::label('','Index Number') !!}
@@ -124,9 +124,12 @@
                        {!! Form::label('','Nationality') !!}
                        <select name="nationality" class="form-control" 									
                         @if($applicant->status == null) 
-                          @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
+                          @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || 
+                              $applicant->payment_complete_status == 1 || $applicant->submission_complete_status == 1) 
                             disabled="disabled" 
                           @endif 
+                        @elseif(!Auth::user()->hasRole('administrator'))
+                            disabled="disabled"
                         @endif required>
                         <option value="">Select Nationality</option>
                         @foreach($countries as $country)
@@ -135,7 +138,7 @@
                           </option>
                          @endforeach
                        </select>
-                       @if($applicant->status == null) 
+                       @if($applicant->status == null || !Auth::user()->hasRole('administrator')) 
                           @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
                           {!! Form::input('hidden','citizenship',$applicant->nationality) !!}
                           @endif 
@@ -152,53 +155,49 @@
                      <div class="form-group col-3">
                       {!! Form::label('','Programme level') !!}
                       <select name="program_level_id" class="form-control" 
-					  @if($applicant->status != null) 
-						  disabled="true" 
-					  @endif required>
-                         <option value="">Select Program Level</option>
-                         @foreach($awards as $award)
-                         @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
-                         <option value="{{ $award->id }}" @if($applicant->program_level_id == $award->id) selected="selected" @endif>{{ $award->name }}</option>
-                         @endif
-                         @endforeach
+                      @if($applicant->status != null && !Auth::user()->hasRole('administrator')) disabled="true" @endif required>
+                      <option value="">Select Program Level</option>
+                        @foreach($awards as $award)
+                          @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                            <option value="{{ $award->id }}" @if($applicant->program_level_id == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                          @endif
+                        @endforeach
                       </select>
-                    </div>
-                    <div class="form-group col-3">
-                      {!! Form::label('','Entry mode') !!}
-                      <select name="entry_mode" class="form-control" 
-					  @if($applicant->status != null) 
-						  disabled="true" 
-					  @endif required>
-                         <option value="">Select Highest Qualification</option>
-                         <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
-                         <option value="EQUIVALENT" @if($applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
-                      </select>
-                    </div>
-                  </div>
-                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-				  @if($applicant->status == null) 
-					@if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
-						{!! Form::input('hidden','nationality',$applicant->nationality) !!}
-					@endif 
-				  @endif
-				  @if($applicant->status != null)
-					{!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!}
-					{!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}				
-				  @endif
-                  <div class="ss-form-actions">
-                   @if($applicant->campus_id != 0)
-                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                   @endif
-                   @if($applicant->programs_complete_status == 0)
-                    <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
-                   @endif
-                   <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
-                   @if($invoice)
-                    <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
-                  </div>
-                  @endif
-                   {!! Form::close() !!}
-              @endif
+                      </div>
+                        <div class="form-group col-3">
+                          {!! Form::label('','Entry mode') !!}
+                          <select name="entry_mode" class="form-control" 
+                          @if(($applicant->status != null || $applicant->submission_complete_status == 1) && !Auth::user()->hasRole('administrator')) disabled="true" @endif required>
+                            <option value="">Select Highest Qualification</option>
+                            <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
+                            <option value="EQUIVALENT" @if($applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
+                          </select>
+                        </div>
+                      </div>
+                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                    @if($applicant->status == null && !Auth::user()->hasRole('administrator')) 
+                        @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
+                            {!! Form::input('hidden','nationality',$applicant->nationality) !!}
+                        @endif 
+                    @endif
+                    @if($applicant->status != null && !Auth::user()->hasRole('administrator'))
+                        {!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!}
+                        {!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}				
+                    @endif
+                        <div class="ss-form-actions">
+                        @if($applicant->campus_id != 0)
+                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                        @endif
+                        @if($applicant->programs_complete_status == 0)
+                          <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
+                        @endif
+                        <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
+                        @if($invoice)
+                          <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
+                        </div>
+                        @endif
+                        {!! Form::close() !!}
+                    @endif
 
               </div>
             </div>

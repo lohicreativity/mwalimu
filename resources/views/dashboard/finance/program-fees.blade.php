@@ -199,7 +199,7 @@
                   @foreach($fees as $key=>$fee)
                   <tr>
                     <td>{{ ($key+1) }}</td>
-                    <td>{{ $fee->campusProgram->program->code }}</td>
+                    <td>{{ $fee->campusProgram->code }}</td>
                     <td>{{ number_format($fee->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>

@@ -43,6 +43,8 @@ use Validator, Auth, Hash;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Application\Models\ApplicationBatch;
+use App\Domain\Application\Models\ApplicantSubmissionLog;
+use App\Domain\Application\Models\ApplicantFeedBackCorrection;
 
 class ApplicantController extends Controller
 {
@@ -2585,7 +2587,9 @@ class ApplicantController extends Controller
         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             return redirect()->back()->with('error','Application window already closed');
         }
-        if($applicant->submission_complete_status == 1){
+        if($applicant->submission_complete_status == 1 &&  ($applicant->index_number != $request->get('index_number') || 
+           $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
+           $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
 
@@ -2617,6 +2621,146 @@ class ApplicantController extends Controller
                   Applicant::where('id',$applicant->id)->update(['batch_id'=>$batch->id]);
                }
             }
+
+            $award = Award::select('id','name')->find($applicant->program_level_id);
+            $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id',$request->get('application_window_id'))
+                                     ->where('program_level_id',$award->id)->latest()->first();
+            
+            $tcu_username = $tcu_token = $nactvet_authorization_key = null;
+            if($staff->campus_id == 1){
+                $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+                $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+                $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
+    
+            }elseif($staff->campus_id == 2){
+                $tcu_username = config('constants.TCU_USERNAME_KARUME');
+                $tcu_token = config('constants.TCU_TOKEN_KARUME');
+                $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
+    
+            }elseif($staff->campus_id == 3){
+                $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
+            }
+            if(str_contains(strtolower($award->name),'bachelor')){
+               $submission_log = ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
+                                                       ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->first();
+                  if(!empty($submission_log)){
+
+                     $url='http://api.tcu.go.tz/applicants/resubmit';
+
+                     $selected_programs = array();
+                     $approving_selection = null;
+
+                     foreach($applicant->selections as $selection){
+                        $selected_programs[] = $selection->campusProgram->regulator_code;
+                        if($selection->status == 'APPROVING'){
+                              $approving_selection = $selection;
+                              
+                        }
+                     }
+
+                     $f6indexno = null;
+                     $otherf4indexno = $otherf6indexno = [];
+                     foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 2){
+                              if($f6indexno != null && $f6indexno != $detail->index_number){
+                                 $otherf6indexno[] = $detail->index_number;
+                              }else{
+                                 $f6indexno = $detail->index_number;
+                              }
+                        }
+                     }
+
+                     foreach($applicant->nacteResultDetails as $detail){
+                        if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
+                              $f6indexno = $detail->avn;
+                              break;
+                        }
+                     }
+
+                     foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 1 && $detail->index_number != $applicant->index_number){
+                              $otherf4indexno[]= $detail->index_number;
+                        }
+                     }                            
+
+                     if(is_array($selected_programs)){
+                        $selected_programs=implode(', ',$selected_programs);
+                     }
+
+                     if(is_array($otherf4indexno)){
+                     $otherf4indexno=implode(', ',$otherf4indexno);
+                     }
+
+                     if(is_array($otherf6indexno)){
+                     $otherf6indexno=implode(', ',$otherf6indexno);
+                     }
+
+                     $category = null;
+                     if($applicant->entry_mode == 'DIRECT'){
+                        $category = 'A';
+
+                     }else{
+                        // Open university
+                        if($applicant->outResultDetails){
+                              $category = 'F';
+
+                        }
+
+                        // Diploma holders
+                        if($applicant->nacteResultDetails){
+                              $category = 'D';
+
+                        }
+                     }
+
+                  $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                  <Request>
+                        <UsernameToken>
+                           <Username>'.$tcu_username.'</Username>
+                           <SessionToken>'.$tcu_token.'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                           <f4indexno>'.$applicant->index_number.'</f4indexno>
+                           <f6indexno>'.$f6indexno.'</f6indexno>
+                           <Gender>'.$applicant->gender.'</Gender>
+                           <SelectedProgrammes>'.$selected_programs.'</SelectedProgrammes>
+                           <MobileNumber>'.str_replace('255', '0', $applicant->phone).'</MobileNumber>
+                           <OtherMobileNumber></OtherMobileNumber>
+                           <EmailAddress>'.$applicant->email.'</EmailAddress>
+                           <AdmissionStatus>Provisional admission</AdmissionStatus>
+                           <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                           <Category>'.$category.'</Category>
+                           <Reason>eligible</Reason>
+                           <Nationality>'.$applicant->nationality.'</Nationality>
+                           <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                           <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                           <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+                           <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
+                        </RequestParameters>
+                  </Request>';
+
+                  //return $xml_request;
+                  $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                  $json = json_encode($xml_response);
+                  $array = json_decode($json,TRUE);  
+
+                  if($array['Response']['ResponseParameters']['StatusCode'] == 200){                
+                     Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+
+                     $submission_log->submitted = 2;
+                     $submission_log->save();
+
+                  }else{
+                     $error_log = new ApplicantFeedBackCorrection;
+                     $error_log->applicant_id = $applicant->id;
+                     $error_log->application_window_id = $applicant->application_window_id;
+                     $error_log->programme_id = $approving_selection? $approving_selection->campusProgram->regulator_code : 'BD';
+                     $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
+                     $error_log->save();
+                  }
+               }
+           }
             return redirect()->to('application/edit-applicant-details')->with('message','Applicant details updated successfully');
             //return redirect()->back()->with('message','Applicant details updated successfully');
         }

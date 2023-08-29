@@ -248,7 +248,7 @@ class SendAdmissionLetter implements ShouldQueue
                $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
                $practical_training_fee = null;
-               if(str_contains(strtolower($applicant->selections->campusProgram->program->name),'education')){
+               if(str_contains(strtolower($applicant->selections->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections->campusProgram->program->name),'education')){
                     $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                                         ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                                                         ->where('name','LIKE','%Practical%'); })->first();
@@ -280,6 +280,7 @@ class SendAdmissionLetter implements ShouldQueue
                  'caution_money_fee'=>str_contains($applicant->nationality,'Tanzania')? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
                  'nacte_quality_assurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $quality_assurance_fee->amount_in_tzs : $quality_assurance_fee->amount_in_usd,
                  'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
+                 'welfare_emergence_fund'=>str_contains($applicant->nationality,'Tanzania')? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
                ];
 
                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
