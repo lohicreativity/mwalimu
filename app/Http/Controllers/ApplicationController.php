@@ -4713,7 +4713,7 @@ class ApplicationController extends Controller
         
         $study_academic_year = StudyAcademicYear::select('id','academic_year_id','begin_date')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
             ->with('academicYear:id,year')->first();
-return $study_academic_year;
+
         $level_orientation_date = null;
         $orientation_dates = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->get();
