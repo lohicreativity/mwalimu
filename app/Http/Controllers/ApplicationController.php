@@ -4754,7 +4754,7 @@ class ApplicationController extends Controller
                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                     ->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Students Organization%')
                     ->orWhere('name','LIKE','%Students Union%')->orWhere('name','LIKE','%MASO%');})->first();
-
+return $students_union_fee;
                 $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                     ->where('name','LIKE','%Caution Money%');})->first();
