@@ -2554,7 +2554,7 @@ class ApplicantController extends Controller
      * Update applicant details
      */
     public function updateApplicantDetails(Request $request)
-    {
+    { return $request;
         $validation = Validator::make($request->all(),[
             'phone'=>'required|min:12|max:12',
             'email'=>'required|email'
