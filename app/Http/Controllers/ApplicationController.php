@@ -4805,7 +4805,7 @@ class ApplicationController extends Controller
 
             $numberToWords = new NumberToWords();
             $numberTransformer = $numberToWords->getNumberTransformer('en');
-return $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration);
+return str_contains($applicant->nationality,'Tanzania')? 'Tsh' : 'Usd'; //.str_contains($applicant->nationality,'Tanzania')? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd);
             $data = [
               'applicant'=>$applicant,
               'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
