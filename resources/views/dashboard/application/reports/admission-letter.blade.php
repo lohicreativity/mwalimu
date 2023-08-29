@@ -253,12 +253,12 @@
               </div>
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
-             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="130%">
+             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}"  width="140px" height="auto">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
 
-        
+        <br><br>
         <div class="row" style="float:left; width: 70%">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
