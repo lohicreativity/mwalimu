@@ -243,7 +243,7 @@
               </div>
           </div>
         </div>
-        <div class="row" style="border-bottom: 1px double #333;">
+        <div class="row" style="border-bottom: 2px double #000;">
           <div class="col-md-3 ss-center">
              <img src="{{ public_path('/img/coa-tz.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
