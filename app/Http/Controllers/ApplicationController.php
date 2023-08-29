@@ -4686,6 +4686,7 @@ class ApplicationController extends Controller
                 return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
             }
 
+            $practical_training_fee = null;
             if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
                 $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
@@ -4694,7 +4695,11 @@ class ApplicationController extends Controller
                 if(!$practical_training_fee){
                     return redirect()->back()->with('error','Practical training fee not defined');
                 }
-            }   
+            }
+
+            $practical_training_fee = str_contains($applicant->nationality,'Tanzania')? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd;
+
+        
         }
 
         $numberToWords = new NumberToWords();
