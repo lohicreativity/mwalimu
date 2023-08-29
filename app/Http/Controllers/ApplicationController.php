@@ -4543,7 +4543,7 @@ class ApplicationController extends Controller
                                    ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
                                    ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
 
-                                   $applicants = Applicant::select('id','first_name','surname','email','campus_id','application_window_id','intake_id','nationality','region_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+                                   $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date','region:id,name'])
@@ -4554,6 +4554,9 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }  
 
+        if(count($applicants) == 0){
+            return redirect()->back()->with('error','There is no applicant to admit at the moment');
+        }
         $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
         $ac_year += 1;
         

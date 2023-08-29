@@ -214,8 +214,9 @@
       text-align: right;
      }
      .footer-text {
-      font-size: 14px;
+      font-size: 12px;
       border-top: 2px solid #000;
+      text-align: justify;
       padding-bottom: 20px;
      }
      p, li{
@@ -234,7 +235,7 @@
 
 <body>
 
-      <div class="container">
+      <div class="container ss-font-sm">
         <div class="row">
           <div class="col-md-12">
              <div class="ss-letter-head  ss-center">
@@ -252,17 +253,18 @@
               </div>
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
-             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
+             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="110%">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <p class="text-right">{{ now()->format('jS F Y') }}</p>
+        <span class="text-right">{{ now()->format('jS F Y') }}</span>
         
         <div class="row">
             <div class="col-md-6">
-              <p>Our Ref: {{ strtoupper($reference_number) }}</p>
+              <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
+              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}
               <p>{{ $applicant->address }}</p>
-              <p>{{ ucwords(strtolower($applicant->region->name)) }}</p>    
+              <span>{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
         <!-- end of row -->
@@ -271,7 +273,7 @@
            <div class="col-md-12">
               <h4>RE: ADMISSION INTO {{ strtoupper($program_code_name) }} PROGRAMME IN THE ACADEMIC YEAR {{ $study_year }}</h4>
 
-              <p>Dear <strong>{{ $applicant_name }}</strong> (of index number <strong>{{ $applicant->index_number}})</strong>, I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} 
+              <p>Dear <strong>{{ $applicant_name }}</strong> (of index number <strong>{{ $  ->index_number}})</strong>, I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} 
                 @if($program_duration_no > 1) years @else year @endif pursuing <strong>{{ $program_name }}</strong> at the <strong>{{ $campus_name }}</strong>. 
                 You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong> ready for registration and a <strong> one-week Orientation 
                 Programme that will commence on {{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong>. Please note that all First Year students are required 
@@ -285,13 +287,13 @@
       be paid at the beginning of a Semester.</li>
 
 <li>That you should also pay <strong>{{ $currency }} {{ number_format($nacte_quality_assurance_fee) }}/=</strong> for Quality Assurance,
-    
+    @if(!empty($practical_training_fee)) <strong>{{ $currency }} {{ number_format($practical_training_fee) }}/=</strong> for Practical Training, @endif 
     <strong>{{ $currency }} {{ number_format($students_union_fee) }}/=</strong> for Students Union, 
     <strong>{{ $currency }} {{ number_format($caution_money_fee) }}/=</strong> for Caution Money,  
     <strong>{{ $currency }} {{ number_format($medical_examination_fee) }}/=</strong> for Medical Examination,
     <strong>{{ $currency }} {{ number_format($registration_fee) }}/=</strong> for Registration, 
     <strong>{{ $currency }} {{ number_format($identity_card_fee) }}/=</strong> for Identity Card and    
-    <strong>{{ $currency }} {{ number_format($welfare_emergence_fund) }}/=</strong> for Students' Welfare Emergency Fund and at the beginning of 
+    <strong>{{ $currency }} {{ number_format($welfare_emergence_fund) }}/=</strong> for Students' Welfare Emergency Fund at the beginning of 
     the first semester once a year.</li>
 
 <li>That you should revisit your system account to indicate your health insurance status. It is mandatory for all students to have medical insurance that will be valid for one year, starting from 
@@ -325,11 +327,11 @@
 
 </ol>
 <p>I am looking forward to your registration and a successful period of study at the Academy.</p>
-Yours Sincerely,
-<img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" class="ss-signature">
+<span class="ss-center">Yours Sincerely,</span>
+<img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" class="ss-signature ss-center" width="60%">
 <div class="ss-center">
-  Prof. Richard Y.M. Kangalawe
-  <strong>DEPUTY RECTOR - ACADEMIC, RESEARCH AND CONSULTANCY</strong>
+  <span class="ss-center">Prof. Richard Y.M. Kangalawe</span><br>
+  <span class="ss-center ss-bold">DEPUTY RECTOR - ACADEMIC, RESEARCH AND CONSULTANCY</span>
 </div>
            </div>
         </div><!-- end of row -->
