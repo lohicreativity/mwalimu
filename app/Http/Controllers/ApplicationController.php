@@ -4686,7 +4686,7 @@ return 1;
                 }
             }   
         }
-        
+        return 2;
         dispatch(new SendAdmissionLetter($request->all()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
