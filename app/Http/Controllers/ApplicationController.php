@@ -4536,7 +4536,7 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
 
         if(Auth::user()->hasRole('admission-officer')){
-            $applicants = Applicant::select('id','campus_id','application_window_id','intake_id','email')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+            $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                    ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
                                            'applicationWindow:id,end_date','selections.campusProgram.program:id,award_id','selections.campusProgram.program.award:id,name'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
@@ -4545,7 +4545,7 @@ class ApplicationController extends Controller
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }  
-return $applicants;
+
         $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
         $ac_year += 1;
         
@@ -4685,7 +4685,7 @@ return $applicants;
                 }
             }   
         }
-        return 2;
+
         dispatch(new SendAdmissionLetter($request->all()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
