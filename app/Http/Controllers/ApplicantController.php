@@ -2577,7 +2577,7 @@ class ApplicantController extends Controller
 
         if((Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) && $applicant->status != null && ($applicant->index_number != $request->get('index_number') || 
         $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-        $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
+        $request->get('citizenship') != $applicant->nationality || $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
             if($request->get('nationality') != $applicant->nationality || (!empty($request->get('citizenship')) && $request->get('citizenship') != $applicant->nationality)){
                return 2; return redirect()->back()->with('error','The action cannot be performed');
             }
@@ -2585,7 +2585,7 @@ class ApplicantController extends Controller
         
         if($applicant->status != null && $applicant->status != null && ($applicant->index_number != $request->get('index_number') || 
         $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-        $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
+        $request->get('citizenship') != $applicant->nationality || $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
          return 3; return redirect()->back()->with('error','The action cannot be performed');
         }
 
@@ -2594,7 +2594,7 @@ class ApplicantController extends Controller
         }
         if($applicant->submission_complete_status == 1 &&  ($applicant->index_number != $request->get('index_number') || 
            $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-           $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
+           $request->get('citizenship') != $applicant->nationality || $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
 
