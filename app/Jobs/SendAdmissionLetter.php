@@ -45,23 +45,30 @@ class SendAdmissionLetter implements ShouldQueue
      * @return void
      */
     public function handle()
-    { 
+    { return 1;
         set_time_limit(240);
-        ini_set('memory_limit', '1024M');
-        //ini_set('memory_limit', '-1');
+        //ini_set('memory_limit', '1024M');
+        ini_set('memory_limit', '-1');
 
         $request = $this->request;
         $staff = User::find(Auth::user()->id)->staff;
 
-        $applicants = Applicant::select('id','first_name','surname','email','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+/*         $applicants = Applicant::select('id','first_name','surname','email','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date'])
                                 ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                 ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
+                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
 
-/*         $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
+                                $applicants = Applicant::whereHas('selections',function($query) use($request){
+                                    $query->where('status','SELECTED');
+                               })->with(['nextOfKin','intake','selections'=>function($query){
+                                    $query->where('status','SELECTED');
+                               },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->program_level_id)->where('status','SELECTED')->where('application_window_id',$request->application_window_id)->get();
+                       
+
+        $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
         $ac_year += 1;
         
         $study_academic_year = StudyAcademicYear::select('id','academic_year_id','begin_date')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
@@ -139,12 +146,12 @@ class SendAdmissionLetter implements ShouldQueue
                     $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                                             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                                                             ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
-                } */
+                }
 
-            //} 
+            } 
 
         foreach($applicants as $applicant){ 
-           try{/* $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
+           try{$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
             $practical_training_fee = null;
             if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
@@ -189,8 +196,8 @@ class SendAdmissionLetter implements ShouldQueue
                 'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                 'welfare_emergence_fund'=>str_contains($applicant->nationality,'Tanzania')? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
               ];
- */
-/*                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
+
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
                    'margin_top'=>20,
                    'margin_bottom'=>20,
                    'margin_left'=>20,
@@ -199,7 +206,7 @@ class SendAdmissionLetter implements ShouldQueue
                $user = new User;
                $user->email = $applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf)); */
+               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf));
                
 			   $app = Applicant::find($applicant->id);
                $app->status = 'ADMITTED';
