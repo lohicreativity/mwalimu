@@ -253,13 +253,13 @@
               </div>
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
-             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="110%">
+             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="130%">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <span class="text-right">{{ now()->format('jS F Y') }}</span>
+
         
-        <div class="row">
+        <div class="row" style="float:left; width: 70%">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
               <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br>
@@ -267,6 +267,7 @@
               <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
+        <div style="position:relative; top:20px; width:20%" class="text-right">{{ now()->format('jS F Y') }}</div>
         <!-- end of row -->
         
         <div class="row">
@@ -327,9 +328,10 @@
 
 </ol>
 <p>I am looking forward to your registration and a successful period of study at the Academy.</p>
-<p class="ss-center">Yours Sincerely,</p>
-<p class="ss-signature ss-center" > <img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" width="20%"> </p>
+
 <div class="ss-center">
+  <span>Yours Sincerely,</span>
+  <p class="ss-signature" > <img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" width="20%"> </p>
   <span class="ss-center">Prof. Richard Y.M. Kangalawe</span><br>
   <span class="ss-center ss-bold">DEPUTY RECTOR - ACADEMIC, RESEARCH AND CONSULTANCY</span>
 </div>
