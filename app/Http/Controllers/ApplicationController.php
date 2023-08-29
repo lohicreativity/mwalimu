@@ -4697,7 +4697,7 @@ class ApplicationController extends Controller
 
 
 
-        $request = $this->request;
+       // $request = $this->request;
         $staff = User::find(Auth::user()->id)->staff;
 
         $applicants = Applicant::select('id','first_name','surname','email','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
