@@ -191,7 +191,7 @@
        width: 120px;
      }
      .ss-logo{
-       width: 120px;
+       width: 100px;
        height: auto;
      }
      .ss-signature{
@@ -259,7 +259,7 @@
 
 
         <br><br>
-        <div class="row" style="float:left; width: 70%">
+        <div class="row" style="float:left; width: 80%">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
               <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br>
@@ -267,7 +267,7 @@
               <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
-        <div style="position:relative; top:20px; width:20%; " class="text-right ss-right">{{ now()->format('jS F Y') }}</div>
+        <div style="position:relative; top:20px; width:20%; " class="text-right">{{ now()->format('jS F Y') }}</div>
         <!-- end of row -->
         
         <div class="row" style="clear:left">
@@ -282,7 +282,7 @@
 
               <p>Please observe the following instructions.</p>
               <ol>
-<li>  That you should pay annual tuition fee of <strong>{{ $program_fee_words }} ({{ $currency }} {{ number_format($program_fee) }}/= ) only</strong> (accommodation exclusive)<sup>1</sup>. 
+<li>  That you should pay annual tuition fee of <strong>{{ $program_fee_words }} ({{ $currency }} {{ number_format($program_fee) }}/= ) only</strong> (accommodation exclusive). 
       Fees may be paid <strong>either</strong> in one or two installments at the rate of 60%, equivalent to <strong>{{ $currency }} {{ number_format(0.6*$program_fee) }}/=</strong> (payable in the second 
       semester) and 40%, equivalent to <strong>{{ $currency }} {{ number_format(0.4*$program_fee) }}/=</strong> (payable in the first semester). Each installment should 
       be paid at the beginning of a Semester.</li>
