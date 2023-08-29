@@ -45,7 +45,7 @@ class SendAdmissionLetter implements ShouldQueue
      * @return void
      */
     public function handle()
-    {
+    { return 1;
         set_time_limit(240);
         //ini_set('memory_limit', '1024M');
         ini_set('memory_limit', '-1');
@@ -72,7 +72,7 @@ class SendAdmissionLetter implements ShouldQueue
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->get();
 
         foreach($orientation_dates as $orientation_date){
-            if(in_array($applicants[0]->selections[0]->campusProgram->program->award, unserialize($orientation_date->applicable_levels))){
+            if(in_array($applicants[0]->selections[0]->campusProgram->program->award->name, unserialize($orientation_date->applicable_levels))){
                 $level_orientation_date = $orientation_date;
                 break;
             }
@@ -266,6 +266,7 @@ class SendAdmissionLetter implements ShouldQueue
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
                  'study_year'=>$study_academic_year->academicYear->year,
+                 'program_duration_no'=>$applicant->selections[0]->campusProgram->program->min_duration,
                  'commencement_date'=>$study_academic_year->begin_date,
                  'program_fee'=>str_contains($applicant->nationality,'Tanzania')? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
                  'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
