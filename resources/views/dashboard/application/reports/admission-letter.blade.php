@@ -262,9 +262,9 @@
         <div class="row">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
-              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br><br>
-              <span style="width: 10%; border-bottom-width: 1cm; border-bottom-style: dotted;">{{ $applicant->address }}</span>
-              <span style="width: 10%; border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
+              <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br>
+              <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ $applicant->address }}</span> <br>
+              <span style="border-bottom-width: 1cm; border-bottom-style: dotted;">{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
         <!-- end of row -->
