@@ -2575,13 +2575,17 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','The action cannot be performed');
         }
 
-        if(Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1){
+        if((Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) && $applicant->status != null && ($applicant->index_number != $request->get('index_number') || 
+        $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
+        $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
             if($request->get('nationality') != $applicant->nationality || (!empty($request->get('citizenship')) && $request->get('citizenship') != $applicant->nationality)){
                return 2; return redirect()->back()->with('error','The action cannot be performed');
             }
         }
         
-        if($applicant->status != null && ($request->get('entry_mode') != $applicant->entry_mode || $request->get('program_level_id') != $applicant->program_level_id)){
+        if($applicant->status != null && $applicant->status != null && ($applicant->index_number != $request->get('index_number') || 
+        $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
+        $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
          return 3; return redirect()->back()->with('error','The action cannot be performed');
         }
 
