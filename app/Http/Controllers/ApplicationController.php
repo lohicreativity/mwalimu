@@ -4791,7 +4791,7 @@ class ApplicationController extends Controller
 
             } 
 
-        foreach($applicants as $applicant){ return 3;
+        foreach($applicants as $applicant){ 
            try{$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 return 4;
             $practical_training_fee = null;
