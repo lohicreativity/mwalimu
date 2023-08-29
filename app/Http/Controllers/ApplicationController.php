@@ -4790,10 +4790,10 @@ class ApplicationController extends Controller
                 }
 
             } 
-            return $applicants;   
-        foreach($applicants as $applicant){
-           try{$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
+        foreach($applicants as $applicant){ return 3;
+           try{$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
+return 4;
             $practical_training_fee = null;
             if(str_contains(strtolower($applicant->selections->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections->campusProgram->program->name),'education')){
                  $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
@@ -4801,6 +4801,8 @@ class ApplicationController extends Controller
                                                      ->where('name','LIKE','%Practical%'); })->first();
 
              }  
+
+             return 5;
             $numberToWords = new NumberToWords();
             $numberTransformer = $numberToWords->getNumberTransformer('en');
 
