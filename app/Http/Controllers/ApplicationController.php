@@ -4812,7 +4812,7 @@ class ApplicationController extends Controller
 
             }
             
-return $practical_training_fee;
+
             $data = [
               'applicant'=>$applicant,
               'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
