@@ -65,7 +65,7 @@ class SendAdmissionLetter implements ShouldQueue
         $ac_year += 1;
         
         $study_academic_year = StudyAcademicYear::select('id','academic_year_id')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
-            ->with('academicYear:id,year')->first();
+            ->with('academicYear:id,year,begin_date')->first();
 
         $level_orientation_date = null;
         $orientation_dates = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
