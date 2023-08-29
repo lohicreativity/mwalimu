@@ -4533,7 +4533,7 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-/*          $staff = User::find(Auth::user()->id)->staff;
+         $staff = User::find(Auth::user()->id)->staff;
 
         if(Auth::user()->hasRole('admission-officer')){
             $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
@@ -4688,8 +4688,8 @@ class ApplicationController extends Controller
 
         dispatch(new SendAdmissionLetter($request->all()));
 
-        return redirect()->back()->with('message','Admission package sent successfully');
- */
+        //return redirect()->back()->with('message','Admission package sent successfully');
+
 
 
 
@@ -4698,7 +4698,7 @@ class ApplicationController extends Controller
 
 
        // $request = $this->request;
-        $staff = User::find(Auth::user()->id)->staff;
+/*         $staff = User::find(Auth::user()->id)->staff;
 
         $applicants = Applicant::select('id','first_name','surname','email','campus_id','application_window_id','intake_id','nationality')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
@@ -4844,7 +4844,7 @@ class ApplicationController extends Controller
             //$this->response = ['message'=>$e->getMessage(),'status'=>'error'];
          }}
 
-         return 2;
+         return 2; */
     }
 
 

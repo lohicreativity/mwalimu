@@ -190,7 +190,7 @@ class SendAdmissionLetter implements ShouldQueue
                 'welfare_emergence_fund'=>str_contains($applicant->nationality,'Tanzania')? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
               ];
 
-               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
+/*                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
                    'margin_top'=>20,
                    'margin_bottom'=>20,
                    'margin_left'=>20,
@@ -199,7 +199,7 @@ class SendAdmissionLetter implements ShouldQueue
                $user = new User;
                $user->email = $applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf));
+               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf)); */
                
 			   $app = Applicant::find($applicant->id);
                $app->status = 'ADMITTED';
