@@ -4721,7 +4721,7 @@ class ApplicationController extends Controller
           'applicant'=>$applicant,
           'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
           'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
-          'reference_number'=>$this->reference_number,
+          'reference_number'=>$request->get('reference_number'),
           'program_name'=>$applicant->selections[0]->campusProgram->program->name,
           'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
           'study_year'=>$study_academic_year->academicYear->year,
@@ -4758,7 +4758,7 @@ class ApplicationController extends Controller
          $app->status = 'ADMITTED';
          $app->documents_complete_status = 0;
          $app->save();
-         
+
         //dispatch(new SendAdmissionLetter($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
 
         return redirect()->back()->with('message','Admission package sent successfully');
