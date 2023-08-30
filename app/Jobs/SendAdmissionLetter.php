@@ -45,7 +45,7 @@ class SendAdmissionLetter implements ShouldQueue
      * @return void
      */
     public function handle()
-    { 
+    { dd('hello');
         set_time_limit(240);
         ini_set('memory_limit', '1024M');
         //ini_set('memory_limit', '-1');
