@@ -181,7 +181,7 @@ class SendAdmissionLetter implements ShouldQueue
 
               
         foreach($applicants as $applicant){
-           try{
+           //try{
                /* $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
@@ -349,9 +349,9 @@ return redirect()->back()->with('error','Practical training fee not defined');
                 $app->documents_complete_status = 0;
                 $app->save();
                $this->response = ['message'=>'Admission package sent successfully','status'=>'message']; //redirect()->back()->with('message','Admission package sent successfully');
-           }catch(\Exception $e){
+/*            }catch(\Exception $e){
               $this->response = ['message'=>$e->getMessage(),'status'=>'error'];
-           }
+           } */
         }
 
         return;
