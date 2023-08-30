@@ -60,7 +60,7 @@ class SendAdmissionLetter implements ShouldQueue
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date','region:id,name'])
-                                ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
+                                ->where('program_level_id',$request->program_level_id)->where('status','SELECTED')
                                 ->where('campus_id', $application_window->campus_id)->where('application_window_id',$application_window->_id)
                                 ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
 
@@ -260,7 +260,7 @@ class SendAdmissionLetter implements ShouldQueue
            return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
            }
 
-           if($request->get('program_level_id') == 4){
+           if($request->program_level_id == 4){
                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$application_window->campus_id)
                                                        ->whereHas('feeItem',function($query) use($application_window){$query->where('campus_id',$application_window->campus_id)
                                                        ->where('name','LIKE','%TCU%');})->first();
