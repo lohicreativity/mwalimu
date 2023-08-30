@@ -4710,7 +4710,7 @@ class ApplicationController extends Controller
             }
         }
         
-        dispatch(new SendAdmissionLetter($request->all()));
+        dispatch(new SendAdmissionLetter($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 

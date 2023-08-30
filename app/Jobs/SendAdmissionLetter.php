@@ -24,7 +24,9 @@ class SendAdmissionLetter implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $request;
+    protected $application_window_id;
+    protected $program_level_id;
+    protected $reference_number;
 
     public $tries = 5;
 
@@ -35,9 +37,11 @@ class SendAdmissionLetter implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($program_level_id, $application_window_id, $reference_number)
     {
-        $this->request = (object) $request;
+        $this->$application_window_id = $application_window_id;
+        $this->$program_level_id = $program_level_id;
+        $this->$reference_number = $reference_number;
     }
 
     /**
@@ -51,15 +55,13 @@ class SendAdmissionLetter implements ShouldQueue
         ini_set('memory_limit', '1024M'); */
         //ini_set('memory_limit', '-1');
 
-        
-        $request = $this->request;
-        $application_window = ApplicationWindow::find($request->application_window_id);
+        $application_window = ApplicationWindow::find($this->application_window_id);
 
         $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date','region:id,name'])
-                                ->where('program_level_id',$request->program_level_id)->where('status','SELECTED')
+                                ->where('program_level_id',$this->program_level_id)->where('status','SELECTED')
                                 ->where('campus_id', $application_window->campus_id)->where('application_window_id',$application_window->_id)
                                 ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
 
@@ -259,7 +261,7 @@ class SendAdmissionLetter implements ShouldQueue
            return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
            }
 
-           if($request->program_level_id == 4){
+           if($this->program_level_id == 4){
                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$application_window->campus_id)
                                                        ->whereHas('feeItem',function($query) use($application_window){$query->where('campus_id',$application_window->campus_id)
                                                        ->where('name','LIKE','%TCU%');})->first();
@@ -304,7 +306,7 @@ return redirect()->back()->with('error','Practical training fee not defined');
                  'applicant'=>$applicant,
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
                  'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
-                 'reference_number'=>$request->reference_number,
+                 'reference_number'=>$this->reference_number,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
                  'study_year'=>$study_academic_year->academicYear->year,
