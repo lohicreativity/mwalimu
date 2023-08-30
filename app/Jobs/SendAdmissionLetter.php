@@ -51,7 +51,9 @@ class SendAdmissionLetter implements ShouldQueue
         //ini_set('memory_limit', '-1');
 
 
-kimbunga        
+        $kimbunga = '';
+        
+        $kasheshe = '';        
         $request = $this->request;
         $staff = User::find(Auth::user()->id)->staff;
 
