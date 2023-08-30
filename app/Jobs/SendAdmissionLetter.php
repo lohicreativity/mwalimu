@@ -36,7 +36,7 @@ class SendAdmissionLetter implements ShouldQueue
      */
     public function __construct($request)
     {
-        $this->request = (object) $request;
+        dd($this->request = (object) $request);
     }
 
     /**
