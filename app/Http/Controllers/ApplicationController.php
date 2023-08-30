@@ -50,7 +50,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Utils\Util;
-use App\Jobs\SendAdmissionLetter;
+use App\Jobs\SendAdmissionLetterToSelectedApplicantJob;
 use App\Mail\AdmissionLetterCreated;
 use App\Mail\StudentAccountCreated;
 use App\Mail\TamisemiApplicantCreated;
@@ -4710,7 +4710,7 @@ class ApplicationController extends Controller
             }
         }
         
-        dispatch(new SendAdmissionLetter($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
+        dispatch(new SendAdmissionLetterToSelectedApplicantJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
