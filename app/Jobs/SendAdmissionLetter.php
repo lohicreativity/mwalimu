@@ -39,9 +39,9 @@ class SendAdmissionLetter implements ShouldQueue
      */
     public function __construct($program_level_id, $application_window_id, $reference_number)
     {
-        $this->$application_window_id = $application_window_id;
-        $this->$program_level_id = $program_level_id;
-        $this->$reference_number = $reference_number;
+        $this->application_window_id = $application_window_id;
+        $this->program_level_id = $program_level_id;
+        $this->reference_number = $reference_number;
     }
 
     /**
@@ -62,13 +62,13 @@ class SendAdmissionLetter implements ShouldQueue
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date','region:id,name'])
                                 ->where('program_level_id',$this->program_level_id)->where('status','SELECTED')
-                                ->where('campus_id', $application_window->campus_id)->where('application_window_id',$application_window->_id)
+                                ->where('campus_id', $application_window->campus_id)->where('application_window_id',$application_window->id)
                                 ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
 
         $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
         $ac_year += 1;
         
-        $study_academic_year = StudyAcademicYear::select('id','academic_year_id')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
+        $study_academic_year = StudyAcademicYear::select('id','academic_year_id','begin_date')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
             ->with('academicYear:id,year')->first();
 
 /*         $level_orientation_date = null;
