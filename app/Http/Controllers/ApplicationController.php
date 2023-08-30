@@ -4533,6 +4533,18 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
+/*         $validation = $request->validate($request->all(),[
+            'application_window_id'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        } */
+
          $staff = User::find(Auth::user()->id)->staff;
 
         if(Auth::user()->hasRole('admission-officer')){
@@ -4698,7 +4710,7 @@ class ApplicationController extends Controller
             }
         }
         
-        dispatch(new SendAdmissionLetter($request->all()));
+        dispatch(new SendAdmissionLetter($request->validated()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
