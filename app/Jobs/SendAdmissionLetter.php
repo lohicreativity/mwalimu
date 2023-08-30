@@ -36,7 +36,7 @@ class SendAdmissionLetter implements ShouldQueue
      */
     public function __construct($request)
     {
-        dd($this->request = (object) $request);
+        $this->request = (object) $request;
     }
 
     /**
@@ -50,10 +50,7 @@ class SendAdmissionLetter implements ShouldQueue
         ini_set('memory_limit', '1024M'); */
         //ini_set('memory_limit', '-1');
 
-
-        $kimbunga = '';
-        
-        $kasheshe = '';        
+dd($this->request);        
         $request = $this->request;
         $staff = User::find(Auth::user()->id)->staff;
 
