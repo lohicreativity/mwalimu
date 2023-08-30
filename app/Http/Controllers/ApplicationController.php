@@ -4698,7 +4698,7 @@ class ApplicationController extends Controller
             }
         }
         
-        dd(dispatch(new SendAdmissionLetter($request->all())));
+        dispatch(new SendAdmissionLetter($request->all()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
