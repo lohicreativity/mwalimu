@@ -4536,20 +4536,20 @@ class ApplicationController extends Controller
          $staff = User::find(Auth::user()->id)->staff;
 
         if(Auth::user()->hasRole('admission-officer')){
-/*             $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+            $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                    ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
                                            'applicationWindow:id,end_date','selections.campusProgram.program:id,award_id','selections.campusProgram.program.award:id,name'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                    ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                   ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
+                                   ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
 
-                                   $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
+/*                                    $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                 ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
                                         'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
                                         'campus:id,name','applicationWindow:id,end_date','region:id,name'])
                                 ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                 ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
+                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }  
@@ -4696,57 +4696,9 @@ class ApplicationController extends Controller
                     return redirect()->back()->with('error','Practical training fee not defined');
                 }
             }
-            if($practical_training_fee){
-                $practical_training_fee = str_contains($applicant->nationality,'Tanzania')? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd;
-            }
-        
         }
 
-        $numberToWords = new NumberToWords();
-        $numberTransformer = $numberToWords->getNumberTransformer('en');
-
-        $data = [
-         'applicant'=>$applicant,
-         'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
-         'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
-         'reference_number'=>$request->reference_number,
-         'program_name'=>$applicant->selections[0]->campusProgram->program->name,
-         'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
-         'study_year'=>$study_academic_year->academicYear->year,
-         'program_duration_no'=>$applicant->selections[0]->campusProgram->program->min_duration,
-         'commencement_date'=>$study_academic_year->begin_date,
-         'program_fee'=>str_contains($applicant->nationality,'Tanzania')? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
-         'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
-         'program_fee_words'=>str_contains($applicant->nationality,'Tanzania')? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
-         'currency'=>str_contains($applicant->nationality,'Tanzania')? 'Tsh' : 'Usd',
-         'medical_insurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,   
-         'medical_examination_fee'=>str_contains($applicant->nationality,'Tanzania')? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
-         'registration_fee'=>str_contains($applicant->nationality,'Tanzania')? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,     
-         'late_registration_fee'=>str_contains($applicant->nationality,'Tanzania')? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,    
-         'practical_training_fee'=>$practical_training_fee,
-         'identity_card_fee'=>str_contains($applicant->nationality,'Tanzania')? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
-         'caution_money_fee'=>str_contains($applicant->nationality,'Tanzania')? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
-         'nacte_quality_assurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $quality_assurance_fee->amount_in_tzs : $quality_assurance_fee->amount_in_usd,
-         'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
-         'welfare_emergence_fund'=>str_contains($applicant->nationality,'Tanzania')? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
-       ];
-
-        $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
-            'margin_top'=>20,
-            'margin_bottom'=>20,
-            'margin_left'=>20,
-            'margin_right'=>20
-        ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
-        $user = new User;
-        $user->email = $applicant->email;
-        $user->username = $applicant->first_name.' '.$applicant->surname;
-        Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf));
-        
-        $app = Applicant::find($applicant->id);
-        $app->status = 'ADMITTED';
-        $app->documents_complete_status = 0;
-        $app->save();
-        //dispatch(new SendAdmissionLetter($request->all()));
+        dispatch(new SendAdmissionLetter($request->all()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
