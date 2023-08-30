@@ -48,7 +48,7 @@ class AdmissionLetterCreated extends Mailable
                  }
             }
         } */
-        dd($attachments);
+        dd($this->applicant->selections[0]->campusProgram->program->award->name);
         foreach ($attachments as $attachment) {
 			if(file_exists(public_path().'/uploads/'.$attachment->file_name)){
                $this->attach(public_path().'/uploads/'.$attachment->file_name);
