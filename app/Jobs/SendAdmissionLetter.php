@@ -79,109 +79,15 @@ class SendAdmissionLetter implements ShouldQueue
          }*/
         
         // Checks for Masters
-        if($request->get('program_level_id') == 5){
-
-
-
-            return 1;
-
-
-                $research_supervion = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                ->where('name','LIKE','%Research%');})->first(); 
-
-                if(!$research_supervion){
-                    return redirect()->back()->with('error','Research supervision fee has not been defined');
-                } 
         
-            // Checks for Undergraduates
-            }else{
-                $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
 
-            if(!$medical_insurance_fee){
-            return redirect()->back()->with('error','Medical insurance fee has not been defined');
-            }
-
-            $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
-
-            if(!$students_union_fee){
-            return redirect()->back()->with('error','Students union fee has not been defined');
-            }
-
-            $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%Caution Money%');})->first();
-
-            if(!$caution_money_fee){
-            return redirect()->back()->with('error','Caution money fee has not been defined');
-            }
-
-            $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                    ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                    ->where('name','LIKE','%Medical Examination%');})->first();
-
-            if(!$medical_examination_fee){
-            return redirect()->back()->with('error','Medical examination fee has not been defined');
-            }
-
-            $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-            ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-            ->where('name','LIKE','%Registration%');})->first();
-
-            if(!$registration_fee){
-            return redirect()->back()->with('error','Registration fee has not been defined');
-            }
-
-            $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','LIKE','%New ID Card%');})->first();
-
-            if(!$identity_card_fee){
-            return redirect()->back()->with('error','ID card fee for new students has not been defined');
-            }
-
-            $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-            ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-            ->where('name','LIKE','%Late Registration%');})->first();
-
-            if(!$late_registration_fee){
-            return redirect()->back()->with('error','Late registration fee has not been defined');
-            }
-
-            $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-            ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-            ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
-
-            if(!$welfare_emergence_fund){
-            return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
-            }
-
-            if($request->get('program_level_id') == 4){
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                        ->where('name','LIKE','%TCU%');})->first();
-                $message = 'TCU quality assurance fee has not been defined';
-             }else{
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                        ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
-                $message = 'NACTVET qualtity assurance fee has not been defined';
-             }
-             
-             if(!$quality_assurance_fee){
-                 return redirect()->back()->with('error',$message);
-             }
-        }
+        
 
 
 
               
         foreach($applicants as $applicant){
-           //try{
+           try{
                /* $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
@@ -281,6 +187,91 @@ class SendAdmissionLetter implements ShouldQueue
                if(!$orientation_date){
                    return redirect()->back()->with('error','Orientation date not defined');
                } */
+               $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
+               $ac_year += 1;
+               
+               $study_academic_year = StudyAcademicYear::select('id','academic_year_id')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
+                   ->with('academicYear:id,year')->first();
+
+               $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+               ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+               ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
+
+           if(!$medical_insurance_fee){
+           return redirect()->back()->with('error','Medical insurance fee has not been defined');
+           }
+
+           $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+               ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+               ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+
+           if(!$students_union_fee){
+           return redirect()->back()->with('error','Students union fee has not been defined');
+           }
+
+           $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+               ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+               ->where('name','LIKE','%Caution Money%');})->first();
+
+           if(!$caution_money_fee){
+           return redirect()->back()->with('error','Caution money fee has not been defined');
+           }
+
+           $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                   ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                   ->where('name','LIKE','%Medical Examination%');})->first();
+
+           if(!$medical_examination_fee){
+           return redirect()->back()->with('error','Medical examination fee has not been defined');
+           }
+
+           $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+           ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+           ->where('name','LIKE','%Registration%');})->first();
+
+           if(!$registration_fee){
+           return redirect()->back()->with('error','Registration fee has not been defined');
+           }
+
+           $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+               ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+               ->where('name','LIKE','%New ID Card%');})->first();
+
+           if(!$identity_card_fee){
+           return redirect()->back()->with('error','ID card fee for new students has not been defined');
+           }
+
+           $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+           ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+           ->where('name','LIKE','%Late Registration%');})->first();
+
+           if(!$late_registration_fee){
+           return redirect()->back()->with('error','Late registration fee has not been defined');
+           }
+
+           $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+           ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+           ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
+
+           if(!$welfare_emergence_fund){
+           return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
+           }
+
+           if($request->get('program_level_id') == 4){
+               $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                                       ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                                       ->where('name','LIKE','%TCU%');})->first();
+               $message = 'TCU quality assurance fee has not been defined';
+            }else{
+               $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                                       ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                                       ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
+               $message = 'NACTVET qualtity assurance fee has not been defined';
+            }
+            
+            if(!$quality_assurance_fee){
+                return redirect()->back()->with('error',$message);
+            }
 
                $program_fee = ProgramFee::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
                ->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
@@ -349,9 +340,9 @@ return redirect()->back()->with('error','Practical training fee not defined');
                 $app->documents_complete_status = 0;
                 $app->save();
                $this->response = ['message'=>'Admission package sent successfully','status'=>'message']; //redirect()->back()->with('message','Admission package sent successfully');
-/*            }catch(\Exception $e){
+           }catch(\Exception $e){
               $this->response = ['message'=>$e->getMessage(),'status'=>'error'];
-           } */
+           }
         }
 
         return;
