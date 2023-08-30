@@ -4710,7 +4710,7 @@ class ApplicationController extends Controller
             }
         }
         
-        dispatch(new SendAdmissionLetter($request->validated()));
+        dispatch(new SendAdmissionLetter($request->all()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
