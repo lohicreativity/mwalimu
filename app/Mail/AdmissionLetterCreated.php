@@ -48,12 +48,7 @@ class AdmissionLetterCreated extends Mailable
                  }
             }
         }
-        
-/*         foreach ($attachments as $attachment) {
-			if(file_exists(public_path().'/uploads/'.$attachment->file_name)){
-               $this->attach(public_path().'/uploads/'.$attachment->file_name);
-			}
-        }  */   
+   
         return $this->view('emails.admission-letter')
                     ->subject('MNMA Admission Letter')
                     ->with([
