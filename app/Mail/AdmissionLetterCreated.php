@@ -48,7 +48,7 @@ class AdmissionLetterCreated extends Mailable
                  }
             }
         } */
-        return $attachments;
+        return 1;
         foreach ($attachments as $attachment) {
 			if(file_exists(public_path().'/uploads/'.$attachment->file_name)){
                $this->attach(public_path().'/uploads/'.$attachment->file_name);
