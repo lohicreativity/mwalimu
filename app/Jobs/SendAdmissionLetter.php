@@ -46,10 +46,11 @@ class SendAdmissionLetter implements ShouldQueue
      */
     public function handle()
     { 
-        set_time_limit(240);
-        ini_set('memory_limit', '1024M');
+    /*     set_time_limit(240);
+        ini_set('memory_limit', '1024M'); */
         //ini_set('memory_limit', '-1');
 
+        
         $request = $this->request;
         $staff = User::find(Auth::user()->id)->staff;
 
