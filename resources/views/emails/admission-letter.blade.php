@@ -23,7 +23,7 @@
                      <p style="font-size: 18px;">Dear {!! ucwords(strtolower($name)) !!},</p>
                      <p style="font-size: 18px;">{!! $notification_message !!}</p><br>
               
-                     <p style="font-weight: bold; font-size: 18px; margin-top:30px;">Admission Office <br>The Mwalimu Nyerere Memorial Academy.</p>
+                     <p style="font-weight: bold; font-size: 18px; margin-top:30px;">The Mwalimu Nyerere Memorial Academy.</p>
                    </td>
                  </tr>
 
