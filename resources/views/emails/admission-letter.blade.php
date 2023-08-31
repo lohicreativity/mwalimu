@@ -13,7 +13,7 @@
                <table class="container" align="center" bgcolor="#ddd" width="640" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #ddd;">
                  <tr bgcolor="#ffffff" style="border-bottom: 1px solid #C0C0C0;">
                    <td class="logo" valign="top" style="padding: 40px 20px 20px 20px; text-align: center;" width="100%">
-                      <a href="{{ config('constants.SITE_URL') }}" target="_blank"><img src="{{ public_path('/dist/img/logo.png') }}" border="0" width"auto" height="50" alt="{{ config('constants.SITE_NAME') }}"></a>
+                      <a href="{{ config('constants.SITE_URL') }}" target="_blank"><img src="{{ public_path('/dist/img/email_logo.PNG') }}" border="0" width"auto" height="50" alt="{{ config('constants.SITE_NAME') }}"></a>
                    </td>
                  </tr>
 
@@ -23,7 +23,7 @@
                      <p style="font-size: 18px;">Dear {!! ucwords(strtolower($name)) !!},</p>
                      <p style="font-size: 18px;">{!! $notification_message !!}</p><br>
               
-                     <p style="font-weight: bold; font-size: 18px; margin-top:30px;">The Mwalimu Nyerere Memorial Academy.</p>
+                     <p style="font-weight: bold; font-size: 18px; margin-top:30px;">Admission Office <br>The Mwalimu Nyerere Memorial Academy.</p>
                    </td>
                  </tr>
 

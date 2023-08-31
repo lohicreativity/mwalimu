@@ -297,7 +297,7 @@
     the first semester once a year.</li>
 
 <li>That you should revisit your system account to indicate your health insurance status. It is mandatory for all students to have medical insurance that will be valid for one year, starting from 
-  {{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}. If you do not have valid medical insurance, you will have to pay 
+  <strong>{{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong>. If you do not have valid medical insurance, you will have to pay 
   <strong>{{ $currency }} {{ number_format($medical_insurance_fee) }}/=</strong> for medical insurance from NHIF.</li>
 
 <li>That you should revisit your system account to indicate if you would like to be considered for on-campus accommodation. Please note, accommodation on campus is not guaranteed and therefore you 
@@ -318,7 +318,7 @@
       is ready to continue supporting you.</li>
 
 <li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from <strong>{{ Carbon\Carbon::parse($orientation_date)->format('jS F, Y') }}</strong> to 
-      <strong>{{ Carbon\Carbon::parse($orientation_date)->addDays(14)->format('jS F, Y') }}</strong> will be required to pay late registration fee of 
+      <strong>{{ Carbon\Carbon::parse($orientation_date)->addDays(13)->format('jS F, Y') }}</strong> will be required to pay late registration fee of 
       <strong>{{ $currency }} {{ number_format($late_registration_fee) }}/=</strong> per day for a maximum of 7 days. Failure to register within this period will lead to <strong>automatic cancellation</strong> 
       of your admission; hence you will therefore be required to re-apply.</li>
 

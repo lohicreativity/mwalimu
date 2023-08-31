@@ -39,7 +39,7 @@ class AdmissionLetterCreated extends Mailable
     public function build()
     {
         $file_name = base_path('public/uploads').'/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
-        $attachments = AdmissionAttachment::where('campus_id', 1)->get();
+        $attachments = AdmissionAttachment::where('campus_id', $applicant->campus_id)->get();
 
         foreach($attachments as $attachment){
             if(in_array($this->applicant->selections[0]->campusProgram->program->award->name, unserialize($attachment->applicable_levels))){
@@ -54,8 +54,8 @@ class AdmissionLetterCreated extends Mailable
                     ->with([
                        'heading'=>'Admission Letter',
                        'name'=>$this->applicant->first_name.' '.$this->applicant->surname,
-                       'notification_message'=>'We are pleased to inform you that you have been admitted to The Mwalimu Nyerere Memorial Academy for academic year '
-                       .$this->study_academic_year->academicYear->year.'. Attached herewith is your admission letter and other relevant documents.',
+                       'notification_message'=>'We apologise for our previous email regarding the Admission Letter. The letter had incorrect dates. Pleased find the attached Admission Letter with correct dates and 
+                                                other relevant documents. We apologise for any inconvenience so caused.',
                        'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
                        'study_year'=>$this->study_academic_year->academicYear->year
                     ])->attach($file_name);
