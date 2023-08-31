@@ -297,7 +297,7 @@
     the first semester once a year.</li>
 
 <li>That you should revisit your system account to indicate your health insurance status. It is mandatory for all students to have medical insurance that will be valid for one year, starting from 
-  {{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}. If you do not have valid medical insurance, you will have to pay 
+  <strong>{{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong>. If you do not have valid medical insurance, you will have to pay 
   <strong>{{ $currency }} {{ number_format($medical_insurance_fee) }}/=</strong> for medical insurance from NHIF.</li>
 
 <li>That you should revisit your system account to indicate if you would like to be considered for on-campus accommodation. Please note, accommodation on campus is not guaranteed and therefore you 
