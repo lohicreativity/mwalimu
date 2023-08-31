@@ -23,11 +23,6 @@ class NectaResultController extends Controller
         }
 
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
-        $detail->verified = 1;
-        $detail->save();
-        $o_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',1)->where('verified',1)->first()? true : false;
-        $a_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',2)->where('verified',1)->first()? true : false;
-        $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
 
         // if(count($non_details) != 0){
         //     return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
@@ -38,6 +33,13 @@ class NectaResultController extends Controller
                 return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
             }
         }
+
+        $detail->verified = 1;
+        $detail->save();
+        $o_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',1)->where('verified',1)->first()? true : false;
+        $a_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',2)->where('verified',1)->first()? true : false;
+        $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
+
         $applicant->first_name = $detail->first_name;
         $applicant->middle_name =  $detail->middle_name;
         $applicant->surname = $detail->last_name;
