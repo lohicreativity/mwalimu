@@ -16,6 +16,7 @@ use NumberToWords\NumberToWords;
 use App\Mail\AdmissionLetterCreated;
 use App\Models\User;
 use Mail, PDF;
+use App\Domain\Settings\Models\SpecialDate;
 
 class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 {
@@ -43,6 +44,23 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             $study_academic_year = StudyAcademicYear::select('id', 'academic_year_id')
                 ->whereHas('academicYear', fn($query) => $query->where('year', 'LIKE', '%/' . $ac_year . '%'))
                 ->with('academicYear:id,year')->first();
+
+            $special_dates = SpecialDate::where('name','Orientation')
+                                        ->where('study_academic_year_id',$study_academic_year->id)
+                                        ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
+            
+            $orientation_date = null;
+            if(count($special_dates) == 0){
+                return redirect()->back()->with('error','Orientation date has not been defined');
+            }else{
+                foreach($special_dates as $special_date){
+                    if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                        return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+                    }else{
+                        $orientation_date = $special_date->date;
+                    }
+                }
+            }
 
             $medical_insurance_fee = FeeAmount::select('amount_in_tzs', 'amount_in_usd')
                 ->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $applicant->campus_id)
@@ -189,7 +207,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
                 'study_year' => $study_academic_year->academicYear->year,
                 'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
-                'commencement_date' => $study_academic_year->begin_date,
+                'orientation_date' => $orientation_date,
                 'program_fee' => str_contains($applicant->nationality, 'Tanzania') ? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
                 'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
                 'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),

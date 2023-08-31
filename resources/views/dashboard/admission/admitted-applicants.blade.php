@@ -39,7 +39,6 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
            <div class="col-12">
- 
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Select Application Window') }}</h3>
@@ -90,41 +89,44 @@
                         <tr>
                           <th>#</th>
                           <th>Name</th>
-						  <th>Form IV Index No.</th>
-						  <th>Form VI Index No./AVN</th>
+                          <th>Sex</th>
                           <th>Phone</th>
-                          <th>Gender</th>
+                          <th>F4 Index#</th>
+                              @if($request->get('program_level_id') != 1)
+                                @if($request->get('program_level_id') == 2)
+                                  <th>NACTVET Reg#/F6 Index#</th>
+                                @else
+                                  <th>F6 Index#/AVN</th>
+                                @endif
+                              @endif
                           <th>Programme</th>
+                          <th>Batch#</th>
                         </tr>
                     </thead>
-                    <tbody>
-                 @foreach($applicants as $applicant)
-                   <tr>
-                      <td>{{ $loop->iteration }}</td>
-					  <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>					  
-					  <td>{{ $applicant->index_number }}</td>
-					  <td>@foreach($applicant->nectaResultDetails as $detail)
-					              @if($detail->exam_id == 2) {{ $detail->index_number }} @endif
-						  @endforeach <br>
-						  @foreach($applicant->nacteResultDetails as $detail)
-					        {{ $detail->avn }}
-						  @endforeach
-					  </td>
-                      <td>{{ $applicant->phone }}</td>
-                      <td>{{ $applicant->gender }}</td>
-                      <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'SELECTED')
-                           {{ $selection->campusProgram->code }}
-                           @endif
-                          @endforeach
-                      </td>
-                   </tr>
-                 @endforeach
-                   </tbody>
+                     <tbody>
+                        @foreach($applicants as $applicant)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>					  
+                            <td>{{ $applicant->gender }}</td>
+                            <td>{{ $applicant->phone }}</td>
+                            <td>{{ $applicant->index_number }}</td>
+                            <td>
+                                @foreach($applicant->nectaResultDetails as $detail) {{ $detail->index_number }} @endforeach <br>
+                                @foreach($applicant->nacteResultDetails as $detail) {{ $detail->avn }} @endforeach
+                            </td>
+                            <td>
+                                @foreach($applicant->selections as $selection)
+                                  @if($selection->status == 'SELECTED') {{ $selection->campusProgram->code }} @endif
+                                @endforeach
+                            </td>
+                            <td>@foreach($batches as $batch) @if($batch->id == $applicant->batch_id) {{ $batch->batch_no }} @break @endif @endforeach</td>
+                          </tr>
+                        @endforeach
+                    </tbody>
                   </table>
-                @endif    
-                  
-               </div>
+              @endif          
+              </div>
             </div>
 
 			     @foreach($applicants as $applicant)
@@ -184,7 +186,8 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $applicant->disabilityStatus->name }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ ucwords(strtolower($applicant->entry_mode)) }}	 												  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->address }}	 	
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->ward->name)) }},&nbsp; {{ ucwords(strtolower($applicant->region->name)) }},&nbsp; {{ ucwords(strtolower($applicant->country->name)) }}	 	 
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->ward->name)) }},
+                              ,&nbsp; {{ ucwords(strtolower($applicant->district->name)) }}, &nbsp; {{ ucwords(strtolower($applicant->region->name)) }},&nbsp; {{ ucwords(strtolower($applicant->country->name)) }}	 	 
 													</div>
 												  </div>
 												</div>
@@ -206,7 +209,9 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nextOfKin->nationality }}											  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $applicant->nextOfKin->phone }}	
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->nextOfKin->address }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }},&nbsp; {{ ucwords(strtolower($applicant->nextOfKin->region->name)) }},&nbsp; {{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}	 	 
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }},
+                                   &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->district->name)) }}, &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->region->name)) }},
+                                   &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}	 	 
 																										  
 													   @endif
 													</div>

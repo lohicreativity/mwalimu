@@ -275,9 +275,9 @@
 
               <p>Dear <strong>{{ $applicant_name }}</strong> (of index number <strong>{{ $applicant->index_number}})</strong>, I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} 
                 @if($program_duration_no > 1) years @else year @endif pursuing <strong>{{ $program_name }}</strong> at the <strong>{{ $campus_name }}</strong>. 
-                You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong> ready for registration and a <strong> one-week Orientation 
-                Programme that will commence on {{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong>. Please note that all First Year students are required 
-                to attend the Orientation Programme. Classes will commence on <strong>{{ Carbon\Carbon::parse($commencement_date)->addDays(7)->format('l jS F Y') }}</strong>.</p>
+                You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong> ready for registration and a <strong> one-week Orientation 
+                Programme that will commence on {{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong>. Please note that all First Year students are required 
+                to attend the Orientation Programme. Classes will commence on <strong>{{ Carbon\Carbon::parse($orientation_date)->addDays(7)->format('l jS F Y') }}</strong>.</p>
 
               <p>Please observe the following instructions.</p>
               <ol>
@@ -297,7 +297,7 @@
     the first semester once a year.</li>
 
 <li>That you should revisit your system account to indicate your health insurance status. It is mandatory for all students to have medical insurance that will be valid for one year, starting from 
-  {{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}. If you do not have valid medical insurance, you will have to pay 
+  {{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}. If you do not have valid medical insurance, you will have to pay 
   <strong>{{ $currency }} {{ number_format($medical_insurance_fee) }}/=</strong> for medical insurance from NHIF.</li>
 
 <li>That you should revisit your system account to indicate if you would like to be considered for on-campus accommodation. Please note, accommodation on campus is not guaranteed and therefore you 
@@ -317,8 +317,8 @@
 <li>  That you will be a full time student. If you are a Government or Public Institution/Organisation employee, you will have to produce evidence that your employer has released you from duties and 
       is ready to continue supporting you.</li>
 
-<li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from <strong>{{ Carbon\Carbon::parse($commencement_date)->format('jS F, Y') }}</strong> to 
-      <strong>{{ Carbon\Carbon::parse($commencement_date)->addDays(14)->format('jS F, Y') }}</strong> will be required to pay late registration fee of 
+<li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from <strong>{{ Carbon\Carbon::parse($orientation_date)->format('jS F, Y') }}</strong> to 
+      <strong>{{ Carbon\Carbon::parse($orientation_date)->addDays(14)->format('jS F, Y') }}</strong> will be required to pay late registration fee of 
       <strong>{{ $currency }} {{ number_format($late_registration_fee) }}/=</strong> per day for a maximum of 7 days. Failure to register within this period will lead to <strong>automatic cancellation</strong> 
       of your admission; hence you will therefore be required to re-apply.</li>
 

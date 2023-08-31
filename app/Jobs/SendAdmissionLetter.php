@@ -191,11 +191,6 @@ class SendAdmissionLetter implements ShouldQueue
                if(!$orientation_date){
                    return redirect()->back()->with('error','Orientation date not defined');
                } */
-               $ac_year = date('Y',strtotime($applicants[0]->applicationWindow->end_date));
-               $ac_year += 1;
-               
-               $study_academic_year = StudyAcademicYear::select('id','academic_year_id')->whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})
-                   ->with('academicYear:id,year')->first();
 
                $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$application_window->campus_id)
                ->whereHas('feeItem',function($query) use($application_window){$query->where('campus_id',$application_window->campus_id)

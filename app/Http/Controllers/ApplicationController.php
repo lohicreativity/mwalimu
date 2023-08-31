@@ -556,13 +556,30 @@ class ApplicationController extends Controller
            })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
 
          }elseif (Auth::user()->hasRole('hod')) {
-            
-            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
-                $query->where('status','SELECTED');})
-                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff) {$query->where('department_id',$staff->department_id);})
-                ->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
-           })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','birth_date','nationality','email','phone','address','disability_id','batch_id','index_number','intake_id',
+                                            'status','entry_mode','ward_id','district_id','region_id','country_id','next_of_kin_id')
+                                    ->doesntHave('student')
+                                    ->whereHas('selections',function($query) {$query->where('status','SELECTED');})
+                                    ->whereHas('selections.campusProgram.program.departments',function($query) use($staff) {$query->where('department_id',$staff->department_id);})
+                                    ->with([
+                                        'disabilityStatus:id,name',
+                                        'ward:id,name',
+                                        'region:id,name',
+                                        'country:id,name',
+                                        'nextOfKin:id,first_name,middle_name,surname,gender,address,phone,nationality,relationship,ward_id,district_id,region_id,country_id',
+                                        'intake:id,name',
+                                        'selections'=>function($query){$query->select('id','applicant_id','campus_program_id','status')->where('status','SELECTED');},
+                                        'selections.campusProgram:id,code,program_id',
+                                        'selections.campusProgram.program:id,code',
+                                        'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number')->where('exam_id',2)->where('verified',1);},
+                                        'nacteResultDetails'=>function($query){$query->select('id','applicant_id','avn')->where('verified',1);}
+                                    ])
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('program_level_id',$request->get('program_level_id'))
+                                    ->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
+                                    ->where('campus_id', $campus_id)
+                                    ->where('status','ADMITTED')->get();
 
          }        
 
@@ -586,7 +603,8 @@ class ApplicationController extends Controller
             })->with('program')->get(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'applicants'=>$applicants,
-            'request'=>$request
+            'request'=>$request,
+            'batches'=>ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->get(),
          ];
          return view('dashboard.admission.admitted-applicants',$data)->withTitle('Admitted Applicants');
     }
@@ -4578,16 +4596,20 @@ class ApplicationController extends Controller
         if(!$study_academic_year){
             return redirect()->back()->with('error','Study academic year has not been created');
         }
-
-        $orientation_dates = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)
+       
+        $special_dates = SpecialDate::where('name','Orientation')
+        ->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->get();
 
-        if(count($orientation_dates) == 0){
-            return redirect()->back()->with('error','Orientation date for has not been defined');
+        $orientation_date = null;
+        if(count($special_dates) == 0){
+            return redirect()->back()->with('error','Orientation date has not been defined');
         }else{
-            foreach($orientation_dates as $orientation_date){
-                if(!in_array($applicants[0]->selections[0]->campusProgram->program->award->name, unserialize($orientation_date->applicable_levels))){
+            foreach($special_dates as $special_date){
+                if(!in_array($applicants[0]->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
                     return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award->name.' has not been defined');
+                }else{
+                    $orientation_date = $special_date->date;
                 }
             }
         }
