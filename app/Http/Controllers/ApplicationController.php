@@ -4984,7 +4984,7 @@ class ApplicationController extends Controller
      * Reset applicant's results
      */
     public function resetApplicantResults(Request $request)
-    {
+    {   $staff = User::find(Auth::user()->id)->staff;
         NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('verified',1)->update(['applicant_id'=>0]);
         NectaResult::where('applicant_id', $request->get('applicant_id'))->update(['applicant_id'=>0]);
         $applicant = Applicant::find($request->get('applicant_id'));

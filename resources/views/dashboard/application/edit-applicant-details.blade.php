@@ -78,7 +78,6 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-
                     @php
                       $index_number = [
                          'placeholder'=>'Form IV Index Number',
@@ -90,7 +89,7 @@
                       $dob = [
                         'placeholder'=>'Date of Birth',
                         'class'=>'form-control ss-datepicker',
-                        'readonly'=> !Auth::user()->hasRole('administrator') && $applicant->submission_complete_status = 1? true : null,
+                        'readonly'=> !Auth::user()->hasRole('administrator') && App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
                         'required'=>true					  
                       ];
                       $nationality = [
@@ -124,8 +123,8 @@
                        {!! Form::label('','Nationality') !!}
                        <select name="nationality" class="form-control" 									
                         @if($applicant->status == null) 
-                          @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || 
-                              $applicant->payment_complete_status == 1 || $applicant->submission_complete_status == 1) 
+                          @if((App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || 
+                              $applicant->payment_complete_status == 1 || $applicant->submission_complete_status == 1) && !Auth::user()->hasRole('administrator'))
                             disabled="disabled" 
                           @endif 
                         @elseif(!Auth::user()->hasRole('administrator'))
@@ -188,7 +187,7 @@
                         @if($applicant->campus_id != 0)
                         <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                         @endif
-                        @if($applicant->programs_complete_status == 0)
+                        @if($applicant->programs_complete_status != 0 || $applicant->results_complete_status != 0)
                           <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
                         @endif
                         <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
