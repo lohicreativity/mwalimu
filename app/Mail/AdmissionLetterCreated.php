@@ -54,7 +54,7 @@ class AdmissionLetterCreated extends Mailable
                     ->with([
                        'heading'=>'Admission Letter',
                        'name'=>$this->applicant->first_name.' '.$this->applicant->surname,
-                       'notification_message'=>'We apologise for our previous email regarding the Admission Letter. The letter had incorrect dates. Pleased find the attached Admission Letter with correct dates and 
+                       'notification_message'=>'We apologise for our previous email regarding the Admission Letter. The letter had incorrect dates. Please find the attached Admission Letter, with correct the dates, and 
                        other relevant documents. We apologise for any inconvenience so caused.',
                        'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
                        'study_year'=>$this->study_academic_year->academicYear->year
