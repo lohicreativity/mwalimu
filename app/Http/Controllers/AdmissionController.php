@@ -21,7 +21,7 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use App\Domain\Settings\Models\SpecialDate;
-use app\Utils\DateMaker;
+use App\Utils\DateMaker;
 
 class AdmissionController extends Controller
 {
