@@ -139,7 +139,7 @@
                        </select>
                        @if($applicant->status == null || !Auth::user()->hasRole('administrator')) 
                           @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
-                          {!! Form::input('hidden','citizenship',$applicant->nationality) !!}
+                          {!! Form::input('hidden','nationality',$applicant->nationality) !!}
                           @endif 
                         @endif
                     </div>
