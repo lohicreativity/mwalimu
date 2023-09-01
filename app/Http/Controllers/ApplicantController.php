@@ -2641,7 +2641,7 @@ class ApplicantController extends Controller
             }elseif($staff->campus_id == 3){
                 $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
             }
-            if(str_contains(strtolower($award->name),'bachelor')){
+/*             if(str_contains(strtolower($award->name),'bachelor')){
                $submission_log = ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
                                                        ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->first();
                   if(!empty($submission_log)){
@@ -2761,7 +2761,7 @@ class ApplicantController extends Controller
                      $error_log->save();
                   }
                }
-           }
+           } */
             return redirect()->to('application/edit-applicant-details')->with('message','Applicant details updated successfully');
             //return redirect()->back()->with('message','Applicant details updated successfully');
         }
