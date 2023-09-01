@@ -21,6 +21,7 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use App\Domain\Settings\Models\SpecialDate;
+use app\Utils\DateMaker;
 
 class AdmissionController extends Controller
 {
@@ -63,7 +64,12 @@ class AdmissionController extends Controller
                 }
             }
         }
-        return Carbon::parse($orientation_date)->addDays(-14).'-'.Carbon::parse($orientation_date);
+return $orientation_date;
+        return DateMaker::timeBeforeDate($orientation_date);
+        if(Carbon::parse($orientation_date)->addDays(-14) > Carbon::parse($orientation_date)){
+            //return Carbon::parse($orientation_date)->addDays(-14).'-'.Carbon::parse($orientation_date);
+        }
+       
         if(Carbon::parse($orientation_date)->addDays(-14)){
             Carbon::parse($orientation_date)->addDays(7)->format('l jS F Y') ;
         } 
