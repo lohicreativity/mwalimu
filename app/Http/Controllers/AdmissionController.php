@@ -64,7 +64,7 @@ class AdmissionController extends Controller
                 }
             }
         }
-return $orientation_date;
+
         return DateMaker::timeBeforeDate($orientation_date);
         if(Carbon::parse($orientation_date)->addDays(-14) > Carbon::parse($orientation_date)){
             //return Carbon::parse($orientation_date)->addDays(-14).'-'.Carbon::parse($orientation_date);
