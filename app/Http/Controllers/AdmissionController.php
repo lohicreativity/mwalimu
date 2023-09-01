@@ -63,7 +63,7 @@ class AdmissionController extends Controller
                 }
             }
         }
-        return Carbon::parse($orientation_date)->addDays(-14)->format('l jS F Y').'-'.Carbon::parse($orientation_date)->addDays(-14)->format('l jS F Y');
+        return Carbon::parse($orientation_date)->addDays(-14)->format('l jS F Y').'-'.Carbon::parse($orientation_date)->format('l jS F Y');
         if(Carbon::parse($orientation_date)->addDays(-14)){
             Carbon::parse($orientation_date)->addDays(7)->format('l jS F Y') ;
         } 
