@@ -129,7 +129,7 @@
                     </tr>
                     @endif
                     @endif
-                    @if(!$program_fee_invoice)
+                    @if(!$program_fee_invoice || $datediff)
                     <tr>
                       <td>
                         {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}

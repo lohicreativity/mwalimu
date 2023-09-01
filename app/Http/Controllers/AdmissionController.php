@@ -53,6 +53,8 @@ class AdmissionController extends Controller
             return redirect()->back()->with('error','Programme fee has not been defined for '.$study_academic_year->academicYear->year);
         }
 
+        $usd_currency = Currency::where('code','USD')->first();
+
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -130,6 +132,26 @@ class AdmissionController extends Controller
 				$hostel_fee_amount = $hostel_fee->amount_in_usd*$usd_currency->factor;
 			}
 		}
+
+        $special_dates = SpecialDate::where('name','Orientation')
+        ->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
+
+        $orientation_date = null;
+        if(count($special_dates) == 0){
+            foreach($special_dates as $special_date){
+                if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                    $orientation_date = $special_date->date;
+                }
+            }
+        }
+
+        $now = strtotime(date('Y-m-d'));
+        $orientation_date_time = strtotime($orientation_date);
+        $datediff = $orientation_date_time - $now;
+		$datediff = round($datediff / (60 * 60 * 24));
+        $datediff = $datediff > 14? true : false;
+
     	$data = [
            'applicant'=>$applicant,
            'program_fee'=>$program_fee,
@@ -146,7 +168,8 @@ class AdmissionController extends Controller
            'other_fee_invoice'=>$other_fee_invoice,
            'loan_allocation'=>$loan_allocation,
            'usd_currency'=>Currency::where('code','USD')->first(),
-           'campus'=>Campus::find(session('applicant_campus_id'))
+           'campus'=>Campus::find(session('applicant_campus_id')),
+           'datediff'=>$datediff
     	];
 
         if ($student) {
@@ -174,7 +197,7 @@ class AdmissionController extends Controller
     	$program_fee = ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
 
         if(!$program_fee){
-            return redirect()->back()->with('error','Programme fee has not been set');
+            return redirect()->back()->with('error','Programme fee has not been set.');
         }
 
         $special_dates = SpecialDate::where('name','Orientation')
@@ -183,7 +206,7 @@ class AdmissionController extends Controller
 
         $orientation_date = null;
         if(count($special_dates) == 0){
-            return redirect()->back()->with('error','Orientation date has not been defined');
+            return redirect()->back()->with('error','Orientation date has not been defined.');
         }else{
             foreach($special_dates as $special_date){
                 if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
@@ -194,15 +217,19 @@ class AdmissionController extends Controller
             }
         }
 
+        if(empty($applicant->phone) || empty($applicant->email)){
+            return redirect()->back()->with('error','Please provide mobile phone number and email address.');
+        }
+
         $now = strtotime(date('Y-m-d'));
         $orientation_date_time = strtotime($orientation_date);
         $datediff = $orientation_date_time - $now;
 		$datediff = round($datediff / (60 * 60 * 24));
-        
+        //return date('Y-m-d').'-'.$orientation_date.'-'.$datediff;
         if($datediff > 14){
-            return redirect()->back()->with('error','This action cannot be performed now - ');
+            return redirect()->back()->with('error','This action cannot be performed now.');
         }
- return 1;
+
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
         if($loan_allocation){
              if(str_contains($applicant->nationality,'Tanzania')){
@@ -256,7 +283,8 @@ class AdmissionController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-
+        $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name; 
+        $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
 
         $result = $this->requestControlNumber($request,
                                     $invoice->reference_no,
@@ -266,7 +294,7 @@ class AdmissionController extends Controller
                                     $program_fee->feeItem->feeType->gfs_code,
                                     $program_fee->feeItem->feeType->payment_option,
                                     $applicant->id,
-                                    $applicant->first_name.' '.$applicant->surname,
+                                    $first_name.' '.$surname,
                                     $applicant->phone,
                                     $email,
                                     $generated_by,
@@ -274,6 +302,7 @@ class AdmissionController extends Controller
                                     $program_fee->feeItem->feeType->duration,
                                     $invoice->currency);
         }
+
 		// Kama mkopo kiasi cha fee anachopata ni zaidi ya 60%
         if($amount_loan/$amount_without_loan >= 0.6){
             $applicant->tuition_payment_check = 1;
@@ -308,7 +337,7 @@ class AdmissionController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-        $result = $this->requestControlNumber($request,
+        return $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
@@ -316,7 +345,7 @@ class AdmissionController extends Controller
                                     $hostel_fee->feeItem->feeType->gfs_code,
                                     $hostel_fee->feeItem->feeType->payment_option,
                                     $applicant->id,
-                                    $applicant->first_name.' '.$applicant->surname,
+                                    $first_name.' '.$surname,
                                     $applicant->phone,
                                     $email,
                                     $generated_by,
@@ -378,7 +407,7 @@ class AdmissionController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-        $result = $this->requestControlNumber($request,
+        return $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
@@ -386,7 +415,7 @@ class AdmissionController extends Controller
                                     $feeType->gfs_code,
                                     $feeType->payment_option,
                                     $applicant->id,
-                                    $applicant->first_name.' '.$applicant->surname,
+                                    $first_name.' '.$surname,
                                     $applicant->phone,
                                     $email,
                                     $generated_by,
@@ -406,7 +435,7 @@ class AdmissionController extends Controller
 
          
 
-        return redirect()->back()->with('message','Control numbers requested successfully');
+        return redirect()->back()->with('message','Control number requested successfully');
     }
 
     /**
