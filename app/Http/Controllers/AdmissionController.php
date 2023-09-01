@@ -75,10 +75,10 @@ class AdmissionController extends Controller
         $datediff = $orientation_date_time - $now;
 		$datediff = round($datediff / (60 * 60 * 24));
         
-        if($datediff < 14){
+        if($datediff > 14){
             return redirect()->back()->with('error','This action cannot be performed now - ');
         }
- 
+ return 1;
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
