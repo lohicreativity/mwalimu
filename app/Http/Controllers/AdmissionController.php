@@ -21,7 +21,7 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use App\Domain\Settings\Models\SpecialDate;
-use App\Utils\DateMaker;
+use app\Utils\DateMaker;
 
 class AdmissionController extends Controller
 {
@@ -65,14 +65,15 @@ class AdmissionController extends Controller
             }
         }
 
-        return DateMaker::timeBeforeDate($orientation_date);
-        if(Carbon::parse($orientation_date)->addDays(-14) > Carbon::parse($orientation_date)){
-            //return Carbon::parse($orientation_date)->addDays(-14).'-'.Carbon::parse($orientation_date);
+        $now = strtotime(date('Y-m-d'));
+        $orientation_date_time = strtotime($orientation_date->date);
+        $datediff = $orientation_date_time - $now;
+		$datediff = round($datediff / (60 * 60 * 24));
+        
+        if($datediff < 14){
+            return redirect()->back()->with('error','This action cannot be performed now - ');
         }
-       
-        if(Carbon::parse($orientation_date)->addDays(-14)){
-            Carbon::parse($orientation_date)->addDays(7)->format('l jS F Y') ;
-        } 
+ 
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
