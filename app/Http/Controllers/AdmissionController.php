@@ -53,32 +53,6 @@ class AdmissionController extends Controller
             return redirect()->back()->with('error','Programme fee has not been defined for '.$study_academic_year->academicYear->year);
         }
 
-        $special_dates = SpecialDate::where('name','Orientation')
-        ->where('study_academic_year_id',$study_academic_year->id)
-        ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
-
-        $orientation_date = null;
-        if(count($special_dates) == 0){
-            return redirect()->back()->with('error','Orientation date has not been defined');
-        }else{
-            foreach($special_dates as $special_date){
-                if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
-                    return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
-                }else{
-                    $orientation_date = $special_date->date;
-                }
-            }
-        }
-
-        $now = strtotime(date('Y-m-d'));
-        $orientation_date_time = strtotime($orientation_date);
-        $datediff = $orientation_date_time - $now;
-		$datediff = round($datediff / (60 * 60 * 24));
-        
-        if($datediff > 14){
-            return redirect()->back()->with('error','This action cannot be performed now - ');
-        }
- return 1;
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -203,7 +177,32 @@ class AdmissionController extends Controller
             return redirect()->back()->with('error','Programme fee has not been set');
         }
 
+        $special_dates = SpecialDate::where('name','Orientation')
+        ->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
 
+        $orientation_date = null;
+        if(count($special_dates) == 0){
+            return redirect()->back()->with('error','Orientation date has not been defined');
+        }else{
+            foreach($special_dates as $special_date){
+                if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                    return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+                }else{
+                    $orientation_date = $special_date->date;
+                }
+            }
+        }
+
+        $now = strtotime(date('Y-m-d'));
+        $orientation_date_time = strtotime($orientation_date);
+        $datediff = $orientation_date_time - $now;
+		$datediff = round($datediff / (60 * 60 * 24));
+        
+        if($datediff > 14){
+            return redirect()->back()->with('error','This action cannot be performed now - ');
+        }
+ return 1;
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
         if($loan_allocation){
              if(str_contains($applicant->nationality,'Tanzania')){
