@@ -4579,10 +4579,10 @@ class ApplicationController extends Controller
                                                 ->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                                 ->with([
                                                     'intake:id,name',
-                                                    'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
-                                                    'selections.campusProgram:campusProgram.id,program_id,campus_id',
-                                                    'selections.campusProgram.program:program.id,name,award_id,min_duration',
-                                                    'selections.campusProgram.program.award:award.id,name',
+                                                    'selections'=>function($query){$query->select('selections.id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
+                                                    'selections.campusProgram:id,program_id,campus_id',
+                                                    'selections.campusProgram.program:id,name,award_id,min_duration',
+                                                    'selections.campusProgram.program.award:id,name',
                                                     'campus:id,name',
                                                     'applicationWindow:id,end_date',
                                                     'region:id,name'
