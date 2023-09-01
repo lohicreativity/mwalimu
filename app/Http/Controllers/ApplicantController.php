@@ -2571,12 +2571,12 @@ class ApplicantController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $applicant = Applicant::find($request->get('applicant_id'));
         if(Applicant::hasConfirmedResults($applicant) && $request->get('index_number') != $applicant->index_number && !Auth::user()->hasRole('administrator')){
-            return redirect()->back()->with('error','The action cannot be performed2');
+            return redirect()->back()->with('error','The action cannot be performed');
         }
 
         if($applicant->payment_complete_status == 1 && $applicant->status == null && !Auth::user()->hasRole('administrator')){
             if($request->get('nationality') != $applicant->nationality || (!empty($request->get('citizenship')) && $request->get('citizenship') != $applicant->nationality)){
-               return redirect()->back()->with('error','The action cannot be performed3');
+               return redirect()->back()->with('error','The action cannot be performed');
             }
         }
 
@@ -2587,6 +2587,7 @@ class ApplicantController extends Controller
 /*         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             return redirect()->back()->with('error','Application window already closed');
         } */
+        return $request;
         if($applicant->submission_complete_status == 1 &&  ($applicant->index_number != $request->get('index_number') || 
            $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
            $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
