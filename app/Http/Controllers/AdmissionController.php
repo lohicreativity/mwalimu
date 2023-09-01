@@ -19,6 +19,8 @@ use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Auth;
+use Carbon\Carbon;
+use App\Domain\Settings\Models\SpecialDate;
 
 class AdmissionController extends Controller
 {
@@ -44,6 +46,27 @@ class AdmissionController extends Controller
         if(!$program_fee){
             return redirect()->back()->with('error','Programme fee has not been defined for '.$study_academic_year->academicYear->year);
         }
+
+        $special_dates = SpecialDate::where('name','Orientation')
+        ->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
+
+        $orientation_date = null;
+        if(count($special_dates) == 0){
+            return redirect()->back()->with('error','Orientation date has not been defined');
+        }else{
+            foreach($special_dates as $special_date){
+                if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                    return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+                }else{
+                    $orientation_date = $special_date->date;
+                }
+            }
+        }
+        return Carbon::parse($orientation_date)->addDays(-14)->format('l jS F Y');
+        if(Carbon::parse($orientation_date)->addDays(-14)){
+            Carbon::parse($orientation_date)->addDays(7)->format('l jS F Y') ;
+        } 
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();

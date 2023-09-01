@@ -2824,8 +2824,8 @@ class ApplicationController extends Controller
         $payable = Invoice::find($invoice->id)->payable;
         $fee_type = $fee_amount->feeItem->feeType;
 
-        $firstname = str_contains($payable->first_name,"'")? str_replace("'","/",$payable->first_name) : $payable->first_name; 
-        $surname = str_contains($payable->surname,"'")? str_replace("'","/",$payable->surname) : $payable->surname;
+        $firstname = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name; 
+        $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
         
         $generated_by = 'SP';
         $approved_by = 'SP';
