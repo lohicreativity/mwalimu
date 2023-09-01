@@ -4569,19 +4569,30 @@ class ApplicationController extends Controller
 
         if(Auth::user()->hasRole('admission-officer')){
             /* $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
-                                   ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
+                                   ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
+                                   'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
                                            'applicationWindow:id,end_date','selections.campusProgram.program:id,award_id','selections.campusProgram.program.award:id,name'])
                                    ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
                                    ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
                                    ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
 
-                                   $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
-                                ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
-                                        'selections.campusProgram:id,program_id,campus_id','selections.campusProgram.program:id,name,award_id,min_duration','selections.campusProgram.program.award:id,name',
-                                        'campus:id,name','applicationWindow:id,end_date','region:id,name'])
-                                ->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')
-                                ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
+                                   $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
+                                                ->whereHas('selections',function($query){$query->where('status','SELECTED');})
+                                                ->with([
+                                                    'intake:id,name',
+                                                    'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
+                                                    'selections.campusProgram:id,program_id,campus_id',
+                                                    'selections.campusProgram.program:id,name,award_id,min_duration',
+                                                    'selections.campusProgram.program.award:id,name',
+                                                    'campus:id,name',
+                                                    'applicationWindow:id,end_date',
+                                                    'region:id,name'
+                                                ])
+                                                ->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('status','SELECTED')
+                                                ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
+                                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
+
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }  
@@ -4616,6 +4627,16 @@ class ApplicationController extends Controller
             }
         }
         // Checks for Masters
+        
+
+        return Applicant::select('id', 'first_name', 'surname', 'email', 'campus_id', 'address', 'index_number', 'application_window_id', 'intake_id', 'nationality', 'region_id')
+        ->whereHas('selections', fn($query) => $query->where('status', 'SELECTED'))
+        ->with([
+            'intake:id,name',
+            'selections' => fn($query) => $query->select('id', 'status', 'campus_program_id', 'applicant_id')->where('status', 'SELECTED')
+            
+        ])
+        ->get();
         if($request->get('program_level_id') == 5){
 
 
