@@ -4576,7 +4576,7 @@ class ApplicationController extends Controller
                                    ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
 
                                    $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
-                                                ->whereHas('selections',function($query){$query->where('selections.status','SELECTED');})
+                                                ->whereHas('selections',function($query)use($request){$query->where('selections.status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
                                                 ->with([
                                                     'intake:id,name',
                                                     'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
