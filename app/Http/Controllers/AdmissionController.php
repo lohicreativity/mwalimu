@@ -30,9 +30,14 @@ class AdmissionController extends Controller
      */
     public function payments(Request $request)
     {
-    	$applicant = User::find(Auth::user()->id)->applicants()->with(['applicationWindow','selections'=>function($query){
-    		  $query->where('status','SELECTED');
-    	}])->where('campus_id',session('applicant_campus_id'))->first();
+    	$applicant = User::find(Auth::user()->id)->applicants()->doesntHave('student')->where('campus_id',session('applicant_campus_id'))
+        ->with([
+            'applicationWindow',
+            'selections' => fn($query) => $query->select('id', 'status', 'campus_program_id', 'applicant_id')->where('status', 'SELECTED'),
+            'selections.campusProgram:id,program_id',
+            'selections.campusProgram.program:id,award_id',
+            'selections.campusProgram.program.award:id,name',
+            ])->where('status','ADMITTED')->first();
 
         $student = Student::where('applicant_id', $applicant->id)->first();
 
