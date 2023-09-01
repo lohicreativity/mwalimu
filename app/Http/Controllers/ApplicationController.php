@@ -879,11 +879,13 @@ class ApplicationController extends Controller
                         }
                     }
 
- 
+                    $status = null;
                     if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
                         $status = $selection->status == 'APPROVING'? 'Internal Selected' : 'Selected';
+                        break;
                     }elseif($selection->status == 'PENDING'){
                         $status = 'Awaiting Approval';
+                        break;
                     }  
 
                 }
