@@ -71,7 +71,7 @@ class AdmissionController extends Controller
         }
 
         $now = strtotime(date('Y-m-d'));
-        $orientation_date_time = strtotime($orientation_date->date);
+        $orientation_date_time = strtotime($orientation_date);
         $datediff = $orientation_date_time - $now;
 		$datediff = round($datediff / (60 * 60 * 24));
         
