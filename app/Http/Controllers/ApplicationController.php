@@ -541,27 +541,14 @@ class ApplicationController extends Controller
 		$applicants = null;
          if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
 
-            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+/*             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
            })->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
                $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
-           })->where('status','ADMITTED')->get();
+           })->where('status','ADMITTED')->get(); */
 
-         }elseif (Auth::user()->hasRole('admission-officer')) {
-
-            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
-                $query->where('status','SELECTED');
-           })->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
-           })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
-
-         }elseif (Auth::user()->hasRole('hod')) {
-
-            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','birth_date','nationality','email','phone','address','disability_id','batch_id','index_number','intake_id',
+           $applicants = Applicant::select('id','first_name','middle_name','surname','gender','birth_date','nationality','email','phone','address','disability_status_id','batch_id','index_number','intake_id',
                                             'status','entry_mode','ward_id','district_id','region_id','country_id','next_of_kin_id')
-                                    ->doesntHave('student')
-                                    ->whereHas('selections',function($query) {$query->where('status','SELECTED');})
-                                    ->whereHas('selections.campusProgram.program.departments',function($query) use($staff) {$query->where('department_id',$staff->department_id);})
                                     ->with([
                                         'disabilityStatus:id,name',
                                         'ward:id,name',
@@ -570,14 +557,69 @@ class ApplicationController extends Controller
                                         'nextOfKin:id,first_name,middle_name,surname,gender,address,phone,nationality,relationship,ward_id,district_id,region_id,country_id',
                                         'intake:id,name',
                                         'selections'=>function($query){$query->select('id','applicant_id','campus_program_id','status')->where('status','SELECTED');},
-                                        'selections.campusProgram:id,code,program_id',
-                                        'selections.campusProgram.program:id,code',
+                                        'selections.campusProgram:id,code',
                                         'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number')->where('exam_id',2)->where('verified',1);},
                                         'nacteResultDetails'=>function($query){$query->select('id','applicant_id','avn')->where('verified',1);}
                                     ])
+                                    ->doesntHave('student')
+                                    ->whereHas('selections',function($query) use($request) {$query->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->where('program_level_id',$request->get('program_level_id'))
-                                    ->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
+                                    //->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
+                                    ->where('status','ADMITTED')->get();
+
+         }elseif (Auth::user()->hasRole('admission-officer')) {
+
+/*             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED');
+           })->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
+           })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
+ */
+           $applicants = Applicant::select('id','first_name','middle_name','surname','gender','birth_date','nationality','email','phone','address','disability_status_id','batch_id','index_number','intake_id',
+                                            'status','entry_mode','ward_id','district_id','region_id','country_id','next_of_kin_id')
+                                    ->with([
+                                        'disabilityStatus:id,name',
+                                        'ward:id,name',
+                                        'region:id,name',
+                                        'country:id,name',
+                                        'nextOfKin:id,first_name,middle_name,surname,gender,address,phone,nationality,relationship,ward_id,district_id,region_id,country_id',
+                                        'intake:id,name',
+                                        'selections'=>function($query){$query->select('id','applicant_id','campus_program_id','status')->where('status','SELECTED');},
+                                        'selections.campusProgram:id,code',
+                                        'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number')->where('exam_id',2)->where('verified',1);},
+                                        'nacteResultDetails'=>function($query){$query->select('id','applicant_id','avn')->where('verified',1);}
+                                    ])
+                                    ->doesntHave('student')
+                                    ->whereHas('selections',function($query) use($request) {$query->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('program_level_id',$request->get('program_level_id'))
+                                    //->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
+                                    ->where('campus_id', $campus_id)
+                                    ->where('status','ADMITTED')->get();
+
+         }elseif (Auth::user()->hasRole('hod')) {
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','gender','birth_date','nationality','email','phone','address','disability_status_id','batch_id','index_number','intake_id',
+                                            'status','entry_mode','ward_id','district_id','region_id','country_id','next_of_kin_id')
+                                    ->with([
+                                        'disabilityStatus:id,name',
+                                        'ward:id,name',
+                                        'region:id,name',
+                                        'country:id,name',
+                                        'nextOfKin:id,first_name,middle_name,surname,gender,address,phone,nationality,relationship,ward_id,district_id,region_id,country_id',
+                                        'intake:id,name',
+                                        'selections'=>function($query){$query->select('id','applicant_id','campus_program_id','status')->where('status','SELECTED');},
+                                        'selections.campusProgram:id,code',
+                                        'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number')->where('exam_id',2)->where('verified',1);},
+                                        'nacteResultDetails'=>function($query){$query->select('id','applicant_id','avn')->where('verified',1);}
+                                    ])
+                                    ->doesntHave('student')
+                                    ->whereHas('selections',function($query) {$query->where('status','SELECTED');})
+                                    ->whereHas('selections.campusProgram.program.departments',function($query) use($staff) {$query->where('department_id',$staff->department_id);})
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('program_level_id',$request->get('program_level_id'))
+                                    //->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
                                     ->where('campus_id', $campus_id)
                                     ->where('status','ADMITTED')->get();
 
@@ -3937,7 +3979,10 @@ class ApplicationController extends Controller
 
         $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
 
-        $result = $this->requestControlNumber($request,
+        $first_name = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name; 
+        $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
+
+        $this->requestControlNumber($request,
                                   $invoice->reference_no,
                                   $inst_id,
                                   $invoice->amount,
@@ -3945,7 +3990,7 @@ class ApplicationController extends Controller
                                   $fee_type->gfs_code,
                                   $fee_type->payment_option,
                                   $payable->id,
-                                  $payable->first_name.' '.$payable->surname,
+                                  $first_name.' '.$surname,
                                   $payable->phone,
                                   $email,
                                   $generated_by,
@@ -7833,7 +7878,8 @@ class ApplicationController extends Controller
                   $approved_by = 'SP';
                   $inst_id = config('constants.SUBSPCODE');
 
-
+                  $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
+                  $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
                   $result = $this->requestControlNumber($request,
                                               $invoice->reference_no,
@@ -7843,7 +7889,7 @@ class ApplicationController extends Controller
                                               $new_program_fee->feeItem->feeType->gfs_code,
                                               $new_program_fee->feeItem->feeType->payment_option,
                                               $student->id,
-                                              $student->first_name.' '.$student->surname,
+                                              $first_name.' '.$surname,
                                               $student->phone,
                                               $student->email,
                                               $generated_by,

@@ -158,7 +158,7 @@
 											<h6>{{ $applicant->index_number }} &nbsp; | &nbsp; 
 											@foreach($applicant->selections as $selection)
 												@if($selection->status == 'SELECTED')
-													{{ $selection->campusProgram->program->code }}
+													{{ $selection->campusProgram->code }}
 												@endif
 											@endforeach											
 											&nbsp; | &nbsp; {{ (ucwords(strtolower($applicant->intake->name))) }} Intake &nbsp; | &nbsp; <span style="color:red">{{ (ucwords(strtolower($applicant->status))) }} </span></h6>
@@ -186,8 +186,11 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $applicant->disabilityStatus->name }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ ucwords(strtolower($applicant->entry_mode)) }}	 												  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->address }}	 	
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->ward->name)) }},
-                              ,&nbsp; {{ ucwords(strtolower($applicant->district->name)) }}, &nbsp; {{ ucwords(strtolower($applicant->region->name)) }},&nbsp; {{ ucwords(strtolower($applicant->country->name)) }}	 	 
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span>
+                               &nbsp; @if(!empty($applicant->ward->name)) {{ ucwords(strtolower($applicant->ward->name)) }},@endif
+                               &nbsp; @if(!empty($applicant->district->name)) {{ ucwords(strtolower($applicant->district->name)) }}, @endif
+                               &nbsp; @if(!empty($applicant->region->name))   {{ ucwords(strtolower($applicant->region->name)) }}, @endif
+                               &nbsp; {{ ucwords(strtolower($applicant->country->name)) }}	 	 
 													</div>
 												  </div>
 												</div>
@@ -209,9 +212,11 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nextOfKin->nationality }}											  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $applicant->nextOfKin->phone }}	
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->nextOfKin->address }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }},
-                                   &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->district->name)) }}, &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->region->name)) }},
-                                   &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}	 	 
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span>
+                               &nbsp; @if(!empty($applicant->nextOfKin->ward->name)) {{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }},@endif
+                               &nbsp; @if(!empty($applicant->nextOfKin->district->name)) {{ ucwords(strtolower($applicant->nextOfKin->district->name)) }}, @endif
+                               &nbsp; @if(!empty($applicant->nextOfKin->region->name))   {{ ucwords(strtolower($applicant->nextOfKin->region->name)) }}, @endif
+                               &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}	 	 
 																										  
 													   @endif
 													</div>

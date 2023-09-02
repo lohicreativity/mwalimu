@@ -55,6 +55,9 @@ class InvoiceController extends Controller
         $approved_by = 'SP';
         $inst_id = Config::get('constants.SUBSPCODE');
 
+        $first_name = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name; 
+        $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
+
         return $this->requestControlNumber($request,
         	                        $invoice->reference_no,
         	                        $inst_id,
@@ -63,7 +66,7 @@ class InvoiceController extends Controller
         	                        $fee_type->gfs_code,
         	                        $fee_type->payment_option,
         	                        $payable->id,
-        	                        $payable->first_name.' '.$payable->middle_name.' '.$payable->surname,
+        	                        $first_name.' '.$surname,
         	                        $payable->phone,
         	                        $payable->email,
         	                        $generated_by,

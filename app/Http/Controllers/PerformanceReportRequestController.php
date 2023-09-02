@@ -108,7 +108,10 @@ class PerformanceReportRequestController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-        $result = $this->requestControlNumber($request,
+        $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
+        $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
+
+        $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
@@ -116,7 +119,7 @@ class PerformanceReportRequestController extends Controller
                                     $fee_amount->feeItem->feeType->gfs_code,
                                     $fee_amount->feeItem->feeType->payment_option,
                                     $student->id,
-                                    $student->first_name.' '.$student->middle_name.' '.$student->surname,
+                                    $first_name.' '.$surname,
                                     $student->phone,
                                     $student->email,
                                     $generated_by,
