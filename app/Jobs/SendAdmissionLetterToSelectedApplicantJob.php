@@ -66,7 +66,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
         if($this->program_level_id == 5){
             $research_supervision = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                                             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                            >where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
+                                            ->where('name','LIKE','%Master%')->where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
 
             if(!$research_supervision){
                 return redirect()->back()->with('error','Research supervision fee has not been defined');
@@ -81,7 +81,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                ->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+                ->where('name','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
 
             if(!$students_union_fee){
             return redirect()->back()->with('error','Students union fee has not been defined');
@@ -89,7 +89,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                ->where('name','LIKE','%Caution Money%');})->first();
+                ->where('name','%Master%')->where('name','LIKE','%Caution Money%');})->first();
 
             if(!$caution_money_fee){
             return redirect()->back()->with('error','Caution money fee has not been defined');
@@ -97,7 +97,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                    ->where('name','LIKE','%Medical Examination%');})->first();
+                    ->where('name','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
 
             if(!$medical_examination_fee){
             return redirect()->back()->with('error','Medical examination fee has not been defined');
@@ -105,7 +105,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-            ->where('name','LIKE','%Registration%');})->first();
+            ->where('name','%Master%')->where('name','LIKE','%Registration%');})->first();
 
             if(!$registration_fee){
             return redirect()->back()->with('error','Registration fee has not been defined');
@@ -113,7 +113,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                ->where('name','LIKE','%New ID Card%');})->first();
+                ->where('name','%Master%')->where('name','LIKE','%New ID Card%');})->first();
 
             if(!$identity_card_fee){
             return redirect()->back()->with('error','ID card fee for new students has not been defined');
@@ -121,7 +121,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-            ->where('name','LIKE','%Late Registration%');})->first();
+            ->where('name','%Master%')->where('name','LIKE','%Late Registration%');})->first();
 
             if(!$late_registration_fee){
             return redirect()->back()->with('error','Late registration fee has not been defined');
@@ -129,7 +129,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-            ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
+            ->where('name','%Master%')->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
 
             if(!$welfare_emergence_fund){
             return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
@@ -137,7 +137,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                                                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                ->where('name','LIKE','%TCU%');})->first();
+                                                ->where('name','%Master%')->where('name','LIKE','%TCU%');})->first();
             if(!$quality_assurance_fee){
                 return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
             }
