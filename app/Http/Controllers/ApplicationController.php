@@ -5062,14 +5062,17 @@ if ($practical_training_fee) {
 }
 
 
-$research_supervion_fee = null;
+$research_supervision_fee = null;
 if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
-    $research_supervion_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+    $research_supervision_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                                    ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                                    ->where('name','LIKE','%Research%');})->first(); 
 
-    if(!$research_supervion_fee){
+    if(!$research_supervision_fee){
     return redirect()->back()->with('error','Research supervision fee has not been defined');
+    }else{
+        $research_supervision_fee = str_contains($applicant->nationality, 'Tanzania') && $research_supervision_fee ? $research_supervision_fee->amount_in_tzs : $research_supervision_fee->amount_in_usd;
+
     }
 }
 $numberToWords = new NumberToWords();
@@ -5089,7 +5092,7 @@ $data = [
     'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
     'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
     'annual_program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords(($program_fee->amount_in_tzs)/2) : $numberTransformer->toWords(($program_fee->amount_in_usd)/2),
-    'research_supervision_fee'=> str_contains($applicant->nationality, 'Tanzania') ? $research_supervion_fee->amount_in_tzs : $research_supervion_fee->amount_in_usd,
+    'research_supervision_fee'=> $research_supervision_fee,
     'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
     'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
     'medical_examination_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
