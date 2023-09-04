@@ -258,7 +258,7 @@
         </div><!-- end of row -->
 
         <br>
-        <div class="row" style="float:left; width: 80%">
+        <div class="row" style="float:left; width: 78%">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
               <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br><br>
@@ -266,7 +266,7 @@
               <span>{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
-        <div style="position:relative; top:20px; width:20%; " class="text-right">{{ now()->format('jS F Y') }}</div>
+        <div style="position:relative; top:20px; width:22%; " class="text-right">{{ now()->format('jS F Y') }}</div>
         <!-- end of row -->
         
         <div class="row" style="clear:left">
@@ -275,7 +275,8 @@
 
               <p>Dear <strong>{{ $applicant_name }}</strong> (of index number <strong>{{ $applicant->index_number}})</strong>, I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} 
                 @if($program_duration_no > 1) years @else year @endif pursuing <strong>{{ $program_name }}</strong> at the <strong>{{ $campus_name }}</strong>. 
-                This programme entails one year of coursework and the remaining time for research and dissertation. You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong> ready for registration and a <strong> one-week Orientation 
+                This programme entails one year of coursework and the remaining time for research and dissertation. You are required to report at the Academy on 
+                <strong>{{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong> ready for registration and a <strong> one-week Orientation 
                 Programme that will commence on {{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong>. Please note that all First Year students are required 
                 to attend the Orientation Programme. Classes will commence on <strong>{{ Carbon\Carbon::parse($orientation_date)->addDays(7)->format('l jS F Y') }}</strong>.</p>
 
@@ -283,9 +284,10 @@
               Your registration is effective from <strong> {{ Carbon\Carbon::parse($orientation_date)->format('l jS F Y') }}</strong>, and subject to the following:
               <ol>
 <li>  Registering formally for the degree by paying the required fee. The tuition fee for the entire programme is <strong>{{ $program_fee_words }} ({{ $currency }} {{ number_format($program_fee) }}/= ) </strong> 
-      equivalent to xxx per year (accommodation exclusive). The annual fee may be paid in two installments at the rate of 60%, equivalent to <strong>{{ $currency }} {{ number_format(0.6*$program_fee) }}/=</strong> (payable in the second 
-      semester) and 40%, equivalent to <strong>{{ $currency }} {{ number_format(0.4*$program_fee) }}/=</strong> (payable in the first semester). Each installment should 
-      be paid at the beginning of a Semester. Also, you should pay {{ TShs. 500,000/= }} for research supervision (payable during the registration period of the second year).</li>
+      equivalent to <strong>{{ $annual_program_fee_words }} ({{ $currency }} {{ number_format($program_fee/2) }}/= ) </strong> per year (accommodation exclusive). The annual fee may be paid in two installments at 
+      the rate of 60%, equivalent to <strong>{{ $currency }} {{ number_format(0.6*($program_fee/2)) }}/=</strong> (payable in the first semester 
+      semester) and 40%, equivalent to <strong>{{ $currency }} {{ number_format(0.4*($program_fee/2)) }}/=</strong> (payable in the second semester). Each installment should 
+      be paid at the beginning of a Semester. Also, you should pay <strong>{{ $currency }} {{ number_format($research_supervision_fee) }}/=</strong> for research supervision (payable during the registration period of the second year).</li>
 
 <li>That you should also pay <strong>{{ $currency }} {{ number_format($nacte_quality_assurance_fee) }}/=</strong> for Quality Assurance,
     <strong>{{ $currency }} {{ number_format($students_union_fee) }}/=</strong> for Students Union, 
@@ -308,7 +310,7 @@
 
 <li>That you should bring your <strong>original certificates</strong> plus two certified copies of each of your certificates and transcripts (the original certificate will be returned to you after verification). Certificates 
   should include birth certificate, Form 4, 6, and Bachelor degree or equivalent certificartes. It should be noted that certificates obtained from foreign institutions of higher learning shall be subject to recognition by 
-  the Tanzania Commission for Universities (TCU). For more details please visit the TCU website, <a href="" target="_blank"> www.tcu.go.tz <a/>.</li>
+  the Tanzania Commission for Universities (TCU). For more details please visit the TCU website, <a href="https://www.tcu.go.tz/" target="_blank"> www.tcu.go.tz <a/>.</li>
 
 <li>  That you should produce your <strong>medical check-up form</strong> duly filled by a qualified Government Medical Officer to the Admissions Officer.</li>
 

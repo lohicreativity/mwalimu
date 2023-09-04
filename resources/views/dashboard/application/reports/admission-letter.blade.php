@@ -258,7 +258,7 @@
         </div><!-- end of row -->
 
         <br>
-        <div class="row" style="float:left; width: 80%">
+        <div class="row" style="float:left; width: 78%">
             <div class="col-md-6">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
               <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br><br>
@@ -266,7 +266,7 @@
               <span>{{ ucwords(strtolower($applicant->region->name)) }}</span>    
             </div>
         </div>
-        <div style="position:relative; top:20px; width:20%; " class="text-right">{{ now()->format('jS F Y') }}</div>
+        <div style="position:relative; top:20px; width:22%; " class="text-right">{{ now()->format('jS F Y') }}</div>
         <!-- end of row -->
         
         <div class="row" style="clear:left">
@@ -282,8 +282,8 @@
               <p>Please observe the following instructions.</p>
               <ol>
 <li>  That you should pay annual tuition fee of <strong>{{ $program_fee_words }} ({{ $currency }} {{ number_format($program_fee) }}/= ) only</strong> (accommodation exclusive). 
-      Fees may be paid <strong>either</strong> in one or two installments at the rate of 60%, equivalent to <strong>{{ $currency }} {{ number_format(0.6*$program_fee) }}/=</strong> (payable in the second 
-      semester) and 40%, equivalent to <strong>{{ $currency }} {{ number_format(0.4*$program_fee) }}/=</strong> (payable in the first semester). Each installment should 
+      Fees may be paid <strong>either</strong> in one or two installments at the rate of 60%, equivalent to <strong>{{ $currency }} {{ number_format(0.6*$program_fee) }}/=</strong> (payable in the first 
+      semester) and 40%, equivalent to <strong>{{ $currency }} {{ number_format(0.4*$program_fee) }}/=</strong> (payable in the second semester). Each installment should 
       be paid at the beginning of a Semester.</li>
 
 <li>That you should also pay <strong>{{ $currency }} {{ number_format($nacte_quality_assurance_fee) }}/=</strong> for Quality Assurance,

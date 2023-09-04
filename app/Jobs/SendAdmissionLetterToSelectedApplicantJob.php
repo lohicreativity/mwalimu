@@ -62,6 +62,16 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 }
             }
 
+            if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+                $research_supervion_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                               ->where('name','LIKE','%Research%');})->first(); 
+
+                if(!$research_supervion_fee){
+                return redirect()->back()->with('error','Research supervision fee has not been defined');
+                }
+            }
+
             $medical_insurance_fee = FeeAmount::select('amount_in_tzs', 'amount_in_usd')
                 ->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $applicant->campus_id)
                 ->whereHas('feeItem', function ($query) use ($applicant) {
@@ -211,6 +221,8 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'program_fee' => str_contains($applicant->nationality, 'Tanzania') ? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
                 'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
                 'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
+                'annual_program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords(($program_fee->amount_in_tzs)/2) : $numberTransformer->toWords(($program_fee->amount_in_usd)/2),
+                'research_supervision_fee'=> str_contains($applicant->nationality, 'Tanzania') ? $research_supervion_fee->amount_in_tzs : $research_supervion_fee->amount_in_usd,
                 'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
                 'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
                 'medical_examination_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
@@ -224,12 +236,22 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
             ];
 
-            $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
+            if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+                $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
+                    'margin_top' => 20,
+                    'margin_bottom' => 20,
+                    'margin_left' => 20,
+                    'margin_right' => 20
+                    ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+            }else{
+                $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
                 'margin_top' => 20,
                 'margin_bottom' => 20,
                 'margin_left' => 20,
                 'margin_right' => 20
-            ])->save(base_path('public/uploads') . '/Admission-Letter-' . $applicant->first_name . '-' . $applicant->surname . '.pdf');
+                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+            }
+
             $user = new User;
             $user->email = $applicant->email;
             $user->username = $applicant->first_name . ' ' . $applicant->surname;
