@@ -4939,13 +4939,6 @@ class ApplicationController extends Controller
 
         // Checks for Masters
         if($request->get('program_level_id') == 5){
-            $research_supervision = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                            ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                            ->where('name','LIKE','%Master%')->where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
-
-            if(!$research_supervision){
-                return redirect()->back()->with('error','Research supervision fee has not been defined');
-            } 
             $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
             ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
@@ -4956,7 +4949,7 @@ class ApplicationController extends Controller
 
             $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+                ->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
 
             if(!$students_union_fee){
             return redirect()->back()->with('error','Students union fee has not been defined');
@@ -5010,20 +5003,11 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
             }
 
-            if($request->get('program_level_id') >= 4){
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                        ->where('name','LIKE','%TCU%');})->first();
-                $message = 'TCU quality assurance fee has not been defined';
-            }else{
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-                                                        ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                        ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
-                $message = 'NACTVET qualtity assurance fee has not been defined';
-            }
-            
+            $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+                                                ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+                                                ->where('name','LIKE','%TCU%');})->first();
             if(!$quality_assurance_fee){
-                return redirect()->back()->with('error',$message);
+                return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
             }
    
         // Checks for Undergraduates
@@ -5127,21 +5111,23 @@ class ApplicationController extends Controller
                     return redirect()->back()->with('error','Practical training fee not defined');
                 }
             }
-        }
 
-        $research_supervision_fee = null;
-        if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
-            $research_supervision_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                                        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                        ->where('name','LIKE','%Master%')->where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
+            
+            $research_supervision_fee = null;
+            if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+                $research_supervision_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                            ->where('name','LIKE','%Master%')->where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
 
-            if(!$research_supervision_fee){
-                return redirect()->back()->with('error','Research supervision fee has not been defined');
-            }else{
-                $research_supervision_fee = str_contains($applicant->nationality, 'Tanzania') && $research_supervision_fee ? $research_supervision_fee->amount_in_tzs : $research_supervision_fee->amount_in_usd;
+                if(!$research_supervision_fee){
+                    return redirect()->back()->with('error','Research supervision fee has not been defined');
+                }else{
+                    $research_supervision_fee = str_contains($applicant->nationality, 'Tanzania') && $research_supervision_fee ? $research_supervision_fee->amount_in_tzs : $research_supervision_fee->amount_in_usd;
 
+                }
             }
         }
+
 
         $numberToWords = new NumberToWords();
         $numberTransformer = $numberToWords->getNumberTransformer('en');

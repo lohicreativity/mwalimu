@@ -66,7 +66,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
         if($this->program_level_id == 5){
             $research_supervision = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                                             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                            ->where('name','LIKE','%Master%')->where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
+                                            >where('name','LIKE','%Supervision%')->orWhere('name','LIKE','%Research Supervison%');})->first(); 
 
             if(!$research_supervision){
                 return redirect()->back()->with('error','Research supervision fee has not been defined');
@@ -81,7 +81,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
             $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+                ->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
 
             if(!$students_union_fee){
             return redirect()->back()->with('error','Students union fee has not been defined');
@@ -135,20 +135,11 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
             }
 
-            if($this->program_level_id >= 4){
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                                                        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                        ->where('name','LIKE','%TCU%');})->first();
-                $message = 'TCU quality assurance fee has not been defined';
-            }else{
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                                                        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                        ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
-                $message = 'NACTVET qualtity assurance fee has not been defined';
-            }
-            
+            $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                                ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                                ->where('name','LIKE','%TCU%');})->first();
             if(!$quality_assurance_fee){
-                return redirect()->back()->with('error',$message);
+                return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
             }
    
         // Checks for Undergraduates
@@ -243,8 +234,8 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
 
         $practical_training_fee = null;
         if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
-            $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
-            ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
+            $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
             ->where('name','LIKE','%Practical%'); })->first();
 
             if(!$practical_training_fee){
