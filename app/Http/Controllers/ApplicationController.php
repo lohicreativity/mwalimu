@@ -5129,7 +5129,7 @@ class ApplicationController extends Controller
         }
 
 
-        $numberToWords = new NumberToWords();
+/*         $numberToWords = new NumberToWords();
         $numberTransformer = $numberToWords->getNumberTransformer('en');
         
         $data = [
@@ -5179,9 +5179,9 @@ class ApplicationController extends Controller
         $user = new User;
         $user->email = $applicant->email;
         $user->username = $applicant->first_name . ' ' . $applicant->surname;
-        Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
+        Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf)); */
 
-        //dispatch(new SendAdmissionLetterJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
+        dispatch(new SendAdmissionLetterJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
