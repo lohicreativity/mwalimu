@@ -4947,7 +4947,7 @@ class ApplicationController extends Controller
 
             $research_supervision = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                            ->where('name','LIKE','%Research%');})->first(); 
+                                            ->where('name','LIKE','%Master%')->where('name','LIKE','%Research Supervision%')->orWhere('name','LIKE','%Supervison%');})->first(); 
 
             if(!$research_supervision){
                 return redirect()->back()->with('error','Research supervision fee has not been defined');
@@ -5065,7 +5065,7 @@ $research_supervision_fee = null;
 if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
     $research_supervision_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                                    ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                   ->where('name','LIKE','%Research%');})->first(); 
+                                   ->where('name','LIKE','%Master%')->where('name','LIKE','%Research Supervision%')->orWhere('name','LIKE','%Supervison%');})->first(); 
 
     if(!$research_supervision_fee){
     return redirect()->back()->with('error','Research supervision fee has not been defined');
