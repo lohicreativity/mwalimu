@@ -5010,7 +5010,7 @@ class ApplicationController extends Controller
         return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
         }
 
-        if($request->get('program_level_id') == 4){
+        if($request->get('program_level_id') >= 4){
             $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                                                     ->where('name','LIKE','%TCU%');})->first();
