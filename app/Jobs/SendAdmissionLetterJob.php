@@ -77,7 +77,7 @@ class SendAdmissionLetterJob implements ShouldQueue
                                     ->where('status','SELECTED')
                                     ->where('campus_id', $application_window->campus_id)
                                     ->where('application_window_id',$this->application_window_id)
-                                    ->where(function($query){$query->where('multiple_admissions','!=',1)->orWhere('confirmation_status','CONFIRMED');})
+                                    ->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})
                                     ->with([
                                         'intake:id,name',
                                         'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
