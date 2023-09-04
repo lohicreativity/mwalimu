@@ -4942,14 +4942,14 @@ class ApplicationController extends Controller
 
 
 
-        return 1;
 
 
-            $research_supervion = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
+
+            $research_supervision = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                                             ->where('name','LIKE','%Research%');})->first(); 
 
-            if(!$research_supervion){
+            if(!$research_supervision){
                 return redirect()->back()->with('error','Research supervision fee has not been defined');
             } 
    
