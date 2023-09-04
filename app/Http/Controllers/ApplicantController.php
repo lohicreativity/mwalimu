@@ -1034,13 +1034,13 @@ class ApplicantController extends Controller
              $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
              $diploma_principle_pass_grade = 'E';
              $diploma_subsidiary_pass_grade = 'S';
-             $principle_pass_grade = 'D';
+             $principle_pass_grade = 'E';
              $subsidiary_pass_grade = 'S';
            }else{
              $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
              $diploma_principle_pass_grade = 'D';
              $diploma_subsidiary_pass_grade = 'E';
-             $principle_pass_grade = 'C';
+             $principle_pass_grade = 'D';
              $subsidiary_pass_grade = 'E';
            }
            // $selected_program[$applicant->id] = false;
