@@ -5055,7 +5055,6 @@ class ApplicationController extends Controller
                 }
             }
         }
-return 1;
 
 if ($practical_training_fee) {
     $practical_training_fee = str_contains($applicant->nationality, 'Tanzania') ? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd;
