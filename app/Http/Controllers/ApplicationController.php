@@ -4859,7 +4859,7 @@ class ApplicationController extends Controller
         } */
 
          $staff = User::find(Auth::user()->id)->staff;
-
+        $applicants = [];
         if(Auth::user()->hasRole('admission-officer')){
             /* $applicants = Applicant::select('id','campus_id','application_window_id','intake_id')->whereHas('selections',function($query){$query->where('status','SELECTED');})
                                    ->with(['intake:id,name','selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},'selections.campusProgram:id,program_id','selections.campusProgram.program:id,name',
@@ -4869,7 +4869,11 @@ class ApplicationController extends Controller
                                    ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get(); */
 
                                    $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
-                                                ->whereHas('selections',function($query)use($request){$query->where('selections.status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
+                                                ->whereHas('selections',function($query)use($request){$query->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
+                                                ->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('status','SELECTED')
+                                                ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
+                                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})
                                                 ->with([
                                                     'intake:id,name',
                                                     'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
@@ -4879,11 +4883,23 @@ class ApplicationController extends Controller
                                                     'campus:id,name',
                                                     'applicationWindow:id,end_date',
                                                     'region:id,name'
-                                                ])
-                                                ->where('program_level_id',$request->get('program_level_id'))
-                                                ->where('status','SELECTED')
-                                                ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('confirmation_status','CONFIRMED');})->get();
+                                                ])->get();
+
+                                                /* $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,surname,a.email,address,index_number,a.nationality,b.status,c.name as campus,
+                                                                                                             d.name as region, e.end_date,f.name as intake,h.name as program,h.min_duration,i.name as award'))
+                                                                                            ->join('applicant_program_selections as b','a.id','=','b.applicant_id')->where('b.status','SELECTED')->where('b.application_window_id',$request->get('application_window_id'))
+                                                                                            ->join('campuses as c','c.id','=','a.campus_id')
+                                                                                            ->join('regions as d','d.id','=','a.region_id')
+                                                                                            ->join('application_windows as e','e.id','=','a.application_window_id')
+                                                                                            ->join('intakes as f','f.id','=','a.intake_id')
+                                                                                            ->join('campus_program as g','g.id','=','b.campus_program_id')
+                                                                                            ->join('programs as h','h.id','=','g.program_id')
+                                                                                            ->join('awards as i','i.id','=','h.award_id')
+                                                                                            ->where('a.program_level_id',$request->get('program_level_id'))
+                                                                                            ->where('a.status','SELECTED')
+                                                                                            ->where('a.campus_id', $staff->campus_id)->where('a.application_window_id',$request->get('application_window_id'))
+                                                                                            ->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})->get();
+                      */                           return $applicants;
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }  

@@ -330,9 +330,13 @@
                     {!! Form::label('','AVN') !!}
                     @php
                        $applicant_avn = null;
+                       $gpa_less = false;
                        foreach($nacte_results as $res){
                            if($res->avn != null){
                             $applicant_avn = $res->avn;
+                            if($res->diploma_gpa < 3){
+                              $gpa_less = true;
+                            }
                             break;
                           }
                         }
@@ -348,14 +352,6 @@
                     {!! Form::input('hidden','results_container','#ss-nacte-results-container') !!}
 
                     {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
-                    @php
-                       $gpa_less = false;
-                       foreach($nacte_results as $res){
-                          if($res->diploma_gpa < 3){
-                           $gpa_less = true;
-                        }
-                       }
-                    @endphp
                     <br>
                     @foreach($nacte_results as $result)
                      <p class="ss-font-xs">Institution: {{ $result->institution }} <br>Programme: {{ $result->programme }} <br> GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
@@ -418,7 +414,7 @@
               </div>
               @endif
             
-
+              @if($gpa_less)
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Diploma in Teacher Education') }}</h3>
@@ -440,6 +436,7 @@
             </div>
             {!! Form::close() !!}
             </div>
+            @endif
             @endif
           @endif 
             
