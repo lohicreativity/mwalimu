@@ -5129,7 +5129,73 @@ class ApplicationController extends Controller
             }
         }
 
-        dispatch(new SendAdmissionLetterJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
+        $research_supervision_fee = null;
+        if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+            $research_supervision_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                        ->where('name','LIKE','%Master%')->where('name','LIKE','%Research Supervision%')->orWhere('name','LIKE','%Supervison%');})->first(); 
+
+            if(!$research_supervision_fee){
+                return redirect()->back()->with('error','Research supervision fee has not been defined');
+            }else{
+                $research_supervision_fee = str_contains($applicant->nationality, 'Tanzania') && $research_supervision_fee ? $research_supervision_fee->amount_in_tzs : $research_supervision_fee->amount_in_usd;
+
+            }
+        }
+
+        $numberToWords = new NumberToWords();
+        $numberTransformer = $numberToWords->getNumberTransformer('en');
+        
+        $data = [
+            'applicant' => $applicant,
+            'campus_name' => $applicant->selections[0]->campusProgram->campus->name,
+            'applicant_name' => $applicant->first_name . ' ' . $applicant->surname,
+            'reference_number' => $request->get('reference_number'),
+            'program_name' => $applicant->selections[0]->campusProgram->program->name,
+            'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
+            'study_year' => $study_academic_year->academicYear->year,
+            'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
+            'orientation_date' => $orientation_date,
+            'program_fee' => str_contains($applicant->nationality, 'Tanzania') ? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
+            'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
+            'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
+            'annual_program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords(($program_fee->amount_in_tzs)/2) : $numberTransformer->toWords(($program_fee->amount_in_usd)/2),
+            'research_supervision_fee'=> $research_supervision_fee,
+            'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
+            'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
+            'medical_examination_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
+            'registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,
+            'late_registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,
+            'practical_training_fee' => $practical_training_fee,
+            'identity_card_fee' => str_contains($applicant->nationality, 'Tanzania') ? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
+            'caution_money_fee' => str_contains($applicant->nationality, 'Tanzania') ? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
+            'nacte_quality_assurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $quality_assurance_fee->amount_in_tzs : $quality_assurance_fee->amount_in_usd,
+            'students_union_fee' => str_contains($applicant->nationality, 'Tanzania') ? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
+            'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
+        ];
+        
+        if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+            $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
+                'margin_top' => 20,
+                'margin_bottom' => 20,
+                'margin_left' => 20,
+                'margin_right' => 20
+                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+        }else{
+            $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+            'margin_left' => 20,
+            'margin_right' => 20
+            ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+        }
+
+        $user = new User;
+        $user->email = $applicant->email;
+        $user->username = $applicant->first_name . ' ' . $applicant->surname;
+        Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
+
+        //dispatch(new SendAdmissionLetterJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
 
         return redirect()->back()->with('message','Admission package sent successfully');
 
