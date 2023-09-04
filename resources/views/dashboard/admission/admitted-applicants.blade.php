@@ -79,7 +79,11 @@
              @if(count($applicants) > 0)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Admitted Applicants') }}</h3><br>
+                 <h3 class="card-title">{{ __('Admitted Applicants') }}</h3><br><br>
+                 <a href="{{ url('application/admitted-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').
+                  '&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">
+                  Download Admitted Applicants
+                  </a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">

@@ -195,6 +195,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     
     Route::get('admitted-applicants',[ApplicationController::class,'admittedApplicants']);
+    Route::get('admitted-applicants/download',[ApplicationController::class,'downloadAdmittedApplicants']);
 
     Route::get('other-applicants',[ApplicationController::class,'otherApplicants']);
     Route::get('other-applicants/reject',[ApplicationController::class,'rejectOtherApplicants']);
