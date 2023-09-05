@@ -49,17 +49,17 @@ class NACTEServiceController extends Controller
                         $detail->save();
                     
                     foreach(json_decode($response)->params[0]->diploma_results as $result){
-                     if($rs = NacteResult::where('subject',$result->subject)->where('nacte_result_detail_id',$detail->id)->first()){
-                        $res = $rs;
-                     }else{
-                        $res = new NacteResult;
-                     }
-                     $res->subject = $result->subject;
-                     $res->grade = $result->grade;
-                     $res->applicant_id = $request->get('applicant_id');
-                     $res->nacte_result_detail_id = $detail->id;
-                     $res->save();
-                     }
+                        if($rs = NacteResult::where('subject',$result->subject)->where('nacte_result_detail_id',$detail->id)->first()){
+                            $res = $rs;
+                        }else{
+                            $res = new NacteResult;
+                            $res->applicant_id = $appl->id;
+                            $res->nacte_result_detail_id = $detail->id;
+                        }
+                        $res->subject = $result->subject;
+                        $res->grade = $result->grade;
+                        $res->save();
+                    }
                 }
             }
 

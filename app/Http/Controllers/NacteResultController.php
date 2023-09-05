@@ -19,18 +19,19 @@ class NacteResultController extends Controller
     public function confirm(Request $request)
     {
         $applicant  = Applicant::find($request->get('applicant_id'));
-
+        $detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
+        
         if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
-
-        $detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
-        $detail->verified = 1;
-        $detail->save();
        
         if(strtoupper($applicant->first_name) != strtoupper($detail->firstname) || strtoupper($applicant->surname) != strtoupper($detail->surname)){
             return redirect()->to('application/nullify-nacte-results?detail_id='.$request->get('nacte_result_detail_id'));
         }
+
+        $detail->verified = 1;
+        $detail->save();
+
         $results_count = NacteResult::where('nacte_result_detail_id',$request->get('nacte_result_detail_id'))->count();
         $out_count = OutResultDetail::where('applicant_id',$applicant->id)->count();
         $o_level_result_count = NectaResultDetail::where('applicant_id',$applicant->id)->where('exam_id',1)->count();
