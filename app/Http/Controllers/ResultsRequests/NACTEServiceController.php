@@ -53,11 +53,11 @@ class NACTEServiceController extends Controller
                             $res = $rs;
                         }else{
                             $res = new NacteResult;
-                            $res->applicant_id = $appl->id;
-                            $res->nacte_result_detail_id = $detail->id;
                         }
                         $res->subject = $result->subject;
                         $res->grade = $result->grade;
+                        $res->applicant_id = $appl->id;;
+                        $res->nacte_result_detail_id = $detail->id;
                         $res->save();
                     }
                 }
