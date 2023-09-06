@@ -8548,7 +8548,7 @@ class ApplicationController extends Controller
                                     ->with('programLevel:id,name')->first();
         } */
 
-        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,phone,a.program_level_id,b.verification_id,b.remark'))
+        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,phone,a.program_level_id,b.verification_id,b.remarks'))
                             ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
                             //->with('programLevel:id,name')
                             ->get();
