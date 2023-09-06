@@ -99,6 +99,7 @@
                 <th>Status</th>             
                 <th>Action</th>
 						 </tr>
+             <tr></tr>
 					 </thead>
 					 <tbody>
 					    @foreach($applicants as $key => $applicant)
