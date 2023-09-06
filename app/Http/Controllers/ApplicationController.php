@@ -8718,7 +8718,7 @@ class ApplicationController extends Controller
                         $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
                     }
                 }
-                return 1;
+                return 2;
                 $verification_id = null;
                 foreach($errors as $error){
                     return $error;
