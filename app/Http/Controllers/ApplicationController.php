@@ -8644,7 +8644,7 @@ class ApplicationController extends Controller
                 ->where('verified',1);},
                 'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->get(); 
 
-        $errors = ApplicantFeedBackCorrection::where('application_window_id',$applicants[0]->application_window_id)->whereNotNull('verification_id')->get();
+        $errors = ApplicantFeedBackCorrection::whereNotNull('verification_id')->get();
 return $errors;
         $tcu_username = $tcu_token = $nactvet_authorization_key = null;
         if($staff->campus_id == 1){
