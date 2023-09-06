@@ -89,35 +89,37 @@
 				     <thead>
 					     <tr>
 						    <th>SN</th>
-                            <th>Name</th>
-							<th>Sex</th>
-							<th>Index Number</th>
-							<th>Phone</th>
-                            <th>Award</th>            
-                            <th>Reason</th>            
-							<th>Action</th>
+                <th>Name</th>
+                <th>Sex</th>
+                <th>Index Number</th>
+                <th>Phone</th>
+                <th>Award</th>            
+                <th>Reason</th>            
+                <th>Action</th>
 						 </tr>
 					 </thead>
 					 <tbody>
-					     @foreach($applicants as $key => $applicant)
-						 <tr>
-                            <td>{{ ($key + 1) }}</td>
-						    <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-							<td>{{ $applicant->gender }}</td>
-							<td>{{ $applicant->index_number }}</td>
-                            <td>{{ $applicant->phone }}</td>
-                            <td>{{ $applicant->programLevel->name }}</td>
-                            <td>
-                                @foreach($errors as $error) 
-                                    @if($error->applicant_id == $applicant->id)
-                                        {{ $error->remarks }}
-                                        @break
-                                    @endif
-                                @endforeach
-                            </td>
-							<td> Hii bado </td>
-
-						 </tr>
+					    @foreach($applicants as $key => $applicant)
+                <tr>
+                    <td>{{ ($key + 1) }}</td>
+                    <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                    <td>{{ $applicant->gender }}</td>
+                    <td>{{ $applicant->index_number }}</td>
+                    <td>{{ $applicant->phone }}</td>
+                    <td>{{ $applicant->programLevel->name }}</td>
+                    <td>
+                        @foreach($errors as $error) 
+                            @if($error->applicant_id == $applicant->id)
+                                {{ $error->remarks }}
+                                @break
+                            @endif
+                        @endforeach
+                    </td>
+                    <td>
+                        @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
+                          {!! Form::checkbox('submit_status',$applicant->id,true) !!}
+                        @endif </td>
+                </tr>
 						 @endforeach
 					 <tbody>
 				  </table>
