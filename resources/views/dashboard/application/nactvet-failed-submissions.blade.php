@@ -116,7 +116,7 @@
                         @endforeach
                     </td>
                     <td>
-                      {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases/','class'=>'ss-form-processing']) !!}
+                      {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
 
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
                           {!! Form::checkbox('verification_ids[]',$applicant->id,true) !!}
