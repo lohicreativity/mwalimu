@@ -8662,8 +8662,6 @@ class ApplicationController extends Controller
         }
 
         foreach($applicants as $applicant){
-            if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
-                                     ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->count() == 0){
 
                 $f6indexno = null;
                 foreach ($applicant->nectaResultDetails as $detail) {
@@ -8779,7 +8777,7 @@ class ApplicationController extends Controller
 
                 //close cURL resource
                 curl_close($ch);
-            }}
+            }
     }
     /**
      * Show Tamisemi applicants
