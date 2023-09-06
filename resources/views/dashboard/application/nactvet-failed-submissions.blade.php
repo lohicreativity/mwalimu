@@ -99,7 +99,6 @@
                 <th>Status</th>             
                 <th>Action</th>
 						 </tr>
-             <tr></tr>
 					 </thead>
 					 <tbody>
 					    @foreach($applicants as $key => $applicant)
@@ -121,7 +120,7 @@
 
 						 @endforeach
              <tr>
-              <td colspan="7"><button type="submit" class="btn btn-primary">Re-submit</button></td>
+              <td colspan="9"><button type="submit" class="btn btn-primary">Re-submit</button></td>
             </tr>
 					 <tbody>
 				  </table>
