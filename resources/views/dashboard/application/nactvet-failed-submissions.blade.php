@@ -123,10 +123,11 @@
                           {!! Form::checkbox('verification_ids[]',$applicant->verification_id,true) !!}
                         @endif </td>
                 </tr>
-                <tr>
-                  <td colspan="7"><button type="submit" class="btn btn-primary">Re-submit</button></td>
-                </tr>
+
 						 @endforeach
+             <tr>
+              <td colspan="7"><button type="submit" class="btn btn-primary">Re-submit</button></td>
+            </tr>
 					 <tbody>
 				  </table>
           {!! Form::close() !!}
