@@ -8633,8 +8633,7 @@ class ApplicationController extends Controller
         ->join('nacte_result_details as d','a.id','=','d.applicant_id')->where('d.verified',1)
         ->get(); */
         
-        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
-        'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id')
+        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
         ->whereIn('id',$request->get('verification_ids'))
         ->with(['selections:id,status,campus_program_id,applicant_id',
                 'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
@@ -8643,6 +8642,7 @@ class ApplicationController extends Controller
                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                 ->where('verified',1);},
                 'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name'])->get();
+return $applicants;
 
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$applicants[0]->application_window_id)->get();
 
