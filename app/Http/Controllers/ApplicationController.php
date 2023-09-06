@@ -8632,6 +8632,7 @@ class ApplicationController extends Controller
         ->join('necta_result_details as c','a.id','=','c.applicant_id')->where('c.exam_id',2)->where('c.verified',1)
         ->join('nacte_result_details as d','a.id','=','d.applicant_id')->where('d.verified',1)
         ->get(); */
+        $staff = User::find(Auth::user()->id)->staff;
         
         $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
         ->whereIn('id',$request->get('applicant_ids'))
@@ -8644,6 +8645,21 @@ class ApplicationController extends Controller
                 'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->get(); 
 
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$applicants[0]->application_window_id)->get();
+
+        $tcu_username = $tcu_token = $nactvet_authorization_key = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
+
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
+
+        }elseif($staff->campus_id == 3){
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
+        }
 
         foreach($applicants as $applicant){
             if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
