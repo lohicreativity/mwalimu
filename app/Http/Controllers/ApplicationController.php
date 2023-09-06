@@ -8722,6 +8722,7 @@ class ApplicationController extends Controller
                 }
                 $verification_id = null;
                 foreach($errors as $error){
+                    return $error;
                     if($error->applicant_id == $applicant->id){
                         $verification_id = $error->verification_id;
                         break;
