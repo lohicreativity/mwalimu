@@ -108,7 +108,7 @@
                     <td>{{ $applicant->gender }}</td>
                     <td>{{ $applicant->index_number }}</td>
                     <td>{{ $applicant->phone }}</td>
-                    <td></td>
+                    <td>@if($applicant->program_level_id == 1) BTC @elseif($applicant->program_level_id == 2) OD @else BD @endif</td>
                     <td>{{ $applicant->remarks }}</td>
                     <td> @if(empty($applicant->submission_status)) PENDING @else $applicant->submission_status @endif </td>
                     <td>
