@@ -8542,11 +8542,11 @@ class ApplicationController extends Controller
     public function showNACTVETFeedbackCorrectionList(Request $request)
     {    
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->get();
-        $applicants = [];
+/*         $applicants = [];
         foreach($errors as $error){
             $applicants[] = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
                                     ->with('programLevel:id,name')->first();
-        }
+        } */
 
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,phone,a.program_level_id,b.verification_id,b.remark'))
                             ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
