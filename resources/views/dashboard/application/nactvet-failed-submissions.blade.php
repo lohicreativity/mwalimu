@@ -81,9 +81,8 @@
 			 @if(count($applicants) != 0)
 			 <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3> <br><br>
-                 <a href="{{ url('application/resubmit-nactvet-error-cases/download?applica='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Re-submit Applicants to NACTVET</a>
-
+                 <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3>
+            
                </div>
                <!-- /.card-header -->
                <div class="card-body">

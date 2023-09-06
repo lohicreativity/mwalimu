@@ -8624,7 +8624,78 @@ class ApplicationController extends Controller
 
 
     public function resubmitNACTVETCorrectionList(Request $request){
-        return $request;
+        $applicants = Applicant::whereIn('id',$request->get('verification_ids'))->get();
+
+        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,
+                                                                     b.verification_id,b.remarks,c.index_number as formsix_index_no,d.registration_number,d.diploma_graduation_year'))
+        ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
+        ->join('necta_result_details as c','a.id','=','c.applicant_id')->where('c.exam_id',2)->where('verified',1)
+        ->join('nacte_result_details as d','a.id','=','c.applicant_id')->where('verified',1)
+        ->get();
+        
+
+/*         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,surname,a.email,address,index_number,a.nationality,b.status,c.name as campus,
+        d.name as region, e.end_date,f.name as intake,h.name as program,h.min_duration,i.name as award'))
+->where('a.program_level_id',$request->get('program_level_id'))
+->where('a.status','SELECTED')
+->where('a.campus_id', $staff->campus_id)->where('a.application_window_id',$request->get('application_window_id'))
+->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})
+
+->join('applicant_program_selections as b','a.id','=','b.applicant_id')->where('b.status','SELECTED')->where('b.application_window_id',$request->get('application_window_id'))
+->join('campuses as c','c.id','=','a.campus_id')
+->join('regions as d','d.id','=','a.region_id')
+->join('application_windows as e','e.id','=','a.application_window_id')
+->join('intakes as f','f.id','=','a.intake_id')
+->join('campus_program as g','g.id','=','b.campus_program_id')
+->join('programs as h','h.id','=','g.program_id')
+->join('awards as i','i.id','=','h.award_id')
+->get(); */
+
+foreach($applicants as $applicant){
+    
+    $f6indexno = null;
+    foreach ($applicant->nectaResultDetails as $detail) {
+        if($detail->exam_id == 2 && $detail->verified == 1){
+        $f6indexno = $detail->index_number;
+        }
+    }
+
+    $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
+    foreach($applicant->nacteResultDetails as $detail){
+        if(str_contains(strtolower($detail->programme),'basic')){
+            $nta4_reg_no = $detail->registration_number;
+            $nta4_graduation_year = $detail->diploma_graduation_year;
+
+        }elseif(str_contains(strtolower($detail->programme),'diploma')){
+            $nta5_reg_no = $detail->registration_number;
+            $nta5_graduation_year = $detail->diploma_graduation_year;
+        }
+    }
+
+    $f4indexno = $f4_exam_year = null;
+    if(str_contains(strtolower($applicant->index_number),'eq')){
+        $f4_exam_year = explode('/',$applicant->index_number)[1];
+        $f4indexno = explode('/',$applicant->index_number)[0];
+    }else{
+        $f4_exam_year = explode('/', $applicant->index_number)[2];
+        $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
+    }
+    
+    $f6_exam_year = null;
+    if(!empty($f6indexno)){
+        if(str_contains(strtolower($f6indexno),'eq')){
+            $f6_exam_year = explode('/',$f6indexno)[1];
+            $f6indexno = explode('/',$f6indexno)[0];
+        }else{
+            $f6_exam_year = explode('/', $f6indexno)[2];
+            $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
+        }
+    }
+}
+
+
+
+        return $applicants;
 
     }
     /**
