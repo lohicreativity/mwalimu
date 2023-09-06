@@ -8632,9 +8632,9 @@ class ApplicationController extends Controller
         ->join('necta_result_details as c','a.id','=','c.applicant_id')->where('c.exam_id',2)->where('c.verified',1)
         ->join('nacte_result_details as d','a.id','=','d.applicant_id')->where('d.verified',1)
         ->get(); */
-        return 1;
+        
         $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
-        ->where('id','23N70161857KE')->get();
+        ->where('id',$request->get('applicant_ids'))->get();
         /* ->with(['selections:id,status,campus_program_id,applicant_id',
                 'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
                 'selections.campusProgram.program.ntaLevel:id,name',
@@ -8642,7 +8642,7 @@ class ApplicationController extends Controller
                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                 ->where('verified',1);},
                 'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->get(); */
-return $applicants;
+
 
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$applicants[0]->application_window_id)->get();
 
