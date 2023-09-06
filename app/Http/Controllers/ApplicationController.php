@@ -8548,7 +8548,7 @@ class ApplicationController extends Controller
                                     ->with('programLevel:id,name')->first();
         } */
 
-        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,b.verification_id,b.remarks'))
+        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,b.verification_id,b.remarks,b.status as submission_status'))
                             ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->where('verification_id','!=',null)
                             //->with('programLevel:id,name')
                             ->get();
@@ -8777,6 +8777,10 @@ class ApplicationController extends Controller
 
                 //close cURL resource
                 curl_close($ch);
+
+/*                 if(response is successfu){
+                    ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->update(['status'=>'RESUBMITTED']);
+                } */
             }
     }
     /**

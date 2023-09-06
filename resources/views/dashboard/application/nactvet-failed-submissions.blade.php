@@ -95,7 +95,8 @@
                 <th>Index Number</th>
                 <th>Phone</th>
                 <th>Award</th>            
-                <th>Reason</th>            
+                <th>Reason</th>
+                <th>Status</th>             
                 <th>Action</th>
 						 </tr>
 					 </thead>
@@ -108,9 +109,8 @@
                     <td>{{ $applicant->index_number }}</td>
                     <td>{{ $applicant->phone }}</td>
                     <td></td>
-                    <td>
-{{ $applicant->remarks }}
-                    </td>
+                    <td>{{ $applicant->remarks }}</td>
+                    <td> @if(empty($applicant->submission_status)) PENDING @else $applicant->submission_status @endif </td>
                     <td>
                       {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
