@@ -8549,7 +8549,7 @@ class ApplicationController extends Controller
         } */
 
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,b.verification_id,b.remarks'))
-                            ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
+                            ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->where('verification_id','!=',null)
                             //->with('programLevel:id,name')
                             ->get();
 
@@ -8633,7 +8633,7 @@ class ApplicationController extends Controller
         ->join('nacte_result_details as d','a.id','=','d.applicant_id')->where('d.verified',1)
         ->get(); */
         $staff = User::find(Auth::user()->id)->staff;
-        
+
         $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
         ->whereIn('id',$request->get('applicant_ids'))
         ->with(['selections:id,status,campus_program_id,applicant_id',
