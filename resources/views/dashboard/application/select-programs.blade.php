@@ -61,24 +61,28 @@
                     <tbody>
                     <tr>
                        <td>1</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1)) 1st Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1)) 1st Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
                     </tr>
                     @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1))
                     <tr>
                        <td>2</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2)) 2nd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2)) 2nd Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
                     </tr>
                     @endif
                     @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2))
                     <tr>
                        <td>3</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3)) 3rd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3)) 3rd Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
                     </tr>
                     @endif
                     @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3))
                     <tr>
                        <td>4</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,4)) 4th Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,4)) 4th Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
                     </tr>
                     @endif
                   </tbody>
@@ -87,7 +91,7 @@
             </div>
             @endif
 
-             <div class="modal fade" id="ss-first-choice">
+              <div class="modal fade" id="ss-first-choice">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -115,10 +119,52 @@
                                 @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
-                                  {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+        
+                                  @php
+                                    $o_level_points = $a_level_points = $diploma_grade = $open_grade = null;
+                                    if(count($o_level_selection_points) > 0){
+                                      foreach ($o_level_selection_points as $key => $value) {
+                                        if($key == $prog->id){
+                                          $o_level_points = $value;
+                                          break;
+                                        }
+                                      }
+                                    }
 
-                                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                    if(count($a_level_selection_points) > 0){
+                                      foreach ($a_level_selection_points as $key => $value) {
+                                        if($key == $prog->id){
+                                          $a_level_points = $value;
+                                          break;
+                                        }
+                                      }
+                                    }
 
+                                    if(count($diploma_selection_grade) > 0){
+                                      foreach ($diploma_selection_grade as $key => $value) {
+                                        if($key == $prog->id){
+                                          $diploma_grade = $value;
+                                          break;
+                                        }
+                                      }
+                                    }
+  
+                                    if(count($open_selection_grade) > 0){
+                                      foreach ($open_selection_grade as $key => $value) {
+                                        if($key == $prog->id){
+                                          $open_grade = $value;
+                                          break;
+                                        }
+                                      }
+                                    }
+                              @endphp
+                              {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+
+                                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                 {!! Form::input('hidden','o_level_points',$o_level_points) !!}
+                                 {!! Form::input('hidden','a_level_points',$a_level_points) !!}
+                                 {!! Form::input('hidden','diploma_grade', $diploma_grade) !!}
+                                 {!! Form::input('hidden','open_grade', $open_grade) !!}
                                      {!! Form::input('hidden','campus_program_id',$prog->id) !!}
 
                                      {!! Form::input('hidden','choice',1) !!}
@@ -172,15 +218,54 @@
                                 @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
-                                  {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+                                @php
+                                $o_level_points = $a_level_points = $diploma_grade = $open_grade = null;
+                                if(count($o_level_selection_points) > 0){
+                                  foreach ($o_level_selection_points as $key => $value) {
+                                    if($key == $prog->id){
+                                      $o_level_points = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                if(count($a_level_selection_points) > 0){
+                                  foreach ($a_level_selection_points as $key => $value) {
+                                    if($key == $prog->id){
+                                      $a_level_points = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+                                if(count($diploma_selection_grade) > 0){
+                                  foreach ($diploma_selection_grade as $key => $value) {
+                                    if($key == $prog->id){
+                                      $diploma_grade = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','choice',2) !!}
+                                if(count($open_selection_grade) > 0){
+                                  foreach ($open_selection_grade as $key => $value) {
+                                    if($key == $prog->id){
+                                      $open_grade = $value;
+                                      break;
+                                    }
+                                  }
+                                }
+                              @endphp
+                              {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
 
-                                     {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                 {!! Form::input('hidden','o_level_points',$o_level_points) !!}
+                                 {!! Form::input('hidden','a_level_points',$a_level_points) !!}
+                                 {!! Form::input('hidden','diploma_grade', $diploma_grade) !!}
+                                 {!! Form::input('hidden','open_grade', $open_grade) !!}
+                                 {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+                                 {!! Form::input('hidden','choice',2) !!}
+                                 {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                 <button type="submit" class="btn btn-primary">Select</button>
                                   {!! Form::close() !!}
                                 @endif
@@ -229,15 +314,54 @@
                                 @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
-                                  {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+                                @php
+                                $o_level_points = $a_level_points = $diploma_grade = $open_grade = null;
+                                if(count($o_level_selection_points) > 0){
+                                  foreach ($o_level_selection_points as $key => $value) {
+                                    if($key == $prog->id){
+                                      $o_level_points = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                if(count($a_level_selection_points) > 0){
+                                  foreach ($a_level_selection_points as $key => $value) {
+                                    if($key == $prog->id){
+                                      $a_level_points = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+                                if(count($diploma_selection_grade) > 0){
+                                  foreach ($diploma_selection_grade as $key => $value) {
+                                    if($key == $prog->id){
+                                      $diploma_grade = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','choice',3) !!}
+                                if(count($open_selection_grade) > 0){
+                                  foreach ($open_selection_grade as $key => $value) {
+                                    if($key == $prog->id){
+                                      $open_grade = $value;
+                                      break;
+                                    }
+                                  }
+                                }
+                              @endphp
+                              {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
 
-                                     {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                 {!! Form::input('hidden','o_level_points',$o_level_points) !!}
+                                 {!! Form::input('hidden','a_level_points',$a_level_points) !!}
+                                 {!! Form::input('hidden','diploma_grade', $diploma_grade) !!}
+                                 {!! Form::input('hidden','open_grade', $open_grade) !!}
+                                 {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+                                 {!! Form::input('hidden','choice',3) !!}
+                                 {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                 <button type="submit" class="btn btn-primary">Select</button>
                                   {!! Form::close() !!}
                                 @endif
@@ -286,15 +410,54 @@
                                 @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
-                                  {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+                                @php
+                                $o_level_points = $a_level_points = $diploma_grade = $open_grade = null;
+                                if(count($o_level_selection_points) > 0){
+                                  foreach ($o_level_selection_points as $key => $value) {
+                                    if($key == $prog->id){
+                                      $o_level_points = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                if(count($a_level_selection_points) > 0){
+                                  foreach ($a_level_selection_points as $key => $value) {
+                                    if($key == $prog->id){
+                                      $a_level_points = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+                                if(count($diploma_selection_grade) > 0){
+                                  foreach ($diploma_selection_grade as $key => $value) {
+                                    if($key == $prog->id){
+                                      $diploma_grade = $value;
+                                      break;
+                                    }
+                                  }
+                                }
 
-                                     {!! Form::input('hidden','choice',4) !!}
+                                if(count($open_selection_grade) > 0){
+                                  foreach ($open_selection_grade as $key => $value) {
+                                    if($key == $prog->id){
+                                      $open_grade = $value;
+                                      break;
+                                    }
+                                  }
+                                }
+                              @endphp
+                              {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
 
-                                     {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                 {!! Form::input('hidden','o_level_points',$o_level_points) !!}
+                                 {!! Form::input('hidden','a_level_points',$a_level_points) !!}
+                                 {!! Form::input('hidden','diploma_grade', $diploma_grade) !!}
+                                 {!! Form::input('hidden','open_grade', $open_grade) !!}
+                                 {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+                                 {!! Form::input('hidden','choice',4) !!}
+                                 {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                 <button type="submit" class="btn btn-primary">Select</button>
                                   {!! Form::close() !!}
                                 @endif
