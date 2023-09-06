@@ -108,14 +108,9 @@
                     <td>{{ $applicant->gender }}</td>
                     <td>{{ $applicant->index_number }}</td>
                     <td>{{ $applicant->phone }}</td>
-                    <td>{{ $applicant->programLevel->name }}</td>
+                    <td></td>
                     <td>
-                        @foreach($errors as $error) 
-                            @if($error->applicant_id == $applicant->id)
-                                {{ $error->remarks }}
-                                @break
-                            @endif
-                        @endforeach
+{{ $applicant->remarks }}
                     </td>
                     <td>
                       {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
