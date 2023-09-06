@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('regulator-failed-cases',[ApplicationController::class,'showRegulatorFailedCases']);
     Route::get('nactvet-error-cases',[ApplicationController::class,'showNACTVETFeedbackCorrectionList']);
     Route::post('nactvet-error-cases/get',[ApplicationController::class,'getNACTVETFeedbackCorrectionList']);
+    Route::post('resubmit-nactvet-error-cases',[ApplicationController::class,'resubmitNACTVETCorrectionList']);
 
 	Route::get('application-windows', [ApplicationWindowController::class,'index']);
 	Route::post('application-window/store', [ApplicationWindowController::class,'store']);
