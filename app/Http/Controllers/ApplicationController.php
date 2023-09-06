@@ -8547,9 +8547,9 @@ class ApplicationController extends Controller
             $applicants[] = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
                                     ->with('programLevel:id,name')->first();
         } */
-
+        $staff = User::find(Auth::user()->id)->staff;
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,b.verification_id,b.remarks,b.status as submission_status'))
-                            ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->where('verification_id','!=',null)
+                            ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->where('verification_id','!=',null)->where('a.campus_id',$staff->campus_id)
                             //->with('programLevel:id,name')
                             ->get();
 
@@ -8642,8 +8642,9 @@ class ApplicationController extends Controller
                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                 ->where('verified',1);},
-                'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->get(); 
-
+                'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
+                ->where('campus_id',$staff->campus_id)->get(); 
+return $applicants;
         $errors = ApplicantFeedBackCorrection::whereNotNull('verification_id')->get();
 
         $tcu_username = $tcu_token = $nactvet_authorization_key = null;
