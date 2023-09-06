@@ -72,7 +72,7 @@
                    <div class="ss-form-actions">
                     <input type="submit" name="action" class="btn btn-primary" value="Retrieve Error Cases">
                    </div>
- 
+
                   {!! Form::close() !!}
                </div>
              </div>
@@ -81,7 +81,7 @@
 			 @if(count($applicants) != 0)
 			 <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3>
+                 <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3> <br><br>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -116,13 +116,22 @@
                         @endforeach
                     </td>
                     <td>
+                      {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases/','class'=>'ss-form-processing']) !!}
+
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
-                          {!! Form::checkbox('submit_status',$applicant->id,true) !!}
+                          {!! Form::checkbox('verification_ids[]',$applicant->id,true) !!}
                         @endif </td>
+                        
                 </tr>
 						 @endforeach
 					 <tbody>
 				  </table>
+
+          <div class="ss-form-actions">
+            <input type="submit" name="action" class="btn btn-primary" value="Re-submit">
+           </div>
+
+          {!! Form::close() !!}
 			   </div>
 			  </div>
 			 @endif

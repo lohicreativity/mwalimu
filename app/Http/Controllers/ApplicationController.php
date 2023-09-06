@@ -8617,6 +8617,11 @@ class ApplicationController extends Controller
 
     }
 
+
+    public function resubmitNACTVETCorrectionList(Request $request){
+        return $request;
+
+    }
     /**
      * Show Tamisemi applicants
      */
