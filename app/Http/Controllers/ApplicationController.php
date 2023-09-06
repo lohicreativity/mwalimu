@@ -8634,7 +8634,7 @@ class ApplicationController extends Controller
         ->get(); */
         
         $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
-        ->whereIn('id',$request->get('verification_ids'))->get();
+        ->where('id','23N70161857KE')->get();
         /* ->with(['selections:id,status,campus_program_id,applicant_id',
                 'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
                 'selections.campusProgram.program.ntaLevel:id,name',
