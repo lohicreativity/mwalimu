@@ -8582,7 +8582,7 @@ class ApplicationController extends Controller
         }
 
         $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/feedbackcorrection/'.$campus_program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$nacte_get_feedbackcorrection_key);
-        return $result;
+
         if($result['code'] == 200){
             foreach ($result['params'] as $res) {
                 $applicant = Applicant::select('id')->where('index_number',$res['form_four_indexnumber'])->where('campus_id',session('staff_campus_id'))
@@ -8606,6 +8606,9 @@ class ApplicationController extends Controller
 
                 }
             }
+        }elseif($result['code'] == 404){
+            return redirect()->back()->with('message','No data found from NACTVET');
+        
         }else{
             return redirect()->back()->with('error','Error occured when sending request to NACTVET');
         }
