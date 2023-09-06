@@ -8697,6 +8697,7 @@ class ApplicationController extends Controller
                 $ch = curl_init($url);
 
                 $string = $approving_selection->campusProgram->program->ntaLevel->name;
+                return $string;
                 $last_character = (strlen($string) - 1);
 
                 $f4indexno = $f4_exam_year = null;
