@@ -82,6 +82,8 @@
 			 <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3> <br><br>
+                 <a href="{{ url('application/resubmit-nactvet-error-cases/download?applica='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Re-submit Applicants to NACTVET</a>
+
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -117,20 +119,16 @@
                     </td>
                     <td>
                       {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
-
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
-                          {!! Form::checkbox('verification_ids[]',$applicant->id,true) !!}
+                          {!! Form::checkbox('verification_ids[]',$applicant->verification_id,true) !!}
                         @endif </td>
-                        
+                </tr>
+                <tr>
+                  <td colspan="7"><button type="submit" class="btn btn-primary">Re-submit</button></td>
                 </tr>
 						 @endforeach
 					 <tbody>
 				  </table>
-
-          <div class="ss-form-actions">
-            <input type="submit" name="action" class="btn btn-primary" value="Re-submit">
-           </div>
-
           {!! Form::close() !!}
 			   </div>
 			  </div>

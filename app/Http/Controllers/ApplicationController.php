@@ -8547,7 +8547,7 @@ class ApplicationController extends Controller
             $applicants[] = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
                                     ->with('programLevel:id,name')->first();
         }
-
+return $errors;
         $data = [
         'applicants'=>$applicants,
         'errors' => $errors,
