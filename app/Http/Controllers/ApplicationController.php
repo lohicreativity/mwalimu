@@ -8634,15 +8634,15 @@ class ApplicationController extends Controller
         ->get(); */
         
         $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
-        ->where('id',$request->get('applicant_ids'))->get();
-        /* ->with(['selections:id,status,campus_program_id,applicant_id',
+        ->where('id',$request->get('applicant_ids'))
+        ->with(['selections:id,status,campus_program_id,applicant_id',
                 'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
                 'selections.campusProgram.program.ntaLevel:id,name',
                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
                 ->where('verified',1);},
-                'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->get(); */
-
+                'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->get(); 
+return $applicants;
 
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$applicants[0]->application_window_id)->get();
 
