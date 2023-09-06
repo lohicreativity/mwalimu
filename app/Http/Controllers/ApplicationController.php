@@ -8662,7 +8662,7 @@ class ApplicationController extends Controller
         }
 
         foreach($applicants as $applicant){
-
+return 1;
                 $f6indexno = null;
                 foreach ($applicant->nectaResultDetails as $detail) {
                     if($detail->exam_id == 2 && $detail->verified == 1){
