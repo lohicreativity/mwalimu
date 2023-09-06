@@ -8626,7 +8626,7 @@ class ApplicationController extends Controller
     public function resubmitNACTVETCorrectionList(Request $request){
         $applicants = Applicant::whereIn('id',$request->get('verification_ids'))->get();
 
-        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,
+        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,a.first_name,a.middle_name,a.surname,a.index_number,a.gender,phone,a.program_level_id,
                                                                      b.verification_id,b.remarks,c.index_number as formsix_index_no,d.registration_number,d.diploma_graduation_year'))
         ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
         ->join('necta_result_details as c','a.id','=','c.applicant_id')->where('c.exam_id',2)->where('verified',1)
