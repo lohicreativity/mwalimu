@@ -8634,7 +8634,7 @@ class ApplicationController extends Controller
         ->get(); */
         $staff = User::find(Auth::user()->id)->staff;
 
-        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id')
+        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id','application_window_id')
         ->whereIn('id',$request->get('applicant_ids'))
         ->with(['selections:id,status,campus_program_id,applicant_id',
                 'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
@@ -8718,7 +8718,7 @@ class ApplicationController extends Controller
                         $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
                     }
                 }
-                return 2;
+                
                 $verification_id = null;
                 foreach($errors as $error){
                     return $error;
