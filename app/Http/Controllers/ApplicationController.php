@@ -8622,129 +8622,124 @@ class ApplicationController extends Controller
 
     }
 
-
     public function resubmitNACTVETCorrectionList(Request $request){
-/*         $applicants = Applicant::whereIn('id',$request->get('verification_ids'))->get();
-
-        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,a.first_name,a.middle_name,a.surname,a.index_number,a.gender,phone,a.program_level_id,
-                                                                     b.verification_id,b.remarks,c.index_number as formsix_index_no,d.registration_number,d.diploma_graduation_year'))
-        ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
-        ->join('necta_result_details as c','a.id','=','c.applicant_id')->where('c.exam_id',2)->where('c.verified',1)
-        ->join('nacte_result_details as d','a.id','=','d.applicant_id')->where('d.verified',1)
-        ->get(); */
-        $staff = User::find(Auth::user()->id)->staff;
-
-        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id','application_window_id')
-        ->whereIn('id',$request->get('applicant_ids'))
-        ->with(['selections:id,status,campus_program_id,applicant_id',
-                'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
-                'selections.campusProgram.program.ntaLevel:id,name',
-                'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
-                ->where('verified',1);},
-                'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
-                ->where('campus_id',$staff->campus_id)->get(); 
-
-        $errors = ApplicantFeedBackCorrection::whereNotNull('verification_id')->get();
-
-        $tcu_username = $tcu_token = $nactvet_authorization_key = null;
-        if($staff->campus_id == 1){
-            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
-            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
-            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
-
-        }elseif($staff->campus_id == 2){
-            $tcu_username = config('constants.TCU_USERNAME_KARUME');
-            $tcu_token = config('constants.TCU_TOKEN_KARUME');
-            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
-
-        }elseif($staff->campus_id == 3){
-            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
-        }
-
-        foreach($applicants as $applicant){
-
-                $f6indexno = null;
-                foreach ($applicant->nectaResultDetails as $detail) {
-                    if($detail->exam_id == 2 && $detail->verified == 1){
-                    $f6indexno = $detail->index_number;
-                    }
+        /*         $applicants = Applicant::whereIn('id',$request->get('verification_ids'))->get();
+        
+                $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,a.first_name,a.middle_name,a.surname,a.index_number,a.gender,phone,a.program_level_id,
+                                                                             b.verification_id,b.remarks,c.index_number as formsix_index_no,d.registration_number,d.diploma_graduation_year'))
+                ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')
+                ->join('necta_result_details as c','a.id','=','c.applicant_id')->where('c.exam_id',2)->where('c.verified',1)
+                ->join('nacte_result_details as d','a.id','=','d.applicant_id')->where('d.verified',1)
+                ->get(); */
+                $staff = User::find(Auth::user()->id)->staff;
+        
+                $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id','application_window_id')
+                ->whereIn('id',$request->get('applicant_ids'))
+                ->with(['selections:id,status,campus_program_id,applicant_id',
+                        'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
+                        'selections.campusProgram.program.ntaLevel:id,name',
+                        'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                        'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
+                        ->where('verified',1);},
+                        'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
+                        ->where('campus_id',$staff->campus_id)->get(); 
+        
+                $errors = ApplicantFeedBackCorrection::whereNotNull('verification_id')->get();
+        
+                $nactvet_authorization_key = null;
+        
+                if($staff->campus_id == 1){
+                    $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+                    $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+                    $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
+        
+                }elseif($staff->campus_id == 2){
+                    $tcu_username = config('constants.TCU_USERNAME_KARUME');
+                    $tcu_token = config('constants.TCU_TOKEN_KARUME');
+                    $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
+        
+                }elseif($staff->campus_id == 3){
+                    $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
                 }
-
-                $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
-                foreach($applicant->nacteResultDetails as $detail){
-                    if(str_contains(strtolower($detail->programme),'basic')){
-                        $nta4_reg_no = $detail->registration_number;
-                        $nta4_graduation_year = $detail->diploma_graduation_year;
-
-                    }elseif(str_contains(strtolower($detail->programme),'diploma')){
-                        $nta5_reg_no = $detail->registration_number;
-                        $nta5_graduation_year = $detail->diploma_graduation_year;
-                    }
-                }
-                $selected_programs = array();
-                $approving_selection = $regulator_programme_id = null;
-                foreach($applicant->selections as $selection){
-                    $selected_programs[] = $selection->campusProgram->regulator_code;
-                    if($selection->status == 'APPROVING'){
-                        $approving_selection = $selection;
-                        $regulator_programme_id = $selection->campusProgram->regulator_code;
-
-                    }
-                }
-
-                $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/addcorrection';
-
-                $ch = curl_init($url);
-
-                $string = $approving_selection->campusProgram->program->ntaLevel->name;
-                $last_character = (strlen($string) - 1);
-
-                $f4indexno = $f4_exam_year = null;
-                if(str_contains(strtolower($applicant->index_number),'eq')){
-                    $f4_exam_year = explode('/',$applicant->index_number)[1];
-                    $f4indexno = explode('/',$applicant->index_number)[0];
-                }else{
-                    $f4_exam_year = explode('/', $applicant->index_number)[2];
-                    $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
-                }
-
-                $f6_exam_year = null;
-                if(!empty($f6indexno)){
-                    if(str_contains(strtolower($f6indexno),'eq')){
-                        $f6_exam_year = explode('/',$f6indexno)[1];
-                        $f6indexno = explode('/',$f6indexno)[0];
-                    }else{
-                        $f6_exam_year = explode('/', $f6indexno)[2];
-                        $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
-                    }
-                }
-                
-                $verification_id = null;
-                foreach($errors as $error){
-                    if($error->applicant_id == $applicant->id){
-                        $verification_id = $error->verification_id;
-                        break;
-                    }
-                }
-
-                $data = array(
-                    'heading' => array(
-                        'authorization' => $nactvet_authorization_key, 
-                        'intake' => strtoupper($applicant->intake->name),
-                        'programme_id' => $regulator_programme_id,
-                        'academic_year' => date('Y'),
-                        'level' => substr($string, $last_character),
-                    ),
-                    'students' => array(
-                        ['particulars' => array(
-                                'student_verification_id' => $verification_id, 
+        
+                foreach($applicants as $applicant){
+        
+                        $f6indexno = null;
+                        foreach ($applicant->nectaResultDetails as $detail) {
+                            if($detail->exam_id == 2 && $detail->verified == 1){
+                            $f6indexno = $detail->index_number;
+                            }
+                        }
+        
+                        $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
+                        foreach($applicant->nacteResultDetails as $detail){
+                            if(str_contains(strtolower($detail->programme),'basic')){
+                                $nta4_reg_no = $detail->registration_number;
+                                $nta4_graduation_year = $detail->diploma_graduation_year;
+        
+                            }elseif(str_contains(strtolower($detail->programme),'diploma')){
+                                $nta5_reg_no = $detail->registration_number;
+                                $nta5_graduation_year = $detail->diploma_graduation_year;
+                            }
+                        }
+                        $selected_programs = array();
+                        $approving_selection = $regulator_programme_id = null;
+                        foreach($applicant->selections as $selection){
+                            $selected_programs[] = $selection->campusProgram->regulator_code;
+                            if($selection->status == 'APPROVING'){
+                                $approving_selection = $selection;
+                                $regulator_programme_id = $selection->campusProgram->regulator_code;
+        
+                            }
+                        }
+        
+                        $string = $approving_selection->campusProgram->program->ntaLevel->name;
+                        $last_character = (strlen($string) - 1);
+        
+                        $f4indexno = $f4_exam_year = null;
+                        if(str_contains(strtolower($applicant->index_number),'eq')){
+                            $f4_exam_year = explode('/',$applicant->index_number)[1];
+                            $f4indexno = explode('/',$applicant->index_number)[0];
+                        }else{
+                            $f4_exam_year = explode('/', $applicant->index_number)[2];
+                            $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
+                        }
+        
+                        $f6_exam_year = null;
+                        if(!empty($f6indexno)){
+                            if(str_contains(strtolower($f6indexno),'eq')){
+                                $f6_exam_year = explode('/',$f6indexno)[1];
+                                $f6indexno = explode('/',$f6indexno)[0];
+                            }else{
+                                $f6_exam_year = explode('/', $f6indexno)[2];
+                                $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
+                            }
+                        }
+                        
+                        $verification_id = null;
+                        foreach($errors as $error){
+                            if($error->applicant_id == $applicant->id){
+                                $verification_id = $error->verification_id;
+                                break;
+                            }
+                        }
+        
+                    $data = array(
+                        'heading' => array(
+                            'authorization' => $nactvet_authorization_key,
+                            'intake' => 'SEPTEMBER',
+                            'programme_id' => $regulator_programme_id,
+                            'academic_year' => date('Y'),
+                            'level' => substr($string, $last_character),
+                        ),
+                        'students' => array(
+                            ['student' => array(
+                                'student_verification_id' => $verification_id,
                                 'firstname' => $applicant->first_name,
                                 'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
                                 'surname' => $applicant->surname,
-                                'email_address' => $applicant->email,
                                 'mobile_number' => str_replace('255', '0',$applicant->phone),
-                                //'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
+                                'email_address' => $applicant->email,
                                 'form_four_indexnumber' => $f4indexno,
                                 'form_four_year' => $f4_exam_year,
                                 'form_six_indexnumber' => $f6indexno? $f6indexno : '',
@@ -8753,37 +8748,40 @@ class ApplicationController extends Controller
                                 'NTA4_grad_year' => !empty($nta4_graduation_year)? explode('/',$nta4_graduation_year)[1] : '',
                                 'NTA5_reg' => !empty($nta5_reg_no)? $nta5_reg_no : '',
                                 'NTA5_grad_year' => !empty($nta5_graduation_year)? explode('/',$nta5_graduation_year)[1] : '',
-
+        
                             )
-                        ],
-                        
-                    )
-                );
-
-        return $data;
-
-                $payload = json_encode(array($data));
-
-                //attach encoded JSON string to the POST fields
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-                //set the content type to application/json
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-
-                //return response instead of outputting
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                //execute the POST request
-                $result = curl_exec($ch);
-
-                //close cURL resource
-                curl_close($ch);
-
-/*                 if(response is successfu){
-                    ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->update(['status'=>'RESUBMITTED']);
-                } */
+                            ],
+        
+                        )
+                    );
+        
+                       $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/addcorrection';
+                       $ch = curl_init($url);
+        
+                        $payload = json_encode(array($data));
+        
+                        //attach encoded JSON string to the POST fields
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        
+                        //set the content type to application/json
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        
+                        //return response instead of outputting
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+                        //execute the POST request
+                        $result = curl_exec($ch);
+        
+                        //close cURL resource
+                        curl_close($ch);
+                        $results = json_decode($result, true);
+                        $results ['code'];
+                        if($results['code']==200){
+                            ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->update(['status'=>'RESUBMITTED']);
+                        }
+                       
+                    }
             }
-    }
     /**
      * Show Tamisemi applicants
      */
