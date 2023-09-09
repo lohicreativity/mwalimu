@@ -430,7 +430,7 @@ class ApplicationController extends Controller
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
                                             'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
- 
+                                            
  /*            $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
            ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch)->count();
  */
@@ -470,7 +470,8 @@ class ApplicationController extends Controller
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);;
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+                                            
 /*             $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                 $query->where('id',$request->get('application_window_id'));
            })->whereHas('selections')
@@ -3439,7 +3440,7 @@ class ApplicationController extends Controller
                                 $batch_no = $batch->batch_no;
 
                             }else{
-                                
+
                             $previous_batch = null;
 
                             $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
@@ -6087,11 +6088,12 @@ class ApplicationController extends Controller
                         <f4indexno>'.$applicant->index_number.'</f4indexno>
                         </RequestParameters>
                         </Request>';
+
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 224){
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $applicant->confirmation_status = 'CANCELLED';
             $applicant->save();
             return redirect()->back()->with('message','Admission rejected successfully');
@@ -6137,11 +6139,12 @@ class ApplicationController extends Controller
                         <ProgrammeCode>'.$admitted_program.'</ ProgrammeCode >
                         </RequestParameters>
                         </Request>';
+
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+        if($array['Response']['ResponseParameters']['StatusCode'] == 230){
             $applicant->confirmation_status = 'RESTORED';
             $applicant->save();
             return redirect()->back()->with('message','Admission restored successfully');
