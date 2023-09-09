@@ -325,12 +325,16 @@ class ApplicationController extends Controller
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))->latest()->first();
             if($batch->batch_no > 1){
-                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-                             ->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$batch->id)->count() == 0){
-                    $batch_id = $batch->id;
-                    $batch_no = $batch->batch_no;
+                if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                    ->where('application_window_id',$request->get('application_window_id'))
+                    ->where('batch_id',$batch->id);})
+                    ->where('application_window_id', $request->get('application_window_id'))
+                    ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                            $batch_id = $batch->id;
+                            $batch_no = $batch->batch_no;
 
-                }else{
+                        }else{
+
                     $previous_batch = null;
                     if($batch->batch_no > 1){
                         $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
@@ -386,13 +390,17 @@ class ApplicationController extends Controller
         $batch_id = 0;
 
         $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
+
         if(!empty($request->get('program_level_id'))){
             if($batch->batch_no > 1){
-                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-                ->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$batch->id)->count() == 0){
-                    $batch_id = $batch->id;
+                    if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$request->get('application_window_id'))
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $request->get('application_window_id'))
+                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                                $batch_id = $batch->id;
 
-                }else{
+                            }else{
                     $previous_batch = null;
 
                     $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('batch_no', $batch->batch_no - 1)->first();
@@ -3317,12 +3325,15 @@ class ApplicationController extends Controller
         $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$applicant->program_level_id)->latest()->first();
         
         if($batch->batch_no > 1){
-            if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-            ->where('program_level_id',$applicant->program_level_id)->where('batch_id',$batch->id)->count() == 0){
-                $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;
+                    if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$request->get('application_window_id'))
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $request->get('application_window_id'))
+                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                                $batch_id = $batch->id;
+                                $batch_no = $batch->batch_no;
 
-            }else{
+                            }else{
                 $previous_batch = null;
 
                 $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$applicant->program_level_id)->where('batch_no', $batch->batch_no - 1)->first();
@@ -3419,17 +3430,21 @@ class ApplicationController extends Controller
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('award_id'))->latest()->first();
             
             if($batch->batch_no > 1){
-                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-                ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() == 0){
-                    $batch_id = $batch->id;
-                    $batch_no = $batch->batch_no;
-    
-                }else{
-                    $previous_batch = null;
+                    if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$request->get('application_window_id'))
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $request->get('application_window_id'))
+                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                                $batch_id = $batch->id;
+                                $batch_no = $batch->batch_no;
 
-                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
-                    $batch_id = $previous_batch->id;
-                    $batch_no = $previous_batch->batch_no;
+                            }else{
+                                
+                            $previous_batch = null;
+
+                            $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
+                            $batch_id = $previous_batch->id;
+                            $batch_no = $previous_batch->batch_no;
                     
                 }
             }else{
@@ -3609,20 +3624,25 @@ class ApplicationController extends Controller
         if(!empty($request->get('campus_program_id'))){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
                                         ->where('program_level_id',$prog->program->award_id)->latest()->first();
-            if($batch->batch_no > 1){
-                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-                             ->where('program_level_id',$prog->program->award_id)->where('batch_id',$batch->id)->count() == 0){
-                    $batch_id = $batch->id;
-                    $batch_no = $batch->batch_no;
 
-                }else{
-                    $previous_batch = null;
-                    if($batch->batch_no > 1){
-                        $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$prog->program->award_id)
-                                                            ->where('batch_no', $batch->batch_no - 1)->first();
-                        $batch_id = $previous_batch->id;
-                        $batch_no = $previous_batch->batch_no;
-                    }
+            if($batch->batch_no > 1){
+                    if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$request->get('application_window_id'))
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $request->get('application_window_id'))
+                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                                $batch_id = $batch->id;
+                                $batch_no = $batch->batch_no;
+
+                            }else{
+
+                                $previous_batch = null;
+                                if($batch->batch_no > 1){
+                                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$prog->program->award_id)
+                                                                        ->where('batch_no', $batch->batch_no - 1)->first();
+                                    $batch_id = $previous_batch->id;
+                                    $batch_no = $previous_batch->batch_no;
+                                }
                 }
             }else{
                 $batch_id = $batch->id;
@@ -5725,15 +5745,18 @@ class ApplicationController extends Controller
 
         if($batch->batch_no > 1){
 
-            if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-            ->where('program_level_id',4)->where('batch_id',$batch->id)->count() == 0){
-                $batch_id = $batch->id;
+                    if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$request->get('application_window_id'))
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $request->get('application_window_id'))
+                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                                $batch_id = $batch->id;
 
-            }else{
-                $previous_batch = null;
+                            }else{
+                            $previous_batch = null;
 
-                $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',4)->where('batch_no', $batch->batch_no - 1)->first();
-                $batch_id = $previous_batch->id;
+                            $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',4)->where('batch_no', $batch->batch_no - 1)->first();
+                            $batch_id = $previous_batch->id;
                 
             }
         }else{
