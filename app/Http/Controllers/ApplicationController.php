@@ -6170,7 +6170,6 @@ class ApplicationController extends Controller
                         <ProgrammeCode>'.$admitted_program.'</ ProgrammeCode >
                         </RequestParameters>
                         </Request>';
-
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);

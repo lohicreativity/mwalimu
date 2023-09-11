@@ -57,15 +57,27 @@
                       </div>
                   @elseif($applicant->status == 'ADMITTED' && !$student)
                       <div class="alert alert-success">
-                        <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme 
+
+                      @if($applicant->confirmation_status != 'CANCELLED')
+                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                        Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
                         OR
                       </h3> 
-                      
                       {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                                 <button type="submit" class="btn btn-danger">{{ __('Cancel Admission') }}</button>
                       {!! Form::close() !!}
+                      @else
+                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                        Congratulations! You have been successfully cancelled from joining to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
+                        
+                      </h3> 
+                      {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
+
+                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                         <button type="submit" class="btn btn-primary">{{ __('Restore Cancelled Admission') }}</button>
+                      {!! Form::close() !!}
+                      @endif
                       </div>
                   @elseif($student)
                       <div class="alert alert-success">
