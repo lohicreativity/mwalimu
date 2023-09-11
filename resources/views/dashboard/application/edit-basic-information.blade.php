@@ -58,13 +58,20 @@
                   @elseif($applicant->status == 'ADMITTED' && !$student)
                       <div class="alert alert-success">
                         <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.</h3>
+                        Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme 
+                        OR
+                      </h3> 
+                      
+                      {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
+                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                                <button type="submit" class="btn btn-danger">{{ __('Cancel Admission') }}</button>
+                      {!! Form::close() !!}
                       </div>
                   @elseif($student)
                       <div class="alert alert-success">
                         <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
                         Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
-                      </div>                
+                      </div>               
                   @endif
               @else
                   <div class="alert alert-danger">
