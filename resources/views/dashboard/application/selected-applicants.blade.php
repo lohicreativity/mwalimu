@@ -76,16 +76,6 @@
                </div>
              </div>
              <!-- /.card -->
-            @if(count($applicants)>0)
-            @php
-              $submission_status = false;
-              foreach($applicants as $applicant){
-                if($applicant->status == 'SUBMITTED'){
-                  $submission_status = true;
-                  break;
-                }
-              }
-            @endphp
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br><br>
@@ -109,7 +99,6 @@
                       @if($submission_status)
                         <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
                       @endif
-                    @endif
                  @endif
                </div>
 

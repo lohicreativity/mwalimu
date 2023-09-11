@@ -444,15 +444,27 @@ class ApplicationController extends Controller
            ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
            ->where(function($query) {$query->where('status','SELECTED')->orWhereNull('status');})->get(); */
 
-           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+        //    $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+        //                                     'confirmation_status','admission_confirmation_status')->doesntHave('student')
+        //                             ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
+        //                             ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
+        //                             ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
+        //                             ->where('program_level_id',$request->get('program_level_id'))
+        //                             ->where('application_window_id',$request->get('application_window_id'))
+        //                             ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
+        //                                     'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
                                             'confirmation_status','admission_confirmation_status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
+                                    ->where('programs_complete_status',1)
+                                    ->where('status','!=','ADMITTED')
+                                    ->where('campus_id', $staff->campus_id)
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);;
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
 
 
            // $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
@@ -463,10 +475,21 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch)->count();   
  */
         }else{
+            // $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+            //                                 'confirmation_status','admission_confirmation_status')->doesntHave('student')
+            //                         ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
+            //                         ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
+            //                         ->where('program_level_id',$request->get('program_level_id'))
+            //                         ->where('application_window_id',$request->get('application_window_id'))
+            //                         ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
+            //                                 'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
                                             'confirmation_status','admission_confirmation_status')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
-                                    ->where(function($query){$query->whereNull('status')->orWhereIn('status',['SELECTED','SUBMITTED','NOT SELECTED']);})
+                                    ->where('programs_complete_status',1)
+                                    ->where('campus_id', $staff->campus_id)
+                                    ->where('status','!=','ADMITTED')
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
@@ -489,11 +512,12 @@ class ApplicationController extends Controller
         }
         
         // Ready to be sent to regulators i.e. NACTVET and TCU
-        $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
-                                        //->whereHas('selections',function($query){$query->where('status','APPROVING');})
-                                        ->where('application_window_id',$request->get('application_window_id'))
-                                        ->where('program_level_id',$request->get('program_level_id'))                                        
-                                        ->whereIn('status',['SELECTED','NOT SELECTED','SUBMITTED'])->get();
+        // $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
+        //                                 //->whereHas('selections',function($query){$query->where('status','APPROVING');})
+        //                                 ->where('application_window_id',$request->get('application_window_id'))
+        //                                 ->where('program_level_id',$request->get('program_level_id'))                                        
+        //                                 ->whereIn('status',['SELECTED','NOT SELECTED','SUBMITTED'])->get();
+
 
         $selected_applicants = [];
         if(!ApplicantProgramSelection::whereIn('status',['SELECTED','PENDING'])->where('batch_id',$batch_id)->first()){
@@ -501,8 +525,14 @@ class ApplicationController extends Controller
                                         ->whereHas('selections',function($query){$query->whereNotIn('status',['SELECTED','PENDING']);})
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))
-                                        ->where('programs_complete_status',1)->get();
+                                        ->where('programs_complete_status',1)
+                                        ->whereIn('status',['SELECTED','NOT SELECTED'])->get();
         }
+
+        $submission_status = Applicant::doesntHave('student')
+                ->where('application_window_id',$request->get('application_window_id'))
+                ->where('program_level_id',$request->get('program_level_id'))
+                ->where('status','SUBMITTED')->count();
 
 /*         if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
             return redirect()->back()->with('error','No selected applicant in this programme level');
@@ -533,7 +563,8 @@ class ApplicationController extends Controller
             //'selection_status'=> $selection_status > 0? false : true,
             'batches'=> ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
             'confirmation_status'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
-                                            ->where('multiple_admissions',1)->whereIn('confirmation_status',['CONFIRMED','NOT CONFIRMED'])->count()>0? true : false
+                                            ->where('multiple_admissions',1)->whereIn('confirmation_status',['CONFIRMED','NOT CONFIRMED'])->count()>0? true : false,
+            'submission_status' => $submission_status
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
