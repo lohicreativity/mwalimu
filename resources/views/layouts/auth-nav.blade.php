@@ -483,6 +483,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-admitted-applicants')
+              <li class="nav-item">
+                <a href="{{ url('application/cancelled-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cancelled Admitted Applicants</p>
+                </a>
+              </li>
+              @endcan
               @can('view-insurance-status')
               <li class="nav-item">
                 <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">

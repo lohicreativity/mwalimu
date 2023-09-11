@@ -75,7 +75,7 @@
                       {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
 
                       {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                         <button type="submit" class="btn btn-primary">{{ __('Restore Cancelled Admission') }}</button>
+                         <button type="submit" class="btn btn-danger">{{ __('Restore Cancelled Admission') }}</button>
                       {!! Form::close() !!}
                       @endif
                       </div>

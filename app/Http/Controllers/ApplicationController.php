@@ -368,6 +368,107 @@ class ApplicationController extends Controller
 	 }
 
     /**
+     * Admitted studdents who have cancelled Admission
+     */
+     public function cancelledApplicants(Request $request)
+     {
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
+
+        $staff = User::find(Auth::user()->id)->staff;
+
+        $batch_id = 0;
+
+        $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
+
+        if(!empty($request->get('program_level_id'))){
+            if($batch->batch_no > 1){
+                    if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$request->get('application_window_id'))
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $request->get('application_window_id'))
+                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+                                $batch_id = $batch->id;
+
+                            }else{
+                    $previous_batch = null;
+
+                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('batch_no', $batch->batch_no - 1)->first();
+                    $batch_id = $previous_batch->id;
+                }
+            }else{
+                $batch_id = $batch->id;
+            }
+        }
+
+        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) { 
+
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
+                                    ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
+                                    ->where(function($query){$query->where('status', 'ADMITTED')->where('confirmation_status', 'CANCELLED');})
+                                    ->where('program_level_id',$request->get('program_level_id'))
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+                                            
+        }elseif(Auth::user()->hasRole('hod')){
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
+                                    ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
+                                    ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
+                                    ->where('programs_complete_status',1)
+                                    ->where(function($query){$query->where('status', 'ADMITTED')->where('confirmation_status', 'CANCELLED');})
+                                    ->where('campus_id', $staff->campus_id)
+                                    ->where('program_level_id',$request->get('program_level_id'))
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+        }else{
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
+                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
+                                    ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
+                                    ->where('programs_complete_status',1)
+                                    ->where('campus_id', $staff->campus_id)
+                                    ->where(function($query){$query->where('status', 'ADMITTED')->where('confirmation_status', 'CANCELLED');})
+                                    ->where('program_level_id',$request->get('program_level_id'))
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+                                            
+        }
+
+        $data = [
+            'staff'=>$staff,
+            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+            'awards'=>Award::all(),
+            'nta_levels'=>NTALevel::all(),
+            'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
+                  $query->where('application_window_id',$request->get('application_window_id'))->whereIn('status',['APPROVING','PENDING']);
+            })->whereHas('program',function($query) use($request){
+                  $query->where('award_id',$request->get('program_level_id'));
+            })->with('program')->get(),
+            'confirmed_campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request,$batch_id){
+                  $query->where('application_window_id',$request->get('application_window_id'))->where('status','SELECTED')->where('batch_id',$batch_id);
+            })->whereHas('selections.applicant',function($query){
+                 $query->where('multiple_admissions',1);
+            })->whereHas('program',function($query) use($request){
+                  $query->where('award_id',$request->get('program_level_id'));
+            })->with('program')->get(),
+            'applicants'=>$applicants,
+            'request'=>$request,
+            //'selection_status'=> $selection_status > 0? false : true,
+            'batches'=> ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
+         ];
+         return view('dashboard.application.cancelled-admitted-applicants',$data)->withTitle('Cancelled Applicants');
+        
+
+     }
+
+    /**
      * Selected applicants
      */
     public function selectedApplicants(Request $request)
