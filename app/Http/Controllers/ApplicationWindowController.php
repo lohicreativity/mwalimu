@@ -17,6 +17,7 @@ use App\Utils\DateMaker;
 use Validator, Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Domain\Application\Models\Applicant;
 use App\Domain\Application\Models\ApplicationBatch;
 
 class ApplicationWindowController extends Controller
@@ -40,13 +41,14 @@ class ApplicationWindowController extends Controller
                 ->latest('end_date')
                ->get();
         }
-           
+        
     	$data = [
            'windows'=>$windows,
            'intakes'=>Intake::all(),
            'campuses'=>Campus::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
-           'request'=>$request
+           'request'=>$request,
+           'window_applicants' =>  Applicant::select(DB::raw('DISTINCT(application_window_id)', 'application_window_id'))->pluck('application_window_id'),
     	];
     	return view('dashboard.application.application-windows',$data)->withTitle('Application Windows');
     }

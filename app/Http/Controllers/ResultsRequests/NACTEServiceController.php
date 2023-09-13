@@ -87,7 +87,8 @@ class NACTEServiceController extends Controller
     public function getNacteRegistrationDetailsAdmin(Request $request,$nacte_reg_no)
     {
         try{
-        $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.'TU.DARCO.CL.019.038-4/'.config('constants.NACTE_API_KEY'));
+        // $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.'TU.DARCO.CL.019.038-4/'.config('constants.NACTE_API_KEY').'/'.$nacte_reg_no);
+        $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('-', '.', $nacte_reg_no).'-4/'.config('constants.NACTE_API_KEY'));
         }catch(\Exception $e){
             return response()->json(['error'=>'Please refresh your browser and try again']);
         }

@@ -480,7 +480,7 @@
                     <br>
                     @foreach($nacte_results as $result)
                      <p class="ss-font-xs">
-                        @if(str_contains(strtolower($result->programme),'basic'))
+                        @if(str_contains(strtolower($result->programme),'certificate'))
                           Institution: {{ $result->institution }} <br>
                           Reg No: {{ $result->registration_number }} <br> GPA: {{ $result->diploma_gpa }} 
                           @break
