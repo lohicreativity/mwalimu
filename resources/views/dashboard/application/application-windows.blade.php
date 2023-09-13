@@ -191,20 +191,23 @@
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <td>
                       @can('edit-application-window')
-                      @if($window_applicants->contains($window->id))
-                      <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                       </a>
-                      @else
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                       </a>
-                      @endif
-                      
+                      @foreach($window_applicants as $key => $window_applicant)
+                        @if($window_applicant == $window->id)
+                        <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Edit
+                        </a>
+                        @break
+                        @else
+                        <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Edit
+                        </a>
+                        @break
+                        @endif
+                      @endforeach
                        @endcan
                        
                       

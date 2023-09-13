@@ -48,7 +48,7 @@ class ApplicationWindowController extends Controller
            'campuses'=>Campus::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request,
-           'window_applicants' =>  Applicant::select(DB::raw('DISTINCT(application_window_id)', 'application_window_id'))->pluck('application_window_id'),
+           'window_applicants' =>  Applicant::select(DB::raw('DISTINCT(application_window_id)', 'application_window_id'))->pluck('application_window_id')->toArray(),
     	];
     	return view('dashboard.application.application-windows',$data)->withTitle('Application Windows');
     }
