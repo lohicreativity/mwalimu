@@ -1210,7 +1210,7 @@ $('.ss-form-processing-nacte-reg-no-admin').submit(function(e){
   }
 
   $.ajax({
-     url:'/application/fetch-nacte-details-admin/'+$(e.target).find('input[name=nacte_reg_no]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+     url:'/application/fetch-nacte-details-admin/'+$(e.target).find('input[name=nacte_reg_no]').val().replaceAll('/', '-'),
      method:'GET',
   }).done(function(data,success){
       if(data.error){

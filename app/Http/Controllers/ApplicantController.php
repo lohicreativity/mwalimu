@@ -2995,7 +2995,6 @@ class ApplicantController extends Controller
      */
     public function updateNacteRegNumber(Request $request, $nacte_reg_no)
     {
-
             if ($nacte_details = NacteResultDetail::where('registration_number',str_replace('-', '/', $nacte_reg_no))->where('applicant_id',$request->get('applicant_id'))->first()) {
                return response()->json(['nacte_details' => $nacte_details, 'exists' => 1]);
             } else {
