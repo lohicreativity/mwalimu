@@ -623,7 +623,7 @@ class ApplicationController extends Controller
         $selected_applicants = [];
         if(!ApplicantProgramSelection::whereIn('status',['SELECTED','PENDING'])->where('batch_id',$batch_id)->first()){
             $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
-                                        ->whereHas('selections',function($query){$query->whereNotIn('status',['SELECTED','PENDING']);})
+                                        ->whereDoesntHave('selections', function($query) { $query->whereIn('status', ['SELECTED', 'PENDING']);})
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))
                                         ->where('programs_complete_status',1)
@@ -659,7 +659,7 @@ class ApplicationController extends Controller
                   $query->where('award_id',$request->get('program_level_id'));
             })->with('program')->get(),
             'applicants'=>$applicants,
-            'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
+            'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->where('batch_id', $batch_id)->get(),
             'request'=>$request,
             //'selection_status'=> $selection_status > 0? false : true,
             'batches'=> ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),

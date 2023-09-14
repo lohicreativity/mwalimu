@@ -133,7 +133,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);
 	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);
 
-	Route::get('selected-applicants',[ApplicationController::class,'cancelledApplicants']);
+	Route::get('selected-applicants',[ApplicationController::class,'selectedApplicants']);
     Route::get('cancelled-applicants',[ApplicationController::class,'cancelledApplicants']);
 	Route::get('selected-applicants/download',[ApplicationController::class,'downloadSelectedApplicants']);
 	Route::post('submit-selected-applicants-tcu',[ApplicationController::class,'submitSelectedApplicants']);
