@@ -1067,7 +1067,9 @@ class ApplicantController extends Controller
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application Fee%');})
                                  ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
         }
+        
         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),

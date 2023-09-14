@@ -110,7 +110,7 @@
                     <td>{{ $applicant->phone }}</td>
                     <td>@if($applicant->program_level_id == 1) BTC @elseif($applicant->program_level_id == 2) OD @else BD @endif</td>
                     <td>{{ $applicant->remarks }}</td>
-                    <td> @if(empty($applicant->submission_status)) PENDING @else $applicant->submission_status @endif </td>
+                    <td> @if(empty($applicant->submission_status)) PENDING @else {{$applicant->submission_status}} @endif </td>
                     <td>
                       {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)

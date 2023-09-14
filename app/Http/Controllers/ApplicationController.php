@@ -1549,8 +1549,8 @@ class ApplicationController extends Controller
                                     ->with(['selections:id,status,campus_program_id,applicant_id',
                                             'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
                                             'selections.campusProgram.program.ntaLevel:id,name',
-                                            'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                                            'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme')
+                                            'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id', 'avn')->where('verified',1);},
+                                            'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')
                                             ->where('verified',1);},
                                             'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
                                             'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
@@ -8847,13 +8847,13 @@ class ApplicationController extends Controller
                             if($selection->status == 'APPROVING'){
                                 $approving_selection = $selection;
                                 $regulator_programme_id = $selection->campusProgram->regulator_code;
-        
                             }
                         }
-        
+                        // dd($approving_selection);
                         $string = $approving_selection->campusProgram->program->ntaLevel->name;
                         $last_character = (strlen($string) - 1);
-        
+                        
+                        
                         $f4indexno = $f4_exam_year = null;
                         if(str_contains(strtolower($applicant->index_number),'eq')){
                             $f4_exam_year = explode('/',$applicant->index_number)[1];
@@ -8881,7 +8881,7 @@ class ApplicationController extends Controller
                                 break;
                             }
                         }
-        
+
                     $data = array(
                         'heading' => array(
                             'authorization' => $nactvet_authorization_key,
@@ -8912,7 +8912,7 @@ class ApplicationController extends Controller
         
                         )
                     );
-        
+
                        $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/addcorrection';
                        $ch = curl_init($url);
         
@@ -8928,8 +8928,9 @@ class ApplicationController extends Controller
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
                         //execute the POST request
+
                         $result = curl_exec($ch);
-        
+
                         //close cURL resource
                         curl_close($ch);
                         $results = json_decode($result, true);
