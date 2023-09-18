@@ -1665,15 +1665,20 @@ class ApplicationController extends Controller
                         }
                     }
 
+                    $has_level5 = false;
                     $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
                     foreach($applicant->nacteResultDetails as $detail){
                         if(str_contains(strtolower($detail->programme),'basic')){
                             $nta4_reg_no = $detail->registration_number;
                             $nta4_graduation_year = $detail->diploma_graduation_year;
 
-                        }elseif(str_contains(strtolower($detail->programme),'diploma')){
+                        }elseif(!str_contains(strtolower($detail->programme),'basic') && str_contains(strtolower($detail->programme),'certificate')){
                             $nta5_reg_no = $detail->registration_number;
                             $nta5_graduation_year = $detail->diploma_graduation_year;
+
+                            if($detail->diploma_gpa >= 2){
+                                $has_level5 = true;
+                            }
                         }
                     }
                     $selected_programs = array();
@@ -1692,8 +1697,16 @@ class ApplicationController extends Controller
 
                     $ch = curl_init($url);
 
+                    $level = null;
                     $string = $approving_selection->campusProgram->program->ntaLevel->name;
-                    $last_character = (strlen($string) - 1);
+                    if($has_level5 || $applicant->program_level_id == 1){
+                        $last_character = (strlen($string) - 1);
+                        $level = substr($string, $last_character);
+                    }else{ 
+                        $last_character = (strlen($string) - 1);
+                        $level = substr($string, $last_character) - 1;
+                    }
+
 
                     $f4indexno = $f4_exam_year = null;
                     if(str_contains(strtolower($applicant->index_number),'eq')){
@@ -1734,7 +1747,7 @@ class ApplicationController extends Controller
                             'intake' => strtoupper($applicant->intake->name),
                             'programme_id' => $regulator_programme_id,
                             'application_year' => date('Y'),
-                            'level' => substr($string, $last_character),
+                            'level' => strval($level),
                             'payment_reference_number' => $payment->reference_no,
                         ),
                         'students' => array(
