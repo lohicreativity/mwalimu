@@ -326,7 +326,7 @@
 
                       @foreach($applicant->selections as $selection)
 
-                        @if($selection->status != 'ELIGIBLE')
+                        @if($selection->status != 'ELIGIBLE' && ($applicant->status == 'SELECTED' || $applicant->status == 'SUBMITTED'))
                           <tr>
                               <td>{{ $counter++ }}</td>
                               <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
