@@ -131,7 +131,8 @@
                   <thead>
                   <tr>
                     <th>Reference Number</th>
-                    <th>Amount</th>
+                    <th>Amount Paid</th>
+                    <th>Balance</th>
                     @if(Auth::user()->hasRole('administrator'))
                     <th>Campus</th>
                     @endif
@@ -144,6 +145,7 @@
                   <tr>
                     <td>{{ $payment->reference_no }}</td>
                     <td>{{ number_format($payment->amount,2) }}</td>
+                    <td>{{ number_format($payment->balance,2) }}</td>
                     @if(Auth::user()->hasRole('administrator'))
                     <td>{{ $payment->campus->name }}</td>
                     @endif
@@ -173,6 +175,13 @@
                                          'readonly' => true
                                       ];
 
+                                      $balance = [
+                                        'placeholder'=>'Balance',
+                                        'class'=>'form-control',
+                                        'required'=>true,
+                                        'readonly' => true
+                                      ];
+
                                       $reference_number = [
                                          'placeholder'=>'Reference number',
                                          'class'=>'form-control',
@@ -184,13 +193,17 @@
                                     
                                     @if(Auth::user()->hasRole('administator'))
                                     <div class="row">
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Amount') !!}
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Amount Paid') !!}
                                         {!! Form::text('amount',$payment->amount,$amount) !!}
 
                                         {!! Form::input('hidden','nacte_payment_id',$payment->id) !!}
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Balance') !!}
+                                        {!! Form::text('balance',$payment->balance,$balance) !!}
+                                      </div>
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Reference number') !!}
                                         {!! Form::text('reference_number',$payment->reference_no,$reference_number) !!}
                                       </div>
@@ -217,13 +230,17 @@
                                     @elseif(Auth::user()->hasRole('admission-officer'))
                                     <input type="hidden" name="campus_id" value="{{ $campus_id }}">
                                     <div class="row">
-                                      <div class="form-group col-4">
-                                        {!! Form::label('','Amount') !!}
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Amount Paid') !!}
                                         {!! Form::text('amount',$payment->amount,$amount) !!}
 
                                         {!! Form::input('hidden','nacte_payment_id',$payment->id) !!}
                                       </div>
-                                      <div class="form-group col-4">
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Balance') !!}
+                                        {!! Form::text('balance',$payment->balance,$balance) !!}
+                                      </div>
+                                      <div class="form-group col-3">
                                         {!! Form::label('','Reference number') !!}
                                         {!! Form::text('reference_number',$payment->reference_no,$reference_number) !!}
                                       </div>
