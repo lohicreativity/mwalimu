@@ -76,6 +76,16 @@
                </div>
              </div>
              <!-- /.card -->
+            @if(count($applicants)>0)
+            @php
+              $submission_status = false;
+              foreach($applicants as $applicant){
+                if($applicant->status == 'SUBMITTED'){
+                  $submission_status = true;
+                  break;
+                }
+              }
+            @endphp
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br><br>
@@ -99,6 +109,7 @@
                       @if($submission_status)
                         <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
                       @endif
+                    @endif
                  @endif
                </div>
 
@@ -315,7 +326,7 @@
 
                       @foreach($applicant->selections as $selection)
 
-                        @if($selection->status != 'ELIGIBLE' && ($selection->status == 'SELECTED' || $selection->status == 'SUBMITTED'))
+                        @if($selection->status != 'ELIGIBLE')
                           <tr>
                               <td>{{ $counter++ }}</td>
                               <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
@@ -365,12 +376,6 @@
                               </td>
                               <td>
                                 @if($applicant->status == 'SELECTED' || $applicant->status == 'SUBMITTED')
-                                {{-- NEW CONDITION --}}
-                                 @if($applicant->status == 'SELECTED')
-                                    <span class="badge badge-danger"> NOT SELECTED </span> <br>
-                                    <span class="text-sm" style="font-style: italic; font-color:red">Retrieved from the Regulator</span>
-                                 @endif
-                                {{-- END --}}
                                   @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
                                       @if($selection->status == 'SELECTED')
                                         @if(!str_contains($applicant->admission_confirmation_status, 'OTHER'))
@@ -436,18 +441,9 @@
                               <td>{{ $applicant->phone }}</td>
                               <td>{{ $applicant->gender }}</td>
                               <td>     
-                                
+                                @if(count($applicant->selections) > 0)
                                   @php $total_selections = $batch_id = 0;
-                                    $regulator_status = null;
                                       foreach($applicant->selections as $y){
-                                       // new condition
-                                       if ($y->status == 'SELECTED' || $y->status == 'PENDING') {
-                                          # code...
-                                          $regulator_status = true;
-                                       }
-                                       // end
-
-
                                         foreach($batches as $batch){
                                           if($batch->program_level_id == $applicant->program_level_id){
                                             if($batch->id > $batch_id){
@@ -461,35 +457,17 @@
                                       }
                                       $x = $total_selections; 
                                   @endphp
-                                  {{-- Regulator condition --}}
-                                    @if($regulator_status)
-                                      <td> {{$selection->campusProgram->code}}
-                                          @if($selection->order == 1)
-                                              (1st Choice)
-                                          @elseif($selection->order == 2)
-                                             (2nd Choice)
-                                          @elseif($selection->order == 3)
-                                             (3rd Choice)
-                                          @elseif($selection->order == 4)
-                                             (4th Choice)
-                                          @endif
-                                      </td>
-                                    @else 
-                                    <td>
-                                    @if(count($applicant->selections) > 0)
-                                          @foreach($applicant->selections as $select)
-                                                @if($select->batch_id == $batch_id)
-                                                   @if($total_selections > 1)
-                                                      @php --$x ; @endphp
-                                                      {{ $select->campusProgram->code }}@if($x != 0), @endif
-                                                   @else
-                                                      {{ $select->campusProgram->code }}
-                                                   @endif
-                                                @endif
-                                          @endforeach
-                                    @endif
-                                    </td>
-                                    @endif
+                                    @foreach($applicant->selections as $select)
+                                            @if($select->batch_id == $batch_id)
+                                              @if($total_selections > 1)
+                                                @php --$x ; @endphp
+                                                {{ $select->campusProgram->code }}@if($x != 0), @endif
+                                              @else
+                                                {{ $select->campusProgram->code }}
+                                              @endif
+                                            @endif
+                                    @endforeach
+                                @endif
 
                         </td>
                         @if($applicant->status == null)
@@ -497,10 +475,8 @@
                         @else
                           <td>
                             <span class="badge badge-warning">NOT SELECTED</span>  <br>
-                            @if($applicant->status == 'SUBMITTED' || $regulator_status)
+                            @if($applicant->status == 'SUBMITTED')
                               <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
-                            @elseif($regulator_status)
-                              <span class="text-sm" style="font-style: italic; font-color:red">Retrieved from the Regulator</span>
                             @else
                               <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
                             @endif
@@ -508,6 +484,7 @@
                         @endif
                     </tr>
                           
+                        
                     @php $counter++; @endphp
                     @break
                     
