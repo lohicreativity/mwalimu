@@ -636,6 +636,9 @@ class ApplicantController extends Controller
          if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
             return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
          }
+         if($applicant->status == 'ADMITTED'){
+            $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
+         }
       }else{
          if($applicant->status != null && $applicant->status != 'SUBMITTED' && !$regulator_selection){
             return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
@@ -695,7 +698,6 @@ class ApplicantController extends Controller
             $query->where('status', 'SELECTED')
                   ->orWhere('status', 'PENDING');
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first(); */
-
 
       $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($applicant, $application_window){
             $query->where('year','LIKE','%'.date('Y',strtotime($application_window->begin_date)).'/%');})->first();
