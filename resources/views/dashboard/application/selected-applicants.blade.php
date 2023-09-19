@@ -76,28 +76,18 @@
                </div>
              </div>
              <!-- /.card -->
-            @if(count($applicants)>0)
-            @php
-              $submission_status = false;
-              foreach($applicants as $applicant){
-                if($applicant->status == 'SUBMITTED'){
-                  $submission_status = true;
-                  break;
-                }
-              }
-            @endphp
-              @endif
+          @if(count($applicants) > 0)
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br><br>
-                 @if(count($applicants) > 0)
+
                     <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download Selected Applicants</a>
                  @endif
                  @if(Auth::user()->hasRole('admission-officer'))
                  
                     @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
                     @if(count($selected_applicants) > 0) <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a> @endif
-                      @if($submission_status) 
+                      @if($submission_status > 0) 
                         <a href="{{ url('application/submit-selected-applicants-tcu/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Submitted Applicants</a> 
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Applicants from TCU</a> 
                       @endif
@@ -105,10 +95,11 @@
                           <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
                         @endif
 
-                    @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1 && count($selected_applicants) > 0)
+                    @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
+                      @if(count($selected_applicants) > 0)
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTVET</a>
-                      
-                      @if($submission_status)
+                      @endif  
+                      @if($submission_status > 0)
                         <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
                       @endif
                     @endif
@@ -271,35 +262,13 @@
               <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+            @if(count($applicants) > 0)
                <!-- /.card-header -->
                <div class="card-body">
                   {!! Form::open(['url'=>'application/selected-applicants','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                   {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                  <!-- <div class="input-group">
-                   <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
-                   <select name="nta_level_id" class="form-control">
-                      <option value="">Select NTA Level</option>
-                      @foreach($nta_levels as $level)
-                      <option value="{{ $level->id }}">{{ $level->name }}</option>
-                      @endforeach
-                   </select>
-                   <select name="campus_program_id" class="form-control ss-select-tags-">
-                      <option value="">Select Programme</option>
-                      @foreach($campus_programs as $program)
-                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                      @endforeach
-                   </select>
-                   <select name="gender" class="form-control">
-                      <option value="">Select Gender</option>
-                      <option value="M">Male</option>
-                      <option value="F">Female</option>
-                   </select>
-                   <span class="input-group-btn">
-                     <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                   </span>
-                  </div> -->
                   {!! Form::close() !!}
 
                   <table id="hello" class="table table-bordered ss-margin-top ss-paginated-table">
@@ -338,7 +307,7 @@
                                   @if($applicant->entry_mode == 'EQUIVALENT')
                                       @foreach($applicant->nacteResultDetails as $detail)
                                         @if($detail->verified == 1)
-                                          {{ $detail->avn }}
+                                          @if(!empty($detail->avn)) {{ $detail->avn }} @else {{ $detail->registration_number }} @endif
                                         @endif
                                       @endforeach <br>
                                       @foreach($applicant->nectaResultDetails as $detail)
@@ -354,7 +323,7 @@
                                       @endforeach <br>
                                       @foreach($applicant->nacteResultDetails as $detail)
                                         @if($detail->verified == 1)
-                                          {{ $detail->avn }}
+                                          @if(!empty($detail->avn)) {{ $detail->avn }} @else {{ $detail->registration_number }} @endif
                                         @endif
                                       @endforeach
                                   @endif
@@ -388,9 +357,9 @@
                                         @if($applicant->admission_confirmation_status == 'CONFIRMED' || $applicant->confirmation_status == 'CONFIRMED')
                                           <span style="font-style: italic; font-color:green">Confirmed</span>
                                         @elseif(str_contains($applicant->admission_confirmation_status, 'OTHER') || str_contains($applicant->confirmation_status, 'OTHER'))
-                                          <span style="font-style: italic; font-color:green">Confirmed Elsewhere</span>
+                                          <span class="text-sm" style="font-style: italic; font-color:green">Confirmed Elsewhere</span>
                                         @else
-                                          <span style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
+                                          <span class="text-sm" style="font-style: italic; font-color:green">Retrieved from the Regulator</span>
                                         @endif
                                       @else
                                         <span class="badge badge-warning"> PRE-SELECTED </span> <br>
@@ -417,7 +386,7 @@
                               <td>@if($applicant->entry_mode == 'EQUIVALENT')
                                       @foreach($applicant->nacteResultDetails as $detail)
                                         @if($detail->verified == 1)
-                                          {{ $detail->avn }}
+                                          @if(!empty($detail->avn)) {{ $detail->avn }} @else {{ $detail->registration_number }} @endif
                                         @endif
                                       @endforeach <br>
                                       @foreach($applicant->nectaResultDetails as $detail)
@@ -433,7 +402,7 @@
                                       @endforeach <br>
                                       @foreach($applicant->nacteResultDetails as $detail)
                                         @if($detail->verified == 1)
-                                          {{ $detail->avn }}
+                                          @if(!empty($detail->avn)) {{ $detail->avn }} @else {{ $detail->registration_number }} @endif
                                         @endif
                                       @endforeach
                                   @endif
@@ -447,10 +416,8 @@
                                   @php $total_selections = $batch_id = 0;
                                       foreach($applicant->selections as $y){
                                         foreach($batches as $batch){
-                                          if($batch->program_level_id == $applicant->program_level_id){
-                                            if($batch->id > $batch_id){
-                                              $batch_id = $batch->id;
-                                            }
+                                          if($batch->id == $applicant->batch_id){
+                                            $batch_id = $batch->id;
                                           }
                                         }
                                         if($y->batch_id == $batch_id){
@@ -476,11 +443,13 @@
                           <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
                         @else
                           <td>
-                            <span class="badge badge-warning">NOT SELECTED</span>  <br>
-                            @if($applicant->status == 'SUBMITTED')
-                              <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
-                            @else
-                              <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                            <span class="badge badge-danger">NOT SELECTED</span>  <br>
+                            @if($applicant->program_level_id == 4 )
+                                @if($applicant->status == 'SUBMITTED')
+                                  <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
+                                @else
+                                  <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                @endif
                             @endif
                           </td>
                         @endif
@@ -497,7 +466,7 @@
               </table>
 
               <div class="float-right ss-pagination-links"> {!! $applicants->appends($request->except('page'))->render() !!} </div>
-                
+                @endif
                </div>
             </div>
             

@@ -529,7 +529,7 @@ class ApplicationController extends Controller
 
         }else{
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status','multiple_admissions',
-                                            'confirmation_status','admission_confirmation_status')->doesntHave('student')
+                                            'confirmation_status','admission_confirmation_status','program_level_id')->doesntHave('student')
                                     ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
                                     ->where('programs_complete_status',1)
                                     ->where('campus_id', $staff->campus_id)
@@ -537,7 +537,7 @@ class ApplicationController extends Controller
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->paginate(500);
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,registration_number,verified'])->paginate(500);
         }
 
         // Ready to be sent to regulators i.e. NACTVET and TCU
@@ -1452,7 +1452,7 @@ class ApplicationController extends Controller
 
         $applicants = [];
         if(str_contains(strtolower($award->name), 'certficate') || str_contains(strtolower($award->name), 'diploma')){
-            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id','nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id')
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id','nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id','program_level_id')
                                 ->whereHas('selections', function($query) use($request){$query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');})
                                 ->whereIn('id',$request->get('applicant_ids'))
                                 ->where('status','SELECTED')
@@ -1467,7 +1467,7 @@ class ApplicationController extends Controller
         }else {
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id')
-                        ->whereIn('id',$request->get('applicant_ids')->whereIn('status', ['SELECTED','NOT SELECTED']))
+                        ->whereIn('id',$request->get('applicant_ids'))->whereIn('status', ['SELECTED','NOT SELECTED'])
                         ->with(['selections:id,status,campus_program_id,applicant_id',
                                 'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
                                 'selections.campusProgram.program.ntaLevel:id,name',
@@ -1647,7 +1647,7 @@ class ApplicationController extends Controller
                     return redirect()->back()->with('error','No NACTVET payment set for this campus');
                 }
 
-                $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_authorization_key);
+                $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_token);
             
                 if(empty(json_decode($result)->params)){
                     return redirect()->back()->with('error','Invalid call to NACTVET account balance. Please try again.');
