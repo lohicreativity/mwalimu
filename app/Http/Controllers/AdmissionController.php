@@ -40,6 +40,10 @@ class AdmissionController extends Controller
             'selections.campusProgram.program.award:id,name',
             ])->where('status','ADMITTED')->first();
 
+        if($applicant->confirmation_status == 'CANCELLED'){
+                return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
+         }
+         
         $student = Student::where('applicant_id', $applicant->id)->first();
 
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));

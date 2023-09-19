@@ -566,51 +566,21 @@ class ApplicantController extends Controller
       //if($applicant->status != null){
       if($applicant->status=='ADMITTED' || ($applicant->status=='SELECTED') && $regulator_selection){         
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-                                    ->where('campus_id', $applicant->campus_id)
-                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                    ->where('status', 'ACTIVE')
-                                    ->latest()->first();
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
          }elseif($applicant->program_level_id == 4){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-                                    ->where('campus_id', $applicant->campus_id)
-                                    ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                    ->where('status', 'ACTIVE')
-                                    ->latest()->first();                    
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();                  
          }elseif($applicant->program_level_id == 5){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-                                    ->where('campus_id', $applicant->campus_id)
-                                    ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                    ->where('status', 'ACTIVE')
-                                    ->latest()->first();
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
          }
             // $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
       }else{
 
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-                                    ->where('campus_id', $applicant->campus_id)
-                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                    ->where('status', 'ACTIVE')
-                                    ->latest()->first();
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
          }elseif($applicant->program_level_id == 4){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-                                    ->where('campus_id', $applicant->campus_id)
-                                    ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                    ->where('status', 'ACTIVE')
-                                    ->latest()->first();                    
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();                  
          }elseif($applicant->program_level_id == 5){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-                                    ->where('campus_id', $applicant->campus_id)
-                                    ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                    ->where('status', 'ACTIVE')
-                                    ->latest()->first();
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
          }
 
          if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
@@ -637,7 +607,7 @@ class ApplicantController extends Controller
             return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
          }
          if($applicant->status == 'ADMITTED'){
-            $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
+            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
          }
       }else{
          if($applicant->status != null && $applicant->status != 'SUBMITTED' && !$regulator_selection){
@@ -2035,6 +2005,9 @@ class ApplicantController extends Controller
     {
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
        $student = Student::where('applicant_id', $applicant->id)->first();
+       if($applicant->confirmation_status == 'CANCELLED'){
+         return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
+       }
        // if($applicant->is_tamisemi != 1){
        //   if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
        //         return redirect()->to('application/submission')->with('error','Application window already closed');
@@ -2457,7 +2430,11 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
-	
+
+        if($applicant->confirmation_status == 'CANCELLED'){
+         return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
+         }
+         
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
         })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -2503,6 +2480,10 @@ class ApplicantController extends Controller
     {
          $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
          $student = Student::where('applicant_id', $applicant->id)->first();
+
+         if($applicant->confirmation_status == 'CANCELLED'){
+            return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
+         }
 
          $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');

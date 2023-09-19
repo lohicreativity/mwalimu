@@ -58,27 +58,40 @@
                   @elseif($applicant->status == 'ADMITTED' && !$student)
                       <div class="alert alert-success">
 
-                      @if($applicant->confirmation_status != 'CANCELLED')
+                    @if($applicant->confirmation_status != 'CANCELLED')
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
                         Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
-                        OR
-                      </h3> 
-                      {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
-                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                                <button type="submit" class="btn btn-danger">{{ __('Cancel Admission') }}</button>
-                      {!! Form::close() !!}
-                      @else
-                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations! You have been successfully cancelled from joining to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
-                        
-                      </h3> 
-                      {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
-
-                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                         <button type="submit" class="btn btn-danger">{{ __('Restore Cancelled Admission') }}</button>
-                      {!! Form::close() !!}
-                      @endif
+                      </h3>
+                      <div style="float:left; width:35%">
+                        <h3 class="text-white" style="font-size: 18px!important;">
+                        <i class="fa fa-times-circle"></i> 
+                        If you wish to cancel the admission, please click 
+                        </h3>
+                      </div>      
+                      <div style="position:relative; bottom:5px">           
+                            {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
+                            {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                              <button type="submit" class="btn btn-danger">{{ __('Cancel Admission') }}</button>
+                            {!! Form::close() !!} 
                       </div>
+                    @else
+                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-times-circle"></i> 
+                          You had been admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme BUT unfortunately you CANCELLED the admission.
+                      </h3>
+                      <div style="float:left; width:36%"> 
+                        <h3 class="text-white" style="font-size: 18px!important;">
+                          <i class="fa fa-check-circle"></i> 
+                          If you wish to restore your admission, please click 
+                        </h3> 
+                      </div>
+                      <div style="position:relative; bottom:5px">
+                        {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
+                        {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                         <button type="submit" class="btn btn-danger">{{ __('Restore Cancelled Admission') }}</button>
+                        {!! Form::close() !!} 
+                      </div>
+                    @endif
+                    </div>
                   @elseif($student)
                       <div class="alert alert-success">
                         <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 

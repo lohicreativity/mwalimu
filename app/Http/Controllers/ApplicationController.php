@@ -66,6 +66,7 @@ use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\ApplicantVerificationResult;
 use App\Domain\Application\Models\ApplicantFeedBackCorrection;
+use Illuminate\Http\Client\ConnectionException;
 
 class ApplicationController extends Controller
 {
@@ -4798,6 +4799,11 @@ class ApplicationController extends Controller
     {    
          $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
          $student = Student::where('applicant_id', $applicant->id)->first();
+
+         if($applicant->confirmation_status == 'CANCELLED'){
+            return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
+            }
+
          $data = [
             'attachments'=>AdmissionAttachment::paginate(20),
             'applicant'=>$applicant,
@@ -5886,7 +5892,7 @@ class ApplicationController extends Controller
                         </RequestParameters>
                         </Request>
                         ';
-
+        
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
@@ -8543,10 +8549,8 @@ class ApplicationController extends Controller
         }else{
             return redirect()->back()->with('message','campus key is unknown');
         }
-   
         foreach($campus_programs as $program){
             $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$verification_key);
-
             if($result['code'] == 200){
                 foreach ($result['params'] as $res) {
                     //if(str_contains(strtolower($res['verification_status'].'approved')){
@@ -8571,13 +8575,13 @@ class ApplicationController extends Controller
                         }else{
                             ApplicantVerificationResult::where('index_number',$res['username'])->update(['verification_status'=>$res['verification_status'],'multiple_selection'=>$res['multiple_selection'],'eligibility'=>$res['eligibility'],'remarks'=>$res['remarks']]);
                         }    
-                    /* }else{
+                    /* }else{ 
                         
                     } */
 
                 }
             }else{
-                return redirect()->back()->with('message','error occured when sending request to NACTVET');
+                return redirect()->back()->with('message','No applicants submitted to nactvet');
             }
         }
             return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
@@ -8917,7 +8921,6 @@ class ApplicationController extends Controller
              if(!isset($returnedObject->params)){
                 return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
              }
-
              // return $returnedObject;
           //echo $returnedObject->params[0]->student_verification_id."-dsdsdsdsds-<br />";
           // check for parse errors json_last_error() == JSON_ERROR_NONE
