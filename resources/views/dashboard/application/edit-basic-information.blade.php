@@ -60,7 +60,7 @@
 
                     @if($applicant->confirmation_status != 'CANCELLED')
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
+                        Congratulations! You have been successfully admitted to the {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
                       </h3>
                       <div style="float:left; width:35%">
                         <h3 class="text-white" style="font-size: 18px!important;">
@@ -87,7 +87,7 @@
                       <div style="position:relative; bottom:5px">
                         {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
                         {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                         <button type="submit" class="btn btn-danger">{{ __('Restore Cancelled Admission') }}</button>
+                         <button type="submit" class="btn btn-danger">{{ __('Restore Admission') }}</button>
                         {!! Form::close() !!} 
                       </div>
                     @endif

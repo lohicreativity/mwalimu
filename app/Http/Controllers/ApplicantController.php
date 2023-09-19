@@ -2005,9 +2005,7 @@ class ApplicantController extends Controller
     {
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
        $student = Student::where('applicant_id', $applicant->id)->first();
-       if($applicant->confirmation_status == 'CANCELLED'){
-         return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
-       }
+
        // if($applicant->is_tamisemi != 1){
        //   if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
        //         return redirect()->to('application/submission')->with('error','Application window already closed');
@@ -2020,9 +2018,12 @@ class ApplicantController extends Controller
 
        if ($student) {
          return redirect()->back()->with('error', 'Unable to view page');
-       } else {
+      }else {
+         if($applicant->confirmation_status == 'CANCELLED'){
+               return redirect()->to('application/basic-information')->with('error','This action cannot be performed. Your admission has been cancelled');
+          }
          return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
-       }
+      }
     }
 
     /**
@@ -2430,10 +2431,6 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
-
-        if($applicant->confirmation_status == 'CANCELLED'){
-         return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
-         }
          
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
@@ -2444,10 +2441,13 @@ class ApplicantController extends Controller
         ];
 
         if ($student) {
-            return redirect()->back()->with('error', 'Unable to view page');
-		}else {
-            return view('dashboard.application.other-information',$data)->withTitle('Other Information');
-        }
+         return redirect()->back()->with('error', 'Unable to view page');
+      }else {
+         if($applicant->confirmation_status == 'CANCELLED'){
+               return redirect()->to('application/basic-information')->with('error','This action cannot be performed. Your admission has been cancelled');
+          }
+         return view('dashboard.application.other-information',$data)->withTitle('Other Information');
+      }
     }
 
     /**
@@ -2481,10 +2481,6 @@ class ApplicantController extends Controller
          $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
          $student = Student::where('applicant_id', $applicant->id)->first();
 
-         if($applicant->confirmation_status == 'CANCELLED'){
-            return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
-         }
-
          $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
          })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -2495,7 +2491,10 @@ class ApplicantController extends Controller
 
          if ($student) {
             return redirect()->back()->with('error', 'Unable to view page');
-         } else {
+         }else {
+            if($applicant->confirmation_status == 'CANCELLED'){
+                  return redirect()->to('application/basic-information')->with('error','This action cannot be performed. Your admission has been cancelled');
+             }
             return view('dashboard.application.other-info-postponement',$data)->withTitle('Postponement Request');
          }
     }

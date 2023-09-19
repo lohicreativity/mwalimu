@@ -4801,7 +4801,7 @@ class ApplicationController extends Controller
          $student = Student::where('applicant_id', $applicant->id)->first();
 
          if($applicant->confirmation_status == 'CANCELLED'){
-            return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
+            return redirect()->to('application/basic-information')->with('error','This action cannot be performed. Your admission has been cancelled');
             }
 
          $data = [

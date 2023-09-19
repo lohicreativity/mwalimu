@@ -39,10 +39,6 @@ class AdmissionController extends Controller
             'selections.campusProgram.program:id,name,award_id',
             'selections.campusProgram.program.award:id,name',
             ])->where('status','ADMITTED')->first();
-
-        if($applicant->confirmation_status == 'CANCELLED'){
-                return redirect()->to('application/basic-information')->with('error','You cancelled admission, You cannot perform this action');
-         }
          
         $student = Student::where('applicant_id', $applicant->id)->first();
 
@@ -224,9 +220,12 @@ class AdmissionController extends Controller
 
         if ($student) {
             return redirect()->back()->with('error', 'Unable to view page');
-        } else {
+         }else {
+            if($applicant->confirmation_status == 'CANCELLED'){
+                  return redirect()->to('application/basic-information')->with('error','This action cannot be performed. Your admission has been cancelled');
+             }
             return view('dashboard.admission.payments',$data)->withTitle('Payments');
-        }
+         }
     }
 
         /**
