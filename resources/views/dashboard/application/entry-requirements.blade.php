@@ -1900,49 +1900,49 @@
                                     $equivalent_gpa = [
                                        'placeholder'=>'Equivalent GPA',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $equivalent_majors = [
                                        'placeholder'=>'Equivalent Majors',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $equivalent_average_grade = [
                                        'placeholder'=>'Equivalent Average Grade',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $open_equivalent_gpa = [
                                        'placeholder'=>'Open Equivalent GPA',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $open_equivalent_majors = [
                                        'placeholder'=>'Open Equivalent Majors',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $open_equivalent_average_grade = [
                                        'placeholder'=>'Open Equivalent Average Grade',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $principle_pass_points = [
                                        'placeholder'=>'Principle Pass Points',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $principle_pass_subjects = [
                                        'placeholder'=>'Principle Pass Subjects',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $pass_subjects = [
@@ -1963,7 +1963,7 @@
                                     $award_division = [
                                        'placeholder'=>'Award Division',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $exclude_subjects = [
@@ -1979,13 +1979,13 @@
                                     $subsidiary_subjects = [
                                        'placeholder'=>'Subsidiary Subjects',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $principle_subjects = [
                                        'placeholder'=>'Principle Subjects',
                                        'class'=>'form-control',
-                                       'readonly'=>true
+                                       'readonly'=>false
                                     ];
 
                                     $max_capacity = [
@@ -2013,7 +2013,7 @@
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Majors') !!}
-                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required disabled="disabled">
+                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                            @foreach($diploma_programs as $prog)
                                                <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                                                @endforeach
@@ -2021,7 +2021,7 @@
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Average Grade') !!}
-                                        <select name="equivalent_average_grade" class="form-control" disabled="disabled">
+                                        <select name="equivalent_average_grade" class="form-control">
                                            <option value="">Select Pass Grade</option>
                                            <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
                                              <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>
@@ -2109,43 +2109,43 @@
                                       $equivalent_gpa = [
                                          'placeholder'=>'Equivalent GPA',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $equivalent_majors = [
                                          'placeholder'=>'Equivalent Majors',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $equivalent_average_grade = [
                                          'placeholder'=>'Equivalent Average Grade',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $open_equivalent_gpa = [
                                          'placeholder'=>'Open Equivalent GPA',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $open_equivalent_majors = [
                                          'placeholder'=>'Open Equivalent Majors',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $open_equivalent_average_grade = [
                                          'placeholder'=>'Open Equivalent Average Grade',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $principle_pass_points = [
                                          'placeholder'=>'Principle Pass Points',
                                          'class'=>'form-control',
-                                         'readonly'=>true
+                                         'readonly'=>false
                                       ];
 
                                       $principle_pass_subjects = [
@@ -2276,7 +2276,7 @@
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Average Grade') !!}
-                                          <select name="equivalent_average_grade" class="form-control" disabled="disabled">
+                                          <select name="equivalent_average_grade" class="form-control">
                                              <option value="">Select Pass Grade</option>
                                              <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
                                              <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>

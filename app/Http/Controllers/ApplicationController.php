@@ -1458,7 +1458,7 @@ class ApplicationController extends Controller
                                 ->whereIn('id',$request->get('applicant_ids'))
                                 ->where('status','SELECTED')
                                 ->with(['selections:id,status,campus_program_id,applicant_id',
-                                        'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
+                                        'selections.campusProgram:id,regulator_code,program_id,code','selections.campusProgram.program:id,nta_level_id',
                                         'selections.campusProgram.program.ntaLevel:id,name',
                                         'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                         'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')
@@ -1470,7 +1470,7 @@ class ApplicationController extends Controller
                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id')
                         ->whereIn('id',$request->get('applicant_ids'))->whereIn('status', ['SELECTED','NOT SELECTED'])
                         ->with(['selections:id,status,campus_program_id,applicant_id',
-                                'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
+                                'selections.campusProgram:id,regulator_code,program_id,code','selections.campusProgram.program:id,nta_level_id',
                                 'selections.campusProgram.program.ntaLevel:id,name',
                                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')
@@ -1689,7 +1689,7 @@ class ApplicationController extends Controller
                         if($selection->status == 'APPROVING'){
                             $approving_selection = $selection;
                             $regulator_programme_id = $selection->campusProgram->regulator_code;
-                            $program_code = $selection->campusProgram->code;
+                            $programme_code = $selection->campusProgram->code;
                         }
                     }
 
@@ -1824,9 +1824,9 @@ class ApplicationController extends Controller
                             $error_log = new ApplicantFeedBackCorrection;
                             $error_log->applicant_id = $applicant->id;
                             $error_log->application_window_id = $request->get('application_window_id');
-                            $error_log->programme_id = $programme->code;
-                            $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
-                            $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
+                            $error_log->programme_id = $programme_code;
+                            $error_log->error_code = json_decode($result)->code;
+                            $error_log->remarks = json_decode($result)->message;
                             $error_log->save();
                         }
                     }                                              
@@ -8594,26 +8594,20 @@ class ApplicationController extends Controller
      */
     public function showNACTVETFeedbackCorrectionList(Request $request)
     {    
-        $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->get();
-/*         $applicants = [];
-        foreach($errors as $error){
-            $applicants[] = Applicant::select('id','program_level_id','first_name','surname','index_number','gender','phone')->where('id',$error->applicant_id)
-                                    ->with('programLevel:id,name')->first();
-        } */
+        $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->where('status',null)->whereNotNull('verification_id')->count();
         $staff = User::find(Auth::user()->id)->staff;
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,b.verification_id,b.remarks,b.status as submission_status'))
                             ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->where('verification_id','!=',null)->where('a.campus_id',$staff->campus_id)
-                            //->with('programLevel:id,name')
-                            ->get();
+                           ->where('b.application_window_id', $request->get('application_window_id'))->orderBy('b.status','ASC')->get();
 
         $data = [
         'applicants'=>$applicants,
-        //'errors' => $errors,
+        'errors_status' => $errors,
         'awards' => Award::all(),
         'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
         'request' => $request
         ];
-
+        
         return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Submissions');
     }
 
@@ -8679,7 +8673,7 @@ class ApplicationController extends Controller
     public function resubmitNACTVETCorrectionList(Request $request){
         $staff = User::find(Auth::user()->id)->staff;
 
-        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id','application_window_id')
+        $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','intake_id','application_window_id', 'program_level_id')
                 ->whereHas('selections',function($query){$query->where('status','APPROVING');})->whereIn('id',$request->get('applicant_ids'))->whereNotIn('status',['SUBMITTED','ADMITTED'])
                 ->with(['selections:id,status,campus_program_id,applicant_id',
                         'selections.campusProgram:id,regulator_code,program_id','selections.campusProgram.program:id,nta_level_id',
@@ -8718,6 +8712,7 @@ class ApplicationController extends Controller
                     }
                 }
 
+                $has_level5 = null;
                 $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
                 foreach($applicant->nacteResultDetails as $detail){
                     if(str_contains(strtolower($detail->programme),'basic')){
@@ -8727,6 +8722,10 @@ class ApplicationController extends Controller
                     }elseif(str_contains(strtolower($detail->programme),'diploma')){
                         $nta5_reg_no = $detail->registration_number;
                         $nta5_graduation_year = $detail->diploma_graduation_year;
+
+                        if($detail->diploma_gpa >= 2){
+                            $has_level5 = true;
+                        }
                     }
                 }
                 $selected_programs = array();
@@ -8740,8 +8739,15 @@ class ApplicationController extends Controller
                     }
                 }
                 // dd($approving_selection);
+                $level = null;
                 $string = $approving_selection->campusProgram->program->ntaLevel->name;
-                $last_character = (strlen($string) - 1);
+                if($has_level5 || $applicant->program_level_id == 1){
+                    $last_character = (strlen($string) - 1);
+                    $level = substr($string, $last_character);
+                }else {
+                    $last_character = (strlen($string) - 1);
+                    $level = substr($string, $last_character) - 1;
+                }
                 
                 
                 $f4indexno = $f4_exam_year = null;
@@ -8778,7 +8784,7 @@ class ApplicationController extends Controller
                     'intake' => strtoupper($applicant->intake->name),
                     'programme_id' => $regulator_programme_id,
                     'academic_year' => date('Y'),
-                    'level' => substr($string, $last_character),
+                    'level' => $level,
                 ),
                 'students' => array(
                     ['student' => array(

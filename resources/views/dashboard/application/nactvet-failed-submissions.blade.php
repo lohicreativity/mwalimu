@@ -119,9 +119,11 @@
                 </tr>
 
 						 @endforeach
-             <tr>
-              <td colspan="9"><button type="submit" class="btn btn-primary">Re-submit</button></td>
-            </tr>
+                @if($errors_status  > 0)
+                <tr>
+                  <td colspan="9"><button type="submit" class="btn btn-primary">Re-submit</button></td>
+                </tr>
+                @endif 
 					 <tbody>
 				  </table>
           {!! Form::close() !!}
