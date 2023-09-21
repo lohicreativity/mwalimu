@@ -1568,7 +1568,7 @@ class ApplicationController extends Controller
                                     <f6indexno>'.$f6indexno.'</f6indexno>
                                     <Gender>'.$applicant->gender.'</Gender>
                                     <SelectedProgrammes>'.$selected_programs.'</SelectedProgrammes>
-                                    <MobileNumber>'.str_replace('255', '0', $applicant->phone).'</MobileNumber>
+                                    <MobileNumber>'.'0'.substr($applicant->phone,3).'</MobileNumber>
                                     <OtherMobileNumber></OtherMobileNumber>
                                     <EmailAddress>'.$applicant->email.'</EmailAddress>
                                     <Category>'.$category.'</Category>
@@ -1597,7 +1597,7 @@ class ApplicationController extends Controller
                                     <f6indexno>'.$f6indexno.'</f6indexno>
                                     <Gender>'.$applicant->gender.'</Gender>
                                     <SelectedProgrammes>'.$selected_programs.'</SelectedProgrammes>
-                                    <MobileNumber>'.str_replace('255', '0', $applicant->phone).'</MobileNumber>
+                                    <MobileNumber>'.'0'.substr($applicant->phone,3).'</MobileNumber>
                                     <OtherMobileNumber></OtherMobileNumber>
                                     <EmailAddress>'.$applicant->email.'</EmailAddress>
                                     <Category>'.$category.'</Category>
@@ -1768,7 +1768,7 @@ class ApplicationController extends Controller
                                     'NTA5_reg' => !empty($nta5_reg_no)? $nta5_reg_no : '',
                                     'NTA5_grad_year' => !empty($nta5_graduation_year)? explode('/',$nta5_graduation_year)[1] : '',
                                     'email_address' => $applicant->email,
-                                    'mobile_number' => str_replace('255', '0',$applicant->phone),
+                                    'mobile_number' => '0'.substr($applicant->phone,3),
                                     'address' => $applicant->address,
                                     'region' => $applicant->region->name,
                                     'district' => $applicant->district->name,
@@ -1776,7 +1776,7 @@ class ApplicationController extends Controller
                                     'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
                                     'next_kin_address' => $applicant->nextOfKin->address,
                                     'next_kin_email_address' => $applicant->nextOfKin->email? $applicant->nextOfKin->email : '',
-                                    'next_kin_phone' => str_replace('255', '0',$applicant->nextOfKin->phone),
+                                    'next_kin_phone' => '0'.substr($applicant->nextOfKin->phone,3),
                                     'next_kin_region' => $applicant->nextOfKin->region->name,
                                     'next_kin_relation' => $applicant->nextOfKin->relationship
                                 
@@ -8797,7 +8797,7 @@ class ApplicationController extends Controller
                         'firstname' => $applicant->first_name,
                         'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
                         'surname' => $applicant->surname,
-                        'mobile_number' => str_replace('255', '0',$applicant->phone),
+                        'mobile_number' => '0'.substr($applicant->phone,3),
                         'email_address' => $applicant->email,
                         'form_four_indexnumber' => $f4indexno,
                         'form_four_year' => $f4_exam_year,
