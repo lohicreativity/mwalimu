@@ -188,7 +188,7 @@ class ApplicantController extends Controller
                   // $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                   // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
                   $window = ApplicationWindow::where('id', $new_to_campus_applicant->application_window_id)
-                              ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $new_to_campus_applicant->batch_id)->where('program_level_id', $new_to_campus_applicant->program_level_id);})
+                              ->whereHas('applicationBatches', function($query) use($new_to_campus_applicant){ $query->where('id', $new_to_campus_applicant->batch_id)->where('program_level_id', $new_to_campus_applicant->program_level_id);})
                               ->where('campus_id', $request->get('campus_id'))
                               ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                               ->where('status', 'ACTIVE')

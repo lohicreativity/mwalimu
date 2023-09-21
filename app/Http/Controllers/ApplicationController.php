@@ -2021,6 +2021,10 @@ class ApplicationController extends Controller
                  $selection->campus_program_id = $request->campus_program_id;
                  $selection->application_window_id = $request->get('application_window_id');
                  $selection->order = $request->get('choice');
+                 $selection->o_level_points = $request->get('o_level_points');
+                 $selection->a_level_points = $request->get('a_level_points');
+                 $selection->diploma_grade = $request->get('diploma_grade');
+                 $selection->open_grade = $request->get('open_grade');
                  if($applicant->is_continue == 1){
                     $selection->status = 'SELECTED';
                  }
@@ -2052,7 +2056,8 @@ class ApplicationController extends Controller
                     $applicant->save();
                 }
       
-                if(($applicant->is_tcu_added == null || $applicant->is_tcu_added == 0) && str_contains(strtolower($applicant->programLevel->name),'bachelor')){
+                // if(($applicant->is_tcu_added == null || $applicant->is_tcu_added == 0) && str_contains(strtolower($applicant->programLevel->name),'bachelor')){ old
+                if(($applicant->is_tcu_added != 1) && str_contains(strtolower($applicant->programLevel->name),'bachelor')){ 
                     $tcu_username = $tcu_token = null;  
                     if(session('applicant_campus_id') == 1){
                         $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');

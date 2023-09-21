@@ -105,7 +105,7 @@
                     <div class="card-body">
                       @if(explode('.',$applicant->birth_certificate)[1] == 'pdf')
                          <iframe
-                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->birth_certificate) }}#toolbar=0&scrollbar=0"
+                              src="{{ asset('uploads/'.$applicant->birth_certificate) }}"
                               frameBorder="0"
                               scrolling="auto"
                               height="400px"
@@ -132,7 +132,7 @@
                     <div class="card-body">
                       @if(explode('.',$applicant->o_level_certificate)[1] == 'pdf')
                          <iframe
-                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->o_level_certificate) }}#toolbar=0&scrollbar=0"
+                              src="{{ asset('uploads/'.$applicant->o_level_certificate) }}"
                               frameBorder="0"
                               scrolling="auto"
                               height="400px"
@@ -159,7 +159,7 @@
                     <div class="card-body">
                       @if(explode('.',$applicant->a_level_certificate)[1] == 'pdf')
                          <iframe
-                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->a_level_certificate) }}#toolbar=0&scrollbar=0"
+                              src="{{ asset('uploads/'.$applicant->a_level_certificate) }}"
                               frameBorder="0"
                               scrolling="auto"
                               height="400px"
@@ -186,7 +186,7 @@
                     <div class="card-body">
                       @if(explode('.',$applicant->diploma_certificate)[1] == 'pdf')
                          <iframe
-                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
+                              src="{{ asset('uploads/'.$applicant->diploma_certificate) }}"
                               frameBorder="0"
                               scrolling="auto"
                               height="400px"
@@ -213,7 +213,7 @@
                     <div class="card-body">
                       @if(explode('.',$applicant->avn_certificate)[1] == 'pdf')
                          <iframe
-                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->avn_certificate) }}#toolbar=0&scrollbar=0"
+                              src="{{ asset('uploads/'.$applicant->avn_certificate) }}"
                               frameBorder="0"
                               scrolling="auto"
                               height="400px"
@@ -240,7 +240,7 @@
                     <div class="card-body">
                       @if(explode('.',$applicant->postponement_letter)[1] == 'pdf')
                          <iframe
-                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->postponement_letter) }}#toolbar=0&scrollbar=0"
+                              src="{{ asset('uploads/'.$applicant->postponement_letter) }}"
                               frameBorder="0"
                               scrolling="auto"
                               height="400px"

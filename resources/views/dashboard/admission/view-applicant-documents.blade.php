@@ -58,7 +58,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->o_level_certificate)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->o_level_certificate) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('public/'.'uploads/'.$applicant->o_level_certificate) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"
@@ -86,7 +86,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->a_level_certificate)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->a_level_certificate) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('uploads/'.$applicant->a_level_certificate) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"
@@ -114,7 +114,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->nacte_reg_no)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->nacte_reg_no) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('uploads/'.$applicant->nacte_reg_no) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"
@@ -142,7 +142,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->diploma_certificate)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('uploads/'.$applicant->diploma_certificate) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"
@@ -170,7 +170,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->teacher_diploma_certificate)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->teacher_diploma_certificate) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('uploads/'.$applicant->teacher_diploma_certificate) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"
@@ -198,7 +198,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->veta_certificate)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->veta_certificate) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('uploads/'.$applicant->veta_certificate) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"
@@ -226,7 +226,7 @@
                         <div class="card-body">
                           @if(explode('.',$applicant->degree_certificate)[1] == 'pdf')
                             <iframe
-                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->degree_certificate) }}#toolbar=0&scrollbar=0"
+                                  src="{{ asset('uploads/'.$applicant->degree_certificate) }}"
                                   frameBorder="0"
                                   scrolling="auto"
                                   height="400px"

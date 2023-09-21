@@ -96,7 +96,7 @@
                   <div id="collapseOne" class="collapse show" aria-labelledby="ss-letter" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
-                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->resumption_letter) }}#toolbar=0&scrollbar=0"
+                      src="{{ asset('uploads/'.$postponement->resumption_letter) }}"
                       frameBorder="0"
                       scrolling="auto"
                       height="400"

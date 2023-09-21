@@ -237,7 +237,7 @@
 												  <div id="collapseLetter" class="collapse" aria-labelledby="ss-letter" data-parent="#applicant-accordion">
 													<div class="card-body">
 														 <iframe
-															  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('/uploads/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf') }}#toolbar=0&scrollbar=0"
+															  src="{{ asset('/uploads/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf') }}"
 															  frameBorder="0"
 															  scrolling="auto"
 															  height="400px"

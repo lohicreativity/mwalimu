@@ -96,7 +96,7 @@
                   <div id="collapseOne" class="collapse show" aria-labelledby="ss-letter" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
-                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->postponement_letter) }}#toolbar=0&scrollbar=0"
+                      src="{{ asset('uploads/'.$postponement->postponement_letter) }}"
                       frameBorder="0"
                       scrolling="auto"
                       height="400"
@@ -119,7 +119,7 @@
                   <div id="collapseOne" class="collapse" aria-labelledby="ss-supporting-document" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
-                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->supporting_document) }}#toolbar=0&scrollbar=0"
+                      src="{{ asset('uploads/'.$postponement->supporting_document) }}"
                       frameBorder="0"
                       scrolling="auto"
                       height="400"
