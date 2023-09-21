@@ -1172,6 +1172,8 @@ class ApplicantController extends Controller
          return redirect()->to('application/results')->with('error','You must complete results section first');
       }
 
+      $o_level_selection_points = $a_level_selection_points = $diploma_selection_grade = $open_selection_grade = [];
+      
       if(!str_contains(strtolower($applicant->programLevel->name),'master')){
          $window = $applicant->applicationWindow;
          $campus_programs = $window? $window->campusPrograms()
@@ -1223,7 +1225,6 @@ class ApplicantController extends Controller
             $subsidiary_pass_grade = 'E';
          }
            // $selected_program[$applicant->id] = false;
-         $o_level_selection_points = $a_level_selection_points = $diploma_selection_grade = $open_selection_grade = [];
          $o_level_points = $a_level_points = $diploma_gpa = null;
          $subject_count = 0;
          foreach($campus_programs as $program){
@@ -1984,15 +1985,7 @@ class ApplicantController extends Controller
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
       }
       
-      if(!str_contains(strtolower($applicant->programLevel->name),'master')){
-         $data = [
-            'applicant'=>$applicant,
-            'campus'=>Campus::find(session('applicant_campus_id')),
-            'application_window'=>$window,
-            'campus_programs'=>$window ? $programs : [],
-            'regulator_selection'=>false,
-         ];
-      }else {
+
          $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
@@ -2004,7 +1997,6 @@ class ApplicantController extends Controller
             'diploma_selection_grade'=>$diploma_selection_grade,
             'open_selection_grade'=>$open_selection_grade
          ];
-      }
 
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
