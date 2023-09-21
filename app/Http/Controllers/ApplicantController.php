@@ -1983,18 +1983,29 @@ class ApplicantController extends Controller
                     $query->where('award_id',$applicant->program_level_id);
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
       }
+      
+      if(!str_contains(strtolower($applicant->programLevel->name),'master')){
+         $data = [
+            'applicant'=>$applicant,
+            'campus'=>Campus::find(session('applicant_campus_id')),
+            'application_window'=>$window,
+            'campus_programs'=>$window ? $programs : [],
+            'regulator_selection'=>false,
+         ];
+      }else {
+         $data = [
+            'applicant'=>$applicant,
+            'campus'=>Campus::find(session('applicant_campus_id')),
+            'application_window'=>$window,
+            'campus_programs'=>$window ? $programs : [],
+            'regulator_selection'=>false,
+            'o_level_selection_points'=>$o_level_selection_points,
+            'a_level_selection_points'=>$a_level_selection_points,
+            'diploma_selection_grade'=>$diploma_selection_grade,
+            'open_selection_grade'=>$open_selection_grade
+         ];
+      }
 
-        $data = [
-           'applicant'=>$applicant,
-           'campus'=>Campus::find(session('applicant_campus_id')),
-           'application_window'=>$window,
-           'campus_programs'=>$window ? $programs : [],
-           'regulator_selection'=>false,
-           'o_level_selection_points'=>$o_level_selection_points,
-           'a_level_selection_points'=>$a_level_selection_points,
-           'diploma_selection_grade'=>$diploma_selection_grade,
-           'open_selection_grade'=>$open_selection_grade
-        ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
 
