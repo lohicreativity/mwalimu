@@ -3237,9 +3237,9 @@ class ApplicationController extends Controller
 
         $pattern = null;
         if(str_contains(strtolower($request->get('index_number')),'eq')){
-            $pattern = "/eq(?:[0-9]{10}\/[0-9]{4})/i";
+            $pattern = "/eq(?:[0-9]{10}\/[0-9]{4})/i"; 
         }else{
-            $pattern = "/[A-Za-z]{1}[0-9]{4}\/[0-9]{4}\/[0-9]{4}/";
+            $pattern = "/^[A-Za-z]{1}\d{4}\/\d{4}\/\d{4}$/";
         }
 
         if(!preg_match($pattern,$request->get('index_number'))){
@@ -3459,8 +3459,9 @@ class ApplicationController extends Controller
         $batch_id = $batch_no = 0;
         if(!empty($request->get('award_id'))){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('award_id'))->latest()->first();
-            
+
             if($batch->batch_no > 1){
+                
                     if(Applicant::whereHas('selections',function($query) use($request, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
                         ->where('application_window_id',$request->get('application_window_id'))
                         ->where('batch_id',$batch->id);})
@@ -3468,7 +3469,7 @@ class ApplicationController extends Controller
                         ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
                                 $batch_id = $batch->id;
                                 $batch_no = $batch->batch_no;
-
+                            
                             }else{
 
                             $previous_batch = null;
@@ -3517,7 +3518,6 @@ class ApplicationController extends Controller
                                     ->where('batch_id',$batch_id)->where('campus_id', $staff->campus_id)->where('status','ELIGIBLE');})
                                     ->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])
                                     ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get(); */
-
             $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','entry_mode','teacher_certificate_status','batch_id')
                                     ->whereHas('selections',function($query) use($request, $batch_id){$query->where('application_window_id',$request->get('application_window_id'))
                                     ->where('batch_id',$batch_id)->where('status','ELIGIBLE');})
@@ -3525,6 +3525,7 @@ class ApplicationController extends Controller
                                     'nacteResultDetails.results:id,nacte_result_detail_id'])->where('status',null)
                                     ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
 
+                                
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
 
@@ -3576,7 +3577,6 @@ class ApplicationController extends Controller
                                     $has_results = false;
                                 }
                             }
-
                             if($has_results){
                                 foreach($applicant->selections as $selection){
                                     if($selection->order == $choice && $selection->batch_id == $batch_id && $selection->campus_program_id == $program->id){
@@ -5853,8 +5853,8 @@ class ApplicationController extends Controller
         }
 
         ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
-             $query->where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'));
-        })->where('campus_program_id',$request->get('campus_program_id'))->where('status','APPROVING')->update(['status'=>'PENDING']);
+             $query->where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->where('status','SUBMITTED');
+        })->where('batch_id', $batch_id)->where('campus_program_id',$request->get('campus_program_id'))->where('status','APPROVING')->update(['status'=>'PENDING']);
 
         return redirect()->back()->with('message',$no_of_applicants.' applicants retrieved successfully from TCU');
     }
