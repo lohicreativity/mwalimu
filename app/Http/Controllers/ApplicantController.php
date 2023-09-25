@@ -26,6 +26,7 @@ use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\OutResult;
 use App\Domain\Application\Models\OutResultDetail;
 use App\Domain\Application\Models\NacteResultDetail;
+use App\Domain\Application\Models\EntryRequirement;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Models\HealthInsurance;
@@ -606,9 +607,6 @@ class ApplicantController extends Controller
          if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
             return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
          }
-         if($applicant->status == 'ADMITTED'){
-            $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-         }
       }else{
          if($applicant->status != null && $applicant->status != 'SUBMITTED' && !$regulator_selection){
             return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
@@ -736,7 +734,7 @@ class ApplicantController extends Controller
          }
      }
       */
-
+      
         return view('dashboard.application.edit-basic-information',$data)->withTitle('Edit Basic Information');
     }
 
@@ -1157,7 +1155,7 @@ class ApplicantController extends Controller
                                  ->latest()->first();
       }
 
-      if(!$application_window){
+       if(!$application_window){
          if($second_attempt_applicant){
             return redirect()->back()->with('error','Please wait for the application window to be openned');				 
          }
@@ -1180,8 +1178,31 @@ class ApplicantController extends Controller
                                              ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
                                              ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
                                              ->where('campus_id',session('applicant_campus_id'))->get() : [];
-         
+         $entry_requirements = null;
+         foreach($campus_programs as $prog){
+            $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
+                                                   ->with('campusProgram:id,code')->first();            
+         }
 
+         foreach($campus_programs as $prog){
+            foreach($entry_requirements as $requirements){
+               if($requirements){
+                  if($prog->id == $requirements->campus_program_id){
+                     $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
+                                                         ->where(function($query) {
+                                                            $query->where('applicant_program_selections.status', 'SELECTED')
+                                                                  ->orWhere('applicant_program_selections.status', 'APPROVING');
+                                                         })
+                                                         ->count();
+                     if ($count_applicants_per_program < $requirements->max_capacity) {
+                        $campus_progs[] = $prog;
+                         }
+                  }
+               }
+            }
+         }
+         
+         $campus_programs = $campus_progs;
          $award = $applicant->programLevel;
          $programs = [];
 
@@ -1228,7 +1249,6 @@ class ApplicantController extends Controller
          $o_level_points = $a_level_points = $diploma_gpa = null;
          $subject_count = 0;
          foreach($campus_programs as $program){
-            
             if(count($program->entryRequirements) == 0){
                return redirect()->back()->with('error',$program->program->name.' does not have entry requirements, please check with the Admission Office');
             }
