@@ -220,11 +220,11 @@
                               <div class='row'>
                                 <div class='col-6'>
                                   {!! Form::label('','Begin Date') !!}
-                                  {!! Form::text('begin_date',$ba->begin_date,$begin_date) !!}
+                                  {!! Form::text('begin_date',App\Utils\DateMaker::toStandardDate($ba->begin_date),$begin_date) !!}
                                 </div>
                                 <div class='col-6'>
                                   {!! Form::label('','End Date') !!}
-                                  {!! Form::text('end_date',$ba->end_date,$end_date) !!}
+                                  {!! Form::text('end_date',App\Utils\DateMaker::toStandardDate($ba->end_date),$end_date) !!}
                                   {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                                   {!! Form::input('hidden','batch_id',$ba->id) !!}
                                   {!! Form::input('hidden','program_level_id',$ba->program_level_id) !!}
