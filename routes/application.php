@@ -80,6 +80,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('application-batches', [ApplicationBatchController::class,'index']);
     Route::get('application-batches-create', [ApplicationBatchController::class,'store']);
     Route::get('application-batches-selection', [ApplicationBatchController::class,'edit']);
+    Route::post('application-batches/update', [ApplicationBatchController::class,'update']);
  //   Route::post('application-batch/store', [ApplicationBatchController::class,'store']);
     Route::get('application-batch/{id}/destroy', [ApplicationBatchController::class,'destroy']);   
 

@@ -25,11 +25,11 @@ class ApplicationBatchAction{
         $batch->end_date = DateMaker::toDBDate($request->get('end_date'));
         $batch->save();
         if($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2){
-            ApplicationWindow::where('id', $batch->application_window_id)->update(['end_date'=>$batch->end_date]);
+            ApplicationWindow::where('id', $batch->application_window_id)->update(['end_date'=>$batch->end_date, 'begin_date'=>$batch->begin_date]);
         }elseif($request->get('program_level_id') == 4){
-            ApplicationWindow::where('id', $batch->application_window_id)->update(['bsc_end_date'=>$batch->end_date]);
+            ApplicationWindow::where('id', $batch->application_window_id)->update(['bsc_end_date'=>$batch->end_date, 'begin_date'=>$batch->begin_date]);
         }elseif($request->get('program_level_id') == 5){
-            ApplicationWindow::where('id', $batch->application_window_id)->update(['msc_end_date'=>$batch->end_date]);
+            ApplicationWindow::where('id', $batch->application_window_id)->update(['msc_end_date'=>$batch->end_date, 'begin_date'=>$batch->begin_date]);
         }
         
 	}

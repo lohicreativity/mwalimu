@@ -202,8 +202,37 @@
                               </button>
                             </div>
                             <div class="modal-body">
-
+                            {!! Form::open(['url'=>'application/application-batches/update','class'=>'ss-form-processing']) !!} 
+                                  @php                
+                                    $begin_date = [
+                                        'placeholder'=>$ba->begin_date,
+                                        'class'=>'form-control ss-datepicker',
+                                        'required'=>true
+                                    ];
+                                    $end_date = [
+                                        'placeholder'=>$ba->end_date,
+                                        'class'=>'form-control ss-datepicker',
+                                        'required'=>true
+                                    ];
+                                 @endphp
+                              <div class='row'>
+                                <div class='col-6'>
+                                  {!! Form::label('','Begin Date') !!}
+                                  {!! Form::text('begin_date',null,$begin_date) !!}
+                                </div>
+                                <div class='col-6'>
+                                  {!! Form::label('','End Date') !!}
+                                  {!! Form::text('end_date',null,$end_date) !!}
+                                  {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+                                  {!! Form::input('hidden','batch_id',$ba->id) !!}
+                                  {!! Form::input('hidden','program_level_id',$ba->program_level_id) !!}
+                                </div>
+                              </div>
                             </div>
+                            <div class="card-footer">
+                              <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                            </div>
+                            {!! Form::close() !!}
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>

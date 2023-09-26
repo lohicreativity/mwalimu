@@ -138,8 +138,11 @@ class ApplicationBatchController extends Controller
                 return redirect()->back()->with('error','You cannot update this application window because it does not belong to your campus');
         }
 
-        if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('end_date'))) || date('Y-m-d',strtotime($request->get('begin_date'))) > date('Y-m-d',strtotime($request->get('bsc_end_date')))
-            || date('Y-m-d',strtotime($request->get('begin_date'))) > date('Y-m-d',strtotime($request->get('msc_end_date')))){
+        if(ApplicationWindow::where('campus_id',session('staff_campus_id'))->where('status', 'INACTIVE')->latest()->first()){
+            return redirect()->back()->with('error','Application window is inactive');
+        }
+        
+        if(date('Y-m-d', strtotime($request->begin_date)) > date('Y-m-d', strtotime($request->end_date))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
         }
 
@@ -150,7 +153,7 @@ class ApplicationBatchController extends Controller
         // }
 
 
-        (new ApplicationWindowAction)->update($request);
+        (new ApplicationBatchAction)->store($request);
 
         return Util::requestResponse($request,'Application window updated successfully');
     }
