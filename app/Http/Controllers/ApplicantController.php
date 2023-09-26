@@ -229,14 +229,14 @@ class ApplicantController extends Controller
         }
 
 // Need to crosscheck this
-        $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
-        ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
-        //->where('intake_id', $appl->intake_id)
-        ->where('status','INACTIVE')->latest()->first();
+        // $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
+        // ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
+        // //->where('intake_id', $appl->intake_id)
+        // ->where('status','INACTIVE')->latest()->first();
 
-        
 
-        if($closed_window && !$window_batch){
+
+        if(!$app_window && !$window_batch){
             return redirect()->back()->with('error','Application window already closed');
         }
 
