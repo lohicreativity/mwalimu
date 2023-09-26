@@ -264,8 +264,7 @@ class ApplicantController extends Controller
 
                // New applicant
                if($app){
-                  $batch = ApplicationBatch::where('application_window_id',$window->id)->where('program_level_id',$app->program_level_id)->latest()->first();
-                  if(!$batch){
+                  if(!$window){
                      return redirect()->back()->with('error','There is no defined batch for this level. Please contact the Admission Office');
                   }
                   $applicant = $app;
@@ -319,9 +318,8 @@ class ApplicantController extends Controller
 
                }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
                   if($app){
-                     $batch = ApplicationBatch::where('application_window_id',$window->id)->where('program_level_id',$app->program_level_id)->latest()->first();
 
-                     if(!$batch){
+                     if(!$window){
                            return redirect()->back()->with('error','There is no defined batch for this level. Please contact the Admission Office');
                      }
                      // Add an existing applicant to a new campus
