@@ -1222,7 +1222,7 @@ class ApplicantController extends Controller
          //    }
          // }
          
-         $campus_programs = $campus_progs;
+         // $campus_programs = $campus_progs;
          $award = $applicant->programLevel;
          $programs = [];
 
