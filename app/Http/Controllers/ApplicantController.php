@@ -134,7 +134,6 @@ class ApplicantController extends Controller
                }
                $window = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id', 
                   $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
-               dd($window);
             }elseif($applicant->program_level_id == 5){
                // $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
