@@ -1864,7 +1864,7 @@ class ApplicantController extends Controller
                      $diploma_gpa = $detail->diploma_gpa;
                   }
                }
-
+               
                if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_nacte_results && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                         
                      $programs[] = $program;
@@ -1872,7 +1872,7 @@ class ApplicantController extends Controller
                      $diploma_selection_grade[$program->id] = $diploma_gpa;
                }
 
-               if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $has_nacte_results == true){
+               if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                   foreach($applicant->nacteResultDetails as $detail){
                      if($detail->verified == 1){
 
