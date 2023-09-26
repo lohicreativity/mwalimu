@@ -206,11 +206,13 @@
                                   @php                
                                     $begin_date = [
                                         'placeholder'=>$ba->begin_date,
+                                        'value'=>$ba->begin_date,
                                         'class'=>'form-control ss-datepicker',
                                         'required'=>true
                                     ];
                                     $end_date = [
                                         'placeholder'=>$ba->end_date,
+                                        'value'=>$ba->end_date,
                                         'class'=>'form-control ss-datepicker',
                                         'required'=>true
                                     ];
