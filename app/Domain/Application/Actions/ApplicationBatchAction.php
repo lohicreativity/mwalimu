@@ -17,6 +17,9 @@ class ApplicationBatchAction{
 	public function store(Request $request){
 		// $window = ApplicationWindow::where('campus_id',session('staff_campus_id'))->latest()->first();
         $batch = ApplicationBatch::where('id',$request->batch_id)->first();
+        $batch->begin_date = DateMaker::toDBDate($request->get('begin_date'));
+        $batch->end_date = DateMaker::toDBDate($request->get('end_date'));
+        $batch->save();
         // $batch = new ApplicationBatch;
         // $batch->batch_no = $last_batch > 0 ? $last_batch + 1: 1; 
         // $batch->application_window_id = $window->id;
