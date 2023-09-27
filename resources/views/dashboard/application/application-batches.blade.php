@@ -116,22 +116,40 @@
                       <a class="btn btn-danger btn-sm" href="{{ url('application/application-batches-selection?status=0&batch_id='.$ba->id) }}">
                              <i class="fas fa-ban">
                              </i>
-                             Hide Selection Results
+                             Hide Selections
+                      </a>
+                      <a class="btn btn-info btn-sm" href="{{ url('application/update-batches-selection?batch_id='.$ba->id) }}">
+                             <i class="fas fa-check-circle">
+                             </i>
+                             Update Selections
                       </a>
                      @else
                       <a class="btn btn-info btn-sm" @if($have_results == 1) href="{{ url('application/application-batches-selection?status=1&batch_id='.$ba->id) }}" @else disabled="disabled" @endif>
                              <i class="fas fa-check-circle">
                              </i>
-                             Show Selection Results
+                             Show Selections
+                      </a>
+                      <a class="btn btn-info btn-sm disabled" href="{{ url('application/update-batches-selection?batch_id='.$ba->id) }}">
+                             <i class="fas fa-check-circle">
+                             </i>
+                             Update Selections
                       </a>
                      @endif
  
                       @can('delete-application-window')
+                      @if(($ba->where('program_level_id', $ba->program_level_id )->max('batch_no')) == $ba->batch_no)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
+                      @else
+                      <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @endif
                       @endcan
 
                       <div class="modal fade" id="ss-edit-batch-{{ $ba->id }}">

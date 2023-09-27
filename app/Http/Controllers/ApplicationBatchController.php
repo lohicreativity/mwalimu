@@ -51,7 +51,7 @@ class ApplicationBatchController extends Controller
             }
         }
         $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
-      
+        
     	$data = [
            'windows'=>$windows,
            'intakes'=>Intake::all(),
@@ -109,11 +109,20 @@ class ApplicationBatchController extends Controller
         $batch = ApplicationBatch::where('id', $request->get('batch_id'))->first();
         ApplicationBatch::where('id', $request->get('batch_id'))->update(['selection_released'=>$request->get('status')]);
         if($request->get('status') == 1){
-            Applicant::whereHas('selections', function($query) use($batch){$query->where('batch_id',$batch->id)->where('status','SELECTED');})->update(['status'=>'SELECTED']);
-            Applicant::whereHas('selections', function($query) use($batch){$query->where('batch_id',$batch->id)->where('status','PENDING');})->update(['status'=>'NOT SELECTED']);
+            Applicant::whereHas('selections', function($query) {$query->where('status','SELECTED');})->where('status', 'SUBMITTED')->update(['status'=>'SELECTED']);
+            Applicant::whereHas('selections', function($query) {$query->where('status','PENDING');})->where('status', 'SUBMITTED')->update(['status'=>'NOT SELECTED']);
+            Applicant::whereDoesntHave('selections', function($query) {$query->where('status','SELECTED');})->where('status', 'SUBMITTED')->update(['status'=>'NOT SELECTED']);
         }
         $batch->selection_released = $request->get('status');
         $batch->save();
+        return redirect()->back();
+    }
+
+    public function updateBatchSelections(Request $request){
+        $batch = ApplicationBatch::where('id', $request->get('batch_id'))->first();
+            Applicant::whereHas('selections', function($query) {$query->where('status','SELECTED');})->where('status', 'SUBMITTED')->update(['status'=>'SELECTED']);
+            Applicant::whereHas('selections', function($query) {$query->where('status','PENDING');})->where('status', 'SUBMITTED')->update(['status'=>'NOT SELECTED']);
+            Applicant::whereDoesntHave('selections', function($query) {$query->where('status','SELECTED');})->where('status', 'SUBMITTED')->update(['status'=>'NOT SELECTED']);
         return redirect()->back();
     }
     /**
