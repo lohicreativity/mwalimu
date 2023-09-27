@@ -32,16 +32,16 @@ class ApplicationBatchController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $windows = null;
         if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-            $windows = ApplicationWindow::where('status','ACTIVE')->get();
+            $windows = ApplicationWindow::latest()->get();
 
         }else{
-            $windows = ApplicationWindow::where('campus_id', session('staff_campus_id'))->where('status','ACTIVE')->latest()->get();
+            $windows = ApplicationWindow::where('campus_id', session('staff_campus_id'))->latest()->get();
         }
 
         $batches = [];
         foreach($windows as $window){
 
-            $batches[] = ApplicationBatch::where('application_window_id',$window->id)->get();
+            $batches[] = ApplicationBatch::where('application_window_id',$window->id)->latest()->get();
         }
 
         $batch_ids = [];
@@ -51,7 +51,7 @@ class ApplicationBatchController extends Controller
             }
         }
         $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
-        //return $batches;
+      
     	$data = [
            'windows'=>$windows,
            'intakes'=>Intake::all(),

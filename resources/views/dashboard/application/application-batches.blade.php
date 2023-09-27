@@ -37,65 +37,7 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-12">
-
-            <div class="card">
-              <div class="card-header">
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                 {!! Form::open(['url'=>'application/application-batches-create','class'=>'ss-form-processing','method'=>'GET']) !!}
-                    @php
-                    if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){  }               
-                    
-                    $begin_date = [
-                        'placeholder'=>'Begin Date',
-                        'class'=>'form-control ss-datepicker',
-                        'required'=>true
-                    ];
-    
-                    $end_date = [
-                        'placeholder'=>'End Date',
-                        'class'=>'form-control',
-                        'class'=>'form-control ss-datepicker',
-                        'required'=>true
-                    ];
-                    @endphp
-
-                
-                   <div class="row">
-               
-                  <div class="form-group col-4">
-                    {!! Form::label('','Programme Level') !!}
-                    <select name="program_level_id" class="form-control" required>
-                      <option value="">Select Programme Level</option>
-                      @foreach($awards as $award)
-                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
-                        <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
-                        @endif
-                      @endforeach
-                    </select>
-                  </div>
-
-                  <div class="form-group col-4">
-                    {!! Form::label('','Begin Date') !!}
-                    {!! Form::text('begin_date',null,$begin_date) !!}
-                  </div>
-
-                  <div class="form-group col-4">
-                    {!! Form::label('','End Date') !!}
-                    {!! Form::text('end_date',null,$end_date) !!}
-                  </div>
-                  </div>
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Create Batch') }}</button>
-                  </div>
-
-                 {!! Form::close() !!}
-              </div>
-            </div>
-            <!-- /.card -->
-          
+          <div class="col-12">          
             @if(count($batches) != 0)
             <div class="card">
               <div class="card-header">
