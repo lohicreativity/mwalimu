@@ -82,7 +82,7 @@ class ApplicantController extends Controller
             'password'=>'required',
             'campus_id'=>'required'
         ]);
-
+       
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
