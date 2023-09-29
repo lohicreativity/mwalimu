@@ -144,6 +144,7 @@ class ApplicantController extends Controller
                $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id', 
                   $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
             }
+            
         }
 
         if($appl){
@@ -233,8 +234,6 @@ class ApplicantController extends Controller
         // ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
         // //->where('intake_id', $appl->intake_id)
         // ->where('status','INACTIVE')->latest()->first();
-
-
 
         if(!$app_window && !$window_batch){
             return redirect()->back()->with('error','Application window already closed');
@@ -530,6 +529,7 @@ class ApplicantController extends Controller
     public function dashboard(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+
         if($applicant->basic_info_complete_status == 1 && $applicant->submission_complete_status == 0 && $applicant->status == null){
           if($applicant->next_of_kin_complete_status == 1){
               if($applicant->payment_complete_status == 1){
@@ -549,13 +549,13 @@ class ApplicantController extends Controller
                      return redirect()->to('application/results');
                   }
               }else{
-                 return redirect()->to('application/payments');
+                  return redirect()->to('application/payments');
               }
           }else{
-              return redirect()->to('application/next-of-kin');
+               return redirect()->to('application/next-of-kin');
           }
         }else{
-            return redirect()->to('application/basic-information');
+               return redirect()->to('application/basic-information');
         }
         $data = [
            'applicant'=>$applicant
@@ -763,6 +763,40 @@ class ApplicantController extends Controller
 			}
 		}
 
+              //check applicant program capacity
+              if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0){
+               $window = $applicant->applicationWindow;
+               $campus_programs = $window? $window->campusPrograms()
+                                                   ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
+                                                   ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
+                                                   ->where('campus_id', session('applicant_campus_id'))->get() : [];
+               $entry_requirements = null;
+               foreach($campus_programs as $prog){
+                  $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
+                                                         ->with('campusProgram:id,code')->first();            
+               }
+               foreach($campus_programs as $prog){
+                  foreach($entry_requirements as $requirements){
+                     if($requirements){
+                        if($prog->id == $requirements->campus_program_id){
+                           $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
+                                                               ->where(function($query) {
+                                                                  $query->where('applicant_program_selections.status', 'SELECTED')
+                                                                        ->orWhere('applicant_program_selections.status', 'APPROVING');
+                                                               })
+                                                               ->count();
+                           if ($count_applicants_per_program > $requirements->max_capacity) {
+                              $campus_progs[] = $prog;
+                           }else {
+                              $campus_progs = null;
+                           }
+                        }
+                     }
+                  }
+               }   
+            }
+
+
       $data = [
          'applicant'=>$applicant,
          'student' => $payment_status? $student : [],
@@ -777,9 +811,10 @@ class ApplicantController extends Controller
          'status_code'=>isset($array['Response'])? $array['Response']['ResponseParameters']['StatusCode'] : null,
          'wards'=>Ward::all(),
          'disabilities'=>DisabilityStatus::all(),
-         'selection_released_status'=>ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first()
+         'selection_released_status'=>ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first(),
+         'available_progs'=>$campus_programs ?? [],
+         'full_programs'=>$campus_progs ?? []
       ];
-
 /*         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             //   if($applicant->status == null){
