@@ -72,9 +72,9 @@ class SendAdmissionLetterJob implements ShouldQueue
             ->where(fn($query) => $query->where('multiple_admissions', 0)->orWhere('multiple_admissions', null)->orWhere('confirmation_status', 'CONFIRMED'))
             ->get(); */
             $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
-                                    ->whereHas('selections',function($query){$query->where('status','SELECTED')->where('application_window_id',$this->application_window_id);})
+                                    ->whereHas('selections',function($query){$query->where('order','!=',1)->where('status','SELECTED')->where('application_window_id',$this->application_window_id);})
                                     ->where('program_level_id',$this->program_level_id)
-                                    ->where('status','SELECTED')
+                                    ->where('status','ADMITTED')
                                     ->where('campus_id', $application_window->campus_id)
                                     ->where('application_window_id',$this->application_window_id)
                                     ->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})
@@ -90,9 +90,13 @@ class SendAdmissionLetterJob implements ShouldQueue
                                     ])->get();
 
         foreach ($applicants as $applicant) {
+            $campus_program = $applicant->selections[0]->campusProgram->id;
+            $program_name = $applicant->selections[0]->campusProgram->program->name;
             SendAdmissionLetterToSelectedApplicantJob::dispatch(
                 $applicant, 
                 $this->program_level_id, 
+                $campus_program,
+                $program_name,
                 $this->reference_number
             );
         }

@@ -25,12 +25,16 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
     public Applicant $applicant;
     public $program_level_id;
     public $reference_number;
+    public $campus_program;
+    public $program_name;
 
-    public function __construct(Applicant $applicant, $program_level_id, $reference_number)
+    public function __construct(Applicant $applicant, $program_level_id, $reference_number, $campus_program, $program_name)
     {
         $this->applicant = $applicant;
         $this->program_level_id = $program_level_id;
         $this->reference_number = $reference_number;
+        $this->campus_program = $campus_program;
+        $this->program_name = $program_name;
     }
 
     public function handle()
@@ -226,14 +230,14 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
         }
 
         $program_fee = ProgramFee::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
-                                ->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
+                                ->where('campus_program_id',$this->campus_program->id)->first();
 
         if(!$program_fee){
-            return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
+            return redirect()->back()->with('error','Programme fee not defined for '.$this->program_name);
         }
 
         $practical_training_fee = null;
-        if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'bachelor') && str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'education')){
+        if(str_contains(strtolower($this->program_name),'bachelor') && str_contains(strtolower($this->program_name),'education')){
             $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
             ->where('name','LIKE','%Practical%'); })->first();
@@ -270,7 +274,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'campus_name' => $applicant->selections[0]->campusProgram->campus->name,
                 'applicant_name' => $applicant->first_name . ' ' . $applicant->surname,
                 'reference_number' => $this->reference_number,
-                'program_name' => $applicant->selections[0]->campusProgram->program->name,
+                'program_name' => $this->program_name,
                 'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
                 'study_year' => $study_academic_year->academicYear->year,
                 'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
@@ -294,25 +298,42 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             ];
             
             if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+                // get file
+                // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-',$ $study_academic_year->academicYear->year).'.pdf'); 
+                // // If file exist
+                //     if(file_exists($file)){
+                //         // delete
+                //         unlink($file);
+                //     }
+
                 $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
                     'margin_top' => 20,
                     'margin_bottom' => 20,
                     'margin_left' => 20,
                     'margin_right' => 20
-                    ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+                    ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-', $study_academic_year->academicYear->year).'.pdf'); 
+                    
             }else{
+                // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
+                // // If file exist
+                //     if(file_exists($file)){
+                //         // delete
+                //         unlink($file);
+                //     }
+
                 $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
                 'margin_top' => 20,
                 'margin_bottom' => 20,
                 'margin_left' => 20,
                 'margin_right' => 20
-                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
-            }
+                ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-',$study_academic_year->academicYear->year).'.pdf'); 
 
-            $user = new User;
+            }
+            
+            $user = new User;            
             $user->email = $applicant->email;
             $user->username = $applicant->first_name . ' ' . $applicant->surname;
-            Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
+            //Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
 
             $app = Applicant::find($applicant->id);
             $app->status = 'ADMITTED';
