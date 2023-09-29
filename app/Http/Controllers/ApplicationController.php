@@ -4902,11 +4902,6 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        // $file = base_path(('public/uploads').'/Admission-Letter-'."MAGDALENA".'-'."RAMADHANI".'.pdf');
-        // if(file_exists($file)){
-        //     unlink($file);
-        // }
-        
 /*         $validation = $request->validate($request->all(),[
             'application_window_id'=>'required',
         ]);
@@ -4945,6 +4940,7 @@ class ApplicationController extends Controller
                                                     'applicationWindow:id,end_date',
                                                     'region:id,name'
                                                 ])->get();
+
                                                 /* $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,surname,a.email,address,index_number,a.nationality,b.status,c.name as campus,
                                                                                                              d.name as region, e.end_date,f.name as intake,h.name as program,h.min_duration,i.name as award'))
                                                                                             ->where('a.program_level_id',$request->get('program_level_id'))
