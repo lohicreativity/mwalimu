@@ -4,6 +4,7 @@
 
 <div class="wrapper">
 
+
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
@@ -19,6 +20,39 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
+        <div class="row mb-2">
+        @if(count($full_programs) !== count($available_progs))
+         <div class='col-sm-7'>
+        </div>  
+         <div class="col-sm-5"> 
+        @if(count($full_programs) !== 0 && count($available_progs) > count($full_programs))
+          <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4>Please note that the following programmes are full;</h4>
+                @foreach($full_programs as $key=>$prog)
+                  <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                @endforeach
+          </div><!-- end of ss-messages_box -->
+            @elseif(count($full_programs) > count($available_progs))
+              <div class="alert alert-success alert-dismissible ss-messages-box w-25" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4>Please note that only the following programmes are available;</h4>
+                    @foreach($full_programs as $key=>$prog)
+                      <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                    @endforeach
+              </div><!-- end of ss-messages_box -->
+            @endif
+        </div>
+        @else
+       <div class="col-sm-12">  
+        <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4>Unfortunately all programs are full. Please try from other MNMA campuses</h4>
+              </div>
+          </div>
+      </div>
+        @endif
+      </div>
         <div class="row mb-2">
           <div class="col-sm-8">
             <h3>{{ __('Basic Information') }} - {{ $campus->name }} - {{ $applicant->index_number }}</h3>
