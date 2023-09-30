@@ -43,7 +43,11 @@
             <div class="alert alert-warning">Payment section not completed.</div>
             @else
 		    @if(count($campus_programs) == 0)
-			<div class="alert alert-warning">Unfortunately you do not qualify in any of our programmes offered in this campus.</div>
+            @if(count($programs_available) == 0)
+                <div class="alert alert-danger">Unfortunately all programmes are full. Please try from other MNMA campuses.</div>
+            @else
+                <div class="alert alert-warning">Unfortunately you do not qualify in any of our programmes offered in this campus.</div>
+            @endif
 		    @else
                         <div class="card">
               <div class="card-header">

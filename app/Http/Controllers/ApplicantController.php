@@ -763,35 +763,7 @@ class ApplicantController extends Controller
 			}
 		}
 
-              //check applicant program capacity
-              $campus_progs = [];
-              if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0){
-               $window = $applicant->applicationWindow;
-               $campus_programs = $window? $window->campusPrograms()
-                                                   ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
-                                                   ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
-                                                   ->where('campus_id', session('applicant_campus_id'))->get() : [];
-               $entry_requirements = null;
-               foreach($campus_programs as $prog){
-                  $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
-                                                         ->with('campusProgram:id,code')->first();            
-               }
 
-               foreach($campus_programs as $prog){
-
-                  $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
-                                                      ->where(function($query) {
-                                                         $query->where('applicant_program_selections.status', 'SELECTED')
-                                                               ->orWhere('applicant_program_selections.status', 'APPROVING');
-                                                      })
-                                                      ->count();
-                                                      //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
-                  if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
-
-                     $campus_progs[] = $prog;
-                  }
-               }   
-            }
 
       $data = [
          'applicant'=>$applicant,
@@ -808,8 +780,6 @@ class ApplicantController extends Controller
          'wards'=>Ward::all(),
          'disabilities'=>DisabilityStatus::all(),
          'selection_released_status'=>ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first(),
-         'available_progs'=>$campus_programs ?? [],
-         'full_programs'=>$campus_progs ?? []
       ];
 
      
@@ -1166,6 +1136,40 @@ class ApplicantController extends Controller
         
         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
+                      //check applicant program capacity
+              $campus_progs = [];
+              $available_progs = [];
+              if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0){
+               $window = $applicant->applicationWindow;
+               $campus_programs = $window? $window->campusPrograms()
+                                                   ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
+                                                   ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
+                                                   ->where('campus_id', session('applicant_campus_id'))->get() : [];
+               $entry_requirements = null;
+               foreach($campus_programs as $prog){
+                  $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
+                                                         ->with('campusProgram:id,code')->first();            
+               }
+
+               foreach($campus_programs as $prog){
+
+                  $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
+                                                      ->where(function($query) {
+                                                         $query->where('applicant_program_selections.status', 'SELECTED')
+                                                               ->orWhere('applicant_program_selections.status', 'APPROVING');
+                                                      })
+                                                      ->count();
+
+                                                      //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
+                  if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
+
+                     $campus_progs[] = $prog;
+                  }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
+                     $available_progs[] = $prog;
+                  }
+               }   
+            }
+
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
@@ -1176,9 +1180,10 @@ class ApplicantController extends Controller
            'invoice'=>$invoice,
            'usd_currency'=>Currency::where('code','USD')->first(),
            'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null,
-           'regulator_selection'=>false
+           'regulator_selection'=>false,
+           'available_progs'=>$available_progs ?? [],
+           'full_programs'=>$campus_progs ?? []
         ];
-
         return view('dashboard.application.payments',$data)->withTitle('Payments');
     }
 
@@ -1273,6 +1278,13 @@ class ApplicantController extends Controller
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_id = $batch->id;
          $applicant->status = null;
+         NectaResult::where('applicant_id', $applicant->id)->delete();
+         NectaResultDetail::where('applicant_id', $applicant->id)->delete();
+         NacteResult::where('applicant_id', $applicant->id)->delete();
+         NacteResultDetail::where('applicant_id', $applicant->id)->delete();
+         $out = OutResultDetail::where('applicant_id', $applicant->id)->first();
+         OutResult::where('out_result_detail_id', $out->id)->delete();
+         $out->delete();
 			$applicant->save();
 		}
 		//check if window active
@@ -1334,7 +1346,7 @@ class ApplicantController extends Controller
       }
 
       $o_level_selection_points = $a_level_selection_points = $diploma_selection_grade = $open_selection_grade = [];
-      
+      $campus_progs = [];
       if(!str_contains(strtolower($applicant->programLevel->name),'master')){
          $window = $applicant->applicationWindow;
          $campus_programs = $window? $window->campusPrograms()
@@ -1346,6 +1358,7 @@ class ApplicantController extends Controller
             $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
                                                    ->with('campusProgram:id,code')->first();            
          }
+
 
          foreach($campus_programs as $prog){
             foreach($entry_requirements as $requirements){
@@ -1364,6 +1377,7 @@ class ApplicantController extends Controller
                }
             }
          }
+         // dd( $campus_progs);
          
          $campus_programs = $campus_progs;
          $award = $applicant->programLevel;
@@ -2178,7 +2192,8 @@ class ApplicantController extends Controller
             'o_level_selection_points'=>$o_level_selection_points,
             'a_level_selection_points'=>$a_level_selection_points,
             'diploma_selection_grade'=>$diploma_selection_grade,
-            'open_selection_grade'=>$open_selection_grade
+            'open_selection_grade'=>$open_selection_grade,
+            'programs_available' => $campus_progs
          ];
 
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');

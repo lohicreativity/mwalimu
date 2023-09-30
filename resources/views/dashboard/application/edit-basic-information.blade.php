@@ -19,43 +19,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        
-      <div class="row mb-2">
-      @if(($applicant->status === 0) && ($applicant->payment_complete_status == 0))  
-        @if(count($full_programs) == count($available_progs))
-        <div class="col-sm-12">  
-        <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
-                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h5>Unfortunately all programmes are full. Please try from other MNMA campuses.</h5>
-              </div>
-          </div>
-        @else
-        <div class='col-sm-7'>
-        </div>  
-         <div class="col-sm-5"> 
-        @if(count($full_programs) !== 0 && count($available_progs) > count($full_programs))
-          <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
-            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <h4>Please note that the following programmes are full;</h4>
-                @foreach($full_programs as $key=>$prog)
-                  <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
-                @endforeach
-          </div><!-- end of ss-messages_box -->
-            @elseif(count($full_programs) > count($available_progs))
-              <div class="alert alert-success alert-dismissible ss-messages-box w-25" role="alert">
-                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4>Please note that only the following programmes are available;</h4>
-                    @foreach($full_programs as $key=>$prog)
-                      <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
-                    @endforeach
-              </div><!-- end of ss-messages_box -->
-            @endif
-        </div>
-
-        @endif
-      @endif
-        </div>
+      <div class="container-fluid">        
         <div class="row mb-2">
           <div class="col-sm-8">
             <h3>{{ __('Basic Information') }} - {{ $campus->name }} - {{ $applicant->index_number }}</h3>
@@ -78,7 +42,7 @@
 
             <!-- Need to add a filter to prevent applicants from viewing selection status after applicants have been retrieved from a regulator -->
             @if($regulator_selection && $selection_released_status->selection_released == 1)
-
+            
               @if($check_selected_applicant)
                   @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED')
                     <div class="alert alert-danger">
@@ -139,6 +103,7 @@
                   <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
+                     
                       Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
                     </h3>
                   </div> 					   
@@ -149,7 +114,7 @@
                       <i class="fa fa-check-circle"></i> 
                       Your application has been received and we are finalizing selection process. Please bear with us.
                     </h3>
-                    </div> 	
+            </div>
             @endif
 
             
