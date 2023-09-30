@@ -25,15 +25,15 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
     public Applicant $applicant;
     public $program_level_id;
     public $reference_number;
-    public $campus_program;
+    public $campus_program_id;
     public $program_name;
 
-    public function __construct(Applicant $applicant, $program_level_id, $reference_number, $campus_program, $program_name)
+    public function __construct(Applicant $applicant, $program_level_id, $reference_number, $campus_program_id, $program_name)
     {
         $this->applicant = $applicant;
         $this->program_level_id = $program_level_id;
         $this->reference_number = $reference_number;
-        $this->campus_program = $campus_program;
+        $this->campus_program_id = $campus_program_id;
         $this->program_name = $program_name;
     }
 
@@ -230,7 +230,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
         }
 
         $program_fee = ProgramFee::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
-                                ->where('campus_program_id',$this->campus_program->id)->first();
+                                ->where('campus_program_id',$this->campus_program_id)->first();
 
         if(!$program_fee){
             return redirect()->back()->with('error','Programme fee not defined for '.$this->program_name);

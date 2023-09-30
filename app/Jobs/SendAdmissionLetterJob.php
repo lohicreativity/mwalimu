@@ -90,12 +90,12 @@ class SendAdmissionLetterJob implements ShouldQueue
                                     ])->get();
 
         foreach ($applicants as $applicant) {
-            $campus_program = $applicant->selections[0]->campusProgram->id;
+            $campus_program_id = $applicant->selections[0]->campusProgram->id;
             $program_name = $applicant->selections[0]->campusProgram->program->name;
             SendAdmissionLetterToSelectedApplicantJob::dispatch(
                 $applicant, 
                 $this->program_level_id, 
-                $campus_program,
+                $campus_program_id,
                 $program_name,
                 $this->reference_number
             );
