@@ -764,6 +764,7 @@ class ApplicantController extends Controller
 		}
 
               //check applicant program capacity
+              $campus_progs = [];
               if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0){
                $window = $applicant->applicationWindow;
                $campus_programs = $window? $window->campusPrograms()
@@ -775,27 +776,22 @@ class ApplicantController extends Controller
                   $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
                                                          ->with('campusProgram:id,code')->first();            
                }
+
                foreach($campus_programs as $prog){
-                  foreach($entry_requirements as $requirements){
-                     if($requirements){
-                        if($prog->id == $requirements->campus_program_id){
-                           $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
-                                                               ->where(function($query) {
-                                                                  $query->where('applicant_program_selections.status', 'SELECTED')
-                                                                        ->orWhere('applicant_program_selections.status', 'APPROVING');
-                                                               })
-                                                               ->count();
-                           if ($count_applicants_per_program > $requirements->max_capacity) {
-                              $campus_progs[] = $prog;
-                           }else {
-                              $campus_progs = null;
-                           }
-                        }
-                     }
+
+                  $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
+                                                      ->where(function($query) {
+                                                         $query->where('applicant_program_selections.status', 'SELECTED')
+                                                               ->orWhere('applicant_program_selections.status', 'APPROVING');
+                                                      })
+                                                      ->count();
+                                                      //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
+                  if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
+
+                     $campus_progs[] = $prog;
                   }
                }   
             }
-
 
       $data = [
          'applicant'=>$applicant,
@@ -815,6 +811,8 @@ class ApplicantController extends Controller
          'available_progs'=>$campus_programs ?? [],
          'full_programs'=>$campus_progs ?? []
       ];
+
+     
 /*         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             //   if($applicant->status == null){
