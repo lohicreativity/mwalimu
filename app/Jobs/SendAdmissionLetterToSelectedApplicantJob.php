@@ -326,14 +326,14 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'margin_bottom' => 20,
                 'margin_left' => 20,
                 'margin_right' => 20
-                ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-',$study_academic_year->academicYear->year).'.pdf'); 
+                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-',$study_academic_year->academicYear->year).'.pdf'); 
 
             }
             
             $user = new User;            
             $user->email = $applicant->email;
             $user->username = $applicant->first_name . ' ' . $applicant->surname;
-            //Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
+            Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
 
             $app = Applicant::find($applicant->id);
             $app->status = 'ADMITTED';
