@@ -126,6 +126,7 @@
                             </td>
                             <td>@foreach($batches as $batch) @if($batch->id == $applicant->batch_id) {{ $batch->batch_no }} @break @endif @endforeach</td>
                           </tr>
+                      
                         @endforeach
                     </tbody>
                   </table>

@@ -46,7 +46,7 @@
                 <div class="alert alert-danger">Unfortunately all programmes are full. Please try from other MNMA campuses.</div>
             @else
                 @if(count($programs_available) == 1)
-                <div class="alert alert-warning">Only {{ $programs_available[0]->program->name }} is available. But unfortunately you don't qualify. Please try from other MNMA campuses.</div>
+                <div class="alert alert-warning">Only {{ $programs_available[0]->program->name }} is available, but unfortunately you do not qualify. Please try from other MNMA campuses.</div>
                 @elseif(count($programs_available) > 1)
                 <div class="alert alert-warning">
                   Only 
@@ -58,7 +58,7 @@
                     {{ $prog->program->name }},
                     @endif
                   @endforeach
-                  are available. But unfortunately you don't qualify. Please try from other MNMA campuses.</div>
+                  are available, but unfortunately you do not qualify. Please try from other MNMA campuses.</div>
                 @endif
             @endif
 		    @else
