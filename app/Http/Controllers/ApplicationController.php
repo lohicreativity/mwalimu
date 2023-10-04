@@ -8571,30 +8571,40 @@ class ApplicationController extends Controller
             if($result['code'] == 200){
                 foreach ($result['params'] as $res) {
                     //if(str_contains(strtolower($res['verification_status'].'approved')){
-                        $applicant = Applicant::where('index_number',$res['username'])->first();
-                        $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
-                        $applicant->save();
-    
-                        ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+                   $applicant = Applicant::where('index_number',$res['username'])->where('application_window_id', $request->get('application_window_id'))
+									->where('program_level_id',$request->get('program_level_id'))->first();
+                            if($applicant){
+                            $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
+                            $applicant->save();
 
-                        $applicantVerificationResults = ApplicantVerificationResult::where('index_number',$res['username'])->first();
-                        if(!$applicantVerificationResults){
-                            $applicantVerificationResults = new ApplicantVerificationResult;
-                            $applicantVerificationResults->index_number=$res['username'];
-                            $applicantVerificationResults->user_id=$res['user_id'];
-                            $applicantVerificationResults->verification_status=$res['verification_status'];
-                            $applicantVerificationResults->multiple_selection=$res['multiple_selection'];
-                            $applicantVerificationResults->academic_year=$res['academic_year'];
-                            $applicantVerificationResults->intake=$res['intake'];
-                            $applicantVerificationResults->eligibility=$res['eligibility'];
-                            $applicantVerificationResults->remarks=$res['remarks'];
-                            $applicantVerificationResults->save();
-                        }else{
-                            ApplicantVerificationResult::where('index_number',$res['username'])->update(['verification_status'=>$res['verification_status'],'multiple_selection'=>$res['multiple_selection'],'eligibility'=>$res['eligibility'],'remarks'=>$res['remarks']]);
-                        }    
-                    /* }else{ 
+                            ApplicantProgramSelection::where('applicant_id',$applicant->id)->whereIn('status',['APPROVING','PENDING'])->update(['status'=>'SELECTED']);
+                            $no_of_applicants++;
+                            }
+                            dd($result);
+                    //     $applicant = Applicant::where('index_number',$res['username'])->first();
+                    //     $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
+                    //     $applicant->save();
+    
+                    //     ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+
+                    //     $applicantVerificationResults = ApplicantVerificationResult::where('index_number',$res['username'])->first();
+                    //     if(!$applicantVerificationResults){
+                    //         $applicantVerificationResults = new ApplicantVerificationResult;
+                    //         $applicantVerificationResults->index_number=$res['username'];
+                    //         $applicantVerificationResults->user_id=$res['user_id'];
+                    //         $applicantVerificationResults->verification_status=$res['verification_status'];
+                    //         $applicantVerificationResults->multiple_selection=$res['multiple_selection'];
+                    //         $applicantVerificationResults->academic_year=$res['academic_year'];
+                    //         $applicantVerificationResults->intake=$res['intake'];
+                    //         $applicantVerificationResults->eligibility=$res['eligibility'];
+                    //         $applicantVerificationResults->remarks=$res['remarks'];
+                    //         $applicantVerificationResults->save();
+                    //     }else{
+                    //         ApplicantVerificationResult::where('index_number',$res['username'])->update(['verification_status'=>$res['verification_status'],'multiple_selection'=>$res['multiple_selection'],'eligibility'=>$res['eligibility'],'remarks'=>$res['remarks']]);
+                    //     }    
+                    // /* }else{ 
                         
-                    } */
+                    // } */
 
                 }
             }else{
