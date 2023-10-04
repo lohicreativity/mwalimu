@@ -8595,32 +8595,6 @@ class ApplicationController extends Controller
                                 continue;
                             }
 
-                            // dd($result);
-                    //     $applicant = Applicant::where('index_number',$res['username'])->first();
-                    //     $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
-                    //     $applicant->save();
-    
-                    //     ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
-
-                    //     $applicantVerificationResults = ApplicantVerificationResult::where('index_number',$res['username'])->first();
-                    //     if(!$applicantVerificationResults){
-                    //         $applicantVerificationResults = new ApplicantVerificationResult;
-                    //         $applicantVerificationResults->index_number=$res['username'];
-                    //         $applicantVerificationResults->user_id=$res['user_id'];
-                    //         $applicantVerificationResults->verification_status=$res['verification_status'];
-                    //         $applicantVerificationResults->multiple_selection=$res['multiple_selection'];
-                    //         $applicantVerificationResults->academic_year=$res['academic_year'];
-                    //         $applicantVerificationResults->intake=$res['intake'];
-                    //         $applicantVerificationResults->eligibility=$res['eligibility'];
-                    //         $applicantVerificationResults->remarks=$res['remarks'];
-                    //         $applicantVerificationResults->save();
-                    //     }else{
-                    //         ApplicantVerificationResult::where('index_number',$res['username'])->update(['verification_status'=>$res['verification_status'],'multiple_selection'=>$res['multiple_selection'],'eligibility'=>$res['eligibility'],'remarks'=>$res['remarks']]);
-                    //     }    
-                    // /* }else{ 
-                        
-                    // } */
-
                 }
             }else{
                 return redirect()->back()->with('message','No applicants submitted to nactvet');
