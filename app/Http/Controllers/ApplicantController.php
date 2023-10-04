@@ -1283,8 +1283,10 @@ class ApplicantController extends Controller
          NacteResult::where('applicant_id', $applicant->id)->delete();
          NacteResultDetail::where('applicant_id', $applicant->id)->delete();
          $out = OutResultDetail::where('applicant_id', $applicant->id)->first();
-         OutResult::where('out_result_detail_id', $out->id)->delete();
-         $out->delete();
+         if($out !== null){
+            OutResult::where('out_result_detail_id', $out->id)->delete();
+            $out->delete();
+         }
 			$applicant->save();
 		}
 		//check if window active
