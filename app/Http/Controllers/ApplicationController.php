@@ -8572,8 +8572,10 @@ class ApplicationController extends Controller
                 $no_of_applicants = 0;
                 foreach ($result['params'] as $res) {
                     //if(str_contains(strtolower($res['verification_status'].'approved')){
-                   $applicant = Applicant::where('index_number',$res['username'])->where('application_window_id', $request->get('application_window_id'))
-									->where('program_level_id',$request->get('program_level_id'))->first();
+                   $applicant = Applicant::where('index_number',$res['username'])
+                                    ->whereDoesntHave('selections', function($query){ $query->where('status', 'SELECTED');})->where('application_window_id', $request->get('application_window_id'))
+									->where('program_level_id',$request->get('program_level_id'))
+                                    ->where('status', 'SUBMITTED')->first();
                             if($applicant){
                             $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
                             $applicant->save();
