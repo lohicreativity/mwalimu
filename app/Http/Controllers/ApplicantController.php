@@ -1278,10 +1278,18 @@ class ApplicantController extends Controller
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_id = $batch->id;
          $applicant->status = null;
-         NectaResult::where('applicant_id', $applicant->id)->delete();
-         NectaResultDetail::where('applicant_id', $applicant->id)->delete();
-         NacteResult::where('applicant_id', $applicant->id)->delete();
-         NacteResultDetail::where('applicant_id', $applicant->id)->delete();
+         if(NectaResult::where('applicant_id', $applicant->id)->first()){
+            NectaResult::where('applicant_id', $applicant->id)->delete();
+         }
+         if(NectaResultDetail::where('applicant_id', $applicant->id)->first()){
+            NectaResultDetail::where('applicant_id', $applicant->id)->delete();
+         }
+         if(NacteResult::where('applicant_id', $applicant->id)->first()){
+            NacteResult::where('applicant_id', $applicant->id)->delete();
+         }
+         if(NacteResultDetail::where('applicant_id', $applicant->id)->first()){
+            NacteResultDetail::where('applicant_id', $applicant->id)->delete();
+         }
          $out = OutResultDetail::where('applicant_id', $applicant->id)->first();
          if($out !== null){
             OutResult::where('out_result_detail_id', $out->id)->delete();

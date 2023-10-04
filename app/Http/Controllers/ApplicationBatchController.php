@@ -50,6 +50,7 @@ class ApplicationBatchController extends Controller
                 $batch_ids[] = $ba->id;
             }
         }
+
         $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
         
     	$data = [
@@ -62,6 +63,7 @@ class ApplicationBatchController extends Controller
            'batches'=>$batches,
            'batch_ids'=>$batch_ids
     	];
+
     	return view('dashboard.application.application-batches',$data)->withTitle('Application Batches');
     }
 
