@@ -8572,18 +8572,30 @@ class ApplicationController extends Controller
                 $no_of_applicants = 0;
                 foreach ($result['params'] as $res) {
                     //if(str_contains(strtolower($res['verification_status'].'approved')){
-                   $applicant = Applicant::where('index_number',$res['username'])
-                                    ->whereDoesntHave('selections', function($query){ $query->where('status', 'SELECTED');})->where('application_window_id', $request->get('application_window_id'))
-									->where('program_level_id',$request->get('program_level_id'))
-                                    ->where('status', 'SUBMITTED')->first();
-                            if($applicant){
-                            $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
-                            $applicant->save();
+                if(Applicant::where('index_number',$res['username'])
+                            ->whereHas('selections', function($query){ $query->whereIn('status',['APPROVING','PENDING']);})
+                            ->where('application_window_id', $request->get('application_window_id'))
+                            ->where('program_level_id',$request->get('program_level_id'))
+                            ->where('status', 'SUBMITTED')->count() > 0) {
 
-                            ApplicantProgramSelection::where('applicant_id',$applicant->id)->whereIn('status',['APPROVING','PENDING'])->update(['status'=>'SELECTED']);
-                            $no_of_applicants++;
+                                $applicant = Applicant::where('index_number',$res['username'])
+                                        ->whereHas('selections', function($query){ $query->whereIn('status',['APPROVING','PENDING']);})
+                                        ->where('application_window_id', $request->get('application_window_id'))
+                                        ->where('program_level_id',$request->get('program_level_id'))
+                                        ->where('status', 'SUBMITTED')->first();
+        
+                                if($applicant){
+                                $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
+                                $applicant->save();
+
+                                ApplicantProgramSelection::where('applicant_id',$applicant->id)->whereIn('status',['APPROVING','PENDING'])->update(['status'=>'SELECTED']);
+                                $no_of_applicants++;
+                                }
+                            }else {
+                                continue;
                             }
-                            dd($result);
+
+                            // dd($result);
                     //     $applicant = Applicant::where('index_number',$res['username'])->first();
                     //     $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
                     //     $applicant->save();
