@@ -111,6 +111,7 @@
                         }
                       }
 
+
                     @endphp
                       @if($ba->selection_released == 1)
                       <a class="btn btn-danger btn-sm" href="{{ url('application/application-batches-selection?status=0&batch_id='.$ba->id) }}">
@@ -137,13 +138,52 @@
                      @endif
  
                       @can('delete-application-window')
-                      @if(($ba->where('program_level_id', $ba->program_level_id )->max('batch_no')) == $ba->batch_no)
+                      @if(($ba->program_level_id == 1) && $ba->batch_no == $certificate_max)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
-                      @else
+                      @elseif(($ba->program_level_id == 1))
+                      <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @endif
+                      @if(($ba->program_level_id == 2) && $ba->batch_no == $diploma_max)
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @elseif(($ba->program_level_id == 2))
+                      <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @endif
+                      @if(($ba->program_level_id == 4) && $ba->batch_no == $bachelor_max)
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @elseif($ba->program_level_id == 4)
+                      <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @endif
+                      @if(($ba->program_level_id == 5) && $ba->batch_no == $master_max)
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                      </a>
+                      @elseif($ba->program_level_id == 5)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
