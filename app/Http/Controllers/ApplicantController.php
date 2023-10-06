@@ -781,7 +781,7 @@ class ApplicantController extends Controller
          'disabilities'=>DisabilityStatus::all(),
          'selection_released_status'=>ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first(),
       ];
-
+     
      
 /*         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
@@ -1657,7 +1657,7 @@ class ApplicantController extends Controller
                      foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                            foreach($applicant->nacteResultDetails as $det){
                               if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic') && $det->verified == 1){
-                                 $has_btc = true; return 1;
+                                 $has_btc = true; 
                                  $diploma_gpa = $det->diploma_gpa;
                               }elseif(str_contains(strtolower($det->programme),'diploma') && $det->verified == 1){
                                  $has_diploma = true;  

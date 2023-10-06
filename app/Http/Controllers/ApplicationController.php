@@ -4502,7 +4502,7 @@ class ApplicationController extends Controller
                     $bank_name = 'CRDB';
                 }   
                 
-                $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+                $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
             }
         }
 
@@ -4519,7 +4519,7 @@ class ApplicationController extends Controller
                 $bank_name = 'CRDB';
             }
             
-            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
         }
 
         $acpac->close();
@@ -8383,7 +8383,7 @@ class ApplicationController extends Controller
 					$bank_name = 'CRDB';
 				}
 
-				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
 			}
 
 			$misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
@@ -8397,7 +8397,7 @@ class ApplicationController extends Controller
 					$bank_name = 'CRDB';
 				}
 				
-				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
 			}
 
 			$acpac->close();
@@ -8888,6 +8888,9 @@ class ApplicationController extends Controller
      */
     public function downloadTamisemiApplicants(Request $request)
     {
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
+
 		if($request->get('action') == 'Search Qualified'){
 			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&status=qualified');
 		}
@@ -8896,7 +8899,8 @@ class ApplicationController extends Controller
 		}
 		DB::beginTransaction();
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-        $applyr = explode('/', $ac_year->academicYear->year)[0];
+        // explode('/', $ac_year->academicYear->year)[0];
+        $applyr = 2023;
         $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));
         $campus_program = CampusProgram::with(['program','entryRequirements'])->find($request->get('campus_program_id'));
         $program = $campus_program;
@@ -8916,14 +8920,16 @@ class ApplicationController extends Controller
         $intake = $application_window->intake->name;
         $nactecode = $campus_program->regulator_code;
         if($application_window->campus_id == 1){
-            $token = config('constants.NACTE_API_SECRET_KIVUKONI');
+            $token = config('constants.NACTE_API_KEY_KIVUKONI');
         }elseif($application_window->campus_id == 2){
-            $token = config('constants.NACTE_API_SECRET_KARUME');
+            $token = config('constants.NACTE_API_KEY_KARUME');
         }elseif($application_window->campus_id == 3){
-            $token = config('constants.NACTE_API_SECRET_PEMBA');
+            $token = config('constants.NACTE_API_KEY_PEMBA');
         }
 
         $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
+        // dd($url);
+        $returnedObject = null;
         try{
         $arrContextOptions=array(
             "ssl"=>array(
@@ -8931,7 +8937,7 @@ class ApplicationController extends Controller
               "verify_peer_name"=> false,
             ),
           );
-          
+
           $jsondata = file_get_contents($url,false, stream_context_create($arrContextOptions)); 
 
           $curl = curl_init($url);
@@ -8943,17 +8949,21 @@ class ApplicationController extends Controller
           curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); 
           curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
           $jsondata= curl_exec($curl);
+
             curl_close($curl);
 
              $returnedObject = json_decode($jsondata);
-            
+            //  dd($returnedObject->code);
 			 }catch(\Exception $e){}
-
-             if(!isset($returnedObject->params)){
+            //  dd($returnedObject);
+            //  if(!isset($returnedObject->params)){
+            //     return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
+            //  }
+             if($returnedObject->code == 404){
                 return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
              }
 
-            //  return $returnedObject;
+
           //echo $returnedObject->params[0]->student_verification_id."-dsdsdsdsds-<br />";
           // check for parse errors json_last_error() == JSON_ERROR_NONE
           if (isset($returnedObject->params)) {
@@ -8969,34 +8979,34 @@ class ApplicationController extends Controller
                 // }
                 $form4index = $returnedObject->params[$i]->username;
                 $student = null;    
-                if(! TamisemiStudent::where('f4indexno',$form4index)->first();){
+                if(! TamisemiStudent::where('f4indexno',$form4index)->first()){
                    $student = new TamisemiStudent;
                    $student->f4indexno = $form4index;
                    $student->year = $applyr;
-                   $student->fullname = str_replace("'","\'",$returnedObject->params[$i]->fullname);
+                   $student->fullname = $returnedObject->params[$i]->fullname == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->fullname);
                    $student->year = $returnedObject->params[$i]->application_year;
                    $student->programme_id = $nactecode;
                    $student->programme_name = $returnedObject->params[$i]->programe_name;
                    $student->campus = $returnedObject->params[$i]->institution_name;
                    $student->gender = $returnedObject->params[$i]->sex;
-                   $student->date_of_birth = DateMaker::toDBDate($returnedObject->params[$i]->date_of_birth);
+                   $student->date_of_birth = $returnedObject->params[$i]->date_of_birth == '' ? null : DateMaker::toDBDate($returnedObject->params[$i]->date_of_birth);
                    $student->phone_number = $returnedObject->params[$i]->phone_number;
-                   $student->email = str_replace("'","\'",$returnedObject->params[$i]->email);
-                   $student->address = str_replace("'","\'",$returnedObject->params[$i]->address);
-                   $student->district = str_replace("'","\'",$returnedObject->params[$i]->district);
-                   $student->region = str_replace("'","\'",$returnedObject->params[$i]->region);
-                   $student->next_of_kin_fullname = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_fullname);
+                   $student->email = $returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);
+                   $student->address = $returnedObject->params[$i]->address == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->address);
+                   $student->district = $returnedObject->params[$i]->district == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->district);
+                   $student->region = $returnedObject->params[$i]->region == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->region);
+                   $student->next_of_kin_fullname = $returnedObject->params[$i]->Next_of_kin_fullname == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_fullname);
                    $student->next_of_kin_phone_number = $returnedObject->params[$i]->Next_of_kin_phone_number;
-                   $student->next_of_kin_email = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_email);
-                   $student->next_of_kin_address = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_address);
-                   $student->next_of_kin_region = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_region);
+                   $student->next_of_kin_email = $returnedObject->params[$i]->Next_of_kin_email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_email);
+                   $student->next_of_kin_address = $returnedObject->params[$i]->Next_of_kin_address == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_address);
+                   $student->next_of_kin_region = $returnedObject->params[$i]->Next_of_kin_region == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_region);
                    $student->relationship = $returnedObject->params[$i]->relationship;
                    $student->appacyr = $appacyr;
                    $student->intake = $intake;
                    $student->receiveDate = now();
                    $student->save();
 
-                   $surname = count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1];
+                //    $surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
 
                    if($us = User::where('username',$form4index)->first()){
                        $user = $us;
@@ -9005,7 +9015,7 @@ class ApplicationController extends Controller
                    }
                    $user->username = $form4index;
                    $user->email = $student->email;
-                   $user->password = Hash::make($surname);
+                   $user->password = Hash::make($form4index);
                    $user->save();
    
                    $role = Role::where('name','applicant')->first();
@@ -9036,10 +9046,10 @@ class ApplicationController extends Controller
                    }else{
                       $applicant = new Applicant;
                    }
-                   $applicant->first_name = explode(' ', $student->fullname)[0];
-                   $applicant->middle_name = count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null;
-                   $applicant->surname = count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1];
-                   $applicant->phone = '225'.substr($student->phone_number,1);
+                   $applicant->first_name = $student->fullname == '' ? '' : explode(' ', $student->fullname)[0];
+                   $applicant->middle_name = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null);
+                   $applicant->surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
+                   $applicant->phone = $student->phone_number == '' ? '' : '225'.substr($student->phone_number,1);
                    $applicant->email = $student->email;
                    $applicant->address = $student->address;
                    $applicant->gender = substr($student->gender, 0,1);
@@ -9068,7 +9078,7 @@ class ApplicationController extends Controller
                    }
                    $selection->campus_program_id = $campus_program->id;
                    $selection->applicant_id = $applicant->id;
-                   $selection->batch_id = $prev_batch->batch_id;
+                   $selection->batch_id = $prev_batch->id;
                    $selection->application_window_id = $application_window->id;
                    $selection->order = 1;
                    $selection->status = 'ELIGIBLE';
@@ -9076,9 +9086,9 @@ class ApplicationController extends Controller
                    
                  
    
-                   try{
-                       Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
-                   }catch(\Exception $e){}
+                //    try{
+                //        Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
+                //    }catch(\Exception $e){}
                 }
                                 
             }
@@ -9086,7 +9096,9 @@ class ApplicationController extends Controller
         }//end
         
         if($has_must_subjects){
-        $applicants = Applicant::where('application_window_id',$application_window->id)->where('is_tamisemi',1)->get();
+        $applicants = Applicant::where('application_window_id',$application_window->id)->whereHas('selections', function($query) use($campus_program,$application_window) {
+            $query->where('campus_program_id', $campus_program->id)->where('application_window_id',$application_window->id)->where('status', 'ELIGIBLE');})
+            ->where('is_tamisemi',1)->whereNull('status')->get();
         foreach($applicants as $applicant){
             $parts=explode("/",$applicant->index_number);
             //create format from returned form four index format 
@@ -9141,42 +9153,32 @@ class ApplicationController extends Controller
             }
         }
 		
-		        $applicants = Applicant::with(['selections.campusProgram.program','selections'=>function($query){
-                $query->orderBy('order','asc');
+		        $applicants = Applicant::with(['selections.campusProgram.program','selections'=>function($query) use($campus_program,$application_window){
+                $query->where('campus_program_id', $campus_program->id)->where('application_window_id',$application_window->id)->where('status', 'ELIGIBLE');
             },'nectaResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'nacteResultDetails'=>function($query){
-                 $query->where('verified',1);
-            },'outResultDetails'=>function($query){
-                 $query->where('verified',1);
-            },'selections.campusProgram.campus','selections.campusProgram.entryRequirements'=>function($query) use($application_window){
-				 $query->where('application_window_id',$application_window->id);
-			},'nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('is_tamisemi',1)->where('application_window_id',$application_window->id)->get();
+            },'selections.campusProgram.entryRequirements'=>function($query) use($application_window, $campus_program){
+				 $query->where('application_window_id',$application_window->id)->where('campus_program_id', $campus_program->id);
+			},'nectaResultDetails.results','programLevel','applicationWindow'])->where('is_tamisemi',1)->whereNull('status')->where('application_window_id',$application_window->id)->get();
         
 		foreach($applicants as $applicant){
        
         
 
         $award = $applicant->programLevel;
-        $programs = [];
+
 
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
 
-        $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
-
-        $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
-
-        $selected_program = array();
         
            $index_number = $applicant->index_number;
-           $exam_year = explode('/', $index_number)[2];
+           if(str_contains($applicant->index_number,'EQ')){
+                $exam_year = explode('/',$applicant->index_number)[1];
+            }else{
+                $exam_year = explode('/', $applicant->index_number)[2];
+            }
           
-           foreach($applicant->nectaResultDetails as $detail) {
-              if($detail->exam_id == 2){
-                  $index_number = $detail->index_number;
-                  $exam_year = explode('/', $index_number)[2];
-              }
-           }
+
 
         //    if($exam_year < 2014 || $exam_year > 2015){
         //      $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
@@ -9192,27 +9194,12 @@ class ApplicationController extends Controller
         //      $subsidiary_pass_grade = 'E';
         //    }
 
-           if($exam_year < 2014 || $exam_year > 2015){
-            $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
-            $diploma_principle_pass_grade = 'E';
-            $diploma_subsidiary_pass_grade = 'S';
-            $principle_pass_grade = 'E';
-            $subsidiary_pass_grade = 'S';
-         }else{
-            $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
-            $diploma_principle_pass_grade = 'D';
-            $diploma_subsidiary_pass_grade = 'E';
-            $principle_pass_grade = 'D';
-            $subsidiary_pass_grade = 'E';
-         }
            // $selected_program[$applicant->id] = false;
            $subject_count = 0;
-              foreach($applicant->selections as $selection){
                 
-                  $program = $selection->campusProgram;
 				  
-                  if(count($program->entryRequirements) == 0){
-                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+                  if(count($campus_program->entryRequirements) == 0){
+                    return redirect()->back()->with('error',$campus_program->program->name.' does not have entry requirements');
                   }
 
                   // if($program->entryRequirements[0]->max_capacity == null){
@@ -9267,13 +9254,13 @@ class ApplicationController extends Controller
 
                    //NEW
                 // Certificate
-               if(str_contains($award->name,'Certificate')){
                 $o_level_pass_count = $o_level_points = 0;
                 $o_level_other_pass_count = 0;
-                $o_level_must_pass_count = 0;
                 foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                   if($detail->exam_id == 1 && $detail->verified == 1){
+                   if($detail->exam_id == 1 && $detail->verified == 1){ // remove
                       $other_must_subject_ready = false;
+                      $counted_must_subjects = 0;
+                      $counted_other_must_subjects = 0;
                       foreach ($detail->results as $key => $result) {
                          
                          if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
@@ -9281,41 +9268,37 @@ class ApplicationController extends Controller
                             $applicant->rank_points += $o_level_grades[$result->grade];
                             $subject_count += 1;
 
-                            if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                                $must_subject_count = count(unserialize($program->entryRequirements[0]->must_subjects));
+
                                
-                               if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
-                                  if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                     $o_level_pass_count += 1;
-                                     $o_level_points += $o_level_grades[$result->grade];
-                                  }
+                                if($counted_must_subjects == $must_subject_count && unserialize($program->entryRequirements[0]->other_must_subjects) == ''){
+                                    $select = ApplicantProgramSelection::find($selection->id);
+                                    $select->status = 'SELECTED';
+                                    $select->status_changed_at = now();
+                                    $select->save();
 
-                                  if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
-                                     $o_level_pass_count += 1;
-                                     $other_must_subject_ready = true;
-                                     $o_level_points += $o_level_grades[$result->grade];
-                                  }
+                                    $applicant->status = 'SELECTED';
+                                    $applicant->save();
+                                    break;
+                                }elseif($counted_must_subjects == $must_subject_count && $counted_other_must_subjects > 0){
+                                    $select = ApplicantProgramSelection::find($selection->id);
+                                    $select->status = 'SELECTED';
+                                    $select->status_changed_at = now();
+                                    $select->save();
 
-                               }elseif(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                  $o_level_pass_count += 1;
-                                  $o_level_points += $o_level_grades[$result->grade];
-                               }else{
-                                  if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && (count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
-                                     $o_level_other_pass_count += 1;	
-                                  }elseif(count(unserialize($program->entryRequirements[0]->must_subjects)) < $program->entryRequirements[0]->pass_subjects && ($o_level_other_pass_count < ($program->entryRequirements[0]->pass_subjects - count(unserialize($program->entryRequirements[0]->must_subjects))))){
-                                     $o_level_other_pass_count += 1;
-                                     $o_level_points += $o_level_grades[$result->grade];											
-                                  }
-                               }
-                            }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                               if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
-                                     $o_level_pass_count += 1;
-                                     $o_level_points += $o_level_grades[$result->grade];
-                            
-                               }
-                            }else{
-                               $o_level_pass_count += 1;
-                               $o_level_points += $o_level_grades[$result->grade];
+                                    $applicant->status = 'SELECTED';
+                                    $applicant->save();
+                                    break;
+                                }
+
+                            if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                $counted_must_subjects++;
+                            }else if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
+                                $counted_other_must_subjects++;
+                            }else {
+                                continue;
                             }
+                             
                          }
                       }
                    }
@@ -9325,14 +9308,31 @@ class ApplicationController extends Controller
                         $select->status = 'SELECTED';
                         $select->status_changed_at = now();
                         $select->save();
+
+                        $applicant->status = 'SELECTED';
+                        $applicant->save();
                     }
                 }
-             }
+
+                if($counted_must_subjects != $must_subject_count && unserialize($program->entryRequirements[0]->other_must_subjects) == ''){
+                    $applicant->status = 'NOT SELECTED';
+                    $applicant->save();
+                }elseif($counted_must_subjects == $must_subject_count && $counted_other_must_subjects == 0 && unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                    $applicant->status = 'NOT SELECTED';
+                    $applicant->save();
+                }
             
-        }
         }
 
         
+        }else {
+            $select = ApplicantProgramSelection::find($selection->id);
+            $select->status = 'SELECTED';
+            $select->status_changed_at = now();
+            $select->save();
+
+            $applicant->status = 'SELECTED';
+            $applicant->save();
         }
         DB::commit();
         return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message','TAMISEMI applicants retrieved successfully');
@@ -9858,7 +9858,7 @@ class ApplicationController extends Controller
 						$bank_name = 'CRDB';
 					}   
 					
-					$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+					$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
 				}
 			}
 
@@ -9875,7 +9875,7 @@ class ApplicationController extends Controller
 						$bank_name = 'CRDB';
 					}
 					
-					$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+					$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
 				}			
 			}
 

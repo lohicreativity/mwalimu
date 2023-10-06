@@ -63,6 +63,7 @@
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
                         Congratulations! You have been successfully admitted to the {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
                       </h3>
+                      @if($applicant->program_level_id == 4)
                       <div style="float:left; width:35%">
                         <h3 class="text-white" style="font-size: 18px!important;">
                         <i class="fa fa-times-circle"></i> 
@@ -75,7 +76,9 @@
                               <button type="submit" class="btn btn-danger">{{ __('Cancel Admission') }}</button>
                             {!! Form::close() !!} 
                       </div>
+                      @endif
                     @else
+                     @if($applicant->program_level_id == 4)
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-times-circle"></i> 
                           You had been admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme BUT unfortunately you CANCELLED the admission.
                       </h3>
@@ -91,6 +94,7 @@
                          <button type="submit" class="btn btn-danger">{{ __('Restore Admission') }}</button>
                         {!! Form::close() !!} 
                       </div>
+                      @endif
                     @endif
                     </div>
                   @elseif($student)
