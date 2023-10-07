@@ -66,6 +66,7 @@
                           'required'=>true
                       ];
                     @endphp
+                    
                     {!! Form::label('','Intake') !!}
                     {!! Form::text('intake',$app_window->intake->name,$intake) !!}
                  </div>
