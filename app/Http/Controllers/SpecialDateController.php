@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use Validator, Auth;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Settings\Models\Intake;
 use App\Utils\Util;
 
@@ -55,10 +56,20 @@ class SpecialDateController extends Controller
   public function showOrientationDate(Request $request)
   {
       $staff = User::find(Auth::user()->id)->staff;
-
+      $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status','ACTIVE')->latest()->first();
+   //    $boolFlag = false
+   //    foreach($app_window as $window){
+   //       if($window->status == 'ACTIVE' && $window->intake->name == 'September'){
+   //          $boolFlag = true
+   //       }else{
+   //          $boolFlag = false
+   //       }
+   //    }
+   // // dd(json_encode(Intake::whereId($app_window[0]->intake_id)->pluck('name')[0]));
       $data = [
            'campus_id'  => $staff->campus_id,
            'campuses'=>Campus::all(),
+           'app_window' => $app_window,
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
@@ -66,7 +77,7 @@ class SpecialDateController extends Controller
             SpecialDate::where('name','Orientation')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$staff->campus_id)->get(),
            'request'=>$request,
            'awards'=>Award::all(),
-           'intakes'=>Intake::all()
+           'intakes'=>Intake::all(),
         ];
         return view('dashboard.registration.orientation-date',$data)->withTitle('Orientation Date');
   }

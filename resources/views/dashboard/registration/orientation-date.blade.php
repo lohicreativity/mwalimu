@@ -58,13 +58,16 @@
                     </select>
                   </div>
                   <div class="form-group col-4">
+                    @php
+                      $intake = [
+                          'placeholder'=>$app_window->intake->name,
+                          'class'=>'form-control',                      
+                          'readonly'=>true,
+                          'required'=>true
+                      ];
+                    @endphp
                     {!! Form::label('','Intake') !!}
-                    <select name="intake" class="form-control" required>
-                      <option value="">Select Intake</option>
-                      @foreach($intakes as $intake)
-                      <option value="{{ $intake->name }}">{{ $intake->name }}</option>
-                      @endforeach
-                    </select>
+                    {!! Form::text('intake',$app_window->intake->name,$intake) !!}
                  </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Applicable Levels') !!}
