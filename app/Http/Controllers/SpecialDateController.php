@@ -216,113 +216,121 @@ class SpecialDateController extends Controller
 
         $orientation_dates = SpecialDate::where('intake',$request->get('intake'))->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                            ->where('name','Orientation')->where('campus_id',$request->get('campus_id'))->get();
-        
+
+   $find_level = false;
+
         if(count($orientation_dates) > 0){
             foreach($orientation_dates as $orientation_date){
                foreach($request->get('applicable_level') as $level){
                   if(in_array($level, unserialize($orientation_date->applicable_levels))){
                      return redirect()->back()->with('error','Orientation date for '.$level.' in '.$request->get('intake').' intake of this academic has already been created');
                   }else{
-                     $group_id = Util::randString(100);
-                     $date = new SpecialDate;
-                     $date->date = DateMaker::toDBDate($request->get('orientation_date'));
-                     $date->name = $request->get('name');
-                     $date->campus_id = $request->get('campus_id');
-                     $date->study_academic_year_id = $request->get('study_academic_year_id');
-                     $date->intake = $request->get('intake');
-                     $date->applicable_levels = serialize($request->get('applicable_level'));
-                     $date->group_id = $group_id;
-                     $date->save();
-            
-                     $date = new SpecialDate;
-                     $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
-                     $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
-                     $date->name = 'New Registration Period';
-                     $date->campus_id = $request->get('campus_id');
-                     $date->study_academic_year_id = $request->get('study_academic_year_id');
-                     $date->intake = $request->get('intake');
-                     $date->applicable_levels = serialize($request->get('applicable_level'));
-                     $date->group_id = $group_id;
-                     $date->save();
-            
-                     $date = new SpecialDate;
-                     $date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
-                     $date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
-                     $date->name = 'Continueing Registration Period';
-                     $date->campus_id = $request->get('campus_id');
-                     $date->study_academic_year_id = $request->get('study_academic_year_id');
-                     $date->intake = $request->get('intake');
-                     $date->applicable_levels = serialize($request->get('applicable_level'));
-                     $date->group_id = $group_id;
-                     $date->save();
-            
-                     // $ac_year = new AcademicYear;
-                     // $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
-                     // $ac_year->save();
-                     $ac_year = AcademicYear::where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1)->first();
-            
-                     // $year = new StudyAcademicYear;
-                     $year = StudyAcademicYear::whereHas('academicYear',function($query) use($request){
-                        $query->where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1);
-                     })->first();
-                     $year->academic_year_id = $ac_year->id;
-                     $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
-                     $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
-                     $year->save();
-            
-                     return redirect()->back()->with('message','Orientation date created successfully');
+                     $find_level = true;
                   }
                }
             }
-         }else{
-            $group_id = Util::randString(100);
-            $date = new SpecialDate;
-            $date->date = DateMaker::toDBDate($request->get('orientation_date'));
-            $date->name = $request->get('name');
-            $date->campus_id = $request->get('campus_id');
-            $date->study_academic_year_id = $request->get('study_academic_year_id');
-            $date->intake = $request->get('intake');
-            $date->applicable_levels = serialize($request->get('applicable_level'));
-            $date->group_id = $group_id;
-            $date->save();
-   
-            $date = new SpecialDate;
-            $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
-            $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
-            $date->name = 'New Registration Period';
-            $date->campus_id = $request->get('campus_id');
-            $date->study_academic_year_id = $request->get('study_academic_year_id');
-            $date->intake = $request->get('intake');
-            $date->applicable_levels = serialize($request->get('applicable_level'));
-            $date->group_id = $group_id;
-            $date->save();
-   
-            $date = new SpecialDate;
-            $date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
-            $date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
-            $date->name = 'Continueing Registration Period';
-            $date->campus_id = $request->get('campus_id');
-            $date->study_academic_year_id = $request->get('study_academic_year_id');
-            $date->intake = $request->get('intake');
-            $date->applicable_levels = serialize($request->get('applicable_level'));
-            $date->group_id = $group_id;
-            $date->save();
-   
-            // $ac_year = new AcademicYear;
-            // $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
-            // $ac_year->save();
-            $ac_year = AcademicYear::where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1)->first();
-   
-            // $year = new StudyAcademicYear;
-            $year = StudyAcademicYear::whereHas('academicYear',function($query) use($request){
-               $query->where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1);
-            })->first();
-            $year->academic_year_id = $ac_year->id;
-            $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
-            $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
-            $year->save();
-   
-            return redirect()->back()->with('message','Orientation date created successfully');
+         
+            if($find_level){
+               $group_id = Util::randString(100);
+               $date = new SpecialDate;
+               $date->date = DateMaker::toDBDate($request->get('orientation_date'));
+               $date->name = $request->get('name');
+               $date->campus_id = $request->get('campus_id');
+               $date->study_academic_year_id = $request->get('study_academic_year_id');
+               $date->intake = $request->get('intake');
+               $date->applicable_levels = serialize($request->get('applicable_level'));
+               $date->group_id = $group_id;
+               $date->save();
+      
+               $date = new SpecialDate;
+               $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
+               $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+               $date->name = 'New Registration Period';
+               $date->campus_id = $request->get('campus_id');
+               $date->study_academic_year_id = $request->get('study_academic_year_id');
+               $date->intake = $request->get('intake');
+               $date->applicable_levels = serialize($request->get('applicable_level'));
+               $date->group_id = $group_id;
+               $date->save();
+      
+               $date = new SpecialDate;
+               $date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
+               $date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
+               $date->name = 'Continueing Registration Period';
+               $date->campus_id = $request->get('campus_id');
+               $date->study_academic_year_id = $request->get('study_academic_year_id');
+               $date->intake = $request->get('intake');
+               $date->applicable_levels = serialize($request->get('applicable_level'));
+               $date->group_id = $group_id;
+               $date->save();
+      
+               // $ac_year = new AcademicYear;
+               // $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
+               // $ac_year->save();
+               $ac_year = AcademicYear::where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1)->first();
+      
+               // $year = new StudyAcademicYear;
+               $year = StudyAcademicYear::whereHas('academicYear',function($query) use($request){
+                  $query->where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1);
+               })->first();
+               $year->academic_year_id = $ac_year->id;
+               $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
+               $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
+               $year->save();
+      
+               return redirect()->back()->with('message','Orientation date created successfully');
+           }
+
+         }else {
+
+         $group_id = Util::randString(100);
+         $date = new SpecialDate;
+         $date->date = DateMaker::toDBDate($request->get('orientation_date'));
+         $date->name = $request->get('name');
+         $date->campus_id = $request->get('campus_id');
+         $date->study_academic_year_id = $request->get('study_academic_year_id');
+         $date->intake = $request->get('intake');
+         $date->applicable_levels = serialize($request->get('applicable_level'));
+         $date->group_id = $group_id;
+         $date->save();
+
+         $date = new SpecialDate;
+         $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
+         $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+         $date->name = 'New Registration Period';
+         $date->campus_id = $request->get('campus_id');
+         $date->study_academic_year_id = $request->get('study_academic_year_id');
+         $date->intake = $request->get('intake');
+         $date->applicable_levels = serialize($request->get('applicable_level'));
+         $date->group_id = $group_id;
+         $date->save();
+
+         $date = new SpecialDate;
+         $date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
+         $date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
+         $date->name = 'Continueing Registration Period';
+         $date->campus_id = $request->get('campus_id');
+         $date->study_academic_year_id = $request->get('study_academic_year_id');
+         $date->intake = $request->get('intake');
+         $date->applicable_levels = serialize($request->get('applicable_level'));
+         $date->group_id = $group_id;
+         $date->save();
+
+         // $ac_year = new AcademicYear;
+         // $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
+         // $ac_year->save();
+         $ac_year = AcademicYear::where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1)->first();
+
+         // $year = new StudyAcademicYear;
+         $year = StudyAcademicYear::whereHas('academicYear',function($query) use($request){
+            $query->where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1);
+         })->first();
+         $year->academic_year_id = $ac_year->id;
+         $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
+         $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
+         $year->save();
+
+         return redirect()->back()->with('message','Orientation date created successfully');
         }
     }
 
@@ -350,32 +358,80 @@ class SpecialDateController extends Controller
         }
         
         $special_date = SpecialDate::find($request->get('special_date_id'));
+
+        $orientation_dates = SpecialDate::where('intake',$request->get('intake'))->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                          ->where('name','Orientation')->where('campus_id',$request->get('campus_id'))->where('id','!=',$request->get('special_date_id'))->get();
         
         ///$date = SpecialDate::find($request->get('special_date_id'));
-        $special_date->date = DateMaker::toDBDate($request->get('orientation_date'));
-        $special_date->name = $request->get('name');
-        $special_date->campus_id = $request->get('campus_id');
-        $special_date->study_academic_year_id = $request->get('study_academic_year_id');
-        $special_date->intake = $request->get('intake');
-        $special_date->applicable_levels = serialize($request->get('applicable_level'));
-        $special_date->save();
+        $find_level = false;
 
-        $new_reg_date = SpecialDate::where('group_id',$special_date->group_id)->where('name','New Registration Period')->first();
-        $new_reg_date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
-        $new_reg_date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
-        $new_reg_date->campus_id = $request->get('campus_id');
-        $new_reg_date->intake = $request->get('intake');
-        $new_reg_date->applicable_levels = serialize($request->get('applicable_level'));
-        $new_reg_date->save();
+        if(count($orientation_dates) > 0){
+            foreach($orientation_dates as $orientation_date){
+               foreach($request->get('applicable_level') as $level){
+                  if(in_array($level, unserialize($orientation_date->applicable_levels))){
+                     return redirect()->back()->with('error','Orientation date for '.$level.' in '.$request->get('intake').' intake of this academic has already been created');
+                  }else{
+                     $find_level = true;
+                  }
+               }
+            }
+         
+            if($find_level){
+               $special_date->date = DateMaker::toDBDate($request->get('orientation_date'));
+               $special_date->name = $request->get('name');
+               $special_date->campus_id = $request->get('campus_id');
+               $special_date->study_academic_year_id = $request->get('study_academic_year_id');
+               $special_date->intake = $request->get('intake');
+               $special_date->applicable_levels = serialize($request->get('applicable_level'));
+               $special_date->save();
+       
+               $new_reg_date = SpecialDate::where('group_id',$special_date->group_id)->where('name','New Registration Period')->first();
+               $new_reg_date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
+               $new_reg_date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+               $new_reg_date->campus_id = $request->get('campus_id');
+               $new_reg_date->intake = $request->get('intake');
+               $new_reg_date->applicable_levels = serialize($request->get('applicable_level'));
+               $new_reg_date->save();
+       
+               $cont_reg_date = SpecialDate::where('group_id',$special_date->group_id)->where('name','Continueing Registration Period')->first();
+               $cont_reg_date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
+               $cont_reg_date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
+               $cont_reg_date->campus_id = $request->get('campus_id');
+               $cont_reg_date->intake = $request->get('intake');
+               $cont_reg_date->applicable_levels = serialize($request->get('applicable_level'));
+               $cont_reg_date->save();
+       
+               return redirect()->back()->with('message','Orientation updated successfully');
+           }
 
-        $cont_reg_date = SpecialDate::where('group_id',$special_date->group_id)->where('name','Continueing Registration Period')->first();
-        $cont_reg_date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
-        $cont_reg_date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
-        $cont_reg_date->campus_id = $request->get('campus_id');
-        $cont_reg_date->intake = $request->get('intake');
-        $cont_reg_date->applicable_levels = serialize($request->get('applicable_level'));
-        $cont_reg_date->save();
+         }else {
+        
+            $special_date->date = DateMaker::toDBDate($request->get('orientation_date'));
+            $special_date->name = $request->get('name');
+            $special_date->campus_id = $request->get('campus_id');
+            $special_date->study_academic_year_id = $request->get('study_academic_year_id');
+            $special_date->intake = $request->get('intake');
+            $special_date->applicable_levels = serialize($request->get('applicable_level'));
+            $special_date->save();
+    
+            $new_reg_date = SpecialDate::where('group_id',$special_date->group_id)->where('name','New Registration Period')->first();
+            $new_reg_date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
+            $new_reg_date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+            $new_reg_date->campus_id = $request->get('campus_id');
+            $new_reg_date->intake = $request->get('intake');
+            $new_reg_date->applicable_levels = serialize($request->get('applicable_level'));
+            $new_reg_date->save();
+    
+            $cont_reg_date = SpecialDate::where('group_id',$special_date->group_id)->where('name','Continueing Registration Period')->first();
+            $cont_reg_date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
+            $cont_reg_date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
+            $cont_reg_date->campus_id = $request->get('campus_id');
+            $cont_reg_date->intake = $request->get('intake');
+            $cont_reg_date->applicable_levels = serialize($request->get('applicable_level'));
+            $cont_reg_date->save();
+    
+            return redirect()->back()->with('message','Orientation updated successfully');
+        }
 
-        return redirect()->back()->with('message','Orientation updated successfully');
     }
 }
