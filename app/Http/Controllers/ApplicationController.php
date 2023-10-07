@@ -5011,17 +5011,22 @@ class ApplicationController extends Controller
         ->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicants[0]->intake->name)->where('campus_id',$applicants[0]->campus_id)->get();
 
+        $orientation_date = null;
         if(count($special_dates) == 0){
             return redirect()->back()->with('error','Orientation date has not been defined');
         }else{
             foreach($special_dates as $special_date){
+                $specialDateFlag = false;
                 if(!in_array($applicants[0]->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
-                    return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award->name.' has not been defined');
+                    $specialDateFlag = true;
+                    
                 }else{
-
-                        $orientation_date = $special_date->date;
-                
+                    $orientation_date = $special_date->date;
+                    break;
                 }
+            }
+            if($specialDateFlag){
+                return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award->name.' has not been defined');
             }
         }
 
