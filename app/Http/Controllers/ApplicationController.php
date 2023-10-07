@@ -5237,18 +5237,24 @@ class ApplicationController extends Controller
                                     ->where('study_academic_year_id',$study_academic_year->id)
                                     ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
         
-        $orientation_date = null;
-        if(count($special_dates) == 0){
-            return redirect()->back()->with('error','Orientation date has not been defined');
-        }else{
-            foreach($special_dates as $special_date){
-                if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
-                    return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
-                }else{
-                    $orientation_date = $special_date->date;
-                }
+    $orientation_date = null;
+    if(count($special_dates) == 0){
+        return redirect()->back()->with('error','Orientation date has not been defined');
+    }else{
+        foreach($special_dates as $special_date){
+            $specialDateFlag = false;
+            if(!in_array($applicants[0]->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                $specialDateFlag = true;
+                
+            }else{
+                $orientation_date = $special_date->date;
+                break;
             }
         }
+        if($specialDateFlag){
+            return redirect()->back()->with('error','Orientation date for '.$applicants[0]->selections[0]->campusProgram->program->award->name.' has not been defined');
+        }
+    }
 
     // Checks for Masters
     if($request->program_level_id == 5){
@@ -5494,7 +5500,7 @@ class ApplicationController extends Controller
                 'margin_bottom' => 20,
                 'margin_left' => 20,
                 'margin_right' => 20
-                ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
+                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
                 
         }else{
             // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
