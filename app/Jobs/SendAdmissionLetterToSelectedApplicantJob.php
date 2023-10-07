@@ -311,7 +311,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                     'margin_bottom' => 20,
                     'margin_left' => 20,
                     'margin_right' => 20
-                    ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-', $study_academic_year->academicYear->year).'.pdf'); 
+                    ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
                     
             }else{
                 // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
@@ -326,7 +326,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'margin_bottom' => 20,
                 'margin_left' => 20,
                 'margin_right' => 20
-                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-',$study_academic_year->academicYear->year).'.pdf'); 
+                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
 
             }
             
