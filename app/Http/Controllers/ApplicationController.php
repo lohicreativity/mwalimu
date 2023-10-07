@@ -4955,11 +4955,11 @@ class ApplicationController extends Controller
                                                 ])->get();
 
                                                 $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
-                                                ->whereHas('selections',function($query){$query->where('order','!=',1)->where('status','SELECTED')->where('application_window_id',$this->application_window_id);})
-                                                ->where('program_level_id',$this->program_level_id)
+                                                ->whereHas('selections',function($query) use($request){$query->where('order','!=',1)->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id');})
+                                                ->where('program_level_id',$request->get('program_level_id'))
                                                 ->where('status','ADMITTED')
-                                                ->where('campus_id', $application_window->campus_id)
-                                                ->where('application_window_id',$this->application_window_id)
+                                                ->where('campus_id', 2)
+                                                ->where('application_window_id',$request->get('application_window_id')
                                                 ->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})
                                                 ->with([
                                                     'intake:id,name',
@@ -4972,7 +4972,7 @@ class ApplicationController extends Controller
                                                     'region:id,name'
                                                 ])->where('id', 3366)->get();
 
-                                                    dd($applicants);
+                                                // dd($applicants);
                                                 /* $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,surname,a.email,address,index_number,a.nationality,b.status,c.name as campus,
                                                                                                              d.name as region, e.end_date,f.name as intake,h.name as program,h.min_duration,i.name as award'))
                                                                                             ->where('a.program_level_id',$request->get('program_level_id'))
@@ -5236,15 +5236,20 @@ class ApplicationController extends Controller
         if(count($special_dates) == 0){
             return redirect()->back()->with('error','Orientation date has not been defined');
         }else{
+            $specialDateFlag = false;
             foreach($special_dates as $special_date){
                 if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
-                    return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+                    $specialDateFlag = true;
+                    break;
                 }else{
                     $orientation_date = $special_date->date;
                 }
             }
+            if($specialDateFlag){
+                return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+            }
         }
-
+    return $orientation_date;
     // Checks for Masters
     if($request->get('program_level_id') == 5){
         $research_supervision = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -5490,7 +5495,7 @@ class ApplicationController extends Controller
                 'margin_bottom' => 20,
                 'margin_left' => 20,
                 'margin_right' => 20
-                ])->save(base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-', $study_academic_year->academicYear->year).'.pdf'); 
+                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-', $study_academic_year->academicYear->year).'.pdf'); 
                 
         }else{
             // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
