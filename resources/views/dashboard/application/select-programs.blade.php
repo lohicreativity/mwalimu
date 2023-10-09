@@ -120,6 +120,7 @@
               @else 
 
             @endif
+          </div>
           @endif
           @endif
 
