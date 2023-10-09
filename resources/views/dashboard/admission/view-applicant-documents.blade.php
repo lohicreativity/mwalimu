@@ -242,6 +242,7 @@
 
                 </div>
 
+              @if(count($program_codes) != 0)
                 {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
                 <input type="hidden" name="applicant_id" value="{{ $request->get('applicant_id') }}">
                 <input type="hidden" name="application_window_id" value="{{ $request->get('application_window_id') }}">
@@ -268,6 +269,9 @@
                 
                 {!! Form::close() !!} 
 
+              @else
+              <div class="alert alert-danger">Unfortunately all programmes are full. Please try from other MNMA campuses.</div>
+              @endif
 
 
                     
