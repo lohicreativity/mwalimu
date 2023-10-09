@@ -96,7 +96,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 ->where('name','LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
 
             if(!$students_union_fee){
-            // return redirect()->back()->with('error','Students union fee has not been defined');
+            return redirect()->back()->with('error','Students union fee has not been defined');
             }
 
             $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -112,7 +112,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                     ->where('name','LIKE','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
 
             if(!$medical_examination_fee){
-            // return redirect()->back()->with('error','Medical examination fee has not been defined');
+            return redirect()->back()->with('error','Medical examination fee has not been defined');
             }
 
             $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -120,7 +120,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             ->where('name','LIKE','%Master%')->where('name','LIKE','%Registration%');})->first();
 
             if(!$registration_fee){
-            // return redirect()->back()->with('error','Registration fee has not been defined');
+            return redirect()->back()->with('error','Registration fee has not been defined');
             }
 
             $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -128,7 +128,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 ->where('name','LIKE','%Master%')->where('name','LIKE','%New ID Card%');})->first();
 
             if(!$identity_card_fee){
-            // return redirect()->back()->with('error','ID card fee for new students has not been defined');
+            return redirect()->back()->with('error','ID card fee for new students has not been defined');
             }
 
             $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -136,7 +136,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             ->where('name','LIKE','%Master%')->where('name','LIKE','%Late Registration%');})->first();
 
             if(!$late_registration_fee){
-            // return redirect()->back()->with('error','Late registration fee has not been defined');
+            return redirect()->back()->with('error','Late registration fee has not been defined');
             }
 
             $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -151,7 +151,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                                                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                                                 ->where('name','LIKE','%Master%')->where('name','LIKE','%TCU%');})->first();
             if(!$quality_assurance_fee){
-                // return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
+                return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
             }
    
         // Checks for Undergraduates
@@ -293,14 +293,14 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                 'research_supervision_fee'=> $research_supervision_fee,
                 'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
                 'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
-                'medical_examination_fee' => null,
-                'registration_fee' => null,
-                'late_registration_fee' => null,
+                'medical_examination_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
+                'registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,
+                'late_registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,
                 'practical_training_fee' => $practical_training_fee,
-                'identity_card_fee' => null,
+                'identity_card_fee' => str_contains($applicant->nationality, 'Tanzania') ? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
                 'caution_money_fee' => str_contains($applicant->nationality, 'Tanzania') ? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
-                'nacte_quality_assurance_fee' => null,
-                'students_union_fee' => null,
+                'nacte_quality_assurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $quality_assurance_fee->amount_in_tzs : $quality_assurance_fee->amount_in_usd,
+                'students_union_fee' => str_contains($applicant->nationality, 'Tanzania') ? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                 'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
             ];
             
