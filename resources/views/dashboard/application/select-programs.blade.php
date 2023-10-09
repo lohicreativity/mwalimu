@@ -50,12 +50,12 @@
                         <h5>Unfortunately all programmes are full. Please try from other MNMA campuses.</h5>
                     </div>
                 </div>
-            @else
-                <div class='col-sm-7'>
-                </div>  
-                <div class="col-sm-5">
+            @else 
               @if(count($full_programs) != 0)
                 @if(count($full_programs) > 0 && count($full_programs) < count($available_progs))
+                <div class='col-sm-7'>
+                </div> 
+                <div class="col-sm-5">
                   <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute" style="z-index: 7;"  role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                       <h4>Please note that the following programmes are full;</h4>
@@ -71,8 +71,9 @@
                                 <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
                             @endforeach
                       </div><!-- end of ss-messages_box -->
-                @endif
                 </div>
+                @endif
+
                 <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
@@ -118,8 +119,7 @@
               </div>
             </div>
               @else 
-              </div>
-            <div class="col-12"> 
+            <div class="col-sm-12"> 
               <div class="alert alert-warning ss-messages-box position-absolute z-index-auto"  role="alert">
                         <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
                 </div>
