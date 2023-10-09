@@ -72,7 +72,7 @@
                             @endforeach
                       </div><!-- end of ss-messages_box -->
                 @endif
-
+                </div>
                 <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
