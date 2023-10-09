@@ -4931,7 +4931,7 @@ class ApplicationController extends Controller
                                 'applicationWindow:id,end_date',
                                 'region:id,name'
                                 ])->where('id', 807)->get(); //change selected to eligible in program selections table
-                                                dd($applicants);
+                                                // dd($applicants);
               
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
