@@ -5164,63 +5164,63 @@ class ApplicationController extends Controller
             }
         } 
 
-        // dispatch(new SendAdmissionLetterJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
-        $applicant = $applicants[0];
-        $numberToWords = new NumberToWords();
-        $numberTransformer = $numberToWords->getNumberTransformer('en');
+        dispatch(new SendAdmissionLetterJob($request->get('program_level_id'), $request->get('application_window_id'), $request->get('reference_number')));
+        // $applicant = $applicants[0];
+        // $numberToWords = new NumberToWords();
+        // $numberTransformer = $numberToWords->getNumberTransformer('en');
         
-        $data = [
-            'applicant' => $applicant,
-            'campus_name' => $applicant->selections[0]->campusProgram->campus->name,
-            'applicant_name' => $applicant->first_name . ' ' . $applicant->surname,
-            'reference_number' => $request->reference_number,
-            'program_name' => $applicant->selections[0]->campusProgram->program->name,
-            'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
-            'study_year' => $study_academic_year->academicYear->year,
-            'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
-            'orientation_date' => $orientation_date,
-            'program_fee' => str_contains($applicant->nationality, 'Tanzania') ? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
-            'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
-            'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
-            'annual_program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords(($program_fee->amount_in_tzs)/2) : $numberTransformer->toWords(($program_fee->amount_in_usd)/2),
-            'research_supervision_fee'=> $research_supervision_fee,
-            'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
-            'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
-            'medical_examination_fee' => null,
-            'registration_fee' => null,
-            'late_registration_fee' => null,
-            'practical_training_fee' => $practical_training_fee,
-            'identity_card_fee' => null,
-            'caution_money_fee' => str_contains($applicant->nationality, 'Tanzania') ? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
-            'nacte_quality_assurance_fee' => null,
-            'students_union_fee' => null,
-            'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
-        ];
+        // $data = [
+        //     'applicant' => $applicant,
+        //     'campus_name' => $applicant->selections[0]->campusProgram->campus->name,
+        //     'applicant_name' => $applicant->first_name . ' ' . $applicant->surname,
+        //     'reference_number' => $request->reference_number,
+        //     'program_name' => $applicant->selections[0]->campusProgram->program->name,
+        //     'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
+        //     'study_year' => $study_academic_year->academicYear->year,
+        //     'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
+        //     'orientation_date' => $orientation_date,
+        //     'program_fee' => str_contains($applicant->nationality, 'Tanzania') ? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
+        //     'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
+        //     'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
+        //     'annual_program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords(($program_fee->amount_in_tzs)/2) : $numberTransformer->toWords(($program_fee->amount_in_usd)/2),
+        //     'research_supervision_fee'=> $research_supervision_fee,
+        //     'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
+        //     'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
+        //     'medical_examination_fee' => null,
+        //     'registration_fee' => null,
+        //     'late_registration_fee' => null,
+        //     'practical_training_fee' => $practical_training_fee,
+        //     'identity_card_fee' => null,
+        //     'caution_money_fee' => str_contains($applicant->nationality, 'Tanzania') ? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
+        //     'nacte_quality_assurance_fee' => null,
+        //     'students_union_fee' => null,
+        //     'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
+        // ];
         
-        if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
+        // if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
 
-            $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
-                'margin_top' => 20,
-                'margin_bottom' => 20,
-                'margin_left' => 20,
-                'margin_right' => 20
-                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
+        //     $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
+        //         'margin_top' => 20,
+        //         'margin_bottom' => 20,
+        //         'margin_left' => 20,
+        //         'margin_right' => 20
+        //         ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
                 
-        }else{
+        // }else{
 
-            $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
-            'margin_top' => 20,
-            'margin_bottom' => 20,
-            'margin_left' => 20,
-            'margin_right' => 20
-            ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
+        //     $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
+        //     'margin_top' => 20,
+        //     'margin_bottom' => 20,
+        //     'margin_left' => 20,
+        //     'margin_right' => 20
+        //     ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
 
-        }
+        // }
         
-        $user = new User;            
-        $user->email = $applicant->email;
-        $user->username = $applicant->first_name . ' ' . $applicant->surname;
-        Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
+        // $user = new User;            
+        // $user->email = $applicant->email;
+        // $user->username = $applicant->first_name . ' ' . $applicant->surname;
+        // Mail::to($user)->send(new AdmissionLetterCreated($applicant, $study_academic_year, $pdf));
 
 
         return redirect()->back()->with('message','Admission package sent successfully');
