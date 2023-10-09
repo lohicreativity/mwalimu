@@ -5004,7 +5004,7 @@ class ApplicationController extends Controller
                     ->where('name','LIKE','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
 
             if(!$medical_examination_fee){
-            return redirect()->back()->with('error','Medical examination fee has not been defined');
+            // return redirect()->back()->with('error','Medical examination fee has not been defined');
             }
 
             $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
@@ -5012,7 +5012,7 @@ class ApplicationController extends Controller
             ->where('name','LIKE','%Master%')->where('name','LIKE','%Registration%');})->first();
 
             if(!$registration_fee){
-            return redirect()->back()->with('error','Registration fee has not been defined');
+            // return redirect()->back()->with('error','Registration fee has not been defined');
             }
 
             $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
@@ -5020,7 +5020,7 @@ class ApplicationController extends Controller
                 ->where('name','LIKE','%Master%')->where('name','LIKE','%New ID Card%');})->first();
 
             if(!$identity_card_fee){
-            return redirect()->back()->with('error','ID card fee for new students has not been defined');
+            // return redirect()->back()->with('error','ID card fee for new students has not been defined');
             }
 
             $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
@@ -5028,7 +5028,7 @@ class ApplicationController extends Controller
             ->where('name','LIKE','%Master%')->where('name','LIKE','%Late Registration%');})->first();
 
             if(!$late_registration_fee){
-            return redirect()->back()->with('error','Late registration fee has not been defined');
+            // return redirect()->back()->with('error','Late registration fee has not been defined');
             }
 
             $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
@@ -5043,7 +5043,7 @@ class ApplicationController extends Controller
                                                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
                                                 ->where('name','LIKE','%Master%')->where('name','LIKE','%TCU%');})->first();
             if(!$quality_assurance_fee){
-                return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
+                // return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
             }
    
         // Checks for Undergraduates
