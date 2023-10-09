@@ -3335,7 +3335,7 @@ class ApplicationController extends Controller
                                             ->where('status','INACTIVE')->latest()->first();
   */       
 
-       if($prog_code == null){
+       if($program_code == null){
         return redirect()->back()->with('error','This action cannot be performed now.');
        }
             
