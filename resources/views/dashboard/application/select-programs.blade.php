@@ -118,11 +118,10 @@
               </div>
             </div>
               @else  
-            </div>
-            <div class="col-sm-12">  
-              <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">
+            </div> 
+              <div class="alert alert-warning alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">
                       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h5>Unfortunately you do not qualify. Please try from other MNMA campuses</h5>
+                        <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
                 </div>
             @endif
           @endif
