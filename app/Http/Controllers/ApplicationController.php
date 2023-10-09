@@ -5158,6 +5158,10 @@ class ApplicationController extends Controller
                 }
             }
 
+            if ($teaching_practice) {
+                $teaching_practice = str_contains($applicant->nationality, 'Tanzania') ? $teaching_practice->amount_in_tzs : $teaching_practice->amount_in_usd;
+            }
+
                 $practical_training_fee = null;
                 if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'basic') || str_contains(strtolower($applicant->selections[0]->campusProgram->program->name),'diploma')){
                     $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)
@@ -5170,6 +5174,9 @@ class ApplicationController extends Controller
                     }
                 }
 
+                if ($practical_training_fee) {
+                    $practical_training_fee = str_contains($applicant->nationality, 'Tanzania') ? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd;
+                }
             
             $research_supervision_fee = null;
             if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){

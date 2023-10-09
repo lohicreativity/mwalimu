@@ -255,6 +255,10 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             }
         }
 
+        if ($teaching_practice) {
+            $teaching_practice = str_contains($applicant->nationality, 'Tanzania') ? $teaching_practice->amount_in_tzs : $teaching_practice->amount_in_usd;
+        }
+
         $practical_training_fee = null;
         if(str_contains(strtolower($this->program_name),'basic') || str_contains(strtolower($this->program_name),'diploma')){
             $practical_training_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)

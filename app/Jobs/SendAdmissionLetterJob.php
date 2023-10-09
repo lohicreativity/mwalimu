@@ -53,7 +53,7 @@ class SendAdmissionLetterJob implements ShouldQueue
     {
         $application_window = ApplicationWindow::find($this->application_window_id);
 
-            $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
+            $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id','program_level_id')
                                     ->whereHas('selections',function($query) {$query->where('status','SELECTED')->where('application_window_id',$this->application_window_id);})
                                     ->where('program_level_id',$this->program_level_id)
                                     ->where('status','SELECTED')
