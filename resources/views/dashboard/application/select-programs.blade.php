@@ -54,7 +54,7 @@
                 <div class='col-sm-7'>
                 </div>  
                 <div class="col-sm-5">
-              @if(count(full_programs) != 0)
+              @if(count($full_programs) != 0)
                 @if(count($full_programs) > 0 && count($full_programs) < count($available_progs))
                   <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute" style="z-index: 7;"  role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
