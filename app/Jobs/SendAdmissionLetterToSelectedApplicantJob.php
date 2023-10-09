@@ -28,7 +28,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
     public $campus_program_id;
     public $program_name;
 
-    public function __construct(Applicant $applicant, $program_level_id, $reference_number, $campus_program_id, $program_name)
+    public function __construct(Applicant $applicant, $program_level_id, $campus_program_id, $program_name, $reference_number)
     {
         $this->applicant = $applicant;
         $this->program_level_id = $program_level_id;
