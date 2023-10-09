@@ -117,12 +117,13 @@
                  </table>
               </div>
             </div>
+          </div>
               @else  
-            </div> 
               <div class="alert alert-warning alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">
                       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
                 </div>
+            </div> 
             @endif
           @endif
           @endif
