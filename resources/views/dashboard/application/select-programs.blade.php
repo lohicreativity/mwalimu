@@ -117,8 +117,8 @@
                  </table>
               </div>
             </div>
-          </div>
               @else 
+              </div>
             <div class="col-12"> 
               <div class="alert alert-warning ss-messages-box position-absolute z-index-auto"  role="alert">
                         <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
