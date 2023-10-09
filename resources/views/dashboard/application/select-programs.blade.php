@@ -122,7 +122,6 @@
             @endif
           @endif
 
-            @endif
 
               <div class="modal fade" id="ss-first-choice">
                 <div class="modal-dialog modal-lg">
@@ -546,8 +545,6 @@
 					 </table>
 				  </div>
 				</div>
-            @endif
-
             @endif
 
           </div>
