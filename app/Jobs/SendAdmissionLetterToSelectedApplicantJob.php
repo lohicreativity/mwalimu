@@ -73,19 +73,6 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                     }
                 }
 
-                // OLD
-            // $orientation_date = null;
-            // if(count($special_dates) == 0){
-            //     return redirect()->back()->with('error','Orientation date has not been defined');
-            // }else{
-            //     foreach($special_dates as $special_date){
-            //         if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
-            //             return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
-            //         }else{
-            //             $orientation_date = $special_date->date;
-            //         }
-            //     }
-            // }
 
         // Checks for Masters
         if($this->program_level_id == 5){
@@ -318,13 +305,6 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
             ];
             
             if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
-                // get file
-                // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'-'.str_replace('/','-',$ $study_academic_year->academicYear->year).'.pdf'); 
-                // // If file exist
-                //     if(file_exists($file)){
-                //         // delete
-                //         unlink($file);
-                //     }
 
                 $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
                     'margin_top' => 20,
@@ -334,12 +314,6 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
                     ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
                     
             }else{
-                // $file = base_path(('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf'); 
-                // // If file exist
-                //     if(file_exists($file)){
-                //         // delete
-                //         unlink($file);
-                //     }
 
                 $pdf = PDF::loadView('dashboard.application.reports.admission-letter', $data, [], [
                 'margin_top' => 20,

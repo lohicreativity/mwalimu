@@ -53,24 +53,6 @@ class SendAdmissionLetterJob implements ShouldQueue
     {
         $application_window = ApplicationWindow::find($this->application_window_id);
 
-/*         $applicants = Applicant::select('id', 'first_name', 'surname', 'email', 'campus_id', 'address', 'index_number', 'application_window_id', 'intake_id', 'nationality', 'region_id')
-            ->whereHas('selections', fn($query) => $query->where('status', 'SELECTED'))
-            ->with([
-                'intake:id,name',
-                'selections' => fn($query) => $query->select('id', 'status', 'campus_program_id', 'applicant_id')->where('status', 'SELECTED'),
-                'selections.campusProgram:id,program_id,campus_id',
-                'selections.campusProgram.program:id,name,award_id,min_duration',
-                'selections.campusProgram.program.award:id,name',
-                'campus:id,name',
-                'applicationWindow:id,end_date',
-                'region:id,name'
-            ])
-            ->where('program_level_id', $this->program_level_id)
-            ->where('status', 'SELECTED')
-            ->where('campus_id', $application_window->campus_id)
-            ->where('application_window_id', $application_window->id)
-            ->where(fn($query) => $query->where('multiple_admissions', 0)->orWhere('multiple_admissions', null)->orWhere('confirmation_status', 'CONFIRMED'))
-            ->get(); */
             $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
                                     ->whereHas('selections',function($query) {$query->where('status','SELECTED')->where('application_window_id',$this->application_window_id);})
                                     ->where('program_level_id',$this->program_level_id)
@@ -87,7 +69,7 @@ class SendAdmissionLetterJob implements ShouldQueue
                                         'campus:id,name',
                                         'applicationWindow:id,end_date',
                                         'region:id,name'
-                                    ])->where('id', 5)->get(); //152
+                                    ])->get(); 
 
         foreach ($applicants as $applicant) {
             $campus_program_id = $applicant->selections[0]->campusProgram->id;
