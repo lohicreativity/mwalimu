@@ -1040,39 +1040,46 @@ class ApplicationController extends Controller
         
         $program_codes = $programs_selected = $entry_requirements = array();
 
-        foreach ($applicant->selections as $selection) {
-            $programs_selected[] = $selection->campus_program_id;
-        }
-
-        foreach($programs_selected as $program_id){
-            $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $request->get('application_window_id'))->where('campus_program_id',$program_id)
-                                                   ->with('campusProgram:id,code')->first();
-        }
-
-        foreach($programs_selected as $programs) {
-            foreach($entry_requirements as $requirements) {
-                if($requirements){
-                    if($programs == $requirements->campus_program_id){
-                        $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $programs)
-                        ->where(function($query) {
-                            $query->where('applicant_program_selections.status', 'SELECTED')
-                                  ->orWhere('applicant_program_selections.status', 'APPROVING');
-                        })
-                        ->count();
-    
-                        if ($count_applicants_per_program < $requirements->max_capacity) {
-                            $program_codes[] = $requirements->campusProgram->code;
-                        }
-                    }
-                }   
+        if($applicant->program_level_id == 5){
+            foreach ($applicant->selections as $selection) {
+                $program_codes[] = $selection->campusProgram->code;
             }
-
-/*             if(str_contains(strtolower($applicant->programLevel->name),'master')){
-                foreach ($applicant->selections as $selection) {
-                    $program_codes[] = $selection->campusProgram->code;
+        }else{
+            foreach ($applicant->selections as $selection) {
+                $programs_selected[] = $selection->campus_program_id;
+            }
+    
+            foreach($programs_selected as $program_id){
+                $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $request->get('application_window_id'))->where('campus_program_id',$program_id)
+                                                       ->with('campusProgram:id,code')->first();
+            }
+    
+            foreach($programs_selected as $programs) {
+                foreach($entry_requirements as $requirements) {
+                    if($requirements){
+                        if($programs == $requirements->campus_program_id){
+                            $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $programs)
+                            ->where(function($query) {
+                                $query->where('applicant_program_selections.status', 'SELECTED')
+                                      ->orWhere('applicant_program_selections.status', 'APPROVING');
+                            })
+                            ->count();
+        
+                            if ($count_applicants_per_program < $requirements->max_capacity) {
+                                $program_codes[] = $requirements->campusProgram->code;
+                            }
+                        }
+                    }   
                 }
-            } */
+    
+    /*             if(str_contains(strtolower($applicant->programLevel->name),'master')){
+                    foreach ($applicant->selections as $selection) {
+                        $program_codes[] = $selection->campusProgram->code;
+                    }
+                } */
+            }
         }
+
 
         $data = [
             'applicant'         => Applicant::find($request->get('applicant_id')),
@@ -3327,6 +3334,10 @@ class ApplicationController extends Controller
  /*        $closed_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
                                             ->where('status','INACTIVE')->latest()->first();
   */       
+
+       if($prog_code == null){
+        return redirect()->back()->with('error','This action cannot be performed now.');
+       }
             
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first()){
             return redirect()->back()->with('error','Application window is not active');

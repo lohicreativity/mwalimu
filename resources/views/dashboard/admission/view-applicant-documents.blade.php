@@ -270,7 +270,7 @@
                 {!! Form::close() !!} 
 
               @else
-              <div class="alert alert-danger">Unfortunately all programmes are full. Please try from other MNMA campuses.</div>
+              <div class="alert alert-danger">Unfortunately all programmes are full. Please advice the applicant to try from other MNMA campuses.</div>
               @endif
 
 
