@@ -4915,22 +4915,22 @@ class ApplicationController extends Controller
         $applicants = [];
         if(Auth::user()->hasRole('admission-officer')){
 
-                                   $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
-                                                ->whereHas('selections',function($query)use($request){$query->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
-                                                ->where('program_level_id',$request->get('program_level_id'))
-                                                ->where('status','SELECTED')
-                                                ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
-                                                ->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})
-                                                ->with([
-                                                    'intake:id,name',
-                                                    'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
-                                                    'selections.campusProgram:id,program_id,campus_id',
-                                                    'selections.campusProgram.program:id,name,award_id,min_duration',
-                                                    'selections.campusProgram.program.award:id,name',
-                                                    'campus:id,name',
-                                                    'applicationWindow:id,end_date',
-                                                    'region:id,name'
-                                                ])->where('id', 807)->get();
+            $applicants = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id')
+                            ->whereHas('selections',function($query)use($request){$query->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'));})
+                            ->where('program_level_id',$request->get('program_level_id'))
+                            ->where('status','SELECTED')
+                            ->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))
+                            ->where(function($query){$query->where('multiple_admissions',0)->orWhere('multiple_admissions',null)->orWhere('confirmation_status','CONFIRMED');})
+                            ->with([
+                                'intake:id,name',
+                                'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
+                                'selections.campusProgram:id,program_id,campus_id',
+                                'selections.campusProgram.program:id,name,award_id,min_duration',
+                                'selections.campusProgram.program.award:id,name',
+                                'campus:id,name',
+                                'applicationWindow:id,end_date',
+                                'region:id,name'
+                                ])->where('id', 807)->get(); //change selected to eligible in program selections table
                                                 dd($applicants);
               
         }else{
@@ -4985,7 +4985,7 @@ class ApplicationController extends Controller
 
             $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+                ->where('name','LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
 
             if(!$students_union_fee){
             return redirect()->back()->with('error','Students union fee has not been defined');
@@ -4993,7 +4993,7 @@ class ApplicationController extends Controller
 
             $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','%Master%')->where('name','LIKE','%Caution Money%');})->first();
+                ->where('name','LIKE','%Master%')->where('name','LIKE','%Caution Money%');})->first();
 
             if(!$caution_money_fee){
             return redirect()->back()->with('error','Caution money fee has not been defined');
@@ -5001,7 +5001,7 @@ class ApplicationController extends Controller
 
             $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                     ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                    ->where('name','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
+                    ->where('name','LIKE','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
 
             if(!$medical_examination_fee){
             return redirect()->back()->with('error','Medical examination fee has not been defined');
@@ -5009,7 +5009,7 @@ class ApplicationController extends Controller
 
             $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-            ->where('name','%Master%')->where('name','LIKE','%Registration%');})->first();
+            ->where('name','LIKE','%Master%')->where('name','LIKE','%Registration%');})->first();
 
             if(!$registration_fee){
             return redirect()->back()->with('error','Registration fee has not been defined');
@@ -5017,7 +5017,7 @@ class ApplicationController extends Controller
 
             $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                ->where('name','%Master%')->where('name','LIKE','%New ID Card%');})->first();
+                ->where('name','LIKE','%Master%')->where('name','LIKE','%New ID Card%');})->first();
 
             if(!$identity_card_fee){
             return redirect()->back()->with('error','ID card fee for new students has not been defined');
@@ -5025,7 +5025,7 @@ class ApplicationController extends Controller
 
             $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-            ->where('name','%Master%')->where('name','LIKE','%Late Registration%');})->first();
+            ->where('name','LIKE','%Master%')->where('name','LIKE','%Late Registration%');})->first();
 
             if(!$late_registration_fee){
             return redirect()->back()->with('error','Late registration fee has not been defined');
@@ -5033,7 +5033,7 @@ class ApplicationController extends Controller
 
             $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
             ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-            ->where('name','%Master%')->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
+            ->where('name','LIKE','%Master%')->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
 
             if(!$welfare_emergence_fund){
             return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
@@ -5041,7 +5041,7 @@ class ApplicationController extends Controller
 
             $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$staff->campus_id)
                                                 ->whereHas('feeItem',function($query) use($staff){$query->where('campus_id',$staff->campus_id)
-                                                ->where('name','%Master%')->where('name','LIKE','%TCU%');})->first();
+                                                ->where('name','LIKE','%Master%')->where('name','LIKE','%TCU%');})->first();
             if(!$quality_assurance_fee){
                 return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
             }
@@ -5186,14 +5186,14 @@ class ApplicationController extends Controller
             'research_supervision_fee'=> $research_supervision_fee,
             'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
             'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
-            'medical_examination_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
-            'registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,
-            'late_registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,
+            'medical_examination_fee' => null,
+            'registration_fee' => null,
+            'late_registration_fee' => null,
             'practical_training_fee' => $practical_training_fee,
-            'identity_card_fee' => str_contains($applicant->nationality, 'Tanzania') ? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
+            'identity_card_fee' => null,
             'caution_money_fee' => str_contains($applicant->nationality, 'Tanzania') ? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
-            'nacte_quality_assurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $quality_assurance_fee->amount_in_tzs : $quality_assurance_fee->amount_in_usd,
-            'students_union_fee' => str_contains($applicant->nationality, 'Tanzania') ? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
+            'nacte_quality_assurance_fee' => null,
+            'students_union_fee' => null,
             'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
         ];
         
