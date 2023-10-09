@@ -287,7 +287,8 @@
       be paid at the beginning of a Semester.</li>
 
 <li>That you should also pay <strong>{{ $currency }} {{ number_format($nacte_quality_assurance_fee) }}/=</strong> for Quality Assurance,
-    @if(!empty($practical_training_fee)) <strong>{{ $currency }} {{ number_format($practical_training_fee) }}/=</strong> for Practical Training, @endif 
+    @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2) @if(!empty($practical_training_fee)) <strong>{{ $currency }} {{ number_format($practical_training_fee) }}/=</strong> for Practical Training, @endif @else
+    @if(!empty($teaching_practice)) <strong>{{ $currency }} {{ number_format($teaching_practice) }}/=</strong> for Practical Training, @endif@endif
     <strong>{{ $currency }} {{ number_format($students_union_fee) }}/=</strong> for Students Union, 
     <strong>{{ $currency }} {{ number_format($caution_money_fee) }}/=</strong> for Caution Money,  
     <strong>{{ $currency }} {{ number_format($medical_examination_fee) }}/=</strong> for Medical Examination,
