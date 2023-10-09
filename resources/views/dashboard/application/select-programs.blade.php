@@ -41,28 +41,40 @@
             @if($applicant->payment_complete_status == 0)
             <div class="alert alert-warning">Payment section not completed.</div>
             @else
-		    @if(count($campus_programs) == 0)
-            @if(count($programs_available) == 0)
-                <div class="alert alert-danger">Unfortunately all programmes are full. Please try from other MNMA campuses.</div>
+
+            @if(($applicant->status == 'NOT SELECTED'))  
+            @if(count($full_programs) == count($available_progs))
+              <div class="col-sm-12">  
+              <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">
+                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h5>Unfortunately all programmes are full. Please try from other MNMA campuses.</h5>
+                    </div>
+                </div>
             @else
-                @if(count($programs_available) == 1)
-                <div class="alert alert-warning alert-dismissible">Only {{ $programs_available[0]->program->name }} is available, but unfortunately you do not qualify. Please try from other MNMA campuses.</div>
-                @elseif(count($programs_available) > 1)
-                <div class="alert alert-warning">
-                  Only 
-                  @foreach($programs_available as $key=>$prog)
-                    @if((count($programs_available)-2) == $key)
-                      {{ $programs_available[$key]->program->name}}, and {{ $programs_available[$key+1]->program->name }}
-                      @break;
-                    @else
-                    {{ $prog->program->name }},
-                    @endif
-                  @endforeach
-                  are available, but unfortunately you do not qualify. Please try from other MNMA campuses.</div>
+                <div class='col-sm-7'>
+                </div>  
+                <div class="col-sm-5">
+                @if(count($full_programs) > 0 && count($full_programs) < count($available_progs))
+                  <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute" style="z-index: 7;"  role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h4>Please note that the following programmes are full;</h4>
+                        @foreach($full_programs as $key=>$prog)
+                          <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                        @endforeach
+                  </div><!-- end of ss-messages_box -->
+                    @elseif(count($full_programs) >= count($available_progs))
+                      <div class="alert alert-success alert-dismissible ss-messages-box position-absolute z-index-auto" style="z-index: 7;" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4>Please note that only the following programmes are available;</h4>
+                            @foreach($available_progs as $key=>$prog)
+                                <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                            @endforeach
+                      </div><!-- end of ss-messages_box -->
                 @endif
-            @endif
-		    @else
-                        <div class="card">
+            </div>
+
+
+            <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
               </div>
@@ -106,6 +118,10 @@
                  </table>
               </div>
             </div>
+
+            @endif
+          @endif
+
             @endif
 
               <div class="modal fade" id="ss-first-choice">
