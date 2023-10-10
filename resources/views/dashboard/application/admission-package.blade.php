@@ -68,9 +68,6 @@
                       @endforeach
                     </tbody>
                   </table>
-                  <div class="ss-pagination-links">
-                     {!! $attachments->render() !!}
-                  </div>
                 </div>
               </div>
           </div>

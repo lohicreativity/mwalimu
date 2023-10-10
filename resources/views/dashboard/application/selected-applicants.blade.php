@@ -218,7 +218,13 @@
                           <td>{{ ($key+1) }}</td>
                           <td>{{ $applicant->first_name }} {{ substr($applicant->middle_name,0,1) }}. {{ $applicant->surname }}</td>
                           <td>{{ $applicant->gender }}</td>
-                          <td>{{ $applicant->index_number }}</td>
+                          <td>
+                            @foreach($applicant->nectaResultDetails as $key => $result)
+                              @if($result->exam_id == 1 && $result->verified == 1)
+                                {{ $result->index_number }} @if($key > 0)<br> @endif
+                              @endif
+                            @endforeach
+                          </td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'APPROVING')
                               {{ $selection->campusProgram->code }} @break

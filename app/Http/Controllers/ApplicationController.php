@@ -4844,13 +4844,22 @@ class ApplicationController extends Controller
     {    
          $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
          $student = Student::where('applicant_id', $applicant->id)->first();
+         $award = Award::where('id', $applicant->program_level_id)->first();
+         $admission_packages = AdmissionAttachment::where('campus_id',session('applicant_campus_id'))->get();
+         $packages = [];
+
+         foreach($admission_packages as $admission_package){
+            if(in_array($award->name, unserialize($admission_package->applicable_levels))){
+                $packages[] = $admission_package;
+            }
+         }
 
          if($applicant->confirmation_status == 'CANCELLED'){
             return redirect()->to('application/basic-information')->with('error','This action cannot be performed. Your admission has been cancelled');
             }
 
          $data = [
-            'attachments'=>AdmissionAttachment::paginate(20),
+            'attachments'=>$packages,
             'applicant'=>$applicant,
             'request'=>$request
          ];
