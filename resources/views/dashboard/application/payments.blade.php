@@ -21,7 +21,7 @@
 
       <div class="row mb-2">
       @if(($applicant->status == 0) && ($applicant->payment_complete_status == 0))  
-        @if(count($full_programs) == count($available_progs))
+        @if(count($full_programs) == count($all_programs))
         <div class="col-sm-12">  
         <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

@@ -42,37 +42,103 @@
             @else
 
             @if(($applicant->status == 'NOT SELECTED') || ($applicant->status == null))  
-            @if(count($full_programs) == count($available_progs))
+            @if(count($full_programs) == count($all_programs))
               <div class="col-sm-12">  
-              <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">
+              <div class="alert alert-danger alert-dismissible ss-messages-box"  role="alert">
                       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h5>Unfortunately all programmes are full. Please try from other MNMA campuses.</h5>
                     </div>
                 </div>
             @else 
               @if(count($full_programs) != 0)
-                @if(count($full_programs) > 0 && count($full_programs) < count($available_progs))
-                <div class='col-sm-7'>
-                </div> 
-                <div class="col-sm-5">
-                  <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute" style="z-index: 7;"  role="alert">
-                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                      <h4>Please note that the following programmes are full;</h4>
-                        @foreach($full_programs as $key=>$prog)
-                          <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
-                        @endforeach
-                  </div><!-- end of ss-messages_box -->
-                    @elseif(count($full_programs) >= count($available_progs))
-                      <div class="alert alert-success alert-dismissible ss-messages-box position-absolute z-index-auto" style="z-index: 7;" role="alert">
-                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                          <h4>Please note that only the following programmes are available;</h4>
-                            @foreach($available_progs as $key=>$prog)
-                                <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
-                            @endforeach
-                      </div><!-- end of ss-messages_box -->
-                </div>
-                @endif
 
+                @if(count($full_programs) > 0 && count($full_programs) < count($available_progs))
+                      @if(count($campus_programs) === 0)
+                        <div class="col-12"> 
+                          <div class="alert alert-warning alert-dismissible ss-messages-box"  role="alert">
+                          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                              <h6>
+                                  You qualify to 
+
+                                 @foreach($full_programs as $key => $available_program)
+                                  
+                                    @if($key == (count($full_programs)-2))
+                                        {{ $full_programs[$key]->program->name}} and {{ $full_programs[$key+1]->program->name }}
+                                        @break;
+                                    @elseif($key < (count($full_programs)-2))
+                                        {{ $full_programs[$key]->program->name }} ,
+                                    @elseif(count($full_programs) === 1)
+                                        {{ $full_programs[$key]->program->name }}
+                                    @endif
+                                  @endforeach
+                                  but unfortunately 
+                                  @if(count($full_programs) === 1)
+                                    the programme is full.
+                                  @else
+                                    the programmes are full.
+                                  @endif
+                                  Please try from other MNMA campuses.
+                              </h6>
+                          </div>
+                        </div>     
+                      @else
+                          <div class='col-sm-7'>
+                          </div> 
+                          <div class="col-sm-5">
+                            <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute" style="z-index: 7;"  role="alert">
+                              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4>Please note that the following programmes are full;</h4>
+                                  @foreach($full_programs as $key=>$prog)
+                                    <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                                  @endforeach
+                            </div>
+                          </div>
+                      @endif
+              <!-- end of ss-messages_box -->
+                @elseif(count($full_programs) >= count($available_progs))
+                    @if(count($campus_programs) === 0)
+                            <div class="col-12"> 
+                              <div class="alert alert-warning alert-dismissible ss-messages-box"  role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h6>
+                                        @if(count($available_progs) === 1)  
+                                            The following programme is available 
+                                        @else
+                                        The following programmes are available 
+                                        @endif
+
+                                        @foreach($available_progs as $key => $available_program)
+                                        
+                                          @if($key == (count($available_progs)-2))
+                                              {{ $available_progs[$key]->program->name}} and {{ $available_progs[$key+1]->program->name }}
+                                              @break;
+                                          @elseif($key < (count($available_progs)-2))
+                                              {{ $available_progs[$key]->program->name }} ,
+                                          @elseif(count($available_progs) === 1)
+                                              {{ $available_progs[$key]->program->name }}
+                                          @endif
+                                        @endforeach
+                                        but unfortunately you do not qualify. Please try from other MNMA campuses.
+                                    </h6>
+                              </div>
+                            </div>     
+                      @else
+                              <div class='col-sm-7'>
+                              </div> 
+                              <div class="col-sm-5">
+                                  <div class="alert alert-success alert-dismissible ss-messages-box position-absolute z-index-auto" style="z-index: 7;" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                      <h4>Please note that only the following programmes are available;</h4>
+                                        @foreach($available_progs as $key=>$prog)
+                                            <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                                        @endforeach
+                                  </div><!-- end of ss-messages_box -->
+                              </div>
+
+                    @endif
+              @endif
+              @if(count($campus_programs) > 0)  
+              <div class="col-12">
                 <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
@@ -117,18 +183,71 @@
                  </table>
               </div>
             </div>
-              @else 
-
-            @endif
           </div>
           @endif
-          @endif
 
-            <div class="col-sm-12"> 
-              <div class="alert alert-warning ss-messages-box position-absolute z-index-auto"  role="alert">
+            @else
+            @if(count($campus_programs) === 0)
+            <div class="col-12"> 
+              <div class="alert alert-warning"  role="alert">
                         <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
                 </div>
-            </div> 
+            </div>
+          </div>   
+            @else   
+</div>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Selections</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 <table class="table table-bordered">
+                    <thead>
+                       <tr>
+                         <th>Choice</th>
+                         <th>Programme</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                       <td>1</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1)) 1st Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
+                    </tr>
+                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1))
+                    <tr>
+                       <td>2</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2)) 2nd Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
+                    </tr>
+                    @endif
+                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2))
+                    <tr>
+                       <td>3</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3)) 3rd Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
+                    </tr>
+                    @endif
+                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3))
+                    <tr>
+                       <td>4</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,4)) 4th Choice Selected 
+                           @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
+                    </tr>
+                    @endif
+                  </tbody>
+                 </table>
+              </div>
+            </div>
+          </div>
+            @endif
+          </div>
+            @endif
+          @endif
+          @endif
+        
+</div>
               <div class="modal fade" id="ss-first-choice">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">

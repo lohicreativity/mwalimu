@@ -1182,7 +1182,8 @@ class ApplicantController extends Controller
            'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null,
            'regulator_selection'=>false,
            'available_progs'=>$available_progs ?? [],
-           'full_programs'=>$campus_progs ?? []
+           'full_programs'=>$campus_progs ?? [],
+           'all_programs'=>$campus_programs?? []
         ];
         return view('dashboard.application.payments',$data)->withTitle('Payments');
     }
@@ -1362,6 +1363,7 @@ class ApplicantController extends Controller
 
             $campus_progs = [];
             $available_progs = [];
+            $all_programs = [];
             if($applicant->batch_id > 1 && $applicant->payment_complete_status == 1){
                $window = $applicant->applicationWindow;
                $campus_programs = $window? $window->campusPrograms()
@@ -1371,7 +1373,8 @@ class ApplicantController extends Controller
              $entry_requirements = null;
              foreach($campus_programs as $prog){
                 $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
-                                                       ->with('campusProgram:id,code')->first();            
+                                                       ->with('campusProgram:id,code')->first(); 
+                $all_programs[] = $prog;           
              }
                                
              foreach($campus_programs as $prog){
@@ -1393,7 +1396,7 @@ class ApplicantController extends Controller
        }
          // dd( $campus_progs);
          
-         $campus_programs = $campus_progs;
+         $campus_programs = $available_progs;
          $award = $applicant->programLevel;
          $programs = [];
 
@@ -2196,7 +2199,6 @@ class ApplicantController extends Controller
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
       }
       
-
          $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
@@ -2208,7 +2210,8 @@ class ApplicantController extends Controller
             'diploma_selection_grade'=>$diploma_selection_grade,
             'open_selection_grade'=>$open_selection_grade,
             'available_progs'=>$available_progs ?? [],
-            'full_programs'=>$campus_progs ?? []
+            'full_programs'=>$campus_progs ?? [],
+            'all_programs'=>$all_programs ?? []
          ];
 
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
