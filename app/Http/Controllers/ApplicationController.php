@@ -8770,11 +8770,11 @@ class ApplicationController extends Controller
 			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&status=unqualified');
 		}
 		DB::beginTransaction();
-        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        $ac_year = StudyAcademicYear::with('academicYear:id,year')->where('status','ACTIVE')->first();
         // explode('/', $ac_year->academicYear->year)[0];
-        $applyr = 2023;
-        $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));
-        $campus_program = CampusProgram::with(['program','entryRequirements'])->find($request->get('campus_program_id'));
+        $applyr = explode('/', $ac_year->academicYear->year)[0];
+        $application_window = ApplicationWindow::select('id','intake_id')->with('intake:name,id')->find($request->get('application_window_id'));
+        $campus_program = CampusProgram::select('id','regulator_code', 'program_id')->with(['program:name,id','entryRequirements:id,pass_grade,must_subjects,other_must_subjects, campus_program_id'])->find($request->get('campus_program_id'));
         $program = $campus_program;
 
         if(count($program->entryRequirements) == 0){
@@ -8851,7 +8851,7 @@ class ApplicationController extends Controller
                 // }
                 $form4index = $returnedObject->params[$i]->username;
                 $student = null;    
-                if(! TamisemiStudent::where('f4indexno',$form4index)->first()){
+                if(!TamisemiStudent::where('f4indexno',$form4index)->first()){
                    $student = new TamisemiStudent;
                    $student->f4indexno = $form4index;
                    $student->year = $applyr;
@@ -8886,16 +8886,16 @@ class ApplicationController extends Controller
                        $user = new User;
                    }
                    $user->username = $form4index;
-                   $user->email = $student->email;
+                   $user->email = returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);
                    $user->password = Hash::make($form4index);
                    $user->save();
    
-                   $role = Role::where('name','applicant')->first();
+                   $role = Role::select('id')->where('name','applicant')->first();
                    $user->roles()->sync([$role->id]);
 
-                   $program_level = Award::where('name','LIKE','%Basic%')->first();
-                   $current_batch = ApplicationBatch::where('program_level_id', $program_level->id)->where('application_window_id', $application_window->id)->latest()->first();
-                   $prev_batch = ApplicationBatch::where('application_window_id',$application_window->id)->where('program_level_id',$program_level->id)
+                   $program_level = Award::select('id')->where('name','LIKE','%Basic%')->first();
+                   $current_batch = ApplicationBatch::select('batch_no')->where('program_level_id', $program_level->id)->where('application_window_id', $application_window->id)->latest()->first();
+                   $prev_batch = ApplicationBatch::select('id')->where('application_window_id',$application_window->id)->where('program_level_id',$program_level->id)
                                        ->where('batch_no', $current_batch->batch_no - 1)->first();
                    // $next_of_kin = new NextOfKin;
                    // $next_of_kin->first_name = explode(' ', $student->next_of_kin_fullname)[0];
@@ -8912,12 +8912,12 @@ class ApplicationController extends Controller
                    // $ward = Ward::where('district_id',$district->id)->first();
    
    
-                   if($app = Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)
+                   if(Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)
                        ->where('application_window_id',$application_window->id)->where('is_tamisemi',1)->first()){
-                      $applicant = $app;
+                      continue;
                    }else{
                       $applicant = new Applicant;
-                   }
+                   
                    $applicant->first_name = $student->fullname == '' ? '' : explode(' ', $student->fullname)[0];
                    $applicant->middle_name = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null);
                    $applicant->surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
@@ -8929,7 +8929,7 @@ class ApplicationController extends Controller
                    $applicant->program_level_id = $program_level->id;
                    // $applicant->next_of_kin_id = $next_of_kin->id;
                    $applicant->application_window_id = $application_window->id;
-                   $applicant->batch_id = $prev_batch->batch_id;
+                   $applicant->batch_id = $prev_batch->id;
                    $applicant->payment_complete_status = 1;
                    $applicant->intake_id = $application_window->intake->id;
                    $applicant->index_number = $form4index;
@@ -8942,12 +8942,7 @@ class ApplicationController extends Controller
                    $applicant->is_tamisemi = 1;
                    $applicant->save();
    
-                   if($select = ApplicantProgramSelection::where('applicant_id',$applicant->id)
-                       ->where('application_window_id',$application_window->id)->first()){
-                       $selection = $select;
-                   }else{
-                       $selection = new ApplicantProgramSelection;
-                   }
+                   $selection = new ApplicantProgramSelection;
                    $selection->campus_program_id = $campus_program->id;
                    $selection->applicant_id = $applicant->id;
                    $selection->batch_id = $prev_batch->id;
@@ -8956,7 +8951,7 @@ class ApplicationController extends Controller
                    $selection->status = 'ELIGIBLE';
                    $selection->save();
                    
-                 
+                }
    
                 //    try{
                 //        Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
@@ -8968,10 +8963,14 @@ class ApplicationController extends Controller
         }//end
         
         if($has_must_subjects){
-        $applicants = Applicant::where('application_window_id',$application_window->id)->whereHas('selections', function($query) use($campus_program,$application_window) {
-            $query->where('campus_program_id', $campus_program->id)->where('application_window_id',$application_window->id)->where('status', 'ELIGIBLE');})
+        $applicants = Applicant::select('id','index_number')->where('application_window_id',$application_window->id)
+            ->whereHas('selections', function($query) use($campus_program,$application_window) {
+            $query->where('campus_program_id', $campus_program->id)->where('application_window_id',$application_window->id)
+            ->where('status', 'ELIGIBLE');})
             ->where('is_tamisemi',1)->whereNull('status')->get();
+
         foreach($applicants as $applicant){
+
             $parts=explode("/",$applicant->index_number);
             //create format from returned form four index format 
 
@@ -8983,61 +8982,88 @@ class ApplicationController extends Controller
                 $index_no = $parts[0]."-".$parts[1];
             }
             // $exam_year = $parts[2];
-			$response = Http::post('https://api.necta.go.tz/api/results/individual',[
-                'api_key'=>config('constants.NECTA_API_KEY'),
-                'exam_year'=>$exam_year,
-                'index_number'=>$index_no,
-                'exam_id'=>'1'
-            ]);
-            if(!isset(json_decode($response)->results)){
-                return redirect()->back()->with('error','Invalid Index number or year');
-            }
-            if($det = NectaResultDetail::where('index_number',$applicant->index_number)->where('exam_id',1)->where('applicant_id',$applicant->id)->first()){
-                $detail = $det;
-            }else{
+            if($det = NectaResultDetail::where('index_number', $applicant->index_number)->where('exam_id', 1)
+                      ->where('verified', 1)->first()){
                 $detail = new NectaResultDetail;
-                $detail->center_name = json_decode($response)->particulars->center_name;
-                $detail->center_number = json_decode($response)->particulars->center_number;
-                $detail->first_name = json_decode($response)->particulars->first_name;
-                $detail->middle_name = json_decode($response)->particulars->middle_name;
-                $detail->last_name = json_decode($response)->particulars->last_name;
-                $detail->sex = json_decode($response)->particulars->sex;
-                $detail->index_number = $applicant->index_number; //json_decode($response)->particulars->index_number;
-                $detail->division = json_decode($response)->results->division;
-                $detail->points = json_decode($response)->results->points;
+                $detail->center_name = $det->center_name;
+                $detail->center_number = $det->center_number;
+                $detail->first_name = $det->first_name;
+                $detail->middle_name = $det->middle_name;
+                $detail->last_name = $det->last_name;
+                $detail->sex = $det->sex;
+                $detail->index_number = $det->index_number; //json_decode($response)->particulars->index_number;
+                $detail->division = $det->division;
+                $detail->points = $det->points;
                 $detail->exam_id = 1;
                 $detail->applicant_id = $applicant->id;
 				$detail->verified = 1;
                 $detail->save();
-            }
-            foreach(json_decode($response)->subjects as $subject){
-                if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
-                    $res = $rs;
-                }else{
-                    $res = new NectaResult;
+
+                $result = NectaResult::where('necta_result_detail_id', $det->id)->get();
+
+                foreach($result as $res){
+                    $newRes = new Nectaresult;
+                    $newRes->subject_name = $res->subject_name;
+                    $newRes->subject_code = $res->subject_code;
+                    $newRes->grade = $res->grade;
+                    $newRes->applicant_id = $applicant->id;
+                    $newRes->necta_result_detail_id = $det->id;
+                    $newRes->save();
                 }
-                $res->subject_name = $subject->subject_name;
-                $res->subject_code = $subject->subject_code;
-                $res->grade = $subject->grade;
-                $res->applicant_id = $applicant->id;
-                $res->necta_result_detail_id = $detail->id;
-                $res->save();
+                
+            } else{
+
+                $response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                    'api_key'=>config('constants.NECTA_API_KEY'),
+                    'exam_year'=>$exam_year,
+                    'index_number'=>$index_no,
+                    'exam_id'=>'1'
+                ]);
+                
+                if(!isset(json_decode($response)->results)){
+                    return redirect()->back()->with('error','Invalid Index number or year');
+                }
+
+                    $detail = new NectaResultDetail;
+                    $detail->center_name = json_decode($response)->particulars->center_name;
+                    $detail->center_number = json_decode($response)->particulars->center_number;
+                    $detail->first_name = json_decode($response)->particulars->first_name;
+                    $detail->middle_name = json_decode($response)->particulars->middle_name;
+                    $detail->last_name = json_decode($response)->particulars->last_name;
+                    $detail->sex = json_decode($response)->particulars->sex;
+                    $detail->index_number = $applicant->index_number; //json_decode($response)->particulars->index_number;
+                    $detail->division = json_decode($response)->results->division;
+                    $detail->points = json_decode($response)->results->points;
+                    $detail->exam_id = 1;
+                    $detail->applicant_id = $applicant->id;
+                    $detail->verified = 1;
+                    $detail->save();
+
+                foreach(json_decode($response)->subjects as $subject){
+                    if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
+                        $res = $rs;
+                    }else{
+                        $res = new NectaResult;
+                    }
+                    $res->subject_name = $subject->subject_name;
+                    $res->subject_code = $subject->subject_code;
+                    $res->grade = $subject->grade;
+                    $res->applicant_id = $applicant->id;
+                    $res->necta_result_detail_id = $detail->id;
+                    $res->save();
+                }
+
             }
         }
 		
-		        $applicants = Applicant::with(['selections.campusProgram.program','selections'=>function($query) use($campus_program,$application_window){
-                $query->where('campus_program_id', $campus_program->id)->where('application_window_id',$application_window->id)->where('status', 'ELIGIBLE');
-            },'nectaResultDetails'=>function($query){
+		        $applicants = Applicant::select('id','index_number','rank_points','status')->with([
+            'nectaResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'selections.campusProgram.entryRequirements'=>function($query) use($application_window, $campus_program){
-				 $query->where('application_window_id',$application_window->id)->where('campus_program_id', $campus_program->id);
-			},'nectaResultDetails.results','programLevel','applicationWindow'])->where('is_tamisemi',1)->whereNull('status')->where('application_window_id',$application_window->id)->get();
+            },'nectaResultDetails.results:id,grade,subject_name'])->where('is_tamisemi',1)->whereHas('selections', function($query) use($request) {
+                $query->where('campus_program_id', $request->get('campus_program_id'))->where('status', 'ELIGIBLE');
+            })->whereNull('status')->where('application_window_id',$application_window->id)->get();
         
 		foreach($applicants as $applicant){
-       
-        
-
-        $award = $applicant->programLevel;
 
 
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
@@ -9129,7 +9155,7 @@ class ApplicationController extends Controller
                 $o_level_pass_count = $o_level_points = 0;
                 $o_level_other_pass_count = 0;
                 foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                   if($detail->exam_id == 1 && $detail->verified == 1){ // remove
+                   if($detail->exam_id == 1){ // remove
                       $other_must_subject_ready = false;
                       $counted_must_subjects = 0;
                       $counted_other_must_subjects = 0;
@@ -9163,10 +9189,15 @@ class ApplicationController extends Controller
                                     break;
                                 }
 
-                            if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                $counted_must_subjects++;
-                            }else if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
-                                $counted_other_must_subjects++;
+                            if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                                if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                    $counted_must_subjects++;
+
+                                }
+                            }else if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                                if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
+                                    $counted_other_must_subjects++;
+                                }
                             }else {
                                 continue;
                             }

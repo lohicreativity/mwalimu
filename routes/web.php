@@ -107,6 +107,7 @@ Route::get('test',function(){
 
 	// return $result;
 	// $acpac = new ACPACService;
+    // $acpac->query("UPDATE receipts SET RCPTYPE = 2, REVACT = 104");
 
 	// //$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES
  //   //('J','CRDB','REC03','10','TF','MNMA003','TEST','INV003','100.0','C','10')");
