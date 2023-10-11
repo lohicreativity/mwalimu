@@ -8773,21 +8773,26 @@ class ApplicationController extends Controller
         $ac_year = StudyAcademicYear::with('academicYear:id,year')->where('status','ACTIVE')->first();
         // explode('/', $ac_year->academicYear->year)[0];
         $applyr = explode('/', $ac_year->academicYear->year)[0];
-        $application_window = ApplicationWindow::select('id','intake_id')->with('intake:name,id')->find($request->get('application_window_id'));
-        $campus_program = CampusProgram::select('id','regulator_code', 'program_id')->with(['program:name,id','entryRequirements:id,pass_grade,must_subjects,other_must_subjects, campus_program_id'])->find($request->get('campus_program_id'));
+        $application_window = ApplicationWindow::select('id','intake_id','campus_id')->with('intake:name,id')->find($request->get('application_window_id'));
+        $campus_program = CampusProgram::select('id','regulator_code', 'program_id','campus_id')->with(['program:name,id','entryRequirements' => function($query) use($request){
+            $query->select('id','pass_grade','must_subjects','other_must_subjects','campus_program_id','max_capacity')->where('campus_program_id', $request->get('campus_program_id'));
+        }])->find($request->get('campus_program_id'));
         $program = $campus_program;
 
-        if(count($program->entryRequirements) == 0){
+        if(count($program->entryRequirements) === 0){
             return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
         }
 
         if($program->entryRequirements[0]->max_capacity == null){
             return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
         }
+
         $has_must_subjects = false;
+
         if(unserialize($campus_program->entryRequirements[0]->must_subjects) != null){
            $has_must_subjects = true;
         }
+
         $appacyr = $ac_year->academicYear->year;
         $intake = $application_window->intake->name;
         $nactecode = $campus_program->regulator_code;
@@ -8798,6 +8803,7 @@ class ApplicationController extends Controller
         }elseif($application_window->campus_id == 3){
             $token = config('constants.NACTE_API_KEY_PEMBA');
         }
+
 
         $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
         // dd($url);
@@ -8825,12 +8831,13 @@ class ApplicationController extends Controller
             curl_close($curl);
 
              $returnedObject = json_decode($jsondata);
-            //  dd($returnedObject->code);
+
 			 }catch(\Exception $e){}
-            //  dd($returnedObject);
+
             //  if(!isset($returnedObject->params)){
             //     return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
             //  }
+       
              if($returnedObject->code == 404){
                 return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
              }
@@ -8886,7 +8893,7 @@ class ApplicationController extends Controller
                        $user = new User;
                    }
                    $user->username = $form4index;
-                   $user->email = returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);
+                   $user->email = $returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);
                    $user->password = Hash::make($form4index);
                    $user->save();
    
@@ -9007,7 +9014,7 @@ class ApplicationController extends Controller
                     $newRes->subject_code = $res->subject_code;
                     $newRes->grade = $res->grade;
                     $newRes->applicant_id = $applicant->id;
-                    $newRes->necta_result_detail_id = $det->id;
+                    $newRes->necta_result_detail_id = $detail->id;
                     $newRes->save();
                 }
                 
@@ -9019,7 +9026,7 @@ class ApplicationController extends Controller
                     'index_number'=>$index_no,
                     'exam_id'=>'1'
                 ]);
-                
+
                 if(!isset(json_decode($response)->results)){
                     return redirect()->back()->with('error','Invalid Index number or year');
                 }
@@ -9040,11 +9047,7 @@ class ApplicationController extends Controller
                     $detail->save();
 
                 foreach(json_decode($response)->subjects as $subject){
-                    if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
-                        $res = $rs;
-                    }else{
-                        $res = new NectaResult;
-                    }
+                    $res = new NectaResult;
                     $res->subject_name = $subject->subject_name;
                     $res->subject_code = $subject->subject_code;
                     $res->grade = $subject->grade;
@@ -9057,8 +9060,8 @@ class ApplicationController extends Controller
         }
 		
 		        $applicants = Applicant::select('id','index_number','rank_points','status')->with([
-            'nectaResultDetails'=>function($query){
-                 $query->where('verified',1);
+            'nectaResultDetails:id,exam_id,applicant_id'=>function($query){
+                 $query->where('verified',1)->where('exam_id', 1);
             },'nectaResultDetails.results:id,grade,subject_name'])->where('is_tamisemi',1)->whereHas('selections', function($query) use($request) {
                 $query->where('campus_program_id', $request->get('campus_program_id'))->where('status', 'ELIGIBLE');
             })->whereNull('status')->where('application_window_id',$application_window->id)->get();
@@ -9155,7 +9158,6 @@ class ApplicationController extends Controller
                 $o_level_pass_count = $o_level_points = 0;
                 $o_level_other_pass_count = 0;
                 foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                   if($detail->exam_id == 1){ // remove
                       $other_must_subject_ready = false;
                       $counted_must_subjects = 0;
                       $counted_other_must_subjects = 0;
@@ -9204,7 +9206,7 @@ class ApplicationController extends Controller
                              
                          }
                       }
-                   }
+
 
                     if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
                         $select = ApplicantProgramSelection::find($selection->id);
@@ -9238,6 +9240,7 @@ class ApplicationController extends Controller
             $applicant->save();
         }
         DB::commit();
+        dd(1);
         return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message','TAMISEMI applicants retrieved successfully');
     }
 
