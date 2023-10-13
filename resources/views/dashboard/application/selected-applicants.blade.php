@@ -307,7 +307,15 @@
                           <tr>
                               <td>{{ $counter++ }}</td>
                               <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                              <td>{{ $applicant->index_number }}</td>
+                              <td>
+                                   @if(count($applicant->nectaResultDetails)> 1)
+                                       @foreach($applicant->nectaResultDetails as $key=>$detail)
+                                                @if($detail->exam_id == 1 && $detail->verified == 1)
+                                                        {{ $detail->index_number }} @if($key>0)<br> @endif
+                                                @endif
+                                         @endforeach
+                                   @endif
+                              </td>
                               @if($request->get('program_level_id') != 1)	
                               <td>
                                   @if($applicant->entry_mode == 'EQUIVALENT')
