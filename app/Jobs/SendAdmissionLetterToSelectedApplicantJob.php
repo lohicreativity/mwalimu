@@ -248,7 +248,7 @@ class SendAdmissionLetterToSelectedApplicantJob implements ShouldQueue
         if(str_contains(strtolower($this->program_name),'bachelor') && str_contains(strtolower($this->program_name),'education')){
             $teaching_practice = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-            ->where('name','LIKE','%Teaching%')->where('name','LIKE','%Pratice%'); })->first();
+            ->where('name','LIKE','%Teaching%')->where('name','LIKE','%Practice%'); })->first();
 
             if(!$teaching_practice){
                 return redirect()->back()->with('error','Teaching practice fee not defined');
