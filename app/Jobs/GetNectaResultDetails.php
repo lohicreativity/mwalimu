@@ -26,6 +26,10 @@ class GetNectaResultDetails implements ShouldQueue
     protected $application_window_id;
     protected $has_must_subjects;
 
+    public $tries = 5;
+
+    private $response;
+
     /**
      * Create a new job instance.
      *
@@ -45,6 +49,8 @@ class GetNectaResultDetails implements ShouldQueue
      */
     public function handle()
     {
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
         DB::beginTransaction();
         $application_window = ApplicationWindow::select('id','intake_id','campus_id')->with('intake:name,id')->find($this->application_window_id);
         $campus_program = CampusProgram::select('id','regulator_code', 'program_id','campus_id')->with(['program:name,id','entryRequirements' => function($query) {

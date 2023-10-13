@@ -30,6 +30,10 @@ class GetNacteResultdetails implements ShouldQueue
     protected $application_window_id;
     protected $campus_program_id;
 
+    public $tries = 5;
+
+    private $response;
+
     /**
      * Create a new job instance.
      *
@@ -48,6 +52,8 @@ class GetNacteResultdetails implements ShouldQueue
      */
     public function handle()
     {
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
         DB::beginTransaction();
         $ac_year = StudyAcademicYear::with('academicYear:id,year')->where('status','ACTIVE')->first();
         // explode('/', $ac_year->academicYear->year)[0];
