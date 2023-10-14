@@ -8742,8 +8742,10 @@ class ApplicationController extends Controller
 
         $programs = [];
 
+        $application_window = ApplicationWindow::select('id','intake_id','campus_id')->with('intake:name,id')->find($request->get('application_window_id'));
+
+
         if($request->get('campus_program_id') && empty($request->get('nacteFlag'))){
-                $application_window = ApplicationWindow::select('id','intake_id','campus_id')->with('intake:name,id')->find($request->get('application_window_id'));
             
                 $campus_program = CampusProgram::select('id','regulator_code', 'program_id','campus_id')->with(['program:name,id','entryRequirements' => function($query) use($request) {
                     $query->select('id','pass_grade','must_subjects','other_must_subjects','campus_program_id','max_capacity')->where('campus_program_id', $request->get('campus_program_id'));
@@ -9000,18 +9002,18 @@ class ApplicationController extends Controller
                     }
                 }
 
-            $programs = [];
-            foreach($application_window->campusPrograms as $program){
-                $campusProg = CampusProgram::whereHas('program', function($query){
-                    $query->where('name', 'LIKE', '%Basic%');
-                })->where('id', $program->pivot->campus_program_id)->first();
+        }
 
-                if(!$campusProg){
-                    continue;
-                }
-                $programs[] = $campusProg;
+        $programs = [];
+        foreach($application_window->campusPrograms as $program){
+            $campusProg = CampusProgram::whereHas('program', function($query){
+                $query->where('name', 'LIKE', '%Basic%');
+            })->where('id', $program->pivot->campus_program_id)->first();
+
+            if(!$campusProg){
+                continue;
             }
-
+            $programs[] = $campusProg;
         }
 
         
