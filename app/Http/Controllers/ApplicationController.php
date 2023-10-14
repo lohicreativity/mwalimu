@@ -4499,12 +4499,12 @@ class ApplicationController extends Controller
             })->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
         }else{
             $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-                $query->where('name','LIKE','%NACTE%');
+                $query->where('name','LIKE','%NACTVET%');
             })->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
         }
 
         $other_fees = FeeAmount::whereHas('feeItem',function($query){
-                $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+                $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','NOT LIKE','%TCU%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->get();
 
         if(str_contains($applicant->nationality,'Tanzania')){
