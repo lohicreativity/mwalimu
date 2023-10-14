@@ -8740,6 +8740,8 @@ class ApplicationController extends Controller
 
         $applicants = [];
 
+        $programs = [];
+
         if($request->get('campus_program_id') && empty($request->get('nacteFlag'))){
                 $application_window = ApplicationWindow::select('id','intake_id','campus_id')->with('intake:name,id')->find($request->get('application_window_id'));
             
