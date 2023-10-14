@@ -9018,7 +9018,7 @@ class ApplicationController extends Controller
         $data = [
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'campus_programs'=>$programs,
-			'applicants'=>count($applicants) > 0 ? $applicants : Applicant::whereHas('selctions', function($query) use($request){
+			'applicants'=>count($applicants) > 0 ? $applicants : Applicant::whereHas('selections', function($query) use($request){
                 $query->where('campus_program_id', $request->get('campus_prgram_id'));
             })->whereDoesntHave('student')->where('application_window_id', $request->get('application_window_id'))->where('is_tamisemi', 1)->get(),
             'request'=>$request
