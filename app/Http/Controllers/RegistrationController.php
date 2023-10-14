@@ -415,7 +415,7 @@ class RegistrationController extends Controller
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
-			  ->where('semester_id',session('active_semester_id'))->get();
+			  ->where('semester_id',session('active_semester_id'))->latest()->get();
 		   }elseif(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
 			  $active_students = Registration::whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
@@ -423,7 +423,7 @@ class RegistrationController extends Controller
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
-			  ->where('semester_id',session('active_semester_id'))->get();
+			  ->where('semester_id',session('active_semester_id'))->latest()->get();
 			}else{
 			  $active_students = Registration::whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
@@ -432,7 +432,7 @@ class RegistrationController extends Controller
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
-			  ->where('semester_id',session('active_semester_id'))->get();			  
+			  ->where('semester_id',session('active_semester_id'))->latest()->get();			  
 			}
 		   $data = [
 		    'active_students'=>$active_students,
@@ -682,7 +682,7 @@ class RegistrationController extends Controller
 			$student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0);})
 					   ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 					   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
-					   ->with('applicant','campusProgram.program','campusProgram.campus')->get();
+					   ->with('applicant','campusProgram.program','campusProgram.campus')->latest()->get();
 		}
 
 /*         if(count($student) == 0){

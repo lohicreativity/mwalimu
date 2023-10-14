@@ -4569,14 +4569,17 @@ class ApplicationController extends Controller
 		
 		if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){		
 			try{
+               $user = User::where('id', $applicant->user_id)->first();
+               $user->email = $applicant->email;
+               $user->save();
 			   Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
 			}catch(Exception $e){}
 		}
         DB::commit();
         if($days < 0){
-          return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
+          return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id.'&registeredStudent=true')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
-          return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('message','Student registered successfully with registration number '.$student->registration_number);
+          return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id.'&registeredStudent=true')->with('message','Student registered successfully with registration number '.$student->registration_number);
         }
     }
 
@@ -4746,7 +4749,9 @@ class ApplicationController extends Controller
 
             if(count($applicants) == 0){
                 $applicants = [];
-                return redirect('application/applicants-registration?application_window_id='.$application_window->id)->with('error','No applicant to register on this level');
+                if(empty($request->get('registeredStudent'))){
+                    return redirect('application/applicants-registration?application_window_id='.$application_window->id)->with('error','No applicant to register on this level');
+                }
             }
          } else {
             $applicants = [];
@@ -8735,9 +8740,9 @@ class ApplicationController extends Controller
 
         $applicants = [];
 
-        if($request->get('campus_program_id')){
+        if($request->get('campus_program_id') && empty($request->get('nacteFlag'))){
                 $application_window = ApplicationWindow::select('id','intake_id','campus_id')->with('intake:name,id')->find($request->get('application_window_id'));
-
+            
                 $campus_program = CampusProgram::select('id','regulator_code', 'program_id','campus_id')->with(['program:name,id','entryRequirements' => function($query) use($request) {
                     $query->select('id','pass_grade','must_subjects','other_must_subjects','campus_program_id','max_capacity')->where('campus_program_id', $request->get('campus_program_id'));
                 }])->find($request->get('campus_program_id'));
@@ -8993,16 +8998,27 @@ class ApplicationController extends Controller
                     }
                 }
 
+            $programs = [];
+            foreach($application_window->campusPrograms as $program){
+                $campusProg = CampusProgram::whereHas('program', function($query){
+                    $query->where('name', 'LIKE', '%Basic%');
+                })->where('id', $program->pivot->campus_program_id)->first();
+
+                if(!$campusProg){
+                    continue;
+                }
+                $programs[] = $campusProg;
+            }
 
         }
 
         
         $data = [
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
-            'campus_programs'=>CampusProgram::whereHas('program',function($query){
-                 $query->where('name','LIKE','%Basic%');
-            })->where('campus_id',$staff->campus_id)->get(),
-			'applicants'=>$applicants,
+            'campus_programs'=>$programs,
+			'applicants'=>count($applicants) > 0 ? $applicants : Applicant::whereHas('selctions', function($query) use($request){
+                $query->where('campus_program_id', $request->get('campus_prgram_id'));
+            })->whereDoesntHave('student')->where('application_window_id', $request->get('application_window_id'))->where('is_tamisemi', 1)->get(),
             'request'=>$request
         ];
         return view('dashboard.application.tamisemi-applicants',$data)->withTitle('TAMISEMI Applicants');
@@ -9165,8 +9181,13 @@ class ApplicationController extends Controller
     
                        $program_level = Award::select('id')->where('name','LIKE','%Basic%')->first();
                        $current_batch = ApplicationBatch::select('batch_no')->where('program_level_id', $program_level->id)->where('application_window_id', $application_window->id)->latest()->first();
-                       $prev_batch = ApplicationBatch::select('id')->where('application_window_id',$application_window->id)->where('program_level_id',$program_level->id)
-                                           ->where('batch_no', $current_batch->batch_no - 1)->first();
+                       if($current_batch->batch_no > 1){
+                        $prev_batch = ApplicationBatch::select('id')->where('application_window_id',$application_window->id)->where('program_level_id',$program_level->id)
+                                        ->where('batch_no', $current_batch->batch_no - 1)->first();
+                       }else{
+                        $prev_batch = $current_batch;
+                       }
+
                        // $next_of_kin = new NextOfKin;
                        // $next_of_kin->first_name = explode(' ', $student->next_of_kin_fullname)[0];
                        // $next_of_kin->middle_name = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ',$student->next_of_kin_fullname)[1] : null;
@@ -9253,7 +9274,7 @@ class ApplicationController extends Controller
 
         // dispatch(new GetNacteResultDetails($request->get('application_window_id'), $request->get('campus_program_id')));
 		
-        return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message', $countApplicants.'TAMISEMI applicants retrieved successfully');
+        return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&nacteFlag=retrieved')->with('message', $countApplicants.' TAMISEMI applicants retrieved successfully');
     }
 
 

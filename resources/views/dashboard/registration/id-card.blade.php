@@ -200,16 +200,16 @@
 							 </tr>
 							 <tr>
 							    <td>
-								 <table border="1" cellpadding="0" width="500">
+								 <table border="1" cellpadding="0" width="10%">
 									<tbody><tr>
-										<td height="100" width="500">
-											<canvas id="cnv" name="cnv" width="500" height="100"></canvas>
+										<td height="100" width="auto">
+											<canvas id="cnv" name="cnv" width="auto" height="100"></canvas>
 										</td>
 									</tbody></tr>
 								 </table>
 
 								<br>
-							    <canvas name="SigImg" id="SigImg" width="500" height="100"></canvas>
+							    <canvas name="SigImg" id="SigImg" width="auto" height="100"></canvas>
 							    <p id="sigWebVrsnNote" style="font-family: Arial;">SigWeb 1.7.0 installed</p>
 
 
