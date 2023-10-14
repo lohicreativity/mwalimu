@@ -4469,9 +4469,10 @@ class ApplicationController extends Controller
         $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
         $stud_reg = substr($student->registration_number, 5);
         $stud_reg = str_replace('/', '', $stud_reg);
+ 
         $parts = explode('.', $stud_reg);
-        if($parts[0] == 'BTC'){
-            $stud_reg = 'BT'.$parts[1];
+        if(str_contains($parts[0], 'BTC')){
+            $stud_reg = 'C'.$parts[1];
         }else{
             $stud_reg = $parts[0].$parts[1];
         }
@@ -4482,7 +4483,12 @@ class ApplicationController extends Controller
         $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
         
         if ($tuition_invoice) {
-            $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".''."','STD','TSH','".$applicant->email."','".$next_of_kin_email."')");
+
+            $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,
+                                       TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."',
+                                       '".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."',
+                                       '".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','','STD','TSH',
+                                       '".$applicant->email."','".$next_of_kin_email."')");
         }
 
         // return "INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".''."','STD','TSH','".$applicant->email."','".$next_of_kin_email."')";
