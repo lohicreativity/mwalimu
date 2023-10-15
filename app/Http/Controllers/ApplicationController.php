@@ -8812,6 +8812,12 @@ class ApplicationController extends Controller
                                 $detail->verified = 1;
                                 $detail->save();
                 
+                                $applicant->first_name = $det->first_name;
+                                $applicant->middle_name = $det->middle_name;
+                                $applicant->surname = $det->last_name;
+                                $applicant->gender = $det->sex;
+                                $applicant->save();
+
                                 $result = NectaResult::where('necta_result_detail_id', $det->id)->get();
                 
                                 foreach($result as $res){

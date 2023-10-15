@@ -248,6 +248,12 @@ class ApplicantController extends Controller
 
         if(Auth::attempt($credentials)){
             session(['applicant_campus_id'=>$request->get('campus_id')]);
+            if($tamisemi_applicant && $tamisemi_applicant->surname = null){
+               if(!NectaResultDetail::where('applicant_id',$tamisemi_applicant)->where('exam_id',1)->where('verified',1)->first()){
+                  //Go Necta get names and update applicant
+               }
+            }
+
             $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->first();
             if($continue_applicant){
                $campus = Campus::where('id', $continue_applicant->campus_id)->first();
