@@ -43,16 +43,19 @@
               <div class="card-header">
                 <h3 class="card-title">Health Insurance Status 
 				  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
-					  @if($applicant->insurances[0]->verification_status == 'VERIFIED')
-						- <span class="badge badge-success">Valid</span>						  
-					  @elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED')
-						- <span class="badge badge-danger">Invalid</span>					  
-					  @else
-						- <span class="badge badge-warning">Awaiting Verification</span>
-					  @endif
-                  @else
-					- <span class="badge badge-warning">Pending</span>
-                  @endif
+					 
+            @if(count($applicant->insurance_status) >0 )
+                @if($applicant->insurances[0]->verification_status == 'VERIFIED')
+                  - <span class="badge badge-success">Valid</span>						  
+                @elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED')
+                  - <span class="badge badge-danger">Invalid</span>					  
+                @else
+                  - <span class="badge badge-warning">Awaiting Verification</span>
+                @endif
+            @endif
+          @else
+					  - <span class="badge badge-warning">Pending</span>
+          @endif
 				</h3>
               </div>
 			  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
@@ -90,7 +93,7 @@
 									  {!! Form::label('','Expire Date') !!}		
 									  {!! Form::text('expire_date',$applicant->insurances[0]->expire_date,['class'=>'form-control','readonly'=>true]) !!}																  
 									<br>
-									@if($applicant->insurances[0]->card != null)
+									@if(count($applicant->insurances) > 0 && $applicant->insurances[0]->card != null)
 
 										<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Insurance Card</a>
 <!--											<a href="{{ url('application/delete-document?name=insurance') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>		 -->							
