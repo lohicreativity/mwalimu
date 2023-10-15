@@ -111,7 +111,7 @@
 					<div class="col-4">
 					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-						<button type="submit" @if($applicant->insurances[0]->verification_status != null) disabled='false' @endif class="btn btn-primary">Reset</button>
+						<button type="submit" @if(count($applicant->insurances) > 0 && $applicant->insurances[0]->verification_status != null) disabled='false' @endif class="btn btn-primary">Reset</button>
 					  {!! Form::close() !!}
 					</div>
 			  	</div>
@@ -146,7 +146,7 @@
                           <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other"> Other Insurers
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none" @if($applicant->insurance_status === 0) checked="checked" @endif> Don't have Insurance
+                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none" @if(count($applicant->insurances) > 0 && $applicant->insurance_status === 0) checked="checked" @endif> Don't have Insurance
                         </label>
                         </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
@@ -227,7 +227,7 @@
                             {!! Form::input('hidden','insurance_status',0) !!}
                             {!! Form::input('hidden','insurance_name',0) !!}
                             {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                            <button class="btn btn-primary" @if($applicant->insurance_status != 0 || count($applicant->insurances) != 0) disabled="disabled" @else type="submit" @endif>Request NHIF</button>
+                            <button class="btn btn-primary" @if(count($applicant->insurances) > 0 && ($applicant->insurance_status != 0 || count($applicant->insurances) != 0)) disabled="disabled" @else type="submit" @endif>Request NHIF</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
