@@ -158,6 +158,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('admit-applicant/{applicant_id}/{selection_id}',[ApplicationController::class,'admitApplicant']);
     Route::post('register-applicant',[ApplicationController::class,'registerApplicant']);
     Route::get('applicants-registration',[ApplicationController::class,'applicantsRegistration']);
+    Route::get('admission-reference-numbers',[ApplicationController::class,'showAdmissionReferenceNumber']);
+    Route::get('admission-reference-numbers/store',[ApplicationController::class,'storeAdmissionReferenceNumber']);
     Route::get('applicants-admission',[ApplicationController::class,'applicantsAdmission']);
     Route::get('upload-attachments',[ApplicationController::class, 'uploadAttachments']);
     Route::post('upload-attachment-file',[ApplicationController::class,'uploadAttachmentFile']);

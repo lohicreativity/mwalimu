@@ -6,19 +6,21 @@
           @if(Auth::user()->hasRole('applicant'))
 
             @if(isset($applicant))
-              @if($applicant->status == null || ($applicant->status === 'SELECTED' && !$regulator_selection))
-                <li class="nav-item">
-                  <a href="{{ url('application/basic-information') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Basic Information @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/next-of-kin') }}" @endif class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
-                  </a>
-                </li>
+            @if($applicant->status == null || ($applicant->status === 'SELECTED' && !$regulator_selection) || (($applicant->status === 'SELECTED' || $applicant->status === 'NOT SELECTED') && $applicant->is_tamisemi == 1))
+            <li class="nav-item">
+              <a href="{{ url('application/basic-information') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Basic Information @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1 && !$applicant->is_tamisemi == 1) disabled="disabled" 
+                 @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1 && !$applicant->is_tamisemi == 1) disabled="disabled" 
+                 @else href="{{ url('application/next-of-kin') }}" @endif class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
+              </a>
+            </li>
 
                 @if($applicant->is_tamisemi != 1)
 
@@ -70,7 +72,7 @@
                   @endif
               @endif
 
-              @if($applicant->status === 'SELECTED' && $regulator_selection)
+              @if($applicant->status === 'SELECTED' && $regulator_selection && !$applicant->is_tamisemi == 1)
                 <li class="nav-item">
                   <a href="{{ url('application/basic-information') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
@@ -91,14 +93,14 @@
                   <li class="nav-item">
                     <a href="{{ url('application/basic-information') }}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Basic Information</p>
+                      <p>Basic Information  @if($applicant->is_tamisemi == 1) <i class="fa fa-check"></i> @endif</p>
                     </a>
                   </li>
                   @if($applicant->is_continue != 1)
                   <li class="nav-item">
                     <a href="{{ url('application/admission-package') }}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Admission Package</p>
+                      <p>Admission Package <i class="fa fa-check"></i></p>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -464,6 +466,14 @@
                 <a href="{{ url('registration/orientation-date?study_academic_year_id='.session('latest_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Orientation Date</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-orientation-date')
+              <li class="nav-item">
+                <a href="{{ url('application/admission-reference-numbers?study_academic_year_id='.session('latest_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Reference Numbers</p>
                 </a>
               </li>
               @endcan

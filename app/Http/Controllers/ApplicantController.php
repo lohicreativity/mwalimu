@@ -248,9 +248,38 @@ class ApplicantController extends Controller
 
         if(Auth::attempt($credentials)){
             session(['applicant_campus_id'=>$request->get('campus_id')]);
-            if($tamisemi_applicant && $tamisemi_applicant->surname = null){
-               if(!NectaResultDetail::where('applicant_id',$tamisemi_applicant)->where('exam_id',1)->where('verified',1)->first()){
-                  //Go Necta get names and update applicant
+            if($tamisemi_applicant && $tamisemi_applicant->surname == null){
+
+               if(!NectaResultDetail::where('applicant_id',$tamisemi_applicant->id)->where('exam_id',1)->where('verified',1)->first()){
+                  
+                  $parts=explode("/",$tamisemi_applicant->index_number);
+                  //create format from returned form four index format 
+      
+                  if(str_contains($tamisemi_applicant->index_number,'EQ')){
+                      $exam_year = explode('/',$tamisemi_applicant->index_number)[1];
+                      $index_no = $parts[0];
+                  }else{
+                      $exam_year = explode('/', $tamisemi_applicant->index_number)[2];
+                      $index_no = $parts[0]."-".$parts[1];
+                  }
+
+                  $response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                     'api_key'=>config('constants.NECTA_API_KEY'),
+                     'exam_year'=>$exam_year,
+                     'index_number'=>$index_no,
+                     'exam_id'=>'1'
+                 ]);
+ 
+                 if(!isset(json_decode($response)->results)){
+                     return redirect()->back()->with('error','There is a problem, please try again later.');
+                 }
+         
+                  $tamisemi_applicant->first_name = json_decode($response)->particulars->first_name;
+                  $tamisemi_applicant->middle_name = json_decode($response)->particulars->middle_name;
+                  $tamisemi_applicant->surname = json_decode($response)->particulars->last_name;
+                  $tamisemi_applicant->gender = json_decode($response)->particulars->sex;
+
+                  $tamisemi_applicant->save();
                }
             }
 
@@ -2380,7 +2409,7 @@ class ApplicantController extends Controller
         ]);
 
         $applicant = Applicant::find($request->get('applicant_id'));
-        if($applicant->payment_complete_status == 1 && substr($request->get('phone'),1) != substr($applicant->phone,3)){
+        if($applicant->payment_complete_status == 1 && substr($request->get('phone'),1) != substr($applicant->phone,3) && $applicant->is_tamisemi != 1){
             return redirect()->back()->withInput()->with('error','The action cannot be performed at the moment');
          }
         if(Applicant::hasConfirmedResults($applicant)){

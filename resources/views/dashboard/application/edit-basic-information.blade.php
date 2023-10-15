@@ -136,20 +136,20 @@
                   $first_name = [
                      'placeholder'=>'First name',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                      'required'=>true
                   ];
 
                   $middle_name = [
                      'placeholder'=>'Middle name',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                   ];
 
                   $surname = [
                      'placeholder'=>'Surname',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                      'required'=>true
                   ];
 
@@ -214,20 +214,20 @@
                       $first_name = [
                          'placeholder'=>'First name',
                          'class'=>'form-control',
-                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                          'required'=>true
                       ];
 
                       $middle_name = [
                          'placeholder'=>'Middle name',
                          'class'=>'form-control',
-                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                       ];
 
                       $surname = [
                          'placeholder'=>'Surname',
                          'class'=>'form-control',
-                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                          'required'=>true
                       ];
                       $phone = [
@@ -331,7 +331,7 @@
                    <div class="row">
                     <div class="form-group col-6">
                        {!! Form::label('','Gender') !!}
-                       <select name="sex" class="form-control" @if($applicant->status == 'ADMITTED' || App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)) disabled="true" @endif  required>
+                       <select name="sex" class="form-control" @if($applicant->status == 'ADMITTED' || App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1) disabled="true" @endif  required>
                          <option value="">Select Gender</option>
                          <option value="M" @if($applicant->gender == 'M') selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>Male</option>
                          <option value="F" @if($applicant->gender == 'F') selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>Female</option>
@@ -357,7 +357,8 @@
                        <select name="nationality" class="form-control" required>
                          <option value="">Select Nationality</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->nationality }}" @if($applicant->nationality == $country->nationality) selected="selected" @else @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1 || $applicant->status == 'SELECTED' || $applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>{{ $country->nationality }}</option>
+                         <option value="{{ $country->nationality }}" @if($applicant->nationality == $country->nationality) selected="selected" @else @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) 
+                                || $applicant->payment_complete_status == 1 || $applicant->status == 'SELECTED' || $applicant->status == 'ADMITTED'  || $applicant->is_tamisemi == 1) disabled="disabled" @endif @endif>{{ $country->nationality }}</option>
                          @endforeach
                        </select>
                     </div>

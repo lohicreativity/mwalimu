@@ -68,6 +68,7 @@ use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\ApplicantVerificationResult;
 use App\Domain\Application\Models\ApplicantFeedBackCorrection;
 use Illuminate\Http\Client\ConnectionException;
+use App\Domain\Application\Models\AdmissionReferenceNumber;
 
 class ApplicationController extends Controller
 {
@@ -8629,7 +8630,8 @@ class ApplicationController extends Controller
                     }
                 }
                 $selected_programs = array();
-                $approving_selection = $regulator_programme_id = null;
+                $approving_selection = [];
+                $regulator_programme_id = null;
                 foreach($applicant->selections as $selection){
                     $selected_programs[] = $selection->campusProgram->regulator_code;
                     if($selection->status == 'APPROVING'){
@@ -9924,4 +9926,67 @@ class ApplicationController extends Controller
 			}
 
 	}	
+
+      /**
+   * Display registration deadline
+   */
+  public function showAdmissionReferenceNumber(Request $request)
+  {   
+      $staff = User::find(Auth::user()->id)->staff;
+      $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status','ACTIVE')->latest()->first();
+   //    $boolFlag = false
+   //    foreach($app_window as $window){
+   //       if($window->status == 'ACTIVE' && $window->intake->name == 'September'){
+   //          $boolFlag = true
+   //       }else{
+   //          $boolFlag = false
+   //       }
+   //    }
+   // // dd(json_encode(Intake::whereId($app_window[0]->intake_id)->pluck('name')[0]));
+
+      $data = [
+           'campus_id'  => $staff->campus_id,
+           'campuses'=>Campus::all(),
+           'app_window' => $app_window,
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
+           'campus'=>Campus::find($request->get('campus_id')),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'references'=>Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')? AdmissionReferenceNumber::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                        ->where('intake',$request->get('intake'))->get() : AdmissionReferenceNumber::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                        ->where('campus_id',$staff->campus_id)->get(),
+           'request'=>$request,
+           'awards'=>Award::all(),
+           'intakes'=>Intake::all(),
+        ];
+        return view('dashboard.admission.reference-numbers',$data)->withTitle('Admission Reference Number');
+  }
+
+  public function storeAdmissionReferenceNumber(Request $request)
+  { 
+      $validation = Validator::make($request->all(),[
+          'study_academic_year_id'=>'required',
+          'intake'=>'required',
+          'applicable_level'=>'required',
+          'reference_number'=>'required',
+          'campus_id'=>'required',
+      ]);
+
+      if($validation->fails()){
+         if($request->ajax()){
+            return response()->json(array('error_messages'=>$validation->messages()));
+         }else{
+            return redirect()->back()->withInput()->withErrors($validation->messages());
+         }
+      }
+
+      $reference = new AdmissionReferenceNumber;
+      $reference->intake = $request->get('intake');
+      $reference->name = $request->get('reference_number');
+      $reference->campus_id = $request->get('campus_id');
+      $reference->study_academic_year_id = $request->get('study_academic_year_id');
+      $reference->applicable_levels = serialize($request->get('applicable_level'));
+      $reference->save();
+
+      return redirect()->back()->with('message','Graduation date created successfully');
+  }
 }
