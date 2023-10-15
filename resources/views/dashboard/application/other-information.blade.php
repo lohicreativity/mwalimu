@@ -42,20 +42,19 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Health Insurance Status 
+                  @if(count($applicant->insurances) > 0)
 				  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
-					 
-            @if(count($applicant->insurance_status) >0 )
-                @if($applicant->insurances[0]->verification_status == 'VERIFIED')
-                  - <span class="badge badge-success">Valid</span>						  
-                @elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED')
-                  - <span class="badge badge-danger">Invalid</span>					  
-                @else
-                  - <span class="badge badge-warning">Awaiting Verification</span>
-                @endif
+					  @if($applicant->insurances[0]->verification_status == 'VERIFIED')
+						- <span class="badge badge-success">Valid</span>						  
+					  @elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED')
+						- <span class="badge badge-danger">Invalid</span>					  
+					  @else
+						- <span class="badge badge-warning">Awaiting Verification</span>
+					  @endif
             @endif
-          @else
-					  - <span class="badge badge-warning">Pending</span>
-          @endif
+                  @else
+					- <span class="badge badge-warning">Pending</span>
+                  @endif
 				</h3>
               </div>
 			  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
