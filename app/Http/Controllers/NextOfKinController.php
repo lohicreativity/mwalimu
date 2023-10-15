@@ -73,15 +73,28 @@ class NextOfKinController extends Controller
 
         (new NextOfKinAction)->update($request);
 
-        $applicant = Applicant::find($request->get('applicant_id'));
+        $appl = Applicant::find($request->get('applicant_id'));
         
-		if($applicant->is_transfered == 1){
+		if($appl->is_transfered == 1){
 			return redirect()->to('application/results')->with('message','Next of Kin created successfully');
 
-		}elseif($applicant->is_tamisemi == 1 && $applicant->status == 'SELECTED'){
+		}elseif($appl->is_tamisemi == 1 && $appl->status == 'SELECTED'){
          
-         $applicant->status = 'ADMITTED';
-         $applicant->save();
+         $appl->status = 'ADMITTED';
+         $appl->save();
+
+         $applicant = Applicant::select('id','first_name','surname','email','campus_id','address','index_number','application_window_id','intake_id','nationality','region_id','program_level_id')
+                                 ->where('id',$appl->id)
+                                 ->with([
+                                     'intake:id,name',
+                                     'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED');},
+                                     'selections.campusProgram:id,program_id,campus_id',
+                                     'selections.campusProgram.program:id,name,award_id,min_duration',
+                                     'selections.campusProgram.program.award:id,name',
+                                     'campus:id,name',
+                                     'applicationWindow:id,end_date',
+                                     'region:id,name'
+                                 ])->get(); 
 
          $ac_year = date('Y', strtotime($applicant->applicationWindow->end_date));
          $ac_year += 1;
@@ -112,9 +125,7 @@ class NextOfKinController extends Controller
                return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
             }
          }
-         $selection = ApplicantProgramSelection::select('id','campus_program_id')->where('applicant_id',$applicant->id)->where('status','SELECTED')->with(['campusProgram:id','campusProgram.program:id,name,award_id',
-                     'campusProgram.program.award:id,name'])->first();
-
+        
          $admission_references = AdmissionReferenceNumber::where('study_academic_year_id',$study_academic_year->id)
          ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
 
@@ -124,7 +135,7 @@ class NextOfKinController extends Controller
          }else{
             foreach($admission_references as $admission_reference){
                $referenceFlag = false;
-               if(!in_array($selection->campusProgram->program->award->name, unserialize($admission_reference->applicable_levels))){
+               if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($admission_reference->applicable_levels))){
                   $referenceFlag = true;
 
                }else{
@@ -212,10 +223,10 @@ class NextOfKinController extends Controller
          }
      
          $program_fee = ProgramFee::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
-                             ->where('campus_program_id',$selection->campus_program_id)->first();
+                             ->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
 
          if(!$program_fee){
-               return redirect()->back()->with('error','Programme fee not defined for '.$selection->campusProgram->program->name);
+               return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
          }
 
          $practical_training_fee = null;
@@ -242,7 +253,7 @@ class NextOfKinController extends Controller
              'campus_name' => $applicant->selections[0]->campusProgram->campus->name,
              'applicant_name' => $applicant->first_name . ' ' . $applicant->surname,
              'reference_number' => $reference_number,
-             'program_name' => $selection->campusProgram->program->name,
+             'program_name' => $applicant->selections[0]->campusProgram->program->name,
              'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
              'study_year' => $study_academic_year->academicYear->year,
              'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
