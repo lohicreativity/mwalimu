@@ -112,7 +112,8 @@ class NextOfKinController extends Controller
                return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
             }
          }
-         $selection = ApplicantProgramSelection::select('id','campus_program_id')->where('applicant_id',$applicant->id)->where('status','SELECTED')->with(['campusProgram:id','campusProgram.program:id,name'])->first();
+         $selection = ApplicantProgramSelection::select('id','campus_program_id')->where('applicant_id',$applicant->id)->where('status','SELECTED')->with(['campusProgram:id','campusProgram.program:id,name,award_id',
+                     'campusProgram.program.award:id,name'])->first();
 
          $admission_references = AdmissionReferenceNumber::where('study_academic_year_id',$study_academic_year->id)
          ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
