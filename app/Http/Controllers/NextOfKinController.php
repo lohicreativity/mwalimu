@@ -94,7 +94,7 @@ class NextOfKinController extends Controller
                                      'campus:id,name',
                                      'applicationWindow:id,end_date',
                                      'region:id,name'
-                                 ])->get(); 
+                                 ])->first(); 
 
          $ac_year = date('Y', strtotime($applicant->applicationWindow->end_date));
          $ac_year += 1;
