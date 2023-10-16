@@ -60,12 +60,21 @@ class AdmissionController extends Controller
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	if($applicant->hostel_available_status == 1){
-    		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','LIKE','%Hostel%');
-    		})->where('study_academic_year_id',$study_academic_year->id)->first();
-    	    $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
-                   $query->where('name','LIKE','%Hostel%');
-    	    })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+            if($applicant->hostel_status == 1){
+                $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
+                    $query->where('name','LIKE','%Accomodation Main Campus%');
+                })->where('study_academic_year_id',$study_academic_year->id)->first();
+                $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
+                       $query->where('name','LIKE','%Accomodation Main Campus%');
+                })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+            }elseif($applicant->hostel_status == 2){
+                $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
+                    $query->where('name','LIKE','%Kijichi Hostel%');
+                })->where('study_academic_year_id',$study_academic_year->id)->first();
+                $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
+                       $query->where('name','LIKE','%Kijichi Hostel%');
+                })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+            }
     	}else{
     		$hostel_fee = null;
 			$hostel_fee_amount = null;
@@ -197,6 +206,7 @@ class AdmissionController extends Controller
         $datediff = $orientation_date_time - $now;
 		$datediff = round($datediff / (60 * 60 * 24));
         $datediff = $datediff > 14? true : false;
+
 
     	$data = [
            'applicant'=>$applicant,
