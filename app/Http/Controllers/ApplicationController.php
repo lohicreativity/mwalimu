@@ -3429,7 +3429,7 @@ class ApplicationController extends Controller
         ->where('program_level_id',$applicant->program_level_id)->latest()->first();
 
         if($current_batch->id == $batch_id){
-            $new_batch = new ApplicationBatch();
+            $new_batch = new ApplicationBatch;
             $new_batch->application_window_id = $request->get('application_window_id');
             $new_batch->program_level_id = $applicant->program_level_id;
             $new_batch->batch_no = $batch_no + 1;
@@ -3648,7 +3648,7 @@ class ApplicationController extends Controller
             ->where('program_level_id',$request->get('award_id'))->latest()->first();
 
             if($current_batch->id == $batch_id){
-                $new_batch = new ApplicationBatch();
+                $new_batch = new ApplicationBatch;
                 $new_batch->application_window_id = $request->get('application_window_id');
                 $new_batch->program_level_id = $request->get('award_id');
                 $new_batch->batch_no = $batch_no + 1;

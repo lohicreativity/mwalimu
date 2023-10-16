@@ -1314,25 +1314,33 @@ class ApplicantController extends Controller
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_id = $batch->id;
          $applicant->status = null;
-         if(NectaResult::where('applicant_id', $applicant->id)->first()){
-            NectaResult::where('applicant_id', $applicant->id)->delete();
-         }
-         if(NectaResultDetail::where('applicant_id', $applicant->id)->first()){
-            NectaResultDetail::where('applicant_id', $applicant->id)->delete();
-         }
-         if(NacteResult::where('applicant_id', $applicant->id)->first()){
-            NacteResult::where('applicant_id', $applicant->id)->delete();
-         }
-         if(NacteResultDetail::where('applicant_id', $applicant->id)->first()){
-            NacteResultDetail::where('applicant_id', $applicant->id)->delete();
-         }
-         $out = OutResultDetail::where('applicant_id', $applicant->id)->first();
-         if($out !== null){
-            OutResult::where('out_result_detail_id', $out->id)->delete();
-            $out->delete();
-         }
+         // if(NectaResult::where('applicant_id', $applicant->id)->first()){
+         //    NectaResult::where('applicant_id', $applicant->id)->delete();
+         // }
+         // if(NectaResultDetail::where('applicant_id', $applicant->id)->first()){
+         //    NectaResultDetail::where('applicant_id', $applicant->id)->delete();
+         // }
+         // if(NacteResult::where('applicant_id', $applicant->id)->first()){
+         //    NacteResult::where('applicant_id', $applicant->id)->delete();
+         // }
+         // if(NacteResultDetail::where('applicant_id', $applicant->id)->first()){
+         //    NacteResultDetail::where('applicant_id', $applicant->id)->delete();
+         // }
+         // $out = OutResultDetail::where('applicant_id', $applicant->id)->first();
+         // if($out !== null){
+         //    OutResult::where('out_result_detail_id', $out->id)->delete();
+         //    $out->delete();
+         // }
 			$applicant->save();
-		}
+		}elseif($applicant->batch_id != $batch->id){
+         $applicant = Applicant::where('id',$applicant->id)->first();
+			$applicant->submission_complete_status = 0;
+         $applicant->results_complete_status = 0;
+			$applicant->programs_complete_status = 0;
+			$applicant->batch_id = $batch->id;
+         $applicant->status = null;
+         $applicant->save();
+      }
 		//check if window active
       if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
          // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
