@@ -245,8 +245,8 @@ class StaffController extends Controller
 			if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('error','There is no such a payer');
 			}
-			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_payer->id)->with('feeType','gatewayPayment')->get() : $paid_as_applicant = null;
-			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->orWhere('payable_id',$student_payer->applicant->id)->with('feeType','gatewayPayment')->get() : $paid_as_student = null;
+			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_payer->id)->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_applicant = null;
+			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->orWhere('payable_id',$student_payer->applicant->id)->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_student = null;
 
 			$data = [
 				'payer'=>$student_payer? $student_payer : $applicant_payer,
