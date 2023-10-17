@@ -156,7 +156,7 @@
      }
      .ss-margin-top-lg{
          margin-top: 80px;
-      } 
+      }
      .ss-margin-bottom-lg{
          margin-bottom: 50px;
      }
@@ -221,15 +221,21 @@
   </style>
 </head>
 <body>
-   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; padding: 20px; position: relative; background-image: url({{ asset('img/mnma-id-bg.png') }});">
-  
-     <div class="container" style="position: relative; z-index: 1000;">
-     <div class="row">
+
+   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-image: url({{ asset('img/mnma-id-bg.png') }});">
+
+    <div class="container" style="position: relative; z-index: 1000;">
+     <div class="row" style="padding:20px;">
         <div class="col-md-3 ss-center" style="text-align: center;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
         </div>
         <div class="col-md-9">
-           <h3 style="margin-top: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+           <h3 style="margin-top: 0px;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+        </div>
+     </div>
+     <div class="row">
+        <div class="col-md-12">
+            <hr style="border:5px solid #1b2066; width:99%;">
         </div>
      </div>
      <div class="row">
@@ -249,18 +255,36 @@
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
         </div>
      </div>
-     <div class="row">
-     <div class="col-md-6"> @if($semester->name == 'Semester 1')
-          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px;">Semester One</h5>
-          @else
-          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px;">Semester Two</h5>
-          @endif</div>
-     <div class="col-md-6" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red; margin: 20px 0px 0px 0px;">{{ $student->campusProgram->campus->name }}</h5></div>
+     <div class="row" style="background-color:#1b2066; width:100%; position:absolute; top: 21.5rem;">
+        <div class="col-md-6"> @if($semester->name == 'Semester 1')
+            <h5 style="text-align:left; color: white; font-weight: bold; margin: 20px 0px 0px 0px; padding: 10px;">Semester One</h5>
+            @else
+                <h5 style="text-align:left; color: white; font-weight: bold; margin: 20px 0px 0px 0px; padding: 10px;">Semester Two</h5>
+            @endif
+        </div>
+        <div class="col-md-6" style="text-align: right;">
+            <h5 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; margin: 20px 0px 0px 0px; padding: 10px;">{{ $student->campusProgram->campus->name }}</h5>
+        </div>
      </div>
+
    </div>
    </div>
+   <!-- </div>
+    <div id="semester" style="width: 710px; background-color:#1b2066; padding: 0px;">
+        <div class="row">
+                <div class="col-md-6"> @if($semester->name == 'Semester 1')
+                    <h5 style="text-align:left; text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px; color:white;">Semester One</h5>
+                    @else
+                        <h5 style="text-align:left;text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px; color:white;">Semester Two</h5>
+                    @endif
+                </div>
+                <div class="col-md-6" style="text-align: right;">
+                    <h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red; margin: 20px 0px 0px 0px;">{{ $student->campusProgram->campus->name }}</h5>
+                </div>
+        </div>
+    </div> -->
    <pagebreak>
-     <div id="ss-id-card-back" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; padding: 20px;">
+     <div id="ss-id-card-back" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; ">
        <div class="container">
        <div class="row">
           <div class="col-md-12">
@@ -273,10 +297,10 @@
             <h5 style="margin: 0px 0px 10px 10px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
             <p style="margin: 0px 0px 0px 10px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
             <p style="margin: 0px 0px 0px 10px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
-            
+
           </div>
           <div class="col-md-4">
-             <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(80)->generate($student->registration_number)) !!} " style="margin-left: 20px;">
+
           </div>
        </div>
      </div>

@@ -127,30 +127,30 @@ class RegistrationController extends Controller
 
 
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
-		
+
 		$semester = Semester::find(session('active_semester_id'));
-		
+
 		$usd_currency = Currency::where('code','USD')->first();
-         
+
 		if($student->applicant->is_transfered == 1){
 			if($year_of_study == 1 && str_contains($semester->name,'2')){
 				$new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$student->campus_program_id)->first();
-				
+
 				$transfer = InternalTransfer::where('student_id',$student->id)->first();
-				
+
 				$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$transfer->previous_campus_program_id)->first();
-				
+
 				$extra_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
                 })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('id','!=',$tuition_fee_invoice->id)->first();
-				
+
 				if($extra_fee_invoice){
 					$extra_fee_paid = GatewayPayment::where('control_no',$extra_fee_invoice->control_no)->sum('paid_amount');
 					if($extra_fee_paid){
 					   $tuition_fee_paid += $extra_fee_paid;
 					}
 				}
-				
+
 				if(str_contains($student->applicant->nationality,'Tanzania')){
 				     $fee_diff = $new_program_fee->amount_in_tzs - $old_program_fee->amount_in_tzs;
 					 $fee_amount = $new_program_fee->amount_in_tzs;
@@ -158,7 +158,7 @@ class RegistrationController extends Controller
 					 $fee_diff = ($new_program_fee->amount_in_usd - $old_program_fee->amount_in_usd)*$usd_currency->factor;
 					 $fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
 				}
-				
+
 				if(str_contains($student->applicant->nationality,'Tanzania')){
 					$new_fee_amount = $new_program_fee->amount_in_tzs;
 				}else{
@@ -176,7 +176,7 @@ class RegistrationController extends Controller
 	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                        }
 						}
-					    
+
 					}else{
 						if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
@@ -199,7 +199,7 @@ class RegistrationController extends Controller
                        }
 					}
 				}
-				
+
 			}else{
 				if($student->academicStatus->name == 'RETAKE'){
 					if($tuition_fee_paid < (1*$tuition_fee_invoice->amount)){
@@ -314,11 +314,11 @@ class RegistrationController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                       ])->post($url,$data);
 
-            
+
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
-                        
+
         }
-		
+
 	/**
 	 * Show statistics
 	 */
@@ -374,7 +374,7 @@ class RegistrationController extends Controller
 			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
 		 }else{
-			 $data = [ 
+			 $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE')->orWhere('name', 'RESUMED');
 			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
@@ -393,12 +393,12 @@ class RegistrationController extends Controller
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
 			})->orWhereHas('registrations',function($query){
 			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
-		 ];			 
+		 ];
 		 }
-		 
+
 		 return view('dashboard.registration.statistics',$data)->withTitle('Registration Statistics');
 	 }
-	 
+
 	 /**
 	  * Show active students
 	  */
@@ -432,7 +432,7 @@ class RegistrationController extends Controller
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
-			  ->where('semester_id',session('active_semester_id'))->latest()->get();			  
+			  ->where('semester_id',session('active_semester_id'))->latest()->get();
 			}
 		   $data = [
 		    'active_students'=>$active_students,
@@ -444,16 +444,16 @@ class RegistrationController extends Controller
 		   ];
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
-	  
+
 	  /**
 	  * Download active students
 	  */
 	  public function downloadActiveStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
-		   
+
 		   $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
                       'Content-Disposition' => 'attachment; filename=REGISTERED-STUDENTS.csv',
                       'Expires'             => '0',
@@ -466,11 +466,11 @@ class RegistrationController extends Controller
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
-		   $callback = function() use ($students) 
+		   $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
-                  foreach ($students as $row) { 
+                  foreach ($students as $row) {
                       fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number,$row->student->campusProgram->program->name]);
                   }
                   fclose($file_handle);
@@ -478,7 +478,7 @@ class RegistrationController extends Controller
 
               return response()->stream($callback, 200, $headers);
 	  }
-	  
+
 	  /**
 	  * Show postponed students
 	  */
@@ -486,7 +486,7 @@ class RegistrationController extends Controller
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
                       'Content-Disposition' => 'attachment; filename=POSTPONED-STUDENTS.csv',
                       'Expires'             => '0',
@@ -499,11 +499,11 @@ class RegistrationController extends Controller
 			})->with(['campusProgram.program'])->get() : Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
 			})->with(['campusProgram.program'])->get();
-		   $callback = function() use ($students) 
+		   $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
-                  foreach ($students as $row) { 
+                  foreach ($students as $row) {
                       fputcsv($file_handle, [$row->first_name.' '.$row->middle_name.' '.$row->surname,$row->gender,$row->registration_number,$row->campusProgram->program->name]);
                   }
                   fclose($file_handle);
@@ -511,7 +511,7 @@ class RegistrationController extends Controller
 
               return response()->stream($callback, 200, $headers);
 	  }
-	  
+
 	  /**
 	  * Download postponed students
 	  */
@@ -530,7 +530,7 @@ class RegistrationController extends Controller
 		   ];
 		   return view('dashboard.registration.postponed-students',$data)->withTitle('Postponed Students');
 	  }
-	  
+
 	  /**
 	  * Show deceased students
 	  */
@@ -549,7 +549,7 @@ class RegistrationController extends Controller
 		   ];
 		   return view('dashboard.registration.deceased-students',$data)->withTitle('Deceased Students');
 	  }
-	  
+
 	  /**
 	  * Download deceased students
 	  */
@@ -557,7 +557,7 @@ class RegistrationController extends Controller
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
 		    $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
                       'Content-Disposition' => 'attachment; filename=DECEASED-STUDENTS.csv',
                       'Expires'             => '0',
@@ -570,12 +570,12 @@ class RegistrationController extends Controller
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
-			
-			 $callback = function() use ($students) 
+
+			 $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
-                  foreach ($students as $row) { 
+                  foreach ($students as $row) {
                       fputcsv($file_handle, [$row->first_name.' '.$row->middle_name.' '.$row->surname,$row->gender,$row->registration_number,$row->campusProgram->program->name]);
                   }
                   fclose($file_handle);
@@ -583,7 +583,7 @@ class RegistrationController extends Controller
 
               return response()->stream($callback, 200, $headers);
 	  }
-	  
+
 	  /**
 	 * Show unregistered students
 	 */
@@ -610,10 +610,10 @@ class RegistrationController extends Controller
 			})->with(['campusProgram.program','academicStatus'])->get(),
 			'semester'=>Semester::find(session('active_semester_id'))
 		 ];
-		 
+
 		 return view('dashboard.registration.unregistered-students',$data)->withTitle('Unregistered Students');
 	 }
-	 
+
 	   /**
 	 * Download unregistered students
 	 */
@@ -621,7 +621,7 @@ class RegistrationController extends Controller
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
 		 $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
                       'Content-Disposition' => 'attachment; filename=REGISTERED-STUDENTS.csv',
                       'Expires'             => '0',
@@ -642,11 +642,11 @@ class RegistrationController extends Controller
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
 			})->with(['campusProgram.program','academicStatus'])->get();
-			 $callback = function() use ($students) 
+			 $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program','Status']);
-                  foreach ($students as $row) { 
+                  foreach ($students as $row) {
                       fputcsv($file_handle, [$row->first_name.' '.$row->middle_name.' '.$row->surname,$row->gender,$row->registration_number,$row->campusProgram->program->name,$row->academicStatus->name]);
                   }
                   fclose($file_handle);
@@ -660,9 +660,9 @@ class RegistrationController extends Controller
      * Print ID card
      */
     public function printIDCard(Request $request)
-    {   
+    {
 /*         $student = Student::with('applicant','campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
-            
+
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
           if($student){
@@ -693,7 +693,7 @@ class RegistrationController extends Controller
               return redirect()->back()->with('error','Student does not have insurance');
            }
         } */
-		
+
         $data = [
             'students'=>$student? $student : [],
             'semester'=>$semester,
@@ -713,6 +713,8 @@ class RegistrationController extends Controller
      */
     public function showIDCard(Request $request)
     {
+        // dd($request->registration_number);
+
         $student = Student::with('campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
@@ -752,10 +754,10 @@ class RegistrationController extends Controller
                'margin_right'=>0,
                'orientation'=>'L',
                'display_mode'=>'fullpage',
-               // 'format'=>[500,400]
+               'format'=>[500,400]
         ]);
-        return  $pdf->stream(); 
-         // return view('dashboard.registration.reports.id-card',$data);
+        return  $pdf->stream();
+        //  return view('dashboard.registration.reports.id-card',$data);
     }
 
     /**
@@ -789,7 +791,7 @@ class RegistrationController extends Controller
           $source = $img; //imagecreatefromjpeg($image);
 
           imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-          // imagejpeg($thumb,$image,100); 
+          // imagejpeg($thumb,$image,100);
           switch($type){
             case 'bmp': imagewbmp($thumb,$image); break;
             case 'gif': imagegif($thumb,$image); break;
@@ -807,7 +809,7 @@ class RegistrationController extends Controller
 
           $im = $img; //imagecreatefromjpeg($image);
           $dest = imagecreatetruecolor($w,$h);
-            
+
           imagecopyresampled($dest,$im,0,0,$x1,$y1,$w,$h,$w,$h);
 
           switch($type){
@@ -862,7 +864,7 @@ class RegistrationController extends Controller
             return redirect()->back()->with('error','No students registered for this programme');
         }
         $pdf = DomPDF::loadView('dashboard.registration.print-id-card-bulk',$data)->setPaper('a7','landscape');
-        return  $pdf->stream(); 
+        return  $pdf->stream();
     }
 
 }

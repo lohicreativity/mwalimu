@@ -152,6 +152,13 @@
 									  Compose ID
 							  </a>
 
+                              <a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ $student->registration_number }}">
+
+									  <i class="fas fa-check">
+									  </i>
+									  Print Card
+							  </a>
+
 
 
 			<div class="modal fade" id="ss-student-id-{{ $student->id }}">
