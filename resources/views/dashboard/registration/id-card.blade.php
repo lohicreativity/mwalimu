@@ -106,7 +106,7 @@
 					<div class="ss-form-actions">
 					   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
 					</div>
-				  
+
                  {!! Form::close() !!}
 				</div>
             </div>
@@ -151,23 +151,49 @@
 									  </i>
 									  Compose ID
 							  </a>
-							  
-							  							  
-							  
+
+
+
 			<div class="modal fade" id="ss-student-id-{{ $student->id }}">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 
 						<div class="card-body">
 						    <table class="table table-bordered">
-							 <tr>
-								 <td>
+
+                            <tr>
+							   <td>
+								 <div id="ss-my-camera" class="ss-margin-bottom"></div>
+								 <input type=button value="Configure" onClick="configure()" class="btn btn-primary">
+								 <input type=button value="Take Snapshot" onClick="take_snapshot()" class="btn btn-primary">
+
+                                 <br>
+							   </td>
+							 </tr>
+                             <tr>
+                                <td>
+                                    <div id="ss-camera-results">
+                                        @if(file_exists(public_path().'/uploads/'.$student->image))
+                                        <img id="ss-camera-prev" src="{{ public_path().'/uploads/'.$student->image }}"/>
+                                        @endif
+                                        <br>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})" class="btn btn-primary">
+                                </td>
+                             </tr>
+
+                             <tr>
+                                <td>
 								   <div id="crop_wrapper">
 									  <img src="{{ asset('uploads/'.$student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
 									  <div id="crop_div">
 									  </div>
 									</div>
 								 </td>
+                             </tr>
+							 <tr>
 								 <td>
 								   <form method="post" action="{{ url('registration/crop-student-image') }}" onsubmit="return crop();">
 									  @csrf
@@ -183,21 +209,7 @@
 									</div>
 								 </td>
 							 </tr>
-							 <tr>
-							   <td>
-								 <div id="ss-my-camera" class="ss-margin-bottom"></div>
-								 <input type=button value="Configure" onClick="configure()" class="btn btn-primary">
-								 <input type=button value="Take Snapshot" onClick="take_snapshot()" class="btn btn-primary">
-								 <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})" class="btn btn-primary">
-							   </td>
-							   <td>
-								 <div id="ss-camera-results">
-									@if(file_exists(public_path().'/uploads/'.$student->image))
-									<img id="ss-camera-prev" src="{{ public_path().'/uploads/'.$student->image }}"/>
-									@endif
-								 </div>
-							   </td>
-							 </tr>
+
 							 <tr>
 							    <td>
 								 <table border="1" cellpadding="0" width="10%">
@@ -208,7 +220,10 @@
 									</tbody></tr>
 								 </table>
 
-								<br>
+								<br> <br> <br>
+                                <!-- Signature -->
+                                    <img src="{{ asset('signatures/'.$student->signature) }}" id="sign_prev">
+                                <br>
 							    <canvas name="SigImg" id="SigImg" width="auto" height="100"></canvas>
 							    <p id="sigWebVrsnNote" style="font-family: Arial;">SigWeb 1.7.0 installed</p>
 
@@ -248,14 +263,14 @@
 									  try{
 										sigWebVer = GetSigWebVersion();
 									  } catch(err){console.log("Unable to get SigWeb Version: "+err.message)}
-									  
-									  if(sigWebVer != ""){        
+
+									  if(sigWebVer != ""){
 										try {
 										  SigWeb_1_7_0_0_IsInstalled = isSigWeb_1_7_0_0_Installed(sigWebVer);
 										} catch( err ){console.log(err.message)};
 										//if SigWeb 1.7.0.0 is installed, then enable corresponding functionality
 										if(SigWeb_1_7_0_0_IsInstalled){
-										   
+
 										  resetIsSupported = true;
 										  try{
 											var daysUntilCertExpires = GetDaysUntilCertificateExpires();
@@ -266,7 +281,7 @@
 										} else {
 										  try{
 											SigWeb_1_6_4_0_IsInstalled = isSigWeb_1_6_4_0_Installed(sigWebVer);
-											//if SigWeb 1.6.4.0 is installed, then enable corresponding functionality           
+											//if SigWeb 1.6.4.0 is installed, then enable corresponding functionality
 										  } catch( err ){console.log(err.message)};
 										  if(SigWeb_1_6_4_0_IsInstalled){
 											resetIsSupported = true;
@@ -285,8 +300,8 @@
 											var note = document.getElementById("sigWebVrsnNote");
 											note.innerHTML = "A newer version of SigWeb is available. Please uninstall the currently installed version of SigWeb and then install the new version of SigWeb from the following link: ";
 											note.appendChild(sigweb_link);
-										  } 
-										} 
+										  }
+										}
 									  } else{
 										//Older version of SigWeb installed that does not support retrieving the version of SigWeb (Version 1.6.0.2 and older)
 										var sigweb_link = document.createElement("a");
@@ -302,7 +317,7 @@
 									  alert("Unable to communicate with SigWeb. Please confirm that SigWeb is installed and running on this PC.");
 									}
 									}
-								  
+
 								  function isSigWeb_1_6_4_0_Installed(sigWebVer){
 									var minSigWebVersionResetSupport = "1.6.4.0";
 
@@ -312,10 +327,10 @@
 									}
 									return true;
 								  }
-								  
+
 								  function isSigWeb_1_7_0_0_Installed(sigWebVer) {
 								  var minSigWebVersionGetDaysUntilCertificateExpiresSupport = "1.7.0.0";
-								  
+
 								  if(isOlderSigWebVersionInstalled(minSigWebVersionGetDaysUntilCertificateExpiresSupport, sigWebVer)){
 									  console.log("SigWeb version 1.7.0.0 or higher not installed.");
 									  return false;
@@ -323,7 +338,7 @@
 									return true;
 								  }
 
-								  function isOlderSigWebVersionInstalled(cmprVer, sigWebVer){    
+								  function isOlderSigWebVersionInstalled(cmprVer, sigWebVer){
 									  return isOlderVersion(cmprVer, sigWebVer);
 								  }
 
@@ -448,31 +463,31 @@
 								  };
 								</script>
 							    </td>
-							    <td>
+							    <!-- <td>
 								   <img src="{{ asset('signatures/'.$student->signature) }}" id="sign_prev">
-							    </td>
+							    </td> -->
 							 </tr>
 							 <tr>
-								 <td>First name:</td>
-								 <td>{{ $student->first_name }}</td>
+								 <td>First name:   &nbsp  &nbsp  &nbsp  &nbsp  &nbsp {{ $student->first_name }}</td>
+								 <!-- <td>{{ $student->first_name }}</td> -->
 							 </tr>
 							 <tr>
-								 <td>Middle name:</td>
-								 <td>{{ $student->middle_name }}</td>
+								 <td>Middle name:  &nbsp  &nbsp  &nbsp  &nbsp  &nbsp {{ $student->middle_name }}</td>
+								 <!-- <td>{{ $student->middle_name }}</td> -->
 							 </tr>
 							 <tr>
-								 <td>Surname:</td>
-								 <td>{{ $student->surname }}</td>
+								 <td>Surname: &nbsp  &nbsp  &nbsp  &nbsp  &nbsp {{ $student->surname }}</td>
+								 <!-- <td>{{ $student->surname }}</td> -->
 							 </tr>
 						    </table>
 						</div>
 					</div>
 				</div>
 			</div>
-			  
-							  
-							  
-							  
+
+
+
+
 						  </td>
 						  @endif
 
