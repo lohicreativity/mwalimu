@@ -9074,7 +9074,7 @@ class ApplicationController extends Controller
     public function downloadTamisemiApplicants(Request $request)
     {
         ini_set('memory_limit', '-1');
-        set_time_limit(240);
+        set_time_limit(480);
 
 		if($request->get('action') == 'Search Qualified'){
 			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&status=qualified');
@@ -9122,6 +9122,7 @@ class ApplicationController extends Controller
             }elseif($application_window->campus_id == 3){
                 $token = config('constants.NACTE_API_KEY_PEMBA');
             }
+// dd($nactecode."-".$applyr."-".$intake."/".$token);
             $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
             // dd($url);
             $returnedObject = null;
@@ -9132,19 +9133,22 @@ class ApplicationController extends Controller
                   "verify_peer_name"=> false,
                 ),
               );
+            // dd(filesize(file_get_contents($url,false, stream_context_create($arrContextOptions))));
+            //   $jsondata = file_get_contents($url,false, stream_context_create($arrContextOptions));
 
-              $jsondata = file_get_contents($url,false, stream_context_create($arrContextOptions));
-
-              $curl = curl_init($url);
+              $curl = curl_init();
+              curl_setopt($curl, CURLOPT_URL, $url);
               curl_setopt($curl, CURLOPT_HEADER, false);
               curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
               curl_setopt($curl, CURLOPT_HTTPHEADER,array("Content-Type: application/json"));
               curl_setopt($curl, CURLOPT_POST, true);
-              //curl_setopt($curl, CURLOPT_POSTFIELDS, $jsondata);
+            //   curl_setopt($curl, CURLOPT_POSTFIELDS, $jsondata);
               curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
               curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-              $jsondata= curl_exec($curl);
+            //   curl_setopt ($curl, CURLOPT_FOLLOWLOCATION, true);
 
+              $jsondata= curl_exec($curl);
+              $err = curl_error($curl);
                 curl_close($curl);
 
                  $returnedObject = json_decode($jsondata);
