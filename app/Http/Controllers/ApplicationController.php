@@ -3953,7 +3953,7 @@ class ApplicationController extends Controller
 
                     $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'3';
 
-                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'basic') && str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
 
                     $stud_group = 'C'.$stud_group[1].'3';
 
@@ -3963,13 +3963,30 @@ class ApplicationController extends Controller
 
 				$program_code = $prog_code[0].'3.'.$prog_code[1];
 
-				if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+                // if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
 
-					$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'3';
+                //     if (str_contains($selection->campusProgram->program->name, 'Leadership') && str_contains($selection->campusProgram->program->name, 'Governance')) {
 
-				} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+                //         $stud_group = substr($stud_group[0], 0, 2).$stud_group[1].'Z';
 
-					$stud_group = 'C'.$stud_group[1].'3';
+                //     } elseif (str_contains($selection->campusProgram->program->name, 'Procurement') && str_contains($selection->campusProgram->program->name, 'Supply')) {
+
+                //         $stud_group = substr($stud_group[0], 0, 2).$stud_group[1].'Z';
+
+                //     } else {
+
+                //         $stud_group = substr($stud_group[0], 0, 2).'Z'.$stud_group[1];
+
+                //     }
+
+                // }else
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+					$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'Z3';
+
+				} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'basic') && str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+
+					$stud_group = 'C'.$stud_group[1].'Z3';
 
 				}
 
@@ -3982,11 +3999,11 @@ class ApplicationController extends Controller
 
                 if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
 
-                    $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'3';
+                    $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P3';
 
-                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'basic') && str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
 
-                    $stud_group = 'C'.$stud_group[1].'3';
+                    $stud_group = 'C'.$stud_group[1].'P3';
 
                 }
 
@@ -4005,15 +4022,15 @@ class ApplicationController extends Controller
 					$program_code = $prog_code[0].'.'.$prog_code[1];
                     if (str_contains($selection->campusProgram->program->name, 'Leadership') && str_contains($selection->campusProgram->program->name, 'Governance')) {
 
-                    $stud_group = $stud_group[0].$stud_group[1].'Z';
+                        $stud_group = substr($stud_group[0], 0, 2).$stud_group[1].'Z';
 
                     } elseif (str_contains($selection->campusProgram->program->name, 'Procurement') && str_contains($selection->campusProgram->program->name, 'Supply')) {
 
-                    $stud_group = $stud_group[0].$stud_group[1].'Z';
+                        $stud_group = substr($stud_group[0], 0, 2).$stud_group[1].'Z';
 
                     } else {
 
-                    $stud_group = $stud_group[0].'Z'.$stud_group[1];
+                        $stud_group =$stud_group[0].$stud_group[1];
 
                     }
 
@@ -4021,7 +4038,7 @@ class ApplicationController extends Controller
 
                     $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'Z9';
 
-                } else if (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+                } else if (str_contains(strtolower($selection->campusProgram->program->name), 'basic') && str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
 
                     $stud_group = 'C'.$stud_group[1].'Z9';
 
@@ -4036,16 +4053,13 @@ class ApplicationController extends Controller
 
                         $stud_group = substr($stud_group[0], 0, 1).$stud_group[1];
 
-                    } else {
-
-                        $stud_group = $stud_group[0].$stud_group[1];
                     }
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
 					$program_code = $prog_code[0].'9.'.$prog_code[1];
 					$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'9';
 
-                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'basic') && str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
 					$program_code = $prog_code[0].'9.'.$prog_code[1];
                     $stud_group = 'C'.$stud_group[1];
                 }
@@ -4055,12 +4069,13 @@ class ApplicationController extends Controller
 
                 if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
 					$program_code = $prog_code[0].'.'.$prog_code[1];
-                    $stud_group = $stud_group[0].$stud_group[1].'P';
+
+                    $stud_group = substr($stud_group[0], 0, 2).$stud_group[1].'P';
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
                     $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P9';
 
-                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'basic') && str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
                     $stud_group = 'C'.$stud_group[1].'P9';
 
                 }
