@@ -23,7 +23,7 @@
                      <p style="font-size: 18px;">Dear {!! ucwords(strtolower($name)) !!},</p>
                      <p style="font-size: 18px;">{!! $notification_message !!}</p>
 					 @if(!$transfered_status)
-						<p style="font-size: 18px; font-style: italic;">Please note, you must change your password.</p>
+						<p style="font-size: 18px; font-style: italic;">Please note, you must change your password when you login to your newly created student account for the first time.</p>
 					 @endif
                      <p style="font-size: 18px;">Wishing you all the best in your academic life at the Academy.</p><br>
               
