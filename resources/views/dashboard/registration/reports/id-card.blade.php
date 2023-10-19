@@ -300,6 +300,22 @@
 
           </div>
           <div class="col-md-4">
+            @php
+            $courseCode = explode('.', $student->campusProgram->code);
+            $yearofstudy = $student->year_of_study;
+            $yearValue = '';
+            if($yearofstudy = 1){
+                $yearValue = $yearofstudy."st";
+            }elseif($yearofstudy == 2){
+                $yearValue = $yearofstudy."nd";
+            }elseif($yearofstudy == 3){
+                $yearValue = $yearofstudy."rd";
+            }
+            $qrCodeData = "Time: ".Carbon\Carbon::parse($study_academic_year->end_date)->format('m/d/Y H:i')." ID:".$student->registration_number." ".$student->surname.", ".$student->first_name." ".$student->middle_name." Course:".$courseCode[0].$courseCode[1].substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue." ".$student->phone;
+
+            @endphp
+
+            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate($qrCodeData)) !!} " style="margin-left: 20px;">
 
           </div>
        </div>

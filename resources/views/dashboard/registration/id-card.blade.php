@@ -146,7 +146,7 @@
 						  <td>{{ $student->campusProgram->code }}</td>
 						  @if(Auth::user()->hasRole('admission-officer'))
 							<td>
-							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}">
+							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}" onclick=getDraggableDiv("{{ $student->id }}")>
 									  <i class="fas fa-check">
 									  </i>
 									  Compose ID
@@ -170,16 +170,16 @@
 
                             <tr>
 							   <td>
-								 <div id="ss-my-camera" class="ss-margin-bottom"></div>
-								 <input type=button value="Configure" onClick="configure()" class="btn btn-primary">
-								 <input type=button value="Take Snapshot" onClick="take_snapshot()" class="btn btn-primary">
+								 <div id="ss-my-camera-{{ $student->id }}" class="ss-margin-bottom"></div>
+								 <input type=button value="Configure" onClick="configure('{{$student->id}}')" class="btn btn-primary">
+								 <input type=button value="Take Snapshot" onClick="take_snapshot('{{$student->id}}')" class="btn btn-primary">
 
                                  <br>
 							   </td>
 							 </tr>
                              <tr>
                                 <td>
-                                    <div id="ss-camera-results">
+                                    <div id="ss-camera-results-{{ $student->id }}">
                                         @if(file_exists(public_path().'/uploads/'.$student->image))
                                         <img id="ss-camera-prev" src="{{ public_path().'/uploads/'.$student->image }}"/>
                                         @endif
@@ -187,7 +187,7 @@
                                     </div>
                                     <br>
                                     <br>
-                                    <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})" class="btn btn-primary">
+                                    <input type=button value="Save Snapshot" onClick="saveSnap('{{$student->id}}')" class="btn btn-primary">
                                 </td>
                              </tr>
 
@@ -195,19 +195,19 @@
                                 <td>
 								   <div id="crop_wrapper">
 									  <img src="{{ asset('uploads/'.$student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
-									  <div id="crop_div">
+									  <div id="cropped_{{ $student->id }}" class="crop_div">
 									  </div>
 									</div>
 								 </td>
                              </tr>
 							 <tr>
 								 <td>
-								   <form method="post" action="{{ url('registration/crop-student-image') }}" onsubmit="return crop();">
+								   <form method="post" action="{{ url('registration/crop-student-image') }}" onsubmit="return crop('{{$student->id}}');">
 									  @csrf
-									  <input type="hidden" value="" id="top" name="top">
-									  <input type="hidden" value="" id="left" name="left">
-									  <input type="hidden" value="" id="right" name="right">
-									  <input type="hidden" value="" id="bottom" name="bottom">
+									  <input type="hidden" value="" id="top_{{ $student->id }}" name="top">
+									  <input type="hidden" value="" id="left_{{ $student->id }}" name="left">
+									  <input type="hidden" value="" id="right_{{ $student->id }}" name="right">
+									  <input type="hidden" value="" id="bottom_{{ $student->id }}" name="bottom">
 									  <input type="hidden" value="{{$student->image}}" name="image">
 									  <input type="submit" name="crop_image" value="Crop Image" class="btn btn-primary">
 									</form>
@@ -222,7 +222,7 @@
 								 <table border="1" cellpadding="0" width="10%">
 									<tbody><tr>
 										<td height="100" width="auto">
-											<canvas id="cnv" name="cnv" width="auto" height="100"></canvas>
+											<canvas id="cnv_{{ $student->id }}" name="cnv" width="auto" height="100"></canvas>
 										</td>
 									</tbody></tr>
 								 </table>
@@ -237,18 +237,18 @@
 
 							  <form action="https://www.sigplusweb.com/sigwebtablet_demo.html#" name="FORM1">
 								<p>
-								  <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="javascript:onSign()" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
+								  <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="javascript:onSign('{{$student->id}}')" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
 								  <input id="button1" name="ClearBtn" type="button" value="Clear" onclick="javascript:onClear()" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
 
-								  <input id="button2" name="DoneBtn" type="button" value="Done" onclick="javascript:onDone()" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
+								  <input id="button2" name="DoneBtn" type="button" value="Done" onclick="javascript:onDone('{{$student->id}}')" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
 
-								  <input type="HIDDEN" name="bioSigData">
+								  <input type="HIDDEN" name="bioSigData" id="bioSigData_{{ $student->id }}">
 									<input type="HIDDEN" name="sigImgData">
 									  <br>
 										<br>
-										  <input name="sigStringData" type="hidden">
-										  <input name="sigImageData" type="hidden">
-										  <input name="sign_data" type="hidden" id="sign_data">
+										  <input name="sigStringData" id="sigStringData_{{ $student->id }}" type="hidden">
+										  <input name="sigImageData" id="sigImageData_{{ $student->id }}" type="hidden">
+										  <input name="sign_data" type="hidden" id="sign_data_{{ $student->id }}">
 										</p>
 							  </form>
 
@@ -259,6 +259,7 @@
 
 								<script type="text/javascript">
 								  var tmr;
+                                  var print_student_id;
 
 								  var resetIsSupported = false;
 								  var SigWeb_1_6_4_0_IsInstalled = false; //SigWeb 1.6.4.0 and above add the Reset() and GetSigWebVersion functions
@@ -361,10 +362,10 @@
 									return false;
 								  }
 
-								  function onSign()
+								  function onSign(id)
 								  {
 									if(IsSigWebInstalled()){
-									  var canvas = document.getElementById('cnv');
+									  var canvas = document.getElementById('cnv_'+id);
 									  var ctx = canvas.getContext('2d');
 									  ctx.clearRect(0, 0, canvas.width, canvas.height);
 									  SetDisplayXSize( 500 );
@@ -392,7 +393,7 @@
 									ClearTablet();
 								  }
 
-								  function onDone()
+								  function onDone(id)
 								  {
 									if(NumberOfTabletPoints() == 0)
 									{
@@ -403,12 +404,15 @@
 									  SetTabletState(0, tmr);
 									  //RETURN TOPAZ-FORMAT SIGSTRING
 									  SetSigCompressionMode(1);
-									  document.FORM1.bioSigData.value=GetSigString();
-									  document.FORM1.sigStringData.value = GetSigString();
+									//   document.FORM1.bioSigData.value=GetSigString();
+                                    document.getElementById('bioSigData_'+id).value = GetSigString();
+                                    document.getElementById('sigStringData_'+id).value = GetSigString();
+                                    console.log(document.getElementById('sigStringData_'+id).value = GetSigString());
+									//   document.FORM1.sigStringData.value = GetSigString();
 									  // document.getElementById('sign_prev').src = GetSigString();
 									  //this returns the signature in Topaz's own format, with biometric information
 
-
+                                      print_student_id = id;
 									  //RETURN BMP BYTE ARRAY CONVERTED TO BASE64 STRING
 									  SetImageXSize(500);
 									  SetImageYSize(100);
@@ -418,13 +422,13 @@
 									  // var ctx = document.getElementById('cnv').getContext('2d');
 									  // ctx.clearRect(0, 0, ctx.width, ctx.height);
 
-									  var canvas = document.getElementById("cnv");
+									  var canvas = document.getElementById("cnv_"+id);
 									  var ctx = canvas.getContext('2d');
 									  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-									  document.getElementById('cnv').style.backgroundColor = "transparent";
-									  document.getElementById('cnv').style.opacity = "1";
+									  document.getElementById('cnv_'+id).style.backgroundColor = "transparent";
+									  document.getElementById('cnv_'+id).style.opacity = "1";
 									  var dataURL = canvas.toDataURL("image/png");
-									  document.getElementById('sign_data').value = dataURL;
+									  document.getElementById('sign_data_'+id).value = dataURL;
 
 									  var xhttp = new XMLHttpRequest();
 									  xhttp.onreadystatechange = function() {
@@ -436,13 +440,14 @@
 									  };
 									  xhttp.open("POST", "/application/upload-signature", true);
 									  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-									  xhttp.send('sign_image='+dataURL+'&student_id={{ $student->id }}');
+									  xhttp.send('sign_image='+dataURL+'&student_id='+id);
 									}
 								  }
 
 								  function SigImageCallback( str )
 								  {
-									document.FORM1.sigImageData.value = str;
+                                    document.getElementById('sigImageData_'+print_student_id).value = str;
+									// document.FORM1.sigImageData.value = str;
 								  }
 
 								  function endDemo()

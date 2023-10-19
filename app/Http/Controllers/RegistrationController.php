@@ -715,7 +715,7 @@ class RegistrationController extends Controller
     {
         // dd($request->registration_number);
 
-        $student = Student::with('campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
+        $student = Student::with('campusProgram.program','campusProgram.campus', 'applicant.intake')->where('registration_number',$request->get('registration_number'))->first();
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
         $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
