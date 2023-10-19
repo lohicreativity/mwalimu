@@ -698,7 +698,7 @@ class AdmissionController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                       ])->post($url,$data);
 
-                      if(!$result){
+                      if($result){
                         return redirect()->back()->with('error','There is a technical problem, please contact an Admission Officer');
                     }
 
