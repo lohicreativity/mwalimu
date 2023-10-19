@@ -381,7 +381,7 @@ class AdmissionController extends Controller
             $amount = 100000;
             $currency = 'TZS';
         }
-
+return $currency;
         if($amount != 0.00){
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-TF-'.time();
