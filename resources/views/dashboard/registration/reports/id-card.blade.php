@@ -311,7 +311,7 @@
             }elseif($yearofstudy == 3){
                 $yearValue = $yearofstudy."rd";
             }
-            $qrCodeData = "Time: ".Carbon\Carbon::parse($study_academic_year->end_date)->format('m/d/Y H:i')." ID:".$student->registration_number." ".$student->surname.", ".$student->first_name." ".$student->middle_name." Course:".$courseCode[0].$courseCode[1].substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue." ".$student->phone;
+            $qrCodeData = "Time: ".Carbon\Carbon::parse($student->created_at)->format('m/d/Y H:i')." ID:".$student->registration_number." ".$student->surname.", ".$student->first_name." ".$student->middle_name." Course:".$courseCode[0].$courseCode[1].substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue." ".$student->phone;
 
             @endphp
 
