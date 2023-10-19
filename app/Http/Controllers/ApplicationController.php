@@ -4870,7 +4870,7 @@ class ApplicationController extends Controller
      */
     public function admissionPackage(Request $request)
     {
-         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
          $student = Student::where('applicant_id', $applicant->id)->first();
          $award = Award::where('id', $applicant->program_level_id)->first();
          $admission_packages = AdmissionAttachment::where('campus_id',session('applicant_campus_id'))->get();

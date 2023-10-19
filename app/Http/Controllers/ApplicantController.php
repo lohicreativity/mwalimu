@@ -567,7 +567,7 @@ class ApplicantController extends Controller
      */
     public function dashboard(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
         if($applicant->basic_info_complete_status == 1 && $applicant->submission_complete_status == 0 && $applicant->status == null){
           if($applicant->next_of_kin_complete_status == 1){
