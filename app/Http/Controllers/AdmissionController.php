@@ -420,9 +420,6 @@ class AdmissionController extends Controller
                                     $invoice->currency);
         }
 
-        if(!$result){
-            return redirect()->back()->with('error','There is a technical problem, please contact an Admission Officer');
-        }
 		// Kama mkopo kiasi cha fee anachopata ni zaidi ya 60%
         if($amount_loan/$amount_without_loan >= 0.6){
             $applicant->tuition_payment_check = 1;
@@ -701,6 +698,9 @@ class AdmissionController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                       ])->post($url,$data);
 
+                      if(!$result){
+                        return redirect()->back()->with('error','There is a technical problem, please contact an Admission Officer');
+                    }
 
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
 
