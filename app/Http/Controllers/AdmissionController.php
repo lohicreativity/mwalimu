@@ -402,7 +402,7 @@ class AdmissionController extends Controller
 
         $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name;
         $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
-return $invoice;
+
         $result = $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
