@@ -2488,13 +2488,16 @@ class ApplicantController extends Controller
      */
     public function deleteInvoice(Request $request)
     {
-         $applicant = Applicant::find($request->get('applicant_id'));
-         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first();
-         if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
-		   $invoice->payable_id = 0;
-           $invoice->save();
-
+         $applicant = Applicant::select('id')->where('id',$request->get('applicant_id'))->latest()->first();
+         $invoices = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->where('control_no',null)->get();
+         foreach($invoices as $invoice){
+            //if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
+               $invoice->payable_id = 0;
+                 $invoice->save();
+      
+               //}
          }
+
 
          return response()->json(['status','200']);
     }
@@ -3072,10 +3075,12 @@ class ApplicantController extends Controller
 /*         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             return redirect()->back()->with('error','Application window already closed');
         } */
-
-        if($applicant->submission_complete_status == 1 &&  ($applicant->index_number != $request->get('index_number') ||
-           $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') ||
-           $applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id'))){
+        if($applicant->submission_complete_status == 1 && ($applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id') || 
+        $applicant->index_number != $request->get('index_number'))){
+            return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
+        }
+        if($applicant->submission_complete_status == 1 && $applicant->submission_complete_status == null && (
+           $applicant->birth_date != DateMaker::toDBDate($request->get('dob')) ||  $applicant->nationality != $request->get('nationality') )){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
 
