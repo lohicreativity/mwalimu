@@ -28,6 +28,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
 use Auth, PDF, DomPDF, File, Storage;
+use Carbon\Carbon;
 
 class RegistrationController extends Controller
 {
@@ -715,10 +716,19 @@ class RegistrationController extends Controller
     {
         // dd($request->registration_number);
 
-        $student = Student::with('campusProgram.program','campusProgram.campus', 'applicant.intake')->where('registration_number',$request->get('registration_number'))->first();
-        $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $student = Student::with('campusProgram.program','campusProgram.campus', 'applicant.intake')
+        ->where('registration_number',$request->get('registration_number'))->first();
+        $ac_year = StudyAcademicYear::where('status','ACTIVE')->with('academicYear')->first();
+        
         $semester = Semester::where('status','ACTIVE')->first();
-        $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
+        if(!$student->image){
+            return redirect()->back()->with('error','Student image is missing');
+        }
+        if(!$student->signature){
+                return redirect()->back()->with('error','Student signature is missing');
+        }
+        $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+        ->where('semester_id',$semester->id)->first();
         if(!$registration){
              return redirect()->back()->with('error','Student has not been registered for this semester');
         }
@@ -728,21 +738,29 @@ class RegistrationController extends Controller
         if(count($id_requests) == 0 && $registration->id_print_status != 0){
             return redirect()->back()->with('error','Student ID already printed');
         }
+
+        $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
+        $newRegistrationNo = null;
+        if(!$latestRegistrationNo){
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
+            $newRegistrationNo = $registration->id_sn_no;
+        }else{
+            $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
+            $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
+            $newRegistrationNo = $registration->id_sn_no;
+        }
+        $registration->id_print_date = now();
         $registration->id_print_status = 1;
         $registration->save();
 
         IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
 
-        if(!$student->image){
-             return redirect()->back()->with('error','Student image is missing');
-        }
-        if(!$student->signature){
-             return redirect()->back()->with('error','Student signature is missing');
-        }
         $data = [
             'student'=>$student,
             'semester'=>$semester,
-            'study_academic_year'=>$ac_year
+            'study_academic_year'=>$ac_year,
+            'registration_no' => $newRegistrationNo
         ];
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
                'format'=>'A7',

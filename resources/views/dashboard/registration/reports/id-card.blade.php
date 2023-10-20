@@ -288,13 +288,13 @@
        <div class="container">
        <div class="row">
           <div class="col-md-12">
-             <h3 style="margin: 0px 0px 0px 10px;">CAUTION</h1>
+             <h3 style="margin: 0px 0px 0px 10px; text-align:center;">CAUTION</h1>
           </div>
        </div>
        <div class="row">
           <div class="col-md-8">
             <p style="margin: 0px 0px 0px 10px; font-size: 12px;">This identity card is the property of</p>
-            <h5 style="margin: 0px 0px 10px 10px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
+            <h6 style="margin: 0px 0px 10px 10px; font-size: 12px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h6>
             <p style="margin: 0px 0px 0px 10px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
             <p style="margin: 0px 0px 0px 10px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
 
@@ -318,6 +318,16 @@
             <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate($qrCodeData)) !!} " style="margin-left: 20px;">
 
           </div>
+       </div>
+       <div class="row">
+            <p style="text-align:center;">  
+             @php
+
+             $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
+             $reg_no = str_replace('/', '-', $registration_no)
+             @endphp
+            <strong>{{ $footer }} <span style="font-size:13px;"> {{ $reg_no }} </span></strong>
+            </p>
        </div>
      </div>
      </div>
