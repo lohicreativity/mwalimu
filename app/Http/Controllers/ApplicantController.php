@@ -3014,7 +3014,7 @@ class ApplicantController extends Controller
 
             $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->where('campus_id',$staff->campus_id);
-           })->first() : null;
+           })->latest()->first() : null;
 
         }else{
 
