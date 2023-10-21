@@ -38,7 +38,7 @@ class AdmissionController extends Controller
             'selections.campusProgram:id,program_id',
             'selections.campusProgram.program:id,name,award_id',
             'selections.campusProgram.program.award:id,name',
-            ])->where('status','ADMITTED')->first();
+            ])->where('status','ADMITTED')->latest()->first();
 
         $student = Student::where('applicant_id', $applicant->id)->first();
 
@@ -300,7 +300,7 @@ class AdmissionController extends Controller
     {
     	$applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel','country','applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
-    	}])->where('campus_id',session('applicant_campus_id'))->first();
+    	}])->where('campus_id',session('applicant_campus_id'))->latest()->first();
     	$email = $applicant->email? $applicant->email : 'admission@mnma.ac.tz';
 
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));

@@ -1990,7 +1990,7 @@ class ApplicationController extends Controller
     public function selectProgram(Request $request)
     {
 		$applicant = Applicant::where('id',$request->get('applicant_id'))->with(['nectaResultDetails:id,applicant_id,index_number,verified,exam_id','nacteResultDetails:id,applicant_id,verified,avn',
-        'outResultDetails:id,applicant_id,verified'])->first();
+        'outResultDetails:id,applicant_id,verified'])->latest()->first();
 
 		$window = $applicant->applicationWindow;
         $batch = ApplicationBatch::where('application_window_id',$window->id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
@@ -2331,7 +2331,7 @@ class ApplicationController extends Controller
      */
     public function deleteDocument(Request $request)
     {
-        $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->latest()->first();
         try{
 /*             if($request->get('name') == 'insurance'){
 			   $insurance = HealthInsurance::where('applicant_id', $applicant->id)->first();
@@ -2471,7 +2471,9 @@ class ApplicationController extends Controller
      */
     public function downloadSummary(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country','region','district','ward','disabilityStatus','nectaResultDetails.results','nacteResultDetails.results','selections','applicationWindow','intake'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country',
+        'region','district','ward','disabilityStatus','nectaResultDetails.results','nacteResultDetails.results','selections','applicationWindow','intake'])
+        ->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $data = [
            'applicant'=>$applicant,
            'selections'=>ApplicantProgramSelection::with(['campusProgram.program'])->where('applicant_id',$applicant->id)->get()
@@ -4904,7 +4906,7 @@ class ApplicationController extends Controller
      */
     public function downloadAdmissionLetter(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
         try{
            return response()->download(public_path().'/uploads/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
         }catch(\Exception $e){
@@ -5467,7 +5469,7 @@ class ApplicationController extends Controller
 
     public function previewInsuranceStatus(Request $request)
 	{
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
 		$insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
 
@@ -5486,7 +5488,7 @@ class ApplicationController extends Controller
 	public function resetInsuranceStatus(Request $request)
 	{
 		HealthInsurance::where('applicant_id',$request->get('applicant_id'))->delete();
-		$applicant = Applicant::where('id',$request->get('applicant_id'))->first();
+		$applicant = Applicant::where('id',$request->get('applicant_id'))->latest()->first();
 		$applicant->insurance_status = null;
 		$applicant->save();
 
@@ -5751,7 +5753,7 @@ class ApplicationController extends Controller
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
                 $applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))
-										->where('program_level_id',$request->get('program_level_id'))->first();
+										->where('program_level_id',$request->get('program_level_id'))->latest()->first();
                 if($applicant){
                    $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
                    $applicant->save();
@@ -5815,7 +5817,7 @@ class ApplicationController extends Controller
         $array = json_decode($json,TRUE);
 
         foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
-            $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
+            $applicant = Applicant::where('index_number',$data['f4indexno'])->latest()->first();
             if($applicant){
                if($data['ConfirmationStatusCode'] == 233)
                     $applicant->admission_confirmation_status = 'CONFIRMED';
@@ -5834,7 +5836,7 @@ class ApplicationController extends Controller
      */
     public function showConfirmAdmission(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
         $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
         ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
@@ -7013,7 +7015,7 @@ class ApplicationController extends Controller
 		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
 		 $award = Award::where('name','LIKE','%Degree%')->first();
 
-        $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
         $applicant->index_number = strtoupper($request->get('index_number'));
         $applicant->entry_mode = $request->get('entry_mode');
 		$applicant->is_transfered = 1;
@@ -8482,7 +8484,7 @@ class ApplicationController extends Controller
                                         ->whereHas('selections', function($query){ $query->whereIn('status',['APPROVING','PENDING']);})
                                         ->where('application_window_id', $request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))
-                                        ->where('status', 'SUBMITTED')->first();
+                                        ->where('status', 'SUBMITTED')->latest()->first();
 
                                 if($applicant){
                                 $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
@@ -8554,7 +8556,7 @@ class ApplicationController extends Controller
         if($result['code'] == 200){
             foreach ($result['params'] as $res) {
                 $applicant = Applicant::select('id')->where('index_number',$res['form_four_indexnumber'])->where('campus_id',session('staff_campus_id'))
-                                                    ->where('application_window_id',session('active_window_id'))->first();
+                                                    ->where('application_window_id',session('active_window_id'))->latest()->first();
                 //save pushed list
                 $applicantFeedBackCorrections = ApplicantFeedBackCorrection::where('applicant_id',$applicant->id)->first();
                 if(!$applicantFeedBackCorrections){
@@ -9423,7 +9425,7 @@ class ApplicationController extends Controller
 		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
 								->where('application_window_id',$application_window->id);})->with('selections.campusProgram.program')->where('status','ADMITTED')
 								->where('application_window_id',$application_window->id)->where('campus_id', $staff->campus_id)
-								->where('index_number',$request->keyword)->orWhere('surname',$request->keyword)->first();
+								->where('index_number',$request->keyword)->orWhere('surname',$request->keyword)->latest()->first();
 		$student = Student::whereDoesntHave('registrations', function($query) use($ac_year, $semester){$query->where('semester_id',$semester->id)->where('study_academic_year_id',$ac_year->id);})
 							->orWhereHas('registrations', function($query) use($ac_year, $semester){$query->where('status','UNREGISTERED')->where('semester_id',$semester->id)->where('study_academic_year_id',$ac_year->id);})
 							->whereHas('studentshipStatus', function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
