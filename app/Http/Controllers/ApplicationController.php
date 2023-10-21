@@ -5469,7 +5469,7 @@ class ApplicationController extends Controller
 
     public function previewInsuranceStatus(Request $request)
 	{
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
 		$insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
 
