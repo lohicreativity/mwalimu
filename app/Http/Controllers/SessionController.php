@@ -60,7 +60,7 @@ class SessionController extends Controller
 					Auth::guard('web')->logout();
 					$request->session()->invalidate();
 					$request->session()->regenerateToken();
-					return redirect()->to('student/login');
+					return redirect()->to('student/login')->with('message', 'Please use your registration number with your new password to login');
 
 				}
 
