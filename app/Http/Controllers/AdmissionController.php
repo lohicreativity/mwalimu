@@ -40,7 +40,12 @@ class AdmissionController extends Controller
             'selections.campusProgram.program.award:id,name',
             ])->where('status','ADMITTED')->latest()->first();
 
-        $student = Student::where('applicant_id', $applicant->id)->first();
+        if(!$applicant){
+            return redirect()->back()->with('error', 'Unable to view page');
+        }else{
+            $student = Student::where('applicant_id', $applicant->id)->first();
+        }    
+
 
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
@@ -383,42 +388,48 @@ class AdmissionController extends Controller
         }
 
         if($amount != 0.00){
-        $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-TF-'.time();
-        $invoice->actual_amount = $amount_without_loan;
-        $invoice->amount = $amount;
-        $invoice->currency = $currency;
-        $invoice->payable_id = $applicant->id;
-        $invoice->payable_type = 'applicant';
-        $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
-		$invoice->applicable_id = $study_academic_year->id;
-		$invoice->applicable_type = 'academic_year';
-        $invoice->save();
+        $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
+        if(!$programFeeInvoiceRequestedCheck){
+            $invoice = new Invoice;
+            $invoice->reference_no = 'MNMA-TF-'.time();
+            $invoice->actual_amount = $amount_without_loan;
+            $invoice->amount = $amount;
+            $invoice->currency = $currency;
+            $invoice->payable_id = $applicant->id;
+            $invoice->payable_type = 'applicant';
+            $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
+            $invoice->applicable_id = $study_academic_year->id;
+            $invoice->applicable_type = 'academic_year';
+            $invoice->save();
+
+            $generated_by = 'SP';
+            $approved_by = 'SP';
+            $inst_id = config('constants.SUBSPCODE');
+    
+            $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name;
+            $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
+    
+            $result = $this->requestControlNumber($request,
+                                        $invoice->reference_no,
+                                        $inst_id,
+                                        $invoice->amount,
+                                        $program_fee->feeItem->feeType->description,
+                                        $program_fee->feeItem->feeType->gfs_code,
+                                        $program_fee->feeItem->feeType->payment_option,
+                                        $applicant->id,
+                                        $first_name.' '.$surname,
+                                        $applicant->phone,
+                                        $email,
+                                        $generated_by,
+                                        $approved_by,
+                                        $program_fee->feeItem->feeType->duration,
+                                        $invoice->currency);
+            }
+    
+        }  
 
 
-        $generated_by = 'SP';
-        $approved_by = 'SP';
-        $inst_id = config('constants.SUBSPCODE');
 
-        $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name;
-        $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
-
-        $result = $this->requestControlNumber($request,
-                                    $invoice->reference_no,
-                                    $inst_id,
-                                    $invoice->amount,
-                                    $program_fee->feeItem->feeType->description,
-                                    $program_fee->feeItem->feeType->gfs_code,
-                                    $program_fee->feeItem->feeType->payment_option,
-                                    $applicant->id,
-                                    $first_name.' '.$surname,
-                                    $applicant->phone,
-                                    $email,
-                                    $generated_by,
-                                    $approved_by,
-                                    $program_fee->feeItem->feeType->duration,
-                                    $invoice->currency);
-        }
 
 		// Kama mkopo kiasi cha fee anachopata ni zaidi ya 60%
         if($amount_loan/$amount_without_loan >= 0.6){
@@ -437,38 +448,40 @@ class AdmissionController extends Controller
 	             $currency = 'TZS'; //'USD';
 	         }
 
-        $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.$hostel_fee->feeItem->feeType->code.'-'.time();
-        $invoice->actual_amount = $amount;
-        $invoice->amount = $amount;
-        $invoice->currency = $currency;
-        $invoice->payable_id = $applicant->id;
-        $invoice->payable_type = 'applicant';
-        $invoice->fee_type_id = $hostel_fee->feeItem->feeType->id;
-		$invoice->applicable_id = $study_academic_year->id;
-		$invoice->applicable_type = 'academic_year';
-        $invoice->save();
+        $hostelFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $hostel_fee->feeItem->feeType->id)->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
+        if(!$hostelFeeInvoiceRequestedCheck){
+            $invoice = new Invoice;
+            $invoice->reference_no = 'MNMA-'.$hostel_fee->feeItem->feeType->code.'-'.time();
+            $invoice->actual_amount = $amount;
+            $invoice->amount = $amount;
+            $invoice->currency = $currency;
+            $invoice->payable_id = $applicant->id;
+            $invoice->payable_type = 'applicant';
+            $invoice->fee_type_id = $hostel_fee->feeItem->feeType->id;
+            $invoice->applicable_id = $study_academic_year->id;
+            $invoice->applicable_type = 'academic_year';
+            $invoice->save();
 
-
-        $generated_by = 'SP';
-        $approved_by = 'SP';
-        $inst_id = config('constants.SUBSPCODE');
-
-        return $this->requestControlNumber($request,
-                                    $invoice->reference_no,
-                                    $inst_id,
-                                    $invoice->amount,
-                                    $hostel_fee->feeItem->feeType->description,
-                                    $hostel_fee->feeItem->feeType->gfs_code,
-                                    $hostel_fee->feeItem->feeType->payment_option,
-                                    $applicant->id,
-                                    $first_name.' '.$surname,
-                                    $applicant->phone,
-                                    $email,
-                                    $generated_by,
-                                    $approved_by,
-                                    $hostel_fee->feeItem->feeType->duration,
-                                    $invoice->currency);
+            $generated_by = 'SP';
+            $approved_by = 'SP';
+            $inst_id = config('constants.SUBSPCODE');
+    
+            return $this->requestControlNumber($request,
+                                        $invoice->reference_no,
+                                        $inst_id,
+                                        $invoice->amount,
+                                        $hostel_fee->feeItem->feeType->description,
+                                        $hostel_fee->feeItem->feeType->gfs_code,
+                                        $hostel_fee->feeItem->feeType->payment_option,
+                                        $applicant->id,
+                                        $first_name.' '.$surname,
+                                        $applicant->phone,
+                                        $email,
+                                        $generated_by,
+                                        $approved_by,
+                                        $hostel_fee->feeItem->feeType->duration,
+                                        $invoice->currency);
+        }
     	}else{
     		$hostel_fee = null;
     	}
@@ -622,39 +635,43 @@ class AdmissionController extends Controller
             return redirect()->back()->with('error','Miscellaneous fee type has not been set');
         }
 
-        $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-MSC'.time();
-        $invoice->actual_amount = $other_fees;
-        $invoice->amount = $other_fees;
-        $invoice->currency = $currency;
-        $invoice->payable_id = $applicant->id;
-        $invoice->payable_type = 'applicant';
-        $invoice->fee_type_id = $feeType->id;
-		$invoice->applicable_id = $study_academic_year->id;
-		$invoice->applicable_type = 'academic_year';
-        $invoice->save();
-
-
-        $generated_by = 'SP';
-        $approved_by = 'SP';
-        $inst_id = config('constants.SUBSPCODE');
-
-        return $this->requestControlNumber($request,
-                                    $invoice->reference_no,
-                                    $inst_id,
-                                    $invoice->amount,
-                                    $feeType->description,
-                                    $feeType->gfs_code,
-                                    $feeType->payment_option,
-                                    $applicant->id,
-                                    $first_name.' '.$surname,
-                                    $applicant->phone,
-                                    $email,
-                                    $generated_by,
-                                    $approved_by,
-                                    $feeType->duration,
-                                    $invoice->currency);
+        $otherFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('payable_type', 'applicant')->where('applicable_id', $study_academic_year->id)->where('fee_type_id', $feeType->id)->where('applicable_type', 'academic_year')->first();
+        if(!$otherFeeInvoiceRequestedCheck){
+            $invoice = new Invoice;
+            $invoice->reference_no = 'MNMA-MSC'.time();
+            $invoice->actual_amount = $other_fees;
+            $invoice->amount = $other_fees;
+            $invoice->currency = $currency;
+            $invoice->payable_id = $applicant->id;
+            $invoice->payable_type = 'applicant';
+            $invoice->fee_type_id = $feeType->id;
+            $invoice->applicable_id = $study_academic_year->id;
+            $invoice->applicable_type = 'academic_year';
+            $invoice->save();
+    
+    
+            $generated_by = 'SP';
+            $approved_by = 'SP';
+            $inst_id = config('constants.SUBSPCODE');
+    
+            return $this->requestControlNumber($request,
+                                        $invoice->reference_no,
+                                        $inst_id,
+                                        $invoice->amount,
+                                        $feeType->description,
+                                        $feeType->gfs_code,
+                                        $feeType->payment_option,
+                                        $applicant->id,
+                                        $first_name.' '.$surname,
+                                        $applicant->phone,
+                                        $email,
+                                        $generated_by,
+                                        $approved_by,
+                                        $feeType->duration,
+                                        $invoice->currency);
+            }
         }
+
 
     	if($applicant->insurance_available_status == 0){
             $insurance_fee = FeeAmount::whereHas('feeItem',function($query){
@@ -664,8 +681,6 @@ class AdmissionController extends Controller
     	}else{
     		$insurance_fee = null;
     	}
-
-
 
         return redirect()->back()->with('message','Control number requested successfully');
     }

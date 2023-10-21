@@ -3141,52 +3141,59 @@ class ApplicationController extends Controller
         $fee_amount = FeeAmount::with(['feeItem.feeType'])->find($request->get('fee_amount_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
-        $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.time();
-        if(str_contains($applicant->nationality,'Tanzania')){
-           $invoice->amount = round($fee_amount->amount_in_tzs);
-           $invoice->actual_amount = $invoice->amount;
-           $invoice->currency = 'TZS';
+        $invoiceRequestCheck = Invoice::where('payable_id', $applicant->id)->where('payable_type', 'applicant')->where('applicable_id', $applicant->application_window_id)->where('applicable_type', 'application_window')->where('fee_type_id', $fee_amount->feeItem->fee_type_id)->first();
+
+        if(!$invoiceRequestCheck){
+            $invoice = new Invoice;
+            $invoice->reference_no = 'MNMA-'.time();
+            if(str_contains($applicant->nationality,'Tanzania')){
+               $invoice->amount = round($fee_amount->amount_in_tzs);
+               $invoice->actual_amount = $invoice->amount;
+               $invoice->currency = 'TZS';
+            }else{
+               $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
+               $invoice->actual_amount = $invoice->amount;
+               $invoice->currency = 'TZS';//'USD';
+            }
+            $invoice->payable_id = $applicant->id;
+            $invoice->payable_type = 'applicant';
+            $invoice->applicable_id = $applicant->application_window_id;
+            $invoice->applicable_type = 'application_window';
+            $invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
+            $invoice->save();
+    
+    
+            $payable = Invoice::find($invoice->id)->payable;
+            $fee_type = $fee_amount->feeItem->feeType;
+    
+            $firstname = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name;
+            $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
+    
+            $generated_by = 'SP';
+            $approved_by = 'SP';
+            $inst_id = Config::get('constants.SUBSPCODE');
+    
+            $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
+    
+            return $this->requestControlNumber($request,
+                                      $invoice->reference_no,
+                                      $inst_id,
+                                      $invoice->amount,
+                                      $fee_type->description,
+                                      $fee_type->gfs_code,
+                                      $fee_type->payment_option,
+                                      $payable->id,
+                                      $firstname.' '.$surname,
+                                      $payable->phone,
+                                      $email,
+                                      $generated_by,
+                                      $approved_by,
+                                      $fee_type->duration,
+                                      $invoice->currency);
         }else{
-           $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
-           $invoice->actual_amount = $invoice->amount;
-           $invoice->currency = 'TZS';//'USD';
+            return redirect()->back()->with('error','Control number already requesed, Please use the control number already requested for payments');
         }
-        $invoice->payable_id = $applicant->id;
-        $invoice->payable_type = 'applicant';
-        $invoice->applicable_id = $applicant->application_window_id;
-        $invoice->applicable_type = 'application_window';
-        $invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
-        $invoice->save();
 
-
-        $payable = Invoice::find($invoice->id)->payable;
-        $fee_type = $fee_amount->feeItem->feeType;
-
-        $firstname = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name;
-        $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
-
-        $generated_by = 'SP';
-        $approved_by = 'SP';
-        $inst_id = Config::get('constants.SUBSPCODE');
-
-        $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
-
-        return $this->requestControlNumber($request,
-                                  $invoice->reference_no,
-                                  $inst_id,
-                                  $invoice->amount,
-                                  $fee_type->description,
-                                  $fee_type->gfs_code,
-                                  $fee_type->payment_option,
-                                  $payable->id,
-                                  $firstname.' '.$surname,
-                                  $payable->phone,
-                                  $email,
-                                  $generated_by,
-                                  $approved_by,
-                                  $fee_type->duration,
-                                  $invoice->currency);
   }
 
     /**

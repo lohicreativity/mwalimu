@@ -832,7 +832,7 @@ class ApplicantController extends Controller
          'wards'=>Ward::all(),
          'disabilities'=>DisabilityStatus::all(),
          'selection_released_status'=>ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first(),
-         'registrationStatus'=>$registrationStatus->status??null,
+         'registrationStatus'=>$registrationStatus ? $registrationStatus->status : null,
       ];
 
 

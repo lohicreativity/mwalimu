@@ -130,16 +130,34 @@
                     @endif
                     @endif
                     @if(!$program_fee_invoice || $datediff)
-                    <tr>
-                      <td>
-                        {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}
-                          {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                      @if(!$hostel_fee_invoice)
+                        @if($program_fee_invoice && $other_fee_invoice)
+                        @else
+                        <tr>
+                          <td>
+                            {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}
+                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
-                          <button type="submit" class="btn btn-primary">Request Control Number</button>
-                        {!! Form::close() !!}
-                      </td>
-                    </tr>
+                              <button type="submit" class="btn btn-primary">Request Control Number</button>
+                            {!! Form::close() !!}
+                          </td>
+                        </tr>
+                        @endif
+                      @else
+                        @if($program_fee_invoice && $other_fee_invoice)
+                        @else
+                        <tr>
+                          <td>
+                            {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}
+                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                              <button type="submit" class="btn btn-primary">Request Control Number</button>
+                            {!! Form::close() !!}
+                          </td>
+                        </tr>
+                        @endif
                     @endif
+                  @endif  
                  </table>
               </div>
             </div>
