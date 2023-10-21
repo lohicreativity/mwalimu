@@ -292,7 +292,7 @@ class ApplicantController extends Controller
                $campus = Campus::where('id', $continue_applicant->campus_id)->first();
 
             }
-            $applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first();
+            $applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->latest()->first();
             if($applicant){
                if($applicant->submission_complete_status == 1 && $applicant->status == null){
                   $applicant->documents_complete_status = 0;
@@ -1112,7 +1112,7 @@ class ApplicantController extends Controller
      */
     public function payments(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
         if($applicant->is_tamisemi != 1){
          //check if window is active
@@ -1235,7 +1235,7 @@ class ApplicantController extends Controller
      */
     public function requestResults(Request $results)
     {
-		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
       $index_number = $applicant->index_number;
 
@@ -1309,7 +1309,7 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
-		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
 		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id','!=',$batch->id)->first() : null;
@@ -2272,7 +2272,7 @@ class ApplicantController extends Controller
      */
     public function uploadDocuments(Request $request)
     {
-       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
        $student = Student::where('applicant_id', $applicant->id)->first();
 
        // if($applicant->is_tamisemi != 1){
@@ -2300,7 +2300,7 @@ class ApplicantController extends Controller
      */
     public function uploadAvnDocuments(Request $request)
     {
-       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
        $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
        if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
          //check if window active
@@ -2347,7 +2347,7 @@ class ApplicantController extends Controller
      */
     public function submission(Request $request)
       {
-        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
 
          $applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)
@@ -2710,7 +2710,7 @@ class ApplicantController extends Controller
      */
     public function showOtherInformation(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
 
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
@@ -2759,7 +2759,7 @@ class ApplicantController extends Controller
      */
     public function showPostponementRequest(Request $request)
     {
-         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
          $student = Student::where('applicant_id', $applicant->id)->first();
 
          $program_fee_invoice = Invoice::whereHas('feeType',function($query){

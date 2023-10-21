@@ -269,7 +269,7 @@ class StaffController extends Controller
 	  public function downloadPayments(Request $request)
 	  {
 		$student = Student::with('applicant')->where('registration_number', $request->keyword)->first();
-		$applicant = Applicant::with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->first();
+		$applicant = Applicant::with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->latest()->first();
 		
 		$applicant? $applicant_payments = Invoice::where('payable_id',$applicant->id)->with('feeType','gatewayPayment')->get() : [];
 		$student? $student_payments = Invoice::where('payable_id', $student->id)->orWhere('payable_id',$student->applicant->id)->with('feeType','gatewayPayment')->get() : [];
