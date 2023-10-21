@@ -1840,10 +1840,9 @@ class ApplicationController extends Controller
                         }
                     }
                 }
+                $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_token);
+                NactePayment::where('reference_no',$payment->reference_no)->update(['balance'=>$payment->balance = json_decode($result)->params[0]->balance]);
             }
-
-        $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_token);
-        NactePayment::where('reference_no',$payment->reference_no)->update(['balance'=>$payment->balance = json_decode($result)->params[0]->balance]);
 
         return redirect()->back()->with('message',$count.' applicants have been successfully submitted.');
     }
