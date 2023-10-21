@@ -32,6 +32,7 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Academic\Models\Semester;
 use App\Domain\Settings\Models\Currency;
 use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
@@ -766,47 +767,59 @@ class ApplicantController extends Controller
       $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($applicant, $app_window){
             $query->where('year','LIKE','%'.date('Y',strtotime($app_window->begin_date)).'/%');})->first();
 
+
+
+      $activeSemester = Semester::where('status', 'ACTIVE')->first();
+
 		$student = Student::where('applicant_id', $applicant->id)->first();
+        $registrationStatus = null;
+        if($student){
+            $registrationStatus = Registration::select('status')->where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)->first();
+        }
+
 		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
 		$payment_status = false;
 		$invoices = null;
-		if($student){
-			$invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
-								->where('applicable_id',$study_academic_year->id)->get();
+		if($registrationStatus){
+            if($registrationStatus->status == 'UNREGISTERED'){
+                $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
+                ->where('applicable_id',$study_academic_year->id)->get();
 
-			if($invoices){
-				$fee_payment_percent = $other_fee_payment_status = 0;
-				foreach($invoices as $invoice){
-					if(str_contains($invoice->feeType->name,'Tuition Fee')){
-						$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-						$fee_payment_percent = $paid_amount/$invoice->amount;
+                if($invoices){
+                $fee_payment_percent = $other_fee_payment_status = 0;
+                foreach($invoices as $invoice){
+                    if(str_contains($invoice->feeType->name,'Tuition Fee')){
+                        $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+                        $fee_payment_percent = $paid_amount/$invoice->amount;
 
-						if($loan_allocation){
-						   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
-						}
-					}
+                        if($loan_allocation){
+                        $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+                        }
+                    }
 
-					if(str_contains($invoice->feeType->name,'Miscellaneous')){
-						$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-						$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
+                    if(str_contains($invoice->feeType->name,'Miscellaneous')){
+                        $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+                        $other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
 
-					}
-				}
-				if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
-					$payment_status = true;
-					$registration = Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year_id',$study_academic_year->id)->where('semester_id', 1)->first();
-					$registration->status = 'REGISTERED';
-					$registration->save();
+                    }
+                }
+                if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
+                    $payment_status = true;
+                    $registration = Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year_id',$study_academic_year->id)->where('semester_id', 1)->first();
+                    $registration->status = 'REGISTERED';
+                    $registration->save();
 
-				}
-			}
+                }
+                }
+            }
+
 		}
 
 
 
       $data = [
          'applicant'=>$applicant,
-         'student' => $payment_status? $student : [],
+         'student' => $payment_status || $registrationStatus ? (($registrationStatus->status == 'REGISTERED')? $student : []) : null,
          'selection_status' => $selection_status,
          'regulator_selection' => $regulator_selection,
          'check_selected_applicant' => $check_selected_applicant,
@@ -819,6 +832,7 @@ class ApplicantController extends Controller
          'wards'=>Ward::all(),
          'disabilities'=>DisabilityStatus::all(),
          'selection_released_status'=>ApplicationBatch::select('selection_released')->where('id',$applicant->batch_id)->first(),
+         'registrationStatus'=>$registrationStatus->status??null,
       ];
 
 
@@ -2494,7 +2508,7 @@ class ApplicantController extends Controller
             //if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
                $invoice->payable_id = 0;
                  $invoice->save();
-      
+
                //}
          }
 
@@ -3075,7 +3089,7 @@ class ApplicantController extends Controller
 /*         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             return redirect()->back()->with('error','Application window already closed');
         } */
-        if($applicant->submission_complete_status == 1 && ($applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id') || 
+        if($applicant->submission_complete_status == 1 && ($applicant->entry_mode != $request->get('entry_mode') || $applicant->program_level_id != $request->get('program_level_id') ||
         $applicant->index_number != $request->get('index_number'))){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
