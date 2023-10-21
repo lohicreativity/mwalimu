@@ -79,7 +79,7 @@ Route::get('batch-processing', function (Request $request) {
 	$current_batch = $batch->batch_no + 1;
 	
 	$applicant = Applicant::where('index_number','S0837/0008/2019')->where('application_window_id', 1)
-							->where('program_level_id',2)->first(); //Imitation of the previous statement
+							->where('program_level_id',2)->latest()->first(); //Imitation of the previous statement
 	if($applicant){
 //	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0; // from API
 	   $applicant->multiple_admissions = 1; //Imitation of the previous statement

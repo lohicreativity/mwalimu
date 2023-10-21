@@ -5335,7 +5335,7 @@ class ApplicationController extends Controller
 	    $staff = User::find(Auth::user()->id)->staff;
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
 			// $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
-		})->first();
+		})->latest()->first();
         if($request->get('index_number') && !$applicant){
             return redirect()->back()->with('error','Student does not exists');
         }

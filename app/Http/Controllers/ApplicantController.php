@@ -300,7 +300,7 @@ class ApplicantController extends Controller
                }
             }
 
-            if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
+            if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->latest()->first() && !$continue_applicant){
                $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
 
                // New applicant
@@ -539,10 +539,10 @@ class ApplicantController extends Controller
                session(['applicant_campus_id'=>$request->get('campus_id')]);
                return redirect()->to('application/dashboard')->with('message','Logged in successfully');
 
-            }elseif(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && $continue_applicant){
+            }elseif(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->latest()->first() && $continue_applicant){
                return redirect()->back()->with('error','Incorrect campus. Please log in to '.$campus->name);
 
-            }elseif(Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->where('submission_complete_status', 0)->first() && $continue_applicant){
+            }elseif(Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->where('submission_complete_status', 0)->latest()->first() && $continue_applicant){
                if($continue_applicant->application_window_id == null){
                   $app = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->where('application_window_id', null)->first();
                   $continue_applicant = $app;
@@ -755,7 +755,7 @@ class ApplicantController extends Controller
       $check_selected_applicant = User::find(Auth::user()->id)->applicants()
                                        ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING');})
                                        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function($query) {$query->whereIn('status', ['SELECTED','PENDING'])->first();}])
-                                       ->where('campus_id',session('applicant_campus_id'))->first();
+                                       ->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
 		/* ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
@@ -2967,11 +2967,11 @@ class ApplicantController extends Controller
 
             $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->where('campus_id',$staff->campus_id);
-           })->first() : null;
+           })->latest()->first() : null;
 
         }else{
 
-            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->first() : null;
+            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->latest()->first() : null;
 
         }
 
@@ -3018,7 +3018,7 @@ class ApplicantController extends Controller
 
         }else{
 
-            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->first() : null;
+            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->latest()->first() : null;
 
         }
         if(!$applicant && !empty($request->get('index_number'))){
