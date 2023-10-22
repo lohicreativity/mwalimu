@@ -471,6 +471,8 @@
                                     @else
                                       @if($y)
                                           <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                      @else
+                                          <span class="text-sm" style="font-style: italic; font-color:red">Retrieved from the Regulator</span>
                                       @endif
       
                                     @endif
