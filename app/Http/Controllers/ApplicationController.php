@@ -9403,8 +9403,10 @@ class ApplicationController extends Controller
 		if(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT' && $o_level_result_count != 0
 			&& $request->get('veta_certificate_status') == 1){
             $applicant->results_complete_status = 1;
+            $applicant->veta_status = 1;
         }else{
             $applicant->results_complete_status = 0;
+            $applicant->veta_status = null;
 		}
         $applicant->save();
 
