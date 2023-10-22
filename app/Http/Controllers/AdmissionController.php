@@ -453,9 +453,26 @@ class AdmissionController extends Controller
         }
         $hostel_fee = null;
     	if($applicant->hostel_available_status == 1 && $applicant->has_postponed != 1){
-    		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','LIKE','%Accommodation%');
-    		})->where('study_academic_year_id',$study_academic_year->id)->first();
+
+            if($applicant->campus_id == 1){
+                if($applicant->hostel_status == 1){
+                    $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
+                        $query->where('name','LIKE','%Accommodation%')->where('name','NOT LIKE','%Kijichi Hostel%')->where('campus_id',1);
+                    })->where('study_academic_year_id',$study_academic_year->id)->first();
+
+                }elseif($applicant->hostel_status == 2){
+                    $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
+                        $query->where('name','LIKE','%Kijichi Hostel%')->where('campus_id',1);
+                    })->where('study_academic_year_id',$study_academic_year->id)->first();
+
+                }
+            }else{
+                $hostel_fee = FeeAmount::whereHas('feeItem',function($query) use($applicant){
+                    $query->where('name','LIKE','%Accommodation%')->where('campus_id',$applicant->campus_id);
+                })->where('study_academic_year_id',$study_academic_year->id)->first();
+
+            }
+
     		if(str_contains($applicant->nationality,'Tanzania')){
 	             $amount = round($hostel_fee->amount_in_tzs);
 	             $currency = 'TZS';
