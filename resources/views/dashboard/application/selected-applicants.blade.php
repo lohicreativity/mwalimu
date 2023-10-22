@@ -441,6 +441,12 @@
                                       }
                                     }
                                     $x = $total_selections; 
+                                    $y = false;
+                                    foreach($submission_logs as $submission_log){
+                                      if($applicant->batch_id == $submission_log->batch_id && $applicant->batch_id != $batch_id){
+                                          $y = true;
+                                      }
+                                    }
                                 @endphp
                                 @foreach($applicant->selections as $select)
                                     @if($select->batch_id == $batch_id)
@@ -463,7 +469,10 @@
                                     @if($applicant->status == 'SUBMITTED')
                                       <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
                                     @else
-                                      <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                      @if(!$y)
+                                          <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                      @endif
+      
                                     @endif
                                 @endif
                               </td>
