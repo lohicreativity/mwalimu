@@ -389,6 +389,9 @@ class AdmissionController extends Controller
             $currency = 'TZS';
         }
 
+        $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name;
+        $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
+        
         if($amount != 0.00){
         $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)
         ->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
@@ -410,9 +413,6 @@ class AdmissionController extends Controller
             $generated_by = 'SP';
             $approved_by = 'SP';
             $inst_id = config('constants.SUBSPCODE');
-    
-            $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name;
-            $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
     
             $result = $this->requestControlNumber($request,
                                         $invoice->reference_no,
