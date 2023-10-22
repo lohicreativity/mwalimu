@@ -40,16 +40,22 @@
         <div class="row">
           <div class="col-12">
             <!-- Need to add a filter to prevent applicants from viewing selection status after applicants have been retrieved from a regulator -->
-            @if($registrationStatus == 'UNREGISTERED')
-                          <div class="alert alert-warning">
-                              <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                                Please pay your fee balance to complete your registration!
-                            </h3>
-                            </div>  
-            @else
-
+            @if($student)
+                @if($registrationStatus == 'UNREGISTERED')
+                    <div class="alert alert-warning">
+                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                        Please pay your fee balance to complete your registration!
+                      </h3>
+                    </div>  
+                @else
+                    <div class="alert alert-success">
+                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                      Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
+                    </div> 
+                @endif
+            @endif
             @if($regulator_selection && $selection_released_status->selection_released == 1)
-hello
+
               @if($check_selected_applicant)
                   @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED')
                     <div class="alert alert-danger">
@@ -104,13 +110,6 @@ hello
                       @endif
                     @endif
                     </div>
-
-                  @elseif($student)
-
-                      <div class="alert alert-success">
-                        <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
-                      </div>            
                   @endif
               @else
                   <div class="alert alert-danger">
@@ -129,8 +128,6 @@ hello
                     </h3>
             </div>
             @endif
-
-           @endif 
            
 
             <!-- general form elements -->
