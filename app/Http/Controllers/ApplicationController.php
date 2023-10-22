@@ -544,7 +544,7 @@ class ApplicationController extends Controller
         }
 
         // Ready to be sent to regulators i.e. NACTVET and TCU
-        $selected_applicants = [];
+        $selected_applicants = $selected_applicant_new = [];
         if($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2){
                 $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')->whereDoesntHave('selections',function($query){$query->whereIn('status',['SELECTED','PENDING']);})->whereHas('selections',function($query){$query->where('status','APPROVING');})
                                         ->where('status','SELECTED')
@@ -565,8 +565,8 @@ class ApplicationController extends Controller
 
             if(ApplicantSubmissionLog::where('applicant_id',$selected_applicant->id)->where('application_window_id',$request->get('application_window_id'))
             ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->count() == 0){
-                $selected_applicants[] = $selected_applicant;
-                return $selected_applicants;
+                $selected_applicant_new[] = $selected_applicant;
+                return $selected_applicant_new;
             }
          }
          }
