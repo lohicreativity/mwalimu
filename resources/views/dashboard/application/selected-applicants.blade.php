@@ -104,9 +104,8 @@
                       @endif
                     @endif
                     @endif
-               </div>
-
-               <div class="modal fade" id="ss-select-program">
+                </div>
+              <div class="modal fade" id="ss-select-program">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -393,66 +392,68 @@
 
                         @elseif($applicant->status == null || $applicant->status == "NOT SELECTED")
                         <tr>
-                              <td>{{ $counter }}</td>
-                              <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                              <td>{{ $applicant->index_number }}</td>
-                              @if($request->get('program_level_id') != 1)	
-                              <td>@if($applicant->entry_mode == 'EQUIVALENT')
-                                      @foreach($applicant->nacteResultDetails as $detail)
+                          <td>{{ $counter }}</td>
+                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                          <td>{{ $applicant->index_number }}</td>
+                          <td>
+                            @if($request->get('program_level_id') != 1)	
+                                @if($applicant->entry_mode == 'EQUIVALENT')
+                                    @foreach($applicant->nacteResultDetails as $detail)
                                         @if($detail->verified == 1)
                                           @if(!empty($detail->avn)) {{ $detail->avn }} @else {{ $detail->registration_number }} @endif
                                         @endif
-                                      @endforeach <br>
-                                      @foreach($applicant->nectaResultDetails as $detail)
+                                    @endforeach <br>
+
+                                    @foreach($applicant->nectaResultDetails as $detail)
                                         @if($detail->exam_id == 2 && $detail->verified == 1) 
                                           {{ $detail->index_number }} 
                                         @endif
-                                      @endforeach
-                                  @else
-                                      @foreach($applicant->nectaResultDetails as $detail)
+                                    @endforeach
+                                @else
+                                    @foreach($applicant->nectaResultDetails as $detail)
                                         @if($detail->exam_id == 2 && $detail->verified == 1) 
                                           {{ $detail->index_number }} 
                                         @endif
-                                      @endforeach <br>
-                                      @foreach($applicant->nacteResultDetails as $detail)
+                                    @endforeach <br>
+
+                                    @foreach($applicant->nacteResultDetails as $detail)
                                         @if($detail->verified == 1)
                                           @if(!empty($detail->avn)) {{ $detail->avn }} @else {{ $detail->registration_number }} @endif
                                         @endif
-                                      @endforeach
-                                  @endif
-                              </td>
-                              @endif
-                              <td>@foreach($batches as $batch) @if($batch->id == $applicant->batch_id){{ $batch->batch_no }} @break @endif @endforeach</td>
-                              <td>{{ $applicant->phone }}</td>
-                              <td>{{ $applicant->gender }}</td>
-                              <td>     
-                                @if(count($applicant->selections) > 0)
-                                  @php $total_selections = $batch_id = 0;
-                                      foreach($applicant->selections as $y){
-                                        foreach($batches as $batch){
-                                          if($batch->id == $applicant->batch_id){
-                                            $batch_id = $batch->id;
-                                          }
-                                        }
-                                        if($y->batch_id == $batch_id){
-                                          $total_selections++;
-                                        }
-                                      }
-                                      $x = $total_selections; 
-                                  @endphp
-                                    @foreach($applicant->selections as $select)
-                                            @if($select->batch_id == $batch_id)
-                                              @if($total_selections > 1)
-                                                @php --$x ; @endphp
-                                                {{ $select->campusProgram->code }}@if($x != 0), @endif
-                                              @else
-                                                {{ $select->campusProgram->code }}
-                                              @endif
-                                            @endif
                                     @endforeach
                                 @endif
-
-                        </td>
+                            @endif
+                          </td>
+                          <td>@foreach($batches as $batch) @if($batch->id == $applicant->batch_id){{ $batch->batch_no }} @break @endif @endforeach</td>
+                          <td>{{ $applicant->phone }}</td>
+                          <td>{{ $applicant->gender }}</td>
+                          <td>     
+                            @if(count($applicant->selections) > 0)
+                                @php $total_selections = $batch_id = 0;
+                                    foreach($applicant->selections as $y){
+                                      foreach($batches as $batch){
+                                        if($batch->id == $applicant->batch_id){
+                                          $batch_id = $batch->id;
+                                        }
+                                      }
+                                      if($y->batch_id == $batch_id){
+                                        $total_selections++;
+                                      }
+                                    }
+                                    $x = $total_selections; 
+                                @endphp
+                                @foreach($applicant->selections as $select)
+                                    @if($select->batch_id == $batch_id)
+                                      @if($total_selections > 1)
+                                        @php --$x ; @endphp
+                                        {{ $select->campusProgram->code }}@if($x != 0), @endif
+                                      @else
+                                        {{ $select->campusProgram->code }}
+                                      @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                          </td>
                         @if($applicant->status == null)
                           <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
                         @else
@@ -469,7 +470,6 @@
                         @endif
                     </tr>
                           
-                        
                     @php $counter++; @endphp
                     @break
                     
