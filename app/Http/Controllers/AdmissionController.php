@@ -744,9 +744,9 @@ class AdmissionController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                       ])->post($url,$data);
 
-                      if($result){
-                        return redirect()->back()->with('error','There is a technical problem, please contact an Admission Officer');
-                    }
+                    //   if($result){
+                    //     return redirect()->back()->with('error','There is a technical problem, please contact an Admission Officer');
+                    // }
 
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
 
