@@ -566,7 +566,7 @@ class ApplicationController extends Controller
             if(ApplicantSubmissionLog::where('applicant_id',$selected_applicant->id)->where('application_window_id',$request->get('application_window_id'))
             ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->count() == 0){
                 $selected_applicant_new[] = $selected_applicant;
-                return $selected_applicant_new;
+
             }
          }
          }
@@ -583,7 +583,7 @@ class ApplicationController extends Controller
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'awards'=>Award::all(),
             'nta_levels'=>NTALevel::all(),
-            'selected_applicants'=>$selected_applicants,
+            'selected_applicants'=>$selected_applicant_new,
             'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
                   $query->where('application_window_id',$request->get('application_window_id'))->whereIn('status',['APPROVING','PENDING']);
             })->whereHas('program',function($query) use($request){
