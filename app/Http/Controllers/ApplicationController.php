@@ -9392,7 +9392,7 @@ class ApplicationController extends Controller
            }
         }
 
-        $applicant = Applicant::find($request->get('applicant_id'))->with('programLevel')->first();
+        $applicant = Applicant::where('id',$request->get('applicant_id'))->with('programLevel')->first();
         return $applicant;
         if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment');
