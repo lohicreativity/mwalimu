@@ -454,21 +454,21 @@
                                 @endforeach
                             @endif
                           </td>
-                        @if($applicant->status == null)
-                          <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
-                        @else
-                          <td>
-                            <span class="badge badge-danger">NOT SELECTED</span>  <br>
-                            @if($applicant->program_level_id == 4 )
-                                @if($applicant->status == 'SUBMITTED')
-                                  <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
-                                @else
-                                  <span class="text-sm" style="font-style: italic; font-color:red">Awaiting2 Submission</span>
+                            @if($applicant->status == null)
+                              <td><span class="badge badge-warning">AWAITING SELECTION</span>  </td>
+                            @else
+                              <td>
+                                <span class="badge badge-danger">NOT SELECTED</span>  <br>
+                                @if($applicant->program_level_id == 4 )
+                                    @if($applicant->status == 'SUBMITTED')
+                                      <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
+                                    @else
+                                      <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                    @endif
                                 @endif
+                              </td>
                             @endif
-                          </td>
-                        @endif
-                    </tr>
+                        </tr>
                           
                     @php $counter++; @endphp
                     @break
