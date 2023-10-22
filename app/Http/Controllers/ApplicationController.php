@@ -540,7 +540,8 @@ class ApplicationController extends Controller
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,registration_number,verified'])->paginate(500);
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,registration_number,verified'])
+                                    ->orderBy('batch_id', 'DESC')->paginate(500);
         }
 
         // Ready to be sent to regulators i.e. NACTVET and TCU
