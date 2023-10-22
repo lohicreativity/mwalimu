@@ -41,6 +41,7 @@
           <div class="col-12">
             <!-- Need to add a filter to prevent applicants from viewing selection status after applicants have been retrieved from a regulator -->
             @if($student)
+            hello
                 @if($registrationStatus == 'UNREGISTERED')
                     <div class="alert alert-warning">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
