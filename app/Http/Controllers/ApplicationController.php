@@ -9393,7 +9393,7 @@ class ApplicationController extends Controller
         }
 
         $applicant = Applicant::where('id',$request->get('applicant_id'))->with('programLevel')->first();
-        return $applicant;
+
         if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment');
         }
@@ -9410,7 +9410,7 @@ class ApplicationController extends Controller
 
 		}
         $applicant->save();
-return $applicant;
+
         return redirect()->back()->with('message','Veta certificate status updated successfully');
     }
 
