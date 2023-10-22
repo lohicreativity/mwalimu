@@ -74,22 +74,22 @@ class AdmissionController extends Controller
                         $query->where('name','LIKE','%Accommodation%')->where('name','NOT LIKE','%Kijichi Hostel%')->where('campus_id',1);
                     })->where('study_academic_year_id',$study_academic_year->id)->first();
                     $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
-                           $query->where('name','LIKE','%Accommodation%')->where('name','NOT LIKE','%Kijichi Hostel%')->where('campus_id',1);
+                           $query->where('name','LIKE','%Accommodation%');
                     })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
                 }elseif($applicant->hostel_status == 2){
                     $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
                         $query->where('name','LIKE','%Kijichi Hostel%')->where('campus_id',1);
                     })->where('study_academic_year_id',$study_academic_year->id)->first();
                     $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
-                           $query->where('name','LIKE','%Kijichi Hostel%');
+                           $query->where('name','LIKE','%Accommodation%');
                     })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
                 }
             }else{
                 $hostel_fee = FeeAmount::whereHas('feeItem',function($query) use($applicant){
                     $query->where('name','LIKE','%Accommodation%')->where('campus_id',$applicant->campus_id);
                 })->where('study_academic_year_id',$study_academic_year->id)->first();
-                $hostel_fee_invoice = Invoice::whereHas('feeType',function($query) use($applicant){
-                       $query->where('name','LIKE','%Accommodation Main Campus%')->where('campus_id',$applicant->campus_id);
+                $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
+                       $query->where('name','LIKE','%Accommodation%');
                 })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
             }
 
