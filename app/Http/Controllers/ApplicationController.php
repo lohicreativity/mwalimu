@@ -4162,7 +4162,7 @@ class ApplicationController extends Controller
 			}
 		}
 		$payment_status = false;
-		if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
+		if($fee_payment_percent >= 0.6 && $other_fee_payment_status >= 1){
 			$payment_status = true;
 		}
 		if($loan_allocation){
@@ -9713,8 +9713,8 @@ class ApplicationController extends Controller
 						  'DateJoiningEmployer'=> date('Y-m-d'),
 						  'DateOfBirth'=> $applicant->birth_date,
 						  'NationalID'=> $applicant->nin? $applicant->nin : '',
-						  'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
-						  'PhotoImage'=>$base64
+						  'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female'
+                          //,		  'PhotoImage'=>$base64
 					  ];
 
 					  $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
