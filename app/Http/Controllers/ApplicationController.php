@@ -563,7 +563,7 @@ class ApplicationController extends Controller
                                             ->get();
          foreach($selected_applicants as $selected_applicant){
             return ApplicantSubmissionLog::where('applicant_id',$selected_applicant->id)->where('application_window_id',$request->get('application_window_id'))
-            ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->first();
+            ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->count();
             if(ApplicantSubmissionLog::where('applicant_id',$selected_applicant->id)->where('application_window_id',$request->get('application_window_id'))
                                      ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->count() == 0){
                 $selected_applicants[] = $selected_applicant;
