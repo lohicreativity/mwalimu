@@ -609,6 +609,8 @@ class ApplicantController extends Controller
     public function editBasicInfo(Request $request)
     {
       $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
+      
+      $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
 
       $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
                                    ->whereHas('selections', function ($query) use($applicant) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING')
@@ -778,7 +780,6 @@ class ApplicantController extends Controller
         }
 
 		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
-		$payment_status = false;
 		$invoices = null;
 		if($registrationStatus){
             if($registrationStatus->status == 'UNREGISTERED'){
@@ -804,7 +805,6 @@ class ApplicantController extends Controller
                     }
                 }
                 if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
-                    $payment_status = true;
                     $registration = Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year_id',$study_academic_year->id)->where('semester_id', 1)->first();
                     $registration->status = 'REGISTERED';
                     $registration->save();
@@ -819,7 +819,7 @@ class ApplicantController extends Controller
 
       $data = [
          'applicant'=>$applicant,
-         'student' => $payment_status || $registrationStatus ? (($registrationStatus->status == 'REGISTERED')? $student : []) : null,
+         'student' => $student,
          'selection_status' => $selection_status,
          'regulator_selection' => $regulator_selection,
          'check_selected_applicant' => $check_selected_applicant,
