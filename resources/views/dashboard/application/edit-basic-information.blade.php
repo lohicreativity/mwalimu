@@ -49,7 +49,7 @@
             @else
 
             @if($regulator_selection && $selection_released_status->selection_released == 1)
-
+hello
               @if($check_selected_applicant)
                   @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED')
                     <div class="alert alert-danger">
