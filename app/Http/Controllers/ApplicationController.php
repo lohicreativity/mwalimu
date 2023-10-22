@@ -9391,15 +9391,15 @@ class ApplicationController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-return $request;
+
         $applicant = Applicant::find($request->get('applicant_id'))->with('programLevel')->first();
+        return $applicant;
         if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment');
         }
 
         $o_level_result_count = NectaResultDetail::where('applicant_id',$request->get('applicant_id'))->where('exam_id',1)->where('verified',1)->count();
 
-        $applicant = Applicant::find($request->get('applicant_id'))->with('programLevel')->first();
         $applicant->veta_status = $request->get('veta_certificate_status');
 		if(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT' && $o_level_result_count != 0
 			&& $request->get('veta_certificate_status') == 1){
