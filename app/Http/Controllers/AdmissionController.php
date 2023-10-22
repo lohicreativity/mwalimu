@@ -391,7 +391,7 @@ class AdmissionController extends Controller
 
         $first_name = str_contains($applicant->first_name,"'")? str_replace("'","",$applicant->first_name) : $applicant->first_name;
         $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
-        
+
         if($amount != 0.00){
         $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)
         ->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
@@ -444,13 +444,13 @@ class AdmissionController extends Controller
         $hostel_fee = null;
     	if($applicant->hostel_available_status == 1 && $applicant->has_postponed != 1){
     		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','LIKE','%Hostel%');
+    			$query->where('name','LIKE','%Accommodation%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
     		if(str_contains($applicant->nationality,'Tanzania')){
-	             $amount = round($program_fee->amount_in_tzs);
+	             $amount = round($hostel_fee->amount_in_tzs);
 	             $currency = 'TZS';
 	         }else{
-	             $amount = round($program_fee->amount_in_usd*$usd_currency->factor);
+	             $amount = round($hostel_fee->amount_in_usd*$usd_currency->factor);
 	             $currency = 'TZS'; //'USD';
 	         }
 

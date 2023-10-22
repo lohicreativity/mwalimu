@@ -55,7 +55,7 @@
                        <th>Year of Study</th>
                        <th>Tuition Fee</th>
                        <th>Books and Stationeries</th>
-                       <th>Meals and Accomodation</th>
+                       <th>Meals and Accommodation</th>
                        <th>Field Training</th>
                        <th>Research</th>
                        <th>Total Amount (TZS)</th>

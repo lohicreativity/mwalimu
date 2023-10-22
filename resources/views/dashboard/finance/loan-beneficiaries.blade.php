@@ -102,7 +102,7 @@
 					   @else
                        <th>Tuition Fee</th>
                        <th>Books & Stationaries</th>
-                       <th>Meals & Accomodation</th>
+                       <th>Meals & Accommodation</th>
                        <th>Field</th>
                        <th>Research</th>
                        <th>Total (TZS)</th>
