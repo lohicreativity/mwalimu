@@ -4785,7 +4785,7 @@ class ApplicationController extends Controller
                     $query->where('confirmation_status','!==','CANCELLED')->orWhere('confirmation_status','!==','TRANSFERED')->orWhereNull('confirmation_status');
                   })->where(function($query){
                     $query->where('admission_confirmation_status','!==','NOT CONFIRMED')->orWhereNull('admission_confirmation_status');
-                  })->where('status','ADMITTED')->get();
+                  })->where('status','ADMITTED')->orderBy('updated_at','DESC')->get();
 
             if(count($applicants) == 0){
                 $applicants = [];
