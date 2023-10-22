@@ -44,7 +44,7 @@
                 @if($registrationStatus == 'UNREGISTERED')
                     <div class="alert alert-warning">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Please pay your fee balance to complete your registration!
+                        Please pay your fee balance and/or insurance charges to complete your registration!
                       </h3>
                     </div>  
                 @else
