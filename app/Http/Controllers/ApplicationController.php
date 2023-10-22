@@ -9398,17 +9398,16 @@ class ApplicationController extends Controller
         }
 
         $o_level_result_count = NectaResultDetail::where('applicant_id',$request->get('applicant_id'))->where('exam_id',1)->where('verified',1)->count();
-return $request;
+
+        $applicant = Applicant::find($request->get('applicant_id'))->with('programLevel')->first();
         $applicant->veta_status = $request->get('veta_certificate_status');
 		if(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT' && $o_level_result_count != 0
 			&& $request->get('veta_certificate_status') == 1){
-                return 1;
             $applicant->results_complete_status = 1;
-            $applicant->veta_status = 1;
+
         }else{
-            return 2;
             $applicant->results_complete_status = 0;
-            $applicant->veta_status = null;
+
 		}
         $applicant->save();
 
