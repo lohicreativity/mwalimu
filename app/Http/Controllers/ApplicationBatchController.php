@@ -125,6 +125,7 @@ class ApplicationBatchController extends Controller
     }
 
     public function edit(Request $request){
+        return 1;
         $batch = ApplicationBatch::where('id', $request->get('batch_id'))->first();
         ApplicationBatch::where('id', $request->get('batch_id'))->update(['selection_released'=>$request->get('status')]);
         if($request->get('status') == 1){
@@ -138,6 +139,7 @@ class ApplicationBatchController extends Controller
     }
 
     public function updateBatchSelections(Request $request){
+        return 2;
         $batch = ApplicationBatch::where('id', $request->get('batch_id'))->first();
             Applicant::whereHas('selections', function($query) {$query->where('status','SELECTED');})->where('status', 'SUBMITTED')->update(['status'=>'SELECTED']);
             Applicant::whereHas('selections', function($query) {$query->where('status','PENDING');})->where('status', 'SUBMITTED')->update(['status'=>'NOT SELECTED']);
@@ -148,7 +150,7 @@ class ApplicationBatchController extends Controller
      * Update specified award
      */
     public function update(Request $request)
-    {
+    { return 3;
     	$validation = Validator::make($request->all(),[
             'begin_date'=>'required',
             'end_date'=>'required'

@@ -72,27 +72,27 @@ Route::get('send-applicants', function (Request $request) {
 Route::get('batch-processing', function (Request $request) {
     //$applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))
 	//						->where('program_level_id',$request->get('program_level_id'))->first(); // from API
-     $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
-	 $query->where('program_level_id',2);})
-	 ->where('application_window_id', 1)->where('status', 'SELECTED')->latest()->first();
+//      $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
+// 	 $query->where('program_level_id',2);})
+// 	 ->where('application_window_id', 1)->where('status', 'SELECTED')->latest()->first();
 
-	$current_batch = $batch->batch_no + 1;
+// 	$current_batch = $batch->batch_no + 1;
 	
-	$applicant = Applicant::where('index_number','S0837/0008/2019')->where('application_window_id', 1)
-							->where('program_level_id',2)->latest()->first(); //Imitation of the previous statement
-	if($applicant){
-//	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0; // from API
-	   $applicant->multiple_admissions = 1; //Imitation of the previous statement
-	   $applicant->save();
+// 	$applicant = Applicant::where('index_number','S0837/0008/2019')->where('application_window_id', 1)
+// 							->where('program_level_id',2)->latest()->first(); //Imitation of the previous statement
+// 	if($applicant){
+// //	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0; // from API
+// 	   $applicant->multiple_admissions = 1; //Imitation of the previous statement
+// 	   $applicant->save();
 
-	   ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
-	}
+// 	   ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+// 	}
 
-    ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',2);})
-							 ->where('application_window_id', 1)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
+//     ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',2);})
+// 							 ->where('application_window_id', 1)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
      
-	Applicant::where('application_window_id', 1)->where(function($query) {$query->where('status', null)->orWhere('status', 'SELECTED');})
-			 ->where('program_level_id',2)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
+// 	Applicant::where('application_window_id', 1)->where(function($query) {$query->where('status', null)->orWhere('status', 'SELECTED');})
+// 			 ->where('program_level_id',2)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
 
 
 });
