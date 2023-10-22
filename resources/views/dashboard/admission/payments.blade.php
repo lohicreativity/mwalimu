@@ -129,10 +129,9 @@
                     </tr>
                     @endif
                     @endif
-                    @if(!$program_fee_invoice || $datediff)
-                      @if(!$hostel_fee_invoice)
-                        @if($program_fee_invoice && $other_fee_invoice)
-                        @else
+                    @if(!$datediff)
+                      @if($applicant->hostel_available_status == 1 && $applicant->has_postponed != 1)
+                        @if(!$program_fee_invoice || !$other_fee_invoice || !$hostel_fee_invoice)
                         <tr>
                           <td>
                             {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}
@@ -144,8 +143,7 @@
                         </tr>
                         @endif
                       @else
-                        @if($program_fee_invoice && $other_fee_invoice)
-                        @else
+                        @if(!$program_fee_invoice || !$other_fee_invoice)
                         <tr>
                           <td>
                             {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}

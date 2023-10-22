@@ -56,7 +56,7 @@ class AdmissionController extends Controller
         }
     	$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
         if(!$program_fee){
-            return redirect()->back()->with('error','Programme fee has not been defined for '.$study_academic_year->academicYear->year);
+            return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
         }
 
         $usd_currency = Currency::where('code','USD')->first();
@@ -64,13 +64,16 @@ class AdmissionController extends Controller
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
-    	if($applicant->hostel_available_status == 1){
+        $hostel_fee = null;
+        $hostel_fee_amount = null;
+        $hostel_fee_invoice = null;
+        if($applicant->hostel_available_status == 1){
             if($applicant->hostel_status == 1){
                 $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
-                    $query->where('name','LIKE','%Accomodation Main Campus%');
+                    $query->where('name','LIKE','%Accommodation Main Campus%');
                 })->where('study_academic_year_id',$study_academic_year->id)->first();
                 $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
-                       $query->where('name','LIKE','%Accomodation Main Campus%');
+                       $query->where('name','LIKE','%Accommodation Main Campus%');
                 })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
             }elseif($applicant->hostel_status == 2){
                 $hostel_fee = FeeAmount::whereHas('feeItem',function($query){
@@ -80,10 +83,10 @@ class AdmissionController extends Controller
                        $query->where('name','LIKE','%Kijichi Hostel%');
                 })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
             }
-    	}else{
-    		$hostel_fee = null;
-			$hostel_fee_amount = null;
-    		$hostel_fee_invoice = null;
+
+            if(!$hostel_fee){
+                return redirect()->back()->with('error','Hostel fee has not been defined. Please contact the Admission Office.');
+            }
     	}
 
 
@@ -267,7 +270,6 @@ class AdmissionController extends Controller
 		$datediff = round($datediff / (60 * 60 * 24));
         $datediff = $datediff > 14? true : false;
 
-
     	$data = [
            'applicant'=>$applicant,
            'program_fee'=>$program_fee,
@@ -388,8 +390,11 @@ class AdmissionController extends Controller
         }
 
         if($amount != 0.00){
-        $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
+        $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)
+        ->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
+
         if(!$programFeeInvoiceRequestedCheck){
+            
             $invoice = new Invoice;
             $invoice->reference_no = 'MNMA-TF-'.time();
             $invoice->actual_amount = $amount_without_loan;
@@ -436,6 +441,7 @@ class AdmissionController extends Controller
             $applicant->tuition_payment_check = 1;
             $applicant->save();
         }
+        $hostel_fee = null;
     	if($applicant->hostel_available_status == 1 && $applicant->has_postponed != 1){
     		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%Hostel%');
@@ -482,8 +488,6 @@ class AdmissionController extends Controller
                                         $hostel_fee->feeItem->feeType->duration,
                                         $invoice->currency);
         }
-    	}else{
-    		$hostel_fee = null;
     	}
 
         if($applicant->has_postponed != 1){
