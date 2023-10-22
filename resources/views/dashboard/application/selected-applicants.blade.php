@@ -463,7 +463,7 @@
                                 @if($applicant->status == 'SUBMITTED')
                                   <span class="text-sm" style="font-style: italic; font-color:green">Submitted to the Regulator</span>
                                 @else
-                                  <span class="text-sm" style="font-style: italic; font-color:red">Awaiting Submission</span>
+                                  <span class="text-sm" style="font-style: italic; font-color:red">Awaiting2 Submission</span>
                                 @endif
                             @endif
                           </td>
