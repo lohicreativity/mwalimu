@@ -9410,7 +9410,7 @@ class ApplicationController extends Controller
 
 		}
         $applicant->save();
-
+return $applicant->veta_status;
         return redirect()->back()->with('message','Veta certificate status updated successfully');
     }
 
