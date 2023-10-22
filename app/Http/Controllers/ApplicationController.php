@@ -554,12 +554,19 @@ class ApplicationController extends Controller
                                         ->get();
 
          }elseif($request->get('program_level_id') == 4){
-         $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')->whereDoesntHave('selections',function($query){$query->whereIn('status',['SELECTED','PENDING']);})
+         $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')
+                                            ->whereDoesntHave('selections',function($query){$query->whereIn('status',['SELECTED','PENDING']);})
                                             ->whereIn('status',['SELECTED','NOT SELECTED'])
                                             ->where('application_window_id',$request->get('application_window_id'))
                                             ->where('program_level_id',$request->get('program_level_id'))
                                             ->where('programs_complete_status',1)
                                             ->get();
+         foreach($selected_applicants as $selected_applicant){
+            if(!ApplicantSubmissionLog::where('applicant_id',$selected_applicant->id)->where('application_window_id',$request->get('application_window_id'))
+                                     ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->first()){
+                $selected_applicants[] = $selected_applicant;
+            }
+         }
          }
 
 
