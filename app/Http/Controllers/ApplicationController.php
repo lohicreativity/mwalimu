@@ -618,9 +618,9 @@ class ApplicationController extends Controller
         ini_set('memory_limit', '-1');
         set_time_limit(120);
         $staff = User::find(Auth::user()->id)->staff;
-
         $campus_id = $staff->campus_id;
-		$applicants = null;
+		$applicants = null;   
+
          if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
 
 /*             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
@@ -649,6 +649,8 @@ class ApplicationController extends Controller
                                     ->where('program_level_id',$request->get('program_level_id'))
                                     //->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
                                     ->where('status','ADMITTED')->get();
+
+                                    // dd($applicants);
 
          }elseif (Auth::user()->hasRole('admission-officer')) {
 
@@ -679,6 +681,7 @@ class ApplicationController extends Controller
                                     //->where(function($query){$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');})
                                     ->where('campus_id', $campus_id)
                                     ->where('status','ADMITTED')->get();
+
 
          }elseif (Auth::user()->hasRole('hod')) {
 
@@ -5533,19 +5536,26 @@ class ApplicationController extends Controller
             } */
             if($request->get('app_'.$applicant->id) == $applicant->id){
 				if($request->get('applicant_'.$applicant->id) == $applicant->id){
-					$app = Applicant::find($applicant->id);
-					$app->hostel_available_status = 1;
-					$app->save();
-				}else{
-
-					$app = Applicant::find($applicant->id);
-					$app->hostel_available_status = 0;
-					$app->save();
+                    if($applicant->hostel_available_status == 1){
+                        $app = Applicant::find($applicant->id);                 
+                        $app->hostel_available_status = 0;
+                        $app->save();
+                    }else{
+                        $app = Applicant::find($applicant->id);                 
+                        $app->hostel_available_status = 1;
+                        $app->save(); 
+                    }
 				}
             }elseif($request->get('applicant_'.$applicant->id) == $applicant->id){
-                $app = Applicant::find($applicant->id);
-                $app->hostel_available_status = 1;
-                $app->save();
+                if($applicant->hostel_available_status == 1){
+                    $app = Applicant::find($applicant->id);
+                    $app->hostel_available_status = 0;
+                    $app->save();
+                }else{
+                    $app = Applicant::find($applicant->id);
+                    $app->hostel_available_status = 1;
+                    $app->save();
+                }
             }
         }
 

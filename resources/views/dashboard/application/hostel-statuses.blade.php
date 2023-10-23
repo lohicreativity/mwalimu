@@ -137,12 +137,10 @@
                              @endif
                          </td>
                          <td>
-                          @if($applicant->hostel_available_status === 1)
-                             &nbsp; &nbsp; &nbsp;{!! Form::checkbox('applicant_'.$applicant->id,true,$applicant->id) !!}
-                          @else
+ 
                           &nbsp; &nbsp; &nbsp;{!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
-                          @endif
-							 {!! Form::input('hidden','app_'.$applicant->id,$applicant->id) !!}
+
+							            {!! Form::input('hidden','app_'.$applicant->id,$applicant->id) !!}
                          </td>
                        </tr>
                        @endforeach
