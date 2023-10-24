@@ -268,9 +268,7 @@ class StaffController extends Controller
                     }
                 }
 
-
             }elseif($student_payer && $paid_as_student){
-                return 1;
                 foreach($paid_as_student as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
