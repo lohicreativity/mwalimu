@@ -275,7 +275,7 @@
 											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}</td>
 											   <td>
 													@if (str_contains($payments->feeType->name,'Tuition'))
-													{{ number_format($total_fee_paid_amount,2) }}
+													{{ number_format($total_paid_fee,2) }}
 													@else
 													{{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
 													@endif
