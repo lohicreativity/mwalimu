@@ -38,18 +38,18 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
             @if($applicant->payment_complete_status == 0)
-            <div class="alert alert-warning">Payment section not completed.</div>
+                <div class="alert alert-warning">Payment section not completed.</div>
             @else
 
-            @if(($applicant->status == 'NOT SELECTED') || ($applicant->status == null) && !str_contains(strtolower($applicant->programLevel->name),'master'))  
-            @if(count($full_programs) == count($all_programs))
-              <div class="col-sm-12">  
-              <div class="alert alert-danger alert-dismissible ss-messages-box"  role="alert">
-                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h5>Unfortunately all programmes are full. Please try from other MNMA campuses.</h5>
-                    </div>
-                </div>
-            @else 
+                @if(($applicant->status == 'NOT SELECTED') || ($applicant->status == null))  
+                    @if(count($full_programs) == count($all_programs))
+                        <div class="col-sm-12">  
+                            <div class="alert alert-danger alert-dismissible ss-messages-box"  role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h5>Unfortunately all programmes are full. Please try from other MNMA campuses.</h5>
+                            </div>
+                        </div>
+                    @else 
               @if(count($full_programs) != 0)
 
                 @if(count($full_programs) > 0 && count($full_programs) < count($available_progs))

@@ -2277,7 +2277,7 @@ class ApplicantController extends Controller
             'full_programs'=>$campus_progs ?? [],
             'all_programs'=>$all_programs ?? []
          ];
-return $data;
+
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
 
