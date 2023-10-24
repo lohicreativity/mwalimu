@@ -4785,7 +4785,7 @@ class ApplicationController extends Controller
             $applicants = Applicant::doesntHave('student')->whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
            })->with(['intake','selections.campusProgram.program'])->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)
-           ->where('confirmation_status','!==','CANCELLED')->where('admission_confirmation_status','NOT LIKE','%OTHER')->where('status','ADMITTED')->orderBy('tuition_payment_check','DESC')->orderBy('other_payment_check','DESC')->orderBy('documents_complete_status','DESC')->orderBy('updated_at','DESC')->get();
+           ->where('confirmation_status','!=','CANCELLED')->where('admission_confirmation_status','NOT LIKE','%OTHER')->where('status','ADMITTED')->orderBy('tuition_payment_check','DESC')->orderBy('other_payment_check','DESC')->orderBy('documents_complete_status','DESC')->orderBy('updated_at','DESC')->get();
 
             if(count($applicants) == 0){
                 $applicants = [];
