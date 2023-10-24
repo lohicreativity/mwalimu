@@ -255,6 +255,7 @@ class StaffController extends Controller
             $reference_no = [];
             $total_fee_paid_amount = 0;
             if($applicant_payer && $paid_as_applicant){
+                return 1;
                 foreach($paid_as_applicant as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
