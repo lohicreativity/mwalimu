@@ -5849,6 +5849,8 @@ return $array['Response']['ResponseParameters']['Applicant'];
                     $applicant->admission_confirmation_status = 'CONFIRMED';
                elseif($data['ConfirmationStatusCode'] == 234){
                     $applicant->admission_confirmation_status = 'CONFIRMED TO OTHER';
+               }elseif($data['ConfirmationStatusCode'] == 236){
+                    $applicant->admission_confirmation_status = 'NOT CONFIRMED ANYWHERE';
                }
                $applicant->save();
             }
