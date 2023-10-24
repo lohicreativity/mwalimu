@@ -70,7 +70,7 @@
                        </td>
                        <td>
                          @if(!$loan_allocation)
-                         @if(isset($fee_paid_amount) && isset($program_fee_invoice))
+                         @if($fee_paid_amount> 0 && !empty($program_fee_invoice))
                             {{ number_format($program_fee_invoice->amount - $fee_paid_amount,0) }} TZS
                          @endif
                          @endif
