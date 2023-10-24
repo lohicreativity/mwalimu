@@ -154,7 +154,7 @@
 											@foreach($student_payments as $key=>$payments)
 											<tr>
 											   <td>{{ ($key+1) }}</td>
-											   <td>{{ date('Y-m-d',strtotime($payments->gatewayPayment->created_at))}}</td>
+											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
 											   <td title="Control#: {{ $payments->control_no }}">{{ $payments->reference_no }}</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}</td>
