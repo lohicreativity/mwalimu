@@ -282,7 +282,11 @@
 
 											   </td>
 											   <td>
-												  {{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+													@if ((str_contains($payments->feeType->name,'Tuition'))
+													{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee,2) }} {{ $payments->gatewayPayment->ccy }}
+													@else
+														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+													@endif
 											   </td>
 											</tr>
 											@endforeach
