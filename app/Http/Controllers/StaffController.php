@@ -238,7 +238,9 @@ class StaffController extends Controller
     public function viewPayerDetails(Request $request)
     {
 		if(!empty($request->keyword)){
-            $applicant = Applicant::select('id')->where('index_number',$request->keyword)->latest()->first();
+            $staff = User::find(Auth::user()->id)->staff;
+
+            $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
             $applicant_id = $applicant? $applicant->id : 0;
 
 			$student_payer = Student::where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
