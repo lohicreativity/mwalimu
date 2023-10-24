@@ -54,6 +54,13 @@ class Invoice extends Model
         return $this->belongsTo(GatewayPayment::class,'gateway_payment_id');
     }
 
+        /**
+     * Establish one to one relationship with gateway payments
+     */
+    public function payments()
+    {
+        return $this->hasMany(GatewayPayment::class,'bill_id');
+    }
     /**
      * Establish one to many relationship with appeals
      */

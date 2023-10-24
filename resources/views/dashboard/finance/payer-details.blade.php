@@ -254,7 +254,7 @@
 									  <div class="card-body">
 										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a> <br><br>									  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
-											<thead>
+										  <thead>
 											<tr>
 											   <th>SN</th>					
 											   <th>Date</th>
@@ -274,7 +274,12 @@
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}</td>
 											   <td>
-												  {{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+													@if (str_contains($payments->feeType->name,'Tuition'))
+													{{ number_format($total_fee_paid_amount,2) }}
+													@else
+													{{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+													@endif
+
 											   </td>
 											   <td>
 												  {{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}

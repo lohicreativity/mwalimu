@@ -251,15 +251,28 @@ class StaffController extends Controller
                 ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_student = null;
       
             $reference_no = [];
-            $total_paid_amount = 0;
+            $total_fee_paid_amount = 0;
             if($applicant_payer && $paid_as_applicant){
                 foreach($paid_as_applicant as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
-                
+                foreach($paid_as_student as $payment){
+                    if(str_contains($payment->feeType->name, 'Tuition')){
+                        $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
+                        break;
+                    }
+                }
+
+
             }elseif($student_payer && $paid_as_student){
                 foreach($paid_as_student as $invoice){
                     $reference_no[] = $invoice->reference_no;
+                }
+                foreach($paid_as_student as $payment){
+                    if(str_contains($payment->feeType->name, 'Tuition')){
+                        $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
+                        break;
+                    }
                 }
             }
 
@@ -269,8 +282,10 @@ class StaffController extends Controller
 				'category'=>$student_payer? 'student' : 'applicant',
 				'applicant_payments'=>$paid_as_applicant? $paid_as_applicant : [],
 				'student_payments'=>$paid_as_student? $paid_as_student : [],
-                'paid_receipts'=>$paid_receipts? $paid_receipts : []
+                'paid_receipts'=>$paid_receipts? $paid_receipts : [],
+                'total_paid_fee'=>$total_fee_paid_amount
 			];
+
 		}else{
 			$data = [
 				'payer'=>[]

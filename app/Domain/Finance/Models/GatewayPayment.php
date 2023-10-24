@@ -11,4 +11,8 @@ class GatewayPayment extends Model
 
     protected $table = 'gateway_payments';
 
+        /**
+     * Establish one to one relationship with gateway payments
+     */
+
 }
