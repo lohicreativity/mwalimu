@@ -243,11 +243,11 @@ class StaffController extends Controller
             $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
             $applicant_id = $applicant? $applicant->id : 0;
 
-			$student_payer = Student::where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
-			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})
+			$student_payer = Student::where(function($query) use($request,$applicant_id,$staff){$query->where('registration_number', $request->keyword)
+			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id)->where('campus_id',$staff->campus_id);})
 			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
 			$applicant_payer = Applicant::whereDoesntHave('student',function($query) use($applicant_id){$query->where('applicant_id',$applicant_id);})->with(['programLevel','intake','disabilityStatus'])
-            ->where(function ($query) use($request){$query->where('index_number', $request->keyword)->orWhere('surname',$request->keyword);})->latest()->first();
+            ->where(function ($query) use($request){$query->where('index_number', $request->keyword)->orWhere('surname',$request->keyword);})->where('campus_id',$staff->campus_id)->latest()->first();
 
             return $applicant_payer;
             if(!$student_payer && !$applicant_payer){
