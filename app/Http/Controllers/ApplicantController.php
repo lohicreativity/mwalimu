@@ -2258,9 +2258,6 @@ class ApplicantController extends Controller
         }
       }else{
          $window = $applicant->applicationWindow;
-         return $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-            $query->where('award_id',$applicant->program_level_id);
-    })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get();
          $programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                     $query->where('award_id',$applicant->program_level_id);
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
@@ -2280,7 +2277,7 @@ class ApplicantController extends Controller
             'full_programs'=>$campus_progs ?? [],
             'all_programs'=>$all_programs ?? []
          ];
-
+return $data;
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
 
