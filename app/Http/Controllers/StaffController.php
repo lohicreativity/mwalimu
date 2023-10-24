@@ -239,6 +239,7 @@ class StaffController extends Controller
     {
 		if(!empty($request->keyword)){
             $applicant_id = Applicant::select('id')->where('index_number',$request->keyword)->latest()->first();
+            return $applicant_id;
 			$student_payer = Student::where('registration_number', $request->keyword)
 			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id)
 			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
