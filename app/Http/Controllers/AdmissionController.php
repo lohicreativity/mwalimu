@@ -64,6 +64,9 @@ class AdmissionController extends Controller
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+
+        $fee_paid_amount = $program_fee_invoice? GatewayPayment::where('bill_id', $program_fee_invoice->reference_no)->sum('paid_amount'): 0;
+       
         $hostel_fee = null;
         $hostel_fee_amount = null;
         $hostel_fee_invoice = null;
@@ -99,7 +102,8 @@ class AdmissionController extends Controller
             }
     	}
 
-
+        $hostel_paid_amount = $hostel_fee_invoice? GatewayPayment::where('bill_id', $hostel_fee_invoice->reference_no)->sum('paid_amount'): 0;
+        
     	if(str_contains($applicant->programLevel->name,'Bachelor')){
     		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%TCU%');
@@ -291,7 +295,9 @@ class AdmissionController extends Controller
            'other_fees_tzs'=>$other_fees_tzs,
            'other_fees_usd'=>$other_fees_usd,
            'program_fee_invoice'=>$program_fee_invoice,
+           'fee_paid_amount'=>$fee_paid_amount,
            'hostel_fee_invoice'=>$hostel_fee_invoice,
+           'hostel_paid_amount'=>$hostel_paid_amount,
            'insurance_fee_invoice'=>$insurance_fee_invoice,
            'other_fee_invoice'=>$other_fee_invoice,
            'loan_allocation'=>$loan_allocation,
