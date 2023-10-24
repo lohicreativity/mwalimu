@@ -20,7 +20,7 @@
       <div class="container-fluid">
 
       <div class="row mb-2">
-      @if(($applicant->status == 0) && ($applicant->payment_complete_status == 0))  
+      @if($applicant->status == 0 && $applicant->payment_complete_status == 0 && !str_contains(strtolower($applicant->programLevel->name),'master'))  
         @if(count($full_programs) == count($all_programs))
         <div class="col-sm-12">  
         <div class="alert alert-danger alert-dismissible ss-messages-box position-absolute z-index-auto"  role="alert">

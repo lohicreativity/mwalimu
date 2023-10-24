@@ -41,7 +41,7 @@
             <div class="alert alert-warning">Payment section not completed.</div>
             @else
 
-            @if(($applicant->status == 'NOT SELECTED') || ($applicant->status == null))  
+            @if(($applicant->status == 'NOT SELECTED') || ($applicant->status == null) && !str_contains(strtolower($applicant->programLevel->name),'master'))  
             @if(count($full_programs) == count($all_programs))
               <div class="col-sm-12">  
               <div class="alert alert-danger alert-dismissible ss-messages-box"  role="alert">
