@@ -249,6 +249,7 @@ class StaffController extends Controller
 			$applicant_payer = Applicant::whereDoesntHave('student',function($query) use($applicant_id){$query->where('applicant_id',$applicant_id);})->with(['programLevel','intake','disabilityStatus'])
             ->where(function ($query) use($request){$query->where('index_number', $request->keyword)->orWhere('surname',$request->keyword);})->latest()->first();
 
+            return $applicant_payer;
             if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('error','There is no such a payer');
 			}
