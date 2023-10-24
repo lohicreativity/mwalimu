@@ -1195,7 +1195,7 @@ class ApplicantController extends Controller
                       //check applicant program capacity
               $campus_progs = [];
               $available_progs = [];
-              if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0){
+              if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0 && !str_contains(strtolower($applicant->programLevel->name),'master')){
                $window = $applicant->applicationWindow;
                $campus_programs = $window? $window->campusPrograms()
                                                    ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})

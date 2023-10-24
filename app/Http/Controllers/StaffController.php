@@ -239,18 +239,20 @@ class StaffController extends Controller
     {
 		if(!empty($request->keyword)){
             $applicant = Applicant::select('id')->where('index_number',$request->keyword)->latest()->first();
-            
+            $applicant_id = $applicant? $applicant->id : 0;
 			$student_payer = Student::where('registration_number', $request->keyword)
-			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant->id)
+			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id)
 			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
-			$applicant_payer = Applicant::whereDoesntHave('student',function($query) use($applicant){$query->where('applicant_id',$applicant->id);})->with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->orWhere('surname',$request->keyword)->latest()->first();
+			$applicant_payer = Applicant::whereDoesntHave('student',function($query) use($applicant_id){$query->where('applicant_id',$applicant_id);})->with(['programLevel','intake','disabilityStatus'])
+            ->where('index_number', $request->keyword)->orWhere('surname',$request->keyword)->latest()->first();
 
             if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('error','There is no such a payer');
 			}
-			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_payer->id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : 
+			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : 
             $paid_as_applicant = null;
-			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
+			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
+            ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
                 ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_student = null;
       
             $reference_no = [];
