@@ -244,7 +244,8 @@ class StaffController extends Controller
             $applicant_id = $applicant? $applicant->id : 0;
 
 			$student_payer = Student::where(function($query) use($request,$applicant_id,$staff){$query->where('registration_number', $request->keyword)
-			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id)->where('campus_id',$staff->campus_id);})
+			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})
+            ->whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
 			$applicant_payer = Applicant::whereDoesntHave('student',function($query) use($applicant_id){$query->where('applicant_id',$applicant_id);})->with(['programLevel','intake','disabilityStatus'])
             ->where(function ($query) use($request){$query->where('index_number', $request->keyword)->orWhere('surname',$request->keyword);})->where('campus_id',$staff->campus_id)->latest()->first();
