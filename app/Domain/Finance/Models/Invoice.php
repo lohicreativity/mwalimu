@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Finance\Models\Payment;
 
 class Invoice extends Model
 {

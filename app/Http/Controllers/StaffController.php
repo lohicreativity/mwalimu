@@ -245,15 +245,31 @@ class StaffController extends Controller
 			if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('error','There is no such a payer');
 			}
-			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_payer->id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_applicant = null;
+			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_payer->id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : 
+            $paid_as_applicant = null;
 			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
                 ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_student = null;
+      
+            $reference_no = [];
+            $total_paid_amount = 0;
+            if($applicant_payer && $paid_as_applicant){
+                foreach($paid_as_applicant as $invoice){
+                    $reference_no[] = $invoice->reference_no;
+                }
+                
+            }elseif($student_payer && $paid_as_student){
+                foreach($paid_as_student as $invoice){
+                    $reference_no[] = $invoice->reference_no;
+                }
+            }
 
+            $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
 			$data = [
 				'payer'=>$student_payer? $student_payer : $applicant_payer,
 				'category'=>$student_payer? 'student' : 'applicant',
 				'applicant_payments'=>$paid_as_applicant? $paid_as_applicant : [],
-				'student_payments'=>$paid_as_student? $paid_as_student : []
+				'student_payments'=>$paid_as_student? $paid_as_student : [],
+                'paid_receipts'=>$paid_receipts? $paid_receipts : []
 			];
 		}else{
 			$data = [
