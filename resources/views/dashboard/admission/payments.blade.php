@@ -70,7 +70,7 @@
                        </td>
                        <td>
                          @if(!$loan_allocation)
-                         @if($fee_paid_amount> 0 && !empty($program_fee_invoice))
+                         @if($fee_paid_amount> 0 && isset($program_fee_invoice))
                             {{ number_format($program_fee_invoice->amount - $fee_paid_amount,0) }} TZS
                          @endif
                          @endif
@@ -121,7 +121,7 @@
                          @endif
                        </td>
                        <td>
-                         @if(isset($hostel_paid_amount) && isset($hostel_fee_invoice))
+                         @if($hostel_paid_amount>0 && isset($hostel_fee_invoice))
                             {{ number_format($hostel_paid_amount-$hostel_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                        </td>
