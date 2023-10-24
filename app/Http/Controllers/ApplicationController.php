@@ -5841,7 +5841,7 @@ class ApplicationController extends Controller
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
-return $array['Response']['ResponseParameters']['Applicant'];
+
         foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
             $applicant = Applicant::where('index_number',$data['f4indexno'])->where('campus_id',$staff->campus_id)->where('program_level_id',4)->latest()->first();
             if($applicant){
