@@ -2257,8 +2257,8 @@ class ApplicantController extends Controller
             }
         }
       }else{
-         return 1;
          $window = $applicant->applicationWindow;
+         return $window;
          $programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                     $query->where('award_id',$applicant->program_level_id);
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
