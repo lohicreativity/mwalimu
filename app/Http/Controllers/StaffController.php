@@ -244,7 +244,7 @@ class StaffController extends Controller
 			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant->id)
 			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
 			$applicant_payer = Applicant::doesntHave('student')->with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->orWhere('surname',$request->keyword)->latest()->first();
-			return $applicant_payer;
+
             if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('error','There is no such a payer');
 			}
