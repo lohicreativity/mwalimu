@@ -105,6 +105,7 @@ class LoanAllocationController extends Controller
 					$allocation->applicant_id = $applicant->id;
 					$allocation->student_id = $student? $student->id : null;
 					$allocation->index_number = $index_number;
+					$allocation->campus_id = $applicant->campus_id;
 					$allocation->first_name = $student? $firstname : $applicant->first_name;
 					$allocation->middle_name = $student? $middlename : $applicant->middlename;
 					$allocation->surname = $student? $surname : $applicant->surname;
