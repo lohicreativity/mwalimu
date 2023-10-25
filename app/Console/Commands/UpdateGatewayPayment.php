@@ -82,6 +82,7 @@ class UpdateGatewayPayment extends Command
 
                     if($invoice->payable_type == 'student'){
 
+
                         $student = Student::find($invoice->payable_id);
 
                         $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
@@ -94,7 +95,7 @@ class UpdateGatewayPayment extends Command
                             $stud_reg = $parts[0].$parts[1];
                         }
 
-                        if($student->registration_year >= 2023){
+                        if($student->registration_year >= 2022){
                             //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
                             $inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
                                 ->join('gateway_payments','invoices.control_no','=','gateway_payments.control_no')
@@ -102,9 +103,7 @@ class UpdateGatewayPayment extends Command
                                 ->where('invoices.id',$invoice->id)
                                 ->first();
 
-                            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES 
-                            ('".$inv->control_no."','".date('Ymd',strtotime($inv->created_at))."','".$inv->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."',
-                            '".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Ymd',strtotime(now()))."')");
+                            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Ymd',strtotime(now()))."')");
 
                             if($inv->psp_name == 'National Microfinance Bank'){
                                 $bank_code = 619;
