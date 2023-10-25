@@ -63,8 +63,8 @@
                        <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
                          @if(!$loan_allocation)
-                         @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ number_format($program_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
+                         @if($fee_paid_amount> 0 && isset($program_fee_invoice))
+                            {{ number_format($fee_paid_amount,0) }} TZS
                          @endif
                          @endif
                        </td>
