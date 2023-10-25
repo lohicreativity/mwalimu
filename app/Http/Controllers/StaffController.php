@@ -266,6 +266,7 @@ class StaffController extends Controller
                     $reference_no[] = $invoice->reference_no;
                 }
                 foreach($paid_as_applicant as $payment){
+                    return $payment;
                     if(str_contains($payment->feeType->name, 'Tuition')){
                         $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
                         break;
