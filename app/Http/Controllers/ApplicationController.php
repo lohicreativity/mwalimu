@@ -3964,7 +3964,7 @@ class ApplicationController extends Controller
         $program_code = $prog_code[0].'.'.$prog_code[1];
 
         $stud_group = explode('.', $selection->campusProgram->code);
-return $$stud_group;
+return $stud_group;
         if(str_contains($applicant->intake->name,'March')){
 
             if(str_contains($applicant->campus->name,'Kivukoni')){
