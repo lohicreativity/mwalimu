@@ -50,17 +50,11 @@ class LoanAllocationController extends Controller
      * Upload loan allocations
      */
     public function uploadAllocations(Request $request)
-    {return $request;
+    {
     	if($request->hasFile('allocations_file')){
     		  $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
     		  $destination = public_path().'/loan_allocations/';
     		  $request->file('allocations_file')->move($destination, $request->file('allocations_file')->getClientOriginalName());
-
-			//   $destination = public_path('uploads/');
-            //   $request->file('appeals_file')->move($destination, $request->file('appeals_file')->getClientOriginalName());
-
-			// $destination = SystemLocation::uploadsDirectory();
-			// $request->file('document')->move($destination, $request->file('document')->getClientOriginalName());
 
               $file_name = SystemLocation::renameFile($destination, $request->file('allocation_file')->getClientOriginalName(),'csv', $study_academic_year->academicYear->year.'_'.Auth::user()->id.'_'.now()->format('YmdHms'));
 
