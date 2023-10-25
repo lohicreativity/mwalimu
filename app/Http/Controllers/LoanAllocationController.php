@@ -18,6 +18,7 @@ use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Models\Postponement;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
+use Validator;
 
 class LoanAllocationController extends Controller
 {
@@ -50,29 +51,80 @@ class LoanAllocationController extends Controller
      * Upload loan allocations
      */
     public function uploadAllocations(Request $request)
-    {
+    { 
+		$validation = Validator::make($request->all(),[
+            'allocations_file'=>'required|mimes:csv,txt'
+         ]);
+
+         if($validation->fails()){
+             if($request->ajax()){
+                return response()->json(array('error_messages'=>$validation->messages()));
+             }else{
+                return redirect()->back()->withInput()->withErrors($validation->messages());
+             }
+         }
+
     	if($request->hasFile('allocations_file')){
-    		  $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
-    		  $destination = public_path().'/loan_allocations/';
-    		  $request->file('allocations_file')->move($destination, $request->file('allocations_file')->getClientOriginalName());
+			$staff = User::find(Auth::user()->id)->staff;
+			$study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
+			$destination = public_path('loan_allocations/'); //public_path().'/loan_allocations/';
 
-              $file_name = SystemLocation::renameFile($destination, $request->file('allocation_file')->getClientOriginalName(),'csv', $study_academic_year->academicYear->year.'_'.Auth::user()->id.'_'.now()->format('YmdHms'));
+			$request->file('allocations_file')->move($destination, $request->file('allocations_file')->getClientOriginalName());
+			$file_name = SystemLocation::renameFile($destination, $request->file('allocations_file')->getClientOriginalName(),'csv', $study_academic_year->academicYear->year.'_'.Auth::user()->id.'_'.now()->format('YmdHms'));
 
-              $uploaded_loans = [];
-              $csvFileName = $file_name;
-              $csvFile = $destination.$csvFileName;
-              $file_handle = fopen($csvFile, 'r');
-              while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
-              }
-              fclose($file_handle);
-              foreach($line_of_text as $line){
-                 $stud = Student::with('applicant')->where('registration_number',trim($line[0]))->first();
-                 $allocation = new LoanAllocation;
-                 $allocation->index_number = trim($line[1]);
-                 $allocation->registration_number = trim($line[2]);
-                 $allocation->save();
-              }
+			$uploaded_loans = [];
+			$csvFileName = $file_name;
+			$csvFile = $destination.$csvFileName;
+			$file_handle = fopen($csvFile, 'r');
+			fgetcsv($file_handle);
+			while (!feof($file_handle)) {
+				$line_of_text[] = fgetcsv($file_handle, 0, ',');
+			}
+
+			fclose($file_handle);
+
+			foreach($line_of_text as $line){
+				if(gettype($line) != 'boolean'){
+				$index_number = str_replace('.','/',trim($line[1]));
+
+				$applicant = Applicant::where('index_number',$index_number)->where('campus_id',$staff->campus_id)->latest()->first();
+
+				if($applicant){
+					$student = Student::where('applicant_id')->latest()->first();
+					$firstname = $middlename = $surname = null;
+					
+					if($student){
+						$firstname = $student->first_name;
+						$middlename = $student->middle_name;
+						$surname = $student->surname;
+						$sex = $student->sex;
+						$year_of_study = $student->year_of_study;
+						
+					}
+					$allocation = new LoanAllocation;
+					$allocation->applicant_id = $applicant->id;
+					$allocation->student_id = $student? $student->id : null;
+					$allocation->index_number = $index_number;
+					$allocation->first_name = $student? $firstname : $applicant->first_name;
+					$allocation->middle_name = $student? $middlename : $applicant->middlename;
+					$allocation->surname = $student? $surname : $applicant->surname;
+					$allocation->sex = $student? $sex : $applicant->sex;
+					$allocation->year_of_study = $student? $year_of_study : trim($line[2]);
+					$allocation->study_academic_year_id = $study_academic_year->academicYear->id;
+					$allocation->batch_no = trim($line[3]);
+					$allocation->tuition_fee = trim($line[4]);	
+					$allocation->meals_and_accomodation = trim($line[5]);			
+					$allocation->books_and_stationeries = trim($line[6]);	
+					$allocation->research = trim($line[7]);		
+					$allocation->field_training = trim($line[8]);	
+					$allocation->uploaded_by_user_id = $staff->id;										
+					$allocation->save();
+					
+				}else{
+					$missallocations[] =  trim($line[1]);
+				}
+			}
+			}
     	}
     	return redirect()->back()->with('message','Loan allocations uploaded successfully');
     }

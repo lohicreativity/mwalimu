@@ -47,7 +47,6 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'finance/upload-loan-allocation','class'=>'ss-form-processing','files'=>true]) !!}
-                   
                    <div class="row">
                    <div class="form-group col-6">
                     {!! Form::label('','Upload allocations file') !!}
