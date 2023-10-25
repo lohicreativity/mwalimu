@@ -4067,7 +4067,7 @@ class ApplicationController extends Controller
 
 
             } elseif (str_contains($applicant->campus->name,'Kivukoni')) {
-                $stud_group = $stud_group[0];
+                $stud_group = $stud_group[0].$stud_group[1];
                 if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
 
                     if (str_contains(strtolower($selection->campusProgram->program->name), 'human') && str_contains(strtolower($selection->campusProgram->program->name), 'resource')) {
