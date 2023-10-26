@@ -51,7 +51,9 @@ class LoanAllocationController extends Controller
      * Upload loan allocations
      */
     public function uploadAllocations(Request $request)
-    { 
+    {   ini_set('memory_limit', '-1');
+        set_time_limit(180);
+		
 		$validation = Validator::make($request->all(),[
             'allocations_file'=>'required|mimes:csv,txt'
          ]);
