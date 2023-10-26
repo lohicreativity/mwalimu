@@ -63,7 +63,25 @@
                   </div>
                   
                   </div>
-                  
+                  @if(session('missallocations'))
+                  <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <p>The following beneficiaries are not our students. Please, remove them from your CSV file.</p>
+                    @foreach(session('missallocations') as $key=>$stud)
+                      <p> {{ ($key+1) }}. {{ $stud }}  </p>
+                    @endforeach
+                 </div><!-- end of ss-messages_box -->
+                 @endif
+
+                  @if(session('existing_beneficiaries'))
+                  <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <p>The following students have allocations in this batch. Please, remove them from your CSV file or indicate their correct batch.</p>
+                    @foreach(session('existing_beneficiaries') as $key=>$stud)
+                      <p> {{ ($key+1) }}. {{ $stud }} </p>
+                    @endforeach
+                 </div><!-- end of ss-messages_box -->
+                 @endif
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Upload') }}</button>
                   </div>

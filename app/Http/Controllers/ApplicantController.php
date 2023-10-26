@@ -530,7 +530,7 @@ class ApplicantController extends Controller
                         }
                         if($applicant->entry_mode == 'DIRECT' && $necta_change_status){
                            break;
-                        }elseif($applicant->entry_mode == 'EQUIVALENT' && $necta_change_status && ($nacte_change_status || out_change_status)){
+                        }elseif($applicant->entry_mode == 'EQUIVALENT' && $necta_change_status && ($nacte_change_status || $out_change_status)){
                            break;
                         }
                      }
@@ -774,48 +774,48 @@ class ApplicantController extends Controller
       $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
 		$student = Student::where('applicant_id', $applicant->id)->first();
-        $registrationStatus = null;
-        if($student){
-            $registrationStatus = Registration::select('status')->where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)->first();
-        }
 
-		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
+      $registrationStatus = null;
+      if($student){
+         $registrationStatus = Registration::select('status')->where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)->first();
+      }
+
+		$tuition_fee_loan = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)
+                                           ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
+
 		$invoices = null;
 		if($registrationStatus){
-            if($registrationStatus->status == 'UNREGISTERED'){
-                $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
-                ->where('applicable_id',$study_academic_year->id)->get();
+         if($registrationStatus->status == 'UNREGISTERED'){
+               $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
+               ->where('applicable_id',$study_academic_year->id)->get();
 
-                if($invoices){
-                $fee_payment_percent = $other_fee_payment_status = 0;
-                foreach($invoices as $invoice){
-                    if(str_contains($invoice->feeType->name,'Tuition Fee')){
+            if($invoices){
+               $fee_payment_percent = $other_fee_payment_status = 0;
+               foreach($invoices as $invoice){
+                  if(str_contains($invoice->feeType->name,'Tuition Fee')){
                         $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
                         $fee_payment_percent = $paid_amount/$invoice->amount;
 
-                        if($loan_allocation){
-                        $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+                        if($tuition_fee_loan>0){
+                        $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
                         }
-                    }
+                  }
 
-                    if(str_contains($invoice->feeType->name,'Miscellaneous')){
+                  if(str_contains($invoice->feeType->name,'Miscellaneous')){
                         $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
                         $other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
 
-                    }
-                }
-                if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
-                    $registration = Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year_id',$study_academic_year->id)->where('semester_id', 1)->first();
-                    $registration->status = 'REGISTERED';
-                    $registration->save();
+                  }
+               }
+               
+               if($fee_payment_percent >= 0.6 && $other_fee_payment_status >= 1){
+                  Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year_id',$study_academic_year->id)
+                              ->where('semester_id', 1)->update(['status'=>'REGISTERED']);
 
-                }
-                }
+               }
             }
-
+         }
 		}
-
-
 
       $data = [
          'applicant'=>$applicant,

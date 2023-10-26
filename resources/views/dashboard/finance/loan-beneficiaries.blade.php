@@ -80,7 +80,10 @@
             @if(count($beneficiaries) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('List of Loan Beneficiaries') }}</h3><br>
+                <h3 class="card-title">{{ __('List of Loan Beneficiaries') }} - 
+                  @if($request->get('year_of_study') == 1) First Year @elseif($request->get('year_of_study') == 1) Second Year @else Third Year @endif 
+                  @if(count($beneficiaries)>0) @if($beneficiaries[0]->campus_id == 1) (Kivukoni Campus) @elseif($beneficiaries[0]->campus_id == 2) (Karume Campus) @elseif($beneficiaries[0]->campus_id == 3) (Pemba Campus) @endif @endif
+                </h3><br>
                 @if(Auth::user()->hasRole('loan-officer'))
                 <a href="{{ url('finance/download-loan-beneficiaries?study_academic_year_id='.$request->get('study_academic_year_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Loan Beneficiaries</a>
                 @endif
@@ -102,7 +105,7 @@
 					   @else
                        <th>Tuition Fee</th>
                        <th>Books & Stationaries</th>
-                       <th>Meals & Accommodation</th>
+                       <th>Accommodation</th>
                        <th>Field</th>
                        <th>Research</th>
                        <th>Total (TZS)</th>
@@ -114,7 +117,7 @@
                       <tr>
 						<td>{{ ($key+1) }}</td>
                         <td>{{ $stud->index_number }}</td>
-                        <td>{{ $stud->name }}</td>					
+                        <td>{{ $stud->first_name }} {{ $stud->middle_name? substr($stud->middle_name,0,1).'.': null }} {{ $stud->surname }} </td>					
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->phone }}</td>
 						@if($request->get('loan_status') == 1)
@@ -182,12 +185,12 @@
 					
 						</td>		
 						@else		
-                        <td>{{ $stud->tuition_fee }}</td>
-                        <td>{{ $stud->books_and_stationeries }}</td>
-                        <td>{{ $stud->meals_and_accomodation }}</td>
-                        <td>{{ $stud->field_training }}</td>
-                        <td>{{ $stud->research }}</td>
-                        <td>{{ number_format($stud->loan_amount,2) }}</td>
+                        <td>{{ number_format($stud->tuition_fee,2) }}</td>
+                        <td>{{ number_format($stud->books_and_stationeries,2) }}</td>
+                        <td>{{ number_format($stud->meals_and_accomodation,2) }}</td>
+                        <td>{{ number_format($stud->field_training,2) }}</td>
+                        <td>{{ number_format($stud->research,2) }}</td>
+                        <td>{{ number_format(($stud->tuition_fee + $stud->books_and_stationeries + $stud->meals_and_accomodation + $stud->field_training + $stud->research),2) }}</td>
 						@endif
                       </tr>
                      @endforeach

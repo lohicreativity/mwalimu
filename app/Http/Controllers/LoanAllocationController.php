@@ -82,52 +82,69 @@ class LoanAllocationController extends Controller
 			}
 
 			fclose($file_handle);
+			$existing_beneficiaries = $missallocations = [];
 
 			foreach($line_of_text as $line){
 				if(gettype($line) != 'boolean'){
-				$index_number = str_replace('.','/',trim($line[1]));
+					$index_number = str_replace('.','/',trim($line[1]));
 
-				$applicant = Applicant::where('index_number',$index_number)->where('campus_id',$staff->campus_id)->latest()->first();
+					$applicant = Applicant::where('index_number',$index_number)->where('campus_id',$staff->campus_id)->latest()->first();
 
-				if($applicant){
-					$student = Student::where('applicant_id')->latest()->first();
-					$firstname = $middlename = $surname = null;
-					
-					if($student){
-						$firstname = $student->first_name;
-						$middlename = $student->middle_name;
-						$surname = $student->surname;
-						$sex = $student->sex;
-						$year_of_study = $student->year_of_study;
+					if($applicant){
+						$student = Student::where('applicant_id')->latest()->first();
+						$firstname = $middlename = $surname = null;
 						
+						if($student){
+							$firstname = $student->first_name;
+							$middlename = $student->middle_name;
+							$surname = $student->surname;
+							$sex = $student->sex;
+							$phone = $student->phone;
+							$year_of_study = $student->year_of_study;
+							
+						}
+						if(LoanAllocation::where('applicant_id',$applicant->id)->where('study_academic_year_id',$study_academic_year->academicYear->id)->where('batch_no',trim($line[3]))->first()){
+							$existing_beneficiaries[] = trim($line[1]);
+							continue;
+						}else{
+							$allocation = new LoanAllocation;
+							$allocation->applicant_id = $applicant->id;
+							$allocation->student_id = $student? $student->id : null;
+							$allocation->index_number = $index_number;
+							$allocation->campus_id = $applicant->campus_id;
+							$allocation->first_name = $student? $firstname : $applicant->first_name;
+							$allocation->middle_name = $student? $middlename : $applicant->middlename;
+							$allocation->surname = $student? $surname : $applicant->surname;
+							$allocation->sex = $student? $sex : $applicant->sex;
+							$allocation->phone = $student? $phone : $applicant->phone;
+							$allocation->year_of_study = $student? $year_of_study : trim($line[2]);
+							$allocation->study_academic_year_id = $study_academic_year->academicYear->id;
+							$allocation->batch_no = trim($line[3]);
+							$allocation->tuition_fee = trim($line[4]);	
+							$allocation->meals_and_accomodation = trim($line[5]);			
+							$allocation->books_and_stationeries = trim($line[6]);	
+							$allocation->research = trim($line[7]);		
+							$allocation->field_training = trim($line[8]);	
+							$allocation->uploaded_by_user_id = $staff->id;										
+							$allocation->save();
+						}
+						
+					}else{
+						$missallocations[] =  trim($line[1]);
 					}
-					$allocation = new LoanAllocation;
-					$allocation->applicant_id = $applicant->id;
-					$allocation->student_id = $student? $student->id : null;
-					$allocation->index_number = $index_number;
-					$allocation->campus_id = $applicant->campus_id;
-					$allocation->first_name = $student? $firstname : $applicant->first_name;
-					$allocation->middle_name = $student? $middlename : $applicant->middlename;
-					$allocation->surname = $student? $surname : $applicant->surname;
-					$allocation->sex = $student? $sex : $applicant->sex;
-					$allocation->year_of_study = $student? $year_of_study : trim($line[2]);
-					$allocation->study_academic_year_id = $study_academic_year->academicYear->id;
-					$allocation->batch_no = trim($line[3]);
-					$allocation->tuition_fee = trim($line[4]);	
-					$allocation->meals_and_accomodation = trim($line[5]);			
-					$allocation->books_and_stationeries = trim($line[6]);	
-					$allocation->research = trim($line[7]);		
-					$allocation->field_training = trim($line[8]);	
-					$allocation->uploaded_by_user_id = $staff->id;										
-					$allocation->save();
-					
-				}else{
-					$missallocations[] =  trim($line[1]);
 				}
 			}
+			if(count($missallocations) > 0){
+				session()->flash('missallocations',$missallocations);
+				return redirect()->back()->with('error','The following beneficiaries are not our students');
 			}
+			if(count($existing_beneficiaries) > 0){
+				session()->flash('existing_beneficiaries',$existing_beneficiaries);
+				return redirect()->back()->with('error','The following students have allocations in this batch');
+			}
+
+			return redirect()->to('finance/loan-beneficiaries')->with('message','Loan allocations uploaded successfully');
     	}
-    	return redirect()->back()->with('message','Loan allocations uploaded successfully');
     }
 
     /**
@@ -144,8 +161,7 @@ class LoanAllocationController extends Controller
 		$postponements = Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 		->whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
 		->where('category','!=','EXAM')->where('study_academic_year_id', $ac_year->id)->latest()->get();
-		$loan_beneficiary = LoanAllocation::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-		->where('study_academic_year_id', $ac_year->id)->get();
+		$loan_beneficiary = LoanAllocation::where('campus_id',$staff->campus_id)->where('study_academic_year_id', $ac_year->id)->get();
 		$deceased = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 		->whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();
 		
@@ -179,10 +195,16 @@ class LoanAllocationController extends Controller
 
 		}
 
+		if(empty($request)){
+			$loan_beneficiaries = LoanAllocation::where('study_academic_year_id',$ac_year->id)->where('campus_id',$staff->campus_id)->where('year_of_study',1)->get();
+		}else{
+			$loan_beneficiaries = LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$staff->campus_id)
+											  ->where('year_of_study',$request->get('year_of_study'))->get();
+		}
+
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))
-							->whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})->where('year_of_study',$request->get('year_of_study'))->get(),
+            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : $loan_beneficiaries,
 			'transfers'=>$stud_transfers? $stud_transfers : [],
 			'postponements'=>$stud_postponements? $stud_postponements : [],
 			'deceased'=>$stud_deceased? $stud_deceased : [],

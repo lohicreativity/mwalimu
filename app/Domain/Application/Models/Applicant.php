@@ -17,6 +17,7 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Models\User;
 use App\Domain\Application\Models\ApplicationBatch;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class Applicant extends Model
 {
@@ -134,6 +135,14 @@ class Applicant extends Model
     public function selections()
     {
         return $this->hasMany(ApplicantProgramSelection::class,'applicant_id');
+    }
+
+    /**
+     * Establish one to many relationship with loan allocations
+     */
+    public function loans()
+    {
+        return $this->hasMany(LoanAllocation::class,'applicant_id');
     }
 
     /**

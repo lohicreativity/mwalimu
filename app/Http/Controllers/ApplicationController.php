@@ -3846,7 +3846,7 @@ class ApplicationController extends Controller
                                     if($selection->order == $choice && $selection->batch_id == $batch_id && $selection->campus_program_id == $program->id){
                                         if($count < $program->entryRequirements[0]->max_capacity){
                                             if((ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->where('batch_id',$batch_id)->count() == 0) &&
-                                            $applicant->avn_no_results !== 1 || ($applicant->avn_no_results == 1 && $applicant->entry_mode == 'DIRECT')){
+                                                $applicant->avn_no_results !== 1 || ($applicant->avn_no_results == 1 && $applicant->entry_mode == 'DIRECT')){
                                                 $select = ApplicantProgramSelection::find($selection->id);
                                                 $select->status = 'APPROVING';
                                                 $select->status_changed_at = now();
@@ -3858,7 +3858,7 @@ class ApplicationController extends Controller
                                                 $selected_program[$applicant->id] = true;
 
                                                 $count++;
-                                        }
+                                            }
                                         }
                                     }
                                 }
@@ -4142,10 +4142,32 @@ class ApplicationController extends Controller
 
 		$student->user_id = $user->id;
         $student->save();
-        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
+        
+        $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('study_academic_year_id',$ac_year->id)
+        ->where('campus_id',$staff->campus_id)->sum('tuition_fee');
+        
+        $loan_allocation = LoanAllocation::where('applicant_id',$applicant->id)->where('study_academic_year_id',$ac_year->id)
+        ->where('campus_id',$staff->campus_id)->latest()->first();
+
 		// Added 07/04/2023
 		$invoices = Invoice::with('feeType')->where('payable_type','applicant')->where('payable_id',$applicant->id)->whereNotNull('gateway_payment_id')->get();
-		$fee_payment_percent = $other_fee_payment_status = 0;
+		$program_fee =  ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$selection->campus_program_id)->first();
+
+        $fee_payment_percent = $other_fee_payment_status = 0;
+        if($tuition_fee_loan > 0){
+            $usd_currency = Currency::where('code','USD')->first();
+
+            if(str_contains($applicant->nationality,'Tanzania')){
+                $program_fee_amount = $program_fee->amount_in_tzs;
+            }else{
+                $program_fee_amount = round($program_fee->amount_in_usd * $usd_currency->factor);
+            }
+
+            if($tuition_fee_loan >= $program_fee_amount){
+                $fee_payment_percent = 1;
+            }
+
+        }
 
 		if($invoices){
 			foreach($invoices as $invoice){
@@ -4153,12 +4175,12 @@ class ApplicationController extends Controller
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 					$fee_payment_percent = $paid_amount/$invoice->amount;
 
-					if($loan_allocation){
-					   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+					if($tuition_fee_loan > 0){
+					   $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$program_fee_amount;
 					}
 				}
 
-				if(str_contains($invoice->feeType->name,'Miscellaneous')){
+				if(str_contains($invoice->feeType->name,'Miscellaneous')){ 
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 					$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
 				}
@@ -4169,6 +4191,7 @@ class ApplicationController extends Controller
 			$payment_status = true;
 		}
 		if($loan_allocation){
+            
 			if($applicant->has_postponed != 1){
 				if($ac_year->nhif_enabled == 1){
 					if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -4176,6 +4199,7 @@ class ApplicationController extends Controller
 					}else{
 						$registration = new Registration;
 					}
+
 					$registration->study_academic_year_id = $ac_year->id;
 					$registration->semester_id = $semester->id;
 					$registration->student_id = $student->id;
@@ -4190,6 +4214,7 @@ class ApplicationController extends Controller
 					}else{
 						$registration = new Registration;
 					}
+
 					$registration->study_academic_year_id = $ac_year->id;
 					$registration->semester_id = $semester->id;
 					$registration->student_id = $student->id;
@@ -4198,6 +4223,7 @@ class ApplicationController extends Controller
 					$registration->registered_by_staff_id = $staff->id;
 					$registration->status = $payment_status && $loan_allocation->has_signed == 1? 'REGISTERED' : 'UNREGISTERED';
 					$registration->save();
+
 				}
 			}
 		    $loan_allocation->registration_number = $student->registration_number;
@@ -4782,10 +4808,13 @@ class ApplicationController extends Controller
 
          if ($request->get('program_level_id')) {
 
-            $applicants = Applicant::doesntHave('student')->whereDoesntHave('student')->whereHas('selections',function($query) use($request){
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
            })->with(['intake','selections.campusProgram.program'])->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)
-           ->where('confirmation_status','!=','CANCELLED')->where('admission_confirmation_status','NOT LIKE','%OTHER')->where('status','ADMITTED')->orderBy('tuition_payment_check','DESC')->orderBy('other_payment_check','DESC')->orderBy('documents_complete_status','DESC')->orderBy('updated_at','DESC')->get();
+           ->where(function($query){$query->where('confirmation_status', null)->orWhere('confirmation_status','!=','CANCELLED');})->where(function($query){$query->where('admission_confirmation_status'.null)
+            ->orWhere('admission_confirmation_status','NOT LIKE','%OTHER');})->where('status','ADMITTED')
+            ->where(function($query){$query->where('tuition_payment_check',1)->orWhere('other_payment_check',1);})
+            ->orderBy('tuition_payment_check','DESC')->orderBy('other_payment_check','DESC')->orderBy('documents_complete_status','DESC')->orderBy('updated_at','DESC')->get();
 
             if(count($applicants) == 0){
                 $applicants = [];

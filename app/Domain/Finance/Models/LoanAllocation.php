@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Domain\Application\Models\Applicant;
 
 class LoanAllocation extends Model
 {
@@ -22,6 +23,14 @@ class LoanAllocation extends Model
     public function user()
     {
     	return $this->belongsTo(User::class,'uploaded_by_user_id');
+    }
+
+        /**
+     * Establish one to many relationship with students
+     */
+    public function applicant()
+    {
+    	return $this->belongsTo(Applicant::class,'applicant_id');
     }
 
     /**

@@ -232,7 +232,8 @@ class AdmissionController extends Controller
                    $query->where('name','LIKE','%Miscellaneous%');
     	    })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
-        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
+        $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)
+                                          ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
 
 
     	if($applicant->insurance_available_status == 0){
@@ -300,7 +301,7 @@ class AdmissionController extends Controller
            'hostel_paid_amount'=>$hostel_paid_amount,
            'insurance_fee_invoice'=>$insurance_fee_invoice,
            'other_fee_invoice'=>$other_fee_invoice,
-           'loan_allocation'=>$loan_allocation,
+           'tuition_fee_loan'=>$tuition_fee_loan>0? $tuition_fee_loan : 0,
            'usd_currency'=>Currency::where('code','USD')->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'datediff'=>$datediff
@@ -320,7 +321,7 @@ class AdmissionController extends Controller
      * Store appeals
      */
     public function requestPaymentControlNumber(Request $request)
-    {
+    {   dd();
     	$applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel','country','applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
     	}])->where('campus_id',session('applicant_campus_id'))->latest()->first();
@@ -370,15 +371,18 @@ class AdmissionController extends Controller
             return redirect()->back()->with('error','This action cannot be performed now.');
         }
 
-        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
+        $loan_allocation = LoanAllocation::where('applicant_id',$applicant->id)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->sum('tuition_fee');
+        $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)
+                                          ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
+
         if($loan_allocation){
              if(str_contains($applicant->nationality,'Tanzania')){
-                 $amount = $program_fee->amount_in_tzs - $loan_allocation->tuition_fee;
-                 $amount_loan = round($loan_allocation->tuition_fee);
+                 $amount = $program_fee->amount_in_tzs - $tuition_fee_loan;
+                 $amount_loan = round($tuition_fee_loan);
                  $currency = 'TZS';
              }else{
-                 $amount = round(($program_fee->amount_in_usd - $loan_allocation->tuition_fee/$usd_currency->factor) * $usd_currency->factor);
-                 $amount_loan = round($loan_allocation->tuition_fee);
+                 $amount = round(($program_fee->amount_in_usd - $tuition_fee_loan/$usd_currency->factor) * $usd_currency->factor);
+                 $amount_loan = round($tuition_fee_loan);
                  $currency = 'TZS'; //'USD';
              }
         }else{
@@ -409,54 +413,53 @@ class AdmissionController extends Controller
         $surname = str_contains($applicant->surname,"'")? str_replace("'","",$applicant->surname) : $applicant->surname;
 
         if($amount != 0.00){
-        $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)
-        ->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
+            // Kama mkopo kiasi cha fee anachopata ni zaidi ya 60%
+            if($amount_loan/$amount_without_loan >= 0.6){
+                $applicant->tuition_payment_check = 1;
+                $applicant->save();
+            }else{
+                //return $program_fee->feeItem;
+                $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $program_fee->feeItem->feeType->id)
+                ->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
 
-        if(!$programFeeInvoiceRequestedCheck){
+                if(!$programFeeInvoiceRequestedCheck){
+                
+                    $invoice = new Invoice;
+                    $invoice->reference_no = 'MNMA-TF-'.time();
+                    $invoice->actual_amount = $amount_without_loan;
+                    $invoice->amount = $amount;
+                    $invoice->currency = $currency;
+                    $invoice->payable_id = $applicant->id;
+                    $invoice->payable_type = 'applicant';
+                    $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
+                    $invoice->applicable_id = $study_academic_year->id;
+                    $invoice->applicable_type = 'academic_year';
+                    $invoice->save();
+        
+                    $generated_by = 'SP';
+                    $approved_by = 'SP';
+                    $inst_id = config('constants.SUBSPCODE');
             
-            $invoice = new Invoice;
-            $invoice->reference_no = 'MNMA-TF-'.time();
-            $invoice->actual_amount = $amount_without_loan;
-            $invoice->amount = $amount;
-            $invoice->currency = $currency;
-            $invoice->payable_id = $applicant->id;
-            $invoice->payable_type = 'applicant';
-            $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
-            $invoice->applicable_id = $study_academic_year->id;
-            $invoice->applicable_type = 'academic_year';
-            $invoice->save();
-
-            $generated_by = 'SP';
-            $approved_by = 'SP';
-            $inst_id = config('constants.SUBSPCODE');
-    
-            $result = $this->requestControlNumber($request,
-                                        $invoice->reference_no,
-                                        $inst_id,
-                                        $invoice->amount,
-                                        $program_fee->feeItem->feeType->description,
-                                        $program_fee->feeItem->feeType->gfs_code,
-                                        $program_fee->feeItem->feeType->payment_option,
-                                        $applicant->id,
-                                        $first_name.' '.$surname,
-                                        $applicant->phone,
-                                        $email,
-                                        $generated_by,
-                                        $approved_by,
-                                        $program_fee->feeItem->feeType->duration,
-                                        $invoice->currency);
+                    $result = $this->requestControlNumber($request,
+                                                $invoice->reference_no,
+                                                $inst_id,
+                                                $invoice->amount,
+                                                $program_fee->feeItem->feeType->description,
+                                                $program_fee->feeItem->feeType->gfs_code,
+                                                $program_fee->feeItem->feeType->payment_option,
+                                                $applicant->id,
+                                                $first_name.' '.$surname,
+                                                $applicant->phone,
+                                                $email,
+                                                $generated_by,
+                                                $approved_by,
+                                                $program_fee->feeItem->feeType->duration,
+                                                $invoice->currency);
+                }
             }
     
         }  
 
-
-
-
-		// Kama mkopo kiasi cha fee anachopata ni zaidi ya 60%
-        if($amount_loan/$amount_without_loan >= 0.6){
-            $applicant->tuition_payment_check = 1;
-            $applicant->save();
-        }
         $hostel_fee = null;
     	if($applicant->hostel_available_status == 1 && $applicant->has_postponed != 1){
 
