@@ -4794,7 +4794,7 @@ class ApplicationController extends Controller
      * Selected applicant
      */
     public function applicantsRegistration(Request $request)
-    {
+    {    $full_fee_loan = null;
          $staff = User::find(Auth::user()->id)->staff;
          $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
          if(!$ac_year){
@@ -4822,6 +4822,10 @@ class ApplicationController extends Controller
                     return redirect('application/applicants-registration?application_window_id='.$application_window->id)->with('error','No applicant to register on this level');
                 }
             }
+
+            $full_fee_loan = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('study_academic_year_id',1)
+            ->where('campus_id',$application_window->campus_id)->where('tuition_fee','>=',1000000)->get();
+
          } else {
             $applicants = [];
          }
@@ -4859,7 +4863,8 @@ class ApplicationController extends Controller
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'awards'=>Award::all(),
             'applicants'=>$applicants,
-            'request'=>$request
+            'request'=>$request,
+            'loan_status'=>$full_fee_loan
          ];
 
          return view('dashboard.application.applicants-registration',$data)->withTitle('Applicants Registration');
