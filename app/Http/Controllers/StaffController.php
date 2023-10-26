@@ -32,6 +32,7 @@ use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use Illuminate\Support\Facades\Http;
 use App\Domain\Settings\Models\Currency;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class StaffController extends Controller
 {
@@ -241,10 +242,10 @@ class StaffController extends Controller
 		if(!empty($request->keyword)){
             $staff = User::find(Auth::user()->id)->staff;
 
-            $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
+            $applicant = Applicant::select('id','campus_id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
             $applicant_id = $applicant? $applicant->id : 0;
 
-			$student_payer = Student::where(function($query) use($request,$applicant_id,$staff){$query->where('registration_number', $request->keyword)
+			$student_payer = Student::where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
 			->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})
             ->whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
@@ -285,6 +286,16 @@ class StaffController extends Controller
                     }
                 }
             }
+            $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+            
+            $tuition_fee_loan = null;
+            if($applicant_payer){
+                $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('year_of_study',1)->where('study_academic_year_id',$ac_year->academicYear->id)
+                ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
+            }else{
+                $tuition_fee_loan = LoanAllocation::where('student_id',$student_payer->id)->where('year_of_study',$student_payer->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
+                ->where('campus_id',$student_payer->applicant->campus_id)->sum('tuition_fee');
+            }
 
             $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
 			$data = [
@@ -293,7 +304,8 @@ class StaffController extends Controller
 				'applicant_payments'=>$paid_as_applicant? $paid_as_applicant : [],
 				'student_payments'=>$paid_as_student? $paid_as_student : [],
                 'paid_receipts'=>$paid_receipts? $paid_receipts : [],
-                'total_paid_fee'=>$total_fee_paid_amount
+                'total_paid_fee'=>$total_fee_paid_amount,
+                'tuition_fee_loan'=>$tuition_fee_loan
 			];
 
 		}else{

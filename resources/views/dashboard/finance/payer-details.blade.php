@@ -145,9 +145,9 @@
 											   <th>Date</th>
 											   <th>Invoice#</th>
 											   <th>Fee Type</th>										   
-											   <th>Fee Amount</th>
-											   <th>Paid Amount</th>
-											   <th>Balance</th>
+											   <th>Fee Amount (TZS)</th>
+											   <th>Paid Amount (TZS)</th>
+											   <th>Balance (TZS)</th>
 											</tr>
 										  </thead>
 										  <tbody>
@@ -157,13 +157,21 @@
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
 											   <td title="Control#: {{ $payments->control_no }}">{{ $payments->reference_no }}</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
-											   <td>{{ number_format($payments->amount,2) }} {{ $payments->currency }}</td>
+											   <td>
+												@if(str_contains($payments->feeType->name,'Tuition'))
+													@if($tuition_fee_loan > 0)
+														{{ number_format($payments->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+													@endif
+												@else
+													{{ number_format($payments->amount,2) }} 
+												
+												@endif
 											   <td>
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														{{ number_format($total_paid_fee,2) }}
 													@else
-														{{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
 													@endif	
 												@endif
 		
@@ -171,9 +179,9 @@
 											   <td>
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
-														{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee,2) }} {{ $payments->gatewayPayment->ccy }}
+														{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee,2) }} 
 													@else
-														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }}
 													@endif
 												@endif  
 											   </td>
@@ -285,22 +293,31 @@
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
 											   <td title="Control#: {{ $payments->control_no }}">{{ $payments->reference_no }}</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
-											   <td>{{ number_format($payments->amount,2) }} {{ $payments->currency }}</td>
+											   <td>
+												@if(str_contains($payments->feeType->name,'Tuition'))
+													@if($tuition_fee_loan > 0)
+														{{ number_format($payments->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+													@endif
+												@else
+													{{ number_format($payments->amount,2) }} 
+												
+												@endif
+											   </td>
 											   <td>
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														{{ number_format($total_paid_fee,2) }}
 													@else
-														{{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+														{{ number_format($payments->gatewayPayment->paid_amount,2) }}
 													@endif	
 												@endif
 											   </td>
 											   <td>
 												@if($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
-														{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee,2) }} {{ $payments->gatewayPayment->ccy }}
+														{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee,2) }} 
 													@else
-														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} 
 													@endif
 												@endif
 											   </td>
