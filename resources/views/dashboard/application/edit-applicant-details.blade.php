@@ -101,7 +101,12 @@
                          'placeholder'=>'Email',
                          'class'=>'form-control',
                          'required'=>true
-                      ];					  
+                      ];		
+                      $gender = [
+                         'placeholder'=>'F',
+                         'class'=>'form-control',
+                         'required'=>true
+                      ];			  
                       $phone = [
                          'placeholder'=>'255739000000',
                          'class'=>'form-control',
@@ -146,7 +151,15 @@
                     <div class="form-group col-3">
                        {!! Form::label('','Email') !!}
                        {!! Form::email('email',$applicant->email,$email) !!}
-                    </div>					
+                    </div>		
+                    <div class="form-group col-3">
+                      {!! Form::label('','Sex') !!}
+                      <select name="gender" class="form-control" >
+                        <option value="">Select sex</option>
+                        <option value="F" @if($applicant->gender == 'F') selected = 'selected' @endif>Female</option>
+                        <option value="M" @if($applicant->gender == 'M') selected = 'selected' @endif>Male</option>                      
+                      </select>
+                      </div>			
                     <div class="form-group col-3">
                        {!! Form::label('','Phone') !!}
                        {!! Form::text('phone',$applicant->phone,$phone) !!}

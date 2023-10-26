@@ -3059,7 +3059,12 @@ class ApplicantController extends Controller
     {
         $validation = Validator::make($request->all(),[
             'phone'=>'required|min:12|max:12',
-            'email'=>'required|email'
+            'email'=>'required|email',
+            'gender'=>'required',
+            'index_number'=>'required',
+            'nationality'=>'required',
+            'program_level_id'=>'required',
+            'entry_mode'=>'required'
         ]);
 
         if($validation->fails()){
@@ -3112,6 +3117,7 @@ class ApplicantController extends Controller
             $applicant->nationality = $request->get('nationality');
             $applicant->phone = $request->get('phone');
             $applicant->email = $request->get('email');
+            $applicant->gender = $request->get('gender');
             $applicant->entry_mode = $request->get('entry_mode');
             $applicant->program_level_id = $request->get('program_level_id');
             $applicant->save();
