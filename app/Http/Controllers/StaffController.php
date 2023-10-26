@@ -31,6 +31,7 @@ use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use Illuminate\Support\Facades\Http;
+use App\Domain\Settings\Models\Currency;
 
 class StaffController extends Controller
 {
@@ -347,10 +348,10 @@ class StaffController extends Controller
     public function initiateControlNumberRequest(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+        $usd_currency = Currency::where('code','USD')->first();
 
  		$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
-					  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
-
+					  ->where('study_academic_year_id',$request->study_academic_year_id)->with('feeItem:name,id,fee_type_id')->first();
 					  
 		if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
 			$student = Student::with('applicant')->where('registration_number', $request->registration_number)->first();
@@ -400,6 +401,7 @@ class StaffController extends Controller
 			$invoice->applicable_id = $request->study_academic_year_id;
 			$invoice->applicable_type = 'academic_year';
 			$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
+            $invoice->created_by_user_id = $staff->id;
 			$invoice->save();
 
 			$generated_by = 'SP';
@@ -425,7 +427,9 @@ class StaffController extends Controller
 										$fee_amount->feeItem->feeType->duration,
 										$invoice->currency);
 			DB::commit();
-			
+			if(str_contains(strtolower($fee_amount->feeItem->name),'accommodation')){
+                Applicant::where('id',$student->applicant_id)->update(['hostel_status'=>1,'hostel_available_status'=>1]);
+            }
 			return redirect()->to('finance/show-control-number?registration_number='.$student->registration_number)->with('message','Control number created successfully');		
 		}
     }	
