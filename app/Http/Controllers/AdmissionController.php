@@ -321,7 +321,7 @@ class AdmissionController extends Controller
      * Store appeals
      */
     public function requestPaymentControlNumber(Request $request)
-    {   dd();
+    {   
     	$applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel','country','applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
     	}])->where('campus_id',session('applicant_campus_id'))->latest()->first();
