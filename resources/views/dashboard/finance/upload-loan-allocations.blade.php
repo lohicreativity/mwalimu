@@ -66,9 +66,9 @@
                   @if(session('missallocations'))
                   <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                      <p>The following beneficiaries are not our students. Please, remove them from your CSV file.</p>
+                      The following beneficiaries are not our students. Please remove them from your CSV file.<br>
                     @foreach(session('missallocations') as $key=>$stud)
-                      <p> {{ ($key+1) }}. {{ $stud }}  </p>
+                       {{ ($key+1) }}. {{ $stud }}  <br>
                     @endforeach
                  </div><!-- end of ss-messages_box -->
                  @endif
@@ -76,9 +76,9 @@
                   @if(session('existing_beneficiaries'))
                   <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                      <p>The following students have allocations in this batch. Please, remove them from your CSV file or indicate their correct batch.</p>
+                      The following students have allocations in this batch. Please remove them from your CSV file or indicate their correct batch. <br>
                     @foreach(session('existing_beneficiaries') as $key=>$stud)
-                      <p> {{ ($key+1) }}. {{ $stud }} </p>
+                       {{ ($key+1) }}. {{ $stud }} <br>
                     @endforeach
                  </div><!-- end of ss-messages_box -->
                  @endif

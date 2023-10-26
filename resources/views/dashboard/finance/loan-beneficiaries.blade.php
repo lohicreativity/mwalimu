@@ -82,7 +82,7 @@
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Loan Beneficiaries') }} - 
                   @if($request->get('year_of_study') == 1) First Year @elseif($request->get('year_of_study') == 1) Second Year @else Third Year @endif 
-                  @if(count($beneficiaries)>0) @if($beneficiaries[0]->campus_id == 1) (Kivukoni Campus) @elseif($beneficiaries[0]->campus_id == 2) (Karume Campus) @elseif($beneficiaries[0]->campus_id == 3) (Pemba Campus) @endif @endif
+                  @if($beneficiaries[0]->campus_id == 1) (Kivukoni Campus) @elseif($beneficiaries[0]->campus_id == 2) (Karume Campus) @elseif($beneficiaries[0]->campus_id == 3) (Pemba Campus) @endif
                 </h3><br>
                 @if(Auth::user()->hasRole('loan-officer'))
                 <a href="{{ url('finance/download-loan-beneficiaries?study_academic_year_id='.$request->get('study_academic_year_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Loan Beneficiaries</a>

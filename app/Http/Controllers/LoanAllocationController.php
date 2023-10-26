@@ -125,7 +125,8 @@ class LoanAllocationController extends Controller
 							$allocation->books_and_stationeries = trim($line[6]);	
 							$allocation->research = trim($line[7]);		
 							$allocation->field_training = trim($line[8]);	
-							$allocation->uploaded_by_user_id = $staff->id;										
+							$allocation->uploaded_by_user_id = $staff->id;			
+							$allocation->uploaded_at = now();								
 							$allocation->save();
 						}
 						
