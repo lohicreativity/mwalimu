@@ -2503,7 +2503,7 @@ class ApplicantController extends Controller
     public function deleteInvoice(Request $request)
     {
          $applicant = Applicant::select('id')->where('id',$request->get('applicant_id'))->latest()->first();
-         $invoices = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->where('control_no',null)->get();
+         $invoices = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->where(function($query){$query->where('control_no',null)->orWhere('control_no',0);})->get();
          foreach($invoices as $invoice){
             //if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
                $invoice->payable_id = 0;
