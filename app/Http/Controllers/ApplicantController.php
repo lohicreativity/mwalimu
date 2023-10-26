@@ -3043,7 +3043,7 @@ class ApplicantController extends Controller
          'applicant'=> $applicant,
          'awards'=>Award::all(),
 		   'countries'=>Country::all(),
-         'invoice'=>$request->get('index_number')? Invoice::whereNull('control_no')->where('payable_id',$applicant->id)
+         'invoice'=>$request->get('index_number')? Invoice::whereNull('control_no')->orWhere('control_no',0)->where('payable_id',$applicant->id)
                                                             ->where('payable_type','applicant')->latest()->first() : null
          ];
 
