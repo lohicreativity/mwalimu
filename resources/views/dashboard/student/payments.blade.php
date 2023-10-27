@@ -53,24 +53,50 @@
                        <th>Date</th>
                        <th>Control#</th>					   
                        <th>Fee Type</th>
-                       <th>Fee Amount</th>
-                       <th>Paid Amount</th>
-                       <th>Balance</th>
+                       <th>Fee Amount (TZS)</th>
+                       <th>Paid Amount (TZS)</th>
+                       <th>Balance (TZS)</th>
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                    
+                      foreach($receipts as $receipt){
+                        if($receipt->gatewayPayment){
+
+                        }
+                      }
+                    @endphp
                     @foreach($receipts as $receipt)
                     <tr>
-                       <td>{{ $receipt->academic_year }}</td>
+                       <td>{{ explode('-',$receipt->applicable->begin_date)[0].'/'.explode('-',$receipt->applicable->begin_date)[0]+1 }}</td>
                        <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
                        <td>{{ $receipt->control_no }}</td> 					   
-                       <td>{{ $receipt->fee_name }}</td> 
-                       <td>{{ number_format($receipt->bill_amount,2) }} {{ $receipt->ccy }}</td>
+                       <td>{{ $receipt->feeType->name }}</td> 
                        <td>
-                          {{ number_format($receipt->paid_amount,2) }} {{ $receipt->ccy }}
+
+                        @if(str_contains($receipt->feeType->name,'Tuition'))
+                          @if(count($tuition_fee_loans) > 0)
+                            @foreach ($tuition_fee_loans as $tuition_fee_loan)
+                              @if($tuition_fee_loan->study_academic_year_id == $receipt->applicable->id)
+                                {{ number_format($receipt->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan->tuition_fee,2) }} from HESLB) </span>
+                                @break
+                              @endif
+                            @endforeach
+                          @else
+                            {{ number_format($receipt->amount,2) }}
+                          @endif
+                        @else
+                        {{ number_format($receipt->amount,2) }}
+                        
+                        @endif
+
                        </td>
                        <td>
-                          {{ number_format($receipt->bill_amount-$receipt->paid_amount,2) }} {{ $receipt->ccy }}
+                          @if($receipt->gatewayPayment) {{ number_format($receipt->gatewayPayment->paid_amount,2) }} @else 0.00 @endif
+                       </td>
+                       <td>
+                        @if($receipt->gatewayPayment) {{ number_format($receipt->amount-$receipt->gatewayPayment->paid_amount,2) }} @else {{ number_format($receipt->amount, 2) }}@endif
                        </td>
                     </tr>
                     @endforeach
