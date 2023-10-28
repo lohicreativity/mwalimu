@@ -161,6 +161,10 @@ class StudentController extends Controller
   //             $query->where('invoices.payable_id',$student->applicant_id)->where('invoices.payable_type','applicant')->where('invoices.applicable_type','academic_year');
   //           })->latest()->get()
 
+  return Invoice::where('payable_id', $student->id)->where('payable_type','student')
+  ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
+      ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
+
    	$data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,

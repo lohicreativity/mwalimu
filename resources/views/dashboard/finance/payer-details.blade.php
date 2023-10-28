@@ -161,6 +161,8 @@
 												@if(str_contains($payments->feeType->name,'Tuition'))
 													@if($tuition_fee_loan > 0)
 														{{ number_format($payments->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+													@else
+														{{ number_format($payments->amount,2) }} 														
 													@endif
 												@else
 													{{ number_format($payments->amount,2) }} 
@@ -172,7 +174,9 @@
 														{{ number_format($total_paid_fee,2) }}
 													@else
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
-													@endif	
+													@endif
+												@else
+													{{ number_format($payments->amount,2) }} 													
 												@endif
 		
 											   </td>
@@ -183,6 +187,8 @@
 													@else
 														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }}
 													@endif
+												@else
+													{{ number_format($payments->amount,2) }}
 												@endif  
 											   </td>
 											</tr>
@@ -297,10 +303,11 @@
 												@if(str_contains($payments->feeType->name,'Tuition'))
 													@if($tuition_fee_loan > 0)
 														{{ number_format($payments->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+													@else
+														{{ number_format($payments->amount,2) }}
 													@endif
 												@else
 													{{ number_format($payments->amount,2) }} 
-												
 												@endif
 											   </td>
 											   <td>
@@ -309,7 +316,9 @@
 														{{ number_format($total_paid_fee,2) }}
 													@else
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }}
-													@endif	
+													@endif
+												@else
+													{{ number_format($payments->amount,2) }}	
 												@endif
 											   </td>
 											   <td>
@@ -319,6 +328,8 @@
 													@else
 														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} 
 													@endif
+												@else
+													{{ number_format($payments->amount,2) }}
 												@endif
 											   </td>
 											</tr>

@@ -60,9 +60,18 @@
                   </thead>
                   <tbody>
                     @php
-                    
+                      $x = $y = null;
                       foreach($receipts as $receipt){
+                        $fee_type = $ac_yr = null;
                         if($receipt->gatewayPayment){
+                          $fee_type = $receipt->fee_type_id;
+                          $ac_yr = $receipt->applicable;
+
+                          if($fee_type == $x && $ac_yr == $y){
+                            $total_paid_amount =+ $receipt->gatewayPayment->paid_amount;
+                          }else{
+                            
+                          }
 
                         }
                       }
