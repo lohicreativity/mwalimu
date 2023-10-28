@@ -772,7 +772,7 @@ class RegistrationController extends Controller
                'margin_right'=>0,
                'orientation'=>'L',
                'display_mode'=>'fullpage',
-               'format'=>[500,400]
+               //'format'=>[500,400]
         ]);
         return  $pdf->stream();
         //  return view('dashboard.registration.reports.id-card',$data);
