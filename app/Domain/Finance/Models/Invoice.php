@@ -59,7 +59,7 @@ class Invoice extends Model
      */
     public function payments()
     {
-        return $this->hasMany(GatewayPayment::class,'bill_id');
+        return $this->hasMany(GatewayPayment::class,'id');
     }
     /**
      * Establish one to many relationship with appeals

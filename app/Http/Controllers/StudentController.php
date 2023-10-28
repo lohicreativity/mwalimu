@@ -149,8 +149,8 @@ class StudentController extends Controller
      */
     public function showPayments(Request $request)
     {
-      $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
-
+      // needs to improve to display registration status on the top bar
+      $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=> function($query){$query->latest()->first();}])->first();
 
   // DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')
   //           ->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')
@@ -161,16 +161,16 @@ class StudentController extends Controller
   //             $query->where('invoices.payable_id',$student->applicant_id)->where('invoices.payable_type','applicant')->where('invoices.applicable_type','academic_year');
   //           })->latest()->get()
 
-  return Invoice::where('payable_id', $student->id)->where('payable_type','student')
-  ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-      ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
+  // return Invoice::where('payable_id', $student->id)->where('payable_type','student')
+  // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
+  //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
 
    	$data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'receipts'=>Invoice::where('payable_id', $student->id)->where('payable_type','student')
             ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-                ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get(),
+                ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->latest()->get(),
             'tuition_fee_loans'=>LoanAllocation::where('student_id',$student->id)->where('campus_id',$student->applicant->campus_id)->where('tuition_fee','>',0)->get()
 
     	];

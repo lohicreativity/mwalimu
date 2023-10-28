@@ -20,9 +20,11 @@
     <ul class="navbar-nav ml-auto">
       <!-- User Account Dropdown Menu -->
 	  @if(Auth::user()->hasRole('student'))
-		<span class="nav-link">{{ ucwords(strtolower($student->first_name)) }} {{ ucwords(strtolower($student->middle_name)) }} {{ ucwords(strtolower($student->surname)) }}&nbsp;|&nbsp; 
-		{{ $student->campusProgram->code }} &nbsp;|&nbsp; {{ $study_academic_year->academicYear->year }} &nbsp;|&nbsp; 
-		@if($student->applicant->intake_id == 1) September Intake @elseif($student->applicant->intake_id == 2) March Intake @endif </span>
+		<span class="nav-link">{{ ucwords(strtolower($student->first_name)) }} {{ substr($student->middle_name,0,1).'.' }} {{ ucwords(strtolower($student->surname)) }}
+      <span style='color:red'> ({{ ucwords(strtolower($student->studentshipStatus->name)) }}) </span> &nbsp;|&nbsp; 
+		{{ $student->registration_number }} &nbsp;|&nbsp; {{ $study_academic_year->academicYear->year }} &nbsp;|&nbsp; 
+		@if($student->applicant->intake_id == 1) September Intake @elseif($student->applicant->intake_id == 2) March Intake  @endif &nbsp;|&nbsp;
+    @if($student->applicant->campus_id == 1) Kivukoni Campus @elseif($student->applicant->campus_id == 2) Karume Campus @elseif($student->applicant->campus_id == 3) Pemba Campus @endif</span>
       @endif
 	<li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">

@@ -49,6 +49,7 @@
                  <table class="table table-bordered ss-paginated-table">
                     <thead>
                     <tr>
+                       <th>SN</th>
                        <th>Academic Year</th>
                        <th>Date</th>
                        <th>Control#</th>					   
@@ -60,24 +61,12 @@
                   </thead>
                   <tbody>
                     @php
-                      $x = $y = null;
-                      foreach($receipts as $receipt){
-                        $fee_type = $ac_yr = null;
-                        if($receipt->gatewayPayment){
-                          $fee_type = $receipt->fee_type_id;
-                          $ac_yr = $receipt->applicable;
-
-                          if($fee_type == $x && $ac_yr == $y){
-                            $total_paid_amount =+ $receipt->gatewayPayment->paid_amount;
-                          }else{
-                            
-                          }
-
-                        }
-                      }
+                      $total_paid = 0;
                     @endphp
-                    @foreach($receipts as $receipt)
+
+                    @foreach($receipts as $key=>$receipt)
                     <tr>
+                       <td>{{ ($key+1)}} </td>
                        <td>{{ explode('-',$receipt->applicable->begin_date)[0].'/'.explode('-',$receipt->applicable->begin_date)[0]+1 }}</td>
                        <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
                        <td>{{ $receipt->control_no }}</td> 					   
@@ -102,10 +91,21 @@
 
                        </td>
                        <td>
-                          @if($receipt->gatewayPayment) {{ number_format($receipt->gatewayPayment->paid_amount,2) }} @else 0.00 @endif
+                          @if($receipt->gatewayPayment) {{ number_format($receipt->gatewayPayment->paid_amount,2) }} 
+                            @if ($receipt->feeType->payment_option == 2)
+                             @php $total_paid =+ $receipt->gatewayPayment->paid_amount; @endphp
+                            @endif 
+                          @else
+                           0.00 
+                          @endif
                        </td>
                        <td>
-                        @if($receipt->gatewayPayment) {{ number_format($receipt->amount-$receipt->gatewayPayment->paid_amount,2) }} @else {{ number_format($receipt->amount, 2) }}@endif
+                        @if($receipt->gatewayPayment) 
+                          @if ($receipt->feeType->payment_option == 2) {{ number_format($receipt->amount-$total_paid,2) }}
+                          @else  {{ number_format($receipt->amount- $receipt->gatewayPayment->paid_amount,2) }} 
+                          @endif
+                        @else {{ number_format($receipt->amount, 2) }}
+                        @endif
                        </td>
                     </tr>
                     @endforeach
