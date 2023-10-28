@@ -176,7 +176,7 @@
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
 													@endif
 												@else
-													{{ number_format($payments->amount,2) }} 													
+													0.00 													
 												@endif
 		
 											   </td>
@@ -318,7 +318,7 @@
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }}
 													@endif
 												@else
-													{{ number_format($payments->amount,2) }}	
+													0.00	
 												@endif
 											   </td>
 											   <td>
