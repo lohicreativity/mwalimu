@@ -242,9 +242,9 @@
      <div class="row" style="margin-top: -20px;">
         <div class="col-md-3" style="padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
-          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
+          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 20px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
-          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
+          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 20px;">
           @endif
         </div>
         <div class="col-md-9" style="float:right; padding: 5px; margin-top: -120px;">
@@ -268,7 +268,7 @@
         <div class="col-md-6" style="text-align: right;">
             <h2 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:5px; font-size: 20px;">{{ $student->campusProgram->campus->name }}</h2>
         </div>
-    </div>  
+    </div>  padding-left: 15px;
 
    <!-- </div>
     <div id="semester" style="width: 710px; background-color:#1b2066; padding: 0px;">
