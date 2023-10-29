@@ -256,7 +256,6 @@
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px;"></h5>
         </div>
      </div>
-    </div>
      <div class="row" style="background-color:#1b2066; width:auto; margin-top: -20px;">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <h5 style="text-align:left; color: white; font-weight: bold; padding-left: 20px;">Semester One</h5>
@@ -269,6 +268,8 @@
         </div>
     </div>   
    </div>
+    </div>
+
    <!-- </div>
     <div id="semester" style="width: 710px; background-color:#1b2066; padding: 0px;">
         <div class="row">
