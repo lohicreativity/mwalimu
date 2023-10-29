@@ -321,7 +321,7 @@
           </div>
        </div>
        <div class="row">
-            <p style="text-align:center;">  
+            <p style="text-align:center; font-size: 13px;">  
              @php
 
              $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
