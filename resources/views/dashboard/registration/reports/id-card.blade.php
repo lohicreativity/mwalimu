@@ -232,9 +232,9 @@
            <h3 style="margin-top: 0px; color: #1b2066;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
      </div>
-     <div style="border:5px solid #1b2066; margin-top: -20px; margin-bottom: 5px;"></div>
+     <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div>
 
-     <div class="container" style="position: relative; z-index: 1000;">
+     <div class="container" style="position: relative; z-index: 1000; margin-top: 10px;">
      <div class="row" style="margin-top: -20px; margin-bottom: 18px;">
         <div class="col-md-3" style="padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
