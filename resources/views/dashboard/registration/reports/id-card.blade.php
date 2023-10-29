@@ -258,7 +258,7 @@
      </div> 
    </div>
     </div>
-    <div class="row" style="background-color:#1b2066; width:100%; margin-top: -20px; position:absolute;">
+    <div class="row" style="background-color:#1b2066; width:100%; margin-top: -15px; position:absolute;">
         <div class="col-md-6" style=" margin-top: -20px;"> @if($semester->name == 'Semester 1')
             <h5 style="text-align:left; color: white; font-weight: bold; padding-left: 5px;">Semester One</h5>
             @else
