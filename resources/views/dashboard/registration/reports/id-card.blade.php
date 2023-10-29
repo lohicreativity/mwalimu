@@ -224,7 +224,6 @@
 
    <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-image: url({{ asset('img/mnma-id-bg.png') }});">
 
-   
      <div class="row" style="padding:20px;">
         <div class="col-md-3 ss-center" style="text-align: center; padding-top: -5px;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
@@ -254,7 +253,7 @@
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">SIGNATURE:
-           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
+           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px;"></h5>
         </div>
      </div>
      <div class="row" style="background-color:#1b2066; width:100%; position:absolute; top: 21.5rem;">
