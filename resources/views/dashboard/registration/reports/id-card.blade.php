@@ -260,13 +260,13 @@
     </div>
     <div class="row" style="background-color:#1b2066; width:100%; margin-top: -15px; position:absolute;">
         <div class="col-md-6" style=" margin-top: -20px;"> @if($semester->name == 'Semester 1')
-            <h4 style="text-align:left; color: white; font-weight: bold; padding-left: 5px;">Semester One</h5>
+            <h4 style="text-align:left; color: white; font-weight: bold; padding-left: 5px;">Semester One</h4>
             @else
-                <h4 style="text-align:left; color: white; font-weight: bold; padding-left: 5px;">Semester Two</h5>
+                <h4 style="text-align:left; color: white; font-weight: bold; padding-left: 5px;">Semester Two</h4>
             @endif
         </div>
         <div class="col-md-6" style="text-align: right;">
-            <h4 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:5px;">{{ $student->campusProgram->campus->name }}</h5>
+            <h4 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:5px;">{{ $student->campusProgram->campus->name }}</h4>
         </div>
     </div>  
    <!-- </div>
