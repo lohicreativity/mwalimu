@@ -224,7 +224,7 @@
 
    <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-image: url({{ asset('img/mnma-id-bg.png') }});">
 
-    <div class="container" style="position: relative; z-index: 1000;">
+   
      <div class="row" style="padding:20px;">
         <div class="col-md-3 ss-center" style="text-align: center;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
@@ -232,13 +232,14 @@
         <div class="col-md-9">
            <h3 style="margin-top: 0px;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
-        <hr style="border:10px solid #1b2066;">
      </div>
+     <hr style="border:5px solid #1b2066;">
      <!-- <div class="row">
         <div class="col-md-12">
-            <hr style="border:5px solid #1b2066; width:99%;">
+            
         </div>
      </div> -->
+     <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
