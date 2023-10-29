@@ -242,9 +242,9 @@
      <div class="row" style="margin-top: -20px;">
         <div class="col-md-3" style="padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
-          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
+          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
-          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
+          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
           @endif
         </div>
         <div class="col-md-9" style="float:right; padding: 5px; margin-top: -120px;">
