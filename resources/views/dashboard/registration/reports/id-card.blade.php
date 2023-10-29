@@ -265,8 +265,8 @@
                 <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; font-size: 20px;">Semester Two</p>
             @endif
         </div>
-        <div class="col-md-6" style="text-align: right;">
-            <p style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:5px; font-size: 20px;">{{ $student->campusProgram->campus->name }}</p>
+        <div class="col-md-6" style="float: right;">
+            <p style="-webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:5px; font-size: 20px;">{{ $student->campusProgram->campus->name }}</p>
         </div>
     </div> 
 
