@@ -257,7 +257,7 @@
         </div>
      </div>
      <div class="row" style="background-color:#1b2066; width:auto; margin-top: -20px;">
-        <div class="col-md-6"> @if($semester->name == 'Semester 1')
+        <!-- <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <h5 style="text-align:left; color: white; font-weight: bold; padding-left: 20px;">Semester One</h5>
             @else
                 <h5 style="text-align:left; color: white; font-weight: bold; padding-left: 20px;">Semester Two</h5>
@@ -265,7 +265,7 @@
         </div>
         <div class="col-md-6" style="text-align: right;">
             <h5 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right: 20px;">{{ $student->campusProgram->campus->name }}</h5>
-        </div>
+        </div> -->
     </div>   
    </div>
     </div>
