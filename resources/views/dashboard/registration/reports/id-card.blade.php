@@ -222,7 +222,7 @@
 </head>
 <body>
 
-   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-image: url({{ asset('img/mnma-id-bg.png') }});">
+   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 320px; background-image: url({{ asset('img/mnma-id-bg.png') }});">
 
      <div class="row" style="padding:20px;">
         <div class="col-md-3 ss-center" style="text-align: center; padding-top: -5px;">
