@@ -264,7 +264,7 @@
             @endif
         </div>
         <div class="col-md-6" style="float: right;">
-            <p style="-webkit-text-stroke: 1px white; font-weight: bold; color: red; text-align: right; padding-right: 60px;font-size: 16px;">{{ $student->campusProgram->campus->name }}</p>
+            <p style="-webkit-text-stroke: 1px white; font-weight: bold; color: red; text-align: right; padding-right: 70px;font-size: 16px;">{{ $student->campusProgram->campus->name }}</p>
         </div>
     </div> 
    </div>
