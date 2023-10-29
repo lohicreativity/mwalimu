@@ -286,10 +286,10 @@
     </div> -->
    <pagebreak>
      <div id="ss-id-card-back" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; ">
-       <div class="container"  style="margin-top: 10px;">
+       <div class="container">
        <div class="row">
           <div class="col-md-12">
-             <h3 style="margin: 0px 0px 5px 10px; text-align:center;">CAUTION</h1>
+             <h3 style="margin: 0px 0px 5px 10px; text-align:center; padding-top: 10px;">CAUTION</h1>
           </div>
        </div>
        <div class="row">
