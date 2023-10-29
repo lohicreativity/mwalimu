@@ -232,12 +232,13 @@
         <div class="col-md-9">
            <h3 style="margin-top: 0px;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
+        <hr style="border:10px solid #1b2066;">
      </div>
-     <div class="row">
+     <!-- <div class="row">
         <div class="col-md-12">
             <hr style="border:5px solid #1b2066; width:99%;">
         </div>
-     </div>
+     </div> -->
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
