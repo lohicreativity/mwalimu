@@ -242,17 +242,17 @@
      <div class="row" style="margin-top: -20px;">
         <div class="col-md-3" style="padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
-          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
+          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
-          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
+          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
           @endif
         </div>
         <div class="col-md-9" style="float:right; padding: 5px; margin-top: -120px;">
-           <h5 style="margin: 0px 0px 0px 25px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px;">NAME: <span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
-           <h5 style="margin: 0px 0px 0px 25px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px;">SIGNATURE:
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">NAME: <span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px;"></h5>
         </div>
      </div> 
