@@ -289,7 +289,7 @@
        <div class="container">
        <div class="row">
           <div class="col-md-12">
-             <h3 style="margin: 0px 0px 10px 10px; text-align:center;">CAUTION</h1>
+             <h3 style="margin: 5px 0px 5px 10px; text-align:center;">CAUTION</h1>
           </div>
        </div>
        <div class="row">
