@@ -256,7 +256,7 @@
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px;"></h5>
         </div>
      </div> 
-     <div class="row" style="background-color:#1b2066; margin-top: -15px; position:absolute; margin-right: -80px;">
+     <div class="row" style="background-color:#1b2066; margin-top: -10px; position:absolute; margin-right: -80px;">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; font-size: 16px;">Semester One</p>
             @else
@@ -264,7 +264,7 @@
             @endif
         </div>
         <div class="col-md-6" style="float: right;">
-            <p style="-webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:10px; font-size: 16px;">{{ $student->campusProgram->campus->name }}</p>
+            <p style="-webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right:5px; font-size: 16px;">{{ $student->campusProgram->campus->name }}</p>
         </div>
     </div> 
    </div>
