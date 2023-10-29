@@ -241,7 +241,7 @@
      </div> -->
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
-        <div class="col-md-3" style="text-align: center;">
+        <div class="col-md-3" style="text-align: center; padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
