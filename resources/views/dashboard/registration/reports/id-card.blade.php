@@ -229,15 +229,11 @@
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
         </div>
         <div class="col-md-9">
-           <h3 style="margin-top: 0px;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+           <h3 style="margin-top: 0px; color: #1b2066;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
      </div>
-     <hr style="border:20px solid #1b2066; margin-top: -20px;">
-     <!-- <div class="row">
-        <div class="col-md-12">
-            
-        </div>
-     </div> -->
+     <div style="border:20px solid #1b2066; margin-top: -20px;"></div>
+
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row" style="margin-top: -20px; margin-bottom: 18px;">
         <div class="col-md-3" style="padding: 5px;">
