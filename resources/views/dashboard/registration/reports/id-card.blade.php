@@ -248,7 +248,7 @@
           <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
           @endif
         </div>
-        <div class="col-md-9" style="float:right; padding: 5px;">
+        <div class="col-md-9" style="float:right; padding: 5px; position:absolute;">
            <h5 style="margin: 0px 0px 0px 20px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">NAME: <span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
