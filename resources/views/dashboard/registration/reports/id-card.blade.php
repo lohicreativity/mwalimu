@@ -258,19 +258,16 @@
      </div>
     </div>
      <div class="row" style="background-color:#1b2066; width:auto;">
-      <div class="container">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <h5 style="text-align:left; color: white; font-weight: bold; padding: 10px;">Semester One</h5>
             @else
                 <h5 style="text-align:left; color: white; font-weight: bold; padding: 10px;">Semester Two</h5>
             @endif
         </div>
-        <div class="col-md-6" style="text-align: right;">
+        <div class="col-md-6">
             <h5 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding: 10px;">{{ $student->campusProgram->campus->name }}</h5>
         </div>
-    </div>
-     </div>
-    
+    </div>   
    </div>
    <!-- </div>
     <div id="semester" style="width: 710px; background-color:#1b2066; padding: 0px;">
