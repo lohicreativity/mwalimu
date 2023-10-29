@@ -266,7 +266,7 @@
             @endif
         </div>
         <div class="col-md-6" style="text-align: right;">
-            <h5 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-right: 20px;">{{ $student->campusProgram->campus->name }}</h5>
+            <h5 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red;">{{ $student->campusProgram->campus->name }}</h5>
         </div>
     </div>  
    <!-- </div>
