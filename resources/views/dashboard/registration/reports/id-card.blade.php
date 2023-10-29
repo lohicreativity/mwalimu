@@ -287,8 +287,8 @@
    <pagebreak>
      <div id="ss-id-card-back" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; ">
        <div class="container">
-       <div class="row">
-          <div class="col-md-12" style="margin-top: 10px;">
+       <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
              <h3 style="margin: 0px 0px 5px 10px; text-align:center;">CAUTION</h1>
           </div>
        </div>
