@@ -264,7 +264,7 @@
                 <h5 style="text-align:left; color: white; font-weight: bold; padding: 10px;">Semester Two</h5>
             @endif
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" style="text-align: right;">
             <h5 style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding: 10px;">{{ $student->campusProgram->campus->name }}</h5>
         </div>
     </div>   
