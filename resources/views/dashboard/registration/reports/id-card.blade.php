@@ -240,7 +240,7 @@
      </div> -->
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row" style="margin-top: -20px;">
-        <div class="col-md-3" style="padding: 10px;">
+        <div class="col-md-3" style="padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
@@ -257,7 +257,7 @@
         </div>
      </div>
     </div>
-     <div class="row" style="background-color:#1b2066; width:auto; position:absolute; top: 21.5rem; height: 30px; padding: 10px;">
+     <div class="row" style="background-color:#1b2066; width:auto; position:absolute; top: 21.5rem; height: 30px; padding: 0px 5px 0px 5px;">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <h5 style="text-align:left; color: white; font-weight: bold; margin: 20px 0px 0px 0px; padding: 10px;">Semester One</h5>
             @else
