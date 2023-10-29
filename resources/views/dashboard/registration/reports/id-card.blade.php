@@ -260,13 +260,13 @@
     </div>
     <div class="row" style="background-color:#1b2066; width:100%; margin-top: -15px; position:absolute;">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
-            <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; padding-top: 10px; padding-bottom: 30px; font-size: 20px;">Semester One</p>
+            <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; padding-top: 10px; padding-bottom: 20px; font-size: 20px;">Semester One</p>
             @else
-                <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; padding-top: 10px; padding-bottom: 30px; font-size: 20px;">Semester Two</p>
+                <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; padding-top: 10px; padding-bottom: 20px; font-size: 20px;">Semester Two</p>
             @endif
         </div>
         <div class="col-md-6" style="text-align: right;">
-            <p style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-top: 10px; padding-bottom: 30px; padding-right:5px; font-size: 20px;">{{ $student->campusProgram->campus->name }}</p>
+            <p style="float: right;  -webkit-text-stroke: 1px white; font-weight: bold; color: red; padding-top: 10px; padding-bottom: 20px; padding-right:5px; font-size: 20px;">{{ $student->campusProgram->campus->name }}</p>
         </div>
     </div> 
 
