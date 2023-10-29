@@ -233,7 +233,7 @@
            <h3 style="margin-top: 0px;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
      </div>
-     <hr style="border:20px solid #1b2066;">
+     <hr style="border:20px solid #1b2066; margin-top: -15px;">
      <!-- <div class="row">
         <div class="col-md-12">
             
