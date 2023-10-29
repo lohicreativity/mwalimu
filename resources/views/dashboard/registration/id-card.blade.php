@@ -152,7 +152,7 @@
 									  Compose ID
 							  </a>
 
-                              <a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ $student->registration_number }}">
+                              <a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
 
 									  <i class="fas fa-check">
 									  </i>

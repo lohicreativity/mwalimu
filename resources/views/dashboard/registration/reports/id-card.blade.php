@@ -311,11 +311,11 @@
             }elseif($yearofstudy == 3){
                 $yearValue = $yearofstudy."rd";
             }
-            $qrCodeData = "Time: ".Carbon\Carbon::parse($student->created_at)->format('m/d/Y H:i')." ID:".$student->registration_number." ".$student->surname.", ".$student->first_name." ".$student->middle_name." Course:".$courseCode[0].$courseCode[1].substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue." ".$student->phone;
+            $qrCodeData = "Time: ".Carbon\Carbon::parse($student->created_at)->format('m/d/Y H:i')."\n"." ID:".$student->registration_number."\n".$student->surname.", ".$student->first_name." ".$student->middle_name."\n"." Course:".$courseCode[0].$courseCode[1]."\n".substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue."\n".$student->phone;
 
             @endphp
 
-            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate($qrCodeData)) !!} " style="margin-left: 20px;">
+            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!} " style="margin-left: 20px; ">
 
           </div>
        </div>
@@ -332,10 +332,10 @@
      </div>
      </div>
 
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
        document.getElementById('ss-id-card').addEventListener('click',function(e){
              window.print();
        });
-    </script> -->
+    </script>
 </body>
 </html>
