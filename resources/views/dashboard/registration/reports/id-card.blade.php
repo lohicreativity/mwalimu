@@ -226,14 +226,14 @@
 
    
      <div class="row" style="padding:20px;">
-        <div class="col-md-3 ss-center" style="text-align: center;">
+        <div class="col-md-3 ss-center" style="text-align: center; padding-top: -5px;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
         </div>
         <div class="col-md-9">
            <h3 style="margin-top: 0px;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
      </div>
-     <hr style="border:20px solid #1b2066; margin-top: -15px;">
+     <hr style="border:20px solid #1b2066; margin-top: -20px;">
      <!-- <div class="row">
         <div class="col-md-12">
             
