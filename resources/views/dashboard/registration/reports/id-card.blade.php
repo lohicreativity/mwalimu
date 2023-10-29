@@ -235,7 +235,7 @@
      <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div>
 
      <div class="container" style="position: relative; z-index: 1000; margin-top: 30px;">
-     <div class="row" style="margin-top: -20px; margin-bottom: 18px;">
+     <div class="row" style="margin-top: -20px; margin-bottom: 15px;">
         <div class="col-md-3" style="padding: 5px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
