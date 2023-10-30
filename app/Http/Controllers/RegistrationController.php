@@ -752,7 +752,7 @@ class RegistrationController extends Controller
             }
             $paid_tuition_fees = GatewayPayment::where('control_no', $invoice->control_no)->sum('paid_amount');
 
-            if($paid_tuition_fees == $program_fee){
+            if($paid_tuition_fees == $program_fee[0]){
                 $tuition_payment_check = true;
             }else{
                 $tuition_payment_check = false;
