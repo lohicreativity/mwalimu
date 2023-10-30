@@ -258,14 +258,12 @@
               @endphp
               {!! Form::open(['url'=>'application/update-basic-info','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
-                @if($applicant->is_tcu_verified != 1 && str_contains(strtolower($applicant->programLevel->name),'degree') 
-                    && !str_contains(strtolower($applicant->programLevel->name),'master')  && $applicant->is_transfered != 1)
+                @if($applicant->is_tcu_verified != 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered != 1)
                 <div class="alert alert-warning">
                    You cannot proceed with this application because it seems you have admission with another institution. Please contact TCU for clarification.
                 </div>
                 @endif
-				        @if($applicant->is_tcu_verified === 1 && str_contains(strtolower($applicant->programLevel->name),'degree') 
-                    && !str_contains(strtolower($applicant->programLevel->name),'master')  && $applicant->is_transfered == 1)
+				        @if($applicant->is_tcu_verified === 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1)
                 <div class="alert alert-warning">
                    You cannot proceed with this transfer because it seems you do not have admission with another institution. Please contact TCU for clarification.
                 </div>

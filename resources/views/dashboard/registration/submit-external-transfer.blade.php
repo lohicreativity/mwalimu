@@ -41,7 +41,7 @@
 		  
 		   <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Search for Applicant</h3>
+                <h3 class="card-title">Register Applicant</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -73,7 +73,7 @@
 
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Enter applicant index number') !!}
+                    {!! Form::label('','Index number') !!}
                     {!! Form::text('index_number',null,$index_number) !!}
                   </div>
 				  <div class="form-group col-6">
@@ -87,11 +87,11 @@
                   </div>
 				  <div class="row">
 				   <div class="form-group col-6">
-                   {!! Form::label('','Enter previous programme code') !!}
+                   {!! Form::label('','Previous programme (Regulator code)') !!}
                    {!! Form::text('program_code',null,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
                  </div>  
 				 <div class="form-group col-6">
-                   {!! Form::label('','Select new programme') !!}
+                   {!! Form::label('','New programme') !!}
                    <select name="campus_program_id" class="form-control" required>
                       <option value="">Select New Programme</option>
                       @foreach($campus_programs as $program)
@@ -229,8 +229,9 @@
                       </div>
                       <!-- /.modal -->
                        @endforeach
+                
 					   <tr>
-					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers</button></td>
+					     <td colspan="8"><button type="submit" class="btn btn-primary"> Submit Transfers </button></td>
 					   </tr>
 					   {!! Form::close() !!}
                      </tbody>

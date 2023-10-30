@@ -6853,40 +6853,43 @@ class ApplicationController extends Controller
 		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
 
 		 $award = Award::where('name','LIKE','%Degree%')->first();
-		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first()){
+		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
 			 $applicant = $app;
 			 $applicant->is_transfered = 1;
+             $applicant->programs_complete_status = 0;
 			 $applicant->submission_complete_status = 0;
 			 $applicant->save();
 
 			 $user = User::where('username',$request->get('index_number'))->first();
 		 }else{
-			 if($usr = User::where('username',$request->get('index_number'))->first()){
-            $user = $usr;
-        }else{
-            $user = new User;
-            $user->username = $request->get('index_number');
-            $user->password = Hash::make($request->get('index_number'));
-            $user->save();
-        }
+			if($usr = User::where('username',$request->get('index_number'))->first()){
+                $user = $usr;
+            }else{
+                $user = new User;
+                $user->username = $request->get('index_number');
+                $user->password = Hash::make($request->get('index_number'));
+                $user->save();
+            }
 
-        $role = Role::where('name','applicant')->first();
-        $user->roles()->sync([$role->id]);
+            $role = Role::where('name','applicant')->first();
+            $user->roles()->sync([$role->id]);
 
-        $applicant = new Applicant;
-        $applicant->user_id = $user->id;
-        $applicant->campus_id = $staff->campus_id;
-        $applicant->index_number = strtoupper($request->get('index_number'));
-        $applicant->entry_mode = $request->get('entry_mode');
-        $applicant->program_level_id = $award->id;
-        $applicant->intake_id = $application_window->intake_id;
-		$applicant->application_window_id = $application_window->id;
-		$applicant->is_transfered = 1;
-        $applicant->save();
-		 }
-		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+            $applicant = new Applicant;
+            $applicant->user_id = $user->id;
+            $applicant->campus_id = $staff->campus_id;
+            $applicant->index_number = strtoupper($request->get('index_number'));
+            $applicant->entry_mode = $request->get('entry_mode');
+            $applicant->program_level_id = $award->id;
+            $applicant->intake_id = $application_window->intake_id;
+            $applicant->application_window_id = $application_window->id;
+            $applicant->is_transfered = 1;
+            $applicant->save();
+		}
 
-		  $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails','applicationWindow'])->find($applicant->id);
+		ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+
+		//$applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails','applicationWindow'])->find($applicant->id);
+        $applicant = Applicant::find($applicant->id);
 
         $selection = new ApplicantProgramSelection;
 		$selection->applicant_id = $applicant->id;
@@ -6900,16 +6903,15 @@ class ApplicationController extends Controller
 		$admitted_program = $prog;
 		$admitted_program_code = $prog->code;
 
+        $transfer = new ExternalTransfer;
+        $transfer->applicant_id = $applicant->id;
+        $transfer->new_campus_program_id = $admitted_program->id;
+        $transfer->previous_program = $request->get('program_code');
+        $transfer->transfered_by_user_id = Auth::user()->id;
+        $transfer->save();
 
-            $transfer = new ExternalTransfer;
-            $transfer->applicant_id = $applicant->id;
-            $transfer->new_campus_program_id = $admitted_program->id;
-            $transfer->previous_program = $request->get('program_code');
-            $transfer->transfered_by_user_id = Auth::user()->id;
-            $transfer->save();
-
-            $applicant->confirmation_status = 'TRANSFERED';
-            $applicant->save();
+        $applicant->confirmation_status = 'TRANSFERED';
+        $applicant->save();
 
 
         // $applicant = Applicant::whereHas('selections',function($query) use($request){
@@ -7072,7 +7074,7 @@ class ApplicationController extends Controller
       //          $app->save();
                //redirect()->back()->with('message','Admission package sent successfully');
 
-            return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
+            return redirect()->to('registration/external-transfer')->with('message','Transfer rgistration completed successfully');
 
 
 	 }
