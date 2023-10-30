@@ -220,7 +220,7 @@
       }
   </style>
 </head>
-<body>
+<body style="height: 90%;">
 
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
