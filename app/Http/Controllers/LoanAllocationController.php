@@ -290,13 +290,20 @@ class LoanAllocationController extends Controller
     {
     	$staff = User::find(Auth::user()->id)->staff;
     	$loans = LoanAllocation::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get();
-    	foreach($loans as $loan){
+
+		foreach($loans as $loan){
     		if($request->get('allocation_'.$loan->id) == $loan->id){
     			$ln = LoanAllocation::find($loan->id);
     			$ln->has_signed = 1;
     			$ln->save();
+				return $loan->applicant_id;
+				$applicant = null;
+				if($loan->student->applicant_id){
+					$applicant = Applicant::find($loan->student->applicant_id);
 
-    			$applicant = Applicant::find($loan->student->applicant_id);
+				}else{
+					$applicant = Applicant::find($loan->applicant_id);
+				}
 
     			$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
                 $semester = Semester::where('status','ACTIVE')->first();

@@ -4805,13 +4805,14 @@ class ApplicationController extends Controller
          if(!$application_window){
              return redirect()->back()->with('error','No corresponding application window');
          }
-
+         $full_loan_status = [];
          if ($request->get('program_level_id')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
-           })->with(['intake','selections.campusProgram.program'])->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)
-           ->where(function($query){$query->where('confirmation_status', null)->orWhere('confirmation_status','!=','CANCELLED');})->where(function($query){$query->where('admission_confirmation_status'.null)
+           })->with(['intake','selections' => function($request){$request->where('status','SELECTED');},'selections.campusProgram.program'])
+            ->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)
+            ->where(function($query){$query->where('confirmation_status', null)->orWhere('confirmation_status','!=','CANCELLED');})->where(function($query){$query->where('admission_confirmation_status'.null)
             ->orWhere('admission_confirmation_status','NOT LIKE','%OTHER');})->where('status','ADMITTED')
             ->where(function($query){$query->where('tuition_payment_check',1)->orWhere('other_payment_check',1);})
             ->orderBy('tuition_payment_check','DESC')->orderBy('other_payment_check','DESC')->orderBy('documents_complete_status','DESC')->orderBy('updated_at','DESC')->get();
@@ -4822,9 +4823,22 @@ class ApplicationController extends Controller
                     return redirect('application/applicants-registration?application_window_id='.$application_window->id)->with('error','No applicant to register on this level');
                 }
             }
+            // return ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
+            // ->where('campus_program_id',$applicants[0]->selections[0]->campus_program_id)->first();
 
-            $full_fee_loan = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('study_academic_year_id',1)
-            ->where('campus_id',$application_window->campus_id)->where('tuition_fee','>=',1000000)->get();
+            foreach($applicants as $applicant){
+                $program_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
+                ->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
+
+                $full_fee_loan = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('applicant_id',$applicant->id)
+                ->where('study_academic_year_id',$ac_year->id)
+                ->where('campus_id',$application_window->campus_id)->where('tuition_fee','>=',$program_fee->amount_in_tzs)->first();
+
+                if($full_fee_loan){
+                    $full_loan_status = [$applicant->id=>true];
+                }
+       
+            }
 
          } else {
             $applicants = [];
@@ -4864,7 +4878,7 @@ class ApplicationController extends Controller
             'awards'=>Award::all(),
             'applicants'=>$applicants,
             'request'=>$request,
-            'loan_status'=>$full_fee_loan
+            'full_loan_status'=>$full_loan_status,
          ];
 
          return view('dashboard.application.applicants-registration',$data)->withTitle('Applicants Registration');

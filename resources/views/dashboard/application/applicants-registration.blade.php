@@ -103,18 +103,19 @@
                     </tr>
                   </thead>
                   <tbody>
+
                     @foreach($applicants as $key=>$applicant)
                       @php
                         $full_fee_loan = false;
-                        foreach($loan_status as $loan){
-                          if($loan->applicant_id == $applicant->id){
-                            $full_fee_loan = true;
-                            break;
-                          }
-                        }
 
+                        if(in_array($applicant->id, $full_loan_status)){
+                          $full_fee_loan = true;
+
+                        }
+                        
                       @endphp
-                      <tr>
+                      <tr> 
+                        
 						  <td>{{ ($key+1) }}</td>
                           <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                           <td>{{ $applicant->index_number }}</td>
@@ -129,6 +130,7 @@
                           <td>{{ $applicant->status }}</td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
+
                                 @if($applicant->documents_complete_status == 1 && $applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1 ||
                                     ($full_fee_loan && $applicant->other_payment_check == 1))
                                 <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Preview Registration</a>
