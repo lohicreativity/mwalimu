@@ -226,7 +226,7 @@
         @if ($tuition_payment_check)
             <div id="ss-id-card" class="ss-id-card" style=" background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});  background-size: 100%; background-repeat: no-repeat;">
         @else
-            <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});  background-size: 100%; background-repeat: no-repeat; object-contain: fit;">
+            <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});  background-size: contain; background-repeat: no-repeat; object-contain: fit;">
         @endif
    @elseif($student->applicant->campus_id == 2)
         @if ($tuition_payment_check)
