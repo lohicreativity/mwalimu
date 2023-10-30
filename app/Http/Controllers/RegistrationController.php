@@ -742,19 +742,15 @@ class RegistrationController extends Controller
         $tuition_payment_check = null;
         $invoice = Invoice::whereHas('feeType',function($query) use($student){
             $query->where('name','LIKE','%Tuition%');
-                     })->with('gatewayPayment')->where('payable_id',$student->id)->where('payable_type','student')->whereNotNull('gateway_payment_id')->first();
+                     })->where('payable_id',$student->id)->where('payable_type','student')->whereNotNull('gateway_payment_id')->first();
+
         if($invoice) {
             if($invoice->gatewayPayment->ccy == 'TZS'){
                 $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_tzs');
             }else if($invoice->gatewayPayment->ccy == 'USD'){
                 $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_usd');
             }
-            $paid_tuition_fees = 0;
-// dd(->paid_amount);
-            foreach($invoice->gatewayPayment as $paid){
-                dd($paid);
-                // $paid_tuition_fees += (float) $pay->paid_amount;
-            }
+            $paid_tuition_fees = GatewayPayment::where('control_no', $invoice->control_no)->sum('paid_amount');
 
             if($paid_tuition_fees == $program_fee){
                 $tuition_payment_check = true;
