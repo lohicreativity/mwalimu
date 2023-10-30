@@ -249,7 +249,7 @@
 
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
-        <div class="col-md-3" style="margin-top: 50px;">
+        <div class="col-md-3" style="position:absolute; margin-top: 50px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
