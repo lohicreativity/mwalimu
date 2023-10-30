@@ -247,7 +247,7 @@
            <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">REGNO: <span style="font-style: italic; font-weight: normal;">{{ $student->registration_number }}</span></h5>
            <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">NAME: <span style="font-style: italic; font-weight: normal;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
            <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">PROGRAM: <span style="font-style: italic; font-weight: normal;">{{ $student->campusProgram->program->code }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic;">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic; font-weight: normal">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h5>
            <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px; font-weight: normal;"></h5>
         </div>
