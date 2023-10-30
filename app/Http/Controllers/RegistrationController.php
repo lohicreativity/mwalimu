@@ -750,7 +750,7 @@ class RegistrationController extends Controller
                 $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_usd');
             }
             $paid_tuition_fees = $invoice->gatewayPayment->sum('paid_amount');
-            dd($program_fee);
+            dd($program_fee[0]);
             if($paid_tuition_fees == $program_fee){
                 $tuition_payment_check = true;
             }else{
