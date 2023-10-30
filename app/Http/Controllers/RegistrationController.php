@@ -752,7 +752,7 @@ class RegistrationController extends Controller
             $paid_tuition_fees = 0;
 
             foreach($invoice->gatewayPayment as $pay){
-                dd($pay->paid_amount);
+                dd($pay);
                 $paid_tuition_fees += (float) $pay->paid_amount;
             }
 
