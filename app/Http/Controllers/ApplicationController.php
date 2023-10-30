@@ -4823,8 +4823,6 @@ class ApplicationController extends Controller
                     return redirect('application/applicants-registration?application_window_id='.$application_window->id)->with('error','No applicant to register on this level');
                 }
             }
-            // return ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
-            // ->where('campus_program_id',$applicants[0]->selections[0]->campus_program_id)->first();
 
             foreach($applicants as $applicant){
                 $program_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)

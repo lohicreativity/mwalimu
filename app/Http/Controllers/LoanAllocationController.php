@@ -296,9 +296,9 @@ class LoanAllocationController extends Controller
     			$ln = LoanAllocation::find($loan->id);
     			$ln->has_signed = 1;
     			$ln->save();
-				return $loan->applicant_id;
+
 				$applicant = null;
-				if($loan->student->applicant_id){
+				if($loan->student){
 					$applicant = Applicant::find($loan->student->applicant_id);
 
 				}else{

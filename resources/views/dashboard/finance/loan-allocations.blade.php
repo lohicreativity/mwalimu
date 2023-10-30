@@ -94,6 +94,7 @@
                        <th>Index Number</th>
                        <th>Name</th>
                        <th>Sex</th>
+                       <th>Phone </th>
                        <th>Total Amount (TZS)</th>
                        <th>Bank Name</th>
                        <th>Account Number</th>
@@ -104,14 +105,15 @@
                      @foreach($beneficiaries as $stud)
                       <tr>
                         <td>{{ $stud->index_number }}</td>
-                        <td>{{ $stud->name }}</td>
+                        <td>{{ $stud->first_name }} {{ $stud->middle_name? substr($stud->middle_name,0,1).'.': null }} {{ $stud->surname }} </td>					
                         <td>{{ $stud->sex }}</td>
-                        <td>{{ number_format($stud->loan_amount,2) }}</td>
+                        <td>{{ $stud->phone }}</td>
+                        <td>{{ number_format(($stud->tuition_fee + $stud->books_and_stationeries + $stud->meals_and_accomodation + $stud->field_training + $stud->research),2) }}</td>
                         <td>@if(isset($stud->student)) {{ $stud->student->bank_name }} @endif</td>
                         <td>@if(isset($stud->student)) {{ $stud->student->account_number }} @endif</td>
                         <td>
                           @if($stud->has_signed == 1)
-                            {{ Form::checkbox('allocation_'.$stud->id,$stud->id,true) }}
+                           <span style="color: red">Yes </span>
                           @else
                             {{ Form::checkbox('allocation_'.$stud->id,$stud->id) }}
                           @endif
