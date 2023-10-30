@@ -247,7 +247,7 @@
      </div> --}}
      {{-- <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div> --}}
 
-     <div class="container" style="position: relative; z-index: 1000;">
+     <div class="container" style="position: relative;">
      <div class="row">
         <div class="col-md-3" style="position:absolute; padding-top: 100px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
