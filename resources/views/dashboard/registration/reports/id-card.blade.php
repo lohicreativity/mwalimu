@@ -224,15 +224,15 @@
 
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
-            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});">
+            <div id="ss-id-card" class="ss-id-card" style="width: 750px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});">
         @else
-            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});">
+            <div id="ss-id-card" class="ss-id-card" style="width: 750px;  background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});">
         @endif
    @elseif($student->applicant->campus_id == 2)
         @if ($tuition_payment_check)
-         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.jpg') }});">
+         <div id="ss-id-card" class="ss-id-card" style="width: 750px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.jpg') }});">
         @else
-         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi1.jpg') }});">
+         <div id="ss-id-card" class="ss-id-card" style="width: 750px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi1.jpg') }});">
         @endif
    @endif
 
@@ -262,7 +262,7 @@
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px;">PROGRAM: <span style="font-style: italic; font-weight: normal;">{{ $student->campusProgram->program->code }}</span></h4>
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic; font-weight: normal">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h4>
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px;">SIGNATURE:
-           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; font-weight: normal; padding-top: 20px;"></h4>
+           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; font-weight: normal;"></h4>
         </div>
      </div>
      {{-- <div class="row" style="background-color:#1b2066; position:absolute; margin-right: -80px;">
