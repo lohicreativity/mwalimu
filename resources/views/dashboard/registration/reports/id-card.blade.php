@@ -224,15 +224,15 @@
 
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
-            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: auto; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});">
+            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 320px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});">
         @else
-            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: auto; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});">
+            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 320px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});">
         @endif
    @elseif($student->applicant->campus_id == 2)
         @if ($tuition_payment_check)
-         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: auto; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.jpg') }});">
+         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 320px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.jpg') }});">
         @else
-         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height:auto; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi1.jpg') }});">
+         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 320px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi1.jpg') }});">
         @endif
    @endif
 
