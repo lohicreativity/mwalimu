@@ -745,11 +745,12 @@ class RegistrationController extends Controller
                      })->with('gatewayPayment')->where('payable_id',$student->id)->where('payable_type','student')->whereNotNull('gateway_payment_id')->first();
         if($invoice) {
             if($invoice->gatewayPayment->ccy == 'TZS'){
-                $program_fee = ProgramFee::where('study_academic_year_id',$student->applicant->study_academic_year_id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_tzs');
+                $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_tzs');
             }else if($invoice->gatewayPayment->ccy == 'USD'){
-                $program_fee = ProgramFee::where('study_academic_year_id',$student->applicant->study_academic_year_id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_usd');
+                $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_usd');
             }
             $paid_tuition_fees = $invoice->gatewayPayment->sum('paid_amount');
+            dd($program_fee);
             if($paid_tuition_fees == $program_fee){
                 $tuition_payment_check = true;
             }else{
