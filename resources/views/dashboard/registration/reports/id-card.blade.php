@@ -249,7 +249,7 @@
 
      <div class="container"">
      <div class="row">
-        <div class="col-md-3" style="float: left;>
+        <div class="col-md-3">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
@@ -262,7 +262,7 @@
            <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">PROGRAM: <span style="font-style: italic; font-weight: normal;">{{ $student->campusProgram->program->code }}</span></h4>
            <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic; font-weight: normal">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h4>
            <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">SIGNATURE:
-           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px; font-weight: normal;"></h4>
+           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; font-weight: normal;"></h4>
         </div>
      </div>
      {{-- <div class="row" style="background-color:#1b2066; position:absolute; margin-right: -80px;">
