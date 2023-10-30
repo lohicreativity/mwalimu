@@ -244,10 +244,10 @@
           @endif
         </div>
         <div class="col-md-9" style="float:right; padding: 5px; margin-top: -120px;">
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">NAME: <span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">REGNO: </h5><span style="font-style: italic;">{{ $student->registration_number }}</span>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">NAME: </h5><span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">PROGRAM: </h5><span style="font-style: italic;">{{ $student->campusProgram->program->code }}</span>
+           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: </h5><span style="font-style: italic;">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span>
            <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px;"></h5>
         </div>
@@ -301,10 +301,10 @@
        </div>
        <div class="row">
           <div class="col-md-7">
-            <p style="margin: 0px 0px 5px 10px; font-size: 12px; padding-left: 15px;">This identity card is the property of</p>
-            <p style="margin: 0px 0px 5px 10px; font-size: 12px; padding-left: 15px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</p>
-            <p style="margin: 0px 0px 5px 10px; font-size: 12px; padding-left: 15px;">1. Use of this card is subject to the card holder agreement</p>
-            <p style="margin: 0px 0px 5px 10px; font-size: 12px; padding-left: 15px;">2. Card should be returned at the beginning of each semester</p>
+            <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 15px; font-weight: normal;">This identity card is the property of</p>
+            <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 15px; font-weight: bold;">THE MWALIMU NYERERE MEMORIAL ACADEMY</p>
+            <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 15px; font-weight: normal;">1. Use of this card is subject to the card holder agreement</p>
+            <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 15px; font-weight: normal;">2. Card should be returned at the beginning of each semester</p>
 
           </div>
           <div class="col-md-5">
@@ -334,7 +334,7 @@
              $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
              $reg_no = str_replace('/', '-', $registration_no)
              @endphp
-            <strong>{{ $footer }} <span style="font-size:13px;"> {{ $reg_no }} </span></strong>
+            <strong>{{ $footer }} <span style="font-size:10px;"> {{ $reg_no }} </span></strong>
             </p>
        </div>
      </div>
