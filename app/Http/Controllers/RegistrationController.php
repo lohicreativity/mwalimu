@@ -741,26 +741,26 @@ class RegistrationController extends Controller
 
         $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
         $newRegistrationNo = null;
-        // if(!$latestRegistrationNo){
-        //     $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
-        //     $newRegistrationNo = $registration->id_sn_no;
-        // }else{
-        //     $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
-        //     $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
-        //     $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
-        //     $newRegistrationNo = $registration->id_sn_no;
-        // }
-        // $registration->id_print_date = now();
-        // $registration->id_print_status = 1;
-        // $registration->save();$newRegistrationNo
+        if(!$latestRegistrationNo){
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
+            $newRegistrationNo = $registration->id_sn_no;
+        }else{
+            $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
+            $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
+            $newRegistrationNo = $registration->id_sn_no;
+        }
+        $registration->id_print_date = now();
+        $registration->id_print_status = 1;
+        $registration->save();
         
-        // IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
+        IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
 
         $data = [
             'student'=>$student,
             'semester'=>$semester,
             'study_academic_year'=>$ac_year,
-            'registration_no' => 'SN: 00000001'
+            'registration_no' => $newRegistrationNo
         ];
 
 
