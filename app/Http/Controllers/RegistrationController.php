@@ -750,9 +750,8 @@ class RegistrationController extends Controller
                 $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_usd');
             }
             $paid_tuition_fees = 0;
-
+dd($invoice);
             foreach($invoice->gatewayPayment as $pay){
-                dd($pay);
                 $paid_tuition_fees += (float) $pay->paid_amount;
             }
 
