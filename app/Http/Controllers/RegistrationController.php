@@ -723,9 +723,9 @@ class RegistrationController extends Controller
         if(!$student->image){
             return redirect()->back()->with('error','Student image is missing');
         }
-        if(!$student->signature){
-                return redirect()->back()->with('error','Student signature is missing');
-        }
+        // if(!$student->signature){
+        //         return redirect()->back()->with('error','Student signature is missing');
+        // }
         $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
         ->where('semester_id',$semester->id)->first();
 
@@ -737,6 +737,24 @@ class RegistrationController extends Controller
 
         if(count($id_requests) == 0 && $registration->id_print_status != 0){
             return redirect()->back()->with('error','Student ID already printed');
+        }
+
+        $tuition_payment_check = null;
+        $invoice = Invoice::whereHas('feeType',function($query) use($student){
+            $query->where('name','LIKE','%Tuition%');
+                     })->with('gatewayPayment')->where('payable_id',$student->id)->where('payable_type','student')->whereNotNull('gateway_payment_id')->first();
+        if($invoice) {
+            if($invoice->gatewayPayment->currency == 'TZS'){
+                $program_fee = ProgramFee::where('study_academic_year_id',$student->applicant->study_academic_year_id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_tzs');
+            }else if($invoice->gatewayPayment->currency == 'USD'){
+                $program_fee = ProgramFee::where('study_academic_year_id',$student->applicant->study_academic_year_id)->where('campus_program_id',$student->campusProgram->id)->where('year_of_study', $student->year_of_study)->pluck('amount_in_usd');
+            }
+            $paid_tuition_fees = $invoice->gatewayPayment->sum('paid_amount');
+            if($paid_tuition_fees == $program_fee){
+                $tuition_payment_check = true;
+            }else{
+                $tuition_payment_check = false;
+            }
         }
 
         $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
@@ -753,14 +771,17 @@ class RegistrationController extends Controller
         $registration->id_print_date = now();
         $registration->id_print_status = 1;
         $registration->save();
-        
+
         IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
+
+
 
         $data = [
             'student'=>$student,
             'semester'=>$semester,
             'study_academic_year'=>$ac_year,
-            'registration_no' => $newRegistrationNo
+            'registration_no' => $newRegistrationNo,
+            'tuition_payment_check' => $tuition_payment_check
         ];
 
 

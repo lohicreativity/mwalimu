@@ -222,47 +222,59 @@
 </head>
 <body>
 
-   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-image: url({{ asset('img/mnma-id-bg.png') }});">
+   @if ($student->applicant->campus_id == 1)
+        @if ($tuition_payment_check)
+            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});">
+        @else
+            <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1-Kivukoni.jpg') }});">
+        @endif
+   @elseif($student->applicant->campus_id == 2)
+        @if ($tuition_payment_check)
+         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.jpg') }});">
+        @else
+         <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-size: contain; background-repeat: no-repeat; background-image: url({{ asset('img/mnma-id-bg-semi1.jpg') }});">
+        @endif
+   @endif
 
-     <div class="row" style="padding:20px;">
+
+     {{-- <div class="row" style="padding:20px;">
         <div class="col-md-3 ss-center" style="text-align: center; padding-top: -5px;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
         </div>
         <div class="col-md-9">
            <h3 style="margin-top: 0px; color: #1b2066;" class="text-center">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
-     </div>
-     <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div>
+     </div> --}}
+     {{-- <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div> --}}
 
-     <div class="container" style="position: relative; z-index: 1000; margin-top: 30px;">
-     <div class="row" style="margin-top: -19px;">
-        <div class="col-md-3" style="padding: 5px;">
+     <div class="container" style="margin-top: 200px;">
+     <div class="row">
+        <div class="col-md-3" style="float: left; margin-top:200px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
           @elseif(file_exists(public_path().'/uploads/'.$student->image))
-          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
+          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;;">
           @endif
         </div>
-        <div class="col-md-9" style="float:right; padding: 5px; margin-top: -120px;">
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">REGNO: <span style="font-style: italic; font-weight: normal;">{{ $student->registration_number }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">NAME: <span style="font-style: italic; font-weight: normal;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">PROGRAM: <span style="font-style: italic; font-weight: normal;">{{ $student->campusProgram->program->code }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic; font-weight: normal">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 25px; padding-left: 15px;">SIGNATURE:
-           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px; font-weight: normal;"></h5>
+        <div class="col-md-9" style="float: right; padding: 5px; margin-top: -120px">
+           <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">REGNO: <span style="font-style: italic; font-weight: normal;">{{ $student->registration_number }}</span></h4>
+           <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">NAME: <span style="font-style: italic; font-weight: normal;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h4>
+           <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">PROGRAM: <span style="font-style: italic; font-weight: normal;">{{ $student->campusProgram->program->code }}</span></h4>
+           <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">VALID TO: <span style="font-style: italic; font-weight: normal">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h4>
+           <h4 style="margin: 0px 0px 5px 25px; padding-left: 15px;">SIGNATURE:
+           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 5px; font-weight: normal;"></h4>
         </div>
-     </div> 
-     <div class="row" style="background-color:#1b2066; position:absolute; margin-right: -80px;">
+     </div>
+     {{-- <div class="row" style="background-color:#1b2066; position:absolute; margin-right: -80px;">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; font-size: 16px;">Semester One</p>
             @else
                 <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; font-size: 16px;">Semester Two</p>
-            @endif
-        </div>
-        <div class="col-md-6" style="float: right;">
+            @endi4
+        </div>5
             <p style="text-stroke: 1px white; font-weight: bold; color: red; text-align: right; padding-right: 70px;font-size: 16px;">{{ $student->campusProgram->campus->name }}</p>
         </div>
-    </div> 
+    </div> --}}
    </div>
     </div>
     <!-- <div class="row" style="background-color:#1b2066; width:100%; margin-top: -15px; position:absolute;">
@@ -328,7 +340,7 @@
           </div>
        </div>
        <div class="row">
-            <p style="text-align:center; font-size: 13px;">  
+            <p style="text-align:center; font-size: 13px;">
              @php
 
              $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
