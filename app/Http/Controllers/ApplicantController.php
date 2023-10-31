@@ -820,7 +820,7 @@ class ApplicantController extends Controller
                }
                
                if($fee_payment_percent >= 0.6){
-                  Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year_id',$study_academic_year->id)
+                  Registration::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
                               ->where('semester_id', 1)->update(['status'=>'REGISTERED']);
 
                }
