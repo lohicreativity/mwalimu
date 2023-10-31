@@ -333,7 +333,7 @@
 
             @endphp
 
-            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!} " style="margin-left: 10px; ">
+            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(80)->generate($qrCodeData)) !!} " style="margin-left: 5px; ">
 
           </div>
        </div>
