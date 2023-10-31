@@ -310,14 +310,14 @@
           </div>
        </div>
        <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 10px; font-weight: normal;">This identity card is the property of</p>
             <p style="margin: 0px 0px 5px 10px;  padding-left: 10px; font-weight: bold; font-size: 10px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</p>
             <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 10px; font-weight: normal;">1. Use of this card is subject to the card holder agreement</p>
             <p style="margin: 0px 0px 5px 10px; font-size: 11px; padding-left: 10px; font-weight: normal;">2. Card should be returned at the beginning of each semester</p>
 
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5">
             @php
             $courseCode = explode('.', $student->campusProgram->code);
             $yearofstudy = $student->year_of_study;
@@ -333,7 +333,7 @@
 
             @endphp
 
-            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate($qrCodeData)) !!} ">
+            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!} ">
 
           </div>
        </div>
