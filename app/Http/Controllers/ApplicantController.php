@@ -779,7 +779,7 @@ class ApplicantController extends Controller
       $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
 		$student = Student::where('applicant_id', $applicant->id)->first();
-
+return $study_academic_year->id.' - '.$activeSemester->id;
       $registrationStatus = null;
       if($student){
          $registrationStatus = Registration::where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)
