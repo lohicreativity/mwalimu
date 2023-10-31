@@ -779,13 +779,13 @@ class ApplicantController extends Controller
       $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
 		$student = Student::where('applicant_id', $applicant->id)->first();
-return $study_academic_year->id.' - '.$activeSemester->id;
+
       $registrationStatus = null;
       if($student){
          $registrationStatus = Registration::where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)
                                            ->where('status','UNREGISTERED')->first();
       }
-return $registrationStatus;
+
 		$tuition_fee_loan = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)
                                            ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
 
@@ -796,7 +796,7 @@ return $registrationStatus;
          if(!$program_fee){
              return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
          }
-return $tuition_fee_loan;
+
          if($tuition_fee_loan >= $program_fee->amount_in_tzs && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
                                                                ->where('campus_id',$applicant->campus_id)->where('has_signed',1)){
            Registration::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
