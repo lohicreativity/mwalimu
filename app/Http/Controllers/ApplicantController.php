@@ -785,7 +785,7 @@ class ApplicantController extends Controller
          $registrationStatus = Registration::where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)
                                            ->where('status','UNREGISTERED')->first();
       }
-
+return $registrationStatus;
 		$tuition_fee_loan = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)
                                            ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
 
