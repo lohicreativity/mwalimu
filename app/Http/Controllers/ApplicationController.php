@@ -8484,7 +8484,7 @@ class ApplicationController extends Controller
      * Submit external transfer
      */
     public function submitExternalTransfer(Request $request)
-    {
+    {   dd();
 		$transfers = ExternalTransfer::where('status','ELIGIBLE')->get();
 		foreach($transfers as $trans){
 			if($request->get('transfer_'.$trans->id) == $trans->id){
