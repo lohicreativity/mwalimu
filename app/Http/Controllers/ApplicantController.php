@@ -797,7 +797,7 @@ class ApplicantController extends Controller
              return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
          }
 
-         if($tuition_fee_loan >= $program_fee && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
+         if($tuition_fee_loan >= $program_fee->amount_in_tzs && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
                                                                ->where('campus_id',$applicant->campus_id)->where('has_signed',1)){
            Registration::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
            ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
