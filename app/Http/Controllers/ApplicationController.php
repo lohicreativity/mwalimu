@@ -6853,11 +6853,44 @@ class ApplicationController extends Controller
 		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
 
 		 $award = Award::where('name','LIKE','%Degree%')->first();
+         if(!$award){
+
+         }
+
+        $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id',$application_window->id)
+         ->where('program_level_id',$award->id)->latest()->first();
+
+        $batch_id = null;
+        if($batch->batch_no > 1){
+            if(Applicant::whereHas('selections',function($query) use($application_window, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                        ->where('application_window_id',$application_window->id)
+                        ->where('batch_id',$batch->id);})
+                        ->where('application_window_id', $application_window->id)
+                        ->where('program_level_id',$award->id)->where('batch_id',$batch->id)->count() >  0){
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;
+
+            }else{
+
+            $previous_batch = null;
+            if($batch->batch_no > 1){
+                $previous_batch = ApplicationBatch::where('application_window_id',$application_window->id)->where('program_level_id',$award->id)
+                                        ->where('batch_no', $batch->batch_no - 1)->first();
+                $batch_id = $previous_batch->id;
+                $batch_no = $previous_batch->batch_no;
+            }
+        }
+        }else{
+        $batch_id = $batch->id;
+        $batch_no = $batch->batch_no;
+        }
+
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
 			 $applicant = $app;
 			 $applicant->is_transfered = 1;
              $applicant->programs_complete_status = 0;
 			 $applicant->submission_complete_status = 0;
+             $applicant->batch_id = $batch_id;
 			 $applicant->save();
 
 			 $user = User::where('username',$request->get('index_number'))->first();
@@ -6882,6 +6915,8 @@ class ApplicationController extends Controller
             $applicant->program_level_id = $award->id;
             $applicant->intake_id = $application_window->intake_id;
             $applicant->application_window_id = $application_window->id;
+            $applicant->batch_id = $batch_id;
+            $applicant->payment_complete_status = 0;
             $applicant->is_transfered = 1;
             $applicant->save();
 		}
@@ -6897,15 +6932,16 @@ class ApplicationController extends Controller
 		$selection->campus_program_id = $request->get('campus_program_id');
         $selection->order = 1;
         $selection->status = 'PENDING';
+        $selection->batch_id = $batch_id;
         $selection->save();
 
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
-		$admitted_program = $prog;
-		$admitted_program_code = $prog->code;
+		// $admitted_program = $prog;
+		// $admitted_program_code = $prog->code;
 
         $transfer = new ExternalTransfer;
         $transfer->applicant_id = $applicant->id;
-        $transfer->new_campus_program_id = $admitted_program->id;
+        $transfer->new_campus_program_id = $prog->id;
         $transfer->previous_program = $request->get('program_code');
         $transfer->transfered_by_user_id = Auth::user()->id;
         $transfer->save();
