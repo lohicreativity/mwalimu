@@ -49,10 +49,10 @@ use Auth, Hash, Validator, DB;
 class StudentController extends Controller
 {
 	/**
-	 * Display student dashboard 
+	 * Display student dashboard
 	 */
 	public function index()
-	{ 
+	{
     $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 	/* return Student::whereHas('TranscriptRequest', function($query) use($student)
 		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
@@ -116,31 +116,31 @@ class StudentController extends Controller
                 return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
             }
 
-            if($tuition_fee_loan >= $program_fee && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('campus_id',$student->applicant->campus_id)->where('has_signed',1)){
+            if($tuition_fee_loan >= $program_fee->amount_in_tzs && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('campus_id',$student->applicant->campus_id)->where('has_signed',1)){
               Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
               ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
             }else{
               $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
               ->where('applicable_id',$ac_year->id)->get();
-  
+
               if($invoices){
                 $fee_payment_percent = $other_fee_payment_status = 0;
                 foreach($invoices as $invoice){
                   if(str_contains($invoice->feeType->name,'Tuition Fee')){
                     $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
                     $fee_payment_percent = $paid_amount/$invoice->amount;
-  
+
                     if($tuition_fee_loan>0){
                       $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
                     }
                     break;
                   }
                 }
-  
+
                 if($fee_payment_percent >= 0.6){
                 Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
                 ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
-  
+
                 }
               }
             }
@@ -151,7 +151,7 @@ class StudentController extends Controller
               return redirect()->to('change-password')->with('message','Change password');
           }else{
               return redirect()->to('student/dashboard')->with('message','Logged in successfully');
-          } 	
+          }
         }else{
            return redirect()->back()->with('error','Incorrect registration number or password');
         }
@@ -284,7 +284,7 @@ class StudentController extends Controller
     }
 
      /**
-     * Display student module results 
+     * Display student module results
      */
     public function showResultsReport(Request $request)
     {
@@ -296,7 +296,7 @@ class StudentController extends Controller
     	$academic_years = [];
     	foreach($results as $key=>$result){
     		if(!array_key_exists($result->moduleAssignment->programModuleAssignment->year_of_study, $years)){
-               $years[$result->moduleAssignment->programModuleAssignment->year_of_study] = [];  
+               $years[$result->moduleAssignment->programModuleAssignment->year_of_study] = [];
                $years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
     		}
             if(!in_array($result->moduleAssignment->studyAcademicYear->id, $years[$result->moduleAssignment->programModuleAssignment->year_of_study])){
@@ -331,7 +331,7 @@ class StudentController extends Controller
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
 
          $retake_sem_remarks = SemesterRemark::where('student_id',$student->id)->where('remark','RETAKE')->where('year_of_study',$yr_of_study)->get();
-         
+
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
          }])->get();
@@ -402,7 +402,7 @@ class StudentController extends Controller
          },'retakeHistory.retakableResults'=>function($query){
             $query->latest();
          }])->where('student_id',$student->id)->get();
-         
+
         // ->where('study_academic_year_id',$ac_yr_id)
        //  where('study_academic_year_id',$ac_yr_id)->
          $core_programs = ProgramModuleAssignment::with(['module'])->where(function($query) use($ac_yr_id, $request){
@@ -452,7 +452,7 @@ class StudentController extends Controller
                    }
                 }
               }
-              
+
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
@@ -517,7 +517,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Request control number 
+     * Request control number
      */
     public function requestPaymentControlNumber(Request $request)
     {
@@ -530,7 +530,7 @@ class StudentController extends Controller
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
         $semester = Semester::find(session('active_semester_id'));
         $usd_currency = Currency::where('code','USD')->first();
-           
+
         foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
               if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
@@ -585,12 +585,12 @@ class StudentController extends Controller
             $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
                 $query->where('name','LIKE','%Tuition%');
             })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->where('payable_id',$student->id)->where('payable_type','student')->first();
-            
+
             if($existing_tuition_invoice){
                 return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
             }
-            
-			
+
+
 			$existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
                 $query->where('name','LIKE','%Tuition%');
             })->where('payable_id',$student->applicant_id)->where('payable_type','applicant')->first();
@@ -638,7 +638,7 @@ class StudentController extends Controller
                          $currency = 'TZS'; //'USD';
                      }
                  }
-                 
+
             }
 
                  if(str_contains($student->applicant->nationality,'Tanzania')){
@@ -646,8 +646,8 @@ class StudentController extends Controller
                  }else{
                      $amount_without_loan = round($program_fee->amount_in_usd*$usd_currency->factor);
                  }
-          
-            
+
+
             if($amount != 0.00){
                   $invoice = new Invoice;
                   $invoice->reference_no = 'MNMA-TF-'.time();
@@ -666,7 +666,7 @@ class StudentController extends Controller
                   $approved_by = 'SP';
                   $inst_id = config('constants.SUBSPCODE');
 
-                  $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
+                  $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
                   $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
                   $this->requestControlNumber($request,
@@ -685,7 +685,7 @@ class StudentController extends Controller
                                               $program_fee->feeItem->feeType->duration,
                                               $invoice->currency);
             }
-            
+
             if(str_contains($student->applicant->programLevel->name,'Bachelor')){
                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
                   $query->where('name','LIKE','%TCU%');
@@ -697,7 +697,7 @@ class StudentController extends Controller
                })->where('study_academic_year_id',$study_academic_year->id)->first();
 
             }
-            
+
             $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
               $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','NOT LIKE','%TCU%');
             })->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_tzs');
@@ -720,7 +720,7 @@ class StudentController extends Controller
             if(!$feeType){
                 return redirect()->back()->with('error','Miscellaneous fee type has not been set');
             }
-            
+
             if($other_fees != 0.00){
                 $invoice = new Invoice;
                 $invoice->reference_no = 'MNMA-MSC'.time();
@@ -739,7 +739,7 @@ class StudentController extends Controller
                 $approved_by = 'SP';
                 $inst_id = config('constants.SUBSPCODE');
 
-                $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
+                $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
                 $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
                 $this->requestControlNumber($request,
@@ -758,7 +758,7 @@ class StudentController extends Controller
                                             $feeType->duration,
                                             $invoice->currency);
 
-            } 
+            }
         }elseif($request->get('fee_type') == 'LOST ID'){
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){
                   $query->where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%');
@@ -802,7 +802,7 @@ class StudentController extends Controller
                 $approved_by = 'SP';
                 $inst_id = config('constants.SUBSPCODE');
 
-                $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
+                $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
                 $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
                 $this->requestControlNumber($request,
@@ -821,7 +821,7 @@ class StudentController extends Controller
                                             $feeType->duration,
                                             $invoice->currency);
 
-            } 
+            }
         }
         DB::commit();
 
@@ -856,9 +856,9 @@ class StudentController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                 ])->post($url,$data);
 
-      
+
     return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
-            
+
     }
 
     /**
@@ -931,14 +931,14 @@ class StudentController extends Controller
         return view('dashboard.student.postponements',$data)->withTitle('Postponements');
 
     }
-	
+
 	/**
 	 * Show indicate continue
 	 */
 	 public function showIndicateContinue(Request $request)
 	 {
 		 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
-		 
+
 	//	 if($student->continue_status == 1){
 			$applicant = Applicant::where('index_number',$student->applicant->index_number)->where('is_continue', 1)->latest()->first();
 
@@ -959,7 +959,7 @@ class StudentController extends Controller
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
                 $query->where('application_window_id',$window->id);
            }])->where('campus_id',$applicant->campus_id)->get() : [];
-        
+
         $award = $applicant->programLevel;
         $programs = [];
 
@@ -970,10 +970,10 @@ class StudentController extends Controller
         $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
 
         $selected_program = array();
-        
+
            $index_number = $applicant->index_number;
            $exam_year = explode('/', $index_number)[2];
-          
+
            foreach($applicant->nectaResultDetails as $detail) {
               if($detail->exam_id == 2){
                   $index_number = $detail->index_number;
@@ -997,7 +997,7 @@ class StudentController extends Controller
            // $selected_program[$applicant->id] = false;
            $subject_count = 0;
               foreach($campus_programs as $program){
-                
+
 
                   if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
@@ -1014,7 +1014,7 @@ class StudentController extends Controller
                          if($detail->exam_id == 1){
                            $other_must_subject_ready = false;
                            foreach ($detail->results as $key => $result) {
-                              
+
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                 $applicant->rank_points += $o_level_grades[$result->grade];
@@ -1030,13 +1030,13 @@ class StudentController extends Controller
                                          $o_level_pass_count += 1;
                                          $other_must_subject_ready = true;
                                        }
-                                      
+
                                     }else{
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
                                           $o_level_must_pass_count += 1;
                                        }
-                                       
+
                                        if(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
                                        if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) && !in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
@@ -1062,7 +1062,7 @@ class StudentController extends Controller
                                $programs[] = $program;
                              }
                          }
-                         
+
                        }
                    }
 
@@ -1094,13 +1094,13 @@ class StudentController extends Controller
                                          $o_level_pass_count += 1;
                                          $other_must_subject_ready = true;
                                        }
-                                 
+
                                     }else{
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
                                         $o_level_must_pass_count += 1;
                                        }
-                                       
+
                                        if(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
                                        if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) && !in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
@@ -1161,7 +1161,7 @@ class StudentController extends Controller
                               }
                            }
                          }
-                         
+
                        }
                        if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                        if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1) && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
@@ -1173,7 +1173,7 @@ class StudentController extends Controller
                            }
                         }
                        $has_btc = false;
-                      
+
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
@@ -1184,13 +1184,13 @@ class StudentController extends Controller
                                 }
                            }
                        }
-                           
+
 
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
                    }
-                   
+
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
                        $o_level_pass_count = 0;
@@ -1202,7 +1202,7 @@ class StudentController extends Controller
                        $a_level_out_principle_pass_points = 0;
                        $a_level_out_subsidiary_pass_count = 0;
                        $diploma_pass_count = 0;
-                       
+
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
                            $other_must_subject_ready = false;
@@ -1223,7 +1223,7 @@ class StudentController extends Controller
                                          $o_level_pass_count += 1;
                                          $other_must_subject_ready = true;
                                        }
-    
+
                                     }else{
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
@@ -1336,7 +1336,7 @@ class StudentController extends Controller
                            }
                          }
                        }
-                       
+
                        if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                        if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
 
@@ -1387,12 +1387,12 @@ class StudentController extends Controller
                        }
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
-                                
+
                                $programs[] = $program;
                             }
                         }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                             if(($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
-                                
+
                                $programs[] = $program;
                             }
                         }
@@ -1400,7 +1400,7 @@ class StudentController extends Controller
 
                         $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
                         $out_pass_subjects_count = 0;
-                        
+
                         foreach($applicant->outResultDetails as $detail){
                             foreach($detail->results as $key => $result){
                                 if(!in_array($result->code, $exclude_out_subjects_codes)){
@@ -1410,14 +1410,14 @@ class StudentController extends Controller
                                 }
                             }
                             $out_gpa = $detail->gpa;
-                      
+
                         }
 
 
                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
                                 $programs[] = $program;
                         }
-                            
+
                         if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                             if(($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa) || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa)){
                                     $programs[] = $program;
@@ -1437,7 +1437,7 @@ class StudentController extends Controller
                $app->rank_points = $applicant->rank_points / $subject_count;
 			   $app->save();
             }
-            
+
         }
 	    }else{
 			$window = null;
@@ -1445,7 +1445,7 @@ class StudentController extends Controller
 			$applicant = null;
 		} */
 		if($applicant){
-			
+
 		$data = [
 		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
 //           'applicant'=>$applicant,
@@ -1459,7 +1459,7 @@ class StudentController extends Controller
           // 'program_fee_invoice'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->first(),
           // 'request'=>$request
         ];
-			
+
 		}else{
       if(Graduant::where('student_id',$student->id)->where('status','GRADUATING')->count() == 0){
         return redirect()->back()->with('error','You are not in the graduants list, please check with the Examination Office');
@@ -1467,10 +1467,10 @@ class StudentController extends Controller
 
       if(Clearance::where('student_id',$student->id)->where('library_status',1)->where('hostel_status',1)->where('finance_status',1)->where('hod_status',1)->count() == 0){
         return redirect()->back()->with('error','You have not finished clearance');
-      }  
+      }
 
 		$data = [
-		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),			
+		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
 		   'selected_campus'=>[],
 		   'programme'=>[],
            'campuses'=>Campus::all(),
@@ -1480,7 +1480,7 @@ class StudentController extends Controller
 
 		 return view('dashboard.student.indicate-continue',$data)->withTitle('Indicate Continue');
 	 }
-	 
+
 	 /**
 	  * Indicate continue
 	  */
@@ -1499,8 +1499,8 @@ class StudentController extends Controller
 			  return redirect()->back()->with('error','Application window not defined');
 		  } */
 
-                 
-		  
+
+
 		  $past_level = $student->applicant->programLevel;
 		  if(str_contains($past_level->code,'HD')){
 			  return redirect()->back()->with('error','You do not have to indicate, proceed with registration.');
@@ -1525,7 +1525,7 @@ class StudentController extends Controller
 		  if(count($campus_programs) == 0){
 			return redirect()->back()->with('error','Selected campus does not have programmes');
 		  } */
-		  
+
 		  $applicant = new Applicant;
 		  $applicant->first_name = $student->applicant->first_name;
 		  $applicant->middle_name = $student->applicant->middle_name;
@@ -1559,40 +1559,40 @@ class StudentController extends Controller
 		  $applicant->veta_status = $student->applicant->veta_status;
 		  $applicant->avn_no_results = $student->applicant->avn_no_results;
 		  $applicant->teacher_certificate_status = $student->applicant->teacher_certificate_status;
-		  $applicant->basic_info_complete_status = 1;	
-		  $applicant->documents_complete_status = 1;		  
+		  $applicant->basic_info_complete_status = 1;
+		  $applicant->documents_complete_status = 1;
 		  $applicant->next_of_kin_complete_status = 1;
 		  $applicant->results_complete_status = 1;
 		  $applicant->program_level_id = $level->id;
 		  $applicant->is_continue = 1;
-		  $applicant->created_at = now();		  
-		  
-		  
-		  
+		  $applicant->created_at = now();
+
+
+
 		  $user = new User;
 		  $user->username = $applicant->index_number;
 		  $user->email = $applicant->email;
 		  $user->password = Hash::make($student->applicant->index_number);
 		  $user->save();
-		  
+
 		  //$old_user = User::find($student->user_id);
 		  //$old_user->status = 'INACTIVE';
 		  //$old_user->save();
-		  
+
 		  $role = Role::where('name','applicant')->first();
 		  $user->roles()->attach([$role->id]);
-		  
+
 		  $applicant->user_id = $user->id;
 		  $applicant->nacte_reg_no = $student->registration_number;
-		  $applicant->save();	
-		  
+		  $applicant->save();
+
 		  NectaResultDetail::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
 		  NectaResult::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
 
 	      $results = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($student){
 		        $query->where('year_of_study',$student->year_of_study);
 	      })->where('student_id',$student->id)->get();
-		  
+
 			$graduation_date = SpecialDate::select(DB::raw('YEAR(date) year'))->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
 
 		    $detail = new NacteResultDetail;
@@ -1607,15 +1607,15 @@ class StudentController extends Controller
 			$detail->diploma_gpa = $student->overallRemark->gpa;
 			$detail->diploma_code = $student->campusProgram->program->code;
 			//$detail->diploma_category = 'Category';
-			$detail->diploma_graduation_year = $graduation_date->year; 
+			$detail->diploma_graduation_year = $graduation_date->year;
 			$detail->username = $student->surname;
 			$detail->date_birth = $student->birth_date;
 			$detail->applicant_id = $applicant->id;
 			$detail->verified = 1;
 			$detail->created_at = now();
-			$detail->save();		
-			
-			
+			$detail->save();
+
+
 			foreach($results as $result){
 				 $res = new NacteResult;
 				 $res->subject = $result->moduleAssignment->module->name;
@@ -1640,7 +1640,7 @@ class StudentController extends Controller
 
         return redirect()->back()->with('message','Student details updated successfully');
     }
-	
+
 	/**
      * Update specified staff details
      */
@@ -1718,7 +1718,7 @@ class StudentController extends Controller
 
         return redirect()->back()->with('message','Password reset successfully');
     }
-         
+
      /**
      * Reset control number
      */
