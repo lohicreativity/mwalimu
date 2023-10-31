@@ -122,14 +122,14 @@
                    <table class="table table-bordered" id="ss-transfers">
                      <thead>
                        <tr>
-					     <th>SN</th>
+					               <th>SN</th>
                          <th>Name</th>
                          <th>Index Number</th>
-						 <th>Previous Programme</th>
+						             <th>Previous Programme</th>
                          <th>New Programme</th>
                          <th>Date Transfered</th>
                          <th>Transfered By</th>
-						 <th>Status</th>
+						             <th>Status</th>
                        </tr>
                      </thead>
                      <tbody>

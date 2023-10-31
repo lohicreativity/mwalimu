@@ -6887,6 +6887,7 @@ class ApplicationController extends Controller
 
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
 			 $applicant = $app;
+             $applicant->is_tcu_verified = 0; 
 			 $applicant->is_transfered = 1;
              $applicant->programs_complete_status = 0;
 			 $applicant->submission_complete_status = 0;
@@ -6948,7 +6949,6 @@ class ApplicationController extends Controller
 
         $applicant->confirmation_status = 'TRANSFERED';
         $applicant->save();
-
 
         // $applicant = Applicant::whereHas('selections',function($query) use($request){
         //      $query->where('status','PENDING');
@@ -8484,7 +8484,7 @@ class ApplicationController extends Controller
      * Submit external transfer
      */
     public function submitExternalTransfer(Request $request)
-    {   dd();
+    {
 		$transfers = ExternalTransfer::where('status','ELIGIBLE')->get();
 		foreach($transfers as $trans){
 			if($request->get('transfer_'.$trans->id) == $trans->id){

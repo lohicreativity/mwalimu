@@ -47,6 +47,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Domain\Application\Models\ApplicationBatch;
 use App\Domain\Application\Models\ApplicantSubmissionLog;
 use App\Domain\Application\Models\ApplicantFeedBackCorrection;
+use App\Domain\Application\Models\ExternalTransfer;
 
 class ApplicantController extends Controller
 {
@@ -610,6 +611,13 @@ class ApplicantController extends Controller
     {
       $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
       
+      if($applicant->is_tcu_verified === 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
+         ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
+         ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
+      }elseif($applicant->is_tcu_verified !== 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
+         ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
+         ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'PENDING']);
+      }
       $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
 
       $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
@@ -753,8 +761,6 @@ class ApplicantController extends Controller
            $selection_status = $selected_applicants != null ? true : false;
          } */
 
-
-
       $check_selected_applicant = User::find(Auth::user()->id)->applicants()
                                        ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING');})
                                        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function($query) {$query->whereIn('status', ['SELECTED','PENDING'])->first();}])
@@ -768,8 +774,6 @@ class ApplicantController extends Controller
 
       $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($applicant, $app_window){
             $query->where('year','LIKE','%'.date('Y',strtotime($app_window->begin_date)).'/%');})->first();
-
-
 
       $activeSemester = Semester::where('status', 'ACTIVE')->first();
 

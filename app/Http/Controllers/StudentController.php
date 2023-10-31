@@ -101,6 +101,52 @@ class StudentController extends Controller
 			      'status'=>'ACTIVE'
         ];
         if(Auth::attempt($credentials)){
+          $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+          $activeSemester = Semester::where('status', 'ACTIVE')->first();
+
+          $student = Student::where('registration_number',$request->get('registration_number'))->with('applicant')->first();
+          $tuition_fee_loan = LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+          ->where('campus_id',$student->applicant->campus_id)->sum('tuition_fee');
+
+          $invoices = null;
+
+          if(Registration::where('student_id', $student->id)->where('study_academic_year_id', $ac_year->id)->where('semester_id', $activeSemester->id)->where('status','UNREGISTERED')->first()){
+            $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campus_program_id)->first();
+            if(!$program_fee){
+                return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
+            }
+
+            if($tuition_fee_loan >= $program_fee && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('campus_id',$student->applicant->campus_id)->where('has_signed',1)){
+              Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+              ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+            }else{
+              $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
+              ->where('applicable_id',$ac_year->id)->get();
+  
+              if($invoices){
+                $fee_payment_percent = $other_fee_payment_status = 0;
+                foreach($invoices as $invoice){
+                  if(str_contains($invoice->feeType->name,'Tuition Fee')){
+                    $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+                    $fee_payment_percent = $paid_amount/$invoice->amount;
+  
+                    if($tuition_fee_loan>0){
+                      $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
+                    }
+                    break;
+                  }
+                }
+  
+                if($fee_payment_percent >= 0.6){
+                Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+  
+                }
+              }
+            }
+          }
+
+
           if(Auth::user()->must_update_password == 1){
               return redirect()->to('change-password')->with('message','Change password');
           }else{
