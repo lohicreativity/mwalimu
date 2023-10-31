@@ -245,7 +245,7 @@
         </div>
      </div> --}}
      {{-- <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div> --}}
-
+     <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi1.jpg') }});  background-size:  contain; background-repeat: no-repeat; width: 750px; height: 400px; ">
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
         <div class="col-md-3" style="position:absolute; padding-top: 100px;">
