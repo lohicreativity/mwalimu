@@ -6,7 +6,8 @@
           @if(Auth::user()->hasRole('applicant'))
 
             @if(isset($applicant))
-            @if($applicant->status == null || ($applicant->status === 'SELECTED' && !$regulator_selection) || (($applicant->status === 'SELECTED' || $applicant->status === 'NOT SELECTED') && $applicant->is_tamisemi == 1))
+            @if($applicant->status == null || ($applicant->status === 'SELECTED' && !$regulator_selection) || (($applicant->status === 'SELECTED' || $applicant->status === 'NOT SELECTED') && 
+            $applicant->is_tamisemi == 1))
             <li class="nav-item">
               <a href="{{ url('application/basic-information') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
@@ -15,7 +16,6 @@
             </li>
             <li class="nav-item">
               <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1 && !$applicant->is_tamisemi == 1) disabled="disabled" 
-                 @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1 && !$applicant->is_tamisemi == 1) disabled="disabled" 
                  @else href="{{ url('application/next-of-kin') }}" @endif class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
@@ -26,21 +26,23 @@
 
                   @if($applicant->is_transfered != 1)
                     <li class="nav-item">
-                      <a @if(($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) || $applicant->basic_info_complete_status != 1) disabled="disabled" @else href="{{ url('application/payments') }}" @endif class="nav-link">
+                      <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') || $applicant->basic_info_complete_status != 1) disabled="disabled" @else href="{{ url('application/payments') }}" @endif class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Payments @if($applicant->payment_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                       </a>
                     </li>
                   @endif
                   <li class="nav-item">
-                    <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/results') }}" @endif class="nav-link">
+                    <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" 
+                       @else href="{{ url('application/results') }}" @endif class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Request Results @if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                     </a>
                   </li>
                   @if($applicant->is_transfered != 1)
                     <li class="nav-item">
-                      <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/select-programs') }}" @endif class="nav-link">
+                      <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" 
+                        @else href="{{ url('application/select-programs') }}" @endif class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Select Programmes @if($applicant->programs_complete_status === 1) <i class="fa fa-check"></i> @endif</p>
                       </a>
@@ -64,7 +66,8 @@
               
                   @if($applicant->is_tamisemi != 1)
                   <li class="nav-item">
-                    <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/submission') }}" @endif class="nav-link">
+                    <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" 
+                      @else href="{{ url('application/submission') }}" @endif class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Submit Application @if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                     </a>
