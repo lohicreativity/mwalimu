@@ -807,7 +807,7 @@ class ApplicantController extends Controller
             ->where('applicable_id',$study_academic_year->id)->get();
 
             if($invoices){
-               $fee_payment_percent = $other_fee_payment_status = 0;
+               $fee_payment_percent = 0;
                foreach($invoices as $invoice){
                   if(str_contains($invoice->feeType->name,'Tuition Fee')){
                         $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
