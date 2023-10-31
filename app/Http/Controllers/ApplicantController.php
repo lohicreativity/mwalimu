@@ -1098,7 +1098,7 @@ class ApplicantController extends Controller
 
          // }
 
-            if(!$window_batch){
+            if(!$window_batch && $applicant->is_transfered != 1){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
             }
             if($applicant->batch_id != $batch->id){
@@ -1171,7 +1171,7 @@ class ApplicantController extends Controller
             $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
          }
 
-            if(!$window_batch){
+            if(!$window_batch && $applicant->is_transfered != 1){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
             }
  /*            if($applicant->batch_id != $batch->id){
@@ -1297,7 +1297,7 @@ class ApplicantController extends Controller
             $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
          }
 
-        if(!$window_batch){
+        if(!$window_batch && $applicant->is_transfered != 1){
              return redirect()->to('application/submission')->with('error','Application window already closed');
         }
         if($applicant->batch_id != $batch->id){
