@@ -93,15 +93,15 @@
                       <td>{{ $rec->student->first_name }} {{ $rec->student->middle_name }} {{ $rec->student->surname }}</td>
                       <td>{{ $rec->student->campusProgram->program->name }}</td>
                       <td>
-                           {!! Form::checkbox('record_'.$rec->id,$rec->id,true) !!}
+                           {!! Form::checkbox('records[]',$rec->id,true) !!}
                       </td>
                     </tr>
-                    @endforeach  
+                    @endforeach
                     <tr>
                       <td colspan="4">
                         <button type="submit" class="btn btn-primary">Resubmit Insurance Registrations</button>
                       </td>
-                    </tr>              
+                    </tr>
                   </tbody>
                 </table>
                 {!! Form::close()!!}

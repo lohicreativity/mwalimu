@@ -4671,10 +4671,9 @@ class ApplicationController extends Controller
      */
     public function resubmitInsuranceRegistrations(Request $request)
     {
-        foreach($records as $ins){
-            if($request->get('record_'.$ins->id) == $ins->id){
+        foreach($request->records as $ins){
                  try{
-                     $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins->id);
+                     $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
                      $student = $rec->student;
                      $applicant = $rec->applicant;
                      $path = public_path().'/avatars/'.$student->image;
@@ -4698,7 +4697,8 @@ class ApplicationController extends Controller
                           'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
                           'PhotoImage'=>$base64
                       ];
-
+                      return $data;
+                      
                       $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
                       $token = NHIFService::requestToken();
 
@@ -4771,21 +4771,21 @@ class ApplicationController extends Controller
                     $err = curl_error($curl_handle);
 
                     curl_close($curl_handle);
-                        $record = InsuranceRegistration::find($request->get('record_'.$ins->id));
+                        $record = InsuranceRegistration::find($ins);
                         $record->applicant_id = $applicant->id;
                         $record->student_id = $student->id;
-                        $record->study_academic_year_id = $ac_year->id;
+                        $record->study_academic_year_id = $rec->studyAcademicYear->id;
                         $record->is_success = 1;
                         $record->save();
                     }catch(\Exception $e){
-                        $record = InsuranceRegistration::find($request->get('record_'.$ins->id));
+                        $record = InsuranceRegistration::find($ins);
                         $record->applicant_id = $applicant->id;
                         $record->student_id = $student->id;
-                        $record->study_academic_year_id =
+                        $record->study_academic_year_id = $rec->studyAcademicYear->id;
                         $record->is_success = 0;
                         $record->save();
                     }
-            }
+
         }
         return redirect()->back()->with('message','Insurance registrations resubmited successfully');
     }
