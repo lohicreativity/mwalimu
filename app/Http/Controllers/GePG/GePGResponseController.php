@@ -19,6 +19,7 @@ use App\Services\ACPACService;
 use App\Jobs\UpdateGatewayPayment;
 use DB;
 
+
 class GePGResponseController extends Controller
 {
     /**
@@ -94,103 +95,87 @@ class GePGResponseController extends Controller
 		$psp_name = $data['psp_name'];
         $ctry_AccNum = $data['credited_acc_num'];
 
-		if($cell_number == null || $payer_email == null || $payer_name == null){
-			$invoice = Invoice::where('control_no',$control_no)->first();
-			if($invoice){
-				$cell_number = $invoice->phone;
-				$payer_email = $invoice->email;
-				$payer_name = $invoice->payer_name;
-			}
+		$invoice = Invoice::select('payable_id','payable_type')->where('control_no',$control_no)->first();
+
+		$applicant = $student = $cell_number = $payer_email = $payer_name = null;
+		if($invoice->payable_type == 'applicant'){
+            $applicant = Applicant::find($invoice->payable_id);
+
+			$cell_number = $applicant->phone;
+			$payer_email = $applicant->email;
+			$payer_name = $applicant->first_name.' '.$applicant->middle_name.' '.$applicant->surname;
+
+		}elseif($invoice->payable_type == 'student'){
+            $student = Student::find($invoice->payable_id);
+
+			$cell_number = $student->phone;
+			$payer_email = $student->email;
+			$payer_name = $student->first_name.' '.$student->middle_name.' '.$student->surname;
+		
 		}
 
-      if(GatewayPayment::where('transaction_id',$transaction_id)->count() == 0){
-		$gatepay = new GatewayPayment;
-		$gatepay->transaction_id = $transaction_id;
-		// $gatepay->sp_code = $sp_code;
-		$gatepay->pay_refId = $pay_refId;
-		$gatepay->bill_id = $bill_id;
-		$gatepay->control_no = $control_no;
-		$gatepay->bill_amount = $bill_amount;
-		$gatepay->paid_amount = $paid_amount;
-		$gatepay->bill_payOpt = $bill_payOpt;
-		$gatepay->ccy = $ccy;
-		$gatepay->datetime = $datetime;
-		$gatepay->payment_channel = $payment_channel;
-		$gatepay->cell_number = $cell_number;
-		$gatepay->payer_email = $payer_email;
-		$gatepay->payer_name = $payer_name;
-		$gatepay->psp_receipt_no = $psp_receipt_no;
-		$gatepay->ctry_AccNum = $ctry_AccNum;
-		$gatepay->psp_name = $psp_name;
-		$gatepay->is_updated = 0;
-		$gatepay->save();
-       
-        $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
-        $invoice->gateway_payment_id = $gatepay->id;
-		$invoice->save();
+		DB::beginTransaction();
 
-        if($invoice->payable_type == 'applicant'){
-            $applicant = Applicant::find($invoice->payable_id);
-            $stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
-            $stud_reg = 'NULL';
-            if(str_contains($invoice->feeType->name,'Application Fee')){
-               $applicant->payment_complete_status = 1;
-               $applicant->save();
-               
-            }
+		if(GatewayPayment::where('transaction_id',$transaction_id)->count() == 0){
+			$gatepay = new GatewayPayment;
+			$gatepay->transaction_id = $transaction_id;
+			// $gatepay->sp_code = $sp_code;
+			$gatepay->pay_refId = $pay_refId;
+			$gatepay->bill_id = $bill_id;
+			$gatepay->control_no = $control_no;
+			$gatepay->bill_amount = $bill_amount;
+			$gatepay->paid_amount = $paid_amount;
+			$gatepay->bill_payOpt = $bill_payOpt;
+			$gatepay->ccy = $ccy;
+			$gatepay->datetime = $datetime;
+			$gatepay->payment_channel = $payment_channel;
+			$gatepay->cell_number = $cell_number;
+			$gatepay->payer_email = $payer_email;
+			$gatepay->payer_name = $payer_name;
+			$gatepay->psp_receipt_no = $psp_receipt_no;
+			$gatepay->ctry_AccNum = $ctry_AccNum;
+			$gatepay->psp_name = $psp_name;
+			$gatepay->is_updated = 0;
+			$gatepay->save();
+		
+			$invoice = Invoice::select('id','payable_id', 'payable_type', 'reference_no')->with('feeType:id,name')->where('control_no',$control_no)->first();
+			$invoice->gateway_payment_id = $gatepay->id;
+			$invoice->save();
 
-            if(str_contains($invoice->feeType->name,'Tuition Fee')){
-                $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-                //$percentage = $paid_amount/$invoice->amount;
-                $applicant = Applicant::with('applicationWindow')->find($invoice->payable_id);
+			if($invoice->payable_type == 'applicant'){
+				if(str_contains($invoice->feeType->name,'Application Fee')){
+					$applicant->payment_complete_status = 1;
+				
+				}else{
+					if(str_contains($invoice->feeType->name,'Tuition Fee')){
+						$applicant->tuition_payment_check = $data['paid_amount'] > 0? 1 : 0;
 
-/*                 $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-                       $query->where('year','LIKE','%'.$ac_year.'/%');
-                })->first();
+					}
+					if(str_contains($invoice->feeType->name,'Miscellaneous')){
+						$applicant->other_payment_check = $data['paid_amount'] > 0? 1 : 0;
+					}
+				}
+				$applicant->save();
+			}
 
-                if($study_academic_year){
-                    $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
-                }else{
-                    $loan_allocation = null;
-                }           
+			if($invoice->payable_type == 'student'){
+				if(str_contains(strtolower($invoice->feeType->name),'appeal')){
+					Appeal::where('student_id',$invoice->payable_id)->where('invoice_id',$invoice->id)->update(['is_paid'=>1]);
+				}
 
-                if($loan_allocation){
-                   $percentage = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
-                   $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
-                }else{
-                   $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
-                } */
-				$applicant->tuition_payment_check = $paid_amount > 0? 1 : 0;
-                $applicant->save();
-            }
+				if(str_contains(strtolower($invoice->feeType->name),'performance report') || str_contains(strtolower($invoice->feeType->name),'statement of results')){
+					PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID','status'=>'PENDING']);
+				}
 
-            if(str_contains($invoice->feeType->name,'Miscellaneous')){
-                $applicant = Applicant::find($invoice->payable_id);
-//                $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
-				$applicant->other_payment_check = $data['paid_amount'] >0? 1 : 0;
-                $applicant->save();
-            }
-            
-        }
+				if(str_contains(strtolower($invoice->feeType->name),'transcript')){
+					TranscriptRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
+				}
 
-        if($invoice->payable_type == 'student'){
-            if(str_contains(strtolower($invoice->feeType->name),'appeal')){
-                 Appeal::where('student_id',$invoice->payable_id)->where('invoice_id',$invoice->id)->update(['is_paid'=>1]);
-            }
+			}
 
-            if(str_contains(strtolower($invoice->feeType->name),'performance report') || str_contains(strtolower($invoice->feeType->name),'statement of results')){
-                 PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID','status'=>'PENDING']);
-            }
-
-            if(str_contains(strtolower($invoice->feeType->name),'transcript')){
-                 TranscriptRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
-            }
-
-        }
-
-		//dispatch(new UpdateGatewayPayment($gatepay));
-	   }
+			//dispatch(new UpdateGatewayPayment($gatepay));
+		}
+		DB::commit();
 
   //       $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
 		// $invoice->gateway_payment_id = $gatepay->id;
