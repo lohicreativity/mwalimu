@@ -118,7 +118,7 @@
 											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($payer->applicant->gender == 'M') Male @elseif($payer->applicant->gender == 'F') Female @else @endif
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; @if(!empty($payer->applicant->birth_date)) {{ $payer->applicant->birth_date }} @else @endif
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; @if(!empty($payer->applicant->nationality)) {{ $payer->applicant->nationality }}	@else @endif										  
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if(!empty($payer->applicant->disabilityStatus->name)) { $payer->applicant->disabilityStatus->name }} @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if(!empty($payer->applicant->disabilityStatus->name)) {{ $payer->applicant->disabilityStatus->name }} @else @endif
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; @if(!empty($payer->applicant->entry_mode)) {{ $payer->applicant->entry_mode }} @else @endif	 												  
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; @if(!empty($payer->applicant->address)) {{ $payer->applicant->address }} @else @endif	 	
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; @if(!empty($payer->applicant->ward->name)) {{ $payer->applicant->ward->name }},&nbsp; @else @endif 
@@ -259,14 +259,15 @@
 									  <div id="collapseAddress" class="collapse" aria-labelledby="ss-address" data-parent="#student-accordion">
 										<div class="card-body">
 
-											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($payer->gender == 'M') Male @elseif($payer->gender == 'F') Female @endif
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $payer->birth_date }}
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $payer->nationality }}											  
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $payer->disabilityStatus->name }}
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $payer->entry_mode }}	 												  
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $payer->address }}	 	
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $payer->ward->name }},&nbsp; {{ $payer->region->name }},&nbsp; {{ $payer->country->name }}	 	 
-										
+											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Sex:</span> &nbsp; @if($payer->gender == 'M') Male @elseif($payer->gender == 'F') Female @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; @if(!empty($payer->birth_date)) {{ $payer->birth_date }} @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; @if(!empty($payer->nationality)) {{ $payer->nationality }}	@else @endif										  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if(!empty($payer->disabilityStatus->name)) {{ $payer->disabilityStatus->name }} @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; @if(!empty($payer->entry_mode)) {{ $payer->entry_mode }} @else @endif	 												  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; @if(!empty($payer->address)) {{ $payer->address }} @else @endif	 	
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; @if(!empty($payer->ward->name)) {{ $payer->ward->name }},&nbsp; @else @endif 
+											  @if(!empty($payer->region->name)) {{ $payer->region->name }},&nbsp; @else @endif 
+											  @if(!empty($payer->country->name)) {{ $payer->country->name }} @else @endif	
 										</div>
 									  </div>
 									</div>
