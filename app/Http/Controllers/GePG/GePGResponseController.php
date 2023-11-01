@@ -19,7 +19,6 @@ use App\Services\ACPACService;
 use App\Jobs\UpdateGatewayPayment;
 use DB;
 
-
 class GePGResponseController extends Controller
 {
     /**
@@ -95,27 +94,16 @@ class GePGResponseController extends Controller
 		$psp_name = $data['psp_name'];
         $ctry_AccNum = $data['credited_acc_num'];
 
-		$invoice = Invoice::select('payable_id','payable_type')->where('control_no',$control_no)->first();
-
-		$applicant = $student = $cell_number = $payer_email = $payer_name = null;
-		if($invoice->payable_type == 'applicant'){
-            $applicant = Applicant::find($invoice->payable_id);
-
-			$cell_number = $applicant->phone;
-			$payer_email = $applicant->email;
-			$payer_name = $applicant->first_name.' '.$applicant->middle_name.' '.$applicant->surname;
-
-		}elseif($invoice->payable_type == 'student'){
-            $student = Student::find($invoice->payable_id);
-
-			$cell_number = $student->phone;
-			$payer_email = $student->email;
-			$payer_name = $student->first_name.' '.$student->middle_name.' '.$student->surname;
-		
+		if($cell_number == null || $payer_email == null || $payer_name == null){
+			$invoice = Invoice::where('control_no',$control_no)->first();
+			if($invoice){
+				$cell_number = $invoice->phone;
+				$payer_email = $invoice->email;
+				$payer_name = $invoice->payer_name;
+			}
 		}
 
 		DB::beginTransaction();
-
 		if(GatewayPayment::where('transaction_id',$transaction_id)->count() == 0){
 			$gatepay = new GatewayPayment;
 			$gatepay->transaction_id = $transaction_id;
@@ -138,24 +126,35 @@ class GePGResponseController extends Controller
 			$gatepay->is_updated = 0;
 			$gatepay->save();
 		
-			$invoice = Invoice::select('id','payable_id', 'payable_type', 'gateway_payment_id')->with('feeType:id,name')->where('control_no',$control_no)->first();
+			$invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
 			$invoice->gateway_payment_id = $gatepay->id;
 			$invoice->save();
 
 			if($invoice->payable_type == 'applicant'){
+				$applicant = Applicant::find($invoice->payable_id);
+				$stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
+				$stud_reg = 'NULL';
 				if(str_contains($invoice->feeType->name,'Application Fee')){
-					$applicant->payment_complete_status = 1;
-				
-				}else{
-					if(str_contains($invoice->feeType->name,'Tuition Fee')){
-						$applicant->tuition_payment_check = $data['paid_amount'] > 0? 1 : 0;
-
-					}
-					if(str_contains($invoice->feeType->name,'Miscellaneous')){
-						$applicant->other_payment_check = $data['paid_amount'] > 0? 1 : 0;
-					}
-				}
+				$applicant->payment_complete_status = 1;
 				$applicant->save();
+				
+				}
+
+				if(str_contains($invoice->feeType->name,'Tuition Fee')){
+					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+					//$percentage = $paid_amount/$invoice->amount;
+					$applicant = Applicant::with('applicationWindow')->find($invoice->payable_id);
+
+					$applicant->tuition_payment_check = $paid_amount > 0? 1 : 0;
+					$applicant->save();
+				}
+
+				if(str_contains($invoice->feeType->name,'Miscellaneous')){
+					$applicant = Applicant::find($invoice->payable_id);
+					$applicant->other_payment_check = $data['paid_amount'] >0? 1 : 0;
+					$applicant->save();
+				}
+				
 			}
 
 			if($invoice->payable_type == 'student'){
@@ -172,15 +171,8 @@ class GePGResponseController extends Controller
 				}
 
 			}
-
-			//dispatch(new UpdateGatewayPayment($gatepay));
 		}
-		DB::commit();
-
-  //       $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
-		// $invoice->gateway_payment_id = $gatepay->id;
-		// $invoice->save();
-		
+		DB::commit();	
     }
 
     /**
