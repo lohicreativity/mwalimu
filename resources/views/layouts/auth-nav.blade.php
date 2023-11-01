@@ -14,8 +14,8 @@
               </a>
             </li>
             <li class="nav-item">
-              <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1 && !$applicant->is_tamisemi == 1) disabled="disabled" 
-                 @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1 && !$applicant->is_tamisemi == 1) disabled="disabled" 
+              <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1 && !$applicant->is_tamisemi == 1) disabled="disabled"
+                 @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1 && !$applicant->is_tamisemi == 1) disabled="disabled"
                  @else href="{{ url('application/next-of-kin') }}" @endif class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
@@ -33,8 +33,8 @@
                     </li>
                   @endif
                   <li class="nav-item">
-                    <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" 
-                       @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled" 
+                    <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled"
+                       @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled"
                        @else href="{{ url('application/results') }}" @endif class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Request Results @if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
@@ -54,8 +54,8 @@
                     <a href="{{ url('application/upload-avn-documents') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Upload Documents
-                      @if($applicant->teacher_diploma_certificate || $applicant->veta_certificate || $applicant->documents_complete_status == 1 || $applicant->submission_complete_status == 1) 
-                      <i class="fa fa-check"></i> 
+                      @if($applicant->teacher_diploma_certificate || $applicant->veta_certificate || $applicant->documents_complete_status == 1 || $applicant->submission_complete_status == 1)
+                      <i class="fa fa-check"></i>
                       @endif
                     </p>
                     </a>
@@ -63,7 +63,7 @@
                   @endif
 
 				      @endif
-              
+
                   @if($applicant->is_tamisemi != 1)
                   <li class="nav-item">
                     <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Bachelor') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/submission') }}" @endif class="nav-link">
@@ -237,7 +237,7 @@
               </li>
             </ul>
           </li>
-		  @if($student->applicant->program_level_id == 4)		  
+		  @if($student->applicant->program_level_id == 4)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-coins"></i>
@@ -430,9 +430,9 @@
               @endcan
               @can('view-edit-applicant-details')
               <li class="nav-item">
-                <a href="{{ url('application/nactvet-error-cases?application_window_id='.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                <a href="{{ url('application/regulator-failed-case?application_window_id='.session('active_window_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>NACTVET Failed Cases</p>
+                  <p>Regulator Failed Cases</p>
                 </a>
               </li>
               @endcan
@@ -553,7 +553,7 @@
                   <p>{{ __('Registration Status') }}</p>
                 </a>
               </li>
-              @endcan	
+              @endcan
               @can('search-student')
               <li class="nav-item">
                 <a href="{{ url('academic/student-search') }}" class="nav-link">
@@ -561,7 +561,7 @@
                   <p>{{ __('Student Search') }}</p>
                 </a>
               </li>
-              @endcan		  
+              @endcan
               @can('view-insurance-registrations')
               <li class="nav-item">
                 <a href="{{ url('application/failed-insurance-registrations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
@@ -633,7 +633,7 @@
                   <p>Registration Deadline</p>
                 </a>
               </li>
-              @endcan              
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -652,7 +652,7 @@
                   <p>{{ __('Create Control Number') }}</p>
                 </a>
               </li>
-              @endcan			
+              @endcan
               @can('view-payer-details')
               <li class="nav-item">
                 <a href="{{ url('finance/payer-details') }}" class="nav-link">
@@ -668,7 +668,7 @@
                   <p>{{ __('Fee Types') }}</p>
                 </a>
               </li>
-              @endcan			  
+              @endcan
               @can('view-fee-items')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-items') }}" class="nav-link">
@@ -815,7 +815,7 @@
                   <p>{{ __('Results Processing') }}</p>
                 </a>
               </li>
-              @endcan 
+              @endcan
               @can('view-results-appeal')
               <li class="nav-item">
                 <a href="{{ url('academic/results/appeals?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
@@ -995,15 +995,15 @@
                 </a>
               </li>
               @endcan
-              
+
               <!-- <li class="nav-item">
                 <a href="{{ url('academic/academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Academic Years') }}</p>
                 </a>
               </li> -->
-              
-              
+
+
               @can('view-programme-modules')
               <li class="nav-item">
                 <a href="{{ url('academic/program-module-assignments?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
@@ -1126,7 +1126,7 @@
                   <p>Roles</p>
                 </a>
               </li>
-             @endcan 
+             @endcan
              @can('view-system-modules')
               <li class="nav-item">
                 <a href="{{ url('settings/system-modules') }}" class="nav-link">

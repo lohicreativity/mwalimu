@@ -38,7 +38,7 @@ class RegistrationController extends Controller
     public function create(Request $request)
     {
 
-    	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
+    $student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
       foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
               if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){

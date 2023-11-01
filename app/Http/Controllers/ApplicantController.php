@@ -611,7 +611,7 @@ class ApplicantController extends Controller
     public function editBasicInfo(Request $request)
     {
       $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
-      
+
       if($applicant->is_tcu_verified === 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
          ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
          ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
@@ -817,14 +817,20 @@ class ApplicantController extends Controller
                         $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
                         }
                   }
+
+                //   if(str_contains($invoice->feeType->name,'Miscellaneous')){
+                //         $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+                //         $other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
+
+                //   }
                }
-               
+
                if($fee_payment_percent >= 0.6){
                   Registration::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
                               ->where('semester_id', 1)->update(['status'=>'REGISTERED']);
 
                }
-            }            
+            }
          }
 		}
 
@@ -2888,7 +2894,7 @@ class ApplicantController extends Controller
 		if($request->get('insurance_name') == 'NHIF'){
             $status_code = NHIFService::checkCardStatus($request->get('card_number'))->statusCode;
             if($status_code == 406){
-                return redirect()->back()->with('error','Invalid card number. Please resubmit the correct card number or request new NHIF card.');
+                return redirect()->back()->with('error','Invalid card number. Please resubmit the correct card number or request new  card.');
             }else{
                $insurance = new HealthInsurance;
                $insurance->insurance_name = 'NHIF';
@@ -3131,6 +3137,7 @@ class ApplicantController extends Controller
             $applicant->gender = $request->get('gender');
             $applicant->entry_mode = $request->get('entry_mode');
             $applicant->program_level_id = $request->get('program_level_id');
+            $applicant->is_edited = 1;
             $applicant->save();
 
             if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){

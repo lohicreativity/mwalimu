@@ -20,12 +20,24 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
+            @if ($flag == 'initial')
+            <h1 class="m-0">Regulator Failed Cases</h1>
+            @elseif($flag == 'NACTVET')
             <h1 class="m-0">NACTVET Error Cases</h1>
+            @elseif($flag=='TCU')
+            <h1 class="m-0">TCU Correction Cases</h1>
+            @endif
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
+              @if($flag == 'initial')
+              <li class="breadcrumb-item active"><a href="#">Regulator Failed Cases</a></li>
+              @elseif($flag == 'NACTVET')
               <li class="breadcrumb-item active"><a href="#">NACTVET Error Cases</a></li>
+              @elseif($flag=='TCU')
+              <li class="breadcrumb-item active"><a href="#">TCU Correction Cases</a></li>
+              @endif
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -39,13 +51,41 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
            <div class="col-12">
- 
+         @if($flag != 'TCU')
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Retrieve Error Cases') }}</h3>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
+                 @if ($flag == 'initial')
+                 {!! Form::open(['url'=>'application/regulator-failed-case/get','class'=>'ss-form-processing']) !!}
+                 <div class="row">
+                 <div class="form-group col-6">
+                   {!! Form::label('','Application Window') !!}
+                  <select name="window_id" class="form-control" required>
+                     <option value="">Application Window</option>
+                     @foreach($windows as $window)
+                             <option value="{{ $window->id }}">{{ $window->begin_date }} - {{ $window->end_date }}  </option>
+                     @endforeach
+                  </select>
+                </div>
+                <div class="form-group col-6">
+                 {!! Form::label('','Regulator cases') !!}
+                 <select name="regulator_case" class="form-control" required>
+                   <option value="">Regulator cases</option>
+                   @foreach($failed_cases as $case)
+                   <option value="{{ $case }}">{{ $case }}</option>
+                   @endforeach
+                 </select>
+               </div>
+              </div>
+                <div class="ss-form-actions">
+                 <input type="submit" name="action" class="btn btn-primary" value="Search Failed Cases">
+                </div>
+
+               {!! Form::close() !!}
+                 @elseif($flag == 'NACTVET')
                   {!! Form::open(['url'=>'application/nactvet-error-cases/get','class'=>'ss-form-processing']) !!}
                     <div class="row">
                     <div class="form-group col-6">
@@ -53,8 +93,8 @@
                      <select name="program_level_id" class="form-control" required>
                         <option value="">Select Programme Level</option>
                         @foreach($awards as $award)
-                            @if($award->id <= 2)
-                                <option value="{{ $award->id }}" @if($request->get('programme_level_id') == $award->id) selected="selected" @endif>{{ $award->name }} </option>
+                            @if($award->id <= 2 || $award->id == 4)
+                                <option value="{{ $award->id }}">{{ $award->name }} </option>
                             @endif
                         @endforeach
                      </select>
@@ -74,15 +114,17 @@
                    </div>
 
                   {!! Form::close() !!}
+                  @endif
                </div>
              </div>
-             <!-- /.card -->     
-			 
+             @endif
+             <!-- /.card -->
+
 			 @if(count($applicants) != 0)
 			 <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3>
-            
+
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -94,9 +136,9 @@
                 <th>Sex</th>
                 <th>Index Number</th>
                 <th>Phone</th>
-                <th>Award</th>            
+                <th>Award</th>
                 <th>Reason</th>
-                <th>Status</th>             
+                <th>Status</th>
                 <th>Action</th>
 						 </tr>
 					 </thead>
@@ -109,24 +151,35 @@
                     <td>{{ $applicant->index_number }}</td>
                     <td>{{ $applicant->phone }}</td>
                     <td>@if($applicant->program_level_id == 1) BTC @elseif($applicant->program_level_id == 2) OD @else BD @endif</td>
+                    @if($flag != 'TCU')
                     <td>{{ $applicant->remarks }}</td>
                     <td> @if(empty($applicant->submission_status)) PENDING @else {{$applicant->submission_status}} @endif </td>
+                    @endif
                     <td>
+                      @if($flag == 'NACTVET')
                       {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
                           {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
                         @endif </td>
                 </tr>
-
+                @elseif($flag == 'TCU')
+                {!! Form::open(['url'=>'application/resubmit-tcu-correction-cases','class'=>'ss-form-processing']) !!}
+                @if($applicant->program_level_id == 4)
+                  {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
+                @endif </td>
+        </tr>
+        @endif
 						 @endforeach
+
                 @if($errors_status  > 0)
                 <tr>
                   <td colspan="9"><button type="submit" class="btn btn-primary">Re-submit</button></td>
                 </tr>
-                @endif 
+                @endif
 					 <tbody>
 				  </table>
           {!! Form::close() !!}
+
 			   </div>
 			  </div>
 			 @endif

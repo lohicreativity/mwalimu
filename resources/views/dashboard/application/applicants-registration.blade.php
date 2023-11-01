@@ -71,7 +71,7 @@
                         </select>
                       </div>
                     </div>
-                    
+
                     <div class="mt-2">
                       <button type="submit" class="btn btn-primary">Retrieve Applicants</button>
                     </div>
@@ -79,9 +79,9 @@
                   {!! Form::close() !!}
 
 
-                  
-                
-                 
+
+
+
                </div>
             </div>
 
@@ -112,14 +112,14 @@
                           $full_fee_loan = true;
 
                         }
-                        
+
                       @endphp
-                      <tr> 
-                        
+                      <tr>
+
 						  <td>{{ ($key+1) }}</td>
                           <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                           <td>{{ $applicant->index_number }}</td>
-                          <td>{{ $applicant->phone }}</td>						  
+                          <td>{{ $applicant->phone }}</td>
                           <td>{{ $applicant->gender }}</td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')

@@ -69,8 +69,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('regulator-failed-cases',[ApplicationController::class,'showRegulatorFailedCases']);
     Route::get('nactvet-error-cases',[ApplicationController::class,'showNACTVETFeedbackCorrectionList']);
+    Route::get('tcu-failed-cases',[ApplicationController::class,'showTCUFeedbackCorrectionList']);
+    Route::get('regulator-failed-case',[ApplicationController::class,'showRegulatorFailedCase']);
+    Route::post('regulator-failed-case/get',[ApplicationController::class,'getSelectedRegulatorFailedCase']);
     Route::post('nactvet-error-cases/get',[ApplicationController::class,'getNACTVETFeedbackCorrectionList']);
     Route::post('resubmit-nactvet-error-cases',[ApplicationController::class,'resubmitNACTVETCorrectionList']);
+    Route::post('resubmit-tcu-correction-cases',[ApplicationController::class,'resubmitTCUCorrectionList']);
 
 	Route::get('application-windows', [ApplicationWindowController::class,'index']);
 	Route::post('application-window/store', [ApplicationWindowController::class,'store']);
@@ -83,7 +87,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('update-batches-selection', [ApplicationBatchController::class,'updateBatchSelections']);
     Route::post('application-batches/update', [ApplicationBatchController::class,'update']);
  //   Route::post('application-batch/store', [ApplicationBatchController::class,'store']);
-    Route::get('application-batch/{id}/destroy', [ApplicationBatchController::class,'destroy']);   
+    Route::get('application-batch/{id}/destroy', [ApplicationBatchController::class,'destroy']);
 
 	Route::get('entry-requirements', [EntryRequirementController::class,'index']);
 	Route::get('entry-requirements-capacity', [EntryRequirementController::class,'showCapacity']);
@@ -172,7 +176,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('update-applicant-nva',[ApplicantController::class,'updateNVAStatus']);
     Route::get('other-information',[ApplicantController::class,'showOtherInformation']);
     Route::post('update-insurance-status',[ApplicantController::class,'updateInsuranceStatus']);
-    Route::post('reset-insurance-status',[ApplicationController::class,'resetInsuranceStatus']);	
+    Route::post('reset-insurance-status',[ApplicationController::class,'resetInsuranceStatus']);
     Route::post('update-insurance-status-admin',[ApplicationController::class,'updateInsuranceStatus']);
     Route::post('update-insurance',[ApplicantController::class,'updateInsurance']);
     Route::post('update-hostel-status',[ApplicantController::class,'updateHostelStatus']);
@@ -199,7 +203,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('restore-cancelled-admission',[ApplicationController::class,'restoreCancelledAdmission']);
     Route::post('request-confirmation-code',[ApplicationController::class,'requestConfirmationCode']);
 
-    
+
     Route::get('admitted-applicants',[ApplicationController::class,'admittedApplicants']);
     Route::get('admitted-applicants/download',[ApplicationController::class,'downloadAdmittedApplicants']);
 
@@ -214,7 +218,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('get-tamisemi-applicants',[ApplicationController::class,'downloadTamisemiApplicants']);
 
     Route::get('store-requirements-as-previous',[EntryRequirementController::class,'storeAsPrevious']);
- 
+
     Route::get('postponement',[ApplicantController::class,'showPostponementRequest']);
     Route::post('request-postponement',[ApplicantController::class,'requestPostponement']);
     Route::get('download-postponement-letter',[ApplicantController::class,'downloadPosponementLetter']);
@@ -234,17 +238,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('failed-insurance-registrations',[ApplicationController::class,'showFailedInsuranceRegistrations']);
     Route::post('resubmit-insurance-registrations',[ApplicationController::class,'resubmitInsuranceRegistrations']);
-	
+
 	Route::get('internal-transfers',[ApplicationController::class,'showInternalTransfersAdmin']);
 	Route::get('external-transfers',[ApplicationController::class,'showExternalTransfersAdmin']);
 	Route::get('external-transfer/{id}/edit',[ApplicationController::class,'editExternalTransfer']);
 	Route::post('internal-transfers-submission',[ApplicationController::class,'internalTransfersSubmission']);
 	Route::post('register-external-transfer',[ApplicationController::class,'registerExternalTransfer']);
 	Route::post('update-external-transfer',[ApplicationController::class,'updateExternalTransfer']);
-	
+
 	Route::get('check-receipt',[ApplicantController::class,'checkReceipt']);
 	Route::get('reset-selections',[ApplicationController::class,'resetSelections']);
-	
+
 });
 
 Route::get('get-award-by-id',[AwardController::class,'getById']);

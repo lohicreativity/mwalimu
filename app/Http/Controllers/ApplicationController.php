@@ -619,7 +619,7 @@ class ApplicationController extends Controller
         set_time_limit(120);
         $staff = User::find(Auth::user()->id)->staff;
         $campus_id = $staff->campus_id;
-		$applicants = null;   
+		$applicants = null;
 
          if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
 
@@ -3174,20 +3174,20 @@ class ApplicationController extends Controller
             $invoice->applicable_type = 'application_window';
             $invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
             $invoice->save();
-    
-    
+
+
             $payable = Invoice::find($invoice->id)->payable;
             $fee_type = $fee_amount->feeItem->feeType;
-    
+
             $firstname = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name;
             $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
-    
+
             $generated_by = 'SP';
             $approved_by = 'SP';
             $inst_id = Config::get('constants.SUBSPCODE');
-    
+
             $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
-    
+
             return $this->requestControlNumber($request,
                                       $invoice->reference_no,
                                       $inst_id,
@@ -4142,10 +4142,10 @@ class ApplicationController extends Controller
 
 		$student->user_id = $user->id;
         $student->save();
-        
+
         $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('study_academic_year_id',$ac_year->id)
         ->where('campus_id',$staff->campus_id)->sum('tuition_fee');
-        
+
         $loan_allocation = LoanAllocation::where('applicant_id',$applicant->id)->where('study_academic_year_id',$ac_year->id)
         ->where('campus_id',$staff->campus_id)->latest()->first();
 
@@ -4180,7 +4180,7 @@ class ApplicationController extends Controller
 					}
 				}
 
-				if(str_contains($invoice->feeType->name,'Miscellaneous')){ 
+				if(str_contains($invoice->feeType->name,'Miscellaneous')){
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 					$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
 				}
@@ -4191,7 +4191,7 @@ class ApplicationController extends Controller
 			$payment_status = true;
 		}
 		if($loan_allocation){
-            
+
 			if($applicant->has_postponed != 1){
 				if($ac_year->nhif_enabled == 1){
 					if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -4546,7 +4546,7 @@ class ApplicationController extends Controller
         $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
 
         if ($tuition_invoice) {
-     
+
             $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,
                                        TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."',
                                        '".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."',
@@ -4835,7 +4835,7 @@ class ApplicationController extends Controller
                 if($full_fee_loan){
                     $full_loan_status = [$applicant->id=>true];
                 }
-       
+
             }
 
          } else {
@@ -5580,13 +5580,13 @@ class ApplicationController extends Controller
             if($request->get('app_'.$applicant->id) == $applicant->id){
 				if($request->get('applicant_'.$applicant->id) == $applicant->id){
                     if($applicant->hostel_available_status == 1){
-                        $app = Applicant::find($applicant->id);                 
+                        $app = Applicant::find($applicant->id);
                         $app->hostel_available_status = 0;
                         $app->save();
                     }else{
-                        $app = Applicant::find($applicant->id);                 
+                        $app = Applicant::find($applicant->id);
                         $app->hostel_available_status = 1;
-                        $app->save(); 
+                        $app->save();
                     }
 				}
             }elseif($request->get('applicant_'.$applicant->id) == $applicant->id){
@@ -6887,7 +6887,7 @@ class ApplicationController extends Controller
 
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
 			 $applicant = $app;
-             $applicant->is_tcu_verified = 0; 
+             $applicant->is_tcu_verified = 0;
 			 $applicant->is_transfered = 1;
              $applicant->programs_complete_status = 0;
 			 $applicant->submission_complete_status = 0;
@@ -8615,6 +8615,188 @@ class ApplicationController extends Controller
 
     }
 
+    public function showRegulatorFailedCase(Request $request){
+        $staff = User::find(Auth::user()->id)->staff;
+        $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status', 'ACTIVE')->get();
+        $data = [
+            'applicants'=>[],
+            'errors_status' => 0,
+            'request' => $request,
+            'windows' => $app_window,
+            'failed_cases' => ['NACTVET FAILED CASES', 'TCU FAILED CASES'],
+            'flag' => 'initial'
+            ];
+         return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('Regulator Failed Cases');
+    }
+
+    public function getSelectedRegulatorFailedCase(Request $request){
+        if($request->get('regulator_case') == 'NACTVET FAILED CASES'){
+            return redirect()->to('application/nactvet-error-cases?application_window_id='.session("active_window_id").'&campus_id='.session("staff_campus_id"));
+        }elseif($request->get('regulator_case') == 'TCU FAILED CASES'){
+            return redirect()->to('application/tcu-failed-cases?application_window_id='.session("active_window_id").'&campus_id='.session("staff_campus_id"))->with('case', 'tcu');
+        }
+    }
+
+    public function showTCUFeedbackCorrectionList(Request $request){
+        $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->where('status',null)->whereNotNull('verification_id')->count();
+        $staff = User::find(Auth::user()->id)->staff;
+        $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id'))
+                           ->where('a.campus_id',$staff->campus_id)
+                           ->where('a.application_window_id', $request->get('application_window_id'))->where('is_edited', 1)->get();
+        $data = [
+        'applicants'=>$applicants,
+        'errors_status' => $errors,
+        'awards' => Award::all(),
+        'request' => $request,
+        'flag' => 'TCU'
+        ];
+        return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('TCU Correction List');
+    }
+
+    public function resubmitTCUCorrectionList(Request $request){
+
+        $staff = User::find(Auth::user()->id)->staff;
+        $tcu_username = $tcu_token = $nactvet_authorization_key = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+        }
+
+        $countApp = 0;
+        foreach($request->get('applicant_ids') as $app_id){
+            $applicant = Applicant::find($app_id);
+
+                $submission_log = ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
+                            ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->first();
+                if(!empty($submission_log)){
+
+                    $url='http://api.tcu.go.tz/applicants/resubmit';
+
+                    $selected_programs = array();
+                    $approving_selection = null;
+
+                    foreach($applicant->selections as $selection){
+                        $selected_programs[] = $selection->campusProgram->regulator_code;
+                        if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                            $approving_selection = $selection;
+                        }
+                    }
+
+                    $f6indexno = null;
+                    $otherf4indexno = $otherf6indexno = [];
+                    foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 2){
+                            if($f6indexno != null && $f6indexno != $detail->index_number){
+                                $otherf6indexno[] = $detail->index_number;
+                            }else{
+                                $f6indexno = $detail->index_number;
+                            }
+                        }
+                    }
+
+                    foreach($applicant->nacteResultDetails as $detail){
+                        if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
+                            $f6indexno = $detail->avn;
+                            break;
+                        }
+                    }
+
+                    foreach($applicant->nectaResultDetails as $detail) {
+                        if($detail->exam_id == 1 && $detail->index_number != $applicant->index_number){
+                            $otherf4indexno[]= $detail->index_number;
+                        }
+                    }
+
+                    if(is_array($selected_programs)){
+                        $selected_programs=implode(', ',$selected_programs);
+                    }
+
+                    if(is_array($otherf4indexno)){
+                        $otherf4indexno=implode(', ',$otherf4indexno);
+                    }
+
+                    if(is_array($otherf6indexno)){
+                        $otherf6indexno=implode(', ',$otherf6indexno);
+                    }
+
+                    $category = null;
+                    if($applicant->entry_mode == 'DIRECT'){
+                        $category = 'A';
+
+                    }else{
+                        // Open university
+                        if($applicant->outResultDetails){
+                            $category = 'F';
+
+                        }
+
+                        // Diploma holders
+                        if($applicant->nacteResultDetails){
+                            $category = 'D';
+
+                        }
+                    }
+
+                    $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                    <Request>
+                    <UsernameToken>
+                    <Username>'.$tcu_username.'</Username>
+                    <SessionToken>'.$tcu_token.'</SessionToken>
+                    </UsernameToken>
+                    <RequestParameters>
+                    <f4indexno>'.$applicant->index_number.'</f4indexno>
+                    <f6indexno>'.$f6indexno.'</f6indexno>
+                    <Gender>'.$applicant->gender.'</Gender>
+                    <SelectedProgrammes>'.$selected_programs.'</SelectedProgrammes>
+                    <MobileNumber>'.str_replace('255', '0', $applicant->phone).'</MobileNumber>
+                    <OtherMobileNumber></OtherMobileNumber>
+                    <EmailAddress>'.$applicant->email.'</EmailAddress>
+                    <AdmissionStatus>Provisional admission</AdmissionStatus>
+                    <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                    <Category>'.$category.'</Category>
+                    <Reason>eligible</Reason>
+                    <Nationality>'.$applicant->nationality.'</Nationality>
+                    <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                    <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                    <Otherf4indexno>'.$otherf4indexno.'</Otherf4indexno>
+                    <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
+                    </RequestParameters>
+                    </Request>';
+
+                    //return $xml_request;
+                    $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                    $json = json_encode($xml_response);
+                    $array = json_decode($json,TRUE);
+
+                    if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+                    Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+
+                    $submission_log->submitted = 2;
+                    $submission_log->save();
+
+                    $applicant->is_edited = 2;
+                    $applicant->save();
+
+                    $countApp++;
+
+                    }else{
+                    $error_log = new ApplicantFeedBackCorrection;
+                    $error_log->applicant_id = $applicant->id;
+                    $error_log->application_window_id = $applicant->application_window_id;
+                    $error_log->programme_id = $approving_selection? $approving_selection->campusProgram->regulator_code : 'BD';
+                    $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                    $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
+                    $error_log->save();
+                    }
+                }
+        }
+
+        return redirect()->back()->with('message', $countApp.'have been successfully resubmitted to TCU')
+    }
+
 
     /**
      * Get applicants submitted to NACTVET with errors
@@ -8624,7 +8806,7 @@ class ApplicationController extends Controller
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->where('status',null)->whereNotNull('verification_id')->count();
         $staff = User::find(Auth::user()->id)->staff;
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id,b.verification_id,b.remarks,b.status as submission_status'))
-                            ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->where('verification_id','!=',null)->where('a.campus_id',$staff->campus_id)
+                            ->join('applicant_nacte_feedback_corrections as b','a.id','=','b.applicant_id')->whereNotNull('verification_id')->where('a.campus_id',$staff->campus_id)
                            ->where('b.application_window_id', $request->get('application_window_id'))->orderBy('b.status','ASC')->get();
 
         $data = [
@@ -8632,10 +8814,10 @@ class ApplicationController extends Controller
         'errors_status' => $errors,
         'awards' => Award::all(),
         'campus_programs' => CampusProgram::where('campus_id',$request->get('campus_id'))->get(),
-        'request' => $request
+        'request' => $request,
+        'flag' => 'NACTVET'
         ];
-
-        return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Submissions');
+        return view('dashboard.application.nactvet-failed-submissions',$data)->withTitle('NACTVET Failed Cases');
     }
 
 
