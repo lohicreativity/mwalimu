@@ -123,8 +123,11 @@
 			 @if(count($applicants) != 0)
 			 <div class="card">
                <div class="card-header">
+                @if($flag == 'NACTVET')
                  <h3 class="card-title">{{ __('NACTVET Error Cases') }}</h3>
-
+                @elseif($flag == 'TCU')
+                <h3 class="card-title">{{ __('TCU Error Cases') }}</h3>
+                @endif
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -137,8 +140,10 @@
                 <th>Index Number</th>
                 <th>Phone</th>
                 <th>Award</th>
+                @if($flag == 'NACTVET')
                 <th>Reason</th>
                 <th>Status</th>
+                @endif
                 <th>Action</th>
 						 </tr>
 					 </thead>

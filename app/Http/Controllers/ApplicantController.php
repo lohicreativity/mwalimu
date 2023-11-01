@@ -3137,7 +3137,9 @@ class ApplicantController extends Controller
             $applicant->gender = $request->get('gender');
             $applicant->entry_mode = $request->get('entry_mode');
             $applicant->program_level_id = $request->get('program_level_id');
-            $applicant->is_edited = 1;
+            if($request->get('program_level_id') == 4){
+                $applicant->is_edited = 1;
+            }
             $applicant->save();
 
             if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
