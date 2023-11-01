@@ -138,7 +138,7 @@ class GePGResponseController extends Controller
 			$gatepay->is_updated = 0;
 			$gatepay->save();
 		
-			$invoice = Invoice::select('id','payable_id', 'payable_type', 'reference_no')->with('feeType:id,name')->where('control_no',$control_no)->first();
+			$invoice = Invoice::select('id','payable_id', 'payable_type', 'gateway_payment_id')->with('feeType:id,name')->where('control_no',$control_no)->first();
 			$invoice->gateway_payment_id = $gatepay->id;
 			$invoice->save();
 
