@@ -8794,7 +8794,7 @@ class ApplicationController extends Controller
                 }
         }
 
-        return redirect()->back()->with('message', $countApp.'have been successfully resubmitted to TCU')
+        return redirect()->back()->with('message', $countApp.'have been successfully resubmitted to TCU');
     }
 
 
