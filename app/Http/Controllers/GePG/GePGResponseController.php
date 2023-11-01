@@ -94,13 +94,23 @@ class GePGResponseController extends Controller
 		$psp_name = $data['psp_name'];
         $ctry_AccNum = $data['credited_acc_num'];
 
-		if($cell_number == null || $payer_email == null || $payer_name == null){
-			$invoice = Invoice::where('control_no',$control_no)->first();
-			if($invoice){
-				$cell_number = $invoice->phone;
-				$payer_email = $invoice->email;
-				$payer_name = $invoice->payer_name;
-			}
+		$invoice = Invoice::select('payable_id','payable_type')->where('control_no',$control_no)->first();
+
+		$applicant = $student = $cell_number = $payer_email = $payer_name = null;
+		if($invoice->payable_type == 'applicant'){
+            $applicant = Applicant::find($invoice->payable_id);
+
+			$cell_number = $applicant->phone;
+			$payer_email = $applicant->email;
+			$payer_name = $applicant->first_name.' '.$applicant->middle_name.' '.$applicant->surname;
+
+		}elseif($invoice->payable_type == 'student'){
+            $student = Student::find($invoice->payable_id);
+
+			$cell_number = $student->phone;
+			$payer_email = $student->email;
+			$payer_name = $student->first_name.' '.$student->middle_name.' '.$student->surname;
+		
 		}
 
       if(GatewayPayment::where('transaction_id',$transaction_id)->count() == 0){
@@ -130,48 +140,19 @@ class GePGResponseController extends Controller
 		$invoice->save();
 
         if($invoice->payable_type == 'applicant'){
-            $applicant = Applicant::find($invoice->payable_id);
-            $stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
-            $stud_reg = 'NULL';
-            if(str_contains($invoice->feeType->name,'Application Fee')){
-               $applicant->payment_complete_status = 1;
-               $applicant->save();
-               
-            }
+			if(str_contains($invoice->feeType->name,'Application Fee')){
+				$applicant->payment_complete_status = 1;
+			
+			}else{
+				if(str_contains($invoice->feeType->name,'Tuition Fee')){
+					$applicant->tuition_payment_check = $data['paid_amount'] > 0? 1 : 0;
 
-            if(str_contains($invoice->feeType->name,'Tuition Fee')){
-                $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-                //$percentage = $paid_amount/$invoice->amount;
-                $applicant = Applicant::with('applicationWindow')->find($invoice->payable_id);
-
-/*                 $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-                       $query->where('year','LIKE','%'.$ac_year.'/%');
-                })->first();
-
-                if($study_academic_year){
-                    $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
-                }else{
-                    $loan_allocation = null;
-                }           
-
-                if($loan_allocation){
-                   $percentage = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
-                   $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
-                }else{
-                   $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
-                } */
-				$applicant->tuition_payment_check = $paid_amount > 0? 1 : 0;
-                $applicant->save();
-            }
-
-            if(str_contains($invoice->feeType->name,'Miscellaneous')){
-                $applicant = Applicant::find($invoice->payable_id);
-//                $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
-				$applicant->other_payment_check = $data['paid_amount'] >0? 1 : 0;
-                $applicant->save();
-            }
-            
+				}
+				if(str_contains($invoice->feeType->name,'Miscellaneous')){
+					$applicant->other_payment_check = $data['paid_amount'] > 0? 1 : 0;
+				}
+			}
+			$applicant->save();
         }
 
         if($invoice->payable_type == 'student'){
