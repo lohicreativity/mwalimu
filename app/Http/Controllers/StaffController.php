@@ -263,7 +263,7 @@ class StaffController extends Controller
       
             $reference_no = [];
             $total_fee_paid_amount = 0;
-            if($applicant_payer && $paid_as_applicant){
+            if(!empty($applicant_payer) && count($paid_as_applicant) > 0){
                 foreach($paid_as_applicant as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
@@ -275,7 +275,7 @@ class StaffController extends Controller
                     }
                 }
 
-            }elseif($student_payer && $paid_as_student){
+            }elseif(!empty($student_payer) && count($paid_as_student) > 0){
                 foreach($paid_as_student as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
@@ -286,6 +286,7 @@ class StaffController extends Controller
                     }
                 }
             }
+            
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
             
             $tuition_fee_loan = null;

@@ -115,13 +115,15 @@
 										<div class="card-body">
 
 										  @if($payer->applicant)
-											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($payer->applicant->gender == 'M') Male @elseif($payer->applicant->gender == 'F') Female @endif
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $payer->applicant->birth_date }}
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $payer->applicant->nationality }}											  
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $payer->applicant->disabilityStatus->name }}
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $payer->applicant->entry_mode }}	 												  
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $payer->applicant->address }}	 	
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $payer->applicant->ward->name }},&nbsp; {{ $payer->applicant->region->name }},&nbsp; {{ $payer->applicant->country->name }}	 	 
+											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($payer->applicant->gender == 'M') Male @elseif($payer->applicant->gender == 'F') Female @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; @if(!empty($payer->applicant->birth_date)) {{ $payer->applicant->birth_date }} @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; @if(!empty($payer->applicant->nationality) {{ $payer->applicant->nationality }}	@else @endif										  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if(!empty($payer->applicant->disabilityStatus->name) { $payer->applicant->disabilityStatus->name }} @else @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; @if(!empty($payer->applicant->entry_mode) {{ $payer->applicant->entry_mode }} @else @endif	 												  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; @if(!empty($payer->applicant->address) {{ $payer->applicant->address }} @else @endif	 	
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; @if(!empty($payer->applicant->ward->name) {{ $payer->applicant->ward->name }},&nbsp; @else @endif 
+											  @if(!empty($payer->applicant->region->name) {{ $payer->applicant->region->name }},&nbsp; @else @endif 
+											  @if(!empty($payer->applicant->country->name) {{ $payer->applicant->country->name }} @else @endif	 	 
 										  @endif
 										</div>
 									  </div>
