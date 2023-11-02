@@ -91,7 +91,7 @@
                 <table class="table table-bordered ss-paginated-table">
                    <thead>
                      <tr>
-                       <th>Index#</th>
+                       <th>Index#/Registration#</th>
                        <th>Name</th>
                        <th>Sex</th>
                        <th>Phone </th>

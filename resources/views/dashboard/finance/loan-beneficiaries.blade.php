@@ -94,7 +94,7 @@
                    <thead>
                      <tr>
 					   <th>SN</th>
-                       <th>Index#</th>
+                       <th>Index#/Registration#</th>
                        <th>Name</th>
                        <th>Sex</th>
 					   <th>Phone</th>
