@@ -4699,9 +4699,8 @@ class ApplicationController extends Controller
                       ];
 
                       $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
-                      $token = NHIFService::requestToken();
+                      $token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyM3FoYWxtUjZ5VHY1XzRhS29ONHciLCJ0eXAiOiJhdCtqd3QifQ.';
 
-                          return $token;
                       $curl_handle = curl_init();
 
                          // return json_encode($data);
