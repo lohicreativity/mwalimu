@@ -4793,7 +4793,7 @@ class ApplicationController extends Controller
      * Selected applicant
      */
     public function applicantsRegistration(Request $request)
-    {    $full_fee_loan = null;
+    {    $applicant_loan_status = null;
          $staff = User::find(Auth::user()->id)->staff;
          $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
          if(!$ac_year){
@@ -4804,7 +4804,7 @@ class ApplicationController extends Controller
          if(!$application_window){
              return redirect()->back()->with('error','No corresponding application window');
          }
-         $full_loan_status = [];
+         $applicants_loan_status = [];
          if ($request->get('program_level_id')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
@@ -4824,15 +4824,15 @@ class ApplicationController extends Controller
             }
 
             foreach($applicants as $applicant){
-                $program_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
-                ->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
+                // $program_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
+                // ->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
 
-                $full_fee_loan = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('applicant_id',$applicant->id)
+                $applicant_loan_status = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('applicant_id',$applicant->id)
                 ->where('study_academic_year_id',$ac_year->id)
                 ->where('campus_id',$application_window->campus_id)->where('tuition_fee','>=',$program_fee->amount_in_tzs)->first();
 
-                if($full_fee_loan){
-                    $full_loan_status = [$applicant->id=>true];
+                if($applicant_loan_status){
+                    $applicants_loan_status = [$applicant->id=>true];
                 }
 
             }
@@ -4875,7 +4875,7 @@ class ApplicationController extends Controller
             'awards'=>Award::all(),
             'applicants'=>$applicants,
             'request'=>$request,
-            'full_loan_status'=>$full_loan_status,
+            'applicants_loan_status'=>$applicants_loan_status,
          ];
 
          return view('dashboard.application.applicants-registration',$data)->withTitle('Applicants Registration');
