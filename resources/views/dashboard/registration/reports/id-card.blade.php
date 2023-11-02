@@ -190,7 +190,7 @@
      }
      .ss-logo{
        width: 120px;
-       height: 30px;
+       height: 30px !important;
      }
      .ss-signature{
         height: 120px;
