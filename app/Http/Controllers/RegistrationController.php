@@ -782,7 +782,7 @@ class RegistrationController extends Controller
             'student'=>$student,
             'semester'=>$semester,
             'study_academic_year'=>$ac_year,
-            'registration_no' => ssss,
+            'registration_no' => 'ssss',
             'tuition_payment_check' => $tuition_payment_check
         ];
 
