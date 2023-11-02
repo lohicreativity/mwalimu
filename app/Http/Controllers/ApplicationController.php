@@ -4673,7 +4673,6 @@ class ApplicationController extends Controller
     {
         foreach($request->records as $ins){
                  try{
-                    dd($ins);
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
                      $student = $rec->student;
                      $applicant = $rec->applicant;
