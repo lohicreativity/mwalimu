@@ -257,7 +257,7 @@
         <div class="col-md-9" style="float: right; padding: 5px; padding-top: -100px;">
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px;">REGNO: <span style="font-style: italic; font-weight: bold;">{{ $student->registration_number }}</span></h4>
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px;">NAME: <span style="font-style: italic; font-weight: bold;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h4>
-           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px;">PROGRAM: <span style="font-style: italic; font-weight: bold;">{{ $student->campusProgram->program->code }}</span></h4>
+           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px;">PROGRAM: <span style="font-style: italic; font-weight: bold;">{{ str_replace('.','-',$student->campusProgram->program->code) }}</span></h4>
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px;">VALID TO: <span style="font-style: italic; font-weight: bold">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h4>
            <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px;">SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; padding-top: 5px; font-weight: normal;"></h4>
