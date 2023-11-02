@@ -4699,7 +4699,7 @@ class ApplicationController extends Controller
                       ];
 
                       $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
-                    //   $token = NHIFService::requestToken();
+                      $token = NHIFService::requestToken();
 
                       $curl_handle = curl_init();
 
@@ -4726,7 +4726,6 @@ class ApplicationController extends Controller
 
                       curl_close($curl_handle);
 
-                      dd($response);
 
                       $data = [
                       'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/001',
