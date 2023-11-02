@@ -95,6 +95,7 @@
                      <tr>
 					   <th>SN</th>
                        <th>Index#</th>
+                       <th>Registration#</th>
                        <th>Name</th>
                        <th>Sex</th>
 					   <th>Phone</th>
@@ -104,7 +105,7 @@
                        <th>Action</th> 					   
 					   @else
                        <th>Tuition Fee</th>
-                       <th>Books & Stationaries</th>
+                       <th>Books</th>
                        <th>Accommodation</th>
                        <th>Field</th>
                        <th>Research</th>
@@ -117,6 +118,7 @@
                       <tr>
 						<td>{{ ($key+1) }}</td>
                         <td>{{ $stud->index_number }}</td>
+                        <td>{{ $stud->registration_number }}</td>
                         <td>{{ $stud->first_name }} {{ $stud->middle_name? substr($stud->middle_name,0,1).'.': null }} {{ $stud->surname }} </td>					
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->phone }}</td>

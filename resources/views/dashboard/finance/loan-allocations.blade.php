@@ -91,13 +91,14 @@
                 <table class="table table-bordered ss-paginated-table">
                    <thead>
                      <tr>
-                       <th>Index Number</th>
+                       <th>Index#</th>
+                       <th> Rregistration#
                        <th>Name</th>
                        <th>Sex</th>
                        <th>Phone </th>
                        <th>Total Amount (TZS)</th>
                        <th>Bank Name</th>
-                       <th>Account Number</th>
+                       <th>Account#</th>
                        <th>Has Signed?</th>
                      </tr>
                    </thead>
@@ -105,6 +106,7 @@
                      @foreach($beneficiaries as $stud)
                       <tr>
                         <td>{{ $stud->index_number }}</td>
+                        <td>{{ $stud->registration_number }}</td>
                         <td>{{ $stud->first_name }} {{ $stud->middle_name? substr($stud->middle_name,0,1).'.': null }} {{ $stud->surname }} </td>					
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->phone }}</td>
