@@ -44,7 +44,7 @@
                 @if($registrationStatus == 'UNREGISTERED')
                     <div class="alert alert-warning">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Please pay your fee balance and/or insurance charges to complete your registration!
+                        Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> Please note, your student's ID will be printed only after paying your fee balance and/or insurance charges.
                       </h3>
                     </div>  
                 @else
