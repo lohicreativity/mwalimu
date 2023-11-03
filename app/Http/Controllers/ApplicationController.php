@@ -4824,12 +4824,27 @@ class ApplicationController extends Controller
             }
 
             foreach($applicants as $applicant){
+                // OLD CODE
+
                 // $program_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
                 // ->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
 
-                $applicant_loan_status = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('applicant_id',$applicant->id)
+                // $applicant_loan_status = LoanAllocation::select('applicant_id')->where('year_of_study',1)->where('applicant_id',$applicant->id)
+                // ->where('study_academic_year_id',$ac_year->id)
+                // ->where('campus_id',$application_window->campus_id)->where('tuition_fee','>=',$program_fee->amount_in_tzs)->first();
+
+                // if($applicant_loan_status){
+                //     $applicants_loan_status = [$applicant->id=>true];
+                // }
+
+                // NEW CODE
+
+                $program_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)
+                ->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
+
+                $applicant_loan_status = LoanAllocation::select('index_number')->where('year_of_study',1)->where('index_number',$applicant->index_number)
                 ->where('study_academic_year_id',$ac_year->id)
-                ->where('campus_id',$application_window->campus_id)->where('tuition_fee','>=',$program_fee->amount_in_tzs)->first();
+                ->where('tuition_fee','>=',$program_fee->amount_in_tzs)->first();
 
                 if($applicant_loan_status){
                     $applicants_loan_status = [$applicant->id=>true];
