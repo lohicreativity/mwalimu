@@ -222,6 +222,7 @@
   </style>
 </head>
 <body>
+  <div style='height: 0;'>
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
             <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.jpg') }});  background-size:  71rem 47rem; background-repeat: no-repeat; width: 750px; height: 270px; ">
@@ -276,6 +277,7 @@
     </div> --}}
    </div>
     </div>
+     </div>
     <!-- <div class="row" style="background-color:#1b2066; width:100%; margin-top: -15px; position:absolute;">
         <div class="col-md-6"> @if($semester->name == 'Semester 1')
             <p style="text-align:left; color: white; font-weight: bold; padding-left: 5px; font-size: 20px;">Semester One</p>
