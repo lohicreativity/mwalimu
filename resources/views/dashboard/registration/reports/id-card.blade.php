@@ -303,7 +303,7 @@
         </div>
     </div> -->
    <pagebreak>
-     <div id="ss-id-card-back" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; ">
+     <div id="ss-id-card-back" class="ss-id-card" style=" width: 100%;height: 100%; background-color: #FFF; ">
        <div class="container">
        <div class="row">
           <div class="col-md-12">
