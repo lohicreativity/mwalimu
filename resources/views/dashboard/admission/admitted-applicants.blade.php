@@ -189,7 +189,7 @@
 														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($applicant->gender == 'M') Male @elseif($applicant->gender == 'F') Female @endif
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $applicant->birth_date }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nationality }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if ($applicant->disabilityStatus->name != null) {{ $applicant->disabilityStatus->name }} @else  @endif
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if ($applicant->disabilityStatus != null) {{ $applicant->disabilityStatus->name }} @else {{' '}}  @endif
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ ucwords(strtolower($applicant->entry_mode)) }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->address }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span>
