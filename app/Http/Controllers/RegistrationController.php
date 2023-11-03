@@ -788,7 +788,7 @@ class RegistrationController extends Controller
 
 
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
-               'format'=>'A7',
+               'format'=>'A8',
                'mode' => 'utf-8',
                'allow_charset_conversion' => true,
                'margin_top'=>0,
