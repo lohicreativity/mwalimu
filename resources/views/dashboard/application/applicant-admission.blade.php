@@ -78,8 +78,8 @@
                     <b>Programme</b> <a class="float-right">{{ $selection->campusProgram->program->code }}</a>
                   </li>
                 </ul>
-                
-       
+
+
                 <!-- <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ss-edit-applicant-profile"><b>Edit Profile</b></a> -->
               </div>
               <!-- /.card-body -->
@@ -254,7 +254,7 @@
                 </div>
                 @endif
               </div><!-- end of accordian -->
-              
+
              <div class="accordion" id="accordionExample">
                 <div class="card">
                   @foreach($applicant->nectaResultDetails as $key=>$detail)
@@ -286,7 +286,7 @@
                 </div>
               </div>
 
-              
+
 
               <div class="card">
                  {!! Form::open(['url'=>'application/register-applicant','class'=>'ss-form-processing']) !!}
@@ -347,7 +347,7 @@
               </div>
           </div>
         </div>
-        
+
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
