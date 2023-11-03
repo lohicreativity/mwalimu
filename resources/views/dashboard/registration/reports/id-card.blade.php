@@ -4,7 +4,7 @@
   <title></title>
   <style type="text/css">
       body{
-         font-family: helvetica;
+         font-family: Tahoma, sans-serif;
       }
      .container {
         padding-right: 15px;
@@ -255,11 +255,11 @@
           @endif
         </div>
         <div class="col-md-9" style="float: right; padding: 5px; padding-top: -100px;">
-           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px; font-weight: bold; color: #1b2066">NAME: <span style="font-style: italic; font-weight: bold; color:#000;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h4>
-           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px; font-weight: bold; color: #1b2066">PROGRAMME: <span style="font-style: italic; font-weight: bold; color:#000;">{{ str_replace('.','-',$student->campusProgram->program->code) }}</span></h4>
-           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px; font-weight: bold; color: #1b2066">REG NO: <span style="font-style: italic; font-weight: bold; color:#000;">{{ $student->registration_number }}</span></h4>
-           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px; font-weight: bold; color: #1b2066">VALID TO: <span style="font-style: italic; font-weight: bold; color:#000;">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h4>
-           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-weight: normal; font-size: 13px; font-weight: bold; color: #1b2066">SIGNATURE:
+           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-size: 12px; font-weight: bold; color: #1b2066">NAME: <span style="font-style: italic; font-weight: bold; color:#000;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h4>
+           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-size: 12px; font-weight: bold; color: #1b2066">PROGRAMME: <span style="font-style: italic; font-weight: bold; color:#000;">{{ str_replace('.','-',$student->campusProgram->program->code) }}</span></h4>
+           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-size: 12px; font-weight: bold; color: #1b2066">REG NO: <span style="font-style: italic; font-weight: bold; color:#000;">{{ $student->registration_number }}</span></h4>
+           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-size: 12px; font-weight: bold; color: #1b2066">VALID TO: <span style="font-style: italic; font-weight: bold; color:#000;">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span></h4>
+           <h4 style="margin: 0px 0px 0px 25px; padding-left: 15px; font-size: 12px; font-weight: bold; color: #1b2066">SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; padding-top: 5px; font-weight: normal;"></h4>
         </div>
      </div>
