@@ -221,7 +221,7 @@
       }
   </style>
 </head>
-<body style="height: 2.39in; width: 1.13in;">
+<body>
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
             <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }});  background-size:  71rem 47rem; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;">
@@ -247,7 +247,7 @@
      </div> --}}
      {{-- <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div> --}}
 
-     <div class="container" style="position: relative; z-index: 1000;">
+     <div class="container" style="position: relative; z-index: 1000; height: 1300px;">
      <div class="row">
         <div class="col-md-3" style="position:absolute; padding-top: 100px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
