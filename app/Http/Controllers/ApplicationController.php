@@ -4773,7 +4773,10 @@ class ApplicationController extends Controller
                     $err = curl_error($curl_handle);
 
                     curl_close($curl_handle);
-                    dd($response1);
+                    if($response1['statusCode'] != 400){
+                        dd($response1);
+                    }
+
                         $record = InsuranceRegistration::find($ins);
                         $record->applicant_id = $applicant->id;
                         $record->student_id = $student->id;
