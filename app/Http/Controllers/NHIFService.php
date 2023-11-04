@@ -25,7 +25,7 @@ class NHIFService
     //          $app_data['AdmissionNo'] = $applicant->admission_no;
     //          $app_data['CollegeFaculty'] =
     //          $app_data['ProgrammeOfStudy'] =
-    //          $app_data['CourseDuration'] = 
+    //          $app_data['CourseDuration'] =
     //          $app_data['MaritalStatus'] = $applicant->marital_status;
     //          $app_data['DateJoiningEmployer'] =
     //          $app_data['DateOfBirth'] = $applicant->birth_date;
@@ -34,7 +34,7 @@ class NHIFService
 
     //          $data[] = $app_data;
     // 	}
-        
+
     //     $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
     // 	Http::withHeaders([
     //          'Content-Type'=>'application/json',
@@ -57,7 +57,7 @@ class NHIFService
                'Category'=>1
             ];
         }
-        
+
         $payload = [
             'BatchNo'=>'8002217/'.$ac_year.'/001',
             'Description'=>'Card applications on '.date('M, Y'),
@@ -113,8 +113,8 @@ class NHIFService
 
         $curl_handle = curl_init();
 
-               
-        $client = 'MNMAS';   
+
+        $client = 'MNMAS';
 
         curl_setopt_array($curl_handle, array(
         CURLOPT_URL => $url,
