@@ -4434,7 +4434,7 @@ class ApplicationController extends Controller
                           'PhotoImage'=>$base64
                       ];
 
-                      $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+                      $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
                       $token = NHIFService::requestToken();
 
                           //return $token;
@@ -4478,7 +4478,7 @@ class ApplicationController extends Controller
                        ]
                      ];
 
-                    $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+                    $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
                     // $token = NHIFService::requestToken();
 
                     //return $token;
@@ -4671,6 +4671,8 @@ class ApplicationController extends Controller
      */
     public function resubmitInsuranceRegistrations(Request $request)
     {
+        $applicants = [];
+        $ac_year = null;
         foreach($request->records as $ins){
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
@@ -4698,7 +4700,7 @@ class ApplicationController extends Controller
                           'PhotoImage'=>$base64
                       ];
 
-                      $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+                      $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
                       $token = NHIFService::requestToken();
 
                       $curl_handle = curl_init();
@@ -4726,7 +4728,8 @@ class ApplicationController extends Controller
 
                       curl_close($curl_handle);
 
-
+                      $applicants = $applicant;
+                      $ac_year = $rec->studyAcademicYear->academicYear->year;
                       $data = [
                       'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/001',
                       'Description'=>'Batch submitted on '.date('m d, Y'),
@@ -4742,7 +4745,7 @@ class ApplicationController extends Controller
                        ]
                      ];
 
-                    $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+                    $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
                     // $token = NHIFService::requestToken();
 
                     //return $token;
@@ -4786,6 +4789,7 @@ class ApplicationController extends Controller
                     }
 
         }
+
         return redirect()->back()->with('message','Insurance registrations resubmited successfully');
     }
 
@@ -10006,7 +10010,7 @@ class ApplicationController extends Controller
                           //,		  'PhotoImage'=>$base64
 					  ];
 
-					  $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+					  $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
 					  $token = NHIFService::requestToken();
 
 						  //return $token;
@@ -10050,7 +10054,7 @@ class ApplicationController extends Controller
 					   ]
 					 ];
 
-					$url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+					$url = 'https://verfication.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
 					// $token = NHIFService::requestToken();
 
 					//return $token;

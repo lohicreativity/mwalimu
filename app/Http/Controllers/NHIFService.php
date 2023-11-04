@@ -64,7 +64,7 @@ class NHIFService
             'CardApplications'=>$data
         ];
 
-          $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+          $url = 'http://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
           $token = self::requestToken();
 
           $ch = curl_init();
@@ -87,7 +87,7 @@ class NHIFService
      */
     public static function checkCardStatus($card_no)
     {
-          $url = 'http://196.13.105.15/OMRS/api/v1/Verification/GetStudentsCardStatus?CardNo='.$card_no;
+          $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/GetStudentsCardStatus?CardNo='.$card_no;
           $token = self::requestToken();
 
     	  $ch = curl_init();
@@ -109,7 +109,7 @@ class NHIFService
      */
      public static function requestToken()
      {
-        $url = 'http://196.13.105.15/omrs/stsidentity';
+        $url = 'https://verification.nhif.or.tz/omrs/auth';
 
         $curl_handle = curl_init();
 
