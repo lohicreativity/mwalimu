@@ -221,7 +221,7 @@
       }
   </style>
 </head>
-<body style="height: 3.39in; width: 2.13in;">
+<body style="height: 2.39in; width: 1.13in;">
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
             <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }});  background-size:  71rem 47rem; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;">
