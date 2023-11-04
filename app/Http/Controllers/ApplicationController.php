@@ -4773,7 +4773,7 @@ class ApplicationController extends Controller
                     $err = curl_error($curl_handle);
 
                     curl_close($curl_handle);
-                    if($response1['statusCode'] != 400){
+                    if($response1->statusCode != 400){
                         dd($response1);
                     }
 
