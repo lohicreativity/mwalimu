@@ -249,7 +249,7 @@
 
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
-        <div style="width: 3.39in; height: 2.13in;">
+        <div style="width: 407px; height: 256px;">
             <div class="col-md-3" style="position:absolute; padding-top: 100px;">
                 @if(file_exists(public_path().'/avatars/'.$student->image))
                 <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
