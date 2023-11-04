@@ -21,11 +21,6 @@
       .row {
         margin-right: -15px;
         margin-left: -15px;
-
-        /* new dimensions */
-
-        width: 407px;
-        height: 256px;
       }
       .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
         float: left;
