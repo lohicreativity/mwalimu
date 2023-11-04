@@ -4768,11 +4768,12 @@ class ApplicationController extends Controller
                     ));
 
                     $response = curl_exec($curl_handle);
-                    $response = json_decode($response);
+                    $response1 = json_decode($response);
                     $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
                     $err = curl_error($curl_handle);
 
                     curl_close($curl_handle);
+                    dd($response1);
                         $record = InsuranceRegistration::find($ins);
                         $record->applicant_id = $applicant->id;
                         $record->student_id = $student->id;
