@@ -21,6 +21,11 @@
       .row {
         margin-right: -15px;
         margin-left: -15px;
+
+        /* new dimensions */
+
+        width: 407px;
+        height: 256px;
       }
       .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
         float: left;
@@ -205,10 +210,7 @@
      .ss-margin-top{
         margin-top: 20px;
      }
-     #resized-card{
-        width: 470px;
-        height: 256px;
-     }
+
      .ss-color-blue{
         color: #371261;
      }
@@ -250,7 +252,7 @@
      </div> --}}
      {{-- <div style="border:2px solid #1b2066; margin-top: -20px; margin-bottom: 10px;"></div> --}}
      <div class="container" style="position: relative; z-index: 1000;">
-     <div class="row" id="resized-card">
+     <div class="row">
         <div class="col-md-3" style="position:absolute; padding-top: 100px;">
           @if(file_exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 100px; padding-left: 10px;">
