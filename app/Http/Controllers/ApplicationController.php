@@ -4698,7 +4698,8 @@ class ApplicationController extends Controller
                           'PhotoImage'=>$base64
                       ];
 
-                      $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+                    //   $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+                      $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
                       $token = NHIFService::requestToken();
 
                       $curl_handle = curl_init();
