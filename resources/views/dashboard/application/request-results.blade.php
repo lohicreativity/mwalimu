@@ -303,7 +303,7 @@
                  </div>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
+             <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
                       </div>
@@ -363,7 +363,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTVET Results') }}</button>
+                  <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add NACTVET Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -408,7 +408,7 @@
                   </div>
                 </div>
                 <div class="card-footer">
-              <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add OUT Results') }}</button>
+              <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add OUT Results') }}</button>
               </div>
               {!! Form::close() !!}
               </div>
@@ -432,7 +432,7 @@
                   </label>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Update Status') }}</button>
+             <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Update Status') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
@@ -493,7 +493,7 @@
                  </div>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
+             <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
