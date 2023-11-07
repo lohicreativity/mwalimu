@@ -17,7 +17,7 @@ class OutResultController extends Controller
     public function confirm(Request $request)
     {
         $applicant = Applicant::find($request->get('applicant_id'));
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0  && $applicant->is_transfered != 1){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
@@ -40,7 +40,7 @@ class OutResultController extends Controller
     public function destroy(Request $request)
     {
         $applicant = Applicant::find($request->get('applicant_id'));
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0  && $applicant->is_transfered != 1){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
@@ -59,7 +59,7 @@ class OutResultController extends Controller
     public function nullify(Request $request)
     {
         $applicant = Applicant::find($request->get('applicant_id'));
-        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0){
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$applicant->batch_id)->count() != 0  && $applicant->is_transfered != 1){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
