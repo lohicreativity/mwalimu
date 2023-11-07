@@ -7950,7 +7950,7 @@ class ApplicationController extends Controller
                                                         ->orWhere('applicant_program_selections.status', 'APPROVING');
                                                 })
                                                 ->count();
-
+return 5;
             if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
                 return 1;
                 $campus_progs[] = $prog;
