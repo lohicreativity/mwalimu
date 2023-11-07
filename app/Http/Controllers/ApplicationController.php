@@ -7901,7 +7901,7 @@ class ApplicationController extends Controller
      * Edit external transfer
      */
     public function editExternalTransfer(Request $request, $id)
-    {return 100;
+    {
         $staff = User::find(Auth::user()->id)->staff;
 
 		$transfer = ExternalTransfer::with(['applicant.user','newProgram.program','user.staff'])->find($id);
@@ -7941,7 +7941,7 @@ class ApplicationController extends Controller
                                                     ->with('campusProgram:id,code')->first();
             $all_programs[] = $prog;
         }
-
+return $campus_programs;
         foreach($campus_programs as $prog){
 
             $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
@@ -7950,7 +7950,7 @@ class ApplicationController extends Controller
                                                         ->orWhere('applicant_program_selections.status', 'APPROVING');
                                                 })
                                                 ->count();
-return 5;
+
             if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
                 return 1;
                 $campus_progs[] = $prog;
