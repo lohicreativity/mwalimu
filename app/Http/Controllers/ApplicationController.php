@@ -2923,7 +2923,7 @@ class ApplicationController extends Controller
                                 foreach(unserialize($campus_program->entryRequirements[0]->equivalent_majors) as $sub){
         
                                     if(str_contains(strtolower($detail->programme),strtolower($sub))){
-                                        return 1;
+        
                                         $has_major = true;
                                     }
                                 }
@@ -2949,7 +2949,7 @@ class ApplicationController extends Controller
                     }
     
                     if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
-
+return $o_level_pass_count+$o_level_other_pass_count;
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $campus_program->entryRequirements[0]->pass_subjects && $has_major && $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa){
     
                             $qualified = true;
