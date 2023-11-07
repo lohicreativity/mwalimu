@@ -2923,7 +2923,7 @@ class ApplicationController extends Controller
                                 foreach(unserialize($campus_program->entryRequirements[0]->equivalent_majors) as $sub){
         
                                     if(str_contains(strtolower($detail->programme),strtolower($sub))){
-        
+                                        return 1;
                                         $has_major = true;
                                     }
                                 }
