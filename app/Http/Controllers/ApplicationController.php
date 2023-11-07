@@ -6716,6 +6716,7 @@ class ApplicationController extends Controller
 	 */
 	 public function showInternalTransfersAdmin(Request $request)
 	 {
+        $staff = User::find(Auth::user()->id)->staff;
 		 $data = [
 		     'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
@@ -7426,7 +7427,7 @@ class ApplicationController extends Controller
                          ->where('application_window_id',$application_window->id)->first();
 
         if($appl){
-            redirect()->back()->with('error','Applicant already admitted or transfered to this campus.');
+            redirect()->to('registration/external-transfer')->with('error','Applicant already admitted or transfered to this campus.');
         }   
         DB::beginTransaction();
 
