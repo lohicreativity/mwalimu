@@ -7951,10 +7951,11 @@ class ApplicationController extends Controller
                                                 })
                                                 ->count();
 
-            //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
             if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
+                return 1;
                 $campus_progs[] = $prog;
             }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
+                return 2;
                 $available_progs[] = $prog;
             }
         }
