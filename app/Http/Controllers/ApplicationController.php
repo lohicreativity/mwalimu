@@ -2917,10 +2917,9 @@ class ApplicationController extends Controller
                     $out_gpa = null;
     
                     if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
-                        return 1;
                         foreach($applicant->nacteResultDetails as $detail){
                             if($detail->verified == 1){
-        
+                                
                                 foreach(unserialize($campus_program->entryRequirements[0]->equivalent_majors) as $sub){
         
                                     if(str_contains(strtolower($detail->programme),strtolower($sub))){
@@ -2933,7 +2932,6 @@ class ApplicationController extends Controller
                         }
     
                     }else{
-                        return 2;
                         if(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != ''){
                             foreach($applicant->nacteResultDetails as $detail){
                                 if($detail->verified == 1){
