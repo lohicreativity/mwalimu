@@ -2949,7 +2949,6 @@ class ApplicationController extends Controller
                     }
     
                     if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
-                        return $campus_program->entryRequirements[0]->pass_subjects.' - '.$diploma_gpa.' - '.$campus_program->entryRequirements[0]->equivalent_gpa;
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $campus_program->entryRequirements[0]->pass_subjects && $has_major && $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa){
 
                             $qualified = true;
