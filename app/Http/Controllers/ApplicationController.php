@@ -7935,7 +7935,7 @@ class ApplicationController extends Controller
                                             ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
                                             ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
                                             ->where('campus_id',$staff->campus_id)->get() : [];
-                                            return $campus_programs;
+
         $entry_requirements = null;
         foreach($campus_programs as $prog){
             $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
@@ -7953,10 +7953,8 @@ class ApplicationController extends Controller
                                                 ->count();
 
             if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
-                return 1;
                 $campus_progs[] = $prog;
             }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
-                return 2;
                 $available_progs[] = $prog;
             }
         }
@@ -7964,7 +7962,7 @@ class ApplicationController extends Controller
         // dd( $campus_progs);
 
         $campus_programs = $available_progs;
-return $campus_programs;
+
         $programs = [];
 
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
