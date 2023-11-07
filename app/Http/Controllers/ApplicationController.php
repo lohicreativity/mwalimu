@@ -7934,8 +7934,8 @@ class ApplicationController extends Controller
         $campus_programs = $window? $window->campusPrograms()
                                             ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
                                             ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
-                                            ->get() : [];
-                                            return $campus_programs;
+                                            ->where('campus_id',$staff->ampus_id)->get() : [];
+
         $entry_requirements = null;
         foreach($campus_programs as $prog){
             $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
