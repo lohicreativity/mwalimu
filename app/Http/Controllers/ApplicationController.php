@@ -2575,7 +2575,7 @@ class ApplicationController extends Controller
 
                 //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
             if ($count_applicants_per_program >= $campus_program->entryRequirements[0]->max_capacity) {
-        
+        return 1;
                 $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
         
                 $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
