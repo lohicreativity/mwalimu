@@ -3930,6 +3930,14 @@ class ApplicationController extends Controller
 
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
 
+        if(empty($applicant->gender|| empty($applicant->disability_status_id))){
+            return redirect()->back()->with('error','Sex of the applicant is required');
+        }
+
+        if(empty($applicant->disability_status_id)){
+            return redirect()->back()->with('error','Disiability status of the applicant is required');
+        }
+           
         $applicant->results_check = $request->get('results_check')? 1 : 0;
         $applicant->insurance_check = $request->get('insurance_check')? 1 : 0;
         $applicant->personal_info_check = $request->get('personal_info_check')? 1 : 0;
