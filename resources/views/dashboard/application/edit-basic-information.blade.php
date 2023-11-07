@@ -57,7 +57,7 @@
             @if($regulator_selection && $selection_released_status->selection_released == 1)
 
               @if($check_selected_applicant)
-                  @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED')
+                  @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED' )
                     <div class="alert alert-danger">
                       <h3 class="text-white" style="font-size: 18px!important;">
                         <i class="fa fa-times-circle"></i> 
@@ -113,11 +113,12 @@
                   @endif
               @else
                   <div class="alert alert-danger">
+                    @if($applicant->is_transfered != 1)
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                     
                       Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
                     </h3>
+                    @endif
                   </div> 					   
               @endif
             @elseif($applicant->status == 'SUBMITTED')
