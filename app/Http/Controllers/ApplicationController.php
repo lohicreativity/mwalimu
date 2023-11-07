@@ -2575,7 +2575,6 @@ class ApplicationController extends Controller
 
                 //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
             if ($count_applicants_per_program >= $campus_program->entryRequirements[0]->max_capacity) {
-        return 1;
                 $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
         
                 $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
@@ -2916,67 +2915,55 @@ class ApplicationController extends Controller
                     $equivalent_must_subjects_count = 0;
                     $diploma_gpa = null;
                     $out_gpa = null;
-                    $has_nacte_results = false;
-    
-                    foreach($applicant->nacteResultDetails as $detail){
-                        if(count($detail->results) == 0 && $detail->verified == 1){
-                            $has_nacte_results = true;
-                            $diploma_gpa = $detail->diploma_gpa;
-                        }
-                    }
-    
-                    if(($o_level_pass_count + $o_level_other_pass_count) >= $campus_program->entryRequirements[0]->pass_subjects && $has_nacte_results && $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa){
-    
-                        $qualified = true;
-
-                    }
     
                     if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
-                        foreach($applicant->nacteResultDetails as $detail){
-                        if($detail->verified == 1){
-    
-                            foreach(unserialize($campus_program->entryRequirements[0]->equivalent_majors) as $sub){
-    
-                                if(str_contains(strtolower($detail->programme),strtolower($sub))){
-    
-                                    $has_major = true;
-                                }
-                            }
-                            $diploma_gpa = $detail->diploma_gpa;
-                        }
-                        }
-    
-                    }else{
-                        if(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
+                        return 1;
                         foreach($applicant->nacteResultDetails as $detail){
                             if($detail->verified == 1){
-                                foreach($detail->results as $result){
-                                    foreach(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) as $sub){
-                                        if(str_contains(strtolower($result->subject),strtolower($sub))){
-                                            $equivalent_must_subjects_count += 1;
-                                        }
+        
+                                foreach(unserialize($campus_program->entryRequirements[0]->equivalent_majors) as $sub){
+        
+                                    if(str_contains(strtolower($detail->programme),strtolower($sub))){
+        
+                                        $has_major = true;
                                     }
                                 }
                                 $diploma_gpa = $detail->diploma_gpa;
                             }
                         }
+    
+                    }else{
+                        return 2;
+                        if(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            foreach($applicant->nacteResultDetails as $detail){
+                                if($detail->verified == 1){
+                                    foreach($detail->results as $result){
+                                        foreach(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                            if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                                $equivalent_must_subjects_count += 1;
+                                            }
+                                        }
+                                    }
+                                    $diploma_gpa = $detail->diploma_gpa;
+                                }
+                            }
                         }
                     }
     
-                    if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != '' && !$has_nacte_results){
+                    if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
 
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $campus_program->entryRequirements[0]->pass_subjects && $has_major && $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa){
     
                             $qualified = true;
     
                         }
-                    }elseif(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
+                    }elseif(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != ''){
                         if((($o_level_pass_count+$o_level_other_pass_count) >= $campus_program->entryRequirements[0]->pass_subjects &&
                             $equivalent_must_subjects_count >= count(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects)) &&
                             $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $campus_program->entryRequirements[0]->pass_subjects &&
                             $applicant->avn_no_results === 1 && $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa)){
     
-                                $qualified = true;
+                            $qualified = true;
 
                         }
                     }
