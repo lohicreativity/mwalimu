@@ -112,14 +112,14 @@
                     </div>
                   @endif
               @else
+                @if($applicant->is_transfered != 1)
                   <div class="alert alert-danger">
-                    @if($applicant->is_transfered != 1)
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
                       Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
                     </h3>
-                    @endif
-                  </div> 					   
+                  </div>
+                @endif 					   
               @endif
             @elseif($applicant->status == 'SUBMITTED')
             <div class="alert alert-success">
