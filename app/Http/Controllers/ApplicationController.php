@@ -7420,14 +7420,16 @@ class ApplicationController extends Controller
         }else{
         $batch_id = $batch->id;
         }
-        DB::beginTransaction();
+
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)
                          ->where(function($query){$query->where('status','ADMITTED')->orWhere('is_transfered',1);})
                          ->where('application_window_id',$application_window->id)->first();
 
         if($appl){
             redirect()->back()->with('error','Applicant already admitted or transfered to this campus.');
-        }
+        }   
+        DB::beginTransaction();
+
 		if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->latest()->first()){
             Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->update(['status'=>null]);
 			 $applicant = $app;
