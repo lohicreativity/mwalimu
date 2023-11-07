@@ -7931,6 +7931,7 @@ class ApplicationController extends Controller
         $campus_progs = $available_progs = $all_programs = [];
 
         $window = $applicant->applicationWindow;
+        return $window;
         $campus_programs = $window? $window->campusPrograms()
                                             ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
                                             ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
@@ -7941,7 +7942,7 @@ class ApplicationController extends Controller
                                                     ->with('campusProgram:id,code')->first();
             $all_programs[] = $prog;
         }
-return $campus_programs;
+
         foreach($campus_programs as $prog){
 
             $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
