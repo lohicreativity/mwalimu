@@ -7407,7 +7407,6 @@ class ApplicationController extends Controller
                         ->where('application_window_id', $application_window->id)
                         ->where('program_level_id',$award->id)->where('batch_id',$batch->id)->count() >  0){
                 $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;
 
             }else{
 
@@ -7416,15 +7415,20 @@ class ApplicationController extends Controller
                 $previous_batch = ApplicationBatch::where('application_window_id',$application_window->id)->where('program_level_id',$award->id)
                                         ->where('batch_no', $batch->batch_no - 1)->first();
                 $batch_id = $previous_batch->id;
-                $batch_no = $previous_batch->batch_no;
             }
         }
         }else{
         $batch_id = $batch->id;
-        $batch_no = $batch->batch_no;
         }
+        DB::beginTransaction();
+        $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)
+                         ->where(function($query){$query->where('status','ADMITTED')->orWhere('is_transfered',1);})
+                         ->where('application_window_id',$application_window->id)->first();
 
-		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->latest()->first()){
+        if($appl){
+            redirect()->back()->with('error','Applicant already admitted or transfered to this campus.');
+        }
+		if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->latest()->first()){
             Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->update(['status'=>null]);
 			 $applicant = $app;
              $applicant->is_tcu_verified = 0;
@@ -7445,7 +7449,7 @@ class ApplicationController extends Controller
 			 $user = User::where('username',$request->get('index_number'))->first();
              $user->password = Hash::make($request->get('index_number'));
              $user->save();
-		 }else{
+		}else{
 			if($usr = User::where('username',$request->get('index_number'))->first()){
                 $user = $usr;
             }else{
@@ -7659,7 +7663,7 @@ class ApplicationController extends Controller
 			   // //$app->documents_complete_status = 0;
       //          $app->save();
                //redirect()->back()->with('message','Admission package sent successfully');
-
+            DB::commit();
             return redirect()->to('registration/external-transfer')->with('message','Transfer rgistration completed successfully');
 
 
