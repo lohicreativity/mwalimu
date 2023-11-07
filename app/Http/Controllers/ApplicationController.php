@@ -6912,8 +6912,8 @@ class ApplicationController extends Controller
         $batch_no = $batch->batch_no;
         }
 
-		 if($app = Applicant::where('index_number',$request->get('index_number'))->latest()->first()){
-            Applicant::where('index_number',$request->get('index_number'))->update(['status'=>null]);
+		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->latest()->first()){
+            Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->update(['status'=>null]);
 			 $applicant = $app;
              $applicant->is_tcu_verified = 0;
 			 $applicant->is_transfered = 1;
