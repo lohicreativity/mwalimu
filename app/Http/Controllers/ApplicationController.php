@@ -7953,10 +7953,9 @@ class ApplicationController extends Controller
                                                 ->count();
 
             if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
-                return 1;
+                
                 $campus_progs[] = $prog;
             }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
-                return 2;
                 $available_progs[] = $prog;
             }
         }
@@ -7964,7 +7963,7 @@ class ApplicationController extends Controller
         // dd( $campus_progs);
 
         $campus_programs = $available_progs;
-return $campus_programs;
+
         $programs = [];
 
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
