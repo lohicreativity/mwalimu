@@ -117,7 +117,7 @@
                   </label>
               </div>
               <div class="card-footer">
-                <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Update Veta') }}</button>
+                <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Update Veta') }}</button>
               </div>
 
             {!! Form::close() !!}
@@ -183,7 +183,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add A-Level NECTA Results') }}</button>
+                  <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add A-Level NECTA Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
