@@ -7427,7 +7427,7 @@ class ApplicationController extends Controller
                          ->where('application_window_id',$application_window->id)->first();
 
         if($appl){
-            redirect()->to('registration/external-transfer')->with('error','Applicant already admitted or transfered to this campus.');
+            return redirect()->to('registration/external-transfer')->with('error','Applicant already admitted or transfered to this campus.');
         }   
         DB::beginTransaction();
 
