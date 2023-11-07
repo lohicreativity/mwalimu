@@ -6913,6 +6913,7 @@ class ApplicationController extends Controller
         }
 
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->latest()->first()){
+            Applicant::where('index_number',$request->get('index_number'))->update(['status'=>null]);
 			 $applicant = $app;
              $applicant->is_tcu_verified = 0;
 			 $applicant->is_transfered = 1;
@@ -6925,7 +6926,6 @@ class ApplicationController extends Controller
              $applicant->intake_id = $application_window->intake_id;
              $applicant->application_window_id = $application_window->id;
              $applicant->batch_id = $batch_id;
-             $applicant->status = null;
              $applicant->payment_complete_status = 1;
 
 			 $applicant->save();
