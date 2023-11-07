@@ -2561,7 +2561,7 @@ class ApplicationController extends Controller
 
             $campus_program = $window? $window->campusPrograms()
                                                 ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
-                                                ->where('id',$applicant->selections->campus_program_id)->first() : [];
+                                                ->where('id',$applicant->selections[0]->campus_program_id)->first() : [];
 
             $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$campus_program->id)
                                                     ->with('campusProgram:id,code')->first();
