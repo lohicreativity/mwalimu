@@ -3937,7 +3937,7 @@ class ApplicationController extends Controller
         if(empty($applicant->disability_status_id)){
             return redirect()->back()->with('error','Disiability status of the applicant is required');
         }
-           
+
         $applicant->results_check = $request->get('results_check')? 1 : 0;
         $applicant->insurance_check = $request->get('insurance_check')? 1 : 0;
         $applicant->personal_info_check = $request->get('personal_info_check')? 1 : 0;
@@ -6912,16 +6912,27 @@ class ApplicationController extends Controller
         $batch_no = $batch->batch_no;
         }
 
-		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
+		 if($app = Applicant::where('index_number',$request->get('index_number'))->latest()->first()){
 			 $applicant = $app;
              $applicant->is_tcu_verified = 0;
 			 $applicant->is_transfered = 1;
              $applicant->programs_complete_status = 0;
 			 $applicant->submission_complete_status = 0;
              $applicant->batch_id = $batch_id;
+             $applicant->campus_id = $staff->campus_id;
+             $applicant->entry_mode = $request->get('entry_mode');
+             $applicant->program_level_id = $award->id;
+             $applicant->intake_id = $application_window->intake_id;
+             $applicant->application_window_id = $application_window->id;
+             $applicant->batch_id = $batch_id;
+             $applicant->status = null;
+             $applicant->payment_complete_status = 1;
+
 			 $applicant->save();
 
 			 $user = User::where('username',$request->get('index_number'))->first();
+             $user->password = Hash::make($request->get('index_number'));
+             $user->save();
 		 }else{
 			if($usr = User::where('username',$request->get('index_number'))->first()){
                 $user = $usr;
@@ -6944,7 +6955,7 @@ class ApplicationController extends Controller
             $applicant->intake_id = $application_window->intake_id;
             $applicant->application_window_id = $application_window->id;
             $applicant->batch_id = $batch_id;
-            $applicant->payment_complete_status = 0;
+            $applicant->payment_complete_status = 1;
             $applicant->is_transfered = 1;
             $applicant->save();
 		}
