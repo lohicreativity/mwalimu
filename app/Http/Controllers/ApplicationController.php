@@ -7901,7 +7901,7 @@ class ApplicationController extends Controller
      * Edit external transfer
      */
     public function editExternalTransfer(Request $request, $id)
-    {
+    {return 100;
         $staff = User::find(Auth::user()->id)->staff;
 
 		$transfer = ExternalTransfer::with(['applicant.user','newProgram.program','user.staff'])->find($id);
