@@ -7429,10 +7429,18 @@ class ApplicationController extends Controller
         if($appl){
             return redirect()->to('registration/external-transfer')->with('error','Applicant already admitted or transfered to this campus.');
         }   
+
+        
+        $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->where('is_transfered',1)
+                         ->where('application_window_id',$application_window->id)->first();
+
+        if($appl){
+            return redirect()->to('registration/external-transfer')->with('error','Admission has already been used for transfer in another MNMA campus.');
+        }                 
         DB::beginTransaction();
 
-		if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->latest()->first()){
-            Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->update(['status'=>null]);
+		if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
+            //Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->update(['status'=>null]);
 			 $applicant = $app;
              $applicant->is_tcu_verified = 0;
 			 $applicant->is_transfered = 1;
@@ -7465,15 +7473,15 @@ class ApplicationController extends Controller
             $role = Role::where('name','applicant')->first();
             $user->roles()->sync([$role->id]);
 
-            if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
-                $applicant = $app;
-                $applicant->entry_mode = $request->get('entry_mode');
-                $applicant->program_level_id = $award->id;
-                $applicant->batch_id = $batch_id;
-                $applicant->payment_complete_status = 1;
-                $applicant->is_transfered = 1;
+            // if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
+            //     $applicant = $app;
+            //     $applicant->entry_mode = $request->get('entry_mode');
+            //     $applicant->program_level_id = $award->id;
+            //     $applicant->batch_id = $batch_id;
+            //     $applicant->payment_complete_status = 1;
+            //     $applicant->is_transfered = 1;
 
-            }else{
+            // }else{
                 $applicant = new Applicant;
                 $applicant->user_id = $user->id;
                 $applicant->campus_id = $staff->campus_id;
@@ -7485,7 +7493,7 @@ class ApplicationController extends Controller
                 $applicant->batch_id = $batch_id;
                 $applicant->payment_complete_status = 1;
                 $applicant->is_transfered = 1;
-            }
+            //}
             $applicant->save();
 		}
 
