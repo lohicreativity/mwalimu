@@ -7430,9 +7430,8 @@ class ApplicationController extends Controller
             return redirect()->to('registration/external-transfer')->with('error','Applicant already admitted or transfered to this campus.');
         }   
 
-        
-        $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->where('is_transfered',1)
-                         ->where('application_window_id',$application_window->id)->first();
+        //Need to compare with year of application
+        $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->where('is_transfered',1)->first();
 
         if($appl){
             return redirect()->to('registration/external-transfer')->with('error','Admission has already been used for transfer in another MNMA campus.');
