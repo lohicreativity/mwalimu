@@ -7434,7 +7434,7 @@ class ApplicationController extends Controller
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->where('is_transfered',1)->first();
 
         if($appl){
-            return redirect()->to('registration/external-transfer')->with('error','Admission has already been used for transfer in another MNMA campus.');
+            return redirect()->to('registration/external-transfer')->with('error','Admission has already been used for transfer in another campus.');
         }                 
         DB::beginTransaction();
 
