@@ -119,7 +119,7 @@ Route::get('test',function(){
 	// INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTCOD00122','12221','MPAMBA, OTHUMAN S','fddgdgfd','KIGOMA','MATENDO','qwerty','KIGOMA','Tanzania','fddgdgfd','Tanzania','dsfdsafsdf, ddgfdsff ','255746508500','255746508500','BTC.COD','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')
 
 
-	// $acpac->query("DELETE FROM customer");
+	$acpac->query("DELETE FROM customer WHERE IDCUST = 'BDEKH028123'");
 	// $acpac->query("DELETE FROM invoices");
 	// $acpac->query("DELETE FROM receipts");
  	$results = $acpac->query('SELECT * FROM customer');
