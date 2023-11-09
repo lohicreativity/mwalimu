@@ -10271,7 +10271,7 @@ class ApplicationController extends Controller
                                           ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                                           ->where('name','LIKE','%Teaching%')->where('name','LIKE','%Practice%');})
                                           ->with(['feeItem.feeType'])->first();
-return $teaching_practice;
+
             if(str_contains($student->applicant->nationality,'Tanzania')){
                 $amount = $teaching_practice->amount_in_tzs;
             }else{
