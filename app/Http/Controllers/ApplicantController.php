@@ -1973,7 +1973,7 @@ class ApplicantController extends Controller
                               $a_level_points += $a_level_grades[$result->grade];
                            }
                         }
-//return $result->grade.' - '.$diploma_principle_pass_grade;
+
                         if($a_level_grades[$result->grade] == $a_level_grades[$diploma_principle_pass_grade]){
 
                            $applicant->rank_points += $a_level_grades[$result->grade];
