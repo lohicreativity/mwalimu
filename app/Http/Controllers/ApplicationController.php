@@ -10337,7 +10337,7 @@ class ApplicationController extends Controller
         // $misc_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Miscellaneous%');})
         //                        ->with(['gatewayPayment','feeType'])->where('payable_type','student')->where('payable_id',$student->id)->first();
 
-        $student_invoices = Invoice::with(['feeItem.feeType'])->where('payable_type','student')->where('payable_id',$student->id)->get();
+        $student_invoices = Invoice::with(['feeType'])->where('payable_type','student')->where('payable_id',$student->id)->get();
 
         $usd_currency = Currency::where('code','USD')->first();
 
