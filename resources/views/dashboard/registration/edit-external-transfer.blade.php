@@ -63,10 +63,24 @@
                          'required'=>true
                      ];
 					 
+                     if($transfer->status == 'PENDING'){
+                      $prev_prog = [
+                         'class'=>'form-control',
+                         'placeholder'=>'Regulator Code',
+                         'required'=>true
+                     ];
+                     }else{
+                      $prev_prog = [
+                         'class'=>'form-control',
+                         'placeholder'=>'Regulator Code',
+						             'readonly'=>true,
+                         'required'=>true
+                     ];
+                     }
                      $index_number = [
                          'class'=>'form-control',
                          'placeholder'=>'Index number',
-						 'readonly'=>true,
+						             'readonly'=>true,
                          'required'=>true
                      ];
                  @endphp 
@@ -83,16 +97,19 @@
 				     {!! Form::label('','Entry mode') !!}
 				     <select name="entry_mode" class="form-control" required>
                        <option value="">Select Highest Qualification</option>
-                       <option value="DIRECT" @if($transfer->applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
-                       <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
+                       <option value="DIRECT" @if($transfer->applicant->entry_mode == 'DIRECT') selected="selected" @endif
+                        @if($transfer->status != 'PENDING') disabled="disabled" @endif>Form IV or VI (Direct)</option>
+                       <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif
+                        @if($transfer->status != 'PENDING') disabled="disabled" @endif>Certificate or Diploma (Equivalent)</option>
                      </select>
 					</div>
                   </div>
 				  <div class="row">
 				   <div class="form-group col-6">
                    {!! Form::label('','Enter previous programme code') !!}
-                   {!! Form::text('program_code',$transfer->previous_program,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
-                 </div>  
+                   {!! Form::text('program_code',$transfer->previous_program,$prev_prog) !!}
+                 </div> 
+                 @if($transfer->status == 'NOT ELIGIBLE') 
 				 <div class="form-group col-6">
                    {!! Form::label('','Select new programme') !!}
                    <select name="campus_program_id" class="form-control" required>
@@ -102,6 +119,7 @@
                       @endforeach
                     </select>
                  </div> 
+                 @endif
               </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>

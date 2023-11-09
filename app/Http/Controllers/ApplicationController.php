@@ -7411,15 +7411,15 @@ class ApplicationController extends Controller
 
             }else{
 
-            $previous_batch = null;
-            if($batch->batch_no > 1){
-                $previous_batch = ApplicationBatch::where('application_window_id',$application_window->id)->where('program_level_id',$award->id)
-                                        ->where('batch_no', $batch->batch_no - 1)->first();
-                $batch_id = $previous_batch->id;
+                $previous_batch = null;
+                if($batch->batch_no > 1){
+                    $previous_batch = ApplicationBatch::where('application_window_id',$application_window->id)->where('program_level_id',$award->id)
+                                            ->where('batch_no', $batch->batch_no - 1)->first();
+                    $batch_id = $previous_batch->id;
+                }
             }
-        }
         }else{
-        $batch_id = $batch->id;
+            $batch_id = $batch->id;
         }
 
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)
@@ -7694,9 +7694,9 @@ class ApplicationController extends Controller
 	 */
 	 public function updateExternalTransfer(Request $request)
 	 {
-		 $staff = User::find(Auth::user()->id)->staff;
-		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
-		 $award = Award::where('name','LIKE','%Degree%')->first();
+		$staff = User::find(Auth::user()->id)->staff;
+		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
+		$award = Award::where('name','LIKE','%Degree%')->first();
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
         $applicant->index_number = strtoupper($request->get('index_number'));
@@ -7704,176 +7704,338 @@ class ApplicationController extends Controller
 		$applicant->is_transfered = 1;
         $applicant->save();
 
-		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+		ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['campus_program_id'=> $request->get('campus_program_id'), 'status'=>'SELECTED']);
 
-		  $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($applicant->id);
+		$applicant = Applicant::find($applicant->id);
 
-        $selection = new ApplicantProgramSelection;
-		$selection->applicant_id = $applicant->id;
-		$selection->application_window_id = $applicant->application_window_id;
-		$selection->campus_program_id = $request->get('campus_program_id');
-        $selection->order = 1;
-        $selection->status = 'SELECTED';
-        $selection->save();
+        // $selection = new ApplicantProgramSelection;
+		// $selection->applicant_id = $applicant->id;
+		// $selection->application_window_id = $applicant->application_window_id;
+		// $selection->campus_program_id = $request->get('campus_program_id');
+        // $selection->order = 1;
+        // $selection->status = 'SELECTED';
+        // $selection->batch_id = $batch_id;
+        // $selection->save();
 
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
-		$admitted_program = $prog;
-		$admitted_program_code = $prog->program->code;
 
-
-            $transfer = ExternalTransfer::find($request->get('transfer_id'));
-            $transfer->applicant_id = $applicant->id;
-            $transfer->new_campus_program_id = $admitted_program->id;
+        $transfer = ExternalTransfer::find($request->get('transfer_id'));
+        if($transfer->status == 'PENDING'){
             $transfer->previous_program = $request->get('program_code');
-            $transfer->transfered_by_user_id = Auth::user()->id;
-			$transfer->status = 'ELIGIBLE';
-            $transfer->save();
 
-            $applicant->confirmation_status = 'TRANSFERED';
-			$applicant->status = 'ADMITTED';
-            $applicant->save();
-
-			$applicant = Applicant::whereHas('selections',function($query) use($request){
-             $query->where('status','SELECTED');
-        })->with(['nextOfKin','intake','selections'=>function($query){
-             $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)->find($applicant->id);
-
-        // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-        //      $query->where('id',$request->application_window_id);
-        // })->whereHas('selections',function($query) use($request){
-        //      $query->where('status','APPROVING');
-        // })->with(['nextOfKin','intake','selections'=>function($query){
-        //      $query->where('status','APPROVING');
-        // },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->update(['admission_reference_no'=>$request->reference_number]);
+        }elseif($transfer->status == 'NOT ELIGIBLE'){
+            $transfer->new_campus_program_id = $prog->id;
+            $transfer->status = 'ELIGIBLE';
+        }
 
 
-               $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-               $ac_year += 1;
-               $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-                      $query->where('year','LIKE','%/'.$ac_year.'%');
-                })->with('academicYear')->first();
-               if(!$study_academic_year){
-                   redirect()->back()->with('error','Admission study academic year not created');
-               }
+        $transfer->transfered_by_user_id = Auth::user()->id;
+        $transfer->save();
 
-               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
+        $applicant->confirmation_status = 'TRANSFERED';
+        $applicant->status = 'ADMITTED';
+        $applicant->save();
 
-               if(!$program_fee){
-                   redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
-               }
+		$applicant = Applicant::whereHas('selections',function($query) use($request){$query->where('status','SELECTED');})
+                              ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])
+                              ->where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)->find($applicant->id);
 
-               $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');
-               })->first();
+        $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+        $ac_year += 1;
+        $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})->with('academicYear')->first();
+        
+        if(!$study_academic_year){
+            redirect()->back()->with('error','Study academic year not defined.');
+        }
 
-               if(!$medical_insurance_fee){
-                   redirect()->back()->with('error','Medical insurance fee not defined');
-               }
+        $special_dates = SpecialDate::where('name','Orientation')
+        ->where('study_academic_year_id',$study_academic_year->id)
+        ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
 
-               if(str_contains($applicant->selections[0]->campusProgram->program->award->name,'Bachelor')){
-                  $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%TCU%');
-                  })->first();
-               }else{
-                  $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
-               }
+        $orientation_date = null;
+        if(count($special_dates) == 0){
+            return redirect()->back()->with('error','Orientation date has not been defined');
+        }else{
+            foreach($special_dates as $special_date){
+                $specialDateFlag = false;
+                if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                    $specialDateFlag = true;
+
+                }else{
+                    $orientation_date = $special_date->date;
+                    break;
+                }
+            }
+            if($specialDateFlag){
+                return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+            }
+        }
+
+        $admission_references = AdmissionReferenceNumber::where('study_academic_year_id', $study_academic_year->id)->where('intake', $applicant->intake->name)
+        ->where('campus_id', $applicant->campus_id)->get();
+        
+        $reference_number = null;
+        if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($admission_references))){
+            $reference_number = $admission_references->name;
+        }else{
+            return redirect()->back()->with('error','Reference number for '.$applicant->selections[0]->campusProgram->program->award->name.'\'s admission letters not defined.');            
+        }
+
+        $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+        ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
+
+        if(!$medical_insurance_fee){
+            return redirect()->back()->with('error','Medical insurance fee has not been defined');
+        }
+
+        $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+            ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+
+        if(!$students_union_fee){
+            return redirect()->back()->with('error','Students union fee has not been defined');
+        }
+
+        $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+            ->where('name','LIKE','%Caution Money%');})->first();
+
+        if(!$caution_money_fee){
+            return redirect()->back()->with('error','Caution money fee has not been defined');
+        }
+
+        $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                ->where('name','LIKE','%Medical Examination%');})->first();
+
+        if(!$medical_examination_fee){
+            return redirect()->back()->with('error','Medical examination fee has not been defined');
+        }
+
+        $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+        ->where('name','LIKE','%Registration%');})->first();
+
+        if(!$registration_fee){
+            return redirect()->back()->with('error','Registration fee has not been defined');
+        }
+
+        $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+            ->where('name','LIKE','%New ID Card%');})->first();
+
+        if(!$identity_card_fee){
+            return redirect()->back()->with('error','ID card fee for new students has not been defined');
+        }
+
+        $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+        ->where('name','LIKE','%Late Registration%');})->first();
+
+        if(!$late_registration_fee){
+            return redirect()->back()->with('error','Late registration fee has not been defined');
+        }
+
+        $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+        ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
+
+        if(!$welfare_emergence_fund){
+            return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
+        }
+
+        $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                                    ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                                    ->where('name','LIKE','%TCU%');})->first();
+
+        if(!$quality_assurance_fee){
+            return redirect()->back()->with('error','TCU quality assurance fee has not been defined');
+        }
+
+        $program_fee = ProgramFee::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('year_of_study',1)
+        ->where('campus_program_id',$request->get('campus_program_id'))->first();
+
+        if(!$program_fee){
+            return redirect()->back()->with('error','Programme fee not defined for '.$prog->program->name);
+        }
+
+        $teaching_practice = null;
+        if(str_contains(strtolower($prog->program->name),'bachelor') && str_contains(strtolower($prog->program->name),'education')){
+            $teaching_practice = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+            ->where('name','LIKE','%Teaching%')->where('name','LIKE','%Practice%'); })->first();
+
+            if(!$teaching_practice){
+                return redirect()->back()->with('error','Teaching practice fee not defined');
+            }
+        }
+
+        if ($teaching_practice) {
+            $teaching_practice = str_contains($applicant->nationality, 'Tanzania') ? $teaching_practice->amount_in_tzs : $teaching_practice->amount_in_usd;
+        }
+
+        $numberToWords = new NumberToWords();
+        $numberTransformer = $numberToWords->getNumberTransformer('en');
+
+        $data = [
+            'applicant' => $applicant,
+            'campus_name' => $applicant->selections[0]->campusProgram->campus->name,
+            'applicant_name' => $applicant->first_name . ' ' . $applicant->surname,
+            'reference_number' => $reference_number,
+            'program_name' => $prog->program->name,
+            'program_code_name' => $applicant->selections[0]->campusProgram->program->award->name,
+            'study_year' => $study_academic_year->academicYear->year,
+            'program_duration_no' => $applicant->selections[0]->campusProgram->program->min_duration,
+            'orientation_date' => $orientation_date,
+            'program_fee' => str_contains($applicant->nationality, 'Tanzania') ? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
+            'program_duration' => $numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
+            'program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
+            'annual_program_fee_words' => str_contains($applicant->nationality, 'Tanzania') ? $numberTransformer->toWords(($program_fee->amount_in_tzs)/2) : $numberTransformer->toWords(($program_fee->amount_in_usd)/2),
+            'research_supervision_fee'=> null,
+            'currency' => str_contains($applicant->nationality, 'Tanzania') ? 'Tsh' : 'Usd',
+            'medical_insurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
+            'medical_examination_fee' => str_contains($applicant->nationality, 'Tanzania') ? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
+            'registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,
+            'late_registration_fee' => str_contains($applicant->nationality, 'Tanzania') ? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,
+            'practical_training_fee' => null,
+            'teaching_practice' => $teaching_practice,
+            'identity_card_fee' => str_contains($applicant->nationality, 'Tanzania') ? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
+            'caution_money_fee' => str_contains($applicant->nationality, 'Tanzania') ? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
+            'nacte_quality_assurance_fee' => str_contains($applicant->nationality, 'Tanzania') ? $quality_assurance_fee->amount_in_tzs : $quality_assurance_fee->amount_in_usd,
+            'students_union_fee' => str_contains($applicant->nationality, 'Tanzania') ? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
+            'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
+        ];
 
 
-               if(!$nacte_quality_assurance_fee){
-                   redirect()->back()->with('error','NACTVET Quality Assurance fee not defined');
-               }
 
-               $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Practical%');
-               })->first();
 
-               if(!$practical_training_fee){
-                   redirect()->back()->with('error','Practical training fee not defined');
-               }
+            //    $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+            //    $ac_year += 1;
+            //    $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+            //           $query->where('year','LIKE','%/'.$ac_year.'%');
+            //     })->with('academicYear')->first();
+            //    if(!$study_academic_year){
+            //        redirect()->back()->with('error','Admission study academic year not created');
+            //    }
 
-               $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%')
-                   ->orWhere('name','LIKE','%Students Union%');})->first();
+            //    $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
-               if(!$students_union_fee){
-                   redirect()->back()->with('error','Students union fee not defined');
-               }
+            //    if(!$program_fee){
+            //        redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
+            //    }
 
-               $caution_money_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Caution Money%');
-               })->first();
+            //    $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');
+            //    })->first();
 
-               if(!$caution_money_fee){
-                   redirect()->back()->with('error','Caution money fee not defined');
-               }
+            //    if(!$medical_insurance_fee){
+            //        redirect()->back()->with('error','Medical insurance fee not defined');
+            //    }
 
-               $medical_examination_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Medical Examination%');
-               })->first();
+            //    if(str_contains($applicant->selections[0]->campusProgram->program->award->name,'Bachelor')){
+            //       $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%TCU%');
+            //       })->first();
+            //    }else{
+            //       $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
+            //    }
 
-               if(!$medical_examination_fee){
-                   redirect()->back()->with('error','Medical examination fee not defined');
-               }
 
-               $registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Registration%');
-               })->first();
+            //    if(!$nacte_quality_assurance_fee){
+            //        redirect()->back()->with('error','NACTVET Quality Assurance fee not defined');
+            //    }
 
-               if(!$registration_fee){
-                   redirect()->back()->with('error','Registration fee not defined');
-               }
+            //    $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%Practical%');
+            //    })->first();
 
-               $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%New ID Card%');
-               })->first();
+            //    if(!$practical_training_fee){
+            //        redirect()->back()->with('error','Practical training fee not defined');
+            //    }
 
-               if(!$identity_card_fee){
-                   redirect()->back()->with('error','ID card fee for new students not defined');
-               }
+            //    $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%')
+            //        ->orWhere('name','LIKE','%Students Union%');})->first();
 
-               $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Late Registration%');
-               })->first();
+            //    if(!$students_union_fee){
+            //        redirect()->back()->with('error','Students union fee not defined');
+            //    }
 
-               if(!$late_registration_fee){
-                   redirect()->back()->with('error','Late registration fee not defined');
-               }
+            //    $caution_money_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%Caution Money%');
+            //    })->first();
 
-               $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)->first();
+            //    if(!$caution_money_fee){
+            //        redirect()->back()->with('error','Caution money fee not defined');
+            //    }
 
-               if(!$orientation_date){
-                   return redirect()->back()->with('error','Orientation date not defined');
-               }
+            //    $medical_examination_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%Medical Examination%');
+            //    })->first();
 
-               $numberToWords = new NumberToWords();
-               $numberTransformer = $numberToWords->getNumberTransformer('en');
+            //    if(!$medical_examination_fee){
+            //        redirect()->back()->with('error','Medical examination fee not defined');
+            //    }
 
-               $data = [
-                 'applicant'=>$applicant,
-                 'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
-                 'orientation_date'=>$orientation_date,
-                 'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
-                 'reference_number'=>$applicant->admission_reference_no,
-                 'program_name'=>$applicant->selections[0]->campusProgram->program->name,
-                 'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
-                 'study_year'=>$study_academic_year->academicYear->year,
-                 'commencement_date'=>$study_academic_year->begin_date,
-                 'program_fee'=>str_contains($applicant->nationality,'Tanzania')? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
-                 'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
-                 'program_fee_words'=>str_contains($applicant->nationality,'Tanzania')? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
-                 'currency'=>str_contains($applicant->nationality,'Tanzania')? 'Tsh' : 'Usd',
-                 'medical_insurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
-                 'medical_examination_fee'=>str_contains($applicant->nationality,'Tanzania')? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
-                 'registration_fee'=>str_contains($applicant->nationality,'Tanzania')? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,
-                 'late_registration_fee'=>str_contains($applicant->nationality,'Tanzania')? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,
-                 'practical_training_fee'=>str_contains($applicant->nationality,'Tanzania')? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd,
-                 'identity_card_fee'=>str_contains($applicant->nationality,'Tanzania')? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
-                 'caution_money_fee'=>str_contains($applicant->nationality,'Tanzania')? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
-                 'nacte_quality_assurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
-                 'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
-               ];
+            //    $registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%Registration%');
+            //    })->first();
+
+            //    if(!$registration_fee){
+            //        redirect()->back()->with('error','Registration fee not defined');
+            //    }
+
+            //    $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%New ID Card%');
+            //    })->first();
+
+            //    if(!$identity_card_fee){
+            //        redirect()->back()->with('error','ID card fee for new students not defined');
+            //    }
+
+            //    $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+            //        $query->where('name','LIKE','%Late Registration%');
+            //    })->first();
+
+            //    if(!$late_registration_fee){
+            //        redirect()->back()->with('error','Late registration fee not defined');
+            //    }
+
+            //    $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)->first();
+
+            //    if(!$orientation_date){
+            //        return redirect()->back()->with('error','Orientation date not defined');
+            //    }
+
+            //    $numberToWords = new NumberToWords();
+            //    $numberTransformer = $numberToWords->getNumberTransformer('en');
+
+            //    $data = [
+            //      'applicant'=>$applicant,
+            //      'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
+            //      'orientation_date'=>$orientation_date,
+            //      'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
+            //      'reference_number'=>$applicant->admission_reference_no,
+            //      'program_name'=>$applicant->selections[0]->campusProgram->program->name,
+            //      'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
+            //      'study_year'=>$study_academic_year->academicYear->year,
+            //      'commencement_date'=>$study_academic_year->begin_date,
+            //      'program_fee'=>str_contains($applicant->nationality,'Tanzania')? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
+            //      'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
+            //      'program_fee_words'=>str_contains($applicant->nationality,'Tanzania')? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
+            //      'currency'=>str_contains($applicant->nationality,'Tanzania')? 'Tsh' : 'Usd',
+            //      'medical_insurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,
+            //      'medical_examination_fee'=>str_contains($applicant->nationality,'Tanzania')? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,
+            //      'registration_fee'=>str_contains($applicant->nationality,'Tanzania')? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,
+            //      'late_registration_fee'=>str_contains($applicant->nationality,'Tanzania')? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,
+            //      'practical_training_fee'=>str_contains($applicant->nationality,'Tanzania')? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd,
+            //      'identity_card_fee'=>str_contains($applicant->nationality,'Tanzania')? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
+            //      'caution_money_fee'=>str_contains($applicant->nationality,'Tanzania')? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
+            //      'nacte_quality_assurance_fee'=>str_contains($applicant->nationality,'Tanzania')? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
+            //      'students_union_fee'=>str_contains($applicant->nationality,'Tanzania')? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
+            //    ];
 
                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
                    'margin_top'=>20,
