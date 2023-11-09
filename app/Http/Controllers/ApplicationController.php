@@ -10290,7 +10290,6 @@ class ApplicationController extends Controller
             $invoice->fee_type_id = $teaching_practice->feeItem->feeType->id;
             $invoice->save();
 
-return $invoice;
             $generated_by = 'SP';
             $approved_by = 'SP';
             $inst_id = config('constants.SUBSPCODE');
@@ -10447,7 +10446,7 @@ return $invoice;
         //                                         '".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."',
         //                                         '".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
         // }
-return $stud_reg;
+
         $acpac->close();
         $transfered_status = true;
         try{
