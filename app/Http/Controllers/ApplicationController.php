@@ -10290,7 +10290,7 @@ class ApplicationController extends Controller
             $invoice->fee_type_id = $teaching_practice->feeItem->feeType->id;
             $invoice->save();
 
-
+return $invoice;
             $generated_by = 'SP';
             $approved_by = 'SP';
             $inst_id = config('constants.SUBSPCODE');
