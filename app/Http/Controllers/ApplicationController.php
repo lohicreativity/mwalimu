@@ -10267,7 +10267,7 @@ class ApplicationController extends Controller
         }
 
         if(!str_contains(strtolower($admitted_program->program->name),'education') && str_contains(strtolower($selection->campusProgram->program->name),'education')){
-            $teaching_practice = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)
+            $teaching_practice = FeeAmount::where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)
                                           ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                                           ->where('name','LIKE','%Teaching%')->where('name','LIKE','%Practice%');})
                                           ->with(['feeItem.feeType'])->first();
