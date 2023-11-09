@@ -122,21 +122,21 @@ Route::get('test',function(){
 	// $acpac->query("DELETE FROM customer");
 	// $acpac->query("DELETE FROM invoices");
 	// $acpac->query("DELETE FROM receipts");
- 	$results = $acpac->query('SELECT * FROM customer WHERE IDCUST = "BDEKH028123"');
+ 	$results = $acpac->query('SELECT * FROM customer');
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
     }
 
     echo '<br><br><br>';
 
-    $results = $acpac->query('SELECT * FROM invoices WHERE IDCUST = "BDEKH028123"');
+    $results = $acpac->query('SELECT * FROM invoices');
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
     }
 
     echo '<br><br><br>';
 
-    $results = $acpac->query('SELECT * FROM receipts WHERE IDCUST = "BDEKH028123"');
+    $results = $acpac->query('SELECT * FROM receipts');
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
     }
