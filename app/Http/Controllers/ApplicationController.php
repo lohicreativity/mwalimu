@@ -2947,7 +2947,7 @@ class ApplicationController extends Controller
                             }
                         }
                     }
-    
+return $o_level_pass_count+$o_level_other_pass_count.' - '.$campus_program->entryRequirements[0]->pass_subjects.' - '.$has_major.' - '.$diploma_gpa.' - '.$campus_program->entryRequirements[0]->equivalent_gpa;
                     if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $campus_program->entryRequirements[0]->pass_subjects && $has_major && $diploma_gpa >= $campus_program->entryRequirements[0]->equivalent_gpa){
 
@@ -7914,7 +7914,7 @@ class ApplicationController extends Controller
         $data = [
             'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant.user','newProgram.program','user.staff'])->paginate(20),
+            })->with(['applicant.user','newProgram.program','user.staff'])->latest()->paginate(20),
 			'campus_programs'=>$campus_programs,
             'staff'=>$staff
         ];
