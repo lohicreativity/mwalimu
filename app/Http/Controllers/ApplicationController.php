@@ -10028,10 +10028,10 @@ class ApplicationController extends Controller
         $reg_count = Registration::whereHas('student',function($query) use($transfer_program){$query->where('campus_program_id',$transfer_program->id);})
                                  ->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->count();
 
-        if($selection->campusProgram->entryRequirements[0]->max_capacity < $reg_count){
-            DB::rollback();
-            return redirect()->back()->with('error','Programme does not have capacity to accomodate the transfer');
-        }
+        // if($selection->campusProgram->entryRequirements[0]->max_capacity < $reg_count){
+        //     DB::rollback();
+        //     return redirect()->back()->with('error','Programme does not have capacity to accomodate the transfer');
+        // }
 
         $last_student = DB::table('students')->select(DB::raw('MAX(REVERSE(SUBSTRING(REVERSE(registration_number),1,7))) AS last_number'))->where('campus_program_id',$transfer_program->id)->first();
             
