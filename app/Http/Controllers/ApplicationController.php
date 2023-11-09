@@ -9984,6 +9984,31 @@ class ApplicationController extends Controller
             }
         }
 
+        $batch_id = 0;
+
+        $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $applicant->application_window_id)
+                                    ->where('program_level_id',$applicant->program_level_id)->latest()->first();
+        if($batch->batch_no > 1){
+            if(Applicant::whereHas('selections',function($query) use($applicant, $batch){$query->whereNotIn('status',['SELECTED','PENDING','APPROVING'])
+                ->where('application_window_id',$applicant->application_window_id)
+                ->where('batch_id',$batch->id);})
+                ->where('application_window_id', $applicant->application_window_id)
+                ->where('program_level_id',$applicant->program_level_id)->where('batch_id',$batch->id)->count() >  0){
+                        $batch_id = $batch->id;
+
+                    }else{
+
+                $previous_batch = null;
+                if($batch->batch_no > 1){
+                    $previous_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)
+                                                        ->where('batch_no', $batch->batch_no - 1)->first();
+                    $batch_id = $previous_batch->id;
+                }
+            }
+        }else{
+            $batch_id = $batch->id;
+        }
+
         ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
 
         $select = new ApplicantProgramSelection;
