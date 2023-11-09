@@ -10425,7 +10425,7 @@ class ApplicationController extends Controller
                 $bank_name = 'CRDB';
             }
 
-            $invoice = Invoice::with(['feeItem.feeType'])->where('reference_no',$receipt->bill_id)->first();
+            $invoice = Invoice::with(['feeType'])->where('reference_no',$receipt->bill_id)->first();
 
             $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE,RCPTYPE,REVACT) VALUES ('".$bank_code."','".$bank_name."',
                                                 '".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$invoice->feeType->description."','".$stud_reg."',
@@ -10447,7 +10447,7 @@ class ApplicationController extends Controller
         //                                         '".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."',
         //                                         '".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
         // }
-return 1;
+return $stud_reg;
         $acpac->close();
         $transfered_status = true;
         try{
