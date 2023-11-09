@@ -54,7 +54,7 @@ class NacteResultController extends Controller
             }elseif(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT' && $out_count != 0 && $applicant->teacher_certificate_status == 1){
                 $applicant->results_complete_status = 1;
             }
-        }elseif(str_contains($applicant->programLevel->name,'Diploma') && $applicant->entry_mode == 'EQUIVALENT' && $o_level_result_count != 0){
+        }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Master') && $applicant->entry_mode == 'EQUIVALENT' && $o_level_result_count != 0){
             $applicant->results_complete_status = 1;
         }
         $applicant->save();

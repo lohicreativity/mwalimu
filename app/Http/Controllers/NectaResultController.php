@@ -55,7 +55,7 @@ class NectaResultController extends Controller
             $applicant->results_complete_status = 1;
             $applicant->save();
             return redirect()->to('application/select-programs');
-        }elseif(str_contains($applicant->programLevel->name,'Masters') && $applicant->entry_mode == 'DIRECT' && $o_level_results && $detail->exam_id == 2 || ($applicant->entry_mode == 'EQUIVALENT' && $o_level_results)){
+        }elseif(str_contains($applicant->programLevel->name,'Masters') && $applicant->entry_mode == 'DIRECT' && $o_level_results && $detail->exam_id == 2){
             $applicant->results_complete_status = 1;
         }
         $applicant->save();
