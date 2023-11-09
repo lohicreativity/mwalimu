@@ -10422,7 +10422,7 @@ class ApplicationController extends Controller
         //                                         '".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."',
         //                                         '".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
         // }
-
+return 1;
         $acpac->close();
         $transfered_status = true;
         try{
