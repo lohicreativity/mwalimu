@@ -7439,7 +7439,6 @@ class ApplicationController extends Controller
              $applicant->intake_id = $application_window->intake_id;
              $applicant->application_window_id = $application_window->id;
              $applicant->batch_id = $batch_id;
-             $applicant->payment_complete_status = 1;
 
 			 $applicant->save();
 
@@ -7477,7 +7476,6 @@ class ApplicationController extends Controller
                 $applicant->intake_id = $application_window->intake_id;
                 $applicant->application_window_id = $application_window->id;
                 $applicant->batch_id = $batch_id;
-                $applicant->payment_complete_status = 1;
                 $applicant->is_transfered = 1;
             //}
             $applicant->save();
