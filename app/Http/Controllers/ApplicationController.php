@@ -8482,17 +8482,17 @@ class ApplicationController extends Controller
                  $diploma_gpa = $out_gpa = null;
                  $has_nacte_results = false;
   
-                 foreach($applicant->nacteResultDetails as $detail){
-                    if(count($detail->results) == 0 && $detail->verified == 1){
-                       $has_nacte_results = true;
-                       $diploma_gpa = $detail->diploma_gpa;
-                    }
-                 }
+                //  foreach($applicant->nacteResultDetails as $detail){
+                //     if(count($detail->results) == 0 && $detail->verified == 1){
+                //        $has_nacte_results = true;
+                //        $diploma_gpa = $detail->diploma_gpa;
+                //     }
+                //  }
   
-                 if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_nacte_results && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+                //  if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_nacte_results && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
   
-                       $programs[] = $program;
-                 }
+                //        $programs[] = $program;
+                //  }
 
 
 
@@ -8540,7 +8540,7 @@ class ApplicationController extends Controller
                           $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
                           $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
                           $applicant->avn_no_results === 1 && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
-  
+  return 1;
                        $programs[] = $program;
 
                     }
@@ -8579,7 +8579,7 @@ class ApplicationController extends Controller
                  if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
                        $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 &&
                        $a_level_out_principle_pass_count >= 1){
-  
+  return 2;
                     $programs[] = $program;
 
                  }
