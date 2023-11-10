@@ -259,7 +259,7 @@
 						</div>
                       <!-- /.modal -->
 					 </div>
-           @break
+           
                  @endforeach
 
 
