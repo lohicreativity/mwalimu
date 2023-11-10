@@ -8529,63 +8529,63 @@ class ApplicationController extends Controller
                     }
                  }
   
-                 if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                     if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_major && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
-
+return 1;
                         $programs[] = $program;
 
                     }
-                 }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                     if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects &&
-                          $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
-                          $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
-                          $applicant->avn_no_results === 1 && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
-  return 1;
-                       $programs[] = $program;
+                            $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
+                            $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
+                            $applicant->avn_no_results === 1 && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
+return 2;
+                        $programs[] = $program;
 
                     }
-                 }
-  
-                 $out_pass_subjects_count = 0;
-                 if(unserialize($program->entryRequirements[0]->open_exclude_subjects) != '') //['OFC 017','OFP 018','OFP 020'];
-                 {
+                }
+
+                $out_pass_subjects_count = 0;
+                if(unserialize($program->entryRequirements[0]->open_exclude_subjects) != '') //['OFC 017','OFP 018','OFP 020'];
+                {
                     $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects);
-  
+
                     foreach($applicant->outResultDetails as $detail){
-                       if($detail->verified == 1){
-                          foreach($detail->results as $key => $result){
-                             if(!Util::arrayIsContainedInKey($result->subject_code, $exclude_out_subjects_codes)){
+                        if($detail->verified == 1){
+                            foreach($detail->results as $key => $result){
+                                if(!Util::arrayIsContainedInKey($result->subject_code, $exclude_out_subjects_codes)){
                                 if($out_grades[$result->grade] >= $out_grades['C']){
-                                   $out_pass_subjects_count += 1;
+                                    $out_pass_subjects_count += 1;
                                 }
-                             }
-                          }
-                          $out_gpa = $detail->gpa;
-                       }
+                                }
+                            }
+                            $out_gpa = $detail->gpa;
+                        }
                     }
-                 }else{
+                }else{
                     foreach($applicant->outResultDetails as $detail){
-                       if($detail->verified == 1){
-                          foreach($detail->results as $key => $result){
-                             if($out_grades[$result->grade] >= $out_grades['C']){
+                        if($detail->verified == 1){
+                            foreach($detail->results as $key => $result){
+                                if($out_grades[$result->grade] >= $out_grades['C']){
                                 $out_pass_subjects_count += 1;
-                             }
-                          }
-                          $out_gpa = $detail->gpa;
-                       }
+                                }
+                            }
+                            $out_gpa = $detail->gpa;
+                        }
                     }
-                 }
-  
-                 if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
-                       $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 &&
-                       $a_level_out_principle_pass_count >= 1){
-  return 2;
+                }
+
+                if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
+                    $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 &&
+                    $a_level_out_principle_pass_count >= 1){
+
                     $programs[] = $program;
 
-                 }
-  
-                 // OUT with diploma of 2.0 and above
-                 if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                }
+
+                // OUT with diploma of 2.0 and above
+                if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                     if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
                         $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
                         $diploma_gpa >= $program->entryRequirements[0]->min_equivalent_gpa) || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
@@ -8594,28 +8594,28 @@ class ApplicationController extends Controller
                         $programs[] = $program;
 
                     }
-                 }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                       if(($o_level_pass_count+$o_level_other_pass_count) >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $has_major &&
-                          $diploma_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
-  
-                            $programs[] = $program;
+                }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                    if(($o_level_pass_count+$o_level_other_pass_count) >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $has_major &&
+                        $diploma_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
 
-                       }
-                 }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) == ''){
-                    if(($o_level_pass_count+$o_level_other_pass_count) >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa &&
-                          $diploma_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
-  
                         $programs[] = $program;
 
                     }
-                 }
-  
-                 if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
-                       $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_certificate_status === 1){
-  
+                }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) == ''){
+                    if(($o_level_pass_count+$o_level_other_pass_count) >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa &&
+                            $diploma_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
+
+                        $programs[] = $program;
+
+                    }
+                }
+
+                if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
+                    $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_certificate_status === 1){
+
                     $programs[] = $program;
 
-                 }
+                }
           }
 
 
