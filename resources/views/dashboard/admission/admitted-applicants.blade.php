@@ -135,7 +135,6 @@
               </div>
             </div>
 
-			     @foreach($applicants as $applicant)
                     <div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $applicant->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
@@ -259,7 +258,7 @@
 						</div>
                       <!-- /.modal -->
 					 </div>
-                 @endforeach
+  
 
 
 
