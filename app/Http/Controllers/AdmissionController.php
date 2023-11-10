@@ -38,10 +38,10 @@ class AdmissionController extends Controller
             'selections.campusProgram:id,program_id',
             'selections.campusProgram.program:id,name,award_id',
             'selections.campusProgram.program.award:id,name',
-            ])->where('status','ADMITTED')->latest()->first();
+            ])->where('status','ADMITTED')->where('admission_confirmation_status','NOT LIKE','%OTHER%')->latest()->first();
 
         if(!$applicant){
-            return redirect()->back()->with('error', 'Unable to view page');
+            return redirect()->back()->with('error', 'It seems you have confirmed somewhere else. Please contact the Admmission Office.');
         }else{
             $student = Student::where('applicant_id', $applicant->id)->first();
         }    
