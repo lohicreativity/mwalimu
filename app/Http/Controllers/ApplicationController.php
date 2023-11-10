@@ -8529,7 +8529,7 @@ class ApplicationController extends Controller
                     }
                  }
   
-                if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && unserialize($program->entryRequirements[0]->equivalent_must_subjects) == ''){
                     if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_major && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
 
                         $programs[] = $program;
