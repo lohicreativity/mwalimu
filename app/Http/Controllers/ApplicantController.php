@@ -615,10 +615,11 @@ class ApplicantController extends Controller
       if($applicant->is_tcu_verified === 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
          ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
          ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
-      }elseif($applicant->is_tcu_verified !== 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
-         ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
-         ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'PENDING']);
       }
+      // elseif($applicant->is_tcu_verified !== 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
+      //    ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
+      //    ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'PENDING']);
+      // }
       $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
 
       $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
