@@ -424,6 +424,8 @@ class StaffController extends Controller
             $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
             $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
+            $number_filter = preg_replace('/[^0-9]/','',$email);
+            $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
 			$this->requestControlNumber($request,
 										$invoice->reference_no,
 										$inst_id,
@@ -434,7 +436,7 @@ class StaffController extends Controller
 										$student->id,
 										$first_name.' '.$surname,
 										$student->phone,
-										$email,
+										$payer_email,
 										$generated_by,
 										$approved_by,
 										$fee_amount->feeItem->feeType->duration,

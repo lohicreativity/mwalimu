@@ -399,6 +399,8 @@ class GraduantController extends Controller
                   $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name; 
                   $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
+                  $number_filter = preg_replace('/[^0-9]/','',$student->email);
+                  $email = empty($number_filter)? $student->email : 'admission@mnma.ac.tz';
                   $this->requestControlNumber($request,
                                               $invoice->reference_no,
                                               $inst_id,
@@ -409,7 +411,7 @@ class GraduantController extends Controller
                                               $student->id,
                                               $first_name.' '.$surname,
                                               $student->phone,
-                                              $student->email,
+                                              $email,
                                               $generated_by,
                                               $approved_by,
                                               $feeType->duration,

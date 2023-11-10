@@ -3698,8 +3698,8 @@ class ApplicationController extends Controller
             $approved_by = 'SP';
             $inst_id = Config::get('constants.SUBSPCODE');
 
-            $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
-
+            $number_filter = preg_replace('/[^0-9]/','',$payable->email);
+            $payer_email = empty($number_filter)? $payable->email : 'admission@mnma.ac.tz';
             return $this->requestControlNumber($request,
                                       $invoice->reference_no,
                                       $inst_id,
@@ -3710,7 +3710,7 @@ class ApplicationController extends Controller
                                       $payable->id,
                                       $firstname.' '.$surname,
                                       $payable->phone,
-                                      $email,
+                                      $payer_email,
                                       $generated_by,
                                       $approved_by,
                                       $fee_type->duration,
@@ -4905,6 +4905,9 @@ class ApplicationController extends Controller
         $first_name = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name;
         $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
 
+        $number_filter = preg_replace('/[^0-9]/','',$email);
+        $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+
         $this->requestControlNumber($request,
                                   $invoice->reference_no,
                                   $inst_id,
@@ -4915,7 +4918,7 @@ class ApplicationController extends Controller
                                   $payable->id,
                                   $first_name.' '.$surname,
                                   $payable->phone,
-                                  $email,
+                                  $payer_email,
                                   $generated_by,
                                   $approved_by,
                                   $fee_type->duration,
@@ -10249,6 +10252,9 @@ class ApplicationController extends Controller
             $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
             $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
+            $number_filter = preg_replace('/[^0-9]/','',$student->email);
+            $payer_email = empty($number_filter)? $student->email : 'admission@mnma.ac.tz';
+
             $result = $this->requestControlNumber($request,
                                         $invoice->reference_no,
                                         $inst_id,
@@ -10259,7 +10265,7 @@ class ApplicationController extends Controller
                                         $student->id,
                                         $first_name.' '.$surname,
                                         $student->phone,
-                                        $student->email,
+                                        $payer_email,
                                         $generated_by,
                                         $approved_by,
                                         $new_program_fee->feeItem->feeType->duration,
@@ -10297,6 +10303,8 @@ class ApplicationController extends Controller
             $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
             $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
+            $number_filter = preg_replace('/[^0-9]/','',$student->email);
+            $email = empty($number_filter)? $student->email : 'admission@mnma.ac.tz';
             $result = $this->requestControlNumber($request,
                                         $invoice->reference_no,
                                         $inst_id,
@@ -10307,7 +10315,7 @@ class ApplicationController extends Controller
                                         $student->id,
                                         $first_name.' '.$surname,
                                         $student->phone,
-                                        $student->email,
+                                        $email,
                                         $generated_by,
                                         $approved_by,
                                         $teaching_practice->feeItem->feeType->duration,

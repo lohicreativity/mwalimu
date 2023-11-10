@@ -504,6 +504,8 @@ class AdmissionController extends Controller
                     $approved_by = 'SP';
                     $inst_id = config('constants.SUBSPCODE');
             
+                    $number_filter = preg_replace('/[^0-9]/','',$email);
+                    $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
                     $result = $this->requestControlNumber($request,
                                                 $invoice->reference_no,
                                                 $inst_id,
@@ -514,7 +516,7 @@ class AdmissionController extends Controller
                                                 $applicant->id,
                                                 $first_name.' '.$surname,
                                                 $applicant->phone,
-                                                $email,
+                                                $payer_email,
                                                 $generated_by,
                                                 $approved_by,
                                                 $program_fee->feeItem->feeType->duration,
@@ -572,6 +574,9 @@ class AdmissionController extends Controller
             $approved_by = 'SP';
             $inst_id = config('constants.SUBSPCODE');
     
+            $number_filter = preg_replace('/[^0-9]/','',$email);
+            $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+
             return $this->requestControlNumber($request,
                                         $invoice->reference_no,
                                         $inst_id,
@@ -582,7 +587,7 @@ class AdmissionController extends Controller
                                         $applicant->id,
                                         $first_name.' '.$surname,
                                         $applicant->phone,
-                                        $email,
+                                        $payer_email,
                                         $generated_by,
                                         $approved_by,
                                         $hostel_fee->feeItem->feeType->duration,
@@ -803,6 +808,9 @@ class AdmissionController extends Controller
                 $approved_by = 'SP';
                 $inst_id = config('constants.SUBSPCODE');
         
+                $number_filter = preg_replace('/[^0-9]/','',$email);
+                $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+
                 return $this->requestControlNumber($request,
                                             $invoice->reference_no,
                                             $inst_id,
@@ -813,7 +821,7 @@ class AdmissionController extends Controller
                                             $applicant->id,
                                             $first_name.' '.$surname,
                                             $applicant->phone,
-                                            $email,
+                                            $payer_email,
                                             $generated_by,
                                             $approved_by,
                                             $feeType->duration,

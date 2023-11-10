@@ -58,6 +58,9 @@ class InvoiceController extends Controller
         $first_name = str_contains($payable->first_name,"'")? str_replace("'","",$payable->first_name) : $payable->first_name; 
         $surname = str_contains($payable->surname,"'")? str_replace("'","",$payable->surname) : $payable->surname;
 
+        $number_filter = preg_replace('/[^0-9]/','',$payable->email);
+        $email = empty($number_filter)? $payable->email : 'admission@mnma.ac.tz';
+
         return $this->requestControlNumber($request,
         	                        $invoice->reference_no,
         	                        $inst_id,
@@ -68,7 +71,7 @@ class InvoiceController extends Controller
         	                        $payable->id,
         	                        $first_name.' '.$surname,
         	                        $payable->phone,
-        	                        $payable->email,
+        	                        $email,
         	                        $generated_by,
         	                        $approved_by,
         	                        $fee_type->duration,
