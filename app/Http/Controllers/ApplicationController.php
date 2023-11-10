@@ -8540,7 +8540,7 @@ class ApplicationController extends Controller
                             $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
                             $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
                             $has_nacte_results && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
-                       // $programs[] = $program;
+                        $programs[] = $program;
 
                     }
                 }
