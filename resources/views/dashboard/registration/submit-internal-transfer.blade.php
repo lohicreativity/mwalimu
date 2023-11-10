@@ -98,9 +98,9 @@
                    <select name="campus_program_id" class="form-control" required>
                       <option value="">Select New Programme</option>
                       @foreach($campus_programs as $program)
-                      @if($admitted_program_id != $program->id)
-                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                      @endif
+                        @if($admitted_program_id != $program->id)
+                          <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                        @endif
                       @endforeach
                     </select>
                  </div>  

@@ -7347,7 +7347,7 @@ class ApplicationController extends Controller
                 }
 
 				if(count($programs) <= 1){
-					if($programs->id == $student-campus_program_id){
+					if($programs->id == $student->campus_program_id){
 						return redirect()->back()->with('error','The student does not qualify to any other programme');
 					}
 				}
@@ -8480,6 +8480,22 @@ class ApplicationController extends Controller
                  $has_major = false;
                  $equivalent_must_subjects_count = 0;
                  $diploma_gpa = $out_gpa = null;
+                 $has_nacte_results = false;
+  
+                 foreach($applicant->nacteResultDetails as $detail){
+                    if(count($detail->results) == 0 && $detail->verified == 1){
+                       $has_nacte_results = true;
+                       $diploma_gpa = $detail->diploma_gpa;
+                    }
+                 }
+  
+                 if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_nacte_results && $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+  
+                       $programs[] = $program;
+                 }
+
+
+
   
                  if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                     foreach($applicant->nacteResultDetails as $detail){
