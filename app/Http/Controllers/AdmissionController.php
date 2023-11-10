@@ -54,6 +54,7 @@ class AdmissionController extends Controller
         if(!$study_academic_year){
             return redirect()->back()->with('error','Study academic year has not been created');
         }
+        return $applicant;
     	$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
         if(!$program_fee){
             return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
