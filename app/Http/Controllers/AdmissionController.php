@@ -39,7 +39,7 @@ class AdmissionController extends Controller
             'selections.campusProgram.program:id,name,award_id',
             'selections.campusProgram.program.award:id,name',
             ])->where('status','ADMITTED')->where(function($query){$query->where('admission_confirmation_status',null)->orWhereIn('admission_confirmation_status',['CONFIRMED','NOT CONFIRMED ANYWHERE']);})->latest()->first();
-return $applicant;
+
         if(!$applicant){
             return redirect()->back()->with('error', 'It seems you have confirmed somewhere else. Please contact the Admmission Office.');
         }else{
