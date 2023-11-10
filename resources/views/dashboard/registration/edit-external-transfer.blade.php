@@ -89,7 +89,8 @@
                   <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Enter applicant index number') !!}
-                    {!! Form::text('index_number',$transfer->applicant->index_number,$index_number) !!} <span style="color:red"> Missing Diploma Results </span>
+                    {!! Form::text('index_number',$transfer->applicant->index_number,$index_number) !!} 
+                        @if($transfer->applicant->avn_no_results == 1)<span style="color:red: float: left"> Missing Diploma Results </span> @endif
 					
 					{!! Form::input('hidden','transfer_id',$transfer->id) !!}
                   </div>
