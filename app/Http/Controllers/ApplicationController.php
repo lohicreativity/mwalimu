@@ -8536,6 +8536,7 @@ class ApplicationController extends Controller
 
                     }
                 }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                    return 1;
                     if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects &&
                             $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
                             $diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
