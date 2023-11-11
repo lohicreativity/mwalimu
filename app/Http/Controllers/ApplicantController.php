@@ -3137,6 +3137,10 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
 
+        if($applicant->index_number != $request->get('index_number') && Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$applicant->campus_id)->first()){
+            return redirect()->back()->with('error','Applicant with similar index number already exist in this campus.');
+        }
+
         if($staff->campus_id == $applicant->campus_id || Auth::user()->hasRole('administrator')){
             $user = User::where('id',$applicant->user_id)->first();
             if($user->username != $request->get('index_number')){
