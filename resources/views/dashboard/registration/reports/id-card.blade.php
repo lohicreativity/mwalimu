@@ -224,15 +224,18 @@
 <body>
    @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
-            <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }});  background-size:  71rem 47rem; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;">
+            {{-- <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }});  background-size:  71rem 47rem; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;"> --}}
+            <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }});  background-size: 1020px 639px; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;">
         @else
             <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/IMG-20231029-WA0018.jpg') }}); background-repeat: no-repeat; width: 100%; height: 100%; background-position: center; background-size: 100% 100%;">
         @endif
    @elseif($student->applicant->campus_id == 2)
         @if ($tuition_payment_check)
-         <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.png') }});  background-size:  71rem 47rem; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;">
+         {{-- <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.png') }});  background-size:  71rem 47rem; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;"> --}}
+         <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/mnma-id-bg-semi 1&2 Karume.png') }});  background-size: 1020px 639px; background-position: center; background-repeat: no-repeat;  width: 100%; height: 100%;">
         @else
-         <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/WhatsApp Image 2023-10-16 at 14.42.44_9a95e42e.png') }}); background-position: center; background-size:  71rem 47rem; background-repeat: no-repeat;  width: 100%; height: 100%;">
+         {{-- <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/WhatsApp Image 2023-10-16 at 14.42.44_9a95e42e.png') }}); background-position: center; background-size:  71rem 47rem; background-repeat: no-repeat;  width: 100%; height: 100%;"> --}}
+         <div id="ss-id-card" class="ss-id-card" style="background-image: url({{ asset('img/WhatsApp Image 2023-10-16 at 14.42.44_9a95e42e.png') }}); background-position: center; background-size: 1020px 639px; background-repeat: no-repeat;  width: 100%; height: 100%;">
         @endif
    @endif
 
