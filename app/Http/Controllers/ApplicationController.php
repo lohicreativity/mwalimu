@@ -3020,11 +3020,11 @@ class ApplicationController extends Controller
                 }
         
                 if($qualified){
-return $applicant;
-                    $selection = ApplicantProgramSelection::find($applicant->selections[0]->campus_program_id);
-                    return $selection;
-                    $selection->status = 'SELECTED';
-                    $selection->save();
+
+                    ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->update(['status'=>'SELECTED']);
+                    // return $selection;
+                    // $selection->status = 'SELECTED';
+                    // $selection->save();
 
                     $app = Applicant::find($applicant->id);
                     $app->status = 'ADMITTED';
@@ -3620,11 +3620,11 @@ return $applicant;
 // 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
 // 			}
          }
-// return Applicant::with(['selections.campusProgram.program','nectaResultDetails'=>function($query){$query->where('verified',1);},
-// 'nacteResultDetails'=>function($query){$query->where('verified',1);},
-// 'outResultDetails'=>function($query){$query->where('verified',1);},'selections.campusProgram.campus','nectaResultDetails.results',
-// 'nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->find($applicant->id);
-//        return redirect()->back()->with('message','Application Submitted Successfully');
+return Applicant::with(['selections.campusProgram.program','nectaResultDetails'=>function($query){$query->where('verified',1);},
+'nacteResultDetails'=>function($query){$query->where('verified',1);},
+'outResultDetails'=>function($query){$query->where('verified',1);},'selections.campusProgram.campus','nectaResultDetails.results',
+'nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->find($applicant->id);
+       return redirect()->back()->with('message','Application Submitted Successfully');
     }
 
     /**
