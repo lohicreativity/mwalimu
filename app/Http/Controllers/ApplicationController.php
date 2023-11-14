@@ -3028,7 +3028,6 @@ class ApplicationController extends Controller
                     $app = Applicant::find($applicant->id);
                     $app->status = 'ADMITTED';
                     $app->save();
-return $selection->status;
                     ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
                 }else{
                     ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
@@ -3620,7 +3619,7 @@ return $selection->status;
 // 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
 // 			}
          }
-
+return $applicant;
        return redirect()->back()->with('message','Application Submitted Successfully');
     }
 
