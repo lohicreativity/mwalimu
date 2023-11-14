@@ -42,7 +42,7 @@
             
             <!-- general form elements -->
             @if($applicant->multiple_admissions == 1)
-            @if($applicant->confirmation_status == null || $applicant->confirmation_status == 'UNCONFIRMED')
+            @if($applicant->confirmation_status != 'CONFIRMED')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Admission Confirmation') }}</h3>
@@ -71,7 +71,7 @@
                 </div>
               {!! Form::close() !!}
               </div>
-            @elseif($applicant->confirmation_status == 'CONFIRMED')
+            @else
               <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Admission Confirmation') }}</h3>

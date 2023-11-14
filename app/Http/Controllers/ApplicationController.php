@@ -5320,8 +5320,7 @@ class ApplicationController extends Controller
                 $query->where('status','SELECTED');
            })->with(['intake','selections' => function($request){$request->where('status','SELECTED');},'selections.campusProgram.program'])
             ->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)
-            ->where(function($query){$query->where('confirmation_status', null)->orWhere('confirmation_status','!=','CANCELLED');})->where(function($query){$query->where('admission_confirmation_status'.null)
-            ->orWhere('admission_confirmation_status','NOT LIKE','%OTHER');})->where('status','ADMITTED')
+            ->where(function($query){$query->where('confirmation_status', null)->orWhere('confirmation_status','!=','CANCELLED');})->where('status','ADMITTED')
             ->where(function($query){$query->where('tuition_payment_check',1)->orWhere('other_payment_check',1);})
             ->orderBy('tuition_payment_check','DESC')->orderBy('other_payment_check','DESC')->orderBy('documents_complete_status','DESC')->orderBy('updated_at','DESC')->get();
 
