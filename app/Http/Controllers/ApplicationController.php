@@ -3020,7 +3020,7 @@ class ApplicationController extends Controller
                 }
         
                 if($qualified){
-                    return 1;
+
                     $selection = ApplicantProgramSelection::find($applicant->selections[0]->campus_program_id);
                     $selection->status = 'SELECTED';
                     $selection->save();
@@ -3028,7 +3028,7 @@ class ApplicationController extends Controller
                     $app = Applicant::find($applicant->id);
                     $app->status = 'ADMITTED';
                     $app->save();
-
+return $selection->status;
                     ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
                 }else{
                     ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
