@@ -118,7 +118,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-			  {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
+
                    <table class="table table-bordered ss-paginated-table" id="ss-transfers">
                      <thead>
                        <tr>
@@ -133,6 +133,7 @@
                        </tr>
                      </thead>
                      <tbody>
+                      {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
                       @foreach($transfers as $key=>$transfer)
                        <tr>
 					     <td>{{ ($key+1) }} </td>
