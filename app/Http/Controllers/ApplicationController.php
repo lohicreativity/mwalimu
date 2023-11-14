@@ -3020,6 +3020,7 @@ class ApplicationController extends Controller
                 }
         
                 if($qualified){
+                    return 1;
                     $selection = ApplicantProgramSelection::find($applicant->selections[0]->campus_program_id);
                     $selection->status = 'SELECTED';
                     $selection->save();
