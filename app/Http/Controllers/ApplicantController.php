@@ -525,7 +525,6 @@ class ApplicantController extends Controller
                                     $result->save();
 
                                  }
-
                               }
                               $out_change_status = true;
                            }
@@ -612,14 +611,6 @@ class ApplicantController extends Controller
     {
       $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
-      if($applicant->is_tcu_verified === 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
-         ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
-         ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
-      }
-      // elseif($applicant->is_tcu_verified !== 1 && str_contains(strtolower($applicant->programLevel->name),'bachelor') && $applicant->is_transfered == 1){
-      //    ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
-      //    ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'PENDING']);
-      // }
       $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
 
       $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
@@ -723,7 +714,6 @@ class ApplicantController extends Controller
       }
 
       if(str_contains(strtolower($applicant->programLevel->name),'degree') && ($applicant->is_tcu_verified === null || $applicant->is_tcu_verified == 0) && $applicant->status == null){
-         // && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_tcu_verified == 0){
 
          $tcu_username = $tcu_token = null;
          if($applicant->campus_id == 1){
@@ -748,13 +738,19 @@ class ApplicantController extends Controller
                      <f4indexno>'.$fullindex.'</f4indexno>
                   </RequestParameters>
                </Request>';
-            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-            $json = json_encode($xml_response);
-            $array = json_decode($json,TRUE);
+         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+         $json = json_encode($xml_response);
+         $array = json_decode($json,TRUE);
 
          if(isset($array['Response'])){
+            // 1 means OK for application i.e. applicant does not have a prior admission
             $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
             $applicant->save();
+         }
+
+         if($applicant->is_tcu_verified === 1 && $applicant->is_transfered == 1){
+            ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
+            ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'DISCARDED']);
          }
       }
 
@@ -1016,7 +1012,6 @@ class ApplicantController extends Controller
          $array = json_decode($json,TRUE);
 
          if(isset($array['Response'])){
-            //return $array['Response']['ResponseParameters']['StatusDescription'];
             Applicant::where('id',$applicant->id)->update(['is_tcu_added'=> $array['Response']['ResponseParameters']['StatusCode'] == 200? 1 : 0,
                                                          'is_tcu_reason'=> $array['Response']['ResponseParameters']['StatusDescription']]);
           }

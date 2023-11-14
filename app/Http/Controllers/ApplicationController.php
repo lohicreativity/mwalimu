@@ -7346,10 +7346,12 @@ class ApplicationController extends Controller
                     }
                 }
 
-				if(count($programs) <= 1){
-					if($programs->id == $student->campus_program_id){
+				if(count($programs) == 0){
+                    return redirect()->back()->with('error','The student does not qualify to any other programme');                   
+                }elseif(count($programs) == 1 && $programs->id == $student->campus_program_id){
+					//if($programs->id == $student->campus_program_id){
 						return redirect()->back()->with('error','The student does not qualify to any other programme');
-					}
+					//}
 				}
 					}
         $student = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
@@ -7425,29 +7427,33 @@ class ApplicationController extends Controller
         }                 
         DB::beginTransaction();
 
-		if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first()){
+		if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)
+                           ->where('application_window_id',$application_window->id)->latest()->first()){
             //Applicant::where('index_number',$request->get('index_number'))->where('campus_id','!=',$staff->campus_id)->update(['status'=>null]);
-			 $applicant = $app;
-             $applicant->is_tcu_verified = 0;
-			 $applicant->is_transfered = 1;
-             $applicant->programs_complete_status = 0;
-			 $applicant->submission_complete_status = 0;
-             $applicant->batch_id = $batch_id;
-             $applicant->campus_id = $staff->campus_id;
-             $applicant->entry_mode = $request->get('entry_mode');
-             $applicant->program_level_id = $award->id;
-             $applicant->intake_id = $application_window->intake_id;
-             $applicant->application_window_id = $application_window->id;
-             $applicant->batch_id = $batch_id;
+            $applicant = $app;
+            $applicant->is_tcu_verified = null;
+            $applicant->is_transfered = 1;
+            $applicant->programs_complete_status = 0;
+            $applicant->submission_complete_status = 0;
+            $applicant->batch_id = $batch_id;
+            $applicant->campus_id = $staff->campus_id;
+            $applicant->entry_mode = $request->get('entry_mode');
+            $applicant->program_level_id = $award->id;
+            $applicant->intake_id = $application_window->intake_id;
+            $applicant->application_window_id = $application_window->id;
+            $applicant->status = null;
+            $applicant->batch_id = $batch_id;
 
-			 $applicant->save();
+            $applicant->save();
 
-			 $user = User::where('username',$request->get('index_number'))->first();
-             $user->password = Hash::make($request->get('index_number'));
-             $user->save();
+            $user = User::where('username',$request->get('index_number'))->first();
+            $user->password = Hash::make($request->get('index_number'));
+            $user->save();
 		}else{
 			if($usr = User::where('username',$request->get('index_number'))->first()){
                 $user = $usr;
+                $user->password = Hash::make($request->get('index_number'));
+                $user->save();
             }else{
                 $user = new User;
                 $user->username = $request->get('index_number');
@@ -7467,16 +7473,17 @@ class ApplicationController extends Controller
             //     $applicant->is_transfered = 1;
 
             // }else{
-                $applicant = new Applicant;
-                $applicant->user_id = $user->id;
-                $applicant->campus_id = $staff->campus_id;
-                $applicant->index_number = strtoupper($request->get('index_number'));
-                $applicant->entry_mode = $request->get('entry_mode');
-                $applicant->program_level_id = $award->id;
-                $applicant->intake_id = $application_window->intake_id;
-                $applicant->application_window_id = $application_window->id;
-                $applicant->batch_id = $batch_id;
-                $applicant->is_transfered = 1;
+            $applicant = new Applicant;
+            $applicant->user_id = $user->id;
+            $applicant->campus_id = $staff->campus_id;
+            $applicant->index_number = strtoupper($request->get('index_number'));
+            $applicant->entry_mode = $request->get('entry_mode');
+            $applicant->program_level_id = $award->id;
+            $applicant->intake_id = $application_window->intake_id;
+            $applicant->application_window_id = $application_window->id;
+            $applicant->batch_id = $batch_id;
+            $applicant->payment_complete_status = 1;
+            $applicant->is_transfered = 1;
             //}
             $applicant->save();
 		}
@@ -7504,6 +7511,7 @@ class ApplicationController extends Controller
         $transfer->new_campus_program_id = $prog->id;
         $transfer->previous_program = $request->get('program_code');
         $transfer->transfered_by_user_id = Auth::user()->id;
+        $transfer->status = 'PENDING';
         $transfer->save();
 
         $applicant->confirmation_status = 'TRANSFERED';
@@ -8061,7 +8069,7 @@ class ApplicationController extends Controller
         $data = [
             'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant.user','newProgram.program','user.staff'])->latest()->paginate(20),
+            })->with(['applicant.user','newProgram.program','user.staff'])->latest()->get(),
 			'campus_programs'=>$campus_programs,
             'staff'=>$staff
         ];

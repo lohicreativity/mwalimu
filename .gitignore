@@ -21,3 +21,5 @@ public/loan_allocations/20232024_2_20231025131049.csv
 public/loan_allocations/20232024_2_20231025131051.csv
 public/loan_allocations/20232024_2_20231025141038.csv
 public/loan_allocations/20232024_2_20231025141036.csv
+app/Console/Commands/UpdateGatewayPayment.php
+app/Services/ACPACService.php
