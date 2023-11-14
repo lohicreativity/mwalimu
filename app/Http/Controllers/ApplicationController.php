@@ -3619,7 +3619,7 @@ class ApplicationController extends Controller
 // 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
 // 			}
          }
-return $applicant;
+
        return redirect()->back()->with('message','Application Submitted Successfully');
     }
 
