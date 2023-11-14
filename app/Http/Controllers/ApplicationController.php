@@ -3619,11 +3619,11 @@ class ApplicationController extends Controller
 // 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
 // 			}
          }
-return Applicant::with(['selections.campusProgram.program','nectaResultDetails'=>function($query){$query->where('verified',1);},
-'nacteResultDetails'=>function($query){$query->where('verified',1);},
-'outResultDetails'=>function($query){$query->where('verified',1);},'selections.campusProgram.campus','nectaResultDetails.results',
-'nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->find($applicant->id);
-       return redirect()->back()->with('message','Application Submitted Successfully');
+// return Applicant::with(['selections.campusProgram.program','nectaResultDetails'=>function($query){$query->where('verified',1);},
+// 'nacteResultDetails'=>function($query){$query->where('verified',1);},
+// 'outResultDetails'=>function($query){$query->where('verified',1);},'selections.campusProgram.campus','nectaResultDetails.results',
+// 'nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->find($applicant->id);
+//        return redirect()->back()->with('message','Application Submitted Successfully');
     }
 
     /**
