@@ -7431,6 +7431,7 @@ class ApplicationController extends Controller
             $applicant->is_transfered = 1;
             $applicant->programs_complete_status = 0;
             $applicant->submission_complete_status = 0;
+            $applicant->payment_complete_status = 0;
             $applicant->batch_id = $batch_id;
             $applicant->campus_id = $staff->campus_id;
             $applicant->entry_mode = $request->get('entry_mode');
@@ -7478,7 +7479,7 @@ class ApplicationController extends Controller
             $applicant->intake_id = $application_window->intake_id;
             $applicant->application_window_id = $application_window->id;
             $applicant->batch_id = $batch_id;
-            $applicant->payment_complete_status = 1;
+            $applicant->payment_complete_status = 0;
             $applicant->is_transfered = 1;
             //}
             $applicant->save();
@@ -7684,8 +7685,6 @@ class ApplicationController extends Controller
 	 public function updateExternalTransfer(Request $request)
 	 {
 		$staff = User::find(Auth::user()->id)->staff;
-		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
-		$award = Award::where('name','LIKE','%Degree%')->first();
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
         $applicant->index_number = strtoupper($request->get('index_number'));
