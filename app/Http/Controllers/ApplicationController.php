@@ -7408,10 +7408,12 @@ class ApplicationController extends Controller
         }
 
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)
-                         ->where(function($query){$query->where('status','ADMITTED')->orWhere('is_transfered',1);})
-                         ->where('application_window_id',$application_window->id)->first();
+                         ->where(function($query){$query->where('status','ADMITTED')->where('multiple_admissions',1)
+                         ->where(function($query){$query->whereNull('admission_confirmation_status')->orWhere('admission_confirmation_status','NOT LIKE','%OTHER%');})
+                         ->orWhere('is_transfered',1);})
+                         ->where('application_window_id',$application_window->id)->count();
 
-        if($appl){
+        if($appl >= 1){
             return redirect()->to('registration/external-transfer')->with('error','Applicant already admitted or transfered to this campus.');
         }   
 
