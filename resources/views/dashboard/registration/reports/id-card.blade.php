@@ -22,15 +22,15 @@
 <div>
     @if ($student->applicant->campus_id == 1)
         @if ($tuition_payment_check)
-            <img style="position:absolute;top:0.00in;left:0.00in;width:3.4in;height:2.1in" src="{{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }}" />
+            <img style="width:3.4in;height:2.1in" src="{{ asset('img/mnma-id-bg-semi 1&2 Kivukoni.png') }}" />
         @else
-            <img style="position:absolute;top:0.00in;left:0.00in;width:3.4in;height:2.1in" src="{{ asset('img/IMG-20231029-WA0018.jpg') }}" />
+            <img style="width:3.4in;height:2.1in" src="{{ asset('img/IMG-20231029-WA0018.jpg') }}" />
         @endif
     @elseif($student->applicant->campus_id == 2)
         @if ($tuition_payment_check)
-            <img style="position:absolute;top:0.00in;left:0.00in;width:3.4in;height:2.1in" src="{{ asset('img/mnma-id-bg-semi 1&2 Karume.png') }}" />
+            <img style="width:3.4in;height:2.1in" src="{{ asset('img/mnma-id-bg-semi 1&2 Karume.png') }}" />
         @else
-            <img style="position:absolute;top:0.00in;left:0.00in;width:3.4in;height:2.1in" src="{{ asset('img/WhatsApp Image 2023-10-16 at 14.42.44_9a95e42e.png') }}" />
+            <img style="width:3.4in;height:2.1in" src="{{ asset('img/WhatsApp Image 2023-10-16 at 14.42.44_9a95e42e.png') }}" />
         @endif
     @endif
         @if(file_exists(public_path().'/avatars/'.$student->image))
@@ -61,9 +61,8 @@
 
 <p style="page-break-after: always;">&nbsp;</p>
 
-<div style="position: relative;width:3.4in; height:2.1in;">
-    <div style="width:3.4in; height:2.1in;">
-        <h1 style="font-size:14pt; color:#ffffff">&nbsp;</h1>
+<div style="position: relative;width:3.4in; height:2.1in; page-break-after: always;">
+    <div style="width:3.4in; height:2.1in; position: absolute;">
         <h1 style="text-align:center; font-weight:bold;font-size:14pt;color:#000000">CAUTION</h1>
         <p style="font-size: 12px; margin-left: 10px;">
             This Identity card is a property of
@@ -98,7 +97,7 @@
         ."Course:".$courseCode[0].$courseCode[1]."\n".substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue."\n".$student->phone;
     @endphp
 
-    <img style="position:absolute;top:0.7in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
+    <img style="position:relative;top:0.7in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
 </div>
 
 <script type="text/javascript">
