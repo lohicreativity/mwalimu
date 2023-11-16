@@ -77,18 +77,20 @@
                         Congratulations! You have been successfully admitted to the {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
                       </h3>
                       @if($applicant->program_level_id == 4)
-                      <div style="float:left; width:35%">
+                      <div>
                         <h3 class="text-white" style="font-size: 18px!important;">
-                        <i class="fa fa-times-circle"></i> 
-                        If you wish to cancel the admission, please click 
+                        <i class="fa fa-times-circle"></i>
+                        @if($applicant->multiple_admissions == 1) 
+                          Please click <a style="background-color:red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
+                          href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> Cancel Admission</a> to cancel your admission or <a style="background-color: red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
+                          href="{{ url('application/admission-confirmation') }}"> Manage Confirmation</a> to manage your confirmation. 
+                          @else
+                          Please click <a style="background-color:red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
+                          href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> Cancel Admission</a> to cancel your admission. 
+                          @endif 
                         </h3>
                       </div>      
-                      <div style="position:relative; bottom:5px">           
-                            {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
-                            {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                              <button type="submit" class="btn btn-danger">{{ __('Cancel Admission') }}</button>
-                            {!! Form::close() !!} 
-                      </div>
+
                       @endif
                     @else
                      @if($applicant->program_level_id == 4)

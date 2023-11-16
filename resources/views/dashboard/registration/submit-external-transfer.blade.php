@@ -118,8 +118,8 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-			  {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
-                   <table class="table table-bordered" id="ss-transfers">
+
+                   <table class="table table-bordered ss-paginated-table" id="ss-transfers">
                      <thead>
                        <tr>
 					               <th>SN</th>
@@ -133,6 +133,7 @@
                        </tr>
                      </thead>
                      <tbody>
+                      {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
                       @foreach($transfers as $key=>$transfer)
                        <tr>
 					     <td>{{ ($key+1) }} </td>
@@ -238,9 +239,7 @@
                      </tbody>
                    </table>
 
-                   <div class="ss-pagination-links">
-                      {!! $transfers->render() !!}
-                   </div> 
+
               </div>
             </div>
             @endif
