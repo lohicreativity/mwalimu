@@ -7785,11 +7785,14 @@ class ApplicationController extends Controller
         ->where('campus_id', $applicant->campus_id)->get();
         
         $reference_number = null;
-        if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($admission_references))){
-            $reference_number = $admission_references->name;
+        if(count($admission_references) > 0){
+            if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($admission_references))){
+                $reference_number = $admission_references->name;
+            }
         }else{
             return redirect()->back()->with('error','Reference number for '.$applicant->selections[0]->campusProgram->program->award->name.'\'s admission letters not defined.');            
         }
+
 
         $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
         ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
