@@ -7705,7 +7705,7 @@ class ApplicationController extends Controller
 	 * Update external transfer
 	 */
 	 public function updateExternalTransfer(Request $request)
-	 { return 1;
+	 { return $request;
 		$staff = User::find(Auth::user()->id)->staff;
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
