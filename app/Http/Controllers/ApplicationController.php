@@ -7730,7 +7730,7 @@ class ApplicationController extends Controller
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
         $transfer = ExternalTransfer::find($request->get('transfer_id'));
-        return $transfer->status;
+
         if($transfer->status == 'PENDING'){
             $transfer->previous_program = $request->get('program_code');
 
