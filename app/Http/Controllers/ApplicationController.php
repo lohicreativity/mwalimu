@@ -8590,6 +8590,10 @@ class ApplicationController extends Controller
                 }
 
                 // OUT with diploma of 2.0 and above
+
+                return $o_level_pass_count+$o_level_other_pass_count.' >= '.$program->entryRequirements[0]->pass_subjects.' ; '.$out_pass_subjects_count.' >= 3; '.
+                $out_gpa.' >= '.$program->entryRequirements[0]->open_equivalent_gpa.' ; '.$equivalent_must_subjects_count.' >= '.count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)).
+                ' ; '.$diploma_gpa.' >= '.$program->entryRequirements[0]->min_equivalent_gpa;
                 if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                     if((($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 &&
                         $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) &&
