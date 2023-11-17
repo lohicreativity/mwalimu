@@ -101,6 +101,8 @@
                 <option value="DIRECT" @if($transfer->applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
                 <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
               </select>
+
+              @if(!empty($transfer->applicant->entry_mode)) {!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!} @endif
 					</div>
                   </div>
 				  <div class="row">
