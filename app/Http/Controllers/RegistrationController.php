@@ -786,7 +786,8 @@ class RegistrationController extends Controller
             'tuition_payment_check' => $tuition_payment_check
         ];
 
-
+        return view('dashboard.registration.reports.id-card',$data);
+        
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
             //    'format'=>'A7',
                'mode' => 'utf-8',
