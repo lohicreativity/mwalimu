@@ -7788,6 +7788,7 @@ class ApplicationController extends Controller
         $reference_number = null;
         $reference_status = false;
         foreach($admission_references as $reference){
+            return $reference;
             if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($reference))){
                 $reference_number = $reference->name;
                 $reference_status = true;
