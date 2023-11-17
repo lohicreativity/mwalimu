@@ -95,7 +95,6 @@
 					{!! Form::input('hidden','transfer_id',$transfer->id) !!}
                   </div>
 				  <div class="form-group col-6">
-            {{ $transfer->applicant->entry_mode }}
 				     {!! Form::label('','Entry mode') !!}
 				      <select name="entry_mode" class="form-control" @if(!empty($transfer->applicant->entry_mode))  disabled="true" @endif required>
                 <option value="">Select Highest Qualification</option>
