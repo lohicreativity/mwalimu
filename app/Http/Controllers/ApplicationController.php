@@ -2904,9 +2904,7 @@ class ApplicationController extends Controller
                 if(unserialize($campus_program->entryRequirements[0]->equivalent_majors) != ''){
                     foreach($applicant->nacteResultDetails as $detail){
                         if($detail->verified == 1){
-                            
                             foreach(unserialize($campus_program->entryRequirements[0]->equivalent_majors) as $sub){
-    
                                 if(str_contains(strtolower($detail->programme),strtolower($sub))){
     
                                     $has_major = true;
@@ -2915,7 +2913,19 @@ class ApplicationController extends Controller
                             $diploma_gpa = $detail->diploma_gpa;
                         }
                     }
-
+                    if(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                        foreach($applicant->nacteResultDetails as $detail){
+                            if($detail->verified == 1){
+                                foreach($detail->results as $result){
+                                    foreach(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                        if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                            $equivalent_must_subjects_count += 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }else{
                     if(unserialize($campus_program->entryRequirements[0]->equivalent_must_subjects) != ''){
                         foreach($applicant->nacteResultDetails as $detail){
@@ -7268,13 +7278,23 @@ class ApplicationController extends Controller
 
                             foreach($applicant->nacteResultDetails as $detail){
                                 foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
+                                    if(str_contains(strtolower($detail->programme),strtolower($sub))){
 
-                                if(str_contains(strtolower($detail->programme),strtolower($sub))){
-
-                                    $has_major = true;
-                                }
+                                        $has_major = true;
+                                    }
                                 }
                                 $nacte_gpa = $detail->diploma_gpa;
+                            }
+                            if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                                foreach($applicant->nacteResultDetails as $detail){
+                                    foreach($detail->results as $result){
+                                        foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                            if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                                $equivalent_must_subjects_count += 1;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }else{
                             if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
@@ -8077,7 +8097,7 @@ class ApplicationController extends Controller
      * Edit external transfer
      */
     public function editExternalTransfer(Request $request, $id)
-    {
+    {return 1;
         $staff = User::find(Auth::user()->id)->staff;
 
 		$transfer = ExternalTransfer::with(['applicant.user','newProgram.program','user.staff'])->find($id);
@@ -8505,12 +8525,10 @@ class ApplicationController extends Controller
                  if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                     foreach($applicant->nacteResultDetails as $detail){
                        if($detail->verified == 1){
-  
                           foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-  
                              if(str_contains(strtolower($detail->programme),strtolower($sub))){
   
-                                   $has_major = true;
+                                $has_major = true;
                              }
                           }
                           $diploma_gpa = $detail->diploma_gpa;
@@ -8528,7 +8546,7 @@ class ApplicationController extends Controller
                               }
                            }
                         }
-                     }
+                    }
   
                  }else{
                     if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
@@ -9557,15 +9575,26 @@ class ApplicationController extends Controller
             if(unserialize($transfer_program->entryRequirements[0]->equivalent_majors) != ''){
                 foreach($applicant->nacteResultDetails as $detail){
                     if($detail->verified == 1){
-
-                    foreach(unserialize($transfer_program->entryRequirements[0]->equivalent_majors) as $sub){
-
-                        if(str_contains(strtolower($detail->programme),strtolower($sub))){
+                        foreach(unserialize($transfer_program->entryRequirements[0]->equivalent_majors) as $sub){
+                            if(str_contains(strtolower($detail->programme),strtolower($sub))){
 
                                 $has_major = true;
+                            }
                         }
+                        $diploma_gpa = $detail->diploma_gpa;
                     }
-                    $diploma_gpa = $detail->diploma_gpa;
+                }
+                if(unserialize($transfer_program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                    foreach($applicant->nacteResultDetails as $detail){
+                       if($detail->verified == 1){
+                          foreach($detail->results as $result){
+                             foreach(unserialize($transfer_program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                 if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                     $equivalent_must_subjects_count += 1;
+                                 }
+                             }
+                          }
+                       }
                     }
                 }
 
