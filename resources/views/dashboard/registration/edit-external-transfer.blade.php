@@ -102,7 +102,7 @@
                 <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
               </select>
 
-              @if(!empty($transfer->applicant->entry_mode)) {!! Form::input('hidden','entry_mode',($transfer->applicant->entry_mode) !!} @endif
+              @if(!empty($transfer->applicant->entry_mode)) {!! Form::input('hidden','entry_mode',$transfer->applicant->entry_mode) !!} @endif
 					</div>
                   </div>
 				  <div class="row">
