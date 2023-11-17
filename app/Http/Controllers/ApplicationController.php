@@ -7793,7 +7793,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Reference number for '.$applicant->selections[0]->campusProgram->program->award->name.'\'s admission letters not defined.');            
         }
 
-
+return 1;
         $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
         ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
         ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
