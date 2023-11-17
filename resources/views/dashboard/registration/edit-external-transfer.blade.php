@@ -96,13 +96,11 @@
                   </div>
 				  <div class="form-group col-6">
 				     {!! Form::label('','Entry mode') !!}
-				     <select name="entry_mode" class="form-control" required>
-                       <option value="">Select Highest Qualification</option>
-                       <option value="DIRECT" @if($transfer->applicant->entry_mode == 'DIRECT') selected="selected" @endif
-                        @if($transfer->status != 'PENDING') disabled="disabled" @endif>Form IV or VI (Direct)</option>
-                       <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif
-                        @if($transfer->status != 'PENDING') disabled="disabled" @endif>Certificate or Diploma (Equivalent)</option>
-                     </select>
+				      <select name="entry_mode" class="form-control" @if(!empty($transfer->applicant->entry_mode))  disabled="true" @endif required>
+                <option value="">Select Highest Qualification</option>
+                <option value="DIRECT" @if($transfer->applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
+                <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
+              </select>
 					</div>
                   </div>
 				  <div class="row">
