@@ -8516,6 +8516,19 @@ class ApplicationController extends Controller
                           $diploma_gpa = $detail->diploma_gpa;
                        }
                     }
+                    if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                        foreach($applicant->nacteResultDetails as $detail){
+                           if($detail->verified == 1){
+                              foreach($detail->results as $result){
+                                 foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                     if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                         $equivalent_must_subjects_count += 1;
+                                     }
+                                 }
+                              }
+                           }
+                        }
+                     }
   
                  }else{
                     if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
