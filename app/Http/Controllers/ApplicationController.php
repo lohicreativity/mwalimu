@@ -5188,7 +5188,6 @@ class ApplicationController extends Controller
         $applicants = [];
         $ac_year = null;
         foreach($request->records as $ins){
-            return $ins;
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
                      $student = $rec->student;
@@ -5242,7 +5241,7 @@ class ApplicationController extends Controller
                       $err = curl_error($curl_handle);
 
                       curl_close($curl_handle);
-
+return $response;
                       $applicants = $applicant;
                       $ac_year = $rec->studyAcademicYear->academicYear->year;
                       $data = [
