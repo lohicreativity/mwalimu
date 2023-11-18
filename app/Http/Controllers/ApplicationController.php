@@ -5188,6 +5188,7 @@ class ApplicationController extends Controller
         $applicants = [];
         $ac_year = null;
         foreach($request->records as $ins){
+            return $ins;
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
                      $student = $rec->student;
@@ -7729,22 +7730,7 @@ class ApplicationController extends Controller
 
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
-        $transfer = ExternalTransfer::find($request->get('transfer_id'));
 
-        if($transfer->status == 'PENDING'){
-            $transfer->previous_program = $request->get('program_code');
-
-        }elseif($transfer->status == 'NOT ELIGIBLE'){
-            $transfer->new_campus_program_id = $prog->id;
-            $transfer->status = 'ELIGIBLE';
-
-            $applicant->confirmation_status = 'TRANSFERED';
-            $applicant->status = 'ADMITTED';
-            $applicant->save();
-        }
-
-        $transfer->transfered_by_user_id = Auth::user()->id;
-        $transfer->save();
 
 		$applicant = Applicant::whereHas('selections',function($query) use($request){$query->where('status','SELECTED');})
                               ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])
