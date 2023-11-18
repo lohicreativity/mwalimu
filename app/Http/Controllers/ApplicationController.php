@@ -5241,9 +5241,9 @@ class ApplicationController extends Controller
                       $err = curl_error($curl_handle);
 
                       curl_close($curl_handle);
-return $response;
-                      $applicants = $applicant;
-                      $ac_year = $rec->studyAcademicYear->academicYear->year;
+
+                    //   $applicants = $applicant;
+                    //   $ac_year = $rec->studyAcademicYear->academicYear->year;
                       $data = [
                       'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/001',
                       'Description'=>'Batch submitted on '.date('m d, Y'),
@@ -5281,11 +5281,11 @@ return $response;
                       CURLOPT_POSTFIELDS => json_encode($data)
                     ));
 
-                    $response = curl_exec($curl_handle);
-                    $response1 = json_decode($response);
+                    $response2 = curl_exec($curl_handle);
+                    $response1 = json_decode($response2);
                     $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
                     $err = curl_error($curl_handle);
-
+return $response2;
                     curl_close($curl_handle);
 
                         $record = InsuranceRegistration::find($ins);
