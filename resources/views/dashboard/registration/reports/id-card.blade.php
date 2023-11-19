@@ -39,40 +39,31 @@
             <img style="position:absolute;top:0.75in;left:0.11in;width:0.85in;height:1.01in" src="{{ asset('uploads/'.$student->image)}}" />
         @endif
 
-    <div style="position:absolute;top:0.75in;left:1.07in;width:1.94in;line-height:0.20in;">
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#100d48">NAME:  </span>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#000000"> {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#000000"> </span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#100d48">PROGRAMME:  </span>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#000000">{{ str_replace('.','-',$student->campusProgram->program->code) }}</span>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#000000"> </span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">REG No:  REG No:  </span>
-    <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#000000">{{ $student->registration_number }}</span>
-    <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#000000"> </span><br/>
-    <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#100d48">VALID TO:  VALID TO:  </span>
-    <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#000000">{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span>
-    <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#000000"> </span><br/></div>
-    <div style="position:absolute;top:1.75in;left:1.22in;width:0.65in;line-height:0.13in;">
-        <span style="font-style:italic;font-weight:bold;font-size:7pt;color:#100d48">SIGNATURE</span>
-        <span style="font-style:italic;font-weight:bold;font-size:7pt;color:#100d48"> </span><br/>
+    <div style="position:absolute;top:0.75in;left:1.07in;width:1.94in;line-height:0.18in;">
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">PROGRAMME:  {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">REG No: {{ $student->registration_number }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">VALID TO:{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
     </div>
-    <img style="position:absolute;top:1.64in;left:1.88in;width:1.29in;height:0.32in" src="{{ asset('signatures/'.$student->signature) }}" />
+    <div style="position: absolute; top: 1.7in; left: 1.7in;">
+            <span style="font-style:italic;font-weight:bold;font-size:7pt;">SIGNATURE</span>
+        <img style="position: absolute; top:-15px; height:0.32in" src="{{ asset('signatures/'.$student->signature) }}" />
+    </div>
+    
 </div>
 
-<p style="page-break-after: always;">&nbsp;</p>
-
-<div style="position: relative;width:3.4in; height:2.1in; page-break-after: always;">
-    <div style="width:3.4in; height:2.1in; position: absolute;">
-        <h1 style="text-align:center; font-weight:bold;font-size:14pt;color:#000000">CAUTION</h1>
-        <p style="font-size: 12px; margin-left: 10px;">
+<div style="position: relative; top:7px; width:3.4in; page-break-after: always;">
+    <div>
+        <h1 style="text-align:center; font-weight:bold;font-size:12pt;color:#000000">CAUTION</h1>
+        <p style="font-size: 6px; margin-left: 10px;">
             This Identity card is a property of
         </p>
         <h1 style="font-weight:bold;font-size:6pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
-        <p style="font-size: 12px;  margin-left: 10px;">
+        <p style="font-size: 10px;  margin-left: 10px;">
             1. Use of this card is subject to the card <br> holder agreement <br>
             2. Card should be returned at the beginning<br> of each semester
-        </p>
-        <h5 style="font-size: 10px;  margin-left: 10px; margin-top: 20px; margin-bottom: 0;">
+        </p><br>
+        <h5 style="font-size: 8px;  margin-left: 10px; margin-bottom: 0;">
             @php
 
                 $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
