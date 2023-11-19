@@ -39,7 +39,7 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-12">
-            @if($applicant->payment_complete_status == 0)
+            @if($applicant->payment_complete_status == 0 && $applicant->status == null)
             <div class="alert alert-warning">Payment section not completed</div>
             @else
             <!-- general form elements -->

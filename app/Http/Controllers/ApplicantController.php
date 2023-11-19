@@ -2126,17 +2126,29 @@ class ApplicantController extends Controller
                if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                   foreach($applicant->nacteResultDetails as $detail){
                      if($detail->verified == 1){
-
                         foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-
                            if(str_contains(strtolower($detail->programme),strtolower($sub))){
 
-                                 $has_major = true;
+                              $has_major = true;
                            }
                         }
                         $diploma_gpa = $detail->diploma_gpa;
                      }
                   }
+                  if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                     foreach($applicant->nacteResultDetails as $detail){
+                        if($detail->verified == 1){
+                           foreach($detail->results as $result){
+                              foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                    if(str_contains(strtolower($result->subject),strtolower($sub))){
+                                       $equivalent_must_subjects_count += 1;
+                                    }
+                              }
+                           }
+                           $diploma_gpa = $detail->diploma_gpa;
+                        }
+                     }
+                  }                  
 
                }else{
                   if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && !$has_nacte_results){
