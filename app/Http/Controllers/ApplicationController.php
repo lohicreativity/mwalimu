@@ -5191,7 +5191,6 @@ class ApplicationController extends Controller
         foreach($request->records as $ins){
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
-                     return $rec;
                      $student = $rec->student;
                      $applicant = $rec->applicant;
                      $path = public_path().'/avatars/'.$student->image;
