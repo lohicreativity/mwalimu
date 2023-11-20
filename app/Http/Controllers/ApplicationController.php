@@ -6000,8 +6000,10 @@ class ApplicationController extends Controller
         // if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
         //        return redirect()->back()->with('error','You cannot reset applicant\'s password because application window is already closed');
         // }
-
-        $user = User::find($request->get('user_id'));
+        
+        $student_user_id = Student::select('user_id')->where('applicant_id',$applicant->user_id)->first();
+        $user_id = !empty($student_user_id)? $student_user_id : $applicant->user_id;
+        $user = User::find($user_id);
         $user->password = Hash::make($applicant->index_number);
         $user->save();
 
