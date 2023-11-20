@@ -5189,9 +5189,9 @@ class ApplicationController extends Controller
         set_time_limit(120);
         $max_batch_no = InsuranceRegistration::where('study_academic_year_id',$request->study_academic_year_id)->max('batch_no');
         foreach($request->records as $ins){
-            return $ins;
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
+                     return $rec;
                      $student = $rec->student;
                      $applicant = $rec->applicant;
                      $path = public_path().'/avatars/'.$student->image;
