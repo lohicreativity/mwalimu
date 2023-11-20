@@ -5214,7 +5214,7 @@ class ApplicationController extends Controller
                           'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
                           'PhotoImage'=>$base64
                       ];
-
+return $data;
                       $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
                       $token = NHIFService::requestToken();
 
