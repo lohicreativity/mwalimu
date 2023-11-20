@@ -5299,12 +5299,12 @@ class ApplicationController extends Controller
                         $record->save();
                         return redirect()->back()->with('message','Insurance registrations resubmited successfully');
                     }catch(\Exception $e){
-                        $record = InsuranceRegistration::find($ins);
-                        $record->applicant_id = $applicant->id;
-                        $record->student_id = $student->id;
-                        $record->study_academic_year_id = $rec->studyAcademicYear->id;
-                        $record->is_success = 0;
-                        $record->save();
+                        // $record = InsuranceRegistration::find($ins);
+                        // $record->applicant_id = $applicant->id;
+                        // $record->student_id = $student->id;
+                        // $record->study_academic_year_id = $rec->studyAcademicYear->id;
+                        // $record->is_success = 0;
+                        // $record->save();
 
                         return redirect()->back()->with('error','Something is wrong. Please check with the Administrator');
                     }
