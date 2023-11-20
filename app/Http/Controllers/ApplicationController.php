@@ -5259,6 +5259,7 @@ class ApplicationController extends Controller
                        ]
                      ];
 
+                     return $data;
                     $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
                     // $token = NHIFService::requestToken();
 
@@ -5281,11 +5282,11 @@ class ApplicationController extends Controller
                       CURLOPT_POSTFIELDS => json_encode($data)
                     ));
 
-                    $response2 = curl_exec($curl_handle);
-                    $response1 = json_decode($response2);
+                    $response = curl_exec($curl_handle);
+                    $response1 = json_decode($response);
                     $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
                     $err = curl_error($curl_handle);
-return $response2;
+
                     curl_close($curl_handle);
 
                         $record = InsuranceRegistration::find($ins);
