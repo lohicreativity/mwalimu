@@ -5197,7 +5197,7 @@ class ApplicationController extends Controller
                      $type = pathinfo($path, PATHINFO_EXTENSION);
                      $data = file_get_contents($path);
                      $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
-                     return 1;
+
                      $data = [
                           'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
                           'FirstName'=> $applicant->first_name,
