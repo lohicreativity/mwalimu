@@ -5244,7 +5244,7 @@ class ApplicationController extends Controller
                     //   $applicants = $applicant;
                     //   $ac_year = $rec->studyAcademicYear->academicYear->year;
                       $data = [
-                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/'.sprintf("%02d",$max_batch_no + 1),
+                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/'.sprintf("%03d",$max_batch_no + 1),
                       'Description'=>'Batch submitted on '.date('m d, Y'),
                       'CardApplications'=>[
                          array(
