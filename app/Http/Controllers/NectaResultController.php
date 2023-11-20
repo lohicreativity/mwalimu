@@ -23,12 +23,20 @@ class NectaResultController extends Controller
         }
 
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
-
+        $o_level_result_status = NectaResultDetail::where('applicant_id',$applicant->id)->where('exam_id',1)->where('verified',1)->count();
         // if(count($non_details) != 0){
         //     return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
         // }
         // if($detail->exam_id == 2){
-        if($applicant->index_number != $detail->index_number && $detail->exam_id != 2){
+        if($detail->exam_id == 1){
+            if($o_level_result_status == 0 && $applicant->index_number != $detail->index_number){
+                return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
+            }else{
+                if(strtoupper($applicant->first_name) != strtoupper($detail->first_name) || strtoupper($applicant->surname) != strtoupper($detail->last_name)){
+                    return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
+                }               
+            }
+        }elseif($detail->exam_id == 2){
             if(strtoupper($applicant->first_name) != strtoupper($detail->first_name) || strtoupper($applicant->surname) != strtoupper($detail->last_name)){
                 return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
             }
@@ -40,10 +48,13 @@ class NectaResultController extends Controller
         $a_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('exam_id',2)->where('verified',1)->first()? true : false;
         $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
 
-        $applicant->first_name = $detail->first_name;
-        $applicant->middle_name =  $detail->middle_name;
-        $applicant->surname = $detail->last_name;
-        $applicant->gender = $detail->sex;
+        if($o_level_result_status == 0){
+            $applicant->first_name = $detail->first_name;
+            $applicant->middle_name =  $detail->middle_name;
+            $applicant->surname = $detail->last_name;
+            $applicant->gender = $detail->sex;
+        }
+
         if((str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Diploma')) && $applicant->entry_mode == 'DIRECT' && ($o_level_results && $detail->exam_id == 2
             || $a_level_results && $detail->exam_id == 1)){
             $applicant->results_complete_status = 1;
