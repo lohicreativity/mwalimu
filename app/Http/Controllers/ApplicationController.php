@@ -5194,6 +5194,10 @@ class ApplicationController extends Controller
                      $student = $rec->student;
                      $applicant = $rec->applicant;
                      $path = file_exists(public_path().'/avatars/'.$student->image)? public_path().'/avatars/'.$student->image : public_path().'/uploads/'.$student->image;
+                     if(empty($path)){
+                        continue;
+                     }
+                     
                      $type = pathinfo($path, PATHINFO_EXTENSION);
                      $data = file_get_contents($path);
                      $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
