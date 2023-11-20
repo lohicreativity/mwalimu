@@ -5185,8 +5185,8 @@ class ApplicationController extends Controller
      */
     public function resubmitInsuranceRegistrations(Request $request)
     { 
-        ini_set('memory_limit', '-1');
-        set_time_limit(120);
+        // ini_set('memory_limit', '-1');
+        // set_time_limit(120);
         $max_batch_no = InsuranceRegistration::where('study_academic_year_id',$request->study_academic_year_id)->max('batch_no');
         foreach($request->records as $ins){
                  try{
