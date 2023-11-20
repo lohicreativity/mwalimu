@@ -31,7 +31,7 @@ class NectaResultController extends Controller
         if($detail->exam_id == 1){
             if($o_level_result_status == 0 && $applicant->index_number != $detail->index_number){
                 return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
-            }else{
+            }elseif($o_level_result_status > 0){
                 if(strtoupper($applicant->first_name) != strtoupper($detail->first_name) || strtoupper($applicant->surname) != strtoupper($detail->last_name)){
                     return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
                 }               
