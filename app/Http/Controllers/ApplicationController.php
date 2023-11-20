@@ -5245,7 +5245,7 @@ class ApplicationController extends Controller
                     //   $applicants = $applicant;
                     //   $ac_year = $rec->studyAcademicYear->academicYear->year;
                       $data = [
-                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/001',
+                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/002',
                       'Description'=>'Batch submitted on '.date('m d, Y'),
                       'CardApplications'=>[
                          array(
@@ -5259,7 +5259,6 @@ class ApplicationController extends Controller
                        ]
                      ];
 
-                     return $data;
                     $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
                     // $token = NHIFService::requestToken();
 
