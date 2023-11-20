@@ -5297,7 +5297,7 @@ class ApplicationController extends Controller
                         $record->is_success = 1;
                         $record->batch_no = $max_batch_no + 1;
                         $record->save();
-                        return redirect()->back()->with('message','Insurance registrations resubmited successfully');
+                        
                     }catch(\Exception $e){
                         // $record = InsuranceRegistration::find($ins);
                         // $record->applicant_id = $applicant->id;
@@ -5308,6 +5308,7 @@ class ApplicationController extends Controller
 
                         return redirect()->back()->with('error','Something is wrong. Please check with the Administrator');
                     }
+                    return redirect()->back()->with('message','Insurance registrations resubmited successfully');
         }
     }
 
