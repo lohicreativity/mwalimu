@@ -5193,11 +5193,13 @@ class ApplicationController extends Controller
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
                      $student = $rec->student;
                      $applicant = $rec->applicant;
-                     $path = file_exists(public_path().'/avatars/'.$student->image)? public_path().'/avatars/'.$student->image : public_path().'/uploads/'.$student->image;
-                     if(empty($path)){
+                     $path = null;
+                     if(!empty($student->image)){
+                        $path = file_exists(public_path().'/avatars/'.$student->image)? public_path().'/avatars/'.$student->image : public_path().'/uploads/'.$student->image;
+                     }else{
                         continue;
                      }
-                     
+
                      $type = pathinfo($path, PATHINFO_EXTENSION);
                      $data = file_get_contents($path);
                      $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
