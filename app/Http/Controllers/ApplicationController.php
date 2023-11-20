@@ -5197,6 +5197,7 @@ class ApplicationController extends Controller
                      $type = pathinfo($path, PATHINFO_EXTENSION);
                      $data = file_get_contents($path);
                      $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
+                     return 1;
                      $data = [
                           'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
                           'FirstName'=> $applicant->first_name,
@@ -5296,19 +5297,18 @@ return $response;
                         $record->is_success = 1;
                         $record->batch_no = $max_batch_no + 1;
                         $record->save();
+                        return redirect()->back()->with('message','Insurance registrations resubmited successfully');
                     }catch(\Exception $e){
-                        return 'shida'; 
                         $record = InsuranceRegistration::find($ins);
                         $record->applicant_id = $applicant->id;
                         $record->student_id = $student->id;
                         $record->study_academic_year_id = $rec->studyAcademicYear->id;
                         $record->is_success = 0;
                         $record->save();
+
+                        return redirect()->back()->with('error','Something is wrong. Please check with the Administrator');
                     }
-
         }
-
-        return redirect()->back()->with('message','Insurance registrations resubmited successfully');
     }
 
     /**
