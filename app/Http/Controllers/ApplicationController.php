@@ -5257,7 +5257,7 @@ class ApplicationController extends Controller
                          )
                        ]
                      ];
-return $data;
+
                     $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
                     // $token = NHIFService::requestToken();
 
@@ -5292,6 +5292,7 @@ return $data;
                         $record->student_id = $student->id;
                         $record->study_academic_year_id = $rec->studyAcademicYear->id;
                         $record->is_success = 1;
+                        $record->batch_no = $max_batch_no + 1;
                         $record->save();
                     }catch(\Exception $e){
                         $record = InsuranceRegistration::find($ins);
