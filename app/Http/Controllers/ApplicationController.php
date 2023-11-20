@@ -5308,8 +5308,8 @@ class ApplicationController extends Controller
 
                         return redirect()->back()->with('error','Something is wrong. Please check with the Administrator');
                     }
-                    return redirect()->back()->with('message','Insurance registrations resubmited successfully');
         }
+        return redirect()->back()->with('message','Insurance registrations resubmited successfully');
     }
 
     /**
