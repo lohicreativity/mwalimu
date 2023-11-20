@@ -5186,7 +5186,6 @@ class ApplicationController extends Controller
     public function resubmitInsuranceRegistrations(Request $request)
     { 
         $max_batch_no = InsuranceRegistration::where('study_academic_year_id',$request->study_academic_year_id)->max('batch_no');
-        return $max_batch_no;
         foreach($request->records as $ins){
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
@@ -5245,7 +5244,7 @@ class ApplicationController extends Controller
                     //   $applicants = $applicant;
                     //   $ac_year = $rec->studyAcademicYear->academicYear->year;
                       $data = [
-                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/002',
+                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/'.sprintf("%02d",$max_batch_no + 1),
                       'Description'=>'Batch submitted on '.date('m d, Y'),
                       'CardApplications'=>[
                          array(
@@ -5258,7 +5257,7 @@ class ApplicationController extends Controller
                          )
                        ]
                      ];
-
+return $data;
                     $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
                     // $token = NHIFService::requestToken();
 
