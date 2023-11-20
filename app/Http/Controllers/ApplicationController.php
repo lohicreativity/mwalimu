@@ -5184,10 +5184,9 @@ class ApplicationController extends Controller
      * Resubmit insurance registrations
      */
     public function resubmitInsuranceRegistrations(Request $request)
-    { return $request;
-        $applicants = [];
-        $ac_year = null;
-        $max_batch_no = InsuranceRegistration::where('academic_year_id',$request->academic_year_id)->max('batch_no');
+    {
+        $max_batch_no = InsuranceRegistration::where('study_academic_year_id',$request->academic_year_id)->max('batch_no');
+        return $max_batch_no;
         foreach($request->records as $ins){
                  try{
                      $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins);
