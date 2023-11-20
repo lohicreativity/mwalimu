@@ -5297,6 +5297,7 @@ return $response;
                         $record->batch_no = $max_batch_no + 1;
                         $record->save();
                     }catch(\Exception $e){
+                        return 'shida'; 
                         $record = InsuranceRegistration::find($ins);
                         $record->applicant_id = $applicant->id;
                         $record->student_id = $student->id;
