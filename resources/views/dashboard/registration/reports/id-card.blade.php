@@ -88,7 +88,7 @@
         ."Course:".$courseCode[0].$courseCode[1]."\n".substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue."\n".$student->phone;
     @endphp
 
-    <img style="position:relative;top:0.7in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
+    <img style="position:relative;top:-1.3in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
 </div>
 
 <script type="text/javascript">
