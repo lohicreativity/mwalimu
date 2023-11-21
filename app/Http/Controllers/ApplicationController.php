@@ -6862,6 +6862,8 @@ class ApplicationController extends Controller
                     }
                 }
             }
+
+            sleep(5);
         }
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){

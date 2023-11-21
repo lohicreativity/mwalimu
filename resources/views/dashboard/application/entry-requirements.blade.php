@@ -460,7 +460,7 @@
                        <option value="Library">Library</option>
                        <option value="Gender">Gender</option>
                        <option value="Social Studies">Social Studies</option>
-                       <option value="Business Adminstration">Business Adminstration</option>
+                       <option value="Business Administration">Business Administration</option>
                        <option value="Community Development">Community Development</option>
                        <option value="Information Communication Technology">Information Communication Technology</option>
                        <option value="Information Technology">Information Technology</option>
@@ -813,7 +813,7 @@
                        <option value="Library">Library</option>
                        <option value="Gender">Gender</option>
                        <option value="Social Studies">Social Studies</option>
-                       <option value="Business Adminstration">Business Adminstration</option>
+                       <option value="Business Administration">Business Administration</option>
                        <option value="Community Development">Community Development</option>
                        <option value="Information Communication Technology">Information Communication Technology</option>
                        <option value="Information Technology">Information Technology</option>
@@ -1403,7 +1403,7 @@
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
                                                <option value="Social Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Studies</option>
-                                               <option value="Business Adminstration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Adminstration</option>
+                                               <option value="Business Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Administration</option>
                                                <option value="Community Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Community Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Community Development</option>
                                                <option value="Information Communication Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Communication Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Communication Technology</option>
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
@@ -1713,7 +1713,7 @@
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
                                                <option value="Social Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Studies</option>
-                                               <option value="Business Adminstration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Adminstration</option>
+                                               <option value="Business Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Administration</option>
                                                <option value="Community Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Community Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Community Development</option>
                                                <option value="Information Communication Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Communication Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Communication Technology</option>
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
@@ -2270,7 +2270,7 @@
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
                                                <option value="Social Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Studies</option>
-                                               <option value="Business Adminstration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Adminstration</option>
+                                               <option value="Business Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Administration</option>
                                                <option value="Community Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Community Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Community Development</option>
                                                <option value="Information Communication Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Communication Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Communication Technology</option>
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
@@ -2583,7 +2583,7 @@
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
                                                <option value="Social Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Studies</option>
-                                               <option value="Business Adminstration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Adminstration</option>
+                                               <option value="Business Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Administration</option>
                                                <option value="Community Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Community Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Community Development</option>
                                                <option value="Information Communication Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Communication Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Communication Technology</option>
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
