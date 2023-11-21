@@ -6878,8 +6878,6 @@ class ApplicationController extends Controller
                               }
                            }
                          }
-                         if($program->id == 21){
-                         return $program->code.' - '.$o_level_pass_count+$o_level_other_pass_count.' >= '.$program->entryRequirements[0]->pass_subjects; }
 						 if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects){
 
                              $programs[] = $program;
@@ -7390,7 +7388,7 @@ class ApplicationController extends Controller
 		->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
-
+return $programs;
         $data = [
             'student'=>$student,
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
