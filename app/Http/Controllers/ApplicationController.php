@@ -6792,97 +6792,77 @@ class ApplicationController extends Controller
             $index_no = $parts[0]."-".$parts[1];
         }
 
-        NectaResultDetail::where('index_number', $applicant->index_number)->where('exam_id', 1)
-                ->where('verified', 1)->first()
         if($applicant->is_tamisemi == 1){
-
-        }
-        if($det = NectaResultDetail::where('index_number', $applicant->index_number)->where('exam_id', 1)
+            $results_status = NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 1)
+                                                ->where('verified', 1)->count();
+            if($results_status == 0){
+                if($det = NectaResultDetail::where('index_number', $applicant->index_number)->where('exam_id', 1)
                 ->where('verified', 1)->first()){
-            $detail = new NectaResultDetail;
-            $detail->center_name = $det->center_name;
-            $detail->center_number = $det->center_number;
-            $detail->first_name = $det->first_name;
-            $detail->middle_name = $det->middle_name;
-            $detail->last_name = $det->last_name;
-            $detail->sex = $det->sex;
-            $detail->index_number = $det->index_number; //json_decode($response)->particulars->index_number;
-            $detail->division = $det->division;
-            $detail->points = $det->points;
-            $detail->exam_id = 1;
-            $detail->applicant_id = $applicant->id;
-            $detail->verified = 1;
-            $detail->save();
+                    $detail = new NectaResultDetail;
+                    $detail->center_name = $det->center_name;
+                    $detail->center_number = $det->center_number;
+                    $detail->first_name = $det->first_name;
+                    $detail->middle_name = $det->middle_name;
+                    $detail->last_name = $det->last_name;
+                    $detail->sex = $det->sex;
+                    $detail->index_number = $det->index_number; //json_decode($response)->particulars->index_number;
+                    $detail->division = $det->division;
+                    $detail->points = $det->points;
+                    $detail->exam_id = 1;
+                    $detail->applicant_id = $applicant->id;
+                    $detail->verified = 1;
+                    $detail->save();
 
-            $applicant->first_name = $det->first_name;
-            $applicant->middle_name = $det->middle_name;
-            $applicant->surname = $det->last_name;
-            $applicant->gender = $det->sex;
-            $applicant->save();
+                    $result = NectaResult::where('necta_result_detail_id', $det->id)->get();
+                    foreach($result as $res){
+                        $newRes = new Nectaresult;
+                        $newRes->subject_name = $res->subject_name;
+                        $newRes->subject_code = $res->subject_code;
+                        $newRes->grade = $res->grade;
+                        $newRes->applicant_id = $applicant->id;
+                        $newRes->necta_result_detail_id = $detail->id;
+                        $newRes->save();
+                    }
 
-            $result = NectaResult::where('necta_result_detail_id', $det->id)->get();
+                }else{
+                    $response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                        'api_key'=>config('constants.NECTA_API_KEY'),
+                        'exam_year'=>$exam_year,
+                        'index_number'=>$index_no,
+                        'exam_id'=>'1'
+                    ]);
 
-            foreach($result as $res){
-                $newRes = new Nectaresult;
-                $newRes->subject_name = $res->subject_name;
-                $newRes->subject_code = $res->subject_code;
-                $newRes->grade = $res->grade;
-                $newRes->applicant_id = $applicant->id;
-                $newRes->necta_result_detail_id = $detail->id;
-                $newRes->save();
+                    if(!isset(json_decode($response)->results)){
+                        return redirect()->back()->with('error','Invalid Index number or year');
+                    }
+
+                    $detail = new NectaResultDetail;
+                    $detail->center_name = json_decode($response)->particulars->center_name;
+                    $detail->center_number = json_decode($response)->particulars->center_number;
+                    $detail->first_name = json_decode($response)->particulars->first_name;
+                    $detail->middle_name = json_decode($response)->particulars->middle_name;
+                    $detail->last_name = json_decode($response)->particulars->last_name;
+                    $detail->sex = json_decode($response)->particulars->sex;
+                    $detail->index_number = $applicant->index_number; //json_decode($response)->particulars->index_number;
+                    $detail->division = json_decode($response)->results->division;
+                    $detail->points = json_decode($response)->results->points;
+                    $detail->exam_id = 1;
+                    $detail->applicant_id = $applicant->id;
+                    $detail->verified = 1;
+                    $detail->save();
+
+                    foreach(json_decode($response)->subjects as $subject){
+                        $res = new NectaResult;
+                        $res->subject_name = $subject->subject_name;
+                        $res->subject_code = $subject->subject_code;
+                        $res->grade = $subject->grade;
+                        $res->applicant_id = $applicant->id;
+                        $res->necta_result_detail_id = $detail->id;
+                        $res->save();
+                    }
+                }
             }
-
-        } else{
-            $response = Http::post('https://api.necta.go.tz/api/results/individual',[
-                'api_key'=>config('constants.NECTA_API_KEY'),
-                'exam_year'=>$exam_year,
-                'index_number'=>$index_no,
-                'exam_id'=>'1'
-            ]);
-
-            if(!isset(json_decode($response)->results)){
-                return redirect()->back()->with('error','Invalid Index number or year');
-            }
-
-                $detail = new NectaResultDetail;
-                $detail->center_name = json_decode($response)->particulars->center_name;
-                $detail->center_number = json_decode($response)->particulars->center_number;
-                $detail->first_name = json_decode($response)->particulars->first_name;
-                $detail->middle_name = json_decode($response)->particulars->middle_name;
-                $detail->last_name = json_decode($response)->particulars->last_name;
-                $detail->sex = json_decode($response)->particulars->sex;
-                $detail->index_number = $applicant->index_number; //json_decode($response)->particulars->index_number;
-                $detail->division = json_decode($response)->results->division;
-                $detail->points = json_decode($response)->results->points;
-                $detail->exam_id = 1;
-                $detail->applicant_id = $applicant->id;
-                $detail->verified = 1;
-                $detail->save();
-
-            $applicant->first_name = json_decode($response)->particulars->first_name;
-            $applicant->middle_name = json_decode($response)->particulars->middle_name;
-            $applicant->surname = json_decode($response)->particulars->last_name;
-            $applicant->gender = json_decode($response)->particulars->sex;
-            $applicant->save();
-
-
-            foreach(json_decode($response)->subjects as $subject){
-                $res = new NectaResult;
-                $res->subject_name = $subject->subject_name;
-                $res->subject_code = $subject->subject_code;
-                $res->grade = $subject->grade;
-                $res->applicant_id = $applicant->id;
-                $res->necta_result_detail_id = $detail->id;
-                $res->save();
-            }
-
         }
-
-
-
-
-
-
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
