@@ -7388,7 +7388,7 @@ class ApplicationController extends Controller
 		->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
-return $student->applicant->selections[0]->campusProgram->id;
+
         $data = [
             'student'=>$student,
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
