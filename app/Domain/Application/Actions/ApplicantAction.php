@@ -46,6 +46,7 @@ class ApplicantAction implements ApplicantInterface{
         $applicant->ward_id = $request->get('ward_id');
         $applicant->street = strtoupper($request->get('street'));
         $applicant->basic_info_complete_status = 1;
+        if($applicant->is_transfered == 1){$applicant->payment_complete_status = 1;}
         $applicant->save();
 
         $other_apps = Applicant::where('user_id',$applicant->user_id)->where('campus_id','!=',$applicant->campus_id)->get();
