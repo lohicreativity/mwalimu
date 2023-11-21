@@ -6879,7 +6879,7 @@ class ApplicationController extends Controller
                            }
                          }
                          if($program->id == 21){
-                         return $o_level_pass_count+$o_level_other_pass_count.' >= '.$program->entryRequirements[0]->pass_subjects; }
+                         return $program->code.' - '.$o_level_pass_count+$o_level_other_pass_count.' >= '.$program->entryRequirements[0]->pass_subjects; }
 						 if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects){
 
                              $programs[] = $program;
