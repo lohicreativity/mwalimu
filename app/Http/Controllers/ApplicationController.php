@@ -7525,7 +7525,7 @@ class ApplicationController extends Controller
         }else{
             $batch_id = $batch->id;
         }
-return $batch_id;
+
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)
                          ->where(function($query){$query->where('status','ADMITTED')->where('multiple_admissions',1)
                          ->where(function($query){$query->whereNull('admission_confirmation_status')->orWhere('admission_confirmation_status','NOT LIKE','%OTHER%');})
