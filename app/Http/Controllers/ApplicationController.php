@@ -7815,8 +7815,6 @@ class ApplicationController extends Controller
 
 		ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['campus_program_id'=> $request->get('campus_program_id'), 'status'=>'SELECTED']);
 
-		$applicant = Applicant::find($applicant->id);
-
         // $selection = new ApplicantProgramSelection;
 		// $selection->applicant_id = $applicant->id;
 		// $selection->application_window_id = $applicant->application_window_id;
@@ -7827,8 +7825,6 @@ class ApplicationController extends Controller
         // $selection->save();
 
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
-
-
 
 		$applicant = Applicant::whereHas('selections',function($query) use($request){$query->where('status','SELECTED');})
                               ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])
@@ -7865,6 +7861,7 @@ class ApplicationController extends Controller
             }
         }
 
+        $transfer = ExternalTransfer::select('status')->where('applicant_id',$applicant->id)->first();
         if($transfer->status == 'NOT ELIGIBLE'){
             
             $admission_references = AdmissionReferenceNumber::where('study_academic_year_id', $study_academic_year->id)->where('intake', $applicant->intake->name)
