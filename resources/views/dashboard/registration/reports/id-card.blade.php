@@ -52,20 +52,27 @@
     
 </div>
 
-<div style="width:3.4in;height:1.8in;page-break-after: always;">
+<div style="width:3.4in;height:1.8in;page-break-after: avoid;">
     <div>
         <h1 style="text-align:center; font-weight:bold;font-size:12pt;color:#000000">CAUTION</h1>
-        <div style="float:left">
-            <p style="font-size: 6px; margin-left: 10px;">
-                This Identity card is a property of
-            </p>
-            <h1 style="font-weight:bold;font-size:6pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
-            <p style="font-size: 10px;  margin-left: 10px;">
-                1. Use of this card is subject to the card <br> holder agreement <br>
-                2. Card should be returned at the beginning<br> of each semester
-            </p>
-        </div>
-        @php
+        <p style="font-size: 6px; margin-left: 10px;">
+            This Identity card is a property of
+        </p>
+        <h1 style="font-weight:bold;font-size:6pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
+        <p style="font-size: 10px;  margin-left: 10px;">
+            1. Use of this card is subject to the card <br> holder agreement <br>
+            2. Card should be returned at the beginning<br> of each semester
+        </p><br>
+        <h5 style="font-size: 8px;  margin-left: 10px; margin-bottom: 0;">
+            @php
+
+                $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
+                $reg_no = str_replace('/', '-', $registration_no)
+            @endphp
+            {{ $footer }} <span style="font-size:9px;"> {{ $reg_no }} </span>
+        </h5>
+    </div>
+    @php
         $courseCode = explode('.', $student->campusProgram->code);
         $yearofstudy = $student->year_of_study;
         $yearValue = '';
@@ -79,20 +86,9 @@
         $qrCodeData = "Time: ".Carbon\Carbon::parse($student->created_at)->format('m/d/Y H:i')."\n"
         ."ID:".$student->registration_number."\n".$student->surname.", ".$student->first_name." ".$student->middle_name."\n"
         ."Course:".$courseCode[0].$courseCode[1]."\n".substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue."\n".$student->phone;
-        @endphp
+    @endphp
 
-        <img style="position:relative;top:-1.3in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
-        <div style="position: absolute; bottom: 4in">
-            <h5 style="font-size: 8px;  margin-left: 10px; margin-bottom: 0;">
-                @php
-    
-                    $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
-                    $reg_no = str_replace('/', '-', $registration_no)
-                @endphp
-                {{ $footer }} <span style="font-size:9px;"> {{ $reg_no }} </span>
-            </h5>
-        </div>
-    </div>
+    <img style="position:relative;top:-1.3in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
 </div>
 
 <script type="text/javascript">
