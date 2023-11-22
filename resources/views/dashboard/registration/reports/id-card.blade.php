@@ -40,10 +40,10 @@
         @endif
 
     <div style="position:absolute;top:0.75in;left:1.07in;width:1.94in;line-height:0.18in;">
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1008a5">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }} </span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1008a5">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1008a5">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;">{{ $student->registration_number }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1008a5">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }} </span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;">{{ $student->registration_number }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
     </div>
     <div style="position: absolute; top: 1.65in; left: 1.3in;">
             <span style="font-style:italic;font-weight:bold;font-size:7pt;">SIGNATURE</span>
@@ -59,7 +59,7 @@
             This Identity card is a property of
         </p>
         <h1 style="font-weight:bold;font-size:6pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
-        <ol style="font-size: 10px;">
+        <ol style="font-size: 10px;  margin-left: -3px;">
             <li>Use of this card is subject to the card holder agreement</li>
             <li>Card should be returned at the beginning of each semester</li>
         </ol>
