@@ -59,7 +59,7 @@
             This Identity card is a property of
         </p>
         <h1 style="font-weight:bold;font-size:6pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
-        <ol style="font-size: 10px;  margin-left: -1in;">
+        <ol style="font-size: 10px;  margin-left: -0.2in; width:2.2in">
             <li>Use of this card is subject to the card holder agreement</li>
             <li>Card should be returned at the beginning of each semester</li>
         </ol>

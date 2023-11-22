@@ -714,7 +714,6 @@ class RegistrationController extends Controller
      */
     public function showIDCard(Request $request)
     {
-
         $student = Student::with('campusProgram.program','campusProgram.campus', 'applicant.intake')
         ->where('registration_number',str_replace('-','/',$request->get('registration_number')))->first();
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->with('academicYear')->first();
@@ -759,22 +758,22 @@ class RegistrationController extends Controller
             }
         }
 
-        // $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
-        // $newRegistrationNo = null;
-        // if(!$latestRegistrationNo){
-        //     $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
-        //     $newRegistrationNo = $registration->id_sn_no;
-        // }else{
-        //     $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
-        //     $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
-        //     $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
-        //     $newRegistrationNo = $registration->id_sn_no;
-        // }
-        // $registration->id_print_date = now();
-        // $registration->id_print_status = 1; $newRegistrationNo
-        // $registration->save();
+        $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
+        $newRegistrationNo = null;
+        if(!$latestRegistrationNo){
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
+            $newRegistrationNo = $registration->id_sn_no;
+        }else{
+            $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
+            $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
+            $newRegistrationNo = $registration->id_sn_no;
+        }
+        $registration->id_print_date = now();
+        $registration->id_print_status = 1; $newRegistrationNo;
+        $registration->save();
 
-        // IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
+        IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
 
 
 
@@ -782,7 +781,7 @@ class RegistrationController extends Controller
             'student'=>$student,
             'semester'=>$semester,
             'study_academic_year'=>$ac_year,
-            'registration_no' => 123,
+            'registration_no' => $newRegistrationNo,
             'tuition_payment_check' => $tuition_payment_check
         ];
 
