@@ -3171,10 +3171,15 @@ class ApplicantController extends Controller
             $applicant->save();
 
             if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
-               ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+               if($applicant->is_tamisemi != 1 || $applicant->is_transfered != 1){
+                  ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+               }
                Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
 
                if($level_before != $applicant->program_level_id){
+                  if($applicant->is_tamisemi == 1 || $applicant->is_transfered == 1){
+                     ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+                  }
                   $batch = ApplicationBatch::where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)
                            ->latest()->first();
                   Applicant::where('id',$applicant->id)->update(['batch_id'=>$batch->id]);
