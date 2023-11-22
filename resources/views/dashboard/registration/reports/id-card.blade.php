@@ -62,8 +62,8 @@
         <ol style="font-size: 10px;  margin-left: -0.2in; width:2.2in">
             <li>Use of this card is subject to the card holder agreement</li>
             <li>Card should be returned at the beginning of each semester</li>
-        </ol>
-        <h5 style="font-size: 8px;  margin-left: 10px; margin-bottom: 0;">
+        </ol> <br><br>
+        <h5 style="font-size: 8px;  margin-left: .6in; margin-bottom: 0;">
             @php
 
                 $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
