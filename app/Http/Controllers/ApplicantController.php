@@ -1338,6 +1338,10 @@ class ApplicantController extends Controller
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
+      if($applicant->is_transfered == 1 || $applicant->is_tamisemi == 1){
+         return redirect()->to('application/submission');
+
+      }
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
 		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id','!=',$batch->id)->first() : null;
 
