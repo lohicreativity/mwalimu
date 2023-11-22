@@ -40,13 +40,13 @@
         @endif
 
     <div style="position:absolute;top:0.75in;left:1.07in;width:1.94in;line-height:0.18in;">
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} {{ substr($student->middle_name,0,1) }}.  </span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;">{{ $student->registration_number }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} {{ substr($student->middle_name,0,1) }}.  </span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;">{{ $student->registration_number }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
     </div>
     <div style="position: absolute; top: 1.65in; left: 1.3in;">
-            <span style="font-style:italic;font-weight:bold;font-size:7pt;">SIGNATURE</span>
+            <span style="font-style:italic;font-weight:bold;font-size:8pt;">SIGNATURE</span>
         <img style="position: absolute; top:-2px; height:0.32in" src="{{ asset('signatures/'.$student->signature) }}" />
     </div>
     
@@ -55,21 +55,21 @@
 <div style="width:3.4in;height:1.8in;page-break-after: avoid;">
     <div>
         <h1 style="text-align:center; font-weight:bold;font-size:12pt;color:#000000">CAUTION</h1>
-        <p style="font-size: 6px; margin-left: 10px;">
+        <p style="font-size: 7px; margin-left: 10px;">
             This Identity card is a property of
         </p>
-        <h1 style="font-weight:bold;font-size:6pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
-        <ol style="font-size: 10px;  margin-left: -0.2in; width:2.2in">
+        <h1 style="font-weight:bold;font-size:7pt; color:#000000;margin-left: 10px;" >THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
+        <ol style="font-size: 11px;  margin-left: -0.2in; width:2.2in">
             <li>Use of this card is subject to the card holder agreement</li>
             <li>Card should be returned at the beginning of each semester</li>
         </ol> <br><br>
-        <h5 style="font-size: 8px;  margin-left: .6in; margin-bottom: 0;">
+        <h5 style="font-size: 9px;  margin-left: .6in; margin-bottom: 0;">
             @php
 
                 $footer = "PHONE NO: ".str_replace('255', '0',$student->phone)." ";
                 $reg_no = str_replace('/', '-', $registration_no)
             @endphp
-            {{ $footer }} <span style="font-size:9px;"> {{ $reg_no }} </span>
+            {{ $footer }} <span style="font-size:10px;"> {{ $reg_no }} </span>
         </h5>
     </div>
     @php
