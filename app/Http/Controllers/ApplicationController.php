@@ -8143,10 +8143,25 @@ class ApplicationController extends Controller
                    'margin_left'=>20,
                    'margin_right'=>20
                ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
-               $user = new User;
-               $user->email = $applicant->email;
-               $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf));
+
+                $applicant = Applicant::find($applicant->id);
+                $applicant->status = 'ADMITTED';
+                $applicant->confirmation_status = 'TRANSFERED';
+                $applicant->save();
+
+                $selection =ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->first();
+                $selection->campus_program_id = $request->get('campus_program_id');
+                $selection->status = 'SELECTED';
+                $selection->save();
+
+                $transfer = ExternalTransfer::where('applicant_id',$applicant->id)->first();
+                $transfer->status = 'ELIGIBLE';
+                $transfer->save();
+                
+                $user = new User;
+                $user->email = $applicant->email;
+                $user->username = $applicant->first_name.' '.$applicant->surname;
+                Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,$pdf));
         }
 			   //$app = Applicant::find($applicant->id);
                //$app->status = 'ADMITTED';
