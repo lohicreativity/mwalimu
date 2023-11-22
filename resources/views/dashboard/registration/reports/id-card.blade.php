@@ -47,7 +47,7 @@
     </div>
     <div style="position: absolute; top: 1.65in; left: 1.3in;">
             <span style="font-style:italic;font-weight:bold;font-size:7pt;">SIGNATURE</span>
-        <img style="position: absolute; top:-15px; height:0.32in" src="{{ asset('signatures/'.$student->signature) }}" />
+        <img style="position: absolute; top:-2px; height:0.32in" src="{{ asset('signatures/'.$student->signature) }}" />
     </div>
     
 </div>
@@ -88,7 +88,7 @@
         ."Course:".$courseCode[0].$courseCode[1]."\n".substr($student->registration_year, 2,2)."-".strtoupper(substr($student->applicant->intake->name, 0, 3))."-".$yearValue."\n".$student->phone;
     @endphp
 
-    <img style="position:relative;top:-1.3in;left:2.4in;width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
+    <img style="position:absolute;left:2.4in;top:2.6in; width:0.94in;height:0.94in" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qrCodeData)) !!}" />
 </div>
 
 <script type="text/javascript">
