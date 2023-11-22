@@ -2402,7 +2402,7 @@ class ApplicantController extends Controller
 
         if(ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
            $applicant->program_level_id)->where('begin_date','<=',  implode('-', explode('-', now()->format('Y-m-d'))))->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first()){
-            if($applicant->programs_complete_status != 1){
+            if($applicant->programs_complete_status != 1 && $applicant->is_transfered != 1){
                 return redirect()->back()->with('error','You must first select programmes');
             }
         }
