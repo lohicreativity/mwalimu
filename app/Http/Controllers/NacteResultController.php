@@ -45,7 +45,6 @@ class NacteResultController extends Controller
             if($applicant->is_transfered == 1){
                 $programme = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)
                                                       ->with('campusProgram.program')->first();
-                                                      return strtolower($programme->campusProgram->program->name).' - '.$results_count;
                 if(str_contains(strtolower($programme->campusProgram->program->name),'education')){
                     $applicant->avn_no_results = $results_count == 0? 1 : 0;
                 }
