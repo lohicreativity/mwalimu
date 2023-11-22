@@ -43,7 +43,8 @@
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} {{ substr($student->middle_name,0,1) }}.  </span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;">{{ $student->registration_number }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> 
+            @if($tuition_payment_check){{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }} @else 30/04/{{substr(App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)),-4)}} @endif</span><br/>
     </div>
     <div style="position: absolute; top: 1.6in; left: 1.3in;">
             <span style="font-style:italic;font-weight:bold;font-size:8pt;">SIGNATURE</span>
