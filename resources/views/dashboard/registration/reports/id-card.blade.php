@@ -40,10 +40,10 @@
         @endif
 
     <div style="position:absolute;top:0.75in;left:1.07in;width:1.94in;line-height:0.18in;">
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">PROGRAMME:  {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">REG No: {{ $student->registration_number }}</span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#100d48">VALID TO:{{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1710a5">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }} </span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1710a5">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1710a5">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;">{{ $student->registration_number }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:7pt;color:#1710a5">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:7pt;"> {{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }}</span><br/>
     </div>
     <div style="position: absolute; top: 1.65in; left: 1.3in;">
             <span style="font-style:italic;font-weight:bold;font-size:7pt;">SIGNATURE</span>
