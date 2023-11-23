@@ -169,28 +169,28 @@
 					   <table class="table table-bordered ss-paginated-table" id="ss-transfers">
 						 <thead>
 						   <tr>
-							 <th>SN</th>
-							 <th>Name</th>
-							 <th>Previous Reg Number</th>
-							 <th>Previous Programme</th>
-							 <th>Current Reg Number</th>
-							 <th>Current Programme</th>
-							 <th>Date Transfered</th>
-							 <th>Status</th>
+                  <th>SN</th>
+                  <th>Name</th>
+                  <th>Previous Reg Number</th>
+                  <th>Previous Programme</th>
+                  <th>Current Reg Number</th>
+                  <th>Current Programme</th>
+                  <th>Date Transfered</th>
+                  <th>Status</th>
 						   </tr>
 						 </thead>
 						 <tbody>
 						  @foreach($transfers as $key=>$transfer)
-						   <tr>
-							 <td>{{ ($key+1) }} </td>
-							 <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
-							 <td>{{ $transfer->student->applicant->user->username }}</td>
-							 <td>{{ $transfer->previousProgram->code }}</td>
-							 <td>{{ $transfer->student->registration_number }}</td>
-							 <td>{{ $transfer->currentProgram->code }}</td>
-							 <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
-							 <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
-						   </tr>
+						    <tr>
+                  <td>{{ ($key+1) }} </td>
+                  <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
+                  <td>{{ $transfer->student->applicant->user->username }}</td>
+                  <td>{{ $transfer->previousProgram->code }}</td>
+                  <td>{{ $transfer->student->registration_number }}</td>
+                  <td>{{ $transfer->currentProgram->code }}</td>
+                  <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
+                  <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
+						    </tr>
 						   @endforeach
 						   <tr>
 							 <td colspan="8"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button></td>
