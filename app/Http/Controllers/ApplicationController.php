@@ -10786,7 +10786,7 @@ class ApplicationController extends Controller
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-                return $array['Response']['ResponseParameters']['StatusDescription']
+                return $array['Response']['ResponseParameters']['StatusDescription'];
             }
 		}
 		return redirect()->back()->with('message','External transfers submitted successfully');
