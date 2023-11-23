@@ -118,8 +118,9 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
+
                    <table class="table table-bordered ss-paginated-table" id="ss-transfers">
+                    {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
                      <thead>
                        <tr>
 					               <th>SN</th>
