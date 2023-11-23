@@ -8322,7 +8322,7 @@ class ApplicationController extends Controller
                 $a_level_out_principle_pass_count = 0;
                 $a_level_out_principle_pass_points = 0;
                 $a_level_out_subsidiary_pass_count = 0;
-
+return $applicant->nectaResultDetails;
                 foreach ($applicant->nectaResultDetails as $detail) {
                 if($detail->exam_id == 1 && $detail->verified == 1){
                     $other_must_subject_ready = false;

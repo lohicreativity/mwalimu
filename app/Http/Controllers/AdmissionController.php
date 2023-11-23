@@ -290,7 +290,6 @@ class AdmissionController extends Controller
     	// 		$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','NOT LIKE','%TCU%');
     	// 	})->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_usd');
 
-
         $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
         $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
 
