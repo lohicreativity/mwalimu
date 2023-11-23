@@ -10627,8 +10627,8 @@ class ApplicationController extends Controller
                                       ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
                                       ->with(['student.applicant.selections.campusProgram.program',
                                               'previousProgram',
-                                              'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                                              'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);},
+                                              'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                              'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);},
                                               'currentProgram'])
                                       ->where('status','PENDING')->get();
                                       
