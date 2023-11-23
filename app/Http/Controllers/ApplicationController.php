@@ -10756,7 +10756,7 @@ class ApplicationController extends Controller
                                 <f4indexno>'.$applicant->index_number.'</f4indexno>
                                 <f6indexno>'.$f6indexno.'</f6indexno>
                                 <Gender>'.$applicant->gender.'</ Gender >
-                                <CurrentProgrammeCode>'.$applicant->selections->campusProgram->code.'</CurrentProgrammeCode>
+                                <CurrentProgrammeCode>'.$applicant->selections[0]->campusProgram->code.'</CurrentProgrammeCode>
                                 <PreviousProgrammeCode>'.$trans->previous_program.'</PreviousProgrammeCode>
                                 </RequestParameters>
                                 </Request>';
