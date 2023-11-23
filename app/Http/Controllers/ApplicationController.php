@@ -6911,7 +6911,7 @@ class ApplicationController extends Controller
            }
            // $selected_program[$applicant->id] = false;
            $subject_count = 0;
-           return $applicant->nectaResultDetails;
+           
             foreach($campus_programs as $program){
 
                 if(count($program->entryRequirements) == 0){
