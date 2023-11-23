@@ -10708,10 +10708,9 @@ class ApplicationController extends Controller
                                         ->with(['selections'=>function($query){$query->select('id','applicant_id','campus_program_id')->where('status','SELECTED');},
                                                 'selections.campusProgram:id,code',
                                                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                                                'nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
-                                                'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
+                                                'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);}])
                                         ->find($trans->applicant_id);
-return $applicant;
+
                 $prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
                 $admitted_program = $prog;
                 $admitted_program_code = $prog->program->code;
@@ -10757,10 +10756,11 @@ return $applicant;
                                 <f4indexno>'.$applicant->index_number.'</f4indexno>
                                 <f6indexno>'.$f6indexno.'</f6indexno>
                                 <Gender>'.$applicant->gender.'</ Gender >
-                                <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
+                                <CurrentProgrammeCode>'.$applicant->selections->campusProgram->code.'</CurrentProgrammeCode>
                                 <PreviousProgrammeCode>'.$trans->previous_program.'</PreviousProgrammeCode>
                                 </RequestParameters>
                                 </Request>';
+                                return $xml_request;
                 $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                 $json = json_encode($xml_response);
                 $array = json_decode($json,TRUE);
