@@ -10693,7 +10693,6 @@ class ApplicationController extends Controller
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-    return $array['Response']['ResponseParameters']['StatusDescription'];
             }
             return redirect()->back()->with('message','Transfers submitted successfully');
         }else{
@@ -11948,7 +11947,6 @@ class ApplicationController extends Controller
 		if(!$semester){
 			return redirect()->back()->with('error', 'No active semester');
 		}
-
 		$staff = User::find(Auth::user()->id)->staff;
 		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
 		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
@@ -11960,7 +11958,7 @@ class ApplicationController extends Controller
 							->whereHas('studentshipStatus', function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
 							->whereHas('academicStatus', function($query){$query->where('name','!=','FAIL&DISCO')->orWhere('name','!=','DECEASED');})
 							->where('registration_number', $request->keyword)->with(['campusProgram.program','academicStatus'])->first();
-return $applicant;
+
 		if($semester->id === 2 && $student->campusProgram->program->min_duration === $student->year_of_study){
 			$finalist_status = SemesterRemarks::where('student_id', $student->id)->where('semester_id', $semester->id)->where('study_academic_year_id',$ac_year->id)
 								->where('year_of_study',$student->year_of_study)->count();
@@ -11968,7 +11966,7 @@ return $applicant;
 				return redirect()->back()->with('error', 'The student cannot be registered');
 			}
 		}
-		if(!empty($request->keyword) && !$applicant && !$student){
+		if($request->keyword && !$applicant && !$student){
 			return redirect()->back()->with('error', 'The student cannot be registered');
 		}
 		$data = [
