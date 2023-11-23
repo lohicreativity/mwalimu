@@ -140,7 +140,7 @@
                               @else <a href="{{ url('application/external-transfer/'.$transfer->id.'/edit') }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a>@endif</td>
                             <td>{{ $transfer->applicant->index_number }}</td>
                             <td>{{ $transfer->previous_program }}</td>
-                            <td>{{ $transfer->newProgram->program->code }}</td>
+                            <td>{{ $transfer->newProgram->code }}</td>
                             <td>{{ $transfer->created_at }}</td>
                             <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
                             <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
