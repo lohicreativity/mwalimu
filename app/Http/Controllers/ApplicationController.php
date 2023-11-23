@@ -7808,6 +7808,9 @@ class ApplicationController extends Controller
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
         $applicant->index_number = strtoupper($request->get('index_number'));
+        if($applicant->entry_mode != $request->get('entry_mode')){
+            $applicant->result_complete_status = 0;
+        }
         $applicant->entry_mode = $request->get('entry_mode');
 		$applicant->is_transfered = 1;
         $applicant->save();
