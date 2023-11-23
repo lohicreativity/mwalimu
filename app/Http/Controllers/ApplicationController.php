@@ -10680,7 +10680,7 @@ class ApplicationController extends Controller
      * Submit external transfer
      */
     public function submitExternalTransfer(Request $request)
-    {   
+    {   return 1;
         $staff = User::find(Auth::user()->id)->staff;
 		$transfers = ExternalTransfer::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})->where('status','ELIGIBLE')->get();
         $tcu_username = $tcu_token = $nactvet_authorization_key = null;
