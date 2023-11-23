@@ -10676,7 +10676,6 @@ class ApplicationController extends Controller
                                 </RequestParameters>
                                 </Request>';
 
-                                return $xml_request;
                 $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                 $json = json_encode($xml_response);
                 $array = json_decode($json,TRUE);
@@ -10694,7 +10693,7 @@ class ApplicationController extends Controller
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-    
+    return $array['Response']['ResponseParameters']['StatusDescription'];
             }
             return redirect()->back()->with('message','Transfers submitted successfully');
         }else{
