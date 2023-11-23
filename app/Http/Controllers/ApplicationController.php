@@ -7568,7 +7568,7 @@ class ApplicationController extends Controller
             $user->password = Hash::make($request->get('index_number'));
             $user->save();
 
-            ApplicantProgramSelection::where('applicant_id',$applicant->id)->update('status','ELIGIBLE');
+            ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
 		}else{
 			if($usr = User::where('username',$request->get('index_number'))->first()){
                 $user = $usr;
