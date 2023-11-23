@@ -10760,7 +10760,7 @@ class ApplicationController extends Controller
                                 <PreviousProgrammeCode>'.$trans->previous_program.'</PreviousProgrammeCode>
                                 </RequestParameters>
                                 </Request>';
-                                return $xml_request;
+
                 $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                 $json = json_encode($xml_response);
                 $array = json_decode($json,TRUE);
@@ -10777,7 +10777,16 @@ class ApplicationController extends Controller
                     $transfer->status = 'SUBMITTED';
                     $transfer->save();
                     // return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
+                }else{
+                    $error_log = new ApplicantFeedBackCorrection;
+                    $error_log->applicant_id = $applicant->id;
+                    $error_log->application_window_id = $request->get('application_window_id');
+                    $error_log->programme_id = null;
+                    $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                    $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
+                    $error_log->save();
                 }
+                return $array['Response']['ResponseParameters']['StatusDescription']
             }
 		}
 		return redirect()->back()->with('message','External transfers submitted successfully');
