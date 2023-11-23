@@ -11948,7 +11948,7 @@ class ApplicationController extends Controller
 		if(!$semester){
 			return redirect()->back()->with('error', 'No active semester');
 		}
-        return $request->keyword;
+
 		$staff = User::find(Auth::user()->id)->staff;
 		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
 		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
@@ -11968,7 +11968,7 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error', 'The student cannot be registered');
 			}
 		}
-		if($request->keyword && (!$applicant || !$student)){
+		if(!empty($request->keyword) && (!$applicant || !$student)){
 			return redirect()->back()->with('error', 'The student cannot be registered');
 		}
 		$data = [
