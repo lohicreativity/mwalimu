@@ -117,10 +117,10 @@
                 <h3 class="card-title">External Transfers</h3>
               </div>
               <!-- /.card-header -->
+              {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
               <div class="card-body">
 
                    <table class="table table-bordered ss-paginated-table" id="ss-transfers">
-                    {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
                      <thead>
                        <tr>
 					               <th>SN</th>
@@ -235,12 +235,12 @@
 					   <tr>
 					     <td colspan="8"><button type="submit" class="btn btn-primary"> Submit Transfers </button></td>
 					   </tr>
-					   {!! Form::close() !!}
+
                      </tbody>
                    </table>
 
 
-              </div>
+              </div>					   {!! Form::close() !!}
             </div>
             @endif
 
