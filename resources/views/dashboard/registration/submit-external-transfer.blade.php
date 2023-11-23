@@ -144,9 +144,8 @@
                             <td>{{ $transfer->newProgram->code }}</td>
                             <td>{{ $transfer->created_at }}</td>
                             <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
-                            <td>{{ $transfer->status }} @if($transfer->status == 'SUBMITTED') <span style="color: red">{!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!} </span>
-                                                        @else {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!} @endif
-                            </td>
+                            <td>@if($transfer->status == 'SUBMITTED') <span style="color: red"> {{ $transfer->status }} </span> @else {{ $transfer->status }} @endif
+                              {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
                         </tr>
 
                         <div class="modal fade" id="ss-edit-external-{{ $transfer->id }}">
