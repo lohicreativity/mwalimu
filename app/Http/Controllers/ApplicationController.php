@@ -10754,7 +10754,7 @@ return $applicant;
                                     <SessionToken>'.$tcu_token.'</SessionToken>
                                 </UsernameToken>
                                 <RequestParameters>
-                                <f4indexno>'.$applicant->.'</f4indexno>
+                                <f4indexno>'.$applicant->index_number.'</f4indexno>
                                 <f6indexno>'.$f6indexno.'</f6indexno>
                                 <Gender>'.$applicant->gender.'</ Gender >
                                 <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
