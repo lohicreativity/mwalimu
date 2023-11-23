@@ -6889,26 +6889,25 @@ class ApplicationController extends Controller
            $index_number = $applicant->index_number;
            $exam_year = explode('/', $index_number)[2];
 
-           foreach($applicant->nectaResultDetails as $detail) {
-              if($detail->exam_id == 2){
-                  $index_number = $detail->index_number;
-                  $exam_year = explode('/', $index_number)[2];
-              }
-           }
+            foreach($applicant->nectaResultDetails as $detail) {
+                if($detail->exam_id == 2){
+                    $index_number = $detail->index_number;
+                    $exam_year = explode('/', $index_number)[2];
+                }
+            }
 
             if($exam_year < 2014 || $exam_year > 2015){
-             $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
-             $diploma_principle_pass_grade = 'E';
-             $diploma_subsidiary_pass_grade = 'S';
-             $principle_pass_grade = 'D';
-             $subsidiary_pass_grade = 'S';
-           }else{
-             $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
-             $diploma_principle_pass_grade = 'D';
-             $diploma_subsidiary_pass_grade = 'E';
-             $principle_pass_grade = 'C';
-             $subsidiary_pass_grade = 'E';
-           }
+                $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
+                $diploma_principle_pass_grade = 'E';
+                $principle_pass_grade = 'E';
+                $subsidiary_pass_grade = 'S';
+            }else{
+                $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
+                $diploma_principle_pass_grade = 'D';
+                $principle_pass_grade = 'D';
+                $subsidiary_pass_grade = 'E';
+            }
+
            // $selected_program[$applicant->id] = false;
            $subject_count = 0;
            
