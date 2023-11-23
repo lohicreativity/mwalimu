@@ -166,7 +166,7 @@
 				  <!-- /.card-header -->
 				  <div class="card-body">
 					   {!! Form::open(['url'=>'application/internal-transfers-submission','class'=>'ss-form-processing']) !!}
-					   <table class="table table-bordered" id="ss-transfers">
+					   <table class="table table-bordered ss-paginated-table" id="ss-transfers">
 						 <thead>
 						   <tr>
 							 <th>SN</th>
