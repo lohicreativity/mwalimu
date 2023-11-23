@@ -10622,51 +10622,77 @@ class ApplicationController extends Controller
 	 */
 	 public function internalTransfersSubmission(Request $request)
 	 {
-		 $transfers = InternalTransfer::whereHas('student.applicant.programLevel',function($query){$query->where('name','LIKE','%Degree%');})
-                                      ->with(['student.applicant.selections.campusProgram.program','previousProgram','student.applicant.nectaResultDetails',
-                                              'student.applicant.nacteResultDetails','previousProgram'])->where('status','PENDING')->get();
+        $staff = User::find(Auth::user()->id)->staff;
+		$transfers = InternalTransfer::whereHas('student.applicant.programLevel',function($query){$query->where('name','LIKE','%Degree%');})
+                                      ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
+                                      ->with(['student.applicant.selections.campusProgram.program',
+                                              'previousProgram',
+                                              'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                              'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);},
+                                              'currentProgram'])
+                                      ->where('status','PENDING')->get();
+                                      
+        $tcu_username = $tcu_token = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
+
         if(count($transfers) > 0){
             foreach($transfers as $transfer){
                 $f6indexno = null;
-                foreach($transfer->student->applicant->nectaResultDetails as $detail){
+                foreach($transfer->student->applicant->nectaResultDetails as $detail) {
                     if($detail->exam_id == 2){
                         $f6indexno = $detail->index_number;
                         break;
                     }
                 }
-    
-                if($f6indexno == null){
-                    foreach($transfer->student->applicant->nacteResultDetails as $detail){
+
+                foreach($transfer->student->applicant->nacteResultDetails as $detail){
+                    if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
                         $f6indexno = $detail->avn;
                         break;
                     }
                 }
     
-                $transfer_program_code = $transfer->previousProgram->regulator_code;
-    
-                $url = 'http://41.59.90.200/admission/submitInternalTransfers';
+                $url = 'http://api.tcu.go.tz/admission/submitInternalTransfers';
                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
                                 <UsernameToken>
-                                <Username>'.config('constants.TCU_USERNAME').'</Username>
-                                <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                                    <Username>'.$tcu_username.'</Username>
+                                    <SessionToken>'.$tcu_token.'</SessionToken>
                                 </UsernameToken>
                                 <RequestParameters>
                                 <f4indexno>'.$transfer->student->applicant->index_number.'</f4indexno>
                                 <f6indexno>'.$f6indexno.'</f6indexno>
                                 <Gender>'.$transfer->student->applicant->gender.'</ Gender >
-                                <CurrentProgrammeCode>'.$transfer_program_code.'</CurrentProgrammeCode>
+                                <CurrentProgrammeCode>'.$transfer->currentProgram->regulator_code.'</CurrentProgrammeCode>
                                 <PreviousProgrammeCode>'.$transfer->previousProgram->regulator_code.'</PreviousProgrammeCode>
                                 </RequestParameters>
                                 </Request>';
+
+                                return $xml_request;
                 $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                 $json = json_encode($xml_response);
                 $array = json_decode($json,TRUE);
     
                 if($array['Response']['ResponseParameters']['StatusCode'] == 200){
-                $trans = InternalTransfer::find($transfer->id);
-                $trans->status = 'SUBMITTED';
-                $trans->save();
+                    $trans = InternalTransfer::find($transfer->id);
+                    $trans->status = 'SUBMITTED';
+                    $trans->save();
+                }else{
+                    $error_log = new ApplicantFeedBackCorrection;
+                    $error_log->applicant_id = $transfer->student->applicant->id;
+                    $error_log->application_window_id = $transfer->student->applicant->application_window_id;
+                    $error_log->programme_id = null;
+                    $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                    $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
+                    $error_log->save();
                 }
     
             }
@@ -10683,52 +10709,26 @@ class ApplicationController extends Controller
     { 
         $staff = User::find(Auth::user()->id)->staff;
 		$transfers = ExternalTransfer::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})->where('status','ELIGIBLE')->get();
-        $tcu_username = $tcu_token = $nactvet_authorization_key = null;
         
+        $tcu_username = $tcu_token = null;
         if($staff->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
             $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
-            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
-            $nactvet_token = config('constants.NACTE_API_SECRET_KIVUKONI');
 
         }elseif($staff->campus_id == 2){
             $tcu_username = config('constants.TCU_USERNAME_KARUME');
             $tcu_token = config('constants.TCU_TOKEN_KARUME');
-            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
-            $nactvet_token = config('constants.NACTE_API_SECRET_KARUME');
 
-        }elseif($staff->campus_id == 3){
-            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
-            $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
         }
 
         foreach($transfers as $trans){
 			if($request->get('transfer_'.$trans->id) == $trans->id){
-                $applicant = Applicant::select('id','index_number','gender')
+                $applicant = Applicant::select('id','index_number','gender','application_window_id')
                                         ->with(['selections'=>function($query){$query->select('id','applicant_id','campus_program_id')->where('status','SELECTED');},
                                                 'selections.campusProgram:id,code',
                                                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);}])
                                         ->find($trans->applicant_id);
-
-                $prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
-                $admitted_program = $prog;
-                $admitted_program_code = $prog->program->code;
-
-                // $f6indexno = null;
-                // foreach($applicant->nectaResultDetails as $detail){
-                //     if($detail->exam_id == 2){
-                //         $f6indexno = $detail->index_number;
-                //         break;
-                //     }
-                // }
-
-                // if($f6indexno == null){
-                //     foreach($applicant->nacteResultDetails as $detail){
-                //         $f6indexno = $detail->avn;
-                //         break;
-                //     }
-                // }
 
                 $f6indexno = null;
                 foreach($applicant->nectaResultDetails as $detail) {
@@ -10745,7 +10745,7 @@ class ApplicationController extends Controller
                     }
                 }
 
-                $url = 'http://api.tcu.go.tz/admission/submitInterInstitutionalTransfers'; //submitInterInstitutionalTransfers';
+                $url = 'http://api.tcu.go.tz/admission/submitInterInstitutionalTransfers';
                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
                                 <UsernameToken>
@@ -10756,7 +10756,7 @@ class ApplicationController extends Controller
                                 <f4indexno>'.$applicant->index_number.'</f4indexno>
                                 <f6indexno>'.$f6indexno.'</f6indexno>
                                 <Gender>'.$applicant->gender.'</ Gender >
-                                <CurrentProgrammeCode>'.$applicant->selections[0]->campusProgram->code.'</CurrentProgrammeCode>
+                                <CurrentProgrammeCode>'.$applicant->selections[0]->campusProgram->regulator_code.'</CurrentProgrammeCode>
                                 <PreviousProgrammeCode>'.$trans->previous_program.'</PreviousProgrammeCode>
                                 </RequestParameters>
                                 </Request>';
@@ -10764,9 +10764,6 @@ class ApplicationController extends Controller
                 $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                 $json = json_encode($xml_response);
                 $array = json_decode($json,TRUE);
-
-
-
 
                 if($array['Response']['ResponseParameters']['StatusCode'] == 200){
 
@@ -10776,17 +10773,16 @@ class ApplicationController extends Controller
                     $transfer = ExternalTransfer::find($trans->id);
                     $transfer->status = 'SUBMITTED';
                     $transfer->save();
-                    // return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
+
                 }else{
                     $error_log = new ApplicantFeedBackCorrection;
                     $error_log->applicant_id = $applicant->id;
-                    $error_log->application_window_id = $request->get('application_window_id');
+                    $error_log->application_window_id = $applicant->application_window_id;
                     $error_log->programme_id = null;
                     $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-                return $array['Response']['ResponseParameters']['StatusDescription'];
             }
 		}
 		return redirect()->back()->with('message','External transfers submitted successfully');
