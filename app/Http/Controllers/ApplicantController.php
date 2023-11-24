@@ -3176,6 +3176,10 @@ class ApplicantController extends Controller
             $applicant->program_level_id = $request->get('program_level_id');
             if($request->get('program_level_id') == 4){
                 $applicant->is_edited = 1;
+                if($request->get('index_number') != $applicant->index_number){
+                  $applicant->is_tcu_verified = null;
+                  $applicant->is_tcu_added = null;
+                }
             }
             $applicant->save();
 

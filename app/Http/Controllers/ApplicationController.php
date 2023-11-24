@@ -7760,7 +7760,7 @@ class ApplicationController extends Controller
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
 		$applicant = Applicant::whereHas('selections',function($query) use($applicant){$query->where('order',5)->where('batch_id',$applicant->batch_id);})
-                              ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])
+                              ->with(['nextOfKin','intake','selections','selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])
                               ->where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)->find($applicant->id);
 
         $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
