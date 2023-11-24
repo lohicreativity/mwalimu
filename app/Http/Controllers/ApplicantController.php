@@ -1141,7 +1141,7 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
-        if($applicant->is_tamisemi != 1){
+        if($applicant->is_tamisemi != 1 || $applicant->is_transfered != 1){
          //check if window is active
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
             // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
