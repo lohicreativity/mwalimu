@@ -7766,7 +7766,7 @@ class ApplicationController extends Controller
         $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
         $ac_year += 1;
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})->with('academicYear')->first();
-return $applicant;
+
         if(!$study_academic_year){
             redirect()->back()->with('error','Study academic year not defined.');
         }
