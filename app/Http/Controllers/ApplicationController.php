@@ -7736,8 +7736,8 @@ class ApplicationController extends Controller
 	 { 
 		$staff = User::find(Auth::user()->id)->staff;
 
-        $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->with('applicationWindow')->latest()->first();
-
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
+        return $applicant;
         $applicant->index_number = strtoupper($request->get('index_number'));
         if($applicant->entry_mode != $request->get('entry_mode')){
             $applicant->result_complete_status = 0;
@@ -7759,14 +7759,14 @@ class ApplicationController extends Controller
 
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
-		$applicant = Applicant::whereHas('selections',function($query) use($request){$query->where('status','SELECTED');})
+		$applicant = Applicant::whereHas('selections',function($query) use($applicant){$query->where('order',5)->where('batch_id',$applicant->batch_id);})
                               ->with(['nextOfKin','intake','selections'=>function($query){$query->where('status','SELECTED');},'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])
                               ->where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)->find($applicant->id);
 
         $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
         $ac_year += 1;
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})->with('academicYear')->first();
-        
+        return $applicant;
         if(!$study_academic_year){
             redirect()->back()->with('error','Study academic year not defined.');
         }
