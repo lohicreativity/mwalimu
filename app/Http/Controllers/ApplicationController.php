@@ -3031,7 +3031,7 @@ class ApplicationController extends Controller
         
                 if($qualified){
 
-                    ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->update(['status'=>'SELECTED']);
+                    ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->where('order',5)->update(['status'=>'SELECTED']);
 
                     $app = Applicant::find($applicant->id);
                     $app->status = 'ADMITTED';
@@ -7615,7 +7615,7 @@ class ApplicationController extends Controller
 		$selection->applicant_id = $applicant->id;
 		$selection->application_window_id = $application_window->id;
 		$selection->campus_program_id = $request->get('campus_program_id');
-        $selection->order = 1;
+        $selection->order = 5;
         $selection->status = 'PENDING';
         $selection->batch_id = $batch_id;
         $selection->save();
@@ -8152,7 +8152,7 @@ class ApplicationController extends Controller
                 $applicant->confirmation_status = 'TRANSFERED';
                 $applicant->save();
 
-                $selection =ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->first();
+                $selection =ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->where('order',5)->first();
                 $selection->campus_program_id = $request->get('campus_program_id');
                 $selection->status = 'SELECTED';
                 $selection->save();
