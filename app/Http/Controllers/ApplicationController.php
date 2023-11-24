@@ -7737,7 +7737,7 @@ class ApplicationController extends Controller
 		$staff = User::find(Auth::user()->id)->staff;
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
-        return $applicant;
+
         $applicant->index_number = strtoupper($request->get('index_number'));
         if($applicant->entry_mode != $request->get('entry_mode')){
             $applicant->result_complete_status = 0;
@@ -7766,7 +7766,7 @@ class ApplicationController extends Controller
         $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
         $ac_year += 1;
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){$query->where('year','LIKE','%/'.$ac_year.'%');})->with('academicYear')->first();
-
+return $applicant;
         if(!$study_academic_year){
             redirect()->back()->with('error','Study academic year not defined.');
         }
