@@ -7737,6 +7737,7 @@ class ApplicationController extends Controller
 		$staff = User::find(Auth::user()->id)->staff;
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->latest()->first();
+        return $applicant;
         $applicant->index_number = strtoupper($request->get('index_number'));
         if($applicant->entry_mode != $request->get('entry_mode')){
             $applicant->result_complete_status = 0;
