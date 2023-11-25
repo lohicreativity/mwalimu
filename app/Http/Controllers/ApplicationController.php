@@ -10711,7 +10711,7 @@ class ApplicationController extends Controller
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-                if($applicant_id != 39019){
+                if($applicant->id != 39019){
                     return $array['Response']['ResponseParameters']['StatusDescription'];
                 }
 
