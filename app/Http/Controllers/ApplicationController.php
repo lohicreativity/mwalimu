@@ -10653,7 +10653,7 @@ class ApplicationController extends Controller
 			if($request->get('transfer_'.$trans->id) == $trans->id){
                 $applicant = Applicant::select('id','index_number','gender','application_window_id')
                                         ->with(['selections'=>function($query){$query->select('id','applicant_id','campus_program_id')->where('status','SELECTED');},
-                                                'selections.campusProgram:id,code',
+                                                'selections.campusProgram:id,code,regulator_code',
                                                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);}])
                                         ->find($trans->applicant_id);
@@ -10672,7 +10672,7 @@ class ApplicationController extends Controller
                         break;
                     }
                 }
-return $applicant->selections[0];
+
                 $url = 'http://api.tcu.go.tz/admission/submitInterInstitutionalTransfers';
                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
