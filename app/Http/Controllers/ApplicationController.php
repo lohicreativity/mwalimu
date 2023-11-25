@@ -10657,7 +10657,7 @@ class ApplicationController extends Controller
                                                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);}])
                                         ->where('campus_id',$staff->campus_id)->find($trans->applicant_id);
-return $applicant;
+
                 $f6indexno = null;
                 foreach($applicant->nectaResultDetails as $detail) {
                     if($detail->exam_id == 2){
@@ -10711,10 +10711,6 @@ return $applicant;
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-                if($applicant->id != 39019){
-                    return $array['Response']['ResponseParameters']['StatusDescription'];
-                }
-
             }
 		}
 		return redirect()->back()->with('message','External transfers submitted successfully');
