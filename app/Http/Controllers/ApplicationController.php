@@ -10672,7 +10672,7 @@ class ApplicationController extends Controller
                         break;
                     }
                 }
-return $applicant->selections[0];
+
                 $url = 'http://api.tcu.go.tz/admission/submitInterInstitutionalTransfers';
                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
@@ -10711,7 +10711,10 @@ return $applicant->selections[0];
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
-                return $array['Response']['ResponseParameters']['StatusDescription'];
+                if($applicant_id != 39019){
+                    return $array['Response']['ResponseParameters']['StatusDescription'];
+                }
+
             }
 		}
 		return redirect()->back()->with('message','External transfers submitted successfully');
