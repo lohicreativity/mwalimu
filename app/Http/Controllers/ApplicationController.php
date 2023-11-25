@@ -10672,7 +10672,7 @@ class ApplicationController extends Controller
                         break;
                     }
                 }
-
+return $applicant->selections[0];
                 $url = 'http://api.tcu.go.tz/admission/submitInterInstitutionalTransfers';
                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
@@ -10692,7 +10692,7 @@ class ApplicationController extends Controller
                 $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                 $json = json_encode($xml_response);
                 $array = json_decode($json,TRUE);
-return $array['Response']['ResponseParameters']['StatusDescription'];
+
                 if($array['Response']['ResponseParameters']['StatusCode'] == 200){
 
                     $applicant->confirmation_status = 'SUBMITTED';
@@ -10711,6 +10711,7 @@ return $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->remarks = $array['Response']['ResponseParameters']['StatusDescription'];
                     $error_log->save();
                 }
+                return $array['Response']['ResponseParameters']['StatusDescription'];
             }
 		}
 		return redirect()->back()->with('message','External transfers submitted successfully');
