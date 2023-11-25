@@ -10672,7 +10672,7 @@ class ApplicationController extends Controller
                         break;
                     }
                 }
-
+return $applicant->selections[0];
                 $url = 'http://api.tcu.go.tz/admission/submitInterInstitutionalTransfers';
                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                                 <Request>
