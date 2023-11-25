@@ -10805,6 +10805,7 @@ class ApplicationController extends Controller
     }
 
     public function showTCUFeedbackCorrectionList(Request $request){
+        return 1;
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->where('status',null)->whereNotNull('verification_id')->count();
         $staff = User::find(Auth::user()->id)->staff;
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id'))
