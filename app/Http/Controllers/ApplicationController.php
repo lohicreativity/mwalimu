@@ -10656,8 +10656,8 @@ class ApplicationController extends Controller
                                                 'selections.campusProgram:id,code,regulator_code',
                                                 'nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                                 'nacteResultDetails'=>function($query){$query->select('id','applicant_id','programme','avn')->where('verified',1);}])
-                                        ->find($trans->applicant_id);
-
+                                        ->where('campus_id',$staff->campus_id)->find($trans->applicant_id);
+return $applicant;
                 $f6indexno = null;
                 foreach($applicant->nectaResultDetails as $detail) {
                     if($detail->exam_id == 2){
@@ -10807,6 +10807,7 @@ class ApplicationController extends Controller
     public function showTCUFeedbackCorrectionList(Request $request){
         
         $errors = ApplicantFeedBackCorrection::where('application_window_id',$request->get('application_window_id'))->where('status',null)->count();
+        return $errors;
         $staff = User::find(Auth::user()->id)->staff;
         $applicants =  DB::table('applicants as a')->select(DB::raw('a.id,first_name,middle_name,surname,index_number,gender,phone,a.program_level_id'))
                            ->where('a.campus_id',$staff->campus_id)
