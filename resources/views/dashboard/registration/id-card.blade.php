@@ -111,7 +111,7 @@
 				</div>
             </div>
             <!-- /.card -->
-{{ count($students) }}
+{{ $study_academic_year }}
             @if(count($students) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
