@@ -111,9 +111,8 @@
 				</div>
             </div>
             <!-- /.card -->
-
+{{ count($students) }}
             @if(count($students) != 0 && $study_academic_year)
-			hello
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Students Awaiting IDs - {{ $study_academic_year->academicYear->year }}</h3><br>
