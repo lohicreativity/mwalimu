@@ -678,6 +678,7 @@ class RegistrationController extends Controller
 		  $student = null;
 		$semester = Semester::where('status','ACTIVE')->first();
 		if($request->has('study_academic_year_id')){
+            return 1;
 			$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
 
 			$student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0)->where('status', 'REGISTERED');})
