@@ -685,7 +685,7 @@ class RegistrationController extends Controller
 					   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
 					   ->with('applicant','campusProgram.program','campusProgram.campus')->latest()->get();
 		}
-return $student;
+
 /*         if(count($student) == 0){
           return redirect()->back()->with('error','Student has not been registered for this semester');
         } */
@@ -705,6 +705,7 @@ return $student;
 			'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
         ];
+        return $data;
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
     }
 
