@@ -42,7 +42,7 @@
           <div class="col-12">
             <div class="card">
               <!-- /.card-header -->
-
+			  {{ $study_academic_year }}
                 <div class="card-body">
                  {!! Form::open(['url'=>'registration/print-id-card','class'=>'ss-form-processing','method'=>'GET']) !!}
 
@@ -111,7 +111,6 @@
 				</div>
             </div>
             <!-- /.card -->
-{{ $study_academic_year }}
             @if(count($students) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
@@ -123,7 +122,7 @@
                 <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
-                    <th>SN</th>
+                    <th>SN </th>
                     <th>Reg. No.</th>
                     <th>Names</th>
                     <th>Sex</th>
