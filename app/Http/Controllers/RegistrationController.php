@@ -705,7 +705,7 @@ class RegistrationController extends Controller
 			'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
         ];
-        return $data;
+        return $data->students;
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
     }
 
