@@ -694,7 +694,7 @@ class RegistrationController extends Controller
               return redirect()->back()->with('error','Student does not have insurance');
            }
         } */
-
+return $semester;
         $data = [
             'students'=>$student? $student : [],
             'semester'=>$semester,
