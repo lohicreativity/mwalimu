@@ -6554,7 +6554,7 @@ class ApplicationController extends Controller
                 $applicant->multiple_admissions = 0;
                 $applicant->save();
 
-                return redirect()->back()->with('message','Confirmation code requested successfully');
+                return redirect()->back()->with('message','Admission status changed successfully');
             }else{
                 return redirect()->back()->with('error','Unable to request confirmation code. '.$array['Response']['ResponseParameters']['StatusDescription']);
             }
