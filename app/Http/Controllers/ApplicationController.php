@@ -6550,7 +6550,7 @@ class ApplicationController extends Controller
 
             return redirect()->back()->with('message','Confirmation code requested successfully');
         }else{
-            return redirect()->back()->with('error','Unable to request confirmation code. '.$array['Response']['ResponseParameters']['StatusDescription']);
+            return redirect()->back()->with('error','Unable to request confirmation code. '.$array['Response']['ResponseParameters']['StatusCode']);
         }
     }
 
