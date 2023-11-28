@@ -5916,6 +5916,7 @@ class ApplicationController extends Controller
         }
 
         $user = User::find($request->get('user_id'));
+        return $user;
         $user->password = Hash::make($request->get('password'));
         $user->save();
 
