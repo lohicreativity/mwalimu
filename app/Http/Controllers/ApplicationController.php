@@ -3905,9 +3905,9 @@ class ApplicationController extends Controller
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
             $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
         }
-return $applicant->programLevel->name;
+
         if(!$window_batch){
-            return redirect()->back()->with('error','Application window not closed yet');
+            return redirect()->back()->with('error','Application window not closed yet1');
         }
 
         $batch_id = $batch_no = 0;
