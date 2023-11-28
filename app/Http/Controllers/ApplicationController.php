@@ -5932,11 +5932,10 @@ class ApplicationController extends Controller
         //        return redirect()->back()->with('error','You cannot reset applicant\'s password because application window is already closed');
         // }
         
-        $student_user_id = Student::select('user_id')->where('applicant_id',$applicant->user_id)->first();
+        $student_user_id = Student::select('user_id')->where('applicant_id',$applicant->id)->first();
         $user_id = !empty($student_user_id)? $student_user_id : $applicant->user_id;
         $user = User::find($user_id);
         $user->password = Hash::make($applicant->index_number);
-        return $user;
         $user->save();
 
         return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
