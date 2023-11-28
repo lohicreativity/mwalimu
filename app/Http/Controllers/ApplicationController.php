@@ -3901,15 +3901,15 @@ class ApplicationController extends Controller
             if(!$app_window){
                return redirect()->back()->with('error','Application window is inactive');
             }
-return $app_window;
+
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $applicant->program_level_id)->where('end_date','>=',  now()->format('Y-m-d'))->latest()->first();
         }
 
         if(!$window_batch){
             return redirect()->back()->with('error','Application window not closed yet');
         }
-
+return 1;
         $batch_id = $batch_no = 0;
 
         $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
