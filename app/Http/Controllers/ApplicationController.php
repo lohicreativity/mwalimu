@@ -6550,7 +6550,14 @@ class ApplicationController extends Controller
 
             return redirect()->back()->with('message','Confirmation code requested successfully');
         }else{
-            return redirect()->back()->with('error','Unable to request confirmation code. '.$array['Response']['ResponseParameters']['StatusCode']);
+            if($array['Response']['ResponseParameters']['StatusCode'] == 215){
+                $applicant->multiple_admissions = 0;
+                $applicant->save();
+
+                return redirect()->back()->with('message','Confirmation code requested successfully');
+            }else{
+                return redirect()->back()->with('error','Unable to request confirmation code. '.$array['Response']['ResponseParameters']['StatusDescription']);
+            }
         }
     }
 
