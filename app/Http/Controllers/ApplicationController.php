@@ -5916,7 +5916,6 @@ class ApplicationController extends Controller
         }
 
         $user = User::find($request->get('user_id'));
-        return $user;
         $user->password = Hash::make($request->get('password'));
         $user->save();
 
@@ -5937,6 +5936,7 @@ class ApplicationController extends Controller
         $user_id = !empty($student_user_id)? $student_user_id : $applicant->user_id;
         $user = User::find($user_id);
         $user->password = Hash::make($applicant->index_number);
+        return $user;
         $user->save();
 
         return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
