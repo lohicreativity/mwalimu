@@ -66,7 +66,7 @@
                     </div>
                   @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
                       <div class="alert alert-success">
-                        <h3 class="text-white" style="font-size: 14px!important;"><i class="fa fa-check-circle"></i> 
+                        <h3 class="text-white" style="font-size: 16px!important;"><i class="fa fa-check-circle"></i> 
                         Congratulations! You have been successfully selected for {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme. @if($applicant->multiple_admissions === null || $applicant->multiple_admissions === 0) Please wait for admission package or click <a style="background-color:red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" href="{{ url('application/admission-confirmation') }}">cancel admission</a> to cancel the admission. @elseif($applicant->confirmation_status === null) Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
                       </div>
                   @elseif($applicant->status == 'ADMITTED' && !$student)
