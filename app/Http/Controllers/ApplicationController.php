@@ -5934,8 +5934,8 @@ class ApplicationController extends Controller
 
         $student_user_id = Student::select('user_id')->where('applicant_id',$applicant->id)->first();
         $user_id = !empty($student_user_id)? $student_user_id : $applicant->user_id;
-        return $user_id;
         $user = User::find($user_id);
+        return $user;
         $user->password = Hash::make($applicant->index_number);
         $user->save();
 
