@@ -3850,7 +3850,7 @@ class ApplicationController extends Controller
      */
 
     public function selectApplicant(Request $request)
-    {
+    { return 1;
         $decision               = $request->get('decision_btn');
         $applicant_id           = $request->get('applicant_id');
         $application_window_id  = $request->get('application_window_id');
@@ -3909,7 +3909,7 @@ class ApplicationController extends Controller
         if(!$window_batch){
             return redirect()->back()->with('error','Application window not closed yet');
         }
-return 1;
+
         $batch_id = $batch_no = 0;
 
         $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
