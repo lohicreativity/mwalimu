@@ -3880,7 +3880,7 @@ class ApplicationController extends Controller
                return redirect()->back()->with('error','Application window is inactive');
             }
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $applicant->program_level_id)->where('end_date','>=',  now()->format('Y-m-d'))->latest()->first();
 
         }elseif(str_contains(strtolower($applicant->programLevel->name),'bachelor')){
             // $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('status','ACTIVE')
@@ -3891,7 +3891,7 @@ class ApplicationController extends Controller
                return redirect()->back()->with('error','Application window is inactive');
             }
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $applicant->program_level_id)->where('end_date','>=',  now()->format('Y-m-d'))->latest()->first();
 
         }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
             // $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('status','ACTIVE')
