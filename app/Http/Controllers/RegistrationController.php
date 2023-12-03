@@ -680,11 +680,11 @@ class RegistrationController extends Controller
 		if($request->has('study_academic_year_id')){
 			$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
 
-			$student = Student::select('id','registration_number','first_name','middle_name','surname','gender','phone','campus_program_id')
+			$student = Student::select('id','registration_number','first_name','middle_name','surname','gender','phone','campus_program_id','signature','image','applicant_id','registration_year','year_of_study','created_at')
                               ->whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0)->where('status', 'REGISTERED');})
                               ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
                               ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
-                              ->with('campusProgram:id,code')->latest()->get();
+                              ->with('applicant:id,campus_id,intake_id','applicant.intake:id,name','campusProgram:id,code')->latest()->paginate(200);
 
             // $student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0)->where('status', 'REGISTERED');})
             // ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
@@ -806,7 +806,7 @@ class RegistrationController extends Controller
             'tuition_payment_check' => $tuition_payment_check
         ];
 
-        return view('dashboard.registration.reports.id-card',$data);
+        //return view('dashboard.registration.reports.id-card',$data);
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
             //    'format'=>'A7',
                'mode' => 'utf-8',
