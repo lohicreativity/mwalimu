@@ -725,7 +725,8 @@ class RegistrationController extends Controller
             'campuses'=>Campus::all(),
 			'staff'=>User::find(Auth::user()->id)->staff,
             'students'=>Student::select('id','signature','image')->where('id',$request->id)->first(),
-            'compose'=>1
+            'compose'=>1,
+            'request'=>$request
         ];
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
     }
