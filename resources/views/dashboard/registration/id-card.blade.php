@@ -151,13 +151,7 @@
 									  </i>
 									  Compose ID
 							  </a>
-							  @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
-								<script>
-								$(function() {
-									$('#myModal').modal('show');
-								});
-								</script>
-							@endif
+
 								@if($student->signature != null && $student->image != null)
 									<a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
 
