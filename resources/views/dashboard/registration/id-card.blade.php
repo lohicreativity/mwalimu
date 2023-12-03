@@ -146,11 +146,18 @@
 						  <td>{{ $student->campusProgram->code }}</td>
 						  @if(Auth::user()->hasRole('admission-officer'))
 							<td>
-							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}" onclick=getDraggableDiv("{{ $student->id }}")>
+							  <a class="btn btn-success btn-sm" href="compose-id-card/?id={{ $student->id )}}" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}" onclick=getDraggableDiv("{{ $student->id }}")>
 									  <i class="fas fa-check">
 									  </i>
 									  Compose ID
 							  </a>
+							  @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
+								<script>
+								$(function() {
+									$('#myModal').modal('show');
+								});
+								</script>
+							@endif
 								@if($student->signature != null && $student->image != null)
 									<a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
 

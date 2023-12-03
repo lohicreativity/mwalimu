@@ -715,6 +715,9 @@ class RegistrationController extends Controller
     }
 
 
+    public function composeIDCard(Request $request){
+        return $request;
+    }
     /**
      * Show ID Card
      */

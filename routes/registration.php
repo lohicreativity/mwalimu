@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('print-id-card-bulk',[RegistrationController::class,'printIDCardBulk']);
     Route::get('show-id-card-bulk',[RegistrationController::class,'showIDCardBulk']);
     Route::get('show-id-card',[RegistrationController::class,'showIDCard']);
+    Route::get('compose-id-card',[RegistrationController::class,'composeIDCard']);
 
     Route::post('crop-student-image',[RegistrationController::class,'cropStudentImage']);
 
