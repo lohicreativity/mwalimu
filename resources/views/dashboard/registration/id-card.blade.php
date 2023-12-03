@@ -146,7 +146,7 @@
 						  <td>{{ $student->campusProgram->code }}</td>
 						  @if(Auth::user()->hasRole('admission-officer'))
 							<td>
-							  <a class="btn btn-success btn-sm" href="compose-id-card/?id={{ $student->id )}}" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}" onclick=getDraggableDiv("{{ $student->id }}")>
+							  <a class="btn btn-success btn-sm" href="compose-id-card/?id={{ $student->id }}" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}" onclick=getDraggableDiv("{{ $student->id }}")>
 									  <i class="fas fa-check">
 									  </i>
 									  Compose ID
