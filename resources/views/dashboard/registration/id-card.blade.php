@@ -511,7 +511,6 @@
 
 			  </div>
 			</div>
-			              <div class="float-right ss-pagination-links"> {!! $students->appends($request->except('page'))->render() !!} </div>
 
 			@endif
           </div>
