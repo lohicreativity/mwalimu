@@ -412,7 +412,7 @@ class AdmissionController extends Controller
         ->where('study_academic_year_id',$study_academic_year->id)
         ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
 
-        $orientation_date = null;
+        $orientation_date = '';
         if(count($special_dates) == 0){
             return redirect()->back()->with('error','Orientation date has not been defined.');
         }else{

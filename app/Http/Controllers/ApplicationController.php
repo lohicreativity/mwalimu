@@ -6674,8 +6674,8 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $student = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-		->whereHas('academicStatus',function($query){$query->where('name','FRESHER');})
-		->whereHas('studentshipStatus', function($query){$query->where('name', 'ACTIVE');})
+                          ->whereHas('academicStatus',function($query){$query->where('name','FRESHER');})
+                          ->whereHas('studentshipStatus', function($query){$query->where('name', 'ACTIVE');})
 		->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
@@ -7413,14 +7413,15 @@ class ApplicationController extends Controller
 		->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
-
+        
+        $ac_yr = StudyAcademicYear::latest()->first();
         $data = [
             'student'=>$student,
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
             'campus_programs'=>$student? $programs : [],
-            'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){
-                  $query->where('campus_id',$staff->campus_id);
-            })->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
+            'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                         ->whereHas('student.applicant.applicationWindow.studyAcademicYear.academcYear',function($query) use($ac_yr){$query->where('id',$ac_yr->id);})
+                                         ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
