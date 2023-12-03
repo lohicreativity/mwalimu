@@ -17,13 +17,6 @@
 
   <!-- Content Wrapper. Contains page content -->
   <!-- Content Wrapper. Contains page content -->
-  @if($compose == 1)
-  <script>
-  $(function() {
-	  $('#ss-student-id-4411').modal('show');
-  });
-  </script>
-@endif
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -153,12 +146,11 @@
 						  <td>{{ $student->campusProgram->code }}</td>
 						  @if(Auth::user()->hasRole('admission-officer'))
 							<td>
-							  <a class="btn btn-success btn-sm" href="compose-id-card/?id={{ $student->id }}" >
+							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}" onclick=getDraggableDiv("{{ $student->id }}")>
 									  <i class="fas fa-check">
 									  </i>
 									  Compose ID
 							  </a>
-
 								@if($student->signature != null && $student->image != null)
 									<a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
 
