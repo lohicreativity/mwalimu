@@ -251,7 +251,7 @@ class AdmissionController extends Controller
                     ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','%Medical Examination%');});
             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->sum('amount_in_usd');
 
- 
+ return $other_fees_tzs;
     	}else{
     		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
