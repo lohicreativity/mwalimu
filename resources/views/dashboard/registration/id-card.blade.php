@@ -154,10 +154,10 @@
 							  @if($compose == 1)
 								<script>
 								$(function() {
-									$("#ss-student-id-4411").modal('show');
+									$('#ss-student-id-4411').modal('show');
 								});
 								</script>
-							@endif
+							  @endif
 
 								@if($student->signature != null && $student->image != null)
 									<a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
