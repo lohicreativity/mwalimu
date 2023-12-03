@@ -602,7 +602,7 @@ class AdmissionController extends Controller
 
         if($applicant->has_postponed != 1){
 
-            if(str_contains($applicant->programLevel->name,'Bachelor')){
+            if(str_contains(strtolower($applicant->programLevel->name),'bachelor')){
                 $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
                     $query->where('name','LIKE','%TCU%');
                 })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->first();
@@ -639,7 +639,7 @@ class AdmissionController extends Controller
 
                     }
 
-                }else {
+                }else{
                     if(session('applicant_campus_id') == 1){
                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
@@ -741,6 +741,22 @@ class AdmissionController extends Controller
                         ->orWhere('name','LIKE','%Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});
                 })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->sum('amount_in_tzs');
                 
+            }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
+                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                    $query->where('name','LIKE','%Master%')->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
+                })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->first();
+
+                $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+                    $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card Fee%')
+                        ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Welfare Emergence%')->orWhere('name','LIKE','%Caution Money%')
+                        ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','%Medical Examination%');});
+                })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->sum('amount_in_tzs');
+    
+                $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+                    $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card Fee%')
+                        ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Welfare Emergence%')->orWhere('name','LIKE','%Caution Money%')
+                        ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','%Medical Examination%');});
+                })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->sum('amount_in_usd');
             }else{
                 $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
                     $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
