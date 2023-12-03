@@ -724,7 +724,7 @@ class RegistrationController extends Controller
             'awards'=>Award::all(),
             'campuses'=>Campus::all(),
 			'staff'=>User::find(Auth::user()->id)->staff,
-            'students'=>Student::select('id','signature','image')->where('id',$request->id)->get(),
+            'students'=>Student::select('id','signature','image')->where('id',$request->id)->with('campusProgram:id,code')->get(),
             'compose'=>1,
             'request'=>$request
         ];
