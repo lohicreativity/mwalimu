@@ -7419,7 +7419,7 @@ class ApplicationController extends Controller
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
             'campus_programs'=>$student? $programs : [],
             'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                          ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
+                                    ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');

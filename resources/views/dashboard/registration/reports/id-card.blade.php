@@ -40,8 +40,8 @@
         @endif
 
     <div style="position:absolute;top:0.75in;left:1.07in;width:2.3in;line-height:0.18in;">
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} {{ substr($student->middle_name,0,1) }}.  </span><br/>
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('.','-',$student->campusProgram->program->code) }}</span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} @if(empty($student->middle_name)). @else {{ substr($student->middle_name,0,1)}}.  </span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('.','-',$student->campusProgram->code) }}</span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;">{{ $student->registration_number }}</span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> 
             @if($tuition_payment_check){{ str_replace('-', '/', App\Utils\DateMaker::toStandardDate($study_academic_year->end_date)) }} @else 30/04/{{substr(App\Utils\DateMaker::toStandardDate($study_academic_year->end_date),-4)}} @endif</span><br/>
