@@ -7420,7 +7420,7 @@ class ApplicationController extends Controller
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
             'campus_programs'=>$student? $programs : [],
             'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                         ->whereHas('student.applicant.applicationWindow.studyAcademicYear',function($query) use($ac_yr){$query->where('id',1);})
+                                         ->whereHas('student.applicant.applicationWindow',function($query) use($ac_yr){$query->where('id',1);})
                                          ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
             'staff'=>$staff
         ];
