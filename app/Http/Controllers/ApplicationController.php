@@ -7414,7 +7414,8 @@ class ApplicationController extends Controller
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
         
-        $ac_yr = StudyAcademicYear::latest()->first();
+        $ac_yr = StudyAcademicYear::whereHas('student.applicant.applicationWindow',function($query){$query->where('id',1);})->latest()->first();
+        return $ac_yr;
         return InternalTransfer::with('student.applicant.applicationWindow.studyAcademicYear')->limit(1)->get();
         $data = [
             'student'=>$student,
