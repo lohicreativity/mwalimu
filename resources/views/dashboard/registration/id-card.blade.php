@@ -154,7 +154,7 @@
 							  @if($compose == 1)
 								<script>
 								$(function() {
-									$("#ss-student-id-{{ $student->id }").modal('show');
+									$("#ss-student-id-{{ $student->id }}").modal('show');
 								});
 								</script>
 							@endif
