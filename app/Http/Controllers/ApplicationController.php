@@ -4769,9 +4769,8 @@ class ApplicationController extends Controller
 		$days = round($datediff / (60 * 60 * 24));
 
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
-            $fee_amount = FeeAmount::whereHas('feeItem',function($query){
-                   return $query->where('name','LIKE','%Late Registration%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->first();
+            $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Late Registration%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_id',$staff->campus_id)->first();
 
             $student = Student::with(['applicant.country'])->find($student->id);
 
@@ -7421,7 +7420,7 @@ class ApplicationController extends Controller
             'campus_programs'=>$student? $programs : [],
             'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->paginate(20),
+            })->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
