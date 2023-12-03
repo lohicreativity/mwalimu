@@ -151,6 +151,13 @@
 									  </i>
 									  Compose ID
 							  </a>
+							  @if($compose == 1)
+								<script>
+								$(function() {
+									$("#ss-student-id-{{ $student->id }").modal('show');
+								});
+								</script>
+							@endif
 
 								@if($student->signature != null && $student->image != null)
 									<a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
