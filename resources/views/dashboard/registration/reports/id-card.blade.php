@@ -40,7 +40,7 @@
         @endif
 
     <div style="position:absolute;top:0.75in;left:1.07in;width:2.3in;line-height:0.18in;">
-        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} @if(empty($student->middle_name)). @else {{ substr($student->middle_name,0,1)}}.  </span><br/>
+        <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">NAME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt">{{ $student->surname}}, {{ucwords(strtolower($student->first_name))}} @if(empty($student->middle_name)). @else {{ substr($student->middle_name,0,1)}}. @endif </span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">PROGRAMME: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> {{ str_replace('.','-',$student->campusProgram->code) }}</span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">REG No: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;">{{ $student->registration_number }}</span><br/>
         <span style="font-style:normal;font-weight:bold;font-size:8pt;color:#162F7F">VALID TO: </span><span style="font-style:normal;font-weight:bold;font-size:8pt;"> 
