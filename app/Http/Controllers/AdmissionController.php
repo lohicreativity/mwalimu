@@ -178,7 +178,7 @@ class AdmissionController extends Controller
 
             $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
             ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-            ->where('name','LIKE','%Master%')->where('name','LIKE','%Medical Care%');})->first();
+            ->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');});})->first();
 
             if(!$medical_insurance_fee){
             return redirect()->back()->with('error','Medical insurance fee has not been defined. Please contact the Admission Office.');
