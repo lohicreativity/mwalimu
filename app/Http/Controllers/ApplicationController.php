@@ -7413,17 +7413,13 @@ class ApplicationController extends Controller
 		->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
-        
-        $ac_yr = StudyAcademicYear::whereHas('student.applicant.applicationWindow',function($query){$query->where('id',1);})->latest()->first();
-        return $ac_yr;
-        return InternalTransfer::with('student.applicant.applicationWindow.studyAcademicYear')->limit(1)->get();
+
         $data = [
             'student'=>$student,
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
             'campus_programs'=>$student? $programs : [],
             'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                         ->whereHas('student.applicant.applicationWindow',function($query) use($ac_yr){$query->where('id',1);})
-                                         ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
+                                          ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
