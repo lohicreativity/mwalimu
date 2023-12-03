@@ -718,7 +718,13 @@ class RegistrationController extends Controller
 
     public function composeIDCard(Request $request){
         $data = [
-            'student'=>Student::select('id','signature','image')->where('id',$request->id)->first(),
+            'semester'=>Semester::where('status','ACTIVE')->first(),
+			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : StudyAcademicYear::where('status', 'ACTIVE')->first(),
+            'awards'=>Award::all(),
+            'campuses'=>Campus::all(),
+			'staff'=>User::find(Auth::user()->id)->staff,
+            'students'=>Student::select('id','signature','image')->where('id',$request->id)->first(),
             'compose'=>1
         ];
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
