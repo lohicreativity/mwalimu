@@ -808,7 +808,7 @@ class RegistrationController extends Controller
 
         //return view('dashboard.registration.reports.id-card',$data);
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
-            //    'format'=>'A7',
+               'format'=>'A7',
                'mode' => 'utf-8',
                'allow_charset_conversion' => true,
                'margin_top'=>0,
@@ -817,7 +817,7 @@ class RegistrationController extends Controller
                'margin_right'=>0,
                'orientation'=>'L',
                'display_mode'=>'fullpage',
-            //    'format'=>[500,400]
+               'format'=>[500,400]
         ]);
         return  $pdf->stream();
         //  return view('dashboard.registration.reports.id-card',$data);
