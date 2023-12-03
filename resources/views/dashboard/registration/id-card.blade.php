@@ -17,6 +17,13 @@
 
   <!-- Content Wrapper. Contains page content -->
   <!-- Content Wrapper. Contains page content -->
+  @if($compose == 1)
+  <script>
+  $(function() {
+	  $('#ss-student-id-4411').modal('show');
+  });
+  </script>
+@endif
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -111,13 +118,7 @@
 				</div>
             </div>
             <!-- /.card -->
-			@if($compose == 1)
-			<script>
-			$(function() {
-				$('#ss-student-id-4411').modal('show');
-			});
-			</script>
-		  @endif
+
             @if(count($students) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
