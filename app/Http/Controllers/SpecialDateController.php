@@ -198,7 +198,7 @@ class SpecialDateController extends Controller
         $date->intake = $request->get('intake');
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
-        $date->group_id = $request->get('group_id');
+        $date->group_id = $request->get('group');
         $date->applicable_levels = $request->get('applicable_levels');
         $date->save();
 
