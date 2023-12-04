@@ -283,7 +283,7 @@
                                                   
                                                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                                                   {!! Form::input('hidden','name','New Registration Period') !!}
-                                                  {!! Form::input('hidden','applicable_levels',$registration_date->applicable_levels) !!}
+                                                  {!! Form::input('hidden','applicable_levels[]',unserialize($registration_date->applicable_levels)) !!}
                                                 </div>
                                                 <div class="form-group col-4">
                                                   {!! Form::label('','Select campus') !!}
