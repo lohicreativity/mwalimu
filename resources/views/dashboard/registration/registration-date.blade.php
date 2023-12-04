@@ -220,26 +220,36 @@
                                                 'readonly'=>true,
                                                 'required'=>true                                      
                                               ];
+                                              $intake = [
+                                                'class'=>'form-control',                      
+                                                'readonly'=>true,
+                                                'required'=>true                                      
+                                              ];
+                                              $applicable_level = [
+                                                'placeholder'=>'Applicable Levels',
+                                                'class'=>'form-control',
+                                                'readonly'=>true
+                                              ];
                                               foreach($study_academic_years as $year){
                                                 if($year->id == $registration_date->study_academic_year_id){ 
                                                   $academic_year = $year->academicYear->year;
                                                   break;
                                                 }
                                               }
-                                            if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
-                                              $date = [
-                                                  'placeholder'=>'Registration date',
-                                                  'class'=>'form-control ss-datepicker',
-                                                  'required'=>true
-                                              ];
+                                              if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
+                                                $date = [
+                                                    'placeholder'=>'Registration date',
+                                                    'class'=>'form-control ss-datepicker',
+                                                    'required'=>true
+                                                ];
                                               }else{
-                                              $date = [
-                                                  'placeholder'=>'Registration date',
-                                                  'class'=>'form-control',                      
-                                                  'readonly'=>true,
-                                                  'required'=>true
-                                              ];
-                                            }
+                                                $date = [
+                                                    'placeholder'=>'Registration date',
+                                                    'class'=>'form-control',                      
+                                                    'readonly'=>true,
+                                                    'required'=>true
+                                                ];
+                                              }
                                             @endphp
                                              <div class="card-body">
                                                <div class="row">
@@ -275,17 +285,6 @@
                                                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                                                   {!! Form::input('hidden','name','registration') !!}
                                                 </div>
-                                                @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
-                                                <div class="form-group col-4">
-                                                  {!! Form::label('','Select campus') !!}
-                                                  <select name="campus_id" class="form-control" required>
-                                                     <option value="">Select Campus</option>
-                                                     @foreach($campuses as $cp)
-                                                      <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
-                                                     @endforeach
-                                                  </select>
-                                                </div>
-                                                @else
                                                 <div class="form-group col-4">
                                                   {!! Form::label('','Select campus') !!}
                                                   <select name="campus_id" class="form-control" required>
@@ -297,7 +296,6 @@
                                                   </select>
                                                 </div>
                                                 {!! Form::input('hidden','campus_id',$campus->id) !!}
-                                                @endif
                                                  
                                                 </div>
                                               </div> 
