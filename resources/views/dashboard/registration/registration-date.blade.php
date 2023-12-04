@@ -101,7 +101,7 @@
                 <h3 class="card-title">Registration deadline for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
-              @if(!$registration_date)
+              @if(count($registration_date) == 0)
                   {!! Form::open(['url'=>'registration/store-registration-deadline','class'=>'ss-form-processing']) !!}
                       <div class="card-body">
                           @php
@@ -164,19 +164,52 @@
                         ];
                         }
                       @endphp
-                        
+                      
                       <div class="row">
                         <div class="form-group col-3">
-                          {!! Form::label('','Registration deadline') !!}
-                          {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
-
-                          {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                          {!! Form::input('hidden','campus_id',$campus->id) !!}
-                          {!! Form::input('hidden','special_date_id',$registration_date->id) !!}
-                          {!! Form::input('hidden','name','New Registration Period') !!}
+                          <table class="table table-bordered">
+                            <thead>
+                               <tr>
+                                 <th>Date</th>
+                                 <th>Intake</th>
+                                 <th>Applicable Levels</th>
+                                 @if(Auth::user()->hasRole('administrator'))
+                                 <th>Campus</th>
+                                 @endif
+                                 @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
+                                 <th>Action</th>
+                                 @endif
+                               </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($registration_dates as $registration_date)
+                              <tr>
+                                <td>{{ App\Utils\DateMaker::toStandardDate($registration_date->date) }}</td>
+                                <td>{{ $registration_date->intake }}</td>
+                                <td>{{ implode(', ',unserialize($registration_date->applicable_levels)) }}</td>
+                                @if(Auth::user()->hasRole('administrator'))
+                                  <td>
+                                    @foreach($campuses as $campus)
+                                      @if($campus->id == $registration_date->campus_id)
+                                        {{ $campus->name }}
+                                        @break
+                                      @endif
+                                    @endforeach
+                                  </td>
+                                @endif
+                                @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
+                                <td>
+                                  <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-orientation-date-{{ $registration_date->id }}">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    Edit
+                                  </a>
+                                </td>
+                              </tr>
+                              @endforeach
+                            </tbody>
+                          </table> 
                         </div>
                       </div>
-                      
                     </div>
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))              
                       <div class="card-footer">
