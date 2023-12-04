@@ -220,15 +220,15 @@
                                                 'readonly'=>true,
                                                 'required'=>true                                      
                                               ];
-                                              $intake = '';
+                                              $intak = '';
                                               foreach($intakes as $intake){
                                                 if($intake->name == $registration_date->intake){
-                                                  $intake = $intake->name;
+                                                  $intak = $intake->name;
                                                   break;
                                                 }
                                               }
                                               $intake = [
-                                                'placeholder'=>$intake, 
+                                                'placeholder'=>$intak, 
                                                 'class'=>'form-control',                      
                                                 'readonly'=>true,
                                                 'required'=>true                                      
@@ -286,7 +286,7 @@
                                                   {!! Form::label('','Registration date') !!}
                                                   {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
                                                   
-
+                                                  {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                                                   {!! Form::input('hidden','name','registration') !!}
                                                 </div>
                                                 <div class="form-group col-4">
