@@ -178,7 +178,7 @@ class SpecialDateController extends Controller
       $validation = Validator::make($request->all(),[
             'registration_date'=>'required',
         ]);
-
+return $request;
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
