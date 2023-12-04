@@ -178,7 +178,7 @@ class SpecialDateController extends Controller
       $validation = Validator::make($request->all(),[
             'registration_date'=>'required',
         ]);
-return $request;
+
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
@@ -195,8 +195,11 @@ return $request;
         $date->date = DateMaker::toDBDate($request->get('registration_date'));
         $date->begin_date = Carbon::parse($request->get('registration_date'))->subDays(13)->format('Y-m-d');
         $date->name = $request->get('name');
+        $date->intake = $request->get('intake');
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->group_id = $request->get('group_id');
+        $date->applicable_levels = $request->get('applicable_levels');
         $date->save();
 
         return redirect()->back()->with('message','Registration deadline updated successfully');
