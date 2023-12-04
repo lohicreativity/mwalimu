@@ -101,7 +101,7 @@
                 <h3 class="card-title">Registration deadline for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
-              @if(count($registration_date) == 0)
+              @if(count($registration_dates) == 0)
                   {!! Form::open(['url'=>'registration/store-registration-deadline','class'=>'ss-form-processing']) !!}
                       <div class="card-body">
                           @php
