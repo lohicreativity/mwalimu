@@ -166,7 +166,7 @@
                       @endphp
                       
                       <div class="row">
-                        <div class="form-group col-3">
+                        <div >
                           <table class="table table-bordered">
                             <thead>
                                <tr>
