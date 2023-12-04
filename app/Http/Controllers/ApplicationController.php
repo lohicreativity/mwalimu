@@ -8987,7 +8987,7 @@ class ApplicationController extends Controller
 
         $intake = $applicant->intake_id == 1? 'September' : 'March';
 
-		$dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)->where('intake',$intake)->first();
+		$dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)->where('intake',$intake)->get();
 
         return $dates;
         $reg_date = null;
