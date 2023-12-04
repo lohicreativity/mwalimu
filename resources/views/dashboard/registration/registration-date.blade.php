@@ -221,6 +221,12 @@
                                                 'required'=>true                                      
                                               ];
                                               $intake = [
+                                                foreach($intakes as $intake){
+                                                  if($intake->name == $registration_date->intake){
+                                                    'placeholder'=>$intake->name; 
+                                                    break;
+                                                  }
+                                                }
                                                 'class'=>'form-control',                      
                                                 'readonly'=>true,
                                                 'required'=>true                                      
@@ -236,6 +242,7 @@
                                                   break;
                                                 }
                                               }
+
                                               if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
                                                 $date = [
                                                     'placeholder'=>'Registration date',
@@ -260,12 +267,7 @@
                         
                                                 <div class="form-group col-4">
                                                   {!! Form::label('','Intake') !!}
-                                                  <select name="intake" class="form-control" required>
-                                                    <option value="">Select Intake</option>
-                                                    @foreach($intakes as $intake)
-                                                    <option value="{{ $intake->name }}" @if($intake->name == $registration_date->intake) selected="selected" @endif> {{ $intake->name }} </option>
-                                                    @endforeach
-                                                  </select>
+                                                  {!! Form::text('intake',$intake,$intake) !!}
                                                </div>
           
                                                 <div class="form-group col-4">
