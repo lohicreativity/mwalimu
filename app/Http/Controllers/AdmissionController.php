@@ -176,14 +176,6 @@ class AdmissionController extends Controller
 
         }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
 
-            $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-            ->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');});})->first();
-
-            if(!$medical_insurance_fee){
-            return redirect()->back()->with('error','Medical insurance fee has not been defined. Please contact the Admission Office.');
-            }
-
             $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                 ->where('name','LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%union%');})->first();
@@ -710,7 +702,7 @@ class AdmissionController extends Controller
                 })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->sum('amount_in_usd');
                 
             }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
-                dd();
+
                 $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                 ->where('name','LIKE','%Master%')->where('name','LIKE','%NACTVET%');})->first();
