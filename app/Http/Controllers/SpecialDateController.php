@@ -45,6 +45,8 @@ class SpecialDateController extends Controller
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'registration_dates'=>SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->get(),
+           'intakes'=>Intake::all(),
+           'awards'=>Award::all(),
            'request'=>$request
         ];
         return view('dashboard.registration.registration-date',$data)->withTitle('Registration Deadline');
