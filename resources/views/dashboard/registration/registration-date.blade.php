@@ -233,11 +233,6 @@
                                                 'readonly'=>true,
                                                 'required'=>true                                      
                                               ];
-                                              $applicable_level = [
-                                                'placeholder'=>'Applicable Levels',
-                                                'class'=>'form-control',
-                                                'readonly'=>true
-                                              ];
                                               foreach($study_academic_years as $year){
                                                 if($year->id == $registration_date->study_academic_year_id){ 
                                                   $academic_year = $year->academicYear->year;
@@ -274,7 +269,7 @@
           
                                                 <div class="form-group col-4">
                                                   {!! Form::label('','Applicable Levels') !!}
-                                                  <select name="applicable_level[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                                  <select name="applicable_level[]" class="form-control ss-select-tags" multiple="multiple" required disabled="disabled">
                                                     @foreach($awards as $award)
                                                       @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
                                                       <option value="{{ $award->name }}" @if(in_array($award->name,unserialize($registration_date->applicable_levels))) selected="selected" @endif>{{ $award->name }}</option>
