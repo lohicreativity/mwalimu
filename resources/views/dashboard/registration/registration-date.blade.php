@@ -220,13 +220,15 @@
                                                 'readonly'=>true,
                                                 'required'=>true                                      
                                               ];
-                                              $intake = [
-                                                foreach($intakes as $intake){
-                                                  if($intake->name == $registration_date->intake){
-                                                    'placeholder'=>$intake->name; 
-                                                    break;
-                                                  }
+                                              $intake = '';
+                                              foreach($intakes as $intake){
+                                                if($intake->name == $registration_date->intake){
+                                                  $intake = $intake->name;
+                                                  break;
                                                 }
+                                              }
+                                              $intake = [
+                                                'placeholder'=>$intake, 
                                                 'class'=>'form-control',                      
                                                 'readonly'=>true,
                                                 'required'=>true                                      
