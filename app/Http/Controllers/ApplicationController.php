@@ -8985,8 +8985,19 @@ class ApplicationController extends Controller
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
 
-		$reg_date = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->first();
-		if(Carbon::parse($reg_date->date)->addDays(7)->format('Y-m-d') < date('Y-m-d')){
+		$dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)->where('intake_id',$applicant->intake_id)->first();
+        $reg_date = null;
+        foreach($dates as $date){
+            if(in_array($award->name, unserialize($date->applicable_levels))){
+                $reg_date = $date->date;
+                break;
+            }
+        }
+
+        if(empty($reg_date)){
+            return redirect()->back()->with('error','Something is wrong with registration date');
+        }
+		if(Carbon::parse($reg_date)->addDays(7)->format('Y-m-d') < date('Y-m-d')){
 			return redirect()->back()->with('error','Registration period has already passed');
 		}
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
