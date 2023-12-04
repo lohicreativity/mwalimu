@@ -269,7 +269,7 @@
                         
                                                 <div class="form-group col-4">
                                                   {!! Form::label('','Intake') !!}
-                                                  {!! Form::text('intake',$intake,$intake) !!}
+                                                  {!! Form::text('intake',$intak,$intake) !!}
                                                </div>
           
                                                 <div class="form-group col-4">
