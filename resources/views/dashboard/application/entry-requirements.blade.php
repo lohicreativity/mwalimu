@@ -81,108 +81,108 @@
 
                <div class="tab-content">
                  <div class="tab-pane active" id="ss-certificate" role="tabpanel">
-               @php
-                $equivalent_gpa = [
-                   'placeholder'=>'Equivalent GPA',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                     @php
+                        $equivalent_gpa = [
+                           'placeholder'=>'Equivalent GPA',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $equivalent_majors = [
-                   'placeholder'=>'Equivalent Majors',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $equivalent_majors = [
+                           'placeholder'=>'Equivalent Majors',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $equivalent_average_grade = [
-                   'placeholder'=>'Equivalent Average Grade',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $equivalent_average_grade = [
+                           'placeholder'=>'Equivalent Average Grade',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $open_equivalent_gpa = [
-                   'placeholder'=>'Open Equivalent GPA',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $open_equivalent_gpa = [
+                           'placeholder'=>'Open Equivalent GPA',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $open_equivalent_majors = [
-                   'placeholder'=>'Open Equivalent Majors',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $open_equivalent_majors = [
+                           'placeholder'=>'Open Equivalent Majors',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $min_pass_subjects = [
-                   'placeholder'=>'Min Pass Subjects',
-                   'class'=>'form-control'
-                ];
+                        $min_pass_subjects = [
+                           'placeholder'=>'Min Pass Subjects',
+                           'class'=>'form-control'
+                        ];
 
-                $open_equivalent_average_grade = [
-                   'placeholder'=>'Open Equivalent Average Grade',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $open_equivalent_average_grade = [
+                           'placeholder'=>'Open Equivalent Average Grade',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $principle_pass_points = [
-                   'placeholder'=>'Principle Pass Points',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $principle_pass_points = [
+                           'placeholder'=>'Principle Pass Points',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $principle_pass_subjects = [
-                   'placeholder'=>'Principle Pass Subjects',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $principle_pass_subjects = [
+                           'placeholder'=>'Principle Pass Subjects',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $pass_subjects = [
-                   'placeholder'=>'No. of Pass Subjects',
-                   'class'=>'form-control'
-                ];
+                        $pass_subjects = [
+                           'placeholder'=>'No. of Pass Subjects',
+                           'class'=>'form-control'
+                        ];
 
-                $pass_grade = [
-                   'placeholder'=>'Pass Grade',
-                   'class'=>'form-control'
-                ];
+                        $pass_grade = [
+                           'placeholder'=>'Pass Grade',
+                           'class'=>'form-control'
+                        ];
 
-                $nva_level = [
-                   'placeholder'=>'NVA Level',
-                   'class'=>'form-control'
-                ];
+                        $nva_level = [
+                           'placeholder'=>'NVA Level',
+                           'class'=>'form-control'
+                        ];
 
-                $award_division = [
-                   'placeholder'=>'Award Division',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $award_division = [
+                           'placeholder'=>'Award Division',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $exclude_subjects = [
-                   'placeholder'=>'Exclude Subjects',
-                   'class'=>'form-control'
-                ];
+                        $exclude_subjects = [
+                           'placeholder'=>'Exclude Subjects',
+                           'class'=>'form-control'
+                        ];
 
-                $must_subjects = [
-                   'placeholder'=>'Must Subjects',
-                   'class'=>'form-control'
-                ];
+                        $must_subjects = [
+                           'placeholder'=>'Must Subjects',
+                           'class'=>'form-control'
+                        ];
 
-                $subsidiary_subjects = [
-                   'placeholder'=>'Subsidiary Subjects',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $subsidiary_subjects = [
+                           'placeholder'=>'Subsidiary Subjects',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $principle_subjects = [
-                   'placeholder'=>'Principle Subjects',
-                   'class'=>'form-control',
-                   'readonly'=>true
-                ];
+                        $principle_subjects = [
+                           'placeholder'=>'Principle Subjects',
+                           'class'=>'form-control',
+                           'readonly'=>true
+                        ];
 
-                $max_capacity = [
-                   'placeholder'=>'Max Capacity',
-                   'class'=>'form-control'
-                ];
-             @endphp
+                        $max_capacity = [
+                           'placeholder'=>'Max Capacity',
+                           'class'=>'form-control'
+                        ];
+                     @endphp
 
                {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
                <div class="card-body">

@@ -102,81 +102,93 @@
               </div>
               <!-- /.card-header -->
               @if(!$registration_date)
-              {!! Form::open(['url'=>'registration/store-registration-deadline','class'=>'ss-form-processing']) !!}
-              <div class="card-body">
-                @php
-                if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
-                   $date = [
-                      'placeholder'=>'Registration deadline',
-                      'class'=>'form-control ss-datepicker',
-                      'required'=>true
-                   ];
-                  }else{
-                  $date = [
-                      'placeholder'=>'Registration deadline',
-                      'class'=>'form-control',
-                      'readonly'=>true,
-                      'required'=>true
-                   ];
-                  }
-                @endphp
-                   
-                <div class="row">
-                  <div class="form-group col-3">
-                    {!! Form::label('','New registration deadline') !!}
-                    {!! Form::text('registration_date',null,$date) !!}
+                  {!! Form::open(['url'=>'registration/store-registration-deadline','class'=>'ss-form-processing']) !!}
+                      <div class="card-body">
+                          @php
+                            if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
+                              $date = [
+                                  'placeholder'=>'Registration deadline',
+                                  'class'=>'form-control ss-datepicker',
+                                  'required'=>true
+                              ];
+                            }else{
+                              $date = [
+                                  'placeholder'=>'Registration deadline',
+                                  'class'=>'form-control',
+                                  'readonly'=>true,
+                                  'required'=>true
+                              ];
+                            }
+                          @endphp
 
-                    {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                    {!! Form::input('hidden','campus_id',$campus->id) !!}
-                    {!! Form::input('hidden','name','New Registration Period') !!}
-                  </div>
-                  </div>
-                
-              </div>
-               <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Create Registration Deadline') }}</button>
-                </div>
-              {!! Form::close() !!}
+                          <div class="row">
+                            <div class="form-group col-3">
+                              {!! Form::label('','New registration deadline') !!}
+                              {!! Form::text('registration_date',null,$date) !!}
 
-              @else
-               {!! Form::open(['url'=>'registration/update-registration-deadline','class'=>'ss-form-processing']) !!}
-              <div class="card-body">
-                @php
-                  if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
-                   $date = [
-                      'placeholder'=>'Registration deadline',
-                      'class'=>'form-control ss-datepicker',
-                      'required'=>true
-                   ];
-                  }else{
-                  $date = [
-                      'placeholder'=>'Registration deadline',
-                      'class'=>'form-control',
-                      'readonly'=>true,
-                      'required'=>true
-                   ];
-                  }
-                @endphp
-                   
-                <div class="row">
-                  <div class="form-group col-3">
-                    {!! Form::label('','Registration deadline') !!}
-                    {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
+                              {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                              {!! Form::input('hidden','campus_id',$campus->id) !!}
+                              {!! Form::input('hidden','name','New Registration Period') !!}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="card-footer">
+                          <button type="submit" class="btn btn-primary">{{ __('Create Registration Deadline') }}</button>
+                      </div>
+                  {!! Form::close() !!}
 
-                    {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                    {!! Form::input('hidden','campus_id',$campus->id) !!}
-                    {!! Form::input('hidden','special_date_id',$registration_date->id) !!}
-                    {!! Form::input('hidden','name','New Registration Period') !!}
+            @else
+                <!-- /.card-header -->
+                <ul class="nav nav-tabs" id="myList" role="tablist">
+                  <li class="nav-item"><a class="nav-link active" data-toggle="list" href="#ss-new-students" role="tab">New Students</a></li>
+                  <li class="nav-item"><a class="nav-link" data-toggle="list" href="#ss-continuing-students" role="tab">Continuing Students</a></li>
+                </ul>
+
+               <div class="tab-content">
+                 <div class="tab-pane active" id="ss-new-students" role="tabpanel">
+                    {!! Form::open(['url'=>'registration/update-registration-deadline','class'=>'ss-form-processing']) !!}
+                    <div class="card-body">
+                      @php
+                        if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
+                        $date = [
+                            'placeholder'=>'Registration deadline',
+                            'class'=>'form-control ss-datepicker',
+                            'required'=>true
+                        ];
+                        }else{
+                        $date = [
+                            'placeholder'=>'Registration deadline',
+                            'class'=>'form-control',
+                            'readonly'=>true,
+                            'required'=>true
+                        ];
+                        }
+                      @endphp
+                        
+                      <div class="row">
+                        <div class="form-group col-3">
+                          {!! Form::label('','Registration deadline') !!}
+                          {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
+
+                          {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                          {!! Form::input('hidden','campus_id',$campus->id) !!}
+                          {!! Form::input('hidden','special_date_id',$registration_date->id) !!}
+                          {!! Form::input('hidden','name','New Registration Period') !!}
+                        </div>
+                      </div>
+                      
+                    </div>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))              
+                      <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                      </div>
+                    @endif  
+                    {!! Form::close() !!}
+                  </div><!-- /tabpane -->
+
+                  <div class="tab-pane" id="ss-continuing-students" role="tabpanel">
+
                   </div>
-                  </div>
-                
-              </div>
-              @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))              
-               <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                </div>
-              @endif  
-              {!! Form::close() !!}
               @endif
              </div>
             @endif
