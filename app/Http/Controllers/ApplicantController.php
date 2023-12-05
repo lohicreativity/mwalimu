@@ -2545,6 +2545,14 @@ class ApplicantController extends Controller
                $invoice->payable_id = 0;
                $invoice->save();
             }
+
+            if($student){
+               $student_invoices = Invoice::where('payable_id',$student->id)->where('payable_type','student')->whereNull('gateway_payment_id')->get();
+               foreach($student_invoices as $invoice){
+                  $invoice->payable_id = 0;
+                  $invoice->save();
+               }
+            }
          }elseif($student){
             $student_invoices = Invoice::where('payable_id',$student->id)->where('payable_type','student')->whereNull('gateway_payment_id')->get();
             foreach($student_invoices as $invoice){
