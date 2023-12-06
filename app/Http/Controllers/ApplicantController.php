@@ -3092,8 +3092,8 @@ class ApplicantController extends Controller
          }
 
          $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();
-         return Invoice::whereNull('gateway_payment_id')->where('payable_id',$applicant->id)->where('payable_type','applicant')
-         ->orWhere('payable_id',$student->id)->where('payable_type','student')->get();
+         return Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
+         ->orWhere('payable_id',$student->id)->where('payable_type','student');})->get();
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
