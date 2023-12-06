@@ -2539,21 +2539,15 @@ class ApplicantController extends Controller
       $applicant = Applicant::select('id')->where('id',$request->get('applicant_id'))->latest()->first();
       $student = Student::select('id')->where('applicant_id',$request->get('applicant_id'))->latest()->first();
       if(Auth::user()->hasRole('administrator')){
-         if($applicant){
+         if(count($applicant) > 0){
             $applicant_invoices = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->whereNull('gateway_payment_id')->get();
             foreach($applicant_invoices as $invoice){
                $invoice->payable_id = 0;
                $invoice->save();
             }
+         }
 
-            if($student){
-               $student_invoices = Invoice::where('payable_id',$student->id)->where('payable_type','student')->whereNull('gateway_payment_id')->get();
-               foreach($student_invoices as $invoice){
-                  $invoice->payable_id = 0;
-                  $invoice->save();
-               }
-            }
-         }elseif($student){
+         if(count($student) > 0){
             $student_invoices = Invoice::where('payable_id',$student->id)->where('payable_type','student')->whereNull('gateway_payment_id')->get();
             foreach($student_invoices as $invoice){
                $invoice->payable_id = 0;
@@ -2561,7 +2555,7 @@ class ApplicantController extends Controller
             }
          }
       }else{
-         if($applicant){
+         if(count($applicant) > 0){
             $invoices = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')
             ->where(function($query){$query->where('control_no',null)->orWhere('control_no',0);})->get();
             foreach($invoices as $invoice){
