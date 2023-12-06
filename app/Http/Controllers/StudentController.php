@@ -1678,11 +1678,11 @@ class StudentController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
       $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
-
+      $applicant_id = $applicant? $applicant->id : 0;
       $data = [
           'student'=>Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])
-                            ->where(function($query) use($request,$applicant){$query->where('registration_number', $request->keyword)
-                            ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant->id);})->first(),
+                            ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
+                            ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first(),
           'statuses'=>StudentshipStatus::all()
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
