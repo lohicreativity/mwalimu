@@ -3087,16 +3087,19 @@ class ApplicantController extends Controller
             $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->latest()->first() : null;
 
         }
-        if(!$applicant && !empty($request->get('index_number'))){
-         return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
+         if(!$applicant && !empty($request->get('index_number'))){
+            return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
 
-          $data = [
+         $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();
+         return Invoice::whereNull('gateway_payment_id')->where('payable_id',$applicant->id)->where('payable_type','applicant')
+         ->orWhere('payable_id',$student->id)->where('payable_type','student')->get();
+         $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
 		   'countries'=>Country::all(),
-         'invoice'=>$request->get('index_number')? Invoice::whereNull('control_no')->orWhere('control_no',0)->where('payable_id',$applicant->id)
-                                                            ->where('payable_type','applicant')->latest()->first() : null
+         'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where('payable_id',$applicant->id)->where('payable_type','applicant')
+                                                            ->orWhere('payable_id',$student->id)->where('payable_type','student')->get() : null
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
