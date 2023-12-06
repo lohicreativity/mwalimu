@@ -49,7 +49,7 @@
                  @php
                      $reg_number = [
                          'class'=>'form-control',
-                         'placeholder'=>'Registration number',
+                         'placeholder'=>'Index number, registration number or surname',
                          'required'=>true
                      ];
                  @endphp 
@@ -57,8 +57,8 @@
                    
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Enter student registration number') !!}
-                    {!! Form::text('registration_number',null,$reg_number) !!}
+                    {!! Form::label('','Enter search keyword') !!}
+                    {!! Form::text('keyword',null,$reg_number) !!}
                   </div>
                   </div>
                   <div class="ss-form-actions">

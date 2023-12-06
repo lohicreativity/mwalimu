@@ -1676,11 +1676,16 @@ class StudentController extends Controller
      */
     public function searchForStudent(Request $request)
     {
-        $data = [
-            'student'=>Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->where('registration_number',$request->get('registration_number'))->first(),
-            'statuses'=>StudentshipStatus::all()
-        ];
-        return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
+      $staff = User::find(Auth::user()->id)->staff;
+      $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
+
+      $data = [
+          'student'=>Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])
+                            ->where(function($query) use($request,$applicant){$query->where('registration_number', $request->keyword)
+                            ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant->id);})->first(),
+          'statuses'=>StudentshipStatus::all()
+      ];
+      return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
 
     /**
