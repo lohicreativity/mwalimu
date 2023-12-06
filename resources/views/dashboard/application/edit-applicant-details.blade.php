@@ -204,7 +204,6 @@
                           <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
                         @endif
                         <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
-                        {{ $invoice }}
                         @if($invoice)
                           <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
                         </div>
