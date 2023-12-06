@@ -97,7 +97,7 @@
                       <td>{{ $rec->student->first_name }} {{ $rec->student->middle_name }} {{ $rec->student->surname }}</td>
                       <td>{{ $rec->student->gender }}</td>
                       <td>{{ $rec->student->phone }}</td>
-                      <td>{{ $rec->student->campusProgram->program->name }}</td>
+                      <td>{{ $rec->student->campusProgram->code }}</td>
                       <td>
                            {!! Form::checkbox('records[]',$rec->id,true) !!}
                       </td>
