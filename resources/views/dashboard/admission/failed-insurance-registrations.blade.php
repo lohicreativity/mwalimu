@@ -93,7 +93,7 @@
                     @foreach($records as $key=>$rec)
                     <tr>
                       <td>{{ ($key+1) }}</td>
-                      <td>{{ ($key+1) }}</td>
+                      <td>{{ $rec->applicant->index_number }}</td>
                       <td>{{ $rec->student->first_name }} {{ $rec->student->middle_name }} {{ $rec->student->surname }}</td>
                       <td>{{ $rec->student->gender }}</td>
                       <td>{{ $rec->student->phone }}</td>
