@@ -5104,7 +5104,7 @@ class ApplicationController extends Controller
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
-           'records'=>InsuranceRegistration::with(['student:applicant_id,first_name,middle_name,surname,gender,phone,campus_program_id','applicant:id,index_number'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('is_success',0)->get(),
+           'records'=>InsuranceRegistration::with(['student:id,applicant_id,first_name,middle_name,surname,gender,phone,campus_program_id','applicant:id,index_number'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('is_success',0)->get(),
            'request'=>$request
         ];
         return view('dashboard.admission.failed-insurance-registrations',$data)->withTitle('Failed Insurance Registrations');
