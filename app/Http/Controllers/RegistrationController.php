@@ -484,7 +484,7 @@ class RegistrationController extends Controller
 		   $callback = function() use ($students)
             {
                 $file_handle = fopen('php://output', 'w');
-                fputcsv($file_handle, ['Name','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
+                fputcsv($file_handle, ['First Name','Middlename','Surname','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
                 foreach ($students as $row) {
                     $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first();
                     $sponsorship = $loan_status? 'Government' : 'Private';
@@ -515,7 +515,7 @@ class RegistrationController extends Controller
                     if(is_array($f6indexno)){
                         $f6indexno=implode(', ',$f6indexno);
                     }
-                    fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
+                    fputcsv($file_handle, [$row->student->first_name,$row->student->middle_name,$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
                                            $row->student->disabilityStatus->name,$f4indexno,$f6indexno,$row->student->registration_number,
                                            $row->student->campusProgram->program->code,$row->student->applicant->entry_mode,$sponsorship
                                             ]);
