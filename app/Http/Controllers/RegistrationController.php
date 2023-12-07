@@ -480,14 +480,13 @@ class RegistrationController extends Controller
                                                                          'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
                                                                          'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
-           return LoanAllocation::where('index_number','S5222/0059/2020')->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
-            ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();      
+ 
 		   $callback = function() use ($students)
             {
                 $file_handle = fopen('php://output', 'w');
                 fputcsv($file_handle, ['First Name','Middlename','Surname','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
                 foreach ($students as $row) {
-                    $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationaries','>',0)
+                    $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
                                                  ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
                     $sponsorship = $loan_status? 'Government' : 'Private';
 
