@@ -1706,7 +1706,7 @@ class StudentController extends Controller
           'student'=>$student,
           'student_payments'=> $student? $student_payments : null,
           'tuition_fee_loan'=> $student? $tuition_fee_loan : null,
-          'total_fee_paid_amount'=> $student? $total_fee_paid_amount : null
+          'total_paid_fee'=> $student? $total_fee_paid_amount : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
