@@ -3091,6 +3091,7 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
 
+         $student = null;
          if($applicant){
             $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();          
          }
