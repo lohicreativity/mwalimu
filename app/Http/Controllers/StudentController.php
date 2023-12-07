@@ -1685,9 +1685,9 @@ class StudentController extends Controller
       $student_id = $student? $student->id : 0;
       $data = [
           'student'=>$student,
-          'student_payments'=>Invoice::where('payable_id', $student_id)->where('payable_type','student')
+          'student_payments'=> $student? Invoice::where('payable_id', $student_id)->where('payable_type','student')
           ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-              ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get()
+              ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
