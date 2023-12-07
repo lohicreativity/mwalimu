@@ -454,7 +454,7 @@ class RegistrationController extends Controller
 	  public function downloadActiveStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
-
+return $request;
 		   $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
