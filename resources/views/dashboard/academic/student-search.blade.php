@@ -137,7 +137,7 @@
 													  </button>
 												  </div>
 
-												  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#applicant-accordion">
+												  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
 													<div class="card-body">
 
 													  @if($student->applicant->nextOfKin)
