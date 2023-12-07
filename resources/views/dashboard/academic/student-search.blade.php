@@ -140,7 +140,7 @@
 												  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#applicant-accordion">
 													<div class="card-body">
 
-													  @if($applicant->nextOfKin)
+													  @if($student->applicant->nextOfKin)
 														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ ucwords(strtolower($student->applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($student->applicant->nextOfKin->middle_name)) }} {{ ucwords(strtolower($student->applicant->nextOfKin->surname)) }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($student->applicant->nextOfKin->gender == 'M') Male @elseif($student->applicant->nextOfKin->gender == 'F') Female @endif
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $student->applicant->nextOfKin->relationship }}
