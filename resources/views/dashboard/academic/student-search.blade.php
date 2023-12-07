@@ -240,6 +240,7 @@
               </div>
               </div>
               <!-- /.modal-content -->
+              <a href="{{ url('student/deceased?student_id='.$student->id) }}" class="btn btn-primary">Deceased</a> <a href="{{ url('student/reset-password?student_id='.$student->id) }}" class="btn btn-primary">Reset Password</a> <a href="{{ url('student/reset-control-number?student_id='.$student->id) }}" class="btn btn-primary">Reset Control Number</a>
             </div> 
             @endif
 
