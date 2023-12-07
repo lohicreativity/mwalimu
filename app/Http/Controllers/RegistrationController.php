@@ -469,7 +469,6 @@ class RegistrationController extends Controller
                                                      Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number'])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
 
-                                                                 return $students[0];
 		   $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
