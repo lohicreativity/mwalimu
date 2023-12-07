@@ -464,15 +464,23 @@ class RegistrationController extends Controller
               ];
 		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
                                                                  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
-                                                                 ->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number'])->where('study_academic_year_id',session('active_academic_year_id'))
+                                                                 ->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
+                                                                         'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                                                         'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
+                                                                         'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->where('study_academic_year_id',session('active_academic_year_id'))
                                                                  ->where('semester_id',session('active_semester_id'))->get() : 
-                                                     Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number'])
+                                                     Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                 ->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
+                                                                 'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                                                 'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
+                                                                 'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
 
+                                                                return $students[0];
 		   $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['Name','Sex','Date of Birth','Disability','Index Number','Registration Number','Program','Entry Mode','Sponsorship']);
+                  fputcsv($file_handle, ['Name','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
                   foreach ($students as $row) {
                       $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first();
                       $sponsorship = $loan_status? 'Government' : 'Private';
