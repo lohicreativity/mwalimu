@@ -1679,11 +1679,15 @@ class StudentController extends Controller
       $staff = User::find(Auth::user()->id)->staff;
       $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
       $applicant_id = $applicant? $applicant->id : 0;
+      $student = Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus','applicant','campusProgram.program','studentShipStatus'])
+                        ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
+                        ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first();
+
       $data = [
-          'student'=>Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])
-                            ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
-                            ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first(),
-          'statuses'=>StudentshipStatus::all()
+          'student'=>$student,
+          'student_payments'=>Invoice::where('payable_id', $student->id)->where('payable_type','student')
+          ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
+              ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get()
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
