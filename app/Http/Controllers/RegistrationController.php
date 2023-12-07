@@ -461,13 +461,14 @@ class RegistrationController extends Controller
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
-		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
-				  $query->where('id',$staff->department_id);
-			})->whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
+                                                                 ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                 ->with(['student.campusProgram.program','disabilityStatus'])->where('study_academic_year_id',session('active_academic_year_id'))
+                                                                 ->where('semester_id',session('active_semester_id'))->get() : 
+                                                     Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})->with(['student.campusProgram.program','disabilityStatus'])
+                                                                 ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+
+                                                                 return $students[0];
 		   $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
