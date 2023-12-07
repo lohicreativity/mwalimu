@@ -464,18 +464,18 @@ class RegistrationController extends Controller
               ];
 		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
                                                                  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
-                                                                 ->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
+                                                                 ->with(['student.campusProgram.program:id,code','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
                                                                          'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                                                          'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
                                                                          'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->where('study_academic_year_id',session('active_academic_year_id'))
                                                                  ->where('semester_id',session('active_semester_id'))->get() : 
                                                      Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
-                                                                 ->with(['student.campusProgram.program','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
+                                                                 ->with(['student.campusProgram.program:id,code','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
                                                                  'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                                                  'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
                                                                  'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
-
+return $students[0];
 		   $callback = function() use ($students)
             {
                 $file_handle = fopen('php://output', 'w');
@@ -511,7 +511,9 @@ class RegistrationController extends Controller
                         $f6indexno=implode(', ',$f6indexno);
                     }
                     fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
-                                            $row->student->disabilityStatus->name,$f4indexno,$f6indexno,$row->student->applicant->index_number,$row->student->registration_number,$row->student->campusProgram->program->name,$row->student->applicant->entry_mode,$sponsorship]);
+                                           $row->student->disabilityStatus->name,$f4indexno,$f6indexno,$row->student->registration_number,
+                                           $row->student->campusProgram->program->code,$row->student->applicant->entry_mode,$sponsorship
+                                            ]);
                 }
                 fclose($file_handle);
             };
