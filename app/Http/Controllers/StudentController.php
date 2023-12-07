@@ -1680,7 +1680,8 @@ class StudentController extends Controller
       $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
       $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
       $applicant_id = $applicant? $applicant->id : 0;
-      $student = Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus','applicant','campusProgram.program','studentShipStatus'])
+      $student = Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus','applicant','campusProgram.program','studentShipStatus','nextOfKin',
+                                'applicant.nextOfKin.country','applicant.nextOfKin.district','applicant.nextOfKin.ward'])
                         ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first();
       $student_id = $student? $student->id : 0;

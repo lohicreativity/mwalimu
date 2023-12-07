@@ -131,6 +131,34 @@
                         </div>
                         
                         <div class="card">
+												  <div class="card-header" id="ss-next-of-kin">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+														&nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+													  </button>
+												  </div>
+
+												  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#applicant-accordion">
+													<div class="card-body">
+
+													  @if($applicant->nextOfKin)
+														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ ucwords(strtolower($student->applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($student->applicant->nextOfKin->middle_name)) }} {{ ucwords(strtolower($student->applicant->nextOfKin->surname)) }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($student->applicant->nextOfKin->gender == 'M') Male @elseif($student->applicant->nextOfKin->gender == 'F') Female @endif
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $student->applicant->nextOfKin->relationship }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $student->applicant->nextOfKin->nationality }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $student->applicant->nextOfKin->phone }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $student->applicant->nextOfKin->address }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span>
+                               &nbsp; @if(!empty($student->applicant->nextOfKin->ward->name)) {{ ucwords(strtolower($student->applicant->nextOfKin->ward->name)) }},@endif
+                               &nbsp; @if(!empty($student->applicant->nextOfKin->district->name)) {{ ucwords(strtolower($student->applicant->nextOfKin->district->name)) }}, @endif
+                               &nbsp; @if(!empty($student->applicant->nextOfKin->region->name))   {{ ucwords(strtolower($student->applicant->nextOfKin->region->name)) }}, @endif
+                               &nbsp; {{ ucwords(strtolower($student->applicant->nextOfKin->country->name)) }}
+
+													   @endif
+													</div>
+												  </div>
+												</div>
+
+                        <div class="card">
                           <div class="card-header" id="ss-payments">
                             <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
                             &nbsp; Payment Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
