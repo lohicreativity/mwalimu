@@ -1705,7 +1705,7 @@ class StudentController extends Controller
           }
         }
 
-        $invoice = Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
+        $invoice = Invoice::whereNull('gateway_payment_id')->where(function($query) use($student, $student_id){$query->where('payable_id',$student->applicant->id)->where('payable_type','applicant')
                           ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first();
       }
 
