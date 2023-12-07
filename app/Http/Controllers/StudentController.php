@@ -1677,6 +1677,7 @@ class StudentController extends Controller
     public function searchForStudent(Request $request)
     {
       $staff = User::find(Auth::user()->id)->staff;
+      $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
       $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
       $applicant_id = $applicant? $applicant->id : 0;
       $student = Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus','applicant','campusProgram.program','studentShipStatus'])
@@ -1687,7 +1688,9 @@ class StudentController extends Controller
           'student'=>$student,
           'student_payments'=> $student? Invoice::where('payable_id', $student_id)->where('payable_type','student')
           ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-              ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : null
+              ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : null,
+          'tuition_fee_loan'=> $student? LoanAllocation::where('student_id',$student->id)->where('year_of_study',$student->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
+          ->where('campus_id',$student->applicant->campus_id)->sum('tuition_fee') : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
