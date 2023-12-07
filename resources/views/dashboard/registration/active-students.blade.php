@@ -81,7 +81,7 @@
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Active Students') }}</h3><br>
-				 <a href="{{ url('registration/download-active-students?request='.$request->get('program_level_id')) }}" class="btn btn-primary">Download List</a>
+				 <a href="{{ url('registration/download-active-students?program_level='.$request->get('program_level_id')) }}" class="btn btn-primary">Download List</a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">

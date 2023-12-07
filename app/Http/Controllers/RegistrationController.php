@@ -454,7 +454,6 @@ class RegistrationController extends Controller
 	  public function downloadActiveStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
-return $request;
 		   $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
@@ -464,6 +463,7 @@ return $request;
               ];
 		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
                                                                  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                 ->whereHas('student.applicant',function($query) use($request,$staff){$query->where('program_level_id',$request->get('program_level'))->where('campus_id',$staff->campus_id);})
                                                                  ->with(['student:id,first_name,middle_name,surname,gender,phone,birth_date,campus_program_id,registration_number,applicant_id,disability_status_id',
                                                                          'student.campusProgram:id,program_id',
                                                                          'student.campusProgram.program:id,code','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
@@ -472,6 +472,7 @@ return $request;
                                                                          'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->where('study_academic_year_id',session('active_academic_year_id'))
                                                                  ->where('semester_id',session('active_semester_id'))->get() : 
                                                      Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                 ->whereHas('student.applicant',function($query) use($request, $staff){$query->where('program_level_id',$request->get('program_level'))->where('campus_id',$staff->campus_id);})
                                                                  ->with(['student:id,first_name,middle_name,surname,gender,phone,birth_date,campus_program_id,registration_number,applicant_id,disability_status_id',
                                                                          'student.campusProgram:id,program_id',
                                                                          'student.campusProgram.program:id,code','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
@@ -479,7 +480,7 @@ return $request;
                                                                          'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
                                                                          'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
-return $students[0];
+
 		   $callback = function() use ($students)
             {
                 $file_handle = fopen('php://output', 'w');
