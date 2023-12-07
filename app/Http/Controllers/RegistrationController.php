@@ -480,6 +480,8 @@ class RegistrationController extends Controller
                                                                          'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
                                                                          'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+                                                                 
+        return LoanAllocation::where('index_number','S5222/0059/2020')->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first();
 
 		   $callback = function() use ($students)
             {
