@@ -476,19 +476,45 @@ class RegistrationController extends Controller
                                                                  'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
                                                                  ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
 
-                                                                return $students[0];
 		   $callback = function() use ($students)
-              {
-                  $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['Name','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
-                  foreach ($students as $row) {
-                      $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first();
-                      $sponsorship = $loan_status? 'Government' : 'Private';
-                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
-                                             $row->student->disabilityStatus->name,$row->student->applicant->index_number,$row->student->registration_number,$row->student->campusProgram->program->name,$row->student->applicant->entry_mode,$sponsorship]);
-                  }
-                  fclose($file_handle);
-              };
+            {
+                $file_handle = fopen('php://output', 'w');
+                fputcsv($file_handle, ['Name','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
+                foreach ($students as $row) {
+                    $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                    $sponsorship = $loan_status? 'Government' : 'Private';
+
+                    $f4indexno = $f6indexno = [];
+
+                    foreach($row->student->applicant->nectaResultDetails as $detail){
+                        if($detail->exam_id == 1){
+                            $f4indexno[] = $detail->index_number;
+                        }
+
+                        if($detail->exam_id == 2){
+                            $f6indexno[] = $detail->index_number;
+                        }
+                    }
+
+                    foreach($row->student->applicant->nacteResultDetails as $detail){
+                        if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
+                            $f6indexno = $detail->avn;
+                            break;
+                        }
+                    }
+
+                    if(is_array($f4indexno)){
+                        $f4indexno=implode(', ',$f4indexno);
+                    }
+
+                    if(is_array($f6indexno)){
+                        $f6indexno=implode(', ',$f6indexno);
+                    }
+                    fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
+                                            $row->student->disabilityStatus->name,$f4indexno,$f6indexno,$row->student->applicant->index_number,$row->student->registration_number,$row->student->campusProgram->program->name,$row->student->applicant->entry_mode,$sponsorship]);
+                }
+                fclose($file_handle);
+            };
 
               return response()->stream($callback, 200, $headers);
 	  }
