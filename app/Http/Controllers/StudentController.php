@@ -1684,7 +1684,9 @@ class StudentController extends Controller
                                 'applicant.nextOfKin.country','applicant.nextOfKin.district','applicant.nextOfKin.ward'])
                         ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first();
+
       $student_id = $student? $student->id : 0;
+
       if($student){
         $total_fee_paid_amount = null;
         $student_payments = Invoice::where('payable_id', $student_id)->where('payable_type','student')
@@ -1702,12 +1704,17 @@ class StudentController extends Controller
             }
           }
         }
+
+        $invoice = Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
+                          ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first();
       }
+
       $data = [
           'student'=>$student,
           'student_payments'=> $student? $student_payments : null,
           'tuition_fee_loan'=> $student? $tuition_fee_loan : null,
-          'total_paid_fee'=> $student? $total_fee_paid_amount : null
+          'total_paid_fee'=> $student? $total_fee_paid_amount : null,
+          'invoice'=> $student && Auth::user()->hasRole('finance-officer')? $invoice : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
