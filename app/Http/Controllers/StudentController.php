@@ -1682,10 +1682,10 @@ class StudentController extends Controller
       $student = Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus','applicant','campusProgram.program','studentShipStatus'])
                         ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first();
-
+      $student_id = $student? $student->id : 0;
       $data = [
           'student'=>$student,
-          'student_payments'=>Invoice::where('payable_id', $student->id)->where('payable_type','student')
+          'student_payments'=>Invoice::where('payable_id', $student_id)->where('payable_type','student')
           ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
               ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get()
       ];
