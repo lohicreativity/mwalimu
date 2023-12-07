@@ -30,6 +30,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Auth, DomPDF, File, Storage, PDF;
 use Carbon\Carbon;
 use App\Utils\DateMaker;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class RegistrationController extends Controller
 {
@@ -472,9 +473,12 @@ class RegistrationController extends Controller
 		   $callback = function() use ($students)
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['Name','Sex','Date of Birth','Registration Number','Program']);
+                  fputcsv($file_handle, ['Name','Sex','Date of Birth','Disability','Index Number','Registration Number','Program','Entry Mode','Sponsorship']);
                   foreach ($students as $row) {
-                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), $row->student->registration_number,$row->student->campusProgram->program->name]);
+                      $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                      $sponsorship = $loan_status? 'Government' : 'Private';
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
+                                             $row->student->disabilityStatus->name,$row->student->registration_number,$row->student->campusProgram->program->name,$row->student->applicant->entry_mode,$sponsorship]);
                   }
                   fclose($file_handle);
               };
