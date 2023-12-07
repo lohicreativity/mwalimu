@@ -1684,13 +1684,29 @@ class StudentController extends Controller
                         ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first();
       $student_id = $student? $student->id : 0;
+      if($student){
+        $total_fee_paid_amount = null;
+        $student_payments = Invoice::where('payable_id', $student_id)->where('payable_type','student')
+                                   ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
+                                   ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
+
+        $tuition_fee_loan = LoanAllocation::where('student_id',$student->id)->where('year_of_study',$student->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
+        ->where('campus_id',$student->applicant->campus_id)->sum('tuition_fee');
+
+        if(count($student_payments) > 0){
+          foreach($student_payments as $payment){
+            if(str_contains($payment->feeType->name, 'Tuition')){
+                $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
+                break;
+            }
+          }
+        }
+      }
       $data = [
           'student'=>$student,
-          'student_payments'=> $student? Invoice::where('payable_id', $student_id)->where('payable_type','student')
-          ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-              ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : null,
-          'tuition_fee_loan'=> $student? LoanAllocation::where('student_id',$student->id)->where('year_of_study',$student->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
-          ->where('campus_id',$student->applicant->campus_id)->sum('tuition_fee') : null
+          'student_payments'=> $student? $student_payments : null,
+          'tuition_fee_loan'=> $student? $tuition_fee_loan : null,
+          'total_fee_paid_amount'=> $student? $total_fee_paid_amount : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
     }
