@@ -308,7 +308,7 @@
                             <table class="table table-bordered">
                               <thead>
                                 <tr>
-                                  <th>Date</th>
+                                  <th>Date1</th>
                                   <th>Intake</th>
                                   <th>Applicable Levels</th>
                                   @if(Auth::user()->hasRole('administrator'))
@@ -455,11 +455,6 @@
                           </div>
                         </div>
                       </div>
-                      @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))              
-                        <div class="card-footer">
-                          <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                        </div>
-                      @endif  
                       {!! Form::close() !!}
                   </div>
               @endif
