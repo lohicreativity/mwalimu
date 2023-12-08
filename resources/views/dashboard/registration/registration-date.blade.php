@@ -321,6 +321,7 @@
                               </thead>
                               <tbody>
                                 @foreach($continuing_registration_dates as $registration_date)
+                                {{ $registration_date }}
                                 <tr>
                                   <td>{{ App\Utils\DateMaker::toStandardDate($registration_date->date) }}</td>
                                   <td>{{ $registration_date->intake }}</td>
@@ -337,11 +338,11 @@
                                   @endif
                                   @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
                                   <td>
-                                    <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-new-registration-date-{{ $registration_date->id }}">
+                                    <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-continuing-registration-date-{{ $registration_date->id }}">
                                       <i class="fas fa-pencil-alt"></i>
                                       Edit
                                     </a>
-                                    <div class="modal fade" id="ss-edit-new-registration-date-{{ $registration_date->id }}">
+                                    <div class="modal fade" id="ss-edit-continuing-registration-date-{{ $registration_date->id }}">
                                       <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                           <div class="modal-header">
