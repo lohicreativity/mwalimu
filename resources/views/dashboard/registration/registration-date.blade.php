@@ -320,7 +320,7 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                @foreach($registration_dates as $registration_date)
+                                @foreach($continuing_registration_dates as $registration_date)
                                 <tr>
                                   <td>{{ App\Utils\DateMaker::toStandardDate($registration_date->date) }}</td>
                                   <td>{{ $registration_date->intake }}</td>
