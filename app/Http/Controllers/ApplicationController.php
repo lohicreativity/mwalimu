@@ -5102,11 +5102,12 @@ class ApplicationController extends Controller
     public function showFailedInsuranceRegistrations(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+        
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
-           'records'=>InsuranceRegistration::with(['student:id,applicant_id,first_name,middle_name,surname,gender,phone,campus_program_id',
-                                                   'applicant'=>function($query) use($staff){$query->select('id','index_number')->where('campus_id',$staff->campus_id);}])
+           'records'=>InsuranceRegistration::with(['student:id,applicant_id,first_name,middle_name,surname,gender,phone,campus_program_id','applicant:id,index_number'])
+                                           ->whereHas('applicant',function($query) use($staff){$query->select('id','index_number')->where('campus_id',$staff->campus_id);})
                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('is_success',0)->get(),
            'request'=>$request
         ];
