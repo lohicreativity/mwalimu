@@ -39,12 +39,16 @@ class SpecialDateController extends Controller
    */
   public function showRegistrationDeadline(Request $request)
   {
+      $new_students = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->get();
+      $continuing_students = SpecialDate::where('name','Continuing Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->get();
+
       $data = [
            'campuses'=>Campus::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
-           'registration_dates'=>SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->get(),
+           'new_registration_dates'=> $new_students? $new_students : null,
+           'continuing_registration_dates'=> $continuing_students? $continuing_students : null,
            'intakes'=>Intake::all(),
            'awards'=>Award::all(),
            'request'=>$request

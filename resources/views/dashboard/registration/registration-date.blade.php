@@ -101,43 +101,7 @@
                 <h3 class="card-title">Registration deadline for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
-              @if(count($registration_dates) == 0)
-                  {!! Form::open(['url'=>'registration/store-registration-deadline','class'=>'ss-form-processing']) !!}
-                      <div class="card-body">
-                          @php
-                            if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
-                              $date = [
-                                  'placeholder'=>'Registration deadline',
-                                  'class'=>'form-control ss-datepicker',
-                                  'required'=>true
-                              ];
-                            }else{
-                              $date = [
-                                  'placeholder'=>'Registration deadline',
-                                  'class'=>'form-control',
-                                  'readonly'=>true,
-                                  'required'=>true
-                              ];
-                            }
-                          @endphp
-
-                          <div class="row">
-                            <div class="form-group col-3">
-                              {!! Form::label('','New registration deadline') !!}
-                              {!! Form::text('registration_date',null,$date) !!}
-
-                              {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                              {!! Form::input('hidden','campus_id',$campus->id) !!}
-                              {!! Form::input('hidden','name','New Registration Period') !!}
-                            </div>
-                          </div>
-                      </div>
-                      <div class="card-footer">
-                          <button type="submit" class="btn btn-primary">{{ __('Create Registration Deadline') }}</button>
-                      </div>
-                  {!! Form::close() !!}
-
-            @else
+              @if(count($new_registration_dates) > 0 || count($continuing_registration_dates) > 0)
                 <!-- /.card-header -->
                 <ul class="nav nav-tabs" id="myList" role="tablist">
                   <li class="nav-item"><a class="nav-link active" data-toggle="list" href="#ss-new-students" role="tab">New Students</a></li>
@@ -182,7 +146,7 @@
                                </tr>
                             </thead>
                             <tbody>
-                              @foreach($registration_dates as $registration_date)
+                              @foreach($new_registration_dates as $registration_date)
                               <tr>
                                 <td>{{ App\Utils\DateMaker::toStandardDate($registration_date->date) }}</td>
                                 <td>{{ $registration_date->intake }}</td>
@@ -316,11 +280,6 @@
                         </div>
                       </div>
                     </div>
-                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))              
-                      <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                      </div>
-                    @endif  
                     {!! Form::close() !!}
                   </div><!-- /tabpane -->
 
