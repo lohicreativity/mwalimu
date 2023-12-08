@@ -283,7 +283,7 @@
                     {!! Form::close() !!}
                   </div><!-- /tabpane -->
 
-                  <div class="tab-pane" id="#ss-continuing-students" role="tabpanel">
+                  <div class="tab-pane" id="ss-continuing-students" role="tabpanel">
                       {!! Form::open(['url'=>'registration/update-registration-deadline','class'=>'ss-form-processing']) !!}
                       <div class="card-body">
                         @php
@@ -308,7 +308,7 @@
                             <table class="table table-bordered">
                               <thead>
                                 <tr>
-                                  <th>Date1</th>
+                                  <th>Date</th>
                                   <th>Intake</th>
                                   <th>Applicable Levels</th>
                                   @if(Auth::user()->hasRole('administrator'))
