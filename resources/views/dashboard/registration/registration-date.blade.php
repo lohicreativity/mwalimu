@@ -110,7 +110,6 @@
 
                <div class="tab-content">
                  <div class="tab-pane active" id="ss-new-students" role="tabpanel">
-                    {!! Form::open(['url'=>'registration/update-registration-deadline','class'=>'ss-form-processing']) !!}
                     <div class="card-body">
                       @php
                         if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
@@ -280,11 +279,9 @@
                         </div>
                       </div>
                     </div>
-                    {!! Form::close() !!}
                   </div><!-- /tabpane -->
 
                   <div class="tab-pane" id="ss-continuing-students" role="tabpanel">
-                      {!! Form::open(['url'=>'registration/update-registration-deadline','class'=>'ss-form-processing']) !!}
                       <div class="card-body">
                         @php
                           if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
@@ -454,7 +451,6 @@
                           </div>
                         </div>
                       </div>
-                      {!! Form::close() !!}
                   </div>
               @endif
              </div>
