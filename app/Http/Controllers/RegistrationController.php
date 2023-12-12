@@ -502,6 +502,8 @@ class RegistrationController extends Controller
                         }
                     }
 
+                    $f4indexno = count($f4indexno) > 0? $f4indexno : $row->student->applicant->index_number;
+
                     foreach($row->student->applicant->nacteResultDetails as $detail){
                         if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
                             $f6indexno = $detail->avn;
