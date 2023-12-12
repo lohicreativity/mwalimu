@@ -226,7 +226,7 @@ class AdmissionController extends Controller
 
             $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                                                 ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                ->where('name','LIKE','%Master%')->where('name','LIKE','%NACTVET%');})->first();
+                                                ->where('name','LIKE','%Master%')->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
             if(!$quality_assurance_fee){
                 return redirect()->back()->with('error','NACTVET quality assurance fee has not been defined. Please contact the Admission Office.');
             }
