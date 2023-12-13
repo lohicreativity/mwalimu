@@ -509,6 +509,7 @@ class GraduantController extends Controller
         }
         
         $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                           ->whereHas('campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                            ->with(['applicant.disabilityStatus','campusProgram.program','campusProgram.program.award','annualRemarks'])
                            ->where('year_of_study',$request->get('year_of_study'))->get();
 
@@ -559,31 +560,31 @@ class GraduantController extends Controller
 
                $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
                 <Request>
-                <UsernameToken>
-                    <Username>'.$tcu_username.'</Username>
-                    <SessionToken>'.$tcu_token.'</SessionToken>
-                </UsernameToken>
-                <RequestParameters>
-                    <Fname>'.$student->first_name.'</Fname>
-                    <Mname>'.$student->middle_name.'</Mname>
-                    <Surname>'.$student->surname.'</Surname>
-                    <F4indexno>'.$student->applicant->index_number.'</F4indexno>
-                    <Gender>'.$student->gender.'</Gender>
-                    <Nationality>'.$student->nationality.'</Nationality>
-                    <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
-                    <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
-                    <Specialization>'.$specialization.'</Specialization>
-                    <AdmissionYear>'.$student->registration_year.'</AdmissionYear>
-                    <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
-                    <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
-                    <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
-                    <YearOfStudy>'.$year_of_study.'</YearOfStudy >
-                    <StudyMode>'.$study_mode.'</StudyMode >
-                    <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
-                    <EntryMode>'.$entry_mode.'</EntryMode >
-                    <Sponsorship>'.$sponsorship.'</Sponsorship >
-                    <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
-                </RequestParameters>
+                    <UsernameToken>
+                        <Username>'.$tcu_username.'</Username>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
+                    </UsernameToken>
+                    <RequestParameters>
+                        <Fname>'.$student->first_name.'</Fname>
+                        <Mname>'.$student->middle_name.'</Mname>
+                        <Surname>'.$student->surname.'</Surname>
+                        <F4indexno>'.$student->applicant->index_number.'</F4indexno>
+                        <Gender>'.$student->gender.'</Gender>
+                        <Nationality>'.$student->nationality.'</Nationality>
+                        <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
+                        <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
+                        <Specialization>'.$specialization.'</Specialization>
+                        <AdmissionYear>'.$student->registration_year.'</AdmissionYear>
+                        <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
+                        <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
+                        <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
+                        <YearOfStudy>'.$year_of_study.'</YearOfStudy >
+                        <StudyMode>'.$study_mode.'</StudyMode >
+                        <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
+                        <EntryMode>'.$entry_mode.'</EntryMode >
+                        <Sponsorship>'.$sponsorship.'</Sponsorship >
+                        <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
+                    </RequestParameters>
                 </Request>';
 
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
