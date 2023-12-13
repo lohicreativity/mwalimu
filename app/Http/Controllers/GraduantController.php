@@ -579,7 +579,7 @@ class GraduantController extends Controller
      * Download enrolled students
      */
     public function downloadEnrolledStudents(Request $request)
-    {
+    { return $request;
          $award = Award::find($request->get('program_level_id'));
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
