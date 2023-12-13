@@ -635,7 +635,7 @@ class GraduantController extends Controller
                         $is_year_repeat,
                         $student->applicant->entry_mode,
                         'Private',
-                        ($student->registration_year - 1).'/'.$student->registration_year,
+                        $student->registration_year.'/'.($student->registration_year + 1),
                         $student->disabilityStatus->name,
                         $student->applicant->index_number,
                         $student->campusProgram->program->name,
