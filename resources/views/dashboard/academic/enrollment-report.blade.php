@@ -105,6 +105,7 @@
                      <thead>
                        <tr>
                          <th>Registration#</th>
+                         <th>F4 Index#</th>
                          <th>First Name</th>
                          <th>Surname</th>
                          <th>Sex</th>
@@ -118,8 +119,24 @@
                      </thead>
                      <tbody>
                        @foreach($students as $student)
+                       @php
+                          $f4indexno = $f6indexno = [];
+                          
+                          foreach($student->applicant->nectaResultDetails as $detail){
+                              if($detail->exam_id == 1){
+                                  $f4indexno[] = $detail->index_number;
+                              }
+                          }
+
+                          $f4indexno = count($f4indexno) > 0? $f4indexno : $student->applicant->index_number;
+
+                          if(is_array($f4indexno)){
+                              $f4indexno=implode(', ',$f4indexno);
+                          }
+                       @endphp
                          <tr>
                           <td>{{ $student->registration_number }}</td>
+                          <td>{{ $f4indexno }}</td>
                           <td>{{ $student->first_name }}</td>
                           <td>{{ $student->surname }}</td>
                           <td>{{ $student->gender }}</td>
@@ -138,7 +155,7 @@
                           <td>{{ $is_year_repeat }}</td>
                           <td>Private</td>
                           <td>{{ $student->registration_year}}/{{($student->registration_year + 1) }}</td>
-                          <td>{{ $student->campusProgram->program->name }}</td>
+                          <td>{{ $student->campusProgram->code }}</td>
                          </tr>
                       @endforeach
                      </tbody>
