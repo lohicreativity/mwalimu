@@ -591,24 +591,15 @@ class GraduantController extends Controller
 
               $list = Student::whereHas('campusProgram.program',function($query) use($request){
                    $query->where('award_id',$request->get('program_level_id'));
-              })->with(['applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+              })->with(['academicStatus:name','applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
-              $program_name_parts = explode(' ',$list[0]->campusProgram->program->name); 
-              $specialization_array = [];
-              for($i = 4; $i < count($program_name_parts); $i++){
-                  $specialization_array[] = $program_name_parts[$i];
-              }
-
-              $specialization = implode(' ',$specialization_array);
-
-              return $specialization;
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
              $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');   
-                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Award Category','Field Specialization','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Award Name','Registration Number','Institution Code','Programme Code']);
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Award Category','Field Specialization','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Award Name','Registration Number','Institution Code','Programme Code','Status']);
                     foreach ($list as $student) { 
                         foreach($student->campusProgram->program->departments as $dpt){
                             if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
@@ -623,30 +614,40 @@ class GraduantController extends Controller
                                     }
                                 }
                         }
-                        $program_name_parts = explode('',$student->campusProgram->program->name); 
+                        $program_name_parts = explode(' ',$student->campusProgram->program->name); 
                         $specialization_array = [];
-                        for($i = 3; $i < count($program_name_parts); $i++){
+                        for($i = 4; $i < count($program_name_parts); $i++){
                             $specialization_array[] = $program_name_parts[$i];
                         }
+          
+                        $specialization = implode(' ',$specialization_array);
 
-                        $specialization = implode('',$specialization_array);
+                        $year_of_study = null;
+                        if($student->year_of_study == 1){
+                            $year_of_study = 'First Year';
+                        }elseif($student->year_of_study == 2){
+                            $year_of_study = 'Second Year';
+                        }elseif($student->year_of_study == 3){
+                            $year_of_study = 'Third Year';
+                        }
                         fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
                         $student->applicant->nationality,
                         date('Y',strtotime($student->applicant->birth_date)),
                         $student->campusProgram->program->award->name,
                         $department->name,
-                        $student->year_of_study,
+                        $year_of_study,
                         $student->study_mode,
                         $is_year_repeat,
                         $student->applicant->entry_mode,
                         'Private',
-                        $student->applicant->admission_year,
+                        $student->registration_year,
                         $student->applicant->disabilityStatus->name,
                         $student->applicant->index_number,
                         $specialization,
                         $student->registration_number,
-                        substr($student->campusProgram->regulator_code,0,2),
+                        substr($student->campusProgram->code,0,2),
                         $student->campusProgram->regulator_code,
+                        $student->academicStatus->name,
                         ]);
                     }
                   fclose($file_handle);
