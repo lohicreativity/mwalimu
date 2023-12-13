@@ -553,7 +553,7 @@ class GraduantController extends Controller
            }
            
            $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
-
+            $study_mode = $student->study_mode == 'FULLTIME'? 'Full Time' : 'Part time';
            
             $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
                                         ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
@@ -583,7 +583,7 @@ class GraduantController extends Controller
                     <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
                     <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
                     <YearOfStudy>'.$year_of_study.'</YearOfStudy >
-                    <StudyMode>'.$student->study_mode.'</StudyMode >
+                    <StudyMode>'.$study_mode.'</StudyMode >
                     <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
                     <EntryMode>'.$entry_mode.'</EntryMode >
                     <Sponsorship>'.$sponsorship.'</Sponsorship >
@@ -663,7 +663,7 @@ class GraduantController extends Controller
                         }
                         $program_name_parts = explode(' ',$student->campusProgram->program->name); 
                         $specialization_array = [];
-                        for($i = 4; $i < count($program_name_parts); $i++){
+                        for($i = 3; $i < count($program_name_parts); $i++){
                             $specialization_array[] = $program_name_parts[$i];
                         }
           
