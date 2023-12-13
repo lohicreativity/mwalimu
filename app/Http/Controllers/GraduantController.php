@@ -490,6 +490,7 @@ class GraduantController extends Controller
      */
     public function submitEnrolledStudents(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
         $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
                            ->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])
                            ->where('year_of_study',$request->get('year_of_study'))->get();
@@ -517,14 +518,28 @@ class GraduantController extends Controller
               $year_of_study = 'Third Year';
            }
 
+           $tcu_username = $tcu_token = $nactvet_authorization_key = null;
+           if($staff->campus_id == 1){
+               $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+               $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+   
+           }elseif($staff->campus_id == 2){
+               $tcu_username = config('constants.TCU_USERNAME_KARUME');
+               $tcu_token = config('constants.TCU_TOKEN_KARUME');
+   
+           }elseif($staff->campus_id == 3){
+               $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
+               $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
+           }
+           
            // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
             $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
 
                $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
                 <Request>
                 <UsernameToken>
-                <Username>'.config('constants.TCU_USERNAME').'</Username>
-                <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                    <Username>'.$tcu_username.'</Username>
+                    <SessionToken>'.$tcu_token.'</SessionToken>
                 </UsernameToken>
                 <RequestParameters>
                 <Fname>'.$student->first_name.'</Fname>
