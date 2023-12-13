@@ -591,7 +591,7 @@ class GraduantController extends Controller
 
               $list = Student::whereHas('campusProgram.program',function($query) use($request){
                    $query->where('award_id',$request->get('program_level_id'));
-              })->with(['academicStatus:name','applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+              })->with(['academicStatus:id,name','applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
