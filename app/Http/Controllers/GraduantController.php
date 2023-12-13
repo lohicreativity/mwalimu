@@ -618,7 +618,6 @@ class GraduantController extends Controller
                     $error_log->save();
         
                 }
-                return $array['Response']['ResponseParameters']['StatusDescription'];
             }
         }
 
