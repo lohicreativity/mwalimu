@@ -537,7 +537,7 @@ class GraduantController extends Controller
 
            $program_name_parts = explode(' ',$student->campusProgram->program->name); 
            $specialization_array = [];
-           for($i = 4; $i < count($program_name_parts); $i++){
+           for($i = 3; $i < count($program_name_parts); $i++){
                $specialization_array[] = $program_name_parts[$i];
            }
 
