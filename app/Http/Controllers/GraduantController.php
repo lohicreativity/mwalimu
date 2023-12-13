@@ -586,7 +586,7 @@ class GraduantController extends Controller
                         <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
                     </RequestParameters>
                 </Request>';
-//dd($xml_request);
+dd($xml_request);
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
