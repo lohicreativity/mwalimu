@@ -578,15 +578,15 @@ class GraduantController extends Controller
                         <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
                         <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
                         <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
-                        <YearOfStudy>'.$year_of_study.'</YearOfStudy >
-                        <StudyMode>'.$study_mode.'</StudyMode >
-                        <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
-                        <EntryMode>'.$entry_mode.'</EntryMode >
-                        <Sponsorship>'.$sponsorship.'</Sponsorship >
+                        <YearOfStudy>'.$year_of_study.'</YearOfStudy>
+                        <StudyMode>'.$study_mode.'</StudyMode>
+                        <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat>
+                        <EntryMode>'.$entry_mode.'</EntryMode>
+                        <Sponsorship>'.$sponsorship.'</Sponsorship>
                         <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
                     </RequestParameters>
                 </Request>';
-dd($xml_request);
+//dd($xml_request);
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
