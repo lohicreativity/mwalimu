@@ -490,10 +490,9 @@ class GraduantController extends Controller
      */
     public function submitEnrolledStudents(Request $request)
     {
-        $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-           })->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
-
+        $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                           ->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])
+                           ->where('year_of_study',$request->get('year_of_study'))->get();
 
         foreach($students as $student){
             foreach($student->campusProgram->program->departments as $dpt){
@@ -550,7 +549,7 @@ class GraduantController extends Controller
                 </RequestParameters>
                 </Request>';
 
-                return $xml_request;
+            return $xml_request;
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
