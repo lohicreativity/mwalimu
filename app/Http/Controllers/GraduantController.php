@@ -27,6 +27,8 @@ use App\Exports\GraduantsCertExport;
 use App\Mail\GraduationAlert;
 use Mail, Auth;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Application\Models\ApplicantSubmissionLog;
+use App\Domain\Application\Models\TCUApiErrorLog;
 
 class GraduantController extends Controller
 {
@@ -495,6 +497,8 @@ class GraduantController extends Controller
         }
         
         $staff = User::find(Auth::user()->id)->staff;
+        $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
+
         $tcu_username = $tcu_token = null;
         if($staff->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
@@ -591,7 +595,28 @@ class GraduantController extends Controller
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
 
-return $array;
+          if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+
+            $log = new ApplicantSubmissionLog;
+            $log->student_id = $student->id;
+            $log->program_level_id = $request->get('program_level_id');
+            $log->study_academic_year_id = $study_ac_yr->id;
+            $log->entry_type = 'Enrollment';
+            $log->submitted = 1;
+            $log->save();
+
+        }else{
+            //if($array['Response']['ResponseParameters']['StatusCode'] != 208){
+                $error_log = new TCUApiErrorLog;
+                $error_log->student_id = $student->id;
+                $error_log->entry_type = 'Enrollment';
+                $error_log->window_id = $study_ac_yr->id;
+                $error_log->program_level_id = $request->get('program_level_id');
+                $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
+                $error_log->save();
+            //}
+        }
         }
 
         return redirect()->back()->with('message','Enrolled students submitted successfully');
