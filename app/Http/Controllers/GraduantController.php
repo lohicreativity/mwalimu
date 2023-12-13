@@ -589,7 +589,7 @@ class GraduantController extends Controller
                       'Pragma'              => 'public'
               ];
 
-              $list = Student::whereHas('campusProgram.program',function($query) use($request){
+              $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')->whereHas('campusProgram.program',function($query) use($request){
                    $query->where('award_id',$request->get('program_level_id'));
               })->with(['academicStatus:id,name','applicant:id,entry_mode','applicant.disabilityStatus','campusProgram.campus:id,code','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
