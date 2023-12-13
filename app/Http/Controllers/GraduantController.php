@@ -591,7 +591,7 @@ class GraduantController extends Controller
 
               $list = Student::whereHas('campusProgram.program',function($query) use($request){
                    $query->where('award_id',$request->get('program_level_id'));
-              })->with(['academicStatus:id,name','applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+              })->with(['academicStatus:id,name','applicant:id,entry_mode','applicant.disabilityStatus','campusProgram.campus:id,code','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
@@ -601,11 +601,6 @@ class GraduantController extends Controller
                   $file_handle = fopen('php://output', 'w');   
                   fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Award Category','Field Specialization','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Award Name','Registration Number','Institution Code','Programme Code','Status']);
                     foreach ($list as $student) { 
-                        foreach($student->campusProgram->program->departments as $dpt){
-                            if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
-                                $department = $dpt;
-                            }
-                        }
                         $is_year_repeat = 'NO';
                         foreach($student->annualRemarks as $remark){
                                 if($remark->year_of_study == $student->year_of_study){
@@ -631,8 +626,8 @@ class GraduantController extends Controller
                             $year_of_study = 'Third Year';
                         }
                         fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
-                        $student->applicant->nationality,
-                        date('Y',strtotime($student->applicant->birth_date)),
+                        $student->nationality,
+                        date('Y',strtotime($student->birth_date)),
                         $student->campusProgram->program->award->name,
                         $specialization,
                         $year_of_study,
@@ -640,12 +635,12 @@ class GraduantController extends Controller
                         $is_year_repeat,
                         $student->applicant->entry_mode,
                         'Private',
-                        $student->registration_year,
-                        $student->applicant->disabilityStatus->name,
+                        ($student->registration_year - 1).'/'.$student->registration_year,
+                        $student->disabilityStatus->name,
                         $student->applicant->index_number,
                         $student->campusProgram->program->name,
                         $student->registration_number,
-                        substr($student->campusProgram->code,0,2),
+                        $student->campusProgram->campus->code,
                         $student->campusProgram->regulator_code,
                         $student->academicStatus->name,
                         ]);
