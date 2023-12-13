@@ -26,6 +26,7 @@ use App\Exports\GraduantsExport;
 use App\Exports\GraduantsCertExport;
 use App\Mail\GraduationAlert;
 use Mail, Auth;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class GraduantController extends Controller
 {
@@ -591,7 +592,7 @@ class GraduantController extends Controller
 
               $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')->whereHas('campusProgram.program',function($query) use($request){
                    $query->where('award_id',$request->get('program_level_id'));
-              })->with(['academicStatus:id,name','applicant:id,entry_mode','applicant.disabilityStatus','campusProgram.campus:id,code','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+              })->with(['academicStatus:id,name','applicant:id,entry_mode','applicant.nectaResultDetails','campusProgram.campus:id,code','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
@@ -625,6 +626,24 @@ class GraduantController extends Controller
                         }elseif($student->year_of_study == 3){
                             $year_of_study = 'Third Year';
                         }
+ 
+                        $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                                        ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                        $sponsorship = $loan_status? 'Private and Loans Board' : 'Private';
+    
+                        $f4indexno = $f6indexno = [];
+    
+                        foreach($student->applicant->nectaResultDetails as $detail){
+                            if($detail->exam_id == 1){
+                                $f4indexno[] = $detail->index_number;
+                            }
+                        }
+    
+                        $f4indexno = count($f4indexno) > 0? $f4indexno : $student->applicant->index_number;
+    
+                        if(is_array($f4indexno)){
+                            $f4indexno=implode(', ',$f4indexno);
+                        }
                         fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
                         $student->nationality,
                         date('Y',strtotime($student->birth_date)),
@@ -634,10 +653,10 @@ class GraduantController extends Controller
                         $student->study_mode,
                         $is_year_repeat,
                         $student->applicant->entry_mode,
-                        'Private',
+                        $sponsorship,
                         $student->registration_year.'/'.($student->registration_year + 1),
                         $student->disabilityStatus->name,
-                        $student->applicant->index_number,
+                        $f4indexno,
                         $student->campusProgram->program->name,
                         $student->registration_number,
                         $student->campusProgram->campus->code,
