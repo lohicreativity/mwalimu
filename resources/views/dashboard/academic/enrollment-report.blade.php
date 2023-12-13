@@ -104,6 +104,7 @@
                   <table class="table table-bordered ss-margin-top">
                      <thead>
                        <tr>
+                         <th>SN</th>
                          <th>Registration#</th>
                          <th>F4 Index#</th>
                          <th>First Name</th>
@@ -111,14 +112,14 @@
                          <th>Sex</th>
                          <th>Date of Birth</th>
                          <th>Year of Study</th>
-                         <th>Is Year Repeat</th>
+                         <th>Is Repeat</th>
                          <th>Sponsorship</th>
                          <th>Enrollment Year</th>
                          <th>Award Name</th>
                        </tr>
                      </thead>
                      <tbody>
-                       @foreach($students as $student)
+                       @foreach($students as $key=>$student)
                        @php
                           $f4indexno = $f6indexno = [];
                           
@@ -135,6 +136,7 @@
                           }
                        @endphp
                          <tr>
+                          <td>{{ ($key + 1) }}</td>
                           <td>{{ $student->registration_number }}</td>
                           <td>{{ $f4indexno }}</td>
                           <td>{{ $student->first_name }}</td>

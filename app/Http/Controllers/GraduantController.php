@@ -519,7 +519,7 @@ class GraduantController extends Controller
            }
 
            // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
-            $url="http://41.59.90.200/applicants/submitEnrolledStudents";
+            $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
 
                $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
                 <Request>
@@ -533,8 +533,8 @@ class GraduantController extends Controller
                 <Surname>'.$student->surname.'</Surname>
                 <F4indexno>'.$student->applicant->index_number.'</F4indexno>
                 <Gender>'.$student->gender.'</Gender>
-                <Nationality>'.$student->applicant->nationality.'</Nationality>
-                <DateOfBirth>'.date('Y',strtotime($student->applicant->birth_date)).'</DateOfBirth>
+                <Nationality>'.$student->nationality.'</Nationality>
+                <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
                 <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
                 <Specialization>'.$department->name.'</Specialization>
                 <AdmissionYear>'.$student->applicant->admission_year.'</AdmissionYear>
@@ -549,6 +549,8 @@ class GraduantController extends Controller
                 <PhysicalChallenges>'.$student->applicant->disabilityStatus->name.'</PhysicalChallenges>
                 </RequestParameters>
                 </Request>';
+
+                return $xml_request;
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
