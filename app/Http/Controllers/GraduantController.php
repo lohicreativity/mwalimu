@@ -490,9 +490,26 @@ class GraduantController extends Controller
      */
     public function submitEnrolledStudents(Request $request)
     {
+        if($request->get('program_level_id') != 4){
+            return redirect()->back()->with('error','The action is only for Bachelor Degree students.');
+        }
+        
         $staff = User::find(Auth::user()->id)->staff;
+        $tcu_username = $tcu_token = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }else{
+             return redirect()->back()->with('error','The action cannot be performed. Please check with Administrator.');
+        }
+        
         $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
-                           ->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])
+                           ->with(['applicant.disabilityStatus','campusProgram.program','campusProgram.program.award','annualRemarks'])
                            ->where('year_of_study',$request->get('year_of_study'))->get();
 
         foreach($students as $student){
@@ -518,20 +535,30 @@ class GraduantController extends Controller
               $year_of_study = 'Third Year';
            }
 
-           $tcu_username = $tcu_token = $nactvet_authorization_key = null;
-           if($staff->campus_id == 1){
-               $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
-               $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
-   
-           }elseif($staff->campus_id == 2){
-               $tcu_username = config('constants.TCU_USERNAME_KARUME');
-               $tcu_token = config('constants.TCU_TOKEN_KARUME');
-   
-           }elseif($staff->campus_id == 3){
-               $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
-               $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
+           $program_name_parts = explode(' ',$student->campusProgram->program->name); 
+           $specialization_array = [];
+           for($i = 4; $i < count($program_name_parts); $i++){
+               $specialization_array[] = $program_name_parts[$i];
+           }
+
+           $specialization = implode(' ',$specialization_array);
+
+           $year_of_study = null;
+           if($student->year_of_study == 1){
+               $year_of_study = 'First Year';
+           }elseif($student->year_of_study == 2){
+               $year_of_study = 'Second Year';
+           }elseif($student->year_of_study == 3){
+               $year_of_study = 'Third Year';
            }
            
+           $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
+
+           
+            $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                        ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+            $sponsorship = $loan_status? 'Private and Loans Board' : 'Private';
+
            // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
             $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
 
@@ -542,25 +569,25 @@ class GraduantController extends Controller
                     <SessionToken>'.$tcu_token.'</SessionToken>
                 </UsernameToken>
                 <RequestParameters>
-                <Fname>'.$student->first_name.'</Fname>
-                <Mname>'.$student->middle_name.'</Mname>
-                <Surname>'.$student->surname.'</Surname>
-                <F4indexno>'.$student->applicant->index_number.'</F4indexno>
-                <Gender>'.$student->gender.'</Gender>
-                <Nationality>'.$student->nationality.'</Nationality>
-                <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
-                <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
-                <Specialization>'.$department->name.'</Specialization>
-                <AdmissionYear>'.$student->applicant->admission_year.'</AdmissionYear>
-                <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
-                <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
-                <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
-                <YearOfStudy>'.$year_of_study.'</YearOfStudy >
-                <StudyMode>'.$student->study_mode.'</StudyMode >
-                <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
-                <EntryMode>'.$student->applicant->entry_mode.'</EntryMode >
-                <Sponsorship>Private</Sponsorship >
-                <PhysicalChallenges>'.$student->applicant->disabilityStatus->name.'</PhysicalChallenges>
+                    <Fname>'.$student->first_name.'</Fname>
+                    <Mname>'.$student->middle_name.'</Mname>
+                    <Surname>'.$student->surname.'</Surname>
+                    <F4indexno>'.$student->applicant->index_number.'</F4indexno>
+                    <Gender>'.$student->gender.'</Gender>
+                    <Nationality>'.$student->nationality.'</Nationality>
+                    <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
+                    <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
+                    <Specialization>'.$specialization.'</Specialization>
+                    <AdmissionYear>'.$student->registration_year.'</AdmissionYear>
+                    <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
+                    <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
+                    <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
+                    <YearOfStudy>'.$year_of_study.'</YearOfStudy >
+                    <StudyMode>'.$student->study_mode.'</StudyMode >
+                    <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
+                    <EntryMode>'.$entry_mode.'</EntryMode >
+                    <Sponsorship>'.$sponsorship.'</Sponsorship >
+                    <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
                 </RequestParameters>
                 </Request>';
 
