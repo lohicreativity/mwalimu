@@ -590,9 +590,6 @@ class GraduantController extends Controller
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
 
-          return dd($xml_request);
-
-          return dd($array);
 return $array;
         }
 
