@@ -558,7 +558,7 @@ class GraduantController extends Controller
            // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
             $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
 
-               $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
+            $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                 <Request>
                     <UsernameToken>
                         <Username>'.$tcu_username.'</Username>
@@ -586,7 +586,7 @@ class GraduantController extends Controller
                         <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
                     </RequestParameters>
                 </Request>';
-dd($xml_request);
+
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
