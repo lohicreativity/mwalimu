@@ -513,51 +513,46 @@ class GraduantController extends Controller
                            ->where('year_of_study',$request->get('year_of_study'))->get();
 
         foreach($students as $student){
-            foreach($student->campusProgram->program->departments as $dpt){
-              if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
-                  $department = $dpt;
-              }
-           }
-           $is_year_repeat = 'NO';
-           foreach($student->annualRemarks as $remark){
-                 if($remark->year_of_study == $student->year_of_study){
-                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
-                       $is_year_repeat = 'YES';
+            $is_year_repeat = 'NO';
+            foreach($student->annualRemarks as $remark){
+                    if($remark->year_of_study == $student->year_of_study){
+                        if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                        $is_year_repeat = 'YES';
+                        }
                     }
-                 }
-           }
+            }
 
-           if($student->year_of_study == 1){
-              $year_of_study = 'First Year';
-           }elseif($student->year_of_study == 2){
-              $year_of_study = 'Second Year';
-           }elseif($student->year_of_study == 3){
-              $year_of_study = 'Third Year';
-           }
+            if($student->year_of_study == 1){
+                $year_of_study = 'First Year';
+            }elseif($student->year_of_study == 2){
+                $year_of_study = 'Second Year';
+            }elseif($student->year_of_study == 3){
+                $year_of_study = 'Third Year';
+            }
 
-           $program_name_parts = explode(' ',$student->campusProgram->program->name); 
-           $specialization_array = [];
-           for($i = 3; $i < count($program_name_parts); $i++){
-               $specialization_array[] = $program_name_parts[$i];
-           }
+            $program_name_parts = explode(' ',$student->campusProgram->program->name); 
+            $specialization_array = [];
+            for($i = 3; $i < count($program_name_parts); $i++){
+                $specialization_array[] = $program_name_parts[$i];
+            }
 
-           $specialization = implode(' ',$specialization_array);
+            $specialization = implode(' ',$specialization_array);
 
-           $year_of_study = null;
-           if($student->year_of_study == 1){
-               $year_of_study = 'First Year';
-           }elseif($student->year_of_study == 2){
-               $year_of_study = 'Second Year';
-           }elseif($student->year_of_study == 3){
-               $year_of_study = 'Third Year';
-           }
+            $year_of_study = null;
+            if($student->year_of_study == 1){
+                $year_of_study = 'First Year';
+            }elseif($student->year_of_study == 2){
+                $year_of_study = 'Second Year';
+            }elseif($student->year_of_study == 3){
+                $year_of_study = 'Third Year';
+            }
            
-           $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
+            $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
             $study_mode = $student->study_mode == 'FULLTIME'? 'Full Time' : 'Part time';
            
             $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
                                         ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
-            $sponsorship = $loan_status? 'Private and Loans Board' : 'Private';
+            $sponsorship = $loan_status? 'HESLB' : 'Private';
 
            // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
             $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
