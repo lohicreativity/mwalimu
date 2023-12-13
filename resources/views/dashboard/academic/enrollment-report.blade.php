@@ -104,7 +104,7 @@
                   <table class="table table-bordered ss-margin-top">
                      <thead>
                        <tr>
-                         <th>Registration Number</th>
+                         <th>Registration#</th>
                          <th>First Name</th>
                          <th>Surname</th>
                          <th>Sex</th>
@@ -137,7 +137,7 @@
                            @endphp
                           <td>{{ $is_year_repeat }}</td>
                           <td>Private</td>
-                          <td>{{ $student->applicant->admission_year }}</td>
+                          <td>{{ $student->registration_year}}/{{($student->registration_year + 1) }}</td>
                           <td>{{ $student->campusProgram->program->name }}</td>
                          </tr>
                       @endforeach
