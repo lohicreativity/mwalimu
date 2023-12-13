@@ -80,13 +80,13 @@
              <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Enrollment Report</h3><br>
-                <a href="{{ url('academic/submit-enrolled-students?nta_level_id='.$request->get('nta_level_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Submit Enrolled Students</a> 
-                <a href="{{ url('academic/download-enrolled-students?nta_level_id='.$request->get('nta_level_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Enrolled Students</a>
+                <a href="{{ url('academic/submit-enrolled-students?program_level_id='.$request->get('program_level_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Submit Enrolled Students</a> 
+                <a href="{{ url('academic/download-enrolled-students?program_level_id='.$request->get('program_level_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Enrolled Students</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/enrollment-report','method'=>'GET']) !!}
-                 {!! Form::input('hidden','nta_level_id',$request->get('nta_level_id')) !!}
+                 {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                  {!! Form::input('hidden','year_of_study',$request->get('year_of_study')) !!}
                 <div class="input-group ss-stretch">
                  <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
