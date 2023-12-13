@@ -586,7 +586,6 @@ class GraduantController extends Controller
                 </RequestParameters>
                 </Request>';
 
-            return $xml_request;
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
@@ -594,7 +593,7 @@ class GraduantController extends Controller
           return dd($xml_request);
 
           return dd($array);
-
+return $array;
         }
 
         return redirect()->back()->with('message','Enrolled students submitted successfully');
