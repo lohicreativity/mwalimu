@@ -518,105 +518,107 @@ class GraduantController extends Controller
                            ->where('year_of_study',$request->get('year_of_study'))->get();
 
         foreach($students as $student){
-            $is_year_repeat = 'NO';
-            foreach($student->annualRemarks as $remark){
-                    if($remark->year_of_study == $student->year_of_study){
-                        if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
-                        $is_year_repeat = 'YES';
+            if(!ApplicantSubmissionLog::where('student_id',$student->id)->where('study_academic_year_id',$study_ac_yr->id)->where('entry_type','Enrollment')->where('program_level_id',$request->get('program_level_id'))->first()){
+                $is_year_repeat = 'NO';
+                foreach($student->annualRemarks as $remark){
+                        if($remark->year_of_study == $student->year_of_study){
+                            if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                            $is_year_repeat = 'YES';
+                            }
                         }
-                    }
+                }
+    
+                if($student->year_of_study == 1){
+                    $year_of_study = 'First Year';
+                }elseif($student->year_of_study == 2){
+                    $year_of_study = 'Second Year';
+                }elseif($student->year_of_study == 3){
+                    $year_of_study = 'Third Year';
+                }
+    
+                $program_name_parts = explode(' ',$student->campusProgram->program->name); 
+                $specialization_array = [];
+                for($i = 3; $i < count($program_name_parts); $i++){
+                    $specialization_array[] = $program_name_parts[$i];
+                }
+    
+                $specialization = implode(' ',$specialization_array);
+    
+                $year_of_study = null;
+                if($student->year_of_study == 1){
+                    $year_of_study = 'First Year';
+                }elseif($student->year_of_study == 2){
+                    $year_of_study = 'Second Year';
+                }elseif($student->year_of_study == 3){
+                    $year_of_study = 'Third Year';
+                }
+               
+                $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
+                $study_mode = $student->study_mode == 'FULLTIME'? 'Full Time' : 'Part time';
+               
+                $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                            ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                $sponsorship = $loan_status? 'HESLB' : 'Private';
+    
+               // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
+                $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
+    
+                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                    <Request>
+                        <UsernameToken>
+                            <Username>'.$tcu_username.'</Username>
+                            <SessionToken>'.$tcu_token.'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                            <Fname>'.$student->first_name.'</Fname>
+                            <Mname>'.$student->middle_name.'</Mname>
+                            <Surname>'.$student->surname.'</Surname>
+                            <F4indexno>'.$student->applicant->index_number.'</F4indexno>
+                            <Gender>'.$student->gender.'</Gender>
+                            <Nationality>'.$student->nationality.'</Nationality>
+                            <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
+                            <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
+                            <Specialization>'.$specialization.'</Specialization>
+                            <AdmissionYear>'.$student->registration_year.'</AdmissionYear>
+                            <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
+                            <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
+                            <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
+                            <YearOfStudy>'.$year_of_study.'</YearOfStudy>
+                            <StudyMode>'.$study_mode.'</StudyMode>
+                            <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat>
+                            <EntryMode>'.$entry_mode.'</EntryMode>
+                            <Sponsorship>'.$sponsorship.'</Sponsorship>
+                            <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
+                        </RequestParameters>
+                    </Request>';
+    
+                $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                $json = json_encode($xml_response);
+                $array = json_decode($json,TRUE);
+        
+                if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+        
+                    $log = new ApplicantSubmissionLog;
+                    $log->student_id = $student->id;
+                    $log->program_level_id = $request->get('program_level_id');
+                    $log->study_academic_year_id = $study_ac_yr->id;
+                    $log->entry_type = 'Enrollment';
+                    $log->submitted = 1;
+                    $log->save();
+        
+                }else{
+        
+                    $error_log = new TCUApiErrorLog;
+                    $error_log->student_id = $student->id;
+                    $error_log->entry_type = 'Enrollment';
+                    $error_log->window_id = $study_ac_yr->id;
+                    $error_log->program_level_id = $request->get('program_level_id');
+                    $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                    $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
+                    $error_log->save();
+        
+                }
             }
-
-            if($student->year_of_study == 1){
-                $year_of_study = 'First Year';
-            }elseif($student->year_of_study == 2){
-                $year_of_study = 'Second Year';
-            }elseif($student->year_of_study == 3){
-                $year_of_study = 'Third Year';
-            }
-
-            $program_name_parts = explode(' ',$student->campusProgram->program->name); 
-            $specialization_array = [];
-            for($i = 3; $i < count($program_name_parts); $i++){
-                $specialization_array[] = $program_name_parts[$i];
-            }
-
-            $specialization = implode(' ',$specialization_array);
-
-            $year_of_study = null;
-            if($student->year_of_study == 1){
-                $year_of_study = 'First Year';
-            }elseif($student->year_of_study == 2){
-                $year_of_study = 'Second Year';
-            }elseif($student->year_of_study == 3){
-                $year_of_study = 'Third Year';
-            }
-           
-            $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
-            $study_mode = $student->study_mode == 'FULLTIME'? 'Full Time' : 'Part time';
-           
-            $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
-                                        ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
-            $sponsorship = $loan_status? 'HESLB' : 'Private';
-
-           // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
-            $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
-
-            $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                <Request>
-                    <UsernameToken>
-                        <Username>'.$tcu_username.'</Username>
-                        <SessionToken>'.$tcu_token.'</SessionToken>
-                    </UsernameToken>
-                    <RequestParameters>
-                        <Fname>'.$student->first_name.'</Fname>
-                        <Mname>'.$student->middle_name.'</Mname>
-                        <Surname>'.$student->surname.'</Surname>
-                        <F4indexno>'.$student->applicant->index_number.'</F4indexno>
-                        <Gender>'.$student->gender.'</Gender>
-                        <Nationality>'.$student->nationality.'</Nationality>
-                        <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
-                        <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
-                        <Specialization>'.$specialization.'</Specialization>
-                        <AdmissionYear>'.$student->registration_year.'</AdmissionYear>
-                        <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
-                        <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
-                        <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
-                        <YearOfStudy>'.$year_of_study.'</YearOfStudy>
-                        <StudyMode>'.$study_mode.'</StudyMode>
-                        <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat>
-                        <EntryMode>'.$entry_mode.'</EntryMode>
-                        <Sponsorship>'.$sponsorship.'</Sponsorship>
-                        <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
-                    </RequestParameters>
-                </Request>';
-
-          $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-          $json = json_encode($xml_response);
-          $array = json_decode($json,TRUE);
-
-          if($array['Response']['ResponseParameters']['StatusCode'] == 200){
-
-            $log = new ApplicantSubmissionLog;
-            $log->student_id = $student->id;
-            $log->program_level_id = $request->get('program_level_id');
-            $log->study_academic_year_id = $study_ac_yr->id;
-            $log->entry_type = 'Enrollment';
-            $log->submitted = 1;
-            $log->save();
-
-        }else{
-            //if($array['Response']['ResponseParameters']['StatusCode'] != 208){
-                $error_log = new TCUApiErrorLog;
-                $error_log->student_id = $student->id;
-                $error_log->entry_type = 'Enrollment';
-                $error_log->window_id = $study_ac_yr->id;
-                $error_log->program_level_id = $request->get('program_level_id');
-                $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
-                $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
-                $error_log->save();
-            //}
-        }
         }
 
         return redirect()->back()->with('message','Enrolled students submitted successfully');
