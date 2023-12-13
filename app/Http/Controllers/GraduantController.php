@@ -456,24 +456,23 @@ class GraduantController extends Controller
      */
     public function enrollmentReport(Request $request)
     {
-
         if($request->get('query')){
            $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
+                   $query->where('award_id',$request->get('program_level_id'));
            })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%')->paginate(50);
         }else{
            $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
+                   $query->where('award_id',$request->get('program_level_id'));
            })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->paginate(50);
         }
 
         if($request->get('campus_program_id')){
             $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
+                   $query->where('award_id',$request->get('program_level_id'));
            })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->where('campus_program_id',$request->get('campus_program_id'))->paginate(50);
         }
         $data = [
-           'nta_levels'=>NTALevel::all(),
+           'awards'=>Award::all(),
            'students'=>$students,
            'campus_programs'=>CampusProgram::with('program')->get(),
            'request'=>$request
@@ -581,42 +580,48 @@ class GraduantController extends Controller
      */
     public function downloadEnrolledStudents(Request $request)
     {
-         $nta_level = NTALevel::find($request->get('nta_level_id'));
+         $award = Award::find($request->get('program_level_id'));
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$nta_level->name.'.csv',
+                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$award->name.'.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
 
               $list = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-              })->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+                   $query->where('award_id',$request->get('program_level_id'));
+              })->with(['applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
              $callback = function() use ($list) 
               {
-                  $file_handle = fopen('php://output', 'w');
+                  $file_handle = fopen('php://output', 'w');   
                   fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Award Category','Field Specialization','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Award Name','Registration Number','Institution Code','Programme Code']);
-                  foreach ($list as $student) { 
-                       foreach($student->campusProgram->program->departments as $dpt){
-                          if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
-                              $department = $dpt;
-                          }
-                       }
-                       $is_year_repeat = 'NO';
-                       foreach($student->annualRemarks as $remark){
-                             if($remark->year_of_study == $student->year_of_study){
-                                if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
-                                   $is_year_repeat = 'YES';
+                    foreach ($list as $student) { 
+                        foreach($student->campusProgram->program->departments as $dpt){
+                            if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
+                                $department = $dpt;
+                            }
+                        }
+                        $is_year_repeat = 'NO';
+                        foreach($student->annualRemarks as $remark){
+                                if($remark->year_of_study == $student->year_of_study){
+                                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                                    $is_year_repeat = 'YES';
+                                    }
                                 }
-                             }
-                       }
+                        }
+                        $program_name_parts = explode('',$student->campusProgram->program->name); 
+                        $specialization_array = [];
+                        for($i = 3; $i < count($program_name_parts); $i++){
+                            $specialization_array[] = $program_name_parts[$i];
+                        }
 
-                      fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
+                        $specialization = implode('',$specialization_array);
+                        fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
                         $student->applicant->nationality,
                         date('Y',strtotime($student->applicant->birth_date)),
                         $student->campusProgram->program->award->name,
@@ -629,12 +634,12 @@ class GraduantController extends Controller
                         $student->applicant->admission_year,
                         $student->applicant->disabilityStatus->name,
                         $student->applicant->index_number,
-                        $student->campusProgram->program->name,
+                        $specialization,
                         $student->registration_number,
                         substr($student->campusProgram->regulator_code,0,2),
                         $student->campusProgram->regulator_code,
                         ]);
-                  }
+                    }
                   fclose($file_handle);
               };
 

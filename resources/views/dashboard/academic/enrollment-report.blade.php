@@ -48,11 +48,13 @@
                    
                    <div class="row">
                    <div class="form-group col-6">
-                    {!! Form::label('','NTA Level') !!}
-                    <select name="nta_level_id" class="form-control" required>
-                       <option value="">Select NTA Level</option>
-                       @foreach($nta_levels as $level)
-                       <option value="{{ $level->id }}">{{ $level->name }}</option>
+                    {!! Form::label('','Programme Level') !!}
+                    <select name="program_level_id" class="form-control" required>
+                       <option value="">Select Programme Level</option>
+                       @foreach($awards as $award)
+                          @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                              <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                          @endif
                        @endforeach
                     </select>
                   </div>
@@ -105,7 +107,7 @@
                          <th>Registration Number</th>
                          <th>First Name</th>
                          <th>Surname</th>
-                         <th>Gender</th>
+                         <th>Sex</th>
                          <th>Date of Birth</th>
                          <th>Year of Study</th>
                          <th>Is Year Repeat</th>
