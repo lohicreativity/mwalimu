@@ -593,7 +593,15 @@ class GraduantController extends Controller
                    $query->where('award_id',$request->get('program_level_id'));
               })->with(['applicant:id,disability_status_id','applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
 
-              return $list[0];
+              $program_name_parts = explode('',$list[0]->campusProgram->program->name); 
+              $specialization_array = [];
+              for($i = 3; $i < count($program_name_parts); $i++){
+                  $specialization_array[] = $program_name_parts[$i];
+              }
+
+              $specialization = implode('',$specialization_array);
+
+              return $specialization;
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
