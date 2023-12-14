@@ -714,7 +714,7 @@ class StudentController extends Controller
             $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
             $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
             $email = $student->email? $student->email : 'admission@mnma.ac.tz';
-return 5;
+return $other_fees;
             $invoice = new Invoice;
             $invoice->reference_no = 'MNMA-MSC'.time();
             $invoice->actual_amount = $other_fees;
