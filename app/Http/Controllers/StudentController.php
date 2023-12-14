@@ -543,212 +543,212 @@ class StudentController extends Controller
         if($student->year_of_study == 1 && $student->academic_status_id == 8){
           $other_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Miscellaneous Income');})->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$study_academic_year->id)->first();
           
-          if(empty($other_fee_invoice)){
-            if(str_contains(strtolower($student->applicant->programLevel->name),'bachelor')){
-                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-                    $query->where('name','LIKE','%TCU%');
-                })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->first();
+//           if(empty($other_fee_invoice)){
+//             if(str_contains(strtolower($student->applicant->programLevel->name),'bachelor')){
+//                 $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+//                     $query->where('name','LIKE','%TCU%');
+//                 })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->first();
 
-                if(str_contains($student->campusProgram->program->name, 'Education')){
-                    if($student->applicant->campus_id == 1){
-                        $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){$query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                                    ->where('name','NOT LIKE','%Master%')
-                                ->where(function($query){$query->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});})->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                 if(str_contains($student->campusProgram->program->name, 'Education')){
+//                     if($student->applicant->campus_id == 1){
+//                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){$query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                                     ->where('name','NOT LIKE','%Master%')
+//                                 ->where(function($query){$query->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});})->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                        $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
-                    }else{
-                        $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                         $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                     }else{
+//                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                        $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                         $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
 
-                    }
+//                     }
 
-                }else{
-                    if($student->applicant->campus_id == 1){
-                        $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                 }else{
+//                     if($student->applicant->campus_id == 1){
+//                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                        $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
-                    }else{
-                        $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                         $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                     }else{
+//                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                        $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                         $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                                 ->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                                 ->orWhere('name','LIKE','Student\'s Union%');
+//                             })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
 
-                    }
-                }
-            }elseif(str_contains(strtolower($student->campusProgram->program->name), 'education')){
+//                     }
+//                 }
+//             }elseif(str_contains(strtolower($student->campusProgram->program->name), 'education')){
 
-                $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                    $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
-                        ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
-                        ->orWhere('name','LIKE','%Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});
-                })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                 $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                     $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
+//                         ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
+//                         ->orWhere('name','LIKE','%Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});
+//                 })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                    $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
-                        ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
-                        ->orWhere('name','LIKE','%Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});
-                })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                 $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                     $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
+//                         ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
+//                         ->orWhere('name','LIKE','%Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});
+//                 })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
                 
-            }elseif(str_contains(strtolower($student->applicant->programLevel->name),'master')){
+//             }elseif(str_contains(strtolower($student->applicant->programLevel->name),'master')){
 
-                $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$student->applicant->campus_id)
-                ->whereHas('feeItem',function($query) use($student){$query->where('campus_id',$student->applicant->campus_id)
-                ->where('name','LIKE','%Master%')->where('name','LIKE','%NACTVET%');})->first();
+//                 $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$student->applicant->campus_id)
+//                 ->whereHas('feeItem',function($query) use($student){$query->where('campus_id',$student->applicant->campus_id)
+//                 ->where('name','LIKE','%Master%')->where('name','LIKE','%NACTVET%');})->first();
 
-                if($student->applicant->campus_id == 1){
-                    $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
-                            ->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
-                            ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                 if($student->applicant->campus_id == 1){
+//                     $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
+//                             ->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
+//                             ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
         
-                    $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
-                            ->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
-                            ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
-                }else{
-                    $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
-                            ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
-                            ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                     $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
+//                             ->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
+//                             ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                 }else{
+//                     $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
+//                             ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
+//                             ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
         
-                    $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
-                            ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
-                            ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
-                }
+//                     $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('name','LIKE','%Master%')->where(function($query){$query->where('name','LIKE','%Registration Fee%')->orWhere('name','LIKE','%New ID Card%')
+//                             ->orWhere('name','LIKE','%Supervision Fee%')->orWhere('name','LIKE','%Welfare Emergency%')->orWhere('name','LIKE','%Caution Money%')
+//                             ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','Examination Fee%');});
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                 }
 
-            }else{
-                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-                    $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
-                })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->first();
+//             }else{
+//                 $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+//                     $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
+//                 })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->first();
 
-                if($student->applicant->campus_id == 1){
-                    $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                            ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                            ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                            ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                 if($student->applicant->campus_id == 1){
+//                     $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                             ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                             ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                             ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                    $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                            ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                            ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                            ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
-                }else{
-                    $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                            ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                            ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                            ->orWhere('name','LIKE','Student\'s Union%');
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+//                     $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                             ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                             ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                             ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                 }else{
+//                     $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                             ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                             ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                             ->orWhere('name','LIKE','Student\'s Union%');
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
-                    $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
-                        $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
-                            ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                            ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                            ->orWhere('name','LIKE','Student\'s Union%');
-                    })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
+//                     $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
+//                         $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+//                             ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+//                             ->orWhere('name','Practical Training')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
+//                             ->orWhere('name','LIKE','Student\'s Union%');
+//                     })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_usd');
 
-                }
-            }
-            $usd_currency = Currency::where('code','USD')->first();
-            $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
-            $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
-            if(str_contains($student->nationality,'Tanzania')){
-                $other_fees = round($other_fees_tzs);
-                $currency = 'TZS';
-            }else{
-                $other_fees = round($other_fees_usd*$usd_currency->factor);
-                $currency = 'TZS';//'USD';
-            }
+//                 }
+//             }
+//             $usd_currency = Currency::where('code','USD')->first();
+//             $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
+//             $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
+//             if(str_contains($student->nationality,'Tanzania')){
+//                 $other_fees = round($other_fees_tzs);
+//                 $currency = 'TZS';
+//             }else{
+//                 $other_fees = round($other_fees_usd*$usd_currency->factor);
+//                 $currency = 'TZS';//'USD';
+//             }
 
-            $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
+//             $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
 
-            if(!$feeType){
-                return redirect()->back()->with('error','Miscellaneous fee type has not been set');
-            }
-            $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
-            $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
-            $email = $student->email? $student->email : 'admission@mnma.ac.tz';
-return $other_fees;
-            $invoice = new Invoice;
-            $invoice->reference_no = 'MNMA-MSC'.time();
-            $invoice->actual_amount = $other_fees;
-            $invoice->amount = $other_fees;
-            $invoice->currency = $currency;
-            $invoice->payable_id = $student->id;
-            $invoice->payable_type = 'student';
-            $invoice->fee_type_id = $feeType->id;
-            $invoice->applicable_id = $study_academic_year->id;
-            $invoice->applicable_type = 'academic_year';
-            $invoice->save();
+//             if(!$feeType){
+//                 return redirect()->back()->with('error','Miscellaneous fee type has not been set');
+//             }
+//             $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
+//             $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
+//             $email = $student->email? $student->email : 'admission@mnma.ac.tz';
+// return $other_fees;
+//             $invoice = new Invoice;
+//             $invoice->reference_no = 'MNMA-MSC'.time();
+//             $invoice->actual_amount = $other_fees;
+//             $invoice->amount = $other_fees;
+//             $invoice->currency = $currency;
+//             $invoice->payable_id = $student->id;
+//             $invoice->payable_type = 'student';
+//             $invoice->fee_type_id = $feeType->id;
+//             $invoice->applicable_id = $study_academic_year->id;
+//             $invoice->applicable_type = 'academic_year';
+//             $invoice->save();
     
-            $generated_by = 'SP';
-            $approved_by = 'SP';
-            $inst_id = config('constants.SUBSPCODE');
+//             $generated_by = 'SP';
+//             $approved_by = 'SP';
+//             $inst_id = config('constants.SUBSPCODE');
     
-            $number_filter = preg_replace('/[^0-9]/','',$email);
-            $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+//             $number_filter = preg_replace('/[^0-9]/','',$email);
+//             $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
 
-            return $this->requestControlNumber($request,
-                                        $invoice->reference_no,
-                                        $inst_id,
-                                        $invoice->amount,
-                                        $feeType->description,
-                                        $feeType->gfs_code,
-                                        $feeType->payment_option,
-                                        $student->id,
-                                        $first_name.' '.$surname,
-                                        $student->phone,
-                                        $payer_email,
-                                        $generated_by,
-                                        $approved_by,
-                                        $feeType->duration,
-                                        $invoice->currency);
-          }
+//             return $this->requestControlNumber($request,
+//                                         $invoice->reference_no,
+//                                         $inst_id,
+//                                         $invoice->amount,
+//                                         $feeType->description,
+//                                         $feeType->gfs_code,
+//                                         $feeType->payment_option,
+//                                         $student->id,
+//                                         $first_name.' '.$surname,
+//                                         $student->phone,
+//                                         $payer_email,
+//                                         $generated_by,
+//                                         $approved_by,
+//                                         $feeType->duration,
+//                                         $invoice->currency);
+//           }
         }
         
         $data = [
