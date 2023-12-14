@@ -545,6 +545,7 @@ class StudentController extends Controller
           
           if(empty($other_fee_invoice)){
             if(str_contains(strtolower($student->applicant->programLevel->name),'bachelor')){
+              return 1;
                 $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
                     $query->where('name','LIKE','%TCU%');
                 })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->first();
