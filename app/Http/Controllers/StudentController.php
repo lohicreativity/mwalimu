@@ -104,7 +104,8 @@ class StudentController extends Controller
           $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
           $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
-          $student = Student::where('registration_number',$request->get('registration_number'))->with('applicant')->first();
+          $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id')
+                            ->where('registration_number',$request->get('registration_number'))->with(['applicant:id,campus_id','academicStatus:id,name'])->first();
           $tuition_fee_loan = LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
           ->where('campus_id',$student->applicant->campus_id)->sum('tuition_fee');
 
@@ -137,10 +138,43 @@ class StudentController extends Controller
                   }
                 }
 
-                if($fee_payment_percent >= 0.6){
-                Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                if($student->year_of_study == 1 && $student->academicStatus->name == 'FRESHER'){
+                  $other_fee_payment_status = false;
+                  foreach($invoices as $invoice){
+                    if(str_contains($invoice->feeType->name,'Miscellaneous Income')){
+                      $other_fee_payment_status = true;
+                      break;
+                    }
+                  }
 
+                  if($activeSemester->id == 1){
+                    if($fee_payment_percent >= 0.6 && $other_fee_payment_status){
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+      
+                    }
+
+                  }elseif($activeSemester->id == 2){
+                    if($fee_payment_percent == 1 && $other_fee_payment_status){
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+      
+                    }
+                  }
+                }else{
+                  if($activeSemester->id == 1){
+                    if($fee_payment_percent >= 0.6){
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+      
+                    }
+                  }elseif($activeSemester->id == 2){
+                    if($fee_payment_percent == 1){
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+      
+                    }
+                  }
                 }
               }
             }
@@ -210,6 +244,14 @@ class StudentController extends Controller
   // return Invoice::where('payable_id', $student->id)->where('payable_type','student')
   // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
   //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
+
+      $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+      if($student->year_of_study == 1){
+        $other_fee_invoice = Invoice::with(['feeType'=>function($query){$query->where('name','Miscellaneous Income');}])->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$ac_year->id)->first();
+        if(empty($other_fee_invoice)){
+          return 1;
+        }
+      }
 
    	$data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
