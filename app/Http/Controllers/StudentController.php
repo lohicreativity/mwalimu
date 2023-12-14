@@ -245,14 +245,6 @@ class StudentController extends Controller
   // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
   //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
 
-      $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
-      if($student->year_of_study == 1){
-        $other_fee_invoice = Invoice::with(['feeType'=>function($query){$query->where('name','Miscellaneous Income');}])->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$ac_year->id)->first();
-        if(empty($other_fee_invoice)){
-          return 1;
-        }
-      }
-
    	$data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
@@ -543,6 +535,15 @@ class StudentController extends Controller
     public function showRequestControlNumber(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
+
+        $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        if($student->year_of_study == 1){
+          $other_fee_invoice = Invoice::with(['feeType'=>function($query){$query->where('name','Miscellaneous Income');}])->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$ac_year->id)->first();
+          if(empty($other_fee_invoice)){
+            return 1;
+          }
+        }
+        
         $data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'fee_types'=>FeeType::all(),
