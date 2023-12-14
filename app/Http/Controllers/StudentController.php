@@ -541,11 +541,11 @@ class StudentController extends Controller
                                   'studentshipStatus:id,name'])->first();
         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
         if($student->year_of_study == 1 && $student->academic_status_id == 8){
+          return 1;
           $other_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Miscellaneous Income');})->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$study_academic_year->id)->first();
           
           if(empty($other_fee_invoice)){
             if(str_contains(strtolower($student->applicant->programLevel->name),'bachelor')){
-              return 1;
                 $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
                     $query->where('name','LIKE','%TCU%');
                 })->where('study_academic_year_id',$study_academic_year->id)->where('campus_id', session('applicant_campus_id'))->first();
