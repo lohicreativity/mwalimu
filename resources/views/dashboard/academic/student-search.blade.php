@@ -238,7 +238,7 @@
                     @if(!Auth::user()->hasRole('finance-officer'))<a href="{{ url('student/deceased?student_id='.$student->id) }}" class="btn btn-primary">Deceased</a> 
                     <a href="{{ url('student/reset-password?student_id='.$student->id) }}" class="btn btn-primary">Reset Password</a> @endif
                     @if($invoice && (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('finance-officer'))) <a href="{{ url('student/reset-control-number?student_id='.$student->id) }}" class="btn btn-primary">Reset Control Number</a> @endif
-                    @if(Auth::user()->hasRole('administrator'))<a href="{{ url('student/reset-id-print-status?student_id='.$student->id) }}" class="btn btn-primary">Reset ID Status</a>@endif
+                    @if(Auth::user()->hasRole('administrator') && $id_print_status == 0)<a href="{{ url('student/reset-id-print-status?student_id='.$student->id) }}" class="btn btn-primary">Reset ID Status</a>@endif
                   </div>
                 </div>
               </div>

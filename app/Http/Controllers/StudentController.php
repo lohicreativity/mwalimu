@@ -1964,6 +1964,7 @@ class StudentController extends Controller
           'student_payments'=> $student? $student_payments : null,
           'tuition_fee_loan'=> $student? $tuition_fee_loan : null,
           'total_paid_fee'=> $student? $total_fee_paid_amount : null,
+          'id_print_status'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->whereNotNull('id_print_status')->count(),
           'invoice'=> $student && Auth::user()->hasRole('finance-officer')? $invoice : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
@@ -2015,7 +2016,7 @@ class StudentController extends Controller
      * Reset password
      */
     public function resetIDPrintStatus(Request $request)
-    { return session('active_semester_id');
+    { 
         $student = Student::find($request->get('student_id'));
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))
