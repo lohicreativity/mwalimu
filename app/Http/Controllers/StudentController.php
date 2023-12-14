@@ -552,7 +552,7 @@ class StudentController extends Controller
                 if(str_contains($student->campusProgram->program->name, 'Education')){
                     if($student->applicant->campus_id == 1){
                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')->where('name','NOT LIKE','%Master%')
                                 ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
                                 ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
                                 ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
