@@ -533,7 +533,7 @@ class StudentController extends Controller
      * Request control number
      */
     public function showRequestControlNumber(Request $request)
-    {
+    {return 1;
         $student = User::find(Auth::user()->id)->student;
         $student = Student::select('id','first_name','middle_name','surname','phone','email','nationality','applicant_id','registration_number','campus_program_id','studentship_status_id')
                           ->where('id',$student->id)
