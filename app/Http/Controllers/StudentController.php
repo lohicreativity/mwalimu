@@ -535,9 +535,10 @@ class StudentController extends Controller
     public function showRequestControlNumber(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
-        $student = Student::select('id','first_name','surname','phone','email','nationality','applicant_id','campus_program_id')
+        $student = Student::select('id','first_name','middle_name','surname','phone','email','nationality','applicant_id','registration_number','campus_program_id','studentship_status_id')
                           ->where('id',$student->id)
-                          ->with(['applicant:id,program_level_id,campus_id','applicant.programLevel:id,name','campusProgram:id,program_id','campusProgram.program:id,name'])->first();
+                          ->with(['applicant:id,program_level_id,campus_id,intake_id','applicant.programLevel:id,name','campusProgram:id,program_id','campusProgram.program:id,name',
+                                  'studentshipStatus:id,name'])->first();
         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
         if($student->year_of_study == 1 && $student->academic_status_id == 8){
           $other_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Miscellaneous Income');})->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$study_academic_year->id)->first();
