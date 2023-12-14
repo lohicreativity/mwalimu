@@ -1958,13 +1958,17 @@ class StudentController extends Controller
         $invoice = Invoice::whereNull('gateway_payment_id')->where(function($query) use($student, $student_id){$query->where('payable_id',$student->applicant->id)->where('payable_type','applicant')
                           ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first();
       }
+      $id_print_status = 0;
+      if($student){
+        $id_print_status = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
 
+      }
       $data = [
           'student'=>$student,
           'student_payments'=> $student? $student_payments : null,
           'tuition_fee_loan'=> $student? $tuition_fee_loan : null,
           'total_paid_fee'=> $student? $total_fee_paid_amount : null,
-          'id_print_status'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count(),
+          'id_print_status'=>$id_print_status,
           'invoice'=> $student && Auth::user()->hasRole('finance-officer')? $invoice : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
