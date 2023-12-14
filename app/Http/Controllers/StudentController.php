@@ -541,7 +541,7 @@ class StudentController extends Controller
           $other_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Miscellaneous Income');})->where('payable_type','student')->where('payable_id',$student->id)->where('applicable_id',$ac_year->id)->first();
           
           if(empty($other_fee_invoice)){
-            return 1;
+
           }
         }
         
