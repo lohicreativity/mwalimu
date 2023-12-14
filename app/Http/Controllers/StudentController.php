@@ -551,13 +551,11 @@ class StudentController extends Controller
 
                 if(str_contains($student->campusProgram->program->name, 'Education')){
                     if($student->applicant->campus_id == 1){
-                      return 1;
-                        $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){
-                            $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')->where('name','NOT LIKE','%Master%')
-                                ->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
+                        $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){$query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
+                                                    ->where('name','NOT LIKE','%Master%')
+                                ->where(function($query){$query->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
                                 ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Student\'s Welfare Emergency%')
-                                ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');
-                            })->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+                                ->orWhere('name','LIKE','Student\'s Union%')->orWhere('name','LIKE','%Medical Examination%');});})->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
                         $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
