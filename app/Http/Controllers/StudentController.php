@@ -1964,7 +1964,7 @@ class StudentController extends Controller
           'student_payments'=> $student? $student_payments : null,
           'tuition_fee_loan'=> $student? $tuition_fee_loan : null,
           'total_paid_fee'=> $student? $total_fee_paid_amount : null,
-          'id_print_status'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->whereNotNull('id_print_status')->count(),
+          'id_print_status'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count(),
           'invoice'=> $student && Auth::user()->hasRole('finance-officer')? $invoice : null
       ];
       return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
@@ -2020,7 +2020,7 @@ class StudentController extends Controller
         $student = Student::find($request->get('student_id'));
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))
-                    ->update(['id_sn_no'=>null,'id_print_date'=>null,'id_print_status'=>null]);
+                    ->update(['id_sn_no'=>null,'id_print_date'=>null,'id_print_status'=>0]);
 
         return redirect()->back()->with('message','ID card print status reset successfully');
     }
