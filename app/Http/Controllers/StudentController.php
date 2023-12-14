@@ -2011,6 +2011,18 @@ class StudentController extends Controller
         return redirect()->back()->with('message','Password reset successfully');
     }
 
+        /**
+     * Reset password
+     */
+    public function resetIDPrintStatus(Request $request)
+    { return session('active_semester_id');
+        $student = Student::find($request->get('student_id'));
+        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))
+                    ->update(['id_sn_no'=>null,'id_print_date'=>null,'id_print_status'=>null]);
+
+        return redirect()->back()->with('message','ID card print status reset successfully');
+    }
      /**
      * Reset control number
      */
