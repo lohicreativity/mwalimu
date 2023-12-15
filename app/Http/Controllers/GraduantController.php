@@ -768,7 +768,7 @@ class GraduantController extends Controller
                              ->whereIn('id',[$submitted_list_ids])
                              ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                      'academicStatus:id,name','applicant:id,entry_mode,index_number','campusProgram.campus:id,code','campusProgram.program.award:id,name','annualRemarks:id,student_id,year_of_study'])
-                             ->where('year_of_study',$request->get('year_of_study'))->get();
+                             ->get();
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
