@@ -763,7 +763,7 @@ class GraduantController extends Controller
         foreach($submitted_list as $list){
             $submitted_list_ids = $list->id;
         }
-return $submitted_list;
+return session('active_academic_year_id');
         $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')
                              ->wherIn('id',[$submitted_list_ids])
                              ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
