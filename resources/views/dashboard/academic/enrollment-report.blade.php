@@ -92,7 +92,6 @@
                  {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                  {!! Form::input('hidden','year_of_study',$request->get('year_of_study')) !!}
                 <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
                  <select name="campus_program_id" class="form-control">
                    <option value="">Select Programme</option>
                    @foreach($campus_programs as $program)
