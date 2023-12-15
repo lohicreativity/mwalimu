@@ -755,10 +755,10 @@ class GraduantController extends Controller
                     'Pragma'              => 'public'
             ];
 
-        $submitted_list = ApplicantSubmissionLog::select('id')->where('program_level_id',$request->get('program_level_id'))
-                                                ->where('study_academic_year_id',session('active_academic_year_id'))
-                                                ->where('campus_id',$staff->campus_id)->where('entry_type','Enrollment')
-                                                ->where('year_of_study',$request->get('year_of_study'))->get();
+        $submitted_list = ApplicantSubmissionLog::select('id')->where('program_level_id',4)
+                                                ->where('study_academic_year_id',1)
+                                                ->where('campus_id',1)->where('entry_type','Enrollment')
+                                                ->where('year_of_study',1)->get();
         $submitted_list_ids = [];
         foreach($submitted_list as $list){
             $submitted_list_ids = $list->id;
