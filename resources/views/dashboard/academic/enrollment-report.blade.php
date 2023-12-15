@@ -104,7 +104,7 @@
                  </span>
                 </div>
                 {!! Form::close() !!}
-                  <table class="table table-bordered ss-margin-top">
+                  <table class="table table-bordered ss-margin-top ss-paginated-table">
                      <thead>
                        <tr>
                          <th>SN</th>
@@ -166,9 +166,6 @@
                      </tbody>
                   </table>
 
-                  <div class="ss-pagination-links">
-                     {!! $students->appends($request->except('page'))->render() !!}
-                  </div>
               </div>
             </div>
             
