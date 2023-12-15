@@ -772,9 +772,8 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with(['applicant','studentshipStatus','academicStatus','semesterRemarks'=>function($query){
-            $query->latest();
-        },'semesterRemarks.semester'])->find($request->get('student_id'));
+        $student = Student::with(['applicant:id,program_level_id,index_number','applicant.programLevel:id,name','studentshipStatus:id,name','academicStatus:id,name','semesterRemarks'=>function($query){
+            $query->latest();},'semesterRemarks.semester'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
 
         DB::beginTransaction();
@@ -858,7 +857,7 @@ class StudentController extends Controller
 
             $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
             if($loan_allocation){
-                 if(str_contains($student->applicant->nationality,'Tanzania')){
+                 if(str_contains($student->nationality,'Tanzania')){
                      $amount = $program_fee->amount_in_tzs - $loan_allocation->tuition_fee;
                      $amount_loan = round($loan_allocation->tuition_fee);
                      $currency = 'TZS';
@@ -869,7 +868,7 @@ class StudentController extends Controller
                  }
             }else{
                  if($student->academicStatus->name == 'RETAKE'){
-                    if(str_contains($student->applicant->nationality,'Tanzania')){
+                    if(str_contains($student->nationality,'Tanzania')){
                          $amount = round(0.5*$program_fee->amount_in_tzs);
                          $amount_loan = 0.00;
                          $currency = 'TZS';
@@ -879,7 +878,7 @@ class StudentController extends Controller
                          $currency = 'TZS'; //'USD';
                      }
                  }else{
-                    if(str_contains($student->applicant->nationality,'Tanzania')){
+                    if(str_contains($student->nationality,'Tanzania')){
                          $amount = round($program_fee->amount_in_tzs);
                          $amount_loan = 0.00;
                          $currency = 'TZS';
@@ -892,7 +891,7 @@ class StudentController extends Controller
 
             }
 
-                 if(str_contains($student->applicant->nationality,'Tanzania')){
+                 if(str_contains($student->nationality,'Tanzania')){
                      $amount_without_loan = round($program_fee->amount_in_tzs);
                  }else{
                      $amount_without_loan = round($program_fee->amount_in_usd*$usd_currency->factor);
@@ -960,7 +959,7 @@ class StudentController extends Controller
 
             $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
             $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
-            if(str_contains($student->applicant->nationality,'Tanzania')){
+            if(str_contains($student->nationality,'Tanzania')){
               $other_fees = round($other_fees_tzs);
               $currency = 'TZS';
             }else{
@@ -1020,7 +1019,7 @@ class StudentController extends Controller
                })->where('study_academic_year_id',$study_academic_year->id)->first();
 
 
-            if(str_contains($student->applicant->nationality,'Tanzania')){
+            if(str_contains($student->nationality,'Tanzania')){
               $amount = round($identity_card_fee->amount_in_tzs);
               $currency = 'TZS';
             }else{
