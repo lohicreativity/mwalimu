@@ -554,9 +554,7 @@ class StudentController extends Controller
                       
                         $other_fees_tzs = FeeAmount::whereHas('feeItem', function($query){$query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
                                                     ->where('name','NOT LIKE','%Master%')
-                                ->where(function($query){$query->where('name','Caution Money')->orWhere('name','Registration Fee')->orWhere('name', 'LIKE','%New ID Card%')
-                                ->orWhere('name','LIKE','%Teaching Practice%')->orWhere('name','LIKE','%Welfare Emergency%')
-                                ->orWhere('name','LIKE','%Union%')->orWhere('name','LIKE','%Medical Examination%');});})->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
+                                ->where(function($query){$query->where('name','LIKE','%Teaching Practice%');});})->where('study_academic_year_id', $study_academic_year->id)->where('campus_id', $student->applicant->campus_id)->sum('amount_in_tzs');
 
                         $other_fees_usd = FeeAmount::whereHas('feeItem', function($query){
                             $query->where('is_mandatory',1)->where('name', 'NOT LIKE', '%NACTVET%')->where('name', 'NOT LIKE','%TCU%')
