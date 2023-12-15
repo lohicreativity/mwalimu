@@ -1113,8 +1113,11 @@ class StudentController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                 ])->post($url,$data);
 
-
-    return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+      if(str_contains($billno,'MNMA-MSC')){
+        return redirect()->to('student/request-control-number')->with('message','Bill for other fees created successfully');
+      }else{
+        return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+      }
 
     }
 
