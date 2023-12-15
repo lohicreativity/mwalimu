@@ -755,15 +755,15 @@ class GraduantController extends Controller
                     'Pragma'              => 'public'
             ];
 
-        $submitted_list = ApplicantSubmissionLog::select('id')->where('program_level_id',4)
-                                                ->where('study_academic_year_id',1)
-                                                ->where('campus_id',1)->where('entry_type','Enrollment')
-                                                ->where('year_of_study',1)->get();
+        $submitted_list = ApplicantSubmissionLog::select('id')->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('study_academic_year_id',session('active_academic_year_id'))
+                                                ->where('campus_id',$staff->campus_id)->where('entry_type','Enrollment')
+                                                ->where('year_of_study',$request->get('year_of_study'))->get();
         $submitted_list_ids = [];
         foreach($submitted_list as $list){
             $submitted_list_ids = $list->id;
         }
-return $submitted_list;
+return $submitted_list_ids;
         $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')
                              ->wherIn('id',[$submitted_list_ids])
                              ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
