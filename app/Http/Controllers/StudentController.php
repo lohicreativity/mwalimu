@@ -696,6 +696,7 @@ class StudentController extends Controller
                 }
             }
             $usd_currency = Currency::where('code','USD')->first();
+            return $other_fees_tzs.' = '.$quality_assurance_fee->amount_in_tzs;
             $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
             $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
             if(str_contains($student->nationality,'Tanzania')){
