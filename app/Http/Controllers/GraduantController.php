@@ -469,11 +469,12 @@ class GraduantController extends Controller
         foreach($submitted_list as $list){
         $submitted_list_ids[] = $list->student_id;
         }
-        return $submitted_list_ids;
+        
         $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
                             ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                     'applicant.disabilityStatus','campusProgram.program.award'])
-                            ->where('year_of_study',$request->get('year_of_study'))->get();
+                            ->where('year_of_study',$request->get('year_of_study'))
+                            ->whereNotIn('id',$submitted_list_ids)->get();
 
         if($request->get('campus_program_id')){
             $students = Student::whereHas('campusProgram.program',function($query) use($request){
