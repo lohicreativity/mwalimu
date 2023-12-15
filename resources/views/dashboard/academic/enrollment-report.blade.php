@@ -88,22 +88,6 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/enrollment-report','method'=>'GET']) !!}
-                 {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                 {!! Form::input('hidden','year_of_study',$request->get('year_of_study')) !!}
-                <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
-                 <select name="campus_program_id" class="form-control">
-                   <option value="">Select Programme</option>
-                   @foreach($campus_programs as $program)
-                   <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                   @endforeach
-                 </select>
-                 <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                 </span>
-                </div>
-                {!! Form::close() !!}
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                      <thead>
                        <tr>
