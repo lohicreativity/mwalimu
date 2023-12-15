@@ -652,7 +652,7 @@ class GraduantController extends Controller
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$award->name.'.csv',
+                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$award->name.'-'.date('Y-m-d'.'\T'.'h:i:s').'.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
@@ -731,6 +731,101 @@ class GraduantController extends Controller
                         $student->registration_number,
                         $student->campusProgram->campus->code,
                         $student->campusProgram->regulator_code,
+                        $student->academicStatus->name,
+                        ]);
+                    }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
+
+        /**
+     * Download enrolled students
+     */
+    public function downloadSubmittedEnrolledStudents(Request $request)
+    { 
+        $award = Award::find($request->get('program_level_id'));
+        $staff = User::find(Auth::user()->id)->staff;
+        $headers = [
+                    'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                    'Content-type'        => 'text/csv',
+                    'Content-Disposition' => 'attachment; filename=Submitted-Enrolled-Students-Year-'.$request->get('year_of_study').'-'.$award->name.'-'.date('Y-m-d'.'\T'.'h:i:s').'.csv',
+                    'Expires'             => '0',
+                    'Pragma'              => 'public'
+            ];
+
+        $submitted_list = ApplicantSubmissionLog::select('id')->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('study_academic_year_id',session('active_academic_year_id'))
+                                                ->where('campus_id',$staff->campus_id)->where('entry_type','Enrollment')
+                                                ->where('year_of_study',$request->get('year_of_study'))->get();
+        $submitted_list_ids = [];
+        foreach($submitted_list as $list){
+            $submitted_list_ids = $list->id;
+        }
+return $submitted_list_ids;
+        $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')
+                             ->wherIn('id',[$submitted_list_ids])
+                             ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                     'academicStatus:id,name','applicant:id,entry_mode,index_number','campusProgram.campus:id,code','campusProgram.program.award:id,name','annualRemarks:id,student_id,year_of_study'])
+                             ->where('year_of_study',$request->get('year_of_study'))->get();
+
+              # add headers for each column in the CSV download
+              // array_unshift($list, array_keys($list[0]));
+
+             $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');   
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Registration Number','Programme','Status']);
+                    foreach ($list as $student) { 
+                        $is_year_repeat = 'NO';
+                        foreach($student->annualRemarks as $remark){
+                                if($remark->year_of_study == $student->year_of_study){
+                                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                                    $is_year_repeat = 'YES';
+                                    }
+                                }
+                        }
+
+                        $year_of_study = null;
+                        if($student->year_of_study == 1){
+                            $year_of_study = 'First Year';
+                        }elseif($student->year_of_study == 2){
+                            $year_of_study = 'Second Year';
+                        }elseif($student->year_of_study == 3){
+                            $year_of_study = 'Third Year';
+                        }
+ 
+                        $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                                        ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                        $sponsorship = $loan_status? 'Private and Loans Board' : 'Private';
+    
+                        $f4indexno = [];
+    
+                        foreach($student->applicant->nectaResultDetails as $detail){
+                            if($detail->exam_id == 1){
+                                $f4indexno[] = $detail->index_number;
+                            }
+                        }
+    
+                        $f4indexno = count($f4indexno) > 0? $f4indexno : $student->applicant->index_number;
+    
+                        if(is_array($f4indexno)){
+                            $f4indexno=implode(', ',$f4indexno);
+                        }
+                        fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
+                        $student->nationality,
+                        date('Y',strtotime($student->birth_date)),
+                        $year_of_study,
+                        $student->study_mode,
+                        $is_year_repeat,
+                        $student->applicant->entry_mode,
+                        $sponsorship,
+                        $student->registration_year.'/'.($student->registration_year + 1),
+                        $student->disabilityStatus->name,
+                        $f4indexno,
+                        $student->registration_number,
+                        $student->campusProgram->code,
                         $student->academicStatus->name,
                         ]);
                     }
