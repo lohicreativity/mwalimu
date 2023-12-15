@@ -503,6 +503,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-enrollment-report')
+              <li class="nav-item">
+                <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Enrollment Report') }}</p>
+                </a>
+              </li>
+              @endcan
               @can('view-insurance-status')
               <li class="nav-item">
                 <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
@@ -1057,14 +1065,6 @@
                 <a href="{{ url('settings/gpa-classifications?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('GPA Classification') }}</p>
-                </a>
-              </li>
-              @endcan
-              @can('view-enrollment-report')
-              <li class="nav-item">
-                <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Enrollment Report') }}</p>
                 </a>
               </li>
               @endcan
