@@ -458,7 +458,18 @@ class GraduantController extends Controller
      * Enrollment report
      */
     public function enrollmentReport(Request $request)
-    {
+    {        
+        $staff = User::find(Auth::user()->id)->staff;
+        $submitted_list = ApplicantSubmissionLog::select('student_id')->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('study_academic_year_id',session('active_academic_year_id'))
+                                                ->where('campus_id',$staff->campus_id)->where('entry_type','Enrollment')
+                                                ->where('year_of_study',$request->get('year_of_study'))->get();
+
+        $submitted_list_ids = [];
+        foreach($submitted_list as $list){
+        $submitted_list_ids[] = $list->student_id;
+        }
+        return $submitted_list_ids;
         $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
                             ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                     'applicant.disabilityStatus','campusProgram.program.award'])
