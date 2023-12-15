@@ -486,6 +486,7 @@ class GraduantController extends Controller
            'awards'=>Award::all(),
            'students'=>$students,
            'campus_programs'=>CampusProgram::with('program')->get(),
+           'submitted_students'=>count($submitted_list_ids),
            'request'=>$request
         ];
         return view('dashboard.academic.enrollment-report',$data)->withTitle('Enrollment Report');
