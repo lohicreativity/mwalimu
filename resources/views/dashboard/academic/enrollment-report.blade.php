@@ -87,7 +87,7 @@
                 @if($request->get('program_level_id') == 4)<a href="{{ url('academic/download-submitted-enrolled-students?program_level_id='.$request->get('program_level_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Donwload Submitted Enrolled Students</a> @endif
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
+              <div class="card-body"> 
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                      <thead>
                        <tr>

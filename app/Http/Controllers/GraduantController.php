@@ -459,18 +459,10 @@ class GraduantController extends Controller
      */
     public function enrollmentReport(Request $request)
     {
-        if($request->get('query')){
-           $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('award_id',$request->get('program_level_id'));
-           })->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                     'applicant.disabilityStatus','campusProgram.program.award'])
-            ->where('year_of_study',$request->get('year_of_study'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%')->paginate(50);
-        }else{
-           $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
-                              ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
-                                      'applicant.disabilityStatus','campusProgram.program.award'])
-                              ->where('year_of_study',$request->get('year_of_study'))->paginate(50);
-        }
+        $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                            ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                    'applicant.disabilityStatus','campusProgram.program.award'])
+                            ->where('year_of_study',$request->get('year_of_study'))->get();
 
         if($request->get('campus_program_id')){
             $students = Student::whereHas('campusProgram.program',function($query) use($request){
