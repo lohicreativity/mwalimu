@@ -744,7 +744,7 @@ class GraduantController extends Controller
      * Download enrolled students
      */
     public function downloadSubmittedEnrolledStudents(Request $request)
-    { return $request;
+    { 
         $award = Award::find($request->get('program_level_id'));
         $staff = User::find(Auth::user()->id)->staff;
         $headers = [
