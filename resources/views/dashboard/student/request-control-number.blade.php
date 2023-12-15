@@ -92,7 +92,7 @@
                   @if($invoice->payable_type == 'student')
                   <tr>
                       <td>{{ $invoice->applicable->academicYear->year }}</td>
-                      <td>{{ $invoice->feeType->name }}</td>
+                      <td>@if($invoice->feeType->name == 'Miscellaneous Income') Other Fees @else {{ $invoice->feeType->name }} @endif</td>
                       <td>{{ number_format($invoice->actual_amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ number_format($invoice->amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
