@@ -774,7 +774,7 @@ class RegistrationController extends Controller
                                ->whereHas('student.applicant',function($query) use($staff,$request){$query->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id);})
                                ->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('id_print_status',1)
                                ->with('student:id,first_name,middle_name,surname,gender,phone,registration_number,campus_program_id','student.campusProgram:id,code','user.staff:id,first_name,surname')
-                               ->get();
+                               ->orderBy('id_print_date','DESC')->get();
 
         $data = [
             'cards'=>$cards? $cards : [],
