@@ -146,7 +146,7 @@
 						  <td>{{ $card->student->campusProgram->code }}</td>
 						  <td>{{ $card->id_sn_no }} </td>
 						  <td>{{ $card->id_print_date }} </td>
-						  <td>{{ $card->user->staff->first_name }} {{ $card->user->staff->surname }}</td>
+						  <td>@if($card->user){{ $card->user->staff->first_name }} {{ $card->user->staff->surname }} @endif</td>
 						</tr>
 					@endforeach
                   </tbody>
