@@ -787,7 +787,7 @@ class RegistrationController extends Controller
             'compose'=>0,
             'request'=>$request
         ];
-        return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
+        return view('dashboard.registration.printed-id-cards',$data)->withTitle('Printed ID Cards');
     }
 
     public function composeIDCard(Request $request){
