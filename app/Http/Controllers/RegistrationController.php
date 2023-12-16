@@ -809,6 +809,7 @@ class RegistrationController extends Controller
      */
     public function showIDCard(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
         $student = Student::with('campusProgram.program','campusProgram.campus', 'applicant.intake')
         ->where('registration_number',str_replace('-','/',$request->get('registration_number')))->first();
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->with('academicYear')->first();
@@ -865,6 +866,7 @@ class RegistrationController extends Controller
             $newRegistrationNo = $registration->id_sn_no;
         }
         $registration->id_print_date = now();
+        $registration->printed_by_user_id = $staff->id;
         $registration->id_print_status = 1; $newRegistrationNo;
         $registration->save();
 

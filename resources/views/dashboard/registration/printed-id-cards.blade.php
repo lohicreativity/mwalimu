@@ -28,7 +28,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Student Search') }}</li>
+              <li class="breadcrumb-item active">{{ __('Printed ID Cards') }}</li>
             </ol>
           </div>
         </div>
@@ -124,12 +124,12 @@
                   <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Reg. No.</th>
+                    <th>Reg#</th>
                     <th>Names</th>
                     <th>Sex</th>
-                    <th>Phone</th>
+                    <th>Phone#</th>
                     <th>Programme</th>
-                    <th>Card SN</th>
+                    <th>Card Serial#</th>
 					<th>Printed By</th>
 					<th>Printed On</th>					
                   </tr>
@@ -145,8 +145,8 @@
 						  <td>{{ $card->student->phone }}</td>
 						  <td>{{ $card->student->campusProgram->code }}</td>
 						  <td>{{ $card->id_sn_no }} </td>
-						  <td>{{ $card->id_print_date }} </td>
 						  <td>@if($card->user){{ $card->user->staff->first_name }} {{ $card->user->staff->surname }} @endif</td>
+						  <td>{{ $card->id_print_date }} </td>
 						</tr>
 					@endforeach
                   </tbody>
