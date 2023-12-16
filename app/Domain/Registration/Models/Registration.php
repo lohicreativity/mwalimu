@@ -28,4 +28,9 @@ class Registration extends Model
     	return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
     }
 
+    public function user()
+    {
+    	return $this->belongsTo(User::class,'printed_by_user_id');
+    }
+
 }

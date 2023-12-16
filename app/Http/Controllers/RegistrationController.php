@@ -764,6 +764,31 @@ class RegistrationController extends Controller
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
     }
 
+    public function showPrintedIDCards(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+
+        $cards = Registration::select('id','student_id','id_sn_no','id_print_date','printed_by_user_id')
+                               ->whereHas('student.applicant',function($query) use($staff,$request){$query->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id);})
+                               ->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('id_print_status',1)
+                               ->with('student:id,first_name,middle_name,surname,gender,phone,registration_number,campus_program_id','student.campusProgram:id,code','user.staff:id,first_name,surname')
+                               ->get();
+
+        $data = [
+            'cards'=>$cards? $cards : [],
+            'semester'=>$semester,
+			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : StudyAcademicYear::where('status', 'ACTIVE')->first(),
+            'awards'=>Award::all(),
+            'campuses'=>Campus::all(),
+			'staff'=>User::find(Auth::user()->id)->staff,
+            'compose'=>0,
+            'request'=>$request
+        ];
+        return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
+    }
 
     public function composeIDCard(Request $request){
         $data = [

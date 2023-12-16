@@ -602,6 +602,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-printed-identity-cards')
+              <li class="nav-item">
+                <a href="{{ url('registration/printed-id-cards') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Printed IDs</p>
+                </a>
+              </li>
+              @endcan
               @can('view-identity-cards')
               <li class="nav-item">
                 <a href="{{ url('registration/print-id-card-bulk') }}" class="nav-link">

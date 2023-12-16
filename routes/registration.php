@@ -32,6 +32,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('update-orientation-date',[SpecialDateController::class,'updateOrientationDate']);
 
     Route::get('print-id-card',[RegistrationController::class,'printIDCard']);
+    Route::get('printed-id-cards',[RegistrationController::class,'showPrintedIDCards']);
     Route::get('print-id-card-bulk',[RegistrationController::class,'printIDCardBulk']);
     Route::get('show-id-card-bulk',[RegistrationController::class,'showIDCardBulk']);
     Route::get('show-id-card',[RegistrationController::class,'showIDCard']);
