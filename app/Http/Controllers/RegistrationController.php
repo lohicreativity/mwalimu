@@ -770,10 +770,9 @@ class RegistrationController extends Controller
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
 
-        $cards = Registration::select('id','student_id','id_sn_no','id_print_date','printed_by_user_id')
-                               ->whereHas('student.applicant',function($query) use($staff,$request){$query->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id);})
+        $cards = Registration::whereHas('student.applicant',function($query) use($staff,$request){$query->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id);})
                                ->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('id_print_status',1)
-                               ->with(['student:id,first_name,middle_name,surname,gender,phone,registration_number,campus_program_id,user_id','student.campusProgram:id,code','student.user','user.staff:id,first_name,surname'])
+                               ->with(['student','student.campusProgram:id,code','student.user','user.staff'])
                                ->orderBy('id_print_date','DESC')->get();
             
 
