@@ -5,6 +5,7 @@ namespace App\Domain\Registration\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Models\User;
 
 class Registration extends Model
 {
