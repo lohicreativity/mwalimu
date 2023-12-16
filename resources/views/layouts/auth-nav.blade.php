@@ -606,7 +606,7 @@
               <li class="nav-item">
                 <a href="{{ url('registration/printed-id-cards') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Printed IDs</p>
+                  <p>Printed ID Cards</p>
                 </a>
               </li>
               @endcan
