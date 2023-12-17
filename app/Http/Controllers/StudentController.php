@@ -1032,7 +1032,7 @@ class StudentController extends Controller
           }
 
           if($student->academicStatus->name == 'FRESHER'){
-            return 1;
+            return $study_academic_year->id.' - '.$student->applicant->campus_id;
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%Identity Card%');})
                                           ->where('study_academic_year_id',$study_academic_year->id)
                                           ->where('campus_id',$student->applicant->campus_id)
