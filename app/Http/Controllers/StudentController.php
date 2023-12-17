@@ -1031,10 +1031,11 @@ class StudentController extends Controller
             return redirect()->back()->with('error','You have already requested for ID card control number in this academic year');
           }
 
+          //return $student->applicant->campus_id;
           if($student->academicStatus->name == 'FRESHER'){
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%Identity Card%');})
-                                          ->where('study_academic_year_id',$study_academic_year->id)
-                                          ->where('campus_id',$student->applicant->campus_id)
+                                          ->where('study_academic_year_id',1)
+                                          ->where('campus_id',1)
                                           ->first();
 
           }else{
@@ -1047,7 +1048,7 @@ class StudentController extends Controller
           if(!$identity_card_fee){
             return redirect()->back()->with('error','ID card fee type for new students has not been set');
           }
-
+return 1;
           if(str_contains($student->nationality,'Tanzania')){
             $amount = round($identity_card_fee->amount_in_tzs);
             $currency = 'TZS';
