@@ -772,7 +772,7 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with(['applicant:id,program_level_id,index_number','applicant.programLevel:id,name','studentshipStatus:id,name','academicStatus:id,name','semesterRemarks'=>function($query){
+        $student = Student::with(['applicant:id,program_level_id,index_number,campus_id','applicant.programLevel:id,name','studentshipStatus:id,name','academicStatus:id,name','semesterRemarks'=>function($query){
             $query->latest();},'semesterRemarks.semester'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
 
@@ -787,20 +787,24 @@ class StudentController extends Controller
                       return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
               }
           }
-       }
+        }
 
         if($student->studentshipStatus->name == 'POSTPONED'){
              return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
         }
+
         if($student->studentshipStatus->name == 'GRADUANT'){
             return redirect()->back()->with('error','You cannot continue with registration because you have already graduated');
         }
+
         if($student->academicStatus->name == 'FAIL&DISCO'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
         }
+
         if($student->academicStatus->name == 'ABSCOND'){
           return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
         }
+
         if($student->academicStatus->name == 'INCOMPLETE'){
           return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
         }
@@ -832,18 +836,12 @@ class StudentController extends Controller
 
 
         if($request->get('fee_type') == 'TUITION'){
-            $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
-                $query->where('name','LIKE','%Tuition%');
-            })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->where('payable_id',$student->id)->where('payable_type','student')->first();
-
-            if($existing_tuition_invoice){
-                return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
-            }
-
-
-			$existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
-                $query->where('name','LIKE','%Tuition%');
-            })->where('payable_id',$student->applicant_id)->where('payable_type','applicant')->first();
+            $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
+                                               ->where('applicable_type','academic_year')
+                                               ->where('applicable_id',$study_academic_year->id)
+                                               ->where('payable_id',$student->id)
+                                               ->where('payable_type','student')
+                                               ->first();
 
             if($existing_tuition_invoice){
                 return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
@@ -1014,70 +1012,95 @@ class StudentController extends Controller
 
             }
         }elseif($request->get('fee_type') == 'LOST ID'){
-            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){
-                  $query->where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%');
-               })->where('study_academic_year_id',$study_academic_year->id)->first();
+
+          $feeType = FeeType::where('name','LIKE','%Identify Card%')->first();
+
+          if(!$feeType){
+            return redirect()->back()->with('error','Identity card fee type has not been set');
+          }
+
+          $unpaid_id_card = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Identity Card%');})
+                                             ->where('applicable_type','academic_year')
+                                             ->where('applicable_id',$study_academic_year->id)
+                                             ->where('payable_id',$student->id)
+                                             ->where('payable_type','student')
+                                             ->whereNull('gateway_payment_id')
+                                             ->first();
+
+          if($unpaid_id_card){
+            return redirect()->back()->with('error','You have already requested for ID card control number in this academic year');
+          }
+
+          if($student->academicStatus->name == 'FRESHER'){
+            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%Identity Card%');})
+                                          ->where('study_academic_year_id',$study_academic_year->id)
+                                          ->where('campus_id',$student->applicant->campus_id)
+                                          ->first();
+
+          }else{
+            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%');})
+                                          ->where('study_academic_year_id',$study_academic_year->id)
+                                          ->where('campus_id',$student->applicant->campus_id)
+                                          ->first();
+          }
+
+          if(!$identity_card_fee){
+            return redirect()->back()->with('error','ID card fee type for new students has not been set');
+          }
+
+          if(str_contains($student->nationality,'Tanzania')){
+            $amount = round($identity_card_fee->amount_in_tzs);
+            $currency = 'TZS';
+          }else{
+            $amount = round($identity_card_fee->amount_in_usd*$usd_currency->factor);
+            $currency = 'TZS';//'USD';
+          }
+
+          if($amount != 0.00){
+            $invoice = new Invoice;
+            $invoice->reference_no = 'MNMA-ID'.time();
+            $invoice->actual_amount = $amount;
+            $invoice->amount = $amount;
+            $invoice->currency = $currency;
+            $invoice->payable_id = $student->id;
+            $invoice->payable_type = 'student';
+            $invoice->fee_type_id = $feeType->id;
+            $invoice->applicable_id = $study_academic_year->id;
+            $invoice->applicable_type = 'academic_year';
+            $invoice->save();
+
+            $id_req = new IdCardRequest;
+            $id_req->student_id = $student->id;
+            $id_req->study_academic_year_id = $study_academic_year->id;
+            $id_req->save();
 
 
-            if(str_contains($student->nationality,'Tanzania')){
-              $amount = round($identity_card_fee->amount_in_tzs);
-              $currency = 'TZS';
-            }else{
-              $amount = round($identity_card_fee->amount_in_usd*$usd_currency->factor);
-              $currency = 'TZS';//'USD';
-            }
+            $generated_by = 'SP';
+            $approved_by = 'SP';
+            $inst_id = config('constants.SUBSPCODE');
 
-            $feeType = FeeType::where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%')->first();
+            $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
+            $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
-            if(!$feeType){
-                return redirect()->back()->with('error','ID card fee type for continue students has not been set');
-            }
+            $number_filter = preg_replace('/[^0-9]/','',$email);
+            $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+            $this->requestControlNumber($request,
+                                        $invoice->reference_no,
+                                        $inst_id,
+                                        $invoice->amount,
+                                        $feeType->description,
+                                        $feeType->gfs_code,
+                                        $feeType->payment_option,
+                                        $student->id,
+                                        $first_name.' '.$surname,
+                                        $student->phone,
+                                        $payer_email,
+                                        $generated_by,
+                                        $approved_by,
+                                        $feeType->duration,
+                                        $invoice->currency);
 
-            if($amount != 0.00){
-                $invoice = new Invoice;
-                $invoice->reference_no = 'MNMA-ID'.time();
-                $invoice->actual_amount = $amount;
-                $invoice->amount = $amount;
-                $invoice->currency = $currency;
-                $invoice->payable_id = $student->id;
-                $invoice->payable_type = 'student';
-                $invoice->fee_type_id = $feeType->id;
-                $invoice->applicable_id = $study_academic_year->id;
-                $invoice->applicable_type = 'academic_year';
-                $invoice->save();
-
-                $id_req = new IdCardRequest;
-                $id_req->student_id = $student->id;
-                $id_req->study_academic_year_id = $study_academic_year->id;
-                $id_req->save();
-
-
-                $generated_by = 'SP';
-                $approved_by = 'SP';
-                $inst_id = config('constants.SUBSPCODE');
-
-                $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
-                $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
-
-                $number_filter = preg_replace('/[^0-9]/','',$email);
-                $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
-                $this->requestControlNumber($request,
-                                            $invoice->reference_no,
-                                            $inst_id,
-                                            $invoice->amount,
-                                            $feeType->description,
-                                            $feeType->gfs_code,
-                                            $feeType->payment_option,
-                                            $student->id,
-                                            $first_name.' '.$surname,
-                                            $student->phone,
-                                            $payer_email,
-                                            $generated_by,
-                                            $approved_by,
-                                            $feeType->duration,
-                                            $invoice->currency);
-
-            }
+          }
         }
         DB::commit();
 
