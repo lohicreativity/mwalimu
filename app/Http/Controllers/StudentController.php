@@ -1031,7 +1031,7 @@ class StudentController extends Controller
             return redirect()->back()->with('error','You have already requested for ID card control number in this academic year');
           }
 
-          //return $student->applicant->campus_id;
+          return $student->academicStatus->name;
           if($student->academicStatus->name == 'FRESHER'){
             return 10;
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%Identity Card%');})
