@@ -1032,6 +1032,7 @@ class StudentController extends Controller
           }
 
           if($student->academicStatus->name == 'FRESHER'){
+            return 1;
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%Identity Card%');})
                                           ->where('study_academic_year_id',$study_academic_year->id)
                                           ->where('campus_id',$student->applicant->campus_id)
@@ -1045,7 +1046,7 @@ class StudentController extends Controller
           }
 
           if(!$identity_card_fee){
-            return redirect()->back()->with('error','ID card fee type for new students has not been set');
+            return redirect()->back()->with('error','ID card fee amount has not been set');
           }
 
           if(str_contains($student->nationality,'Tanzania')){
