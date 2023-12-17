@@ -1032,14 +1032,13 @@ class StudentController extends Controller
           }
 
           if($student->academicStatus->name == 'FRESHER'){
-            return $study_academic_year->id.' - '.$student->applicant->campus_id;
-            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%Identity Card%');})
+            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%ID Card%');})
                                           ->where('study_academic_year_id',$study_academic_year->id)
                                           ->where('campus_id',$student->applicant->campus_id)
                                           ->first();
 
           }else{
-            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%Continue%')->where('name','LIKE','%Identity Card%');})
+            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%Continue%')->where('name','LIKE','%ID Card%');})
                                           ->where('study_academic_year_id',$study_academic_year->id)
                                           ->where('campus_id',$student->applicant->campus_id)
                                           ->first();
