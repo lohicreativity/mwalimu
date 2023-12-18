@@ -5,7 +5,7 @@ $connectionOptions=[
 	"Uid"=>"arms",
 	"Encrypt"=>"no",
 	"TrustServerCertificate"=>"yes",
-	"PWD"=>"mnma2o22"
+	"PWD"=>"arms2o23!"
 ];
 
 $conn=sqlsrv_connect ($serverName,$connectionOptions);
