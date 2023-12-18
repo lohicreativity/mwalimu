@@ -139,7 +139,7 @@ class StudentController extends Controller
                     break;
                   }
                 }
-return $fee_payment_percent;
+
                 if($student->year_of_study == 1 && $student->academicStatus->name == 'FRESHER'){
                   $other_fee_payment_status = false;
                   foreach($invoices as $invoice){
