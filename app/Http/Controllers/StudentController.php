@@ -295,14 +295,13 @@ class StudentController extends Controller
                                         ->sum('tuition_fee');
       
       $programme_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campus_program_id)->first();
-      return $programme_fee->amount_in_tz;
       $data = [
         'study_academic_year'=>$ac_year,
         'student'=>$student,
         'payments'=>$payments,
         'total_paid_fee'=>$total_fee_paid_amount,
         'tuition_fee_loan'=>$tuition_fee_loan,
-        'programme_fee'=>$programme_fee->amount_in_tz
+        'programme_fee'=>$programme_fee->amount_in_tzs
       ];
     	return view('dashboard.student.payments',$data)->withTitle('Payments');
     }
