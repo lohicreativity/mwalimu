@@ -134,6 +134,7 @@ class StudentController extends Controller
                     if($tuition_fee_loan>0){
                       $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
                     }
+                    return $paid_amount.' + '.$tuition_fee_loan;
                     break;
                   }
                 }
