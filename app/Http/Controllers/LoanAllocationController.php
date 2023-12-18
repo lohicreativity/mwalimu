@@ -93,33 +93,26 @@ class LoanAllocationController extends Controller
 					$applicant = Applicant::where('index_number',$index_number)->where('campus_id',$staff->campus_id)->latest()->first();
 
 					if($applicant){
-						$student = Student::where('applicant_id')->latest()->first();
-						$firstname = $middlename = $surname = null;
-						
-						if($student){
-							$firstname = $student->first_name;
-							$middlename = $student->middle_name;
-							$surname = $student->surname;
-							$sex = $student->sex;
-							$phone = $student->phone;
-							$year_of_study = $student->year_of_study;
-							
-						}
+						$student = Student::select('id','registration_number','first_name','middle_name','surname','gender','phone','year_of_study')
+										  ->where('applicant_id')->latest()->first();
+
 						if(LoanAllocation::where('applicant_id',$applicant->id)->where('study_academic_year_id',$study_academic_year->academicYear->id)->where('batch_no',trim($line[3]))->first()){
 							$existing_beneficiaries[] = trim($line[1]);
 							continue;
+
 						}else{
 							$allocation = new LoanAllocation;
 							$allocation->applicant_id = $applicant->id;
 							$allocation->student_id = $student? $student->id : null;
 							$allocation->index_number = $index_number;
+							$allocation->registration_number = $student? $student->registration_number : null;
 							$allocation->campus_id = $applicant->campus_id;
-							$allocation->first_name = $student? $firstname : $applicant->first_name;
-							$allocation->middle_name = $student? $middlename : $applicant->middle_name;
-							$allocation->surname = $student? $surname : $applicant->surname;
-							$allocation->sex = $student? $sex : $applicant->gender;
-							$allocation->phone = $student? $phone : $applicant->phone;
-							$allocation->year_of_study = $student? $year_of_study : trim($line[2]);
+							$allocation->first_name = $student? $student->first_name : $applicant->first_name;
+							$allocation->middle_name = $student? $student->middle_name : $applicant->middle_name;
+							$allocation->surname = $student? $student->surname : $applicant->surname;
+							$allocation->sex = $student? $student->gender : $applicant->gender;
+							$allocation->phone = $student? $student->phone : $applicant->phone;
+							$allocation->year_of_study = $student? $student->year_of_study : trim($line[2]);
 							$allocation->study_academic_year_id = $study_academic_year->academicYear->id;
 							$allocation->batch_no = trim($line[3]);
 							$allocation->tuition_fee = trim($line[4]);	
