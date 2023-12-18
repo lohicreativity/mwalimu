@@ -93,7 +93,7 @@
                        <td>
                           @if($receipt->gatewayPayment) {{ number_format($receipt->gatewayPayment->paid_amount,2) }} 
                             @if ($receipt->feeType->payment_option == 2)
-                             @php $total_paid =+ $receipt->gatewayPayment->paid_amount; @endphp
+                             @php $total_paid += $receipt->gatewayPayment->paid_amount; @endphp
                             @endif 
                           @else
                            0.00 
