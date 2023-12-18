@@ -119,7 +119,13 @@ class StudentController extends Controller
                 return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
             }
 
-            if($tuition_fee_loan >= $program_fee->amount_in_tzs && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('campus_id',$student->applicant->campus_id)->where('has_signed',1)){
+            $loan_signed_status = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
+                                                ->where('study_academic_year_id',$ac_year->id)
+                                                ->where('campus_id',$student->applicant->campus_id)
+                                                ->where('has_signed',1)
+                                                ->count();
+
+            if($tuition_fee_loan >= $program_fee->amount_in_tzs && $loan_signed_status >= 1){
               Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
               ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
             }else{
@@ -151,8 +157,15 @@ class StudentController extends Controller
 
                   if($activeSemester->id == 1){
                     if($fee_payment_percent >= 0.6 && $other_fee_payment_status){
-                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                      if($tuition_fee_loan > 0){
+                        if($loan_signed_status >= 1){
+                          Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                          ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                        }
+                      }else{
+                        Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+                        ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                      }
       
                     }
 
