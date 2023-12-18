@@ -245,6 +245,10 @@ class StudentController extends Controller
   // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
   //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
 
+  // $invoice = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
+  //           ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
+  //               ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
+
    	$data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
@@ -1984,7 +1988,6 @@ class StudentController extends Controller
         $invoice = Invoice::whereNull('gateway_payment_id')->where(function($query) use($student, $student_id){$query->where('payable_id',$student->applicant->id)->where('payable_type','applicant')
                           ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first();
       }
-      return $total_fee_paid_amount;
       $id_print_status = 0;
       if($student){
         $id_print_status = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();

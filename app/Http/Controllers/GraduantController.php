@@ -471,6 +471,7 @@ class GraduantController extends Controller
         }
         
         $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                            ->whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                             ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
                                     'applicant.disabilityStatus','campusProgram.program.award'])
                             ->where('year_of_study',$request->get('year_of_study'))
