@@ -74,7 +74,7 @@
                        <td>
                           @if(str_contains($receipt->feeType->name,'Tuition'))
                             @if($tuition_fee_loan > 0)
-                              {{ number_format($receipt->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+                              {{ number_format($programme_fee-$tuition_fee_loan,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
                             @else
                               {{ number_format($receipt->amount,2) }} 														
                             @endif
