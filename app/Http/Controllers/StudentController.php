@@ -106,8 +106,10 @@ class StudentController extends Controller
 
           $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id')
                             ->where('registration_number',$request->get('registration_number'))->with(['applicant:id,campus_id','academicStatus:id,name'])->first();
-          $tuition_fee_loan = LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-          ->where('campus_id',$student->applicant->campus_id)->sum('tuition_fee');
+          $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
+                                            ->where('study_academic_year_id',$ac_year->id)
+                                            ->where('campus_id',$student->applicant->campus_id)
+                                            ->sum('tuition_fee');
 
           $invoices = null;
 
