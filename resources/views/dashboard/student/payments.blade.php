@@ -96,9 +96,9 @@
                        <td>
 												@if ($receipt->gatewayPayment)
 													@if (str_contains($receipt->feeType->name,'Tuition'))
-														{{ number_format($receipt->gatewayPayment->bill_amount-$total_paid_fee,2) }} 
+														{{ number_format(($programme_fee-$tuition_fee_loan)-$total_paid_fee,2) }} 
 													@else
-														{{ number_format($receipt->gatewayPayment->bill_amount-$receipt->gatewayPayment->paid_amount,2) }}
+														{{ number_format(($programme_fee-$tuition_fee_loan)-$receipt->gatewayPayment->paid_amount,2) }}
 													@endif
 												@else
 													{{ number_format($receipt->amount,2) }}
