@@ -121,7 +121,6 @@ class StudentController extends Controller
               Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
               ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
             }else{
-              return 1;
               $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
               ->where('applicable_id',$ac_year->id)->get();
 
@@ -138,7 +137,7 @@ class StudentController extends Controller
                     break;
                   }
                 }
-
+return $fee_payment_percent;
                 if($student->year_of_study == 1 && $student->academicStatus->name == 'FRESHER'){
                   $other_fee_payment_status = false;
                   foreach($invoices as $invoice){
