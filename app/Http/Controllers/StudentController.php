@@ -295,6 +295,7 @@ class StudentController extends Controller
                                         ->sum('tuition_fee');
       
       $programme_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campus_program_id)->first();
+      return $programme_fee;
       $data = [
         'study_academic_year'=>$ac_year,
         'student'=>$student,
