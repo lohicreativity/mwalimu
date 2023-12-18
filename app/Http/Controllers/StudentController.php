@@ -247,32 +247,62 @@ class StudentController extends Controller
       // needs to improve to display registration status on the top bar
       $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=> function($query){$query->latest()->first();}])->first();
 
-  // DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')
-  //           ->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')
-  //           ->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')
-  //           ->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year, study_academic_years.id as ac_yr_id'))->where(function($query) use($student){
-  //             $query->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->where('invoices.applicable_type','academic_year');
-  //           })->orWhere(function($query) use($student){
-  //             $query->where('invoices.payable_id',$student->applicant_id)->where('invoices.payable_type','applicant')->where('invoices.applicable_type','academic_year');
-  //           })->latest()->get()
+      // DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')
+      //           ->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')
+      //           ->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')
+      //           ->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year, study_academic_years.id as ac_yr_id'))->where(function($query) use($student){
+      //             $query->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->where('invoices.applicable_type','academic_year');
+      //           })->orWhere(function($query) use($student){
+      //             $query->where('invoices.payable_id',$student->applicant_id)->where('invoices.payable_type','applicant')->where('invoices.applicable_type','academic_year');
+      //           })->latest()->get()
 
-  // return Invoice::where('payable_id', $student->id)->where('payable_type','student')
-  // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-  //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
+      // return Invoice::where('payable_id', $student->id)->where('payable_type','student')
+      // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
+      //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
 
-  // $invoice = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
-  //           ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
-  //               ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
+      // $invoice = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
+      //           ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
+      //               ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
 
-   	$data = [
-			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
-            'student'=>$student,
-            'receipts'=>Invoice::where('payable_id', $student->id)->where('payable_type','student')
-            ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-                ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->latest()->get(),
-            'tuition_fee_loans'=>LoanAllocation::where('student_id',$student->id)->where('campus_id',$student->applicant->campus_id)->where('tuition_fee','>',0)->get()
 
-    	];
+      // $staff = User::find(Auth::user()->id)->staff;
+
+      // $applicant = Applicant::select('id','campus_id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
+      // $applicant_id = $applicant? $applicant->id : 0;
+
+      // $student_payer = User::find(Auth::user()->id)->student()
+      //                       ->with(['applicant','campusProgram.program','studentShipStatus'])
+      //                       ->first();
+
+      $payments = Invoice::where(function($query) use($student){$query->where(function($query) use($student){$query->where('payable_id',$student->id)->where('payable_type','student');})
+                                                        ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');});})
+                          ->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
+return $payments;
+      $total_fee_paid_amount = 0;
+
+      foreach($payments as $payment){
+        if(str_contains($payment->feeType->name, 'Tuition')){
+            $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
+            break;
+        }
+      }
+      
+      $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+
+      $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                        ->where('year_of_study',$student->year_of_study)
+                                        ->where('study_academic_year_id',$ac_year->academicYear->id)
+                                        ->where('campus_id',$student->applicant->campus_id)
+                                        ->sum('tuition_fee');
+      
+
+      $data = [
+        'study_academic_year'=>$ac_year,
+        'student'=>$student,
+        'payments'=>$payments,
+        'total_paid_fee'=>$total_fee_paid_amount,
+        'tuition_fee_loans'=>$tuition_fee_loan,
+      ];
     	return view('dashboard.student.payments',$data)->withTitle('Payments');
     }
 
