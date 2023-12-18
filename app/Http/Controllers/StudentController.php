@@ -277,9 +277,8 @@ class StudentController extends Controller
       $payments = Invoice::where(function($query) use($student){$query->where(function($query) use($student){$query->where('payable_id',$student->id)->where('payable_type','student');})
                                                         ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');});})
                           ->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
-return $payments;
+                          
       $total_fee_paid_amount = 0;
-
       foreach($payments as $payment){
         if(str_contains($payment->feeType->name, 'Tuition')){
             $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
