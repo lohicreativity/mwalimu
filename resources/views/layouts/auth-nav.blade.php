@@ -237,7 +237,7 @@
               </li>
             </ul>
           </li>
-		  @if($student->applicant->program_level_id == 4 && $loan_status >= 1)fd
+		  @if($student->applicant->program_level_id == 4 && $loan_status >= 1)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-coins"></i>
