@@ -58,8 +58,6 @@ class StudentController extends Controller
 	/* return Student::whereHas('TranscriptRequest', function($query) use($student)
 		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
     $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
-                                ->where('year_of_study',$student->year_of_study)
-                                ->where('study_academic_year_id',$ac_year->academicYear->id)
                                 ->where('campus_id',$student->applicant->campus_id)
                                 ->count();
 		$data = [
@@ -230,8 +228,6 @@ class StudentController extends Controller
     		return redirect()->back()->with('error','No active academic year');
     	}
       $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
-                                  ->where('year_of_study',$student->year_of_study)
-                                  ->where('study_academic_year_id',$study_academic_year->academicYear->id)
                                   ->where('campus_id',$student->applicant->campus_id)
                                   ->count();
     	$data = [
@@ -314,8 +310,6 @@ class StudentController extends Controller
       $programme_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campus_program_id)->first();
      
       $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
-                                  ->where('year_of_study',$student->year_of_study)
-                                  ->where('study_academic_year_id',$ac_year->academicYear->id)
                                   ->where('campus_id',$student->applicant->campus_id)
                                   ->count();
 
@@ -336,8 +330,13 @@ class StudentController extends Controller
      */
     public function showProfile(Request $request)
     {
+      $student = User::find(Auth::user()->id)->student()->with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->first();
+      $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                  ->where('campus_id',$student->applicant->campus_id)
+                                  ->count();
     	$data = [
-            'student'=>User::find(Auth::user()->id)->student()->with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->first()
+            'student'=>$student,
+            'loan_status'=>$loan_status
     	];
     	return view('dashboard.student.profile',$data)->withTitle('Profile');
     }
@@ -348,7 +347,7 @@ class StudentController extends Controller
     public function optModule(Request $request, $id)
     {	// $id is a program_module_assignment id
     	try{
-    	   $student = User::find(Auth::user()->id)->student;
+    	    $student = User::find(Auth::user()->id)->student;
            $assignment = ProgramModuleAssignment::with('campusProgram.campus', 'campusProgram.program')->findOrFail($id);
            $study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){
                 $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$student->year_of_study);
@@ -418,12 +417,15 @@ class StudentController extends Controller
     			$years_of_studies[$key][] = StudyAcademicYear::with('academicYear')->find($yr);
     		}
     	}
-
+      $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                  ->where('campus_id',$student->applicant->campus_id)
+                                  ->count();
     	$data = [
-    	 'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
-		 'years_of_studies'=>$years_of_studies,
-         'results_present_status'=>count($results) != 0? true : false,
-         'student'=>$student
+    	  'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+		    'years_of_studies'=>$years_of_studies,
+        'results_present_status'=>count($results) != 0? true : false,
+        'student'=>$student,
+        'loan_status'=>$loan_status
     	];
     	return view('dashboard.student.examination-results',$data)->withTitle('Examination Results');
     }
@@ -462,7 +464,9 @@ class StudentController extends Controller
          // if(count($optional_programs) == 0){
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
-
+         $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                      ->where('campus_id',$student->applicant->campus_id)
+                                      ->count();
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
@@ -472,7 +476,8 @@ class StudentController extends Controller
          	'core_programs'=>$core_programs,
          	'publications'=>$publications,
          	'optional_programs'=>$optional_programs,
-            'student'=>$student
+            'student'=>$student,
+            'loan_status'=>$loan_status
          ];
          return view('dashboard.student.examination-results-report',$data)->withTitle('Examination Results');
     }
@@ -573,6 +578,10 @@ class StudentController extends Controller
                  }
               }
 
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
+
          $data = [
           'semesters'=>$semesters,
           'annual_remark'=>$annual_remark,
@@ -584,7 +593,8 @@ class StudentController extends Controller
           'missing_modules' => $missing_modules,
           'student'=>$student,
           'publications'=>$publications,
-          'student'=>User::find(Auth::user()->id)->student
+          'loan_status'=>$loan_status,
+          
          ];
          return view('dashboard.student.examination-results-overall-report',$data)->withTitle('Student Overall Results');
     }
@@ -595,10 +605,16 @@ class StudentController extends Controller
     public function showRegistration(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
+
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
+
         $data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
-            'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first()
+            'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
+            'loan_status'=>$loan_status,
         ];
         return view('dashboard.student.registration',$data)->withTitle('Registration');
     }
@@ -826,6 +842,9 @@ class StudentController extends Controller
           }
         }
         
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
         $data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'fee_types'=>FeeType::all(),
@@ -834,7 +853,8 @@ class StudentController extends Controller
 			      $query->where('payable_id',$student->id)->where('payable_type','student');
 		   })->orWhere(function($query) use($student){
 			      $query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');
-		   })->latest()->get()
+		   })->latest()->get(),
+       'loan_status'=>$loan_status
         ];
 		//return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
 		//return $data['invoices'];
@@ -1224,10 +1244,14 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
         $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->first();
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
         $data = [
-			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
-            'student'=>$student,
-            'loan_allocation'=>$loan_allocation
+          'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+          'student'=>$student,
+          'loan_allocation'=>$loan_allocation,
+          'loan_status'=>$loan_status
         ];
         return view('dashboard.student.bank-information',$data)->withTitle('Bank Information');
     }
@@ -1264,10 +1288,16 @@ class StudentController extends Controller
     public function showLoanAllocations(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
+
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
+
         $data = [
 		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'student'=>$student,
-           'loan_allocations'=>LoanAllocation::with(['studyAcademicYear.academicYear'])->where('registration_number',$student->registration_number)->paginate(20)
+           'loan_allocations'=>LoanAllocation::with(['studyAcademicYear.academicYear'])->where('registration_number',$student->registration_number)->paginate(20),
+           'loan_status'=>$loan_status
         ];
         return view('dashboard.student.loan-allocations',$data)->withTitle('Loan Allocations');
     }
@@ -1278,11 +1308,16 @@ class StudentController extends Controller
     public function requestPostponement(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
+
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();        
         $data = [
            'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'semester'=>Semester::where('status','ACTIVE')->first(),
            'student'=>$student,
-           'postponements'=>Postponement::where('student_id',$student->id)->latest()->paginate(20)
+           'postponements'=>Postponement::where('student_id',$student->id)->latest()->paginate(20),
+           'loan_status'=>$loan_status
         ];
         return view('dashboard.student.postponements',$data)->withTitle('Postponements');
 
@@ -1825,12 +1860,17 @@ class StudentController extends Controller
         return redirect()->back()->with('error','You have not finished clearance');
       }
 
+      $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
+
 		$data = [
 		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
 		   'selected_campus'=>[],
 		   'programme'=>[],
            'campuses'=>Campus::all(),
-		   'student'=>$student
+		   'student'=>$student,
+       'loan_status'=>$loan_status
         ];
 		}
 
