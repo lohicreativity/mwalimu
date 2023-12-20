@@ -283,7 +283,8 @@ class StaffController extends Controller
                     if(str_contains($payment->feeType->name, 'Tuition')){
                         $fee_paid_amount = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
                         $total_fee_paid_amount[] = array_merge($fee_paid_amount,$total_fee_paid_amount);
-                        return $total_fee_paid_amount;
+                        $x = array('a'=>1,'b'=>2);
+                        return array_merge($total_fee_paid_amount,$x);
                     }
                 }
             }
