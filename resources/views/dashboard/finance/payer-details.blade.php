@@ -178,7 +178,7 @@
 																@if($payments->reference_no == $fe->reference_no)
 																	{{ number_format($fee->amount,2) }}
 																@endif
-															@endif
+															@endforeach
 														@endforeach
 													@else
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
