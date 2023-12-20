@@ -853,7 +853,7 @@ class StudentController extends Controller
 			      $query->where('payable_id',$student->id)->where('payable_type','student');
 		   })->orWhere(function($query) use($student){
 			      $query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');
-		   })->whereIsNull('gateway_payment_id')->latest()->get(),
+		   })->whereNull('gateway_payment_id')->latest()->get(),
        'loan_status'=>$loan_status
         ];
 		//return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
