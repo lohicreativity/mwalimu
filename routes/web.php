@@ -37,7 +37,7 @@ use App\Jobs\RequestControlNumberJob;
 
 Route::get('/request-cn',function(){
 
-    $t = App\Domain\Finance\Models\Invoice::whereNull('gateway_payment_id')
+    App\Domain\Finance\Models\Invoice::whereNull('gateway_payment_id')
     ->where('fee_type_id', 15)
     ->where('payable_id', '>', 0)
     ->whereDate('updated_at', '>=', '2023-12-20')
@@ -50,16 +50,9 @@ Route::get('/request-cn',function(){
         $invoice->control_no = null;
         $invoice->save();
 
-        /* $invoice->update([
-            'reference_no' => $invoice->reference_no.'-NW',
-            'control_no' => null
-        ]); */
-
-        dd($invoice);
-
     });
 
-    dd($t);
+    dd('done');
     
     //RequestControlNumberJob::dispatch();
 });
