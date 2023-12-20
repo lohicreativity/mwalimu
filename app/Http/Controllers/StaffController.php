@@ -296,6 +296,7 @@ class StaffController extends Controller
                 ->where('campus_id',$student_payer->applicant->campus_id)->sum('tuition_fee');
             }
 foreach($total_fee_paid_amount as $fee){
+    return $fee;
     foreach($fee as $fe){
         return $fe;
     }
