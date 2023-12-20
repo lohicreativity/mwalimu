@@ -262,7 +262,7 @@ class StaffController extends Controller
                 ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->latest()->get() : $paid_as_student = null;
       
             $reference_no = [];
-            $total_fee_paid_amount = $fee_paid_amount = $x = [];
+            $total_fee_paid_amount = [];
             if(!empty($applicant_payer) && count($paid_as_applicant) > 0){
                 foreach($paid_as_applicant as $invoice){
                     $reference_no[] = $invoice->reference_no;
@@ -281,13 +281,10 @@ class StaffController extends Controller
                 }
                 foreach($paid_as_student as $payment){
                     if(str_contains($payment->feeType->name, 'Tuition')){
-                        $fee_paid_amount = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
                         $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
-
                     }
                 }
             }
-            return $total_fee_paid_amount[0];
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
             
             $tuition_fee_loan = null;
