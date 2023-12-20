@@ -428,7 +428,7 @@ return 1;
             $number_filter = preg_replace('/[^0-9]/','',$email);
             $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
 			$this->requestControlNumber($request,
-										'MNMA-LR-1699248920',
+										'MNMA-LR-1699249148',
 										$inst_id,
 										5000,
 										$fee_amount->feeItem->feeType->description,
