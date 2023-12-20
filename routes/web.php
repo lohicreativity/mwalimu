@@ -44,11 +44,18 @@ Route::get('/request-cn',function(){
     ->whereNotNull('control_no')
     ->get()->each(function($invoice){
 
-        $invoice->update([
+        $inv = clone $invoice;
+
+        $invoice->reference_no = $inv->reference_no.'-NW';
+        $invoice->control_no = null;
+        $invoice->save();
+
+        /* $invoice->update([
             'reference_no' => $invoice->reference_no.'-NW',
             'control_no' => null
-        ]);
-        dd( $invoice);
+        ]); */
+
+        dd($invoice);
 
     });
 
