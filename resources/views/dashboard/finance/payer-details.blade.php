@@ -174,11 +174,9 @@
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														@foreach($total_paid_fee as $fee)
-															@foreach($fee as $fe)
-																@if($payments->reference_no == $fe->reference_no)
-																	{{ number_format($fee->amount,2) }}
-																@endif
-															@endforeach
+															@if($payments->reference_no == $fee['reference_no'])
+																{{ number_format($fee->amount,2) }}
+															@endif
 														@endforeach
 													@else
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
@@ -192,11 +190,9 @@
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														@foreach($total_paid_fee as $fee)
-															@foreach($fee as $fe)
-																@if($payments->reference_no == $fe->reference_no)
-																	{{ number_format($payments->gatewayPayment->bill_amount-$fee->amount,2) }} 
-																@endif
-															@endforeach
+															@if($payments->reference_no == $fee['reference_no'])
+																{{ number_format($payments->gatewayPayment->bill_amount-$fee->amount,2) }} 
+															@endif
 														@endforeach
 													@else
 														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }}

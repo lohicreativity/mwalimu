@@ -295,11 +295,11 @@ class StaffController extends Controller
                 $tuition_fee_loan = LoanAllocation::where('student_id',$student_payer->id)->where('year_of_study',$student_payer->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
                 ->where('campus_id',$student_payer->applicant->campus_id)->sum('tuition_fee');
             }
-foreach($total_fee_paid_amount as $fee){
-    return $fee;
-    foreach($fee as $fe){
-        return $fe;
-    }
+// foreach($total_fee_paid_amount as $fee){
+//     return $fee;
+//     foreach($fee as $fe){
+//         return $fe;
+//     }
 
 }
             $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
