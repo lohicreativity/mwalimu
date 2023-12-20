@@ -41,7 +41,16 @@ Route::get('/request-cn',function(){
     ->where('fee_type_id', 15)
     ->where('payable_id', '>', 0)
     ->whereDate('updated_at', '>=', '2023-12-20')
-    ->count();
+    ->whereNotNull('control_no')
+    ->get()->each(function($invoice){
+
+        $invoice->update([
+            'reference_no' => $invoice->reference_no.'-NW',
+            'control_no' => null
+        ]);
+        dd( $invoice);
+
+    });
 
     dd($t);
     
