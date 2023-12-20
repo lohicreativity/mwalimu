@@ -36,7 +36,16 @@ use App\Jobs\RequestControlNumberJob;
 */
 
 Route::get('/request-cn',function(){
-    RequestControlNumberJob::dispatch();
+
+    $t = App\Domain\Finance\Models\Invoice::whereNull('gateway_payment_id')
+    ->where('fee_type_id', 15)
+    ->where('payable_id', '>', 0)
+    ->whereDate('updated_at', '>=', '2023-12-20')
+    ->count();
+
+    dd($t);
+    
+    //RequestControlNumberJob::dispatch();
 });
 
 Route::get('send-applicants', function (Request $request) {
