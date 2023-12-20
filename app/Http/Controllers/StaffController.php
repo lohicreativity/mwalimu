@@ -286,7 +286,7 @@ class StaffController extends Controller
                     }
                 }
             }
-            return $fee_paid_amount;
+            return $total_fee_paid_amount;
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
             
             $tuition_fee_loan = null;
