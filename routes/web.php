@@ -37,24 +37,25 @@ use App\Jobs\RequestControlNumberJob;
 
 Route::get('/request-cn',function(){
 
-    App\Domain\Finance\Models\Invoice::whereNull('gateway_payment_id')
+    /* App\Domain\Finance\Models\Invoice::whereNull('gateway_payment_id')
     ->where('fee_type_id', 15)
     ->where('payable_id', '>', 0)
     ->whereDate('updated_at', '>=', '2023-12-20')
     ->whereNotNull('control_no')
     ->get()->each(function($invoice){
-
+        dd('init');
         $inv = clone $invoice;
 
         $invoice->reference_no = $inv->reference_no.'-NW';
         $invoice->control_no = null;
         $invoice->save();
 
+
     });
 
-    dd('done');
+    dd('done'); */
     
-    //RequestControlNumberJob::dispatch();
+    RequestControlNumberJob::dispatch();
 });
 
 Route::get('send-applicants', function (Request $request) {
