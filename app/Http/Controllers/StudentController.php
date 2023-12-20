@@ -845,20 +845,15 @@ class StudentController extends Controller
         $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();
-
-        return Invoice::with(['applicable','feeType','gatewayPayment'])->where(function($query) use($student){
-          $query->where('payable_id',$student->id)->where('payable_type','student');})->orWhere(function($query) use($student){
-          $query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');
-     })->whereNull('gateway_payment_id')->latest()->get();
-     
         $data = [
 			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'fee_types'=>FeeType::all(),
            'student'=>$student,
            'invoices'=>Invoice::with(['applicable','feeType','gatewayPayment'])->where(function($query) use($student){
-			      $query->where('payable_id',$student->id)->where('payable_type','student');})->orWhere(function($query) use($student){
+			      $query->where('payable_id',$student->id)->where('payable_type','student');
+		   })->orWhere(function($query) use($student){
 			      $query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');
-		   })->whereNull('gateway_payment_id')->latest()->get(),
+		   })->latest()->get(),
        'loan_status'=>$loan_status
         ];
 		//return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');

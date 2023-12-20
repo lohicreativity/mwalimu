@@ -89,7 +89,7 @@
                   </thead>
                   <tbody>
                   @foreach($invoices as $invoice)
-                  @if($invoice->payable_type == 'student')
+                  @if($invoice->payable_type == 'student' && $invoice->gateway_payment_id == null)
                   <tr>
                       <td>{{ $invoice->applicable->academicYear->year }}</td>
                       <td>@if($invoice->feeType->name == 'Miscellaneous Income') Other Fees @else {{ $invoice->feeType->name }} @endif</td>
