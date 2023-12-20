@@ -357,10 +357,6 @@ class StaffController extends Controller
 
     public function initiateControlNumberRequest(Request $request)
     {
-        if(Auth::user()->id != 2){
-
-return 1;
-        }
         $staff = User::find(Auth::user()->id)->staff;
         $usd_currency = Currency::where('code','USD')->first();
 
@@ -399,24 +395,24 @@ return 1;
 			}
 			DB::beginTransaction();
 					
-			// $invoice = new Invoice;
-			// $invoice->reference_no = 'MNMA-'.time();
-			// if(str_contains($student->applicant->nationality,'Tanzania')){
-			//    $invoice->amount = round($fee_amount->amount_in_tzs);
-			//    $invoice->actual_amount = $invoice->amount;
-			//    $invoice->currency = 'TZS';
-			// }else{
-			//    $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
-			//    $invoice->actual_amount = $invoice->amount;
-			//    $invoice->currency = 'TZS';//'USD';
-			// }
-			// $invoice->payable_id = $student->id;
-			// $invoice->payable_type = 'student';
-			// $invoice->applicable_id = $request->study_academic_year_id;
-			// $invoice->applicable_type = 'academic_year';
-			// $invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
-            // $invoice->created_by_user_id = $staff->id;
-			// $invoice->save();
+			$invoice = new Invoice;
+			$invoice->reference_no = 'MNMA-'.time();
+			if(str_contains($student->applicant->nationality,'Tanzania')){
+			   $invoice->amount = round($fee_amount->amount_in_tzs);
+			   $invoice->actual_amount = $invoice->amount;
+			   $invoice->currency = 'TZS';
+			}else{
+			   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
+			   $invoice->actual_amount = $invoice->amount;
+			   $invoice->currency = 'TZS';//'USD';
+			}
+			$invoice->payable_id = $student->id;
+			$invoice->payable_type = 'student';
+			$invoice->applicable_id = $request->study_academic_year_id;
+			$invoice->applicable_type = 'academic_year';
+			$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
+            $invoice->created_by_user_id = $staff->id;
+			$invoice->save();
 
 			$generated_by = 'SP';
 			$approved_by = 'SP';
@@ -428,9 +424,9 @@ return 1;
             $number_filter = preg_replace('/[^0-9]/','',$email);
             $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
 			$this->requestControlNumber($request,
-										'MNMA-LR-1699249148',
+										$invoice->reference_no,
 										$inst_id,
-										5000,
+										$invoice->amount,
 										$fee_amount->feeItem->feeType->description,
 										$fee_amount->feeItem->feeType->gfs_code,
 										$fee_amount->feeItem->feeType->payment_option,
@@ -441,7 +437,7 @@ return 1;
 										$generated_by,
 										$approved_by,
 										$fee_amount->feeItem->feeType->duration,
-										'TZS');
+										$invoice->currency);
 			DB::commit();
 			if(str_contains(strtolower($fee_amount->feeItem->name),'accommodation')){
                 Applicant::where('id',$student->applicant_id)->update(['hostel_status'=>1,'hostel_available_status'=>1]);
