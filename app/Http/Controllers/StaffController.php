@@ -270,8 +270,7 @@ class StaffController extends Controller
                 foreach($paid_as_applicant as $payment){
 
                     if(str_contains($payment->feeType->name, 'Tuition')){
-                        $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
-                        break;
+                        $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
                     }
                 }
 
@@ -295,13 +294,7 @@ class StaffController extends Controller
                 $tuition_fee_loan = LoanAllocation::where('student_id',$student_payer->id)->where('year_of_study',$student_payer->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
                 ->where('campus_id',$student_payer->applicant->campus_id)->sum('tuition_fee');
             }
-// foreach($total_fee_paid_amount as $fee){
-//     return $fee;
-//     foreach($fee as $fe){
-//         return $fe;
-//     }
 
-//}
             $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
 			$data = [
 				'payer'=>$student_payer? $student_payer : $applicant_payer,

@@ -232,7 +232,7 @@
               <li class="nav-item">
                 <a href="{{ url('student/request-control-number') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Request Control Number</p>
+                  <p>My Invoices</p>
                 </a>
               </li>
             </ul>
