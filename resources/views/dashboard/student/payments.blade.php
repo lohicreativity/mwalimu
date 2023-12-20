@@ -70,7 +70,7 @@
                        <td>{{ explode('-',$receipt->applicable->begin_date)[0].'/'.explode('-',$receipt->applicable->begin_date)[0]+1 }}</td>
                        <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
                        <td>{{ $receipt->control_no }}</td> 					   
-                       <td>{{ $receipt->feeType->name }}</td> 
+                       <td>@if($receipt->feeType->name == 'Miscellaneous Income') Other Fees @else {{ $receipt->feeType->name }} @endif</td> 
                        <td>
                           @if(str_contains($receipt->feeType->name,'Tuition'))
                             @if($tuition_fee_loan > 0)
