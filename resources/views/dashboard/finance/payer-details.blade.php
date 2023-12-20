@@ -175,7 +175,7 @@
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														@foreach($total_paid_fee as $fee)
 															@if($payments->reference_no == $fee['reference_no'])
-																{{ number_format($fee->['amount'],2) }}
+																{{ number_format($fee['amount'],2) }}
 															@endif
 														@endforeach
 													@else
