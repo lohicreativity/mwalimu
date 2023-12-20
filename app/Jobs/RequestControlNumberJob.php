@@ -68,7 +68,7 @@ class RequestControlNumberJob implements ShouldQueue
     public function requestControlNumber(array $data): void
     {
         Http::withHeaders(['X-CSRF-TOKEN' => csrf_token()])
-            ->post('bills/post_bill', $data);
+            ->post(url('bills/post_bill'), $data);
     }
 
     public function getInvoicesWithNoControlNumber()
