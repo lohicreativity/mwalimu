@@ -18,7 +18,11 @@ class RequestControlNumberJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct()
-    {}
+    {
+        set_time_limit(3600);
+
+        $this->handle();
+    }
 
     public function handle(): void
     {
