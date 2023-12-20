@@ -1204,7 +1204,8 @@ class StudentController extends Controller
     /**
      * Request control number
      */
-    public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency){
+    public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency)
+    {
       $data = array(
         'payment_ref'=>$billno,
         'sub_sp_code'=>$inst_id,

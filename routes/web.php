@@ -21,6 +21,7 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicantProgramSelection;
+use App\Jobs\RequestControlNumberJob;
 
 
 /*
@@ -34,6 +35,9 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 |
 */
 
+Route::get('/request-cn',function(){
+    RequestControlNumberJob::dispatch();
+});
 
 Route::get('send-applicants', function (Request $request) {
 
