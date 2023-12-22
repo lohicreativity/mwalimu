@@ -2,7 +2,7 @@
 $serverName="41.59.91.198";
 $connectionOptions=[
 	"Database"=>"ARMSIntegration",
-	"Uid"=>"arms",
+	"Uid"=>"armsuser",
 	"Encrypt"=>"no",
 	"TrustServerCertificate"=>"yes",
 	"PWD"=>"arms2o23!"

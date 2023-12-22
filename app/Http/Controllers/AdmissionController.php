@@ -577,43 +577,43 @@ class AdmissionController extends Controller
 	             $currency = 'TZS'; //'USD';
 	         }
 
-        $hostelFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $hostel_fee->feeItem->feeType->id)->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
-        if(!$hostelFeeInvoiceRequestedCheck){
-            $invoice = new Invoice;
-            $invoice->reference_no = 'MNMA-'.$hostel_fee->feeItem->feeType->code.'-'.time();
-            $invoice->actual_amount = $amount;
-            $invoice->amount = $amount;
-            $invoice->currency = $currency;
-            $invoice->payable_id = $applicant->id;
-            $invoice->payable_type = 'applicant';
-            $invoice->fee_type_id = $hostel_fee->feeItem->feeType->id;
-            $invoice->applicable_id = $study_academic_year->id;
-            $invoice->applicable_type = 'academic_year';
-            $invoice->save();
+            $hostelFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('fee_type_id', $hostel_fee->feeItem->feeType->id)->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
+            if(!$hostelFeeInvoiceRequestedCheck){
+                $invoice = new Invoice;
+                $invoice->reference_no = 'MNMA-'.$hostel_fee->feeItem->feeType->code.'-'.time();
+                $invoice->actual_amount = $amount;
+                $invoice->amount = $amount;
+                $invoice->currency = $currency;
+                $invoice->payable_id = $applicant->id;
+                $invoice->payable_type = 'applicant';
+                $invoice->fee_type_id = $hostel_fee->feeItem->feeType->id;
+                $invoice->applicable_id = $study_academic_year->id;
+                $invoice->applicable_type = 'academic_year';
+                $invoice->save();
 
-            $generated_by = 'SP';
-            $approved_by = 'SP';
-            $inst_id = config('constants.SUBSPCODE');
-    
-            $number_filter = preg_replace('/[^0-9]/','',$email);
-            $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+                $generated_by = 'SP';
+                $approved_by = 'SP';
+                $inst_id = config('constants.SUBSPCODE');
+        
+                $number_filter = preg_replace('/[^0-9]/','',$email);
+                $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
 
-            return $this->requestControlNumber($request,
-                                        $invoice->reference_no,
-                                        $inst_id,
-                                        $invoice->amount,
-                                        $hostel_fee->feeItem->feeType->description,
-                                        $hostel_fee->feeItem->feeType->gfs_code,
-                                        $hostel_fee->feeItem->feeType->payment_option,
-                                        $applicant->id,
-                                        $first_name.' '.$surname,
-                                        $applicant->phone,
-                                        $payer_email,
-                                        $generated_by,
-                                        $approved_by,
-                                        $hostel_fee->feeItem->feeType->duration,
-                                        $invoice->currency);
-        }
+                return $this->requestControlNumber($request,
+                                            $invoice->reference_no,
+                                            $inst_id,
+                                            $invoice->amount,
+                                            $hostel_fee->feeItem->feeType->description,
+                                            $hostel_fee->feeItem->feeType->gfs_code,
+                                            $hostel_fee->feeItem->feeType->payment_option,
+                                            $applicant->id,
+                                            $first_name.' '.$surname,
+                                            $applicant->phone,
+                                            $payer_email,
+                                            $generated_by,
+                                            $approved_by,
+                                            $hostel_fee->feeItem->feeType->duration,
+                                            $invoice->currency);
+            }
     	}
 
         if($applicant->has_postponed != 1){
