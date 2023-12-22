@@ -161,9 +161,9 @@ class StudentController extends Controller
 
                   if($activeSemester->id == 1){
                     if($fee_payment_percent >= 0.6 && $other_fee_payment_status){
-                      return 1;
                       if($tuition_fee_loan > 0){
                         if($loan_signed_status >= 1){
+                          return 1;
                           Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
                           ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
                         }
