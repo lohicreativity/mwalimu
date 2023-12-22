@@ -150,8 +150,6 @@ class StudentController extends Controller
                   }
                 }
 
-                return $fee_payment_percent;
-                
                 if($student->year_of_study == 1 && $student->academicStatus->name == 'FRESHER'){
                   $other_fee_payment_status = false;
                   foreach($invoices as $invoice){
@@ -163,6 +161,7 @@ class StudentController extends Controller
 
                   if($activeSemester->id == 1){
                     if($fee_payment_percent >= 0.6 && $other_fee_payment_status){
+                      return 1;
                       if($tuition_fee_loan > 0){
                         if($loan_signed_status >= 1){
                           Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
