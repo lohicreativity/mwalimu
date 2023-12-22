@@ -142,14 +142,13 @@ class StudentController extends Controller
                   if(str_contains($invoice->feeType->name,'Tuition Fee')){
                     $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
                     $fee_payment_percent = $paid_amount/$invoice->amount;
-//return $program_fee->amount_in_tzs.' = '.$tuition_fee_loan.' + '.$paid_amount;
+
                     if($tuition_fee_loan>0){
-                      $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$program_fee->amount_in_tzs;
+                      $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
                     }
                     break;
                   }
                 }
-                return $fee_payment_percent;
 
                 if($student->year_of_study == 1 && $student->academicStatus->name == 'FRESHER'){
                   $other_fee_payment_status = false;
