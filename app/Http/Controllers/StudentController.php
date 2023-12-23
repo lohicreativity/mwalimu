@@ -108,8 +108,11 @@ class StudentController extends Controller
           $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
           $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
-          $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id')
-                            ->where('registration_number',$request->get('registration_number'))->with(['applicant:id,campus_id','academicStatus:id,name'])->first();
+          $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id','nationality')
+                            ->where('registration_number',$request->get('registration_number'))
+                            ->with(['applicant:id,campus_id','academicStatus:id,name'])
+                            ->first();
+
           $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
                                             ->where('study_academic_year_id',$ac_year->id)
                                             ->where('campus_id',$student->applicant->campus_id)
@@ -117,10 +120,25 @@ class StudentController extends Controller
 
           $invoices = null;
 
-          if(Registration::where('student_id', $student->id)->where('study_academic_year_id', $ac_year->id)->where('semester_id', $activeSemester->id)->where('status','UNREGISTERED')->first()){
-            $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student->campus_program_id)->first();
+          if(Registration::where('student_id', $student->id)
+                         ->where('study_academic_year_id', $ac_year->id)
+                         ->where('semester_id', $activeSemester->id)
+                         ->where('status','UNREGISTERED')
+                         ->first()){
+
+            $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)
+                                     ->where('campus_program_id',$student->campus_program_id)
+                                     ->first();
             if(!$program_fee){
                 return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
+            }
+
+            $usd_currency = Currency::where('code','USD')->first();
+
+            if(str_contains($student->nationality,'Tanzania')){
+                $program_fee_amount = $program_fee->amount_in_tzs;
+            }else{
+                $program_fee_amount = round($program_fee->amount_in_usd * $usd_currency->factor);
             }
 
             $loan_signed_status = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
@@ -129,12 +147,19 @@ class StudentController extends Controller
                                                 ->where('has_signed',1)
                                                 ->count();
 
-            if($tuition_fee_loan >= $program_fee->amount_in_tzs && $loan_signed_status >= 1){
-              Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-              ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+            if($tuition_fee_loan >= $program_fee_amount && $loan_signed_status >= 1){
+              Registration::where('student_id',$student->id)
+                          ->where('study_academic_year_id',$ac_year->id)
+                          ->where('semester_id', $activeSemester->id)
+                          ->update(['status'=>'REGISTERED']);
+
             }else{
-              $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
-              ->where('applicable_id',$ac_year->id)->get();
+              $invoices = Invoice::where('payable_type','student')
+                                 ->where('payable_id',$student->id)
+                                 ->whereNotNull('gateway_payment_id')
+                                 ->where('applicable_id',$ac_year->id)
+                                 ->with('feeType')
+                                 ->get();
 
               if($invoices){
                 $fee_payment_percent = $other_fee_payment_status = 0;
@@ -144,7 +169,7 @@ class StudentController extends Controller
                     $fee_payment_percent = $paid_amount/$invoice->amount;
 
                     if($tuition_fee_loan>0){
-                      $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
+                      $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$program_fee_amount;
                     }
                     break;
                   }
@@ -611,7 +636,7 @@ class StudentController extends Controller
                                     ->count();
 
         $data = [
-			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+			  'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
             'loan_status'=>$loan_status,

@@ -4654,11 +4654,14 @@ class ApplicationController extends Controller
         ->where('campus_id',$staff->campus_id)->latest()->first();
 
 		$invoices = Invoice::with('feeType')->where('payable_type','applicant')->where('payable_id',$applicant->id)->whereNotNull('gateway_payment_id')->get();
-		$program_fee =  ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$selection->campus_program_id)->first();
 
         $fee_payment_percent = $other_fee_payment_status = 0;
         if($tuition_fee_loan > 0){
             $usd_currency = Currency::where('code','USD')->first();
+	        $program_fee =  ProgramFee::with('feeItem.feeType')
+                                      ->where('study_academic_year_id',$ac_year->id)
+                                      ->where('campus_program_id',$selection->campus_program_id)
+                                      ->first();
 
             if(str_contains($applicant->nationality,'Tanzania')){
                 $program_fee_amount = $program_fee->amount_in_tzs;
