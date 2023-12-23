@@ -967,10 +967,10 @@ class StudentController extends Controller
                                               ->where('payable_type','student')
                                               ->first();
 
-          // if($existing_tuition_invoice){
-          //     return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
-          // }
-
+          if($existing_tuition_invoice){
+              return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
+          }
+return $existing_tuition_invoice;
           $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)
                                    ->where('campus_program_id',$student->campus_program_id)
                                    ->where('year_of_study',$student->year_of_study)
@@ -1021,45 +1021,45 @@ class StudentController extends Controller
           }
 
 
-          // if($amount != 0.00){
-          //       $invoice = new Invoice;
-          //       $invoice->reference_no = 'MNMA-TF-'.time();
-          //       $invoice->actual_amount = $amount_without_loan;
-          //       $invoice->amount = $amount;
-          //       $invoice->currency = 'TZS';
-          //       $invoice->payable_id = $student->id;
-          //       $invoice->payable_type = 'student';
-          //       $invoice->applicable_id = $study_academic_year->id;
-          //       $invoice->applicable_type = 'academic_year';
-          //       $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
-          //       $invoice->save();
+          if($amount != 0.00){
+                $invoice = new Invoice;
+                $invoice->reference_no = 'MNMA-TF-'.time();
+                $invoice->actual_amount = $amount_without_loan;
+                $invoice->amount = $amount;
+                $invoice->currency = 'TZS';
+                $invoice->payable_id = $student->id;
+                $invoice->payable_type = 'student';
+                $invoice->applicable_id = $study_academic_year->id;
+                $invoice->applicable_type = 'academic_year';
+                $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
+                $invoice->save();
 
 
-          //       $generated_by = 'SP';
-          //       $approved_by = 'SP';
-          //       $inst_id = config('constants.SUBSPCODE');
+                $generated_by = 'SP';
+                $approved_by = 'SP';
+                $inst_id = config('constants.SUBSPCODE');
 
-          //       $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
-          //       $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
+                $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
+                $surname = str_contains($student->surname,"'")? str_replace("'","",$student->surname) : $student->surname;
 
-          //       $number_filter = preg_replace('/[^0-9]/','',$email);
-          //       $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
-          //       $this->requestControlNumber($request,
-          //                                   $invoice->reference_no,
-          //                                   $inst_id,
-          //                                   $invoice->amount,
-          //                                   $program_fee->feeItem->feeType->description,
-          //                                   $program_fee->feeItem->feeType->gfs_code,
-          //                                   $program_fee->feeItem->feeType->payment_option,
-          //                                   $student->id,
-          //                                   $first_name.' '.$surname,
-          //                                   $student->phone,
-          //                                   $payer_email,
-          //                                   $generated_by,
-          //                                   $approved_by,
-          //                                   $program_fee->feeItem->feeType->duration,
-          //                                   $invoice->currency);
-          // }
+                $number_filter = preg_replace('/[^0-9]/','',$email);
+                $payer_email = empty($number_filter)? $email : 'admission@mnma.ac.tz';
+                $this->requestControlNumber($request,
+                                            $invoice->reference_no,
+                                            $inst_id,
+                                            $invoice->amount,
+                                            $program_fee->feeItem->feeType->description,
+                                            $program_fee->feeItem->feeType->gfs_code,
+                                            $program_fee->feeItem->feeType->payment_option,
+                                            $student->id,
+                                            $first_name.' '.$surname,
+                                            $student->phone,
+                                            $payer_email,
+                                            $generated_by,
+                                            $approved_by,
+                                            $program_fee->feeItem->feeType->duration,
+                                            $invoice->currency);
+          }
 
           if($student->year_of_study == 1 && $student->academic_status_id == 8){
             $other_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Miscellaneous Income');})
