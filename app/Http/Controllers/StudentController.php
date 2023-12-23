@@ -636,11 +636,12 @@ class StudentController extends Controller
                                     ->count();
 
         $data = [
-			  'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
             'loan_status'=>$loan_status,
         ];
+        return 1;
         return view('dashboard.student.registration',$data)->withTitle('Registration');
     }
 
