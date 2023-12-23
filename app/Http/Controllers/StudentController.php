@@ -641,7 +641,7 @@ class StudentController extends Controller
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
             'loan_status'=>$loan_status,
         ];
-        return 1;
+        return $student;
         return view('dashboard.student.registration',$data)->withTitle('Registration');
     }
 

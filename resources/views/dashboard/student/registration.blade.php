@@ -54,7 +54,7 @@
                    </div>
                  @endif
               </div>
-              @if(!$registration)
+              @if(!$registration && $student->academicStatuses->name != 'Fresher')
               <div class="card-footer">
                  <a href="{{ url('student/registration/create') }}" class="btn btn-primary">Register</a>
               </div>
