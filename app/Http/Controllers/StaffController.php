@@ -396,16 +396,11 @@ class StaffController extends Controller
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
-			$invoice->reference_no = 'MNMA-'.time();
-			if(str_contains($student->applicant->nationality,'Tanzania')){
-			   $invoice->amount = round($fee_amount->amount_in_tzs);
-			   $invoice->actual_amount = $invoice->amount;
-			   $invoice->currency = 'TZS';
-			}else{
-			   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
-			   $invoice->actual_amount = $invoice->amount;
-			   $invoice->currency = 'TZS';//'USD';
-			}
+			$invoice->reference_no = 'MNMA-'.$fee_amount->feeItem->feeType->code.'-'.time();
+
+            $invoice->amount = round($request->amount);
+            $invoice->actual_amount = $invoice->amount;
+            $invoice->currency = 'TZS';
 			$invoice->payable_id = $student->id;
 			$invoice->payable_type = 'student';
 			$invoice->applicable_id = $request->study_academic_year_id;

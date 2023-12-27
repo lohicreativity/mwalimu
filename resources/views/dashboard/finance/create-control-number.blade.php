@@ -52,32 +52,41 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+                  $amount = [
+                     'placeholder'=>'20,000',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
               @endphp
               {!! Form::open(['url'=>'finance/request-control-number','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                  <div class="form-group col-4">
-                    {!! Form::label('','Registration Number') !!}
-                    {!! Form::text('registration_number',null,$registration_number) !!}
-                  </div>
-                  <div class="form-group col-4">
-                    {!! Form::label('','Payment Item') !!}
-                    <select name="fee_type_id" class="form-control">
-                      <option value="">Select Payment Item</option>
-                      @foreach($fee_types as $types)
-                        <option value="{{ $types->id }}">{{ $types->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-4">
-                    {!! Form::label('','Study academic year') !!}
-                    <select name="study_academic_year_id" class="form-control">
-                      <option value="">Select Study Academic Year</option>
-                      @foreach($study_academic_years as $k=>$year)
-                        <option value="{{ $year->id }}" @if($k == 0 || $year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                      @endforeach
-                    </select>
-                  </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Study academic year') !!}
+                      <select name="study_academic_year_id" class="form-control">
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($study_academic_years as $k=>$year)
+                          <option value="{{ $year->id }}" @if($k == 0 || $year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Payment Item') !!}
+                      <select name="fee_type_id" class="form-control">
+                        <option value="">Select Payment Item</option>
+                        @foreach($fee_types as $types)
+                          <option value="{{ $types->id }}">{{ $types->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Amount (TZS)') !!}
+                      {!! Form::text('amount',null,$amount) !!}
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Registration Number') !!}
+                      {!! Form::text('registration_number',null,$registration_number) !!}
+                    </div>
                 </div>
                 </div>
                 <!-- /.card-body -->
