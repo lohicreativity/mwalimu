@@ -110,12 +110,12 @@
                   <thead>
                   <tr>			  
                     <th>Registration#</th>
-                    <th>Names</th>
-                    <th>Gender</th>
-                    <th>Phone</th>					
-                    <th>Status</th>
+                    <th>Payer Names</th>
+                    <th>Sex</th>
+                    <th>Payer Phone</th>					
+                    <th>Student Status</th>
                     <th>Payment Item</th>
-                    <th>Amount</th>
+                    <th>Amount (TZS)</th>
                     <th>Control#</th>
                     <th>Validity</th>					
                   </tr>
@@ -128,7 +128,7 @@
                     <td>{{ $student->phone }}</td>					
                     <td style="color:red">{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
-                    <td>{{ $invoice->currency }} {{$invoice->actual_amount }}</td>
+                    <td>{{$invoice->actual_amount }}</td>
                     <td>@if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a> @else {{ $invoice->control_no }} @endif</td>		
                     <td>{{ $invoice->feeType->duration }} Days</td>						
                   </tbody>
