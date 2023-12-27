@@ -109,10 +109,12 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>			  
-                    <th>Registration#</th>
                     <th>Payer Names</th>
+                    <th>Payer Phone</th>		
+                    <th>Registration#</th>
+                    <th>Student Names</th>
                     <th>Sex</th>
-                    <th>Payer Phone</th>					
+                    <th>Student Phone</th>					
                     <th>Student Status</th>
                     <th>Payment Item</th>
                     <th>Amount (TZS)</th>
@@ -122,6 +124,8 @@
                   </thead>
                   <tbody>
                   <tr>
+                    <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
+                    <td>{{ $student->phone }}</td>	
                     <td>{{ $student->registration_number }}</td>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
