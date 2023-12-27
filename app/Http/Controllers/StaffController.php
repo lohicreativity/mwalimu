@@ -285,7 +285,7 @@ class StaffController extends Controller
                 }
             }
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-            return $total_fee_paid_amount[0]['amount'];
+            
             $tuition_fee_loan = null;
             if($applicant_payer){
                 $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('year_of_study',1)->where('study_academic_year_id',$ac_year->academicYear->id)
