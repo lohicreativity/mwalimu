@@ -87,6 +87,8 @@
                       {!! Form::label('','Registration Number') !!}
                       {!! Form::text('registration_number',null,$registration_number) !!}
                     </div>
+
+                    <div class="modal-body">
                     <div class="form-group col-4">
                         <label class="radio-inline">
                           <input type="radio" name="payer" value="#ss-self-pay-form" id="ss-self-pay"> Self Paid
@@ -116,7 +118,7 @@
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
-
+                    </div>
                 </div>
                 </div>
                 <!-- /.card-body -->
