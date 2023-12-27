@@ -88,7 +88,7 @@
                       {!! Form::text('registration_number',null,$registration_number) !!}
                     </div>
 
-                    <div class="modal-body">
+
                     <div class="form-group col-4">
                         <label class="radio-inline">
                           <input type="radio" name="payer" value="#ss-self-pay-form" id="ss-self-pay"> Self Paid
@@ -99,8 +99,6 @@
 
                      </div><!-- end of row -->
 
-                     <div class="row" id="ss-self-pay-form">
-                     </div>
                      <div class="row" id="ss-other-payer-form">
                       <div class="col-12">
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
@@ -118,7 +116,7 @@
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
-                    </div>
+
                 </div>
                 </div>
                 <!-- /.card-body -->
