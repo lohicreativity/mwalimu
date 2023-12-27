@@ -89,7 +89,8 @@
                     </div>
 
 
-                    <div class="form-group col-4">
+                    <div class="row">
+                      <div class="col-12">
                         <label class="radio-inline">
                           <input type="radio" name="payer" value="#ss-self-pay-form" id="ss-self-pay"> Self Paid
                         </label>
@@ -98,6 +99,7 @@
                         </label>
 
                      </div><!-- end of row -->
+                    </div><!-- end of row -->
 
                      <div class="row" id="ss-other-payer-form">
                       <div class="col-12">
@@ -113,6 +115,17 @@
                               {!! Form::text('payer_email',null,['class'=>'form-control','placeholder'=>'ceo@organization.org']) !!}
                             </div>
                             <button type="submit" class="btn btn-primary">Verify</button>
+                          {!! Form::close() !!}
+                       </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
+
+                     <div class="row" id="ss-self-pay-form">
+                      <div class="col-12">
+                          {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
+                            {!! Form::input('hidden','insurance_status',0) !!}
+                            {!! Form::input('hidden','insurance_name',0) !!}
+                            {!! Form::input('hidden','applicant_id',null) !!}
+                            <button class="btn btn-primary" >Request NHIF</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
