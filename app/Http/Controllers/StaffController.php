@@ -398,7 +398,7 @@ class StaffController extends Controller
 			$invoice = new Invoice;
 			$invoice->reference_no = 'MNMA-'.$fee_amount->feeItem->feeType->code.'-'.time();
 
-            $invoice->amount = round($request->amount);
+            $invoice->amount = $request->amount;
             $invoice->actual_amount = $invoice->amount;
             $invoice->currency = 'TZS';
 			$invoice->payable_id = $student->id;
