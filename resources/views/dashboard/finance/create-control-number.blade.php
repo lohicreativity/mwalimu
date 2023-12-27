@@ -89,7 +89,7 @@
                     </div>
                     <div class="form-group col-4">
                         <label class="radio-inline">
-                          <input type="radio" name="payer" value="#ss-self-pay" id="ss-self-pay"> Self Paid
+                          <input type="radio" name="payer" value="#ss-self-pay-form" id="ss-self-pay"> Self Paid
                         </label>
                         <label class="radio-inline">
                           <input type="radio" name="payer" value="#ss-other-payer-form" id="ss-other-payer"> Other Payer
@@ -97,6 +97,8 @@
 
                      </div><!-- end of row -->
 
+                     <div class="row" id="ss-self-pay-form">
+                     </div>
                      <div class="row" id="ss-other-payer-form">
                       <div class="col-12">
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}

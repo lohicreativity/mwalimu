@@ -84,15 +84,19 @@ $('document').ready(function(){
     $('#ss-card-other-form').css('display','none');
     $('#ss-card-none-form').css('display','none');
 
+    $('#ss-self-pay-form').css('display','none');
     $('#ss-other-payer-form').css('display','none');
 
  $('#ss-other-payer').click(function(e){
   $(e.target.value).css('display','block');
+  $('#ss-self-pay-form').css('display','none');
 });
 
 $('#ss-self-pay').click(function(e){
+  $(e.target.value).css('display','block');
   $('#ss-other-payer-form').css('display','none');
 });
+
     // // Initialize tinymce
     // tinymce.init({
     //  selector: '.ss-textarea',
