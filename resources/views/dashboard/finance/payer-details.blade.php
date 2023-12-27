@@ -324,7 +324,7 @@
 											   <td>
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
-														{{ number_format($total_paid_fee,2) }}
+														{{ number_format($total_paid_fee['amount'],2) }}
 													@else
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }}
 													@endif
@@ -335,7 +335,7 @@
 											   <td>
 												@if($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
-														{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee,2) }} 
+														{{ number_format($payments->gatewayPayment->bill_amount-$total_paid_fee['amount'],2) }} 
 													@else
 														{{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} 
 													@endif
