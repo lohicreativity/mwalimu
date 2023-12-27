@@ -356,7 +356,7 @@ class StaffController extends Controller
 	  }	
 
     public function initiateControlNumberRequest(Request $request)
-    {
+    { return round($request->amount);
         $staff = User::find(Auth::user()->id)->staff;
         $usd_currency = Currency::where('code','USD')->first();
 
