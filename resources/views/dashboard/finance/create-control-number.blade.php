@@ -88,6 +88,7 @@
                       {!! Form::text('registration_number',null,$registration_number) !!}
                     </div>
                     <div class="form-group col-4">
+                      {!! Form::label('','') !!}
                         <label class="radio-inline">
                           <input type="radio" name="insurance_card" value="#ss-card-nhif-form" id="ss-card-nhif"> Self Paid
                         </label>
