@@ -356,7 +356,7 @@ class StaffController extends Controller
 	  }	
 
     public function initiateControlNumberRequest(Request $request)
-    { return round($request->amount);
+    {
         $staff = User::find(Auth::user()->id)->staff;
         $usd_currency = Currency::where('code','USD')->first();
 
@@ -371,6 +371,7 @@ class StaffController extends Controller
 		}
 
 		if($student){
+            return 1;
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
 			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')
 						->where('fee_type_id',$request->fee_type_id)->whereNotNull('control_no')
