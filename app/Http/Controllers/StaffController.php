@@ -371,7 +371,6 @@ class StaffController extends Controller
 		}
 
 		if($student){
-            return 1;
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
 			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')
 						->where('fee_type_id',$request->fee_type_id)->whereNotNull('control_no')
@@ -439,7 +438,9 @@ class StaffController extends Controller
                 Applicant::where('id',$student->applicant_id)->update(['hostel_status'=>1,'hostel_available_status'=>1]);
             }
 			return redirect()->to('finance/show-control-number?registration_number='.$student->registration_number)->with('message','Control number created successfully');		
-		}
+		}else{
+            return redirect()->back()->with('error','No such a student');
+        }
     }	
 
     public function showControlNumber(Request $request)
