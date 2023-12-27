@@ -87,6 +87,17 @@
                       {!! Form::label('','Registration Number') !!}
                       {!! Form::text('registration_number',null,$registration_number) !!}
                     </div>
+                    <div class="row">
+                      <div class="col-12">
+                        To be paid by?
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-nhif-form" id="ss-card-nhif"> Self
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other"> Other Payer
+                        </label>
+                        </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
                 </div>
                 </div>
                 <!-- /.card-body -->
