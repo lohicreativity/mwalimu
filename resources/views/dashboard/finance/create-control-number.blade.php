@@ -88,15 +88,33 @@
                       {!! Form::text('registration_number',null,$registration_number) !!}
                     </div>
                     <div class="form-group col-4">
-                      {!! Form::label('','') !!}
                         <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-nhif-form" id="ss-card-nhif"> Self Paid
+                          <input type="radio" name="payer" value="#ss-self-pay" id="ss-self-pay"> Self Paid
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other"> Other Payer
+                          <input type="radio" name="payer" value="#ss-other-payer-form" id="ss-other-payer"> Other Payer
                         </label>
 
                      </div><!-- end of row -->
+
+                     <div class="row" id="ss-other-payer">
+                      <div class="col-12">
+                          {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
+                            <div class="form-group">
+                              {!! Form::label('','Payer Name') !!}
+                              {!! Form::text('payer_name',null,['class'=>'form-control','placeholder'=>'Organization Name']) !!}
+                             
+                              {!! Form::label('','Payer Phone') !!}
+                              {!! Form::text('payer_phone',null,['class'=>'form-control','placeholder'=>'0739000123']) !!}
+                              
+                              {!! Form::label('','Payer Email') !!}
+                              {!! Form::text('payer_email',null,['class'=>'form-control','placeholder'=>'ceo@organization.org']) !!}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Verify</button>
+                          {!! Form::close() !!}
+                       </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
+
                 </div>
                 </div>
                 <!-- /.card-body -->
