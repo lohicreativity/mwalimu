@@ -53,7 +53,7 @@
                      'required'=>true
                   ];
                   $amount = [
-                     'placeholder'=>'20,000',
+                     'placeholder'=>'Amount in TZS',
                      'class'=>'form-control',
                      'required'=>true
                   ];
