@@ -97,7 +97,7 @@
 
                      </div><!-- end of row -->
 
-                     <div class="row" id="ss-other-payer">
+                     <div class="row" id="ss-other-payer-form">
                       <div class="col-12">
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
                             <div class="form-group">
