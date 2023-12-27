@@ -86,13 +86,7 @@ $('document').ready(function(){
 
     $('#ss-other-payer-form').css('display','none');
 
- $('#ss-other-payer').click(function(e){
-  $(e.target.value).css('display','block');
-});
 
-$('#ss-self-pay').click(function(e){
-  $('#ss-other-payer-form').css('display','none');
-});
 
     // // Initialize tinymce
     // tinymce.init({
