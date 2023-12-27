@@ -10,7 +10,7 @@ class ACPACService{
 		"Uid"=>"armsuser",
 		"Encrypt"=>"no",
 		"TrustServerCertificate"=>"yes",
-		"PWD"=>"arms2o23"
+		"PWD"=>"arms2o23!"
 	];
 	private $connection;
 
