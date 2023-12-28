@@ -1045,8 +1045,8 @@ class RegistrationController extends Controller
                   $transfer = InternalTransfer::where('student_id',$student->id)
                                               ->where('status','SUBMITTED')
                                               ->first();
-                                              return $transfer;
                   if($transfer){
+                    return $transfer;
                     if($data['VerificationStatusCode'] == 231)
                       $transfer = 'APPROVED';
                     elseif($data['VerificationStatusCode'] == 232){
