@@ -1068,4 +1068,19 @@ class RegistrationController extends Controller
                 return 'done';
             }
       }
+
+      public function sendXmlOverPost($url,$xml_request)
+      {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            // For xml, change the content-type.
+            curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml"));
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_request);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+            // Send to remote and return data to caller.
+            $result = curl_exec($ch);
+            curl_close($ch);
+            return $result;
+      }
 }
