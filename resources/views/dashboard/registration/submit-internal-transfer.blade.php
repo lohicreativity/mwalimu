@@ -167,7 +167,7 @@
                       {!! Form::label('','Select programme') !!}
                       <select name="campus_program_id" class="form-control" required>
                           <option value="">Select Programme</option>
-                          @foreach($transfers as $program)
+                          @foreach($transfered_campus_programs as $program)
                             <option value="{{ $program->currentProgram->id }}">{{ $program->currentProgram->program->name }}</option>
                           @endforeach
                       </select>
