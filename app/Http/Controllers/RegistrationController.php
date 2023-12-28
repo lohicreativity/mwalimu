@@ -1017,7 +1017,7 @@ class RegistrationController extends Controller
         }
         
         $url = 'http://api.tcu.go.tz/applicants/getInternalTransferStatus';
-          $campus_program = CampusProgram::find(39);
+          $campus_program = CampusProgram::find($request->get('campus_program_id'));
           $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                           <Request>
                           <UsernameToken>

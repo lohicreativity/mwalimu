@@ -149,6 +149,45 @@
                        @endforeach
 					   <tr>
 					     <td colspan="8"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button></td>
+               <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-internal-transfer-status">Retrieve Trasnfer Status</a>
+
+               <div class="modal fade" id="#ss-internal-transfer-status">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title"> Select Programme</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      {!! Form::open(['url'=>'registration/get-internal-transfer-tcu-status']) !!}
+                      {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                      
+                      <div class="form-group">
+                      {!! Form::label('','Select programme') !!}
+                      <select name="campus_program_id" class="form-control" required>
+                          <option value="">Select Programme</option>
+                          @foreach($confirmed_campus_programs as $program)
+                            <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                          @endforeach
+                      </select>
+                    </div>
+  
+                      <div class="ss-form-actions">
+                        <button type="submit" class="btn btn-primary">Get Status</button>
+                      </div>
+                      {!! Form::close() !!}
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
 					   </tr>
 					   {!! Form::close() !!}
                      </tbody>
