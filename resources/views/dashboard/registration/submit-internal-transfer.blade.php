@@ -162,7 +162,7 @@
                     </div>
                     <div class="modal-body">
                       {!! Form::open(['url'=>'registration/get-internal-transfer-tcu-status']) !!}
-                      {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                      {!! Form::input('hidden','program_level_id',39) !!}
                       
                       <div class="form-group">
                       {!! Form::label('','Select programme') !!}
