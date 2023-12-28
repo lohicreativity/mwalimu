@@ -1046,11 +1046,10 @@ class RegistrationController extends Controller
                                               ->where('status','SUBMITTED')
                                               ->first();
                   if($transfer){
-                    return $transfer;
                     if($data['VerificationStatusCode'] == 231)
-                      $transfer = 'APPROVED';
+                      $transfer->status = 'APPROVED';
                     elseif($data['VerificationStatusCode'] == 232){
-                        $transfer = 'DISAPPROVED';
+                        $transfer->status = 'DISAPPROVED';
                     }else{
                       $error_log = new TCUApiErrorLog;
                       $error_log->student_id = $student->id;
