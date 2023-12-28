@@ -17,13 +17,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Application\Models\InternalTransfer;
-use App\Domain\Application\Models\NectaResultDetail;
-use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Settings\Models\Currency;
-use App\Domain\Settings\Models\Country;
-use App\Domain\Settings\Models\Region;
-use App\Domain\Settings\Models\Ward;
-use App\Domain\Settings\Models\DisabilityStatus;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -31,6 +25,7 @@ use Auth, DomPDF, File, Storage, PDF;
 use Carbon\Carbon;
 use App\Utils\DateMaker;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Application\Models\TCUApiErrorLog;
 
 class RegistrationController extends Controller
 {
@@ -1007,4 +1002,70 @@ class RegistrationController extends Controller
         return  $pdf->stream();
     }
 
+    public function getTransferVerificationStatus(Request $request){
+        $staff = User::find(Auth::user()->id)->staff;
+        $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
+        $tcu_username = $tcu_token = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+  
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+  
+        }
+        
+        $url = 'http://api.tcu.go.tz/applicants/getInternalTransferStatus';
+          $campus_program = CampusProgram::find(39);
+          $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                          <Request>
+                          <UsernameToken>
+                          <Username>'.$tcu_username.'</Username>
+                          <SessionToken>'.$tcu_token.'</SessionToken>
+                          </UsernameToken>
+                          <RequestParameters>
+                          <ProgrammeCode>'.$campus_program->regulator_code.'</ProgrammeCode>
+                          </RequestParameters>
+                          </Request>
+                          ';
+  
+            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+            $json = json_encode($xml_response);
+            $array = json_decode($json,TRUE);
+    
+            foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
+                $student = Student::select('id')
+                                  ->whereHas('applicant',function($query) use($data,$staff){$query
+                                                        ->where('index_number',$data['f4indexno'])
+                                                        ->where('campus_id',$staff->campus_id)
+                                                        ->where('program_level_id',4);})
+                                  ->latest()->first();
+                if($student){
+                  $transfer = InternalTransfer::where('student_id',$student->id)
+                                              ->where('status','SUBMITTED')
+                                              ->first();
+                  if($transfer){
+                    if($data['VerificationStatusCode'] == 231)
+                      $transfer = 'APPROVED';
+                    elseif($data['VerificationStatusCode'] == 232){
+                        $transfer = 'DISAPPROVED';
+                    }else{
+                      $error_log = new TCUApiErrorLog;
+                      $error_log->student_id = $student->id;
+                      $error_log->entry_type = 'Internal Tranfer Status';
+                      $error_log->window_id = $study_ac_yr->id;
+                      $error_log->program_level_id = 4;
+                      $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                      $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
+                      $error_log->save();
+  
+                    }
+                    $transfer->save();
+                  }
+                }
+  
+                return 'done';
+            }
+      }
 }
