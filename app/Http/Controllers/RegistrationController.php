@@ -9,6 +9,7 @@ use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
@@ -1004,7 +1005,6 @@ class RegistrationController extends Controller
 
     public function getTransferVerificationStatus(Request $request){
         $staff = User::find(Auth::user()->id)->staff;
-        return $request;
         $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
         $tcu_username = $tcu_token = null;
         if($staff->campus_id == 1){
@@ -1016,8 +1016,8 @@ class RegistrationController extends Controller
             $tcu_token = config('constants.TCU_TOKEN_KARUME');
   
         }
-        
-        $url = 'http://api.tcu.go.tz/applicants/getInternalTransferStatus';
+
+        $url = $request->get('transfer_type') == 'internal'? 'http://api.tcu.go.tz/applicants/getInternalTransferStatus' : 'http://api.tcu.go.tz/applicants/getInterInstitutionalTransferStatus';
           $campus_program = CampusProgram::find($request->get('campus_program_id'));
           $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                           <Request>
@@ -1043,28 +1043,37 @@ class RegistrationController extends Controller
                                                         ->where('program_level_id',$request->get('program_level_id'));})
                                   ->latest()->first();
                 if($student){
-                  $transfer = InternalTransfer::where('student_id',$student->id)
-                                              ->where('status','SUBMITTED')
-                                              ->first();
-                  if($transfer){
-                    if($data['VerificationStatusCode'] == 231)
-                      $transfer->status = 'APPROVED';
-                    elseif($data['VerificationStatusCode'] == 232){
-                        $transfer->status = 'DISAPPROVED';
+                    $transfer = null;
+                    if($request->get('transfer_type') == 'internal'){
+                        $transfer = InternalTransfer::where('student_id',$student->id)
+                        ->where('status','SUBMITTED')
+                        ->first();
                     }else{
-                      $error_log = new TCUApiErrorLog;
-                      $error_log->student_id = $student->id;
-                      $error_log->entry_type = 'Internal Tranfer Status';
-                      $error_log->window_id = $study_ac_yr->id;
-                      $error_log->program_level_id = 4;
-                      $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
-                      $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
-                      $error_log->save();
-  
+                        $transfer = ExternalTransfer::where('student_id',$student->id)
+                        ->where('status','SUBMITTED')
+                        ->first();
                     }
-                    $transfer->save();
-                  }
+
+                    if($transfer){
+                        if($data['VerificationStatusCode'] == 231)
+                        $transfer->status = 'APPROVED';
+                        elseif($data['VerificationStatusCode'] == 232){
+                            $transfer->status = 'DISAPPROVED';
+                        }else{
+                        $error_log = new TCUApiErrorLog;
+                        $error_log->student_id = $student->id;
+                        $error_log->entry_type = $request->get('transfer_type') == 'internal'? 'Internal Tranfer Status' : 'External Tranfer Status';
+                        $error_log->window_id = $study_ac_yr->id;
+                        $error_log->program_level_id = 4;
+                        $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                        $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
+                        $error_log->save();
+    
+                        }
+                        $transfer->save();
+                    }
                 }
+                return 1;
             }
       }
 

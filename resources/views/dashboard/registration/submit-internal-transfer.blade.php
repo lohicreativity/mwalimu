@@ -163,7 +163,7 @@
                     </div>
                     <div class="modal-body">
                       {!! Form::open(['url'=>'registration/get-internal-transfer-tcu-status']) !!}
-                      {!! Form::input('hidden','program_level_id',5) !!}
+                      {!! Form::input('hidden','program_level_id',4) !!}
                       {!! Form::input('hidden','transfer_type','internal') !!}
                       
                       <div class="form-group">
