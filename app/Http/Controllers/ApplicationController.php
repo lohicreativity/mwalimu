@@ -8150,7 +8150,7 @@ class ApplicationController extends Controller
 			'campus_programs'=>$campus_programs,
             'staff'=>$staff,
             'transfered_campus_programs'=>ExternalTransfer::distinct()
-            ->select('current_campus_program_id')
+            ->select('new_campus_program_id')
             ->whereHas('applicant',function($query) use($staff){$query
                                           ->where('campus_id',$staff->campus_id);})
             ->with('currentProgram.program')
