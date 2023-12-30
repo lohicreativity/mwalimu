@@ -143,7 +143,9 @@
 						 <td>{{ $transfer->student->registration_number }}</td>
                          <td>{{ $transfer->currentProgram->program->name }}</td>
                          <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
-                         <td>@if($transfer->status == 'SUBMITTED') <span style="color: red"> {{ $transfer->status }} </span> @else {{ $transfer->status }} @endif 
+                         <td>@if($transfer->status == 'SUBMITTED') <span style="color: red"> {{ $transfer->status }} </span> 
+                             @elseif($transfer->status == 'APPROVED') <span style="color: green"> {{ $transfer->status }} </span> 
+                             @else {{ $transfer->status }} @endif 
                           {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
                           {!! Form::close() !!}</tr>
                        @endforeach
