@@ -8148,14 +8148,14 @@ class ApplicationController extends Controller
                   $query->where('campus_id',$staff->campus_id);
             })->with(['applicant.user','newProgram.program','user.staff'])->latest()->get(),
 			'campus_programs'=>$campus_programs,
-            'staff'=>$staff,
-            'transfered_campus_programs'=>ExternalTransfer::distinct()
-            ->select('new_campus_program_id')
-            ->whereHas('applicant',function($query) use($staff){$query
-                                          ->where('campus_id',$staff->campus_id);})
-            ->with('newProgram.program')
-            ->where('status','SUBMITTED')
-            ->get()
+            // 'staff'=>$staff,
+            // 'transfered_campus_programs'=>ExternalTransfer::distinct()
+            // ->select('new_campus_program_id')
+            // ->whereHas('applicant',function($query) use($staff){$query
+            //                               ->where('campus_id',$staff->campus_id);})
+            // ->with('newProgram.program')
+            // ->where('status','SUBMITTED')
+            // ->get()
         ];
         return view('dashboard.registration.submit-external-transfer',$data)->withTitle('External Transfer');
     }
