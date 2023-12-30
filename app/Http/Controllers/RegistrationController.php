@@ -1004,6 +1004,7 @@ class RegistrationController extends Controller
 
     public function getTransferVerificationStatus(Request $request){
         $staff = User::find(Auth::user()->id)->staff;
+        return $request;
         $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
         $tcu_username = $tcu_token = null;
         if($staff->campus_id == 1){
