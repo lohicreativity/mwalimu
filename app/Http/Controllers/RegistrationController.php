@@ -1064,8 +1064,6 @@ class RegistrationController extends Controller
                     $transfer->save();
                   }
                 }
-  
-                return 'done';
             }
       }
 
