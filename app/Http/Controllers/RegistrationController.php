@@ -1049,7 +1049,7 @@ class RegistrationController extends Controller
                         ->where('status','SUBMITTED')
                         ->first();
                     }else{
-                        $transfer = ExternalTransfer::where('student_id',$student->id)
+                        $transfer = ExternalTransfer::where('applicant_id',$student->applicant->id)
                         ->where('status','SUBMITTED')
                         ->first();
                     }
