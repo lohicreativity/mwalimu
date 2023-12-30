@@ -7437,7 +7437,7 @@ class ApplicationController extends Controller
                                                           ->get()
         ];
 
-        return InternalTransfer::distinct()->select('id','current_campus_program_id')
+        return InternalTransfer::distinct()->select('current_campus_program_id')
         ->whereHas('student.applicant',function($query) use($staff){$query
                                       ->where('campus_id',$staff->campus_id);})
         ->with('currentProgram.program')
