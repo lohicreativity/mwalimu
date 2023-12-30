@@ -8153,7 +8153,7 @@ class ApplicationController extends Controller
             ->select('new_campus_program_id')
             ->whereHas('applicant',function($query) use($staff){$query
                                           ->where('campus_id',$staff->campus_id);})
-            ->with('currentProgram.program')
+            ->with('newProgram.program')
             ->where('status','SUBMITTED')
             ->get()
         ];
