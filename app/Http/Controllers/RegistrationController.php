@@ -1004,7 +1004,6 @@ class RegistrationController extends Controller
 
     public function getTransferVerificationStatus(Request $request){
         $staff = User::find(Auth::user()->id)->staff;
-        return $request;
         $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
         $tcu_username = $tcu_token = null;
         if($staff->campus_id == 1){
@@ -1037,10 +1036,10 @@ class RegistrationController extends Controller
     
             foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
                 $student = Student::select('id')
-                                  ->whereHas('applicant',function($query) use($data,$staff){$query
+                                  ->whereHas('applicant',function($query) use($data,$staff,$request){$query
                                                         ->where('index_number',$data['f4indexno'])
                                                         ->where('campus_id',$staff->campus_id)
-                                                        ->where('program_level_id',4);})
+                                                        ->where('program_level_id',$request->get('program_level_id'));})
                                   ->latest()->first();
                 if($student){
                   $transfer = InternalTransfer::where('student_id',$student->id)
