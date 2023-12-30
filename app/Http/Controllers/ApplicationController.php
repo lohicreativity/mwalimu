@@ -7442,7 +7442,7 @@ class ApplicationController extends Controller
                                       ->where('campus_id',$staff->campus_id);})
         ->with('currentProgram.program')
         ->where('status','SUBMITTED')
-        ->distinct('current_campus_program_id')
+        ->distinct()
         ->get();
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
     }
