@@ -1041,6 +1041,7 @@ class RegistrationController extends Controller
                                                         ->where('index_number',$data['f4indexno'])
                                                         ->where('campus_id',$staff->campus_id)
                                                         ->where('program_level_id',$request->get('program_level_id'));})
+                                  ->with('applicant:id')
                                   ->latest()->first();
                 if($student){
                     $transfer = null;
