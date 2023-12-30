@@ -7436,6 +7436,14 @@ class ApplicationController extends Controller
                                                           ->distinct('current_campus_program_id')
                                                           ->get()
         ];
+
+        return InternalTransfer::select('id','current_campus_program_id')
+        ->whereHas('student.applicant',function($query) use($staff){$query
+                                      ->where('campus_id',$staff->campus_id);})
+        ->with('currentProgram.program')
+        ->where('status','SUBMITTED')
+        ->distinct('current_campus_program_id')
+        ->get();
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
     }
 
