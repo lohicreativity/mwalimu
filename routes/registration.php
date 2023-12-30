@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('crop-student-image',[RegistrationController::class,'cropStudentImage']);
 
     Route::get('internal-transfer',[ApplicationController::class,'showInternalTransfer']);
-    Route::get('get-internal-transfer-tcu-status',[RegistrationController::class,'getTransferVerificationStatus']);
+    Route::post('get-internal-transfer-tcu-status',[RegistrationController::class,'getTransferVerificationStatus']);
     Route::post('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
 
     Route::get('external-transfer',[ApplicationController::class,'showExternalTransfer']);
