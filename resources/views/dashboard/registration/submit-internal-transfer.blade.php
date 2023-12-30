@@ -171,7 +171,7 @@
                       <select name="campus_program_id" class="form-control" required>
                           <option value="">Select Programme</option>
                           @foreach($transfered_campus_programs as $program)
-                            <option value="{{ $program->newProgram->id }}">{{ $program->newProgram->program->name }}</option>
+                            <option value="{{ $program->currentProgram->id }}">{{ $program->currentProgram->program->name }}</option>
                           @endforeach
                       </select>
                     </div>
