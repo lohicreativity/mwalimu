@@ -7428,8 +7428,13 @@ class ApplicationController extends Controller
             'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                     ->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20),
             'staff'=>$staff,
-            'transfered_campus_programs'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-            ->with('currentProgram.program')->where('status','SUBMITTED')->get()
+            'transfered_campus_programs'=>InternalTransfer::select('id','current_campus_program_id')
+                                                          ->whereHas('student.applicant',function($query) use($staff){$query
+                                                                                        ->where('campus_id',$staff->campus_id);})
+                                                          ->with('currentProgram.program')
+                                                          ->where('status','SUBMITTED')
+                                                          ->distict('current_campus_program_id')
+                                                          ->get()
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
     }
