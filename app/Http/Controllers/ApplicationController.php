@@ -5893,8 +5893,10 @@ class ApplicationController extends Controller
      */
     public function resetApplicantResults(Request $request)
     {   $staff = User::find(Auth::user()->id)->staff;
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('verified',1)->update(['applicant_id'=>0]);
         NectaResult::where('applicant_id', $request->get('applicant_id'))->update(['applicant_id'=>0]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->results_complete_status = 0;
         $applicant->rank_points = null;
