@@ -93,5 +93,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('edit-details', [StudentController::class,'editDetails']);
     Route::get('reset-control-number',[StudentController::class,'resetControlNumber']);
     Route::get('reset-password',[StudentController::class,'resetPassword']);
+    Route::get('reset-id-print-status',[StudentController::class,'resetIDPrintStatus']);
     Route::get('deceased',[StudentController::class,'setDeceased']);
 });

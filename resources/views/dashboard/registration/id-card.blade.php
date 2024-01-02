@@ -151,13 +151,14 @@
 									  </i>
 									  Compose ID
 							  </a>
+								@if($student->signature != null && $student->image != null)
+									<a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
 
-                              <a class="btn btn-success btn-sm" href="show-id-card/?registration_number={{ str_replace('/', '-',$student->registration_number )}}">
-
-									  <i class="fas fa-check">
-									  </i>
-									  Print Card
-							  </a>
+											<i class="fas fa-check">
+											</i>
+											Print Card
+									</a>
+							  	@endif
 
 
 
@@ -510,6 +511,8 @@
 
 			  </div>
 			</div>
+			              <div class="float-right ss-pagination-links"> {!! $students->appends($request->except('page'))->render() !!} </div>
+
 			@endif
           </div>
           <!-- /.col -->

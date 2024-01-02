@@ -96,7 +96,7 @@
                     @if($applicant->has_postponed != 1)
                     <tr>
                        <td>Other Fees</td>
-                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,2) }} {{ $other_fee_invoice->currency }} @else @if($other_fee_amount) {{ number_format($other_fee_amount,2) }} @endif  @endif</td>
+                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,2) }} @else @if($other_fee_amount) {{ number_format($other_fee_amount,2) }} @endif  @endif</td>
                        <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }} @if(!$other_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td> {{ number_format($other_fee_amount,2) }} </td>
                        <td>

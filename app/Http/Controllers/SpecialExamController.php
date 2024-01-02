@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
 use Validator, Auth, DB;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class SpecialExamController extends Controller
 {
@@ -117,7 +118,9 @@ class SpecialExamController extends Controller
         $Special_exams_requested = SpecialExam::where('student_id',$student->id)->get();
 
         // $specialExams[] = null;
-
+        $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                    ->where('campus_id',$student->applicant->campus_id)
+                                    ->count();
         if(sizeof($Special_exams_requested) != 0) {
 
             foreach ($Special_exams_requested as $value) {
@@ -154,7 +157,8 @@ class SpecialExamController extends Controller
             'request'=>$request,
             'suppExams'     => $suppExams,
             'specialExams_count' => $specialExams_count,
-            'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first()
+            'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+            'loan_status'=>$loan_status
         ];
 
         } else {
@@ -181,7 +185,8 @@ class SpecialExamController extends Controller
                  'request'=>$request,
                  'suppExams'     => $suppExams,
                  'specialExams_count' => $specialExams_count,
-                 'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first()                 
+                 'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+                 'loan_status'=>$loan_status                 
              ];
      
 

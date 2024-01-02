@@ -158,7 +158,7 @@ class NextOfKinController extends Controller
 
                     $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                    ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
+                    ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergency%');})->first();
 
                     if(!$welfare_emergence_fund){
                     return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");
@@ -433,7 +433,7 @@ class NextOfKinController extends Controller
 
          $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
          ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-         ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergence%');})->first();
+         ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergency%');})->first();
 
          if(!$welfare_emergence_fund){
          return redirect()->back()->with('error',"Student's welfare emergency fund has not been defined");

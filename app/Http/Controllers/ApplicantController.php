@@ -779,8 +779,11 @@ class ApplicantController extends Controller
 
       $registrationStatus = null;
       if($student){
-         $registrationStatus = Registration::where('student_id', $student->id)->where('study_academic_year_id', $study_academic_year->id)->where('semester_id', $activeSemester->id)
-                                           ->where('status','UNREGISTERED')->first();
+         $registrationStatus = Registration::where('student_id', $student->id)
+                                           ->where('study_academic_year_id', $study_academic_year->id)
+                                           ->where('semester_id', $activeSemester->id)
+                                           ->where('status','UNREGISTERED')
+                                           ->first();
       }
 
 		$tuition_fee_loan = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)
@@ -794,10 +797,21 @@ class ApplicantController extends Controller
              return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
          }
 
-         if($tuition_fee_loan >= $program_fee->amount_in_tzs && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
-                                                               ->where('campus_id',$applicant->campus_id)->where('has_signed',1)){
-           Registration::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
-           ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+         $usd_currency = Currency::where('code','USD')->first();
+
+         if(str_contains($student->nationality,'Tanzania')){
+             $program_fee_amount = $program_fee->amount_in_tzs;
+         }else{
+             $program_fee_amount = round($program_fee->amount_in_usd * $usd_currency->factor);
+         }
+
+         if($tuition_fee_loan >= $program_fee_amount && LoanAllocation::where('student_id',$student->id)->where('study_academic_year_id',$study_academic_year->id)
+                                                                      ->where('campus_id',$applicant->campus_id)
+                                                                      ->where('has_signed',1)){
+            Registration::where('student_id',$student->id)
+                        ->where('study_academic_year_id',$study_academic_year->id)
+                        ->where('semester_id', $activeSemester->id)
+                        ->update(['status'=>'REGISTERED']);
 
          }else{
             $invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
@@ -811,7 +825,7 @@ class ApplicantController extends Controller
                         $fee_payment_percent = $paid_amount/$invoice->amount;
 
                         if($tuition_fee_loan>0){
-                        $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$invoice->amount;
+                           $fee_payment_percent = ($paid_amount+$tuition_fee_loan)/$program_fee_amount;
                         }
                   }
 
@@ -1141,6 +1155,11 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
         $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+        
+        if($applicant->is_transfered == 1){
+         return redirect()->to('application/submission');
+        }
+
         if($applicant->is_tamisemi != 1){
          //check if window is active
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
@@ -1338,6 +1357,10 @@ class ApplicantController extends Controller
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
+      if($applicant->is_transfered == 1 || $applicant->is_tamisemi == 1){
+         return redirect()->to('application/submission');
+
+      }
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
 		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id','!=',$batch->id)->first() : null;
 
@@ -1438,39 +1461,39 @@ class ApplicantController extends Controller
       $campus_progs = [];
       if(!str_contains(strtolower($applicant->programLevel->name),'master')){
 
-            $campus_progs = [];
-            $available_progs = [];
-            $all_programs = [];
-            if($applicant->batch_id > 1 && $applicant->payment_complete_status == 1){
-               $window = $applicant->applicationWindow;
-               $campus_programs = $window? $window->campusPrograms()
-                                                   ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
-                                                   ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
-                                                   ->where('campus_id',session('applicant_campus_id'))->get() : [];
-             $entry_requirements = null;
-             foreach($campus_programs as $prog){
-                $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
-                                                       ->with('campusProgram:id,code')->first();
-                $all_programs[] = $prog;
-             }
+         $campus_progs = [];
+         $available_progs = [];
+         $all_programs = [];
+         if($applicant->batch_id > 1 && $applicant->payment_complete_status == 1){
+            $window = $applicant->applicationWindow;
+            $campus_programs = $window? $window->campusPrograms()
+                                                ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
+                                                ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
+                                                ->where('campus_id',session('applicant_campus_id'))->get() : [];
+            $entry_requirements = null;
+            foreach($campus_programs as $prog){
+               $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
+                                                      ->with('campusProgram:id,code')->first();
+               $all_programs[] = $prog;
+            }
 
-             foreach($campus_programs as $prog){
+            foreach($campus_programs as $prog){
 
-                $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
-                                                    ->where(function($query) {
-                                                       $query->where('applicant_program_selections.status', 'SELECTED')
-                                                             ->orWhere('applicant_program_selections.status', 'APPROVING');
-                                                    })
-                                                    ->count();
+               $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
+                                                   ->where(function($query) {
+                                                      $query->where('applicant_program_selections.status', 'SELECTED')
+                                                            ->orWhere('applicant_program_selections.status', 'APPROVING');
+                                                   })
+                                                   ->count();
 
-                //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
-             if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
-                $campus_progs[] = $prog;
-             }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
-                $available_progs[] = $prog;
-             }
-          }
-       }
+                  //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
+               if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
+                  $campus_progs[] = $prog;
+               }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
+                  $available_progs[] = $prog;
+               }
+            }
+         }
          // dd( $campus_progs);
 
          $campus_programs = $available_progs;
@@ -2402,7 +2425,7 @@ class ApplicantController extends Controller
 
         if(ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
            $applicant->program_level_id)->where('begin_date','<=',  implode('-', explode('-', now()->format('Y-m-d'))))->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first()){
-            if($applicant->programs_complete_status != 1){
+            if($applicant->programs_complete_status != 1 && $applicant->is_transfered != 1){
                 return redirect()->back()->with('error','You must first select programmes');
             }
         }
@@ -2536,7 +2559,9 @@ class ApplicantController extends Controller
                $invoice->payable_id = 0;
                $invoice->save();
             }
-         }elseif($student){
+         }
+
+         if($student){
             $student_invoices = Invoice::where('payable_id',$student->id)->where('payable_type','student')->whereNull('gateway_payment_id')->get();
             foreach($student_invoices as $invoice){
                $invoice->payable_id = 0;
@@ -3076,16 +3101,22 @@ class ApplicantController extends Controller
             $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->latest()->first() : null;
 
         }
-        if(!$applicant && !empty($request->get('index_number'))){
-         return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
+         if(!$applicant && !empty($request->get('index_number'))){
+            return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
 
-          $data = [
+         $student = null;
+         if($applicant){
+            $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();          
+         }
+         $student_id = $student? $student->id : 0;
+
+         $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
 		   'countries'=>Country::all(),
-         'invoice'=>$request->get('index_number')? Invoice::whereNull('control_no')->orWhere('control_no',0)->where('payable_id',$applicant->id)
-                                                            ->where('payable_type','applicant')->latest()->first() : null
+         'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
+                                                          ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first() : null
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
@@ -3167,14 +3198,23 @@ class ApplicantController extends Controller
             $applicant->program_level_id = $request->get('program_level_id');
             if($request->get('program_level_id') == 4){
                 $applicant->is_edited = 1;
+                if($request->get('index_number') != $applicant->index_number){
+                  $applicant->is_tcu_verified = null;
+                  $applicant->is_tcu_added = null;
+                }
             }
             $applicant->save();
 
             if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
-               ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+               if($applicant->is_tamisemi != 1 || $applicant->is_transfered != 1){
+                  ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+               }
                Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
 
                if($level_before != $applicant->program_level_id){
+                  if($applicant->is_tamisemi == 1 || $applicant->is_transfered == 1){
+                     ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+                  }
                   $batch = ApplicationBatch::where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)
                            ->latest()->first();
                   Applicant::where('id',$applicant->id)->update(['batch_id'=>$batch->id]);

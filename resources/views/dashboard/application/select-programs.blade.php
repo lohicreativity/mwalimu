@@ -42,7 +42,7 @@
             @else
 
                 @if(($applicant->status == 'NOT SELECTED') || ($applicant->status == null) )  
-                    @if(count($full_programs) == count($all_programs) && !str_contains(strtolower($applicant->programLevel->name),'master'))
+                    @if(count($full_programs) == count($all_programs) && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_transfered != 1)
                         <div class="col-sm-12">  
                             <div class="alert alert-danger alert-dismissible ss-messages-box"  role="alert">
                                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -52,7 +52,7 @@
                     @else 
               @if(count($full_programs) != 0)
 
-                @if(count($full_programs) > 0 && count($full_programs) < count($available_progs) && !str_contains(strtolower($applicant->programLevel->name),'master'))
+                @if(count($full_programs) > 0 && count($full_programs) < count($available_progs) && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_transfered != 1)
                       @if(count($campus_programs) === 0)
                         <div class="col-12"> 
                           <div class="alert alert-warning alert-dismissible ss-messages-box"  role="alert">
@@ -95,7 +95,7 @@
                           </div>
                       @endif
               <!-- end of ss-messages_box -->
-                @elseif(count($full_programs) >= count($available_progs) && !str_contains(strtolower($applicant->programLevel->name),'master'))
+                @elseif(count($full_programs) >= count($available_progs) && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_transfered != 1)
                     @if(count($campus_programs) === 0)
                             <div class="col-12"> 
                               <div class="alert alert-warning alert-dismissible ss-messages-box"  role="alert">
@@ -123,17 +123,17 @@
                               </div>
                             </div>     
                       @else
-                              <div class='col-sm-7'>
-                              </div> 
-                              <div class="col-sm-5">
-                                  <div class="alert alert-success alert-dismissible ss-messages-box position-absolute z-index-auto" style="z-index: 7;" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                      <h4>Please note that only the following programmes are available;</h4>
-                                        @foreach($available_progs as $key=>$prog)
-                                            <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
-                                        @endforeach
-                                  </div><!-- end of ss-messages_box -->
-                              </div>
+                        <div class='col-sm-7'>
+                        </div> 
+                        <div class="col-sm-5">
+                            <div class="alert alert-success alert-dismissible ss-messages-box position-absolute z-index-auto" style="z-index: 7;" role="alert">
+                              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4>Please note that only the following programmes are available;</h4>
+                                  @foreach($available_progs as $key=>$prog)
+                                      <p> {{ ($key+1) }}. {{ $prog->program->name }} </p>
+                                  @endforeach
+                            </div><!-- end of ss-messages_box -->
+                        </div>
 
                     @endif
               @endif

@@ -5,6 +5,7 @@ namespace App\Domain\Registration\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Models\User;
 
 class Registration extends Model
 {
@@ -26,6 +27,11 @@ class Registration extends Model
     public function studyAcademicYear()
     {
     	return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
+    }
+
+    public function user()
+    {
+    	return $this->belongsTo(User::class,'printed_by_user_id');
     }
 
 }

@@ -255,14 +255,14 @@ class StaffController extends Controller
             if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('error','There is no such a payer');
 			}
-			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->get() : 
+			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->latest()->get() : 
             $paid_as_applicant = null;
 			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
             ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
-                ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get() : $paid_as_student = null;
+                ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->latest()->get() : $paid_as_student = null;
       
             $reference_no = [];
-            $total_fee_paid_amount = 0;
+            $total_fee_paid_amount = [];
             if(!empty($applicant_payer) && count($paid_as_applicant) > 0){
                 foreach($paid_as_applicant as $invoice){
                     $reference_no[] = $invoice->reference_no;
@@ -270,8 +270,7 @@ class StaffController extends Controller
                 foreach($paid_as_applicant as $payment){
 
                     if(str_contains($payment->feeType->name, 'Tuition')){
-                        $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
-                        break;
+                        $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
                     }
                 }
 
@@ -281,12 +280,10 @@ class StaffController extends Controller
                 }
                 foreach($paid_as_student as $payment){
                     if(str_contains($payment->feeType->name, 'Tuition')){
-                        $total_fee_paid_amount = GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount');
-                        break;
+                        $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
                     }
                 }
             }
-            
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
             
             $tuition_fee_loan = null;
@@ -399,16 +396,11 @@ class StaffController extends Controller
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
-			$invoice->reference_no = 'MNMA-'.time();
-			if(str_contains($student->applicant->nationality,'Tanzania')){
-			   $invoice->amount = round($fee_amount->amount_in_tzs);
-			   $invoice->actual_amount = $invoice->amount;
-			   $invoice->currency = 'TZS';
-			}else{
-			   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
-			   $invoice->actual_amount = $invoice->amount;
-			   $invoice->currency = 'TZS';//'USD';
-			}
+			$invoice->reference_no = 'MNMA-'.$fee_amount->feeItem->feeType->code.'-'.time();
+
+            $invoice->amount = $request->amount;
+            $invoice->actual_amount = $invoice->amount;
+            $invoice->currency = 'TZS';
 			$invoice->payable_id = $student->id;
 			$invoice->payable_type = 'student';
 			$invoice->applicable_id = $request->study_academic_year_id;
@@ -446,7 +438,9 @@ class StaffController extends Controller
                 Applicant::where('id',$student->applicant_id)->update(['hostel_status'=>1,'hostel_available_status'=>1]);
             }
 			return redirect()->to('finance/show-control-number?registration_number='.$student->registration_number)->with('message','Control number created successfully');		
-		}
+		}else{
+            return redirect()->back()->with('error','No such a student');
+        }
     }	
 
     public function showControlNumber(Request $request)

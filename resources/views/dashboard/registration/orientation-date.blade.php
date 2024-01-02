@@ -160,8 +160,8 @@
                   <tbody>
                     @foreach($orientation_dates as $orientation_date)
                     <tr>
-                      <td>{{ $orientation_date->date }}</a></td>
-                      <td>{{ $orientation_date->intake }}</a></td>
+                      <td>{{ $orientation_date->date }}</td>
+                      <td>{{ $orientation_date->intake }}</td>
                       <td>{{ implode(', ',unserialize($orientation_date->applicable_levels)) }} </td>
                       @if(Auth::user()->hasRole('administrator'))
                       <td>

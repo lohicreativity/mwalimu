@@ -39,12 +39,18 @@ class SpecialDateController extends Controller
    */
   public function showRegistrationDeadline(Request $request)
   {
+      $new_students = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->get();
+      $continuing_students = SpecialDate::where('name','Continuing Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->get();
+
       $data = [
            'campuses'=>Campus::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
-           'registration_date'=>SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
+           'new_registration_dates'=> $new_students? $new_students : null,
+           'continuing_registration_dates'=> $continuing_students? $continuing_students : null,
+           'intakes'=>Intake::all(),
+           'awards'=>Award::all(),
            'request'=>$request
         ];
         return view('dashboard.registration.registration-date',$data)->withTitle('Registration Deadline');
@@ -193,8 +199,11 @@ class SpecialDateController extends Controller
         $date->date = DateMaker::toDBDate($request->get('registration_date'));
         $date->begin_date = Carbon::parse($request->get('registration_date'))->subDays(13)->format('Y-m-d');
         $date->name = $request->get('name');
+        $date->intake = $request->get('intake');
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->group_id = $request->get('group');
+        $date->applicable_levels = $request->get('applicable_levels');
         $date->save();
 
         return redirect()->back()->with('message','Registration deadline updated successfully');

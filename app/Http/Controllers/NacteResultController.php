@@ -42,7 +42,15 @@ class NacteResultController extends Controller
         $applicant->surname = $detail->surname;
         // $applicant->gender = $detail->gender;
         if($applicant->entry_mode == 'EQUIVALENT'){
-           $applicant->avn_no_results = $results_count == 0? 1 : 0;
+            if($applicant->is_transfered == 1){
+                $programme = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)
+                                                      ->with('campusProgram.program')->first();
+                if(str_contains(strtolower($programme->campusProgram->program->name),'education')){
+                    $applicant->avn_no_results = $results_count == 0? 1 : 0;
+                }
+            }else{
+                $applicant->avn_no_results = $results_count == 0? 1 : 0;
+            }
         }
         if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT' && $detail->diploma_gpa >= 3 && $o_level_result_count != 0){
             $applicant->results_complete_status = 1;

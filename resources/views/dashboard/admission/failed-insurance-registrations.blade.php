@@ -81,7 +81,10 @@
                   <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Student</th>
+                    <th>Index#</th>
+                    <th>Names</th>
+                    <th>Sex</th>
+                    <th>Phone</th>
                     <th>Programme</th>
                     <th>Action</th>
                   </tr>
@@ -90,8 +93,11 @@
                     @foreach($records as $key=>$rec)
                     <tr>
                       <td>{{ ($key+1) }}</td>
+                      <td>{{ $rec->applicant->index_number }}</td>
                       <td>{{ $rec->student->first_name }} {{ $rec->student->middle_name }} {{ $rec->student->surname }}</td>
-                      <td>{{ $rec->student->campusProgram->program->name }}</td>
+                      <td>{{ $rec->student->gender }}</td>
+                      <td>{{ $rec->student->phone }}</td>
+                      <td>{{ $rec->student->campusProgram->code }}</td>
                       <td>
                            {!! Form::checkbox('records[]',$rec->id,true) !!}
                       </td>

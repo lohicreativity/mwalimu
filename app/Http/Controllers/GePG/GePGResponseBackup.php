@@ -16,6 +16,8 @@ use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use Illuminate\Support\Facades\Log;
 use App\Services\ACPACService;
+use App\Domain\Finance\Models\ProgramFee;
+use App\Domain\Settings\Models\Currency;
 
 class GePGResponseBackupController extends Controller
 {
@@ -153,14 +155,29 @@ class GePGResponseBackupController extends Controller
 		    	})->first();
 
 		    	if($study_academic_year){
-		    		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
+		    		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)
+													 ->where('study_academic_year_id',$study_academic_year->id)
+													 ->first();
 		    	}else{
 		    		$loan_allocation = null;
 		    	}			
 
                 if($loan_allocation){
-                   $percentage = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+					$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)
+											 ->where('campus_program_id',$study_academic_year->id)
+											 ->first();
+
+					$usd_currency = Currency::where('code','USD')->first();
+
+					if(str_contains($applicant->nationality,'Tanzania')){
+						$program_fee_amount = $program_fee->amount_in_tzs;
+					}else{
+						$program_fee_amount = round($program_fee->amount_in_usd * $usd_currency->factor);
+					}
+
+                   $percentage = ($paid_amount+$loan_allocation->tuition_fee)/$program_fee_amount;
                    $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+
                 }else{
 			       $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
 			    }

@@ -232,12 +232,12 @@
               <li class="nav-item">
                 <a href="{{ url('student/request-control-number') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Request Control Number</p>
+                  <p>My Invoices</p>
                 </a>
               </li>
             </ul>
           </li>
-		  @if($student->applicant->program_level_id == 4)
+		  @if($student->applicant->program_level_id == 4 && $loan_status >= 1)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-coins"></i>
@@ -499,7 +499,15 @@
               <li class="nav-item">
                 <a href="{{ url('application/cancelled-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Cancelled Admitted Applicants</p>
+                  <p>Cancelled Admissions</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-enrollment-report')
+              <li class="nav-item">
+                <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Enrollment Report') }}</p>
                 </a>
               </li>
               @endcan
@@ -591,6 +599,14 @@
                 <a href="{{ url('registration/print-id-card') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Identity Cards</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-printed-identity-cards')
+              <li class="nav-item">
+                <a href="{{ url('registration/printed-id-cards') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Printed ID Cards</p>
                 </a>
               </li>
               @endcan
@@ -1057,14 +1073,6 @@
                 <a href="{{ url('settings/gpa-classifications?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('GPA Classification') }}</p>
-                </a>
-              </li>
-              @endcan
-              @can('view-enrollment-report')
-              <li class="nav-item">
-                <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Enrollment Report') }}</p>
                 </a>
               </li>
               @endcan

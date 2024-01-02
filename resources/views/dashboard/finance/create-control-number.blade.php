@@ -52,32 +52,41 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+                  $amount = [
+                     'placeholder'=>'Amount in TZS',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
               @endphp
               {!! Form::open(['url'=>'finance/request-control-number','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                  <div class="form-group col-4">
-                    {!! Form::label('','Registration Number') !!}
-                    {!! Form::text('registration_number',null,$registration_number) !!}
-                  </div>
-                  <div class="form-group col-4">
-                    {!! Form::label('','Payment Item') !!}
-                    <select name="fee_type_id" class="form-control">
-                      <option value="">Select Payment Item</option>
-                      @foreach($fee_types as $types)
-                        <option value="{{ $types->id }}">{{ $types->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-4">
-                    {!! Form::label('','Study academic year') !!}
-                    <select name="study_academic_year_id" class="form-control">
-                      <option value="">Select Study Academic Year</option>
-                      @foreach($study_academic_years as $k=>$year)
-                        <option value="{{ $year->id }}" @if($k == 0 || $year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                      @endforeach
-                    </select>
-                  </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Study academic year') !!}
+                      <select name="study_academic_year_id" class="form-control">
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($study_academic_years as $k=>$year)
+                          <option value="{{ $year->id }}" @if($k == 0 || $year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Payment Item') !!}
+                      <select name="fee_type_id" class="form-control">
+                        <option value="">Select Payment Item</option>
+                        @foreach($fee_types as $types)
+                          <option value="{{ $types->id }}">{{ $types->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Amount (TZS)') !!}
+                      {!! Form::text('amount',null,$amount) !!}
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Registration Number') !!}
+                      {!! Form::text('registration_number',null,$registration_number) !!}
+                    </div>
                 </div>
                 </div>
                 <!-- /.card-body -->
@@ -100,26 +109,30 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>			  
+                    <th>Payer Names</th>
+                    <th>Payer Phone</th>		
                     <th>Registration#</th>
-                    <th>Names</th>
-                    <th>Gender</th>
-                    <th>Phone</th>					
-                    <th>Status</th>
+                    <th>Student Names</th>
+                    <th>Sex</th>
+                    <th>Student Phone</th>					
+                    <th>Student Status</th>
                     <th>Payment Item</th>
-                    <th>Amount</th>
+                    <th>Amount (TZS)</th>
                     <th>Control#</th>
                     <th>Validity</th>					
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
+                    <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
+                    <td>{{ $student->phone }}</td>	
                     <td>{{ $student->registration_number }}</td>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
                     <td>{{ $student->phone }}</td>					
                     <td style="color:red">{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
-                    <td>{{ $invoice->currency }} {{$invoice->actual_amount }}</td>
+                    <td>{{$invoice->actual_amount }}</td>
                     <td>@if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a> @else {{ $invoice->control_no }} @endif</td>		
                     <td>{{ $invoice->feeType->duration }} Days</td>						
                   </tbody>

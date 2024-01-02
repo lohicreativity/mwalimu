@@ -26,6 +26,9 @@ use App\Exports\GraduantsExport;
 use App\Exports\GraduantsCertExport;
 use App\Mail\GraduationAlert;
 use Mail, Auth;
+use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Application\Models\ApplicantSubmissionLog;
+use App\Domain\Application\Models\TCUApiErrorLog;
 
 class GraduantController extends Controller
 {
@@ -455,27 +458,36 @@ class GraduantController extends Controller
      * Enrollment report
      */
     public function enrollmentReport(Request $request)
-    {
+    {        
+        $staff = User::find(Auth::user()->id)->staff;
+        $submitted_list = ApplicantSubmissionLog::select('student_id')->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('study_academic_year_id',session('active_academic_year_id'))
+                                                ->where('campus_id',$staff->campus_id)->where('entry_type','Enrollment')
+                                                ->where('year_of_study',$request->get('year_of_study'))->get();
 
-        if($request->get('query')){
-           $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%')->paginate(50);
-        }else{
-           $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->paginate(50);
+        $submitted_list_ids = [];
+        foreach($submitted_list as $list){
+        $submitted_list_ids[] = $list->student_id;
         }
+        
+        $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                            ->whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                            ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                    'applicant.disabilityStatus','campusProgram.program.award'])
+                            ->where('year_of_study',$request->get('year_of_study'))
+                            ->whereNotIn('id',$submitted_list_ids)->get();
 
         if($request->get('campus_program_id')){
             $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
+                   $query->where('award_id',$request->get('program_level_id'));
            })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->where('campus_program_id',$request->get('campus_program_id'))->paginate(50);
         }
+
         $data = [
-           'nta_levels'=>NTALevel::all(),
+           'awards'=>Award::all(),
            'students'=>$students,
            'campus_programs'=>CampusProgram::with('program')->get(),
+           'submitted_students'=>count($submitted_list_ids),
            'request'=>$request
         ];
         return view('dashboard.academic.enrollment-report',$data)->withTitle('Enrollment Report');
@@ -486,73 +498,133 @@ class GraduantController extends Controller
      */
     public function submitEnrolledStudents(Request $request)
     {
-        $students = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-           })->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+        if($request->get('program_level_id') != 4){
+            return redirect()->back()->with('error','The action is only for Bachelor Degree students.');
+        }
+        
+        $staff = User::find(Auth::user()->id)->staff;
+        $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
 
+        $tcu_username = $tcu_token = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }else{
+             return redirect()->back()->with('error','The action cannot be performed. Please check with Administrator.');
+        }
+        
+        $students = Student::whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                           ->whereHas('campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                           ->with(['applicant.disabilityStatus','campusProgram.program','campusProgram.program.award','annualRemarks'])
+                           ->where('year_of_study',$request->get('year_of_study'))->get();
 
         foreach($students as $student){
-            foreach($student->campusProgram->program->departments as $dpt){
-              if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
-                  $department = $dpt;
-              }
-           }
-           $is_year_repeat = 'NO';
-           foreach($student->annualRemarks as $remark){
-                 if($remark->year_of_study == $student->year_of_study){
-                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
-                       $is_year_repeat = 'YES';
-                    }
-                 }
-           }
-
-           if($student->year_of_study == 1){
-              $year_of_study = 'First Year';
-           }elseif($student->year_of_study == 2){
-              $year_of_study = 'Second Year';
-           }elseif($student->year_of_study == 3){
-              $year_of_study = 'Third Year';
-           }
-
-           // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
-            $url="http://41.59.90.200/applicants/submitEnrolledStudents";
-
-               $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
-                <Request>
-                <UsernameToken>
-                <Username>'.config('constants.TCU_USERNAME').'</Username>
-                <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                </UsernameToken>
-                <RequestParameters>
-                <Fname>'.$student->first_name.'</Fname>
-                <Mname>'.$student->middle_name.'</Mname>
-                <Surname>'.$student->surname.'</Surname>
-                <F4indexno>'.$student->applicant->index_number.'</F4indexno>
-                <Gender>'.$student->gender.'</Gender>
-                <Nationality>'.$student->applicant->nationality.'</Nationality>
-                <DateOfBirth>'.date('Y',strtotime($student->applicant->birth_date)).'</DateOfBirth>
-                <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
-                <Specialization>'.$department->name.'</Specialization>
-                <AdmissionYear>'.$student->applicant->admission_year.'</AdmissionYear>
-                <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
-                <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
-                <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
-                <YearOfStudy>'.$year_of_study.'</YearOfStudy >
-                <StudyMode>'.$student->study_mode.'</StudyMode >
-                <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
-                <EntryMode>'.$student->applicant->entry_mode.'</EntryMode >
-                <Sponsorship>Private</Sponsorship >
-                <PhysicalChallenges>'.$student->applicant->disabilityStatus->name.'</PhysicalChallenges>
-                </RequestParameters>
-                </Request>';
-          $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-          $json = json_encode($xml_response);
-          $array = json_decode($json,TRUE);
-
-          return dd($xml_request);
-
-          return dd($array);
-
+            if(!ApplicantSubmissionLog::where('student_id',$student->id)->where('study_academic_year_id',$study_ac_yr->id)->where('entry_type','Enrollment')->where('program_level_id',$request->get('program_level_id'))->first()){
+                $is_year_repeat = 'NO';
+                foreach($student->annualRemarks as $remark){
+                        if($remark->year_of_study == $student->year_of_study){
+                            if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                            $is_year_repeat = 'YES';
+                            }
+                        }
+                }
+    
+                if($student->year_of_study == 1){
+                    $year_of_study = 'First Year';
+                }elseif($student->year_of_study == 2){
+                    $year_of_study = 'Second Year';
+                }elseif($student->year_of_study == 3){
+                    $year_of_study = 'Third Year';
+                }
+    
+                $program_name_parts = explode(' ',$student->campusProgram->program->name); 
+                $specialization_array = [];
+                for($i = 3; $i < count($program_name_parts); $i++){
+                    $specialization_array[] = $program_name_parts[$i];
+                }
+    
+                $specialization = implode(' ',$specialization_array);
+    
+                $year_of_study = null;
+                if($student->year_of_study == 1){
+                    $year_of_study = 'First Year';
+                }elseif($student->year_of_study == 2){
+                    $year_of_study = 'Second Year';
+                }elseif($student->year_of_study == 3){
+                    $year_of_study = 'Third Year';
+                }
+               
+                $entry_mode = $student->applicant->entry_mode == 'DIRECT'? 'Form Six' : 'Diploma';
+                $study_mode = $student->study_mode == 'FULLTIME'? 'Full Time' : 'Part time';
+               
+                $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                            ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                $sponsorship = $loan_status? 'HESLB' : 'Private';
+    
+               // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
+                $url="http://api.tcu.go.tz/applicants/submitEnrolledStudents";
+    
+                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                    <Request>
+                        <UsernameToken>
+                            <Username>'.$tcu_username.'</Username>
+                            <SessionToken>'.$tcu_token.'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                            <Fname>'.$student->first_name.'</Fname>
+                            <Mname>'.$student->middle_name.'</Mname>
+                            <Surname>'.$student->surname.'</Surname>
+                            <F4indexno>'.$student->applicant->index_number.'</F4indexno>
+                            <Gender>'.$student->gender.'</Gender>
+                            <Nationality>'.$student->nationality.'</Nationality>
+                            <DateOfBirth>'.date('Y',strtotime($student->birth_date)).'</DateOfBirth>
+                            <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
+                            <Specialization>'.$specialization.'</Specialization>
+                            <AdmissionYear>'.$student->registration_year.'</AdmissionYear>
+                            <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
+                            <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
+                            <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
+                            <YearOfStudy>'.$year_of_study.'</YearOfStudy>
+                            <StudyMode>'.$study_mode.'</StudyMode>
+                            <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat>
+                            <EntryMode>'.$entry_mode.'</EntryMode>
+                            <Sponsorship>'.$sponsorship.'</Sponsorship>
+                            <PhysicalChallenges>'.$student->disabilityStatus->name.'</PhysicalChallenges>
+                        </RequestParameters>
+                    </Request>';
+    
+                $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                $json = json_encode($xml_response);
+                $array = json_decode($json,TRUE);
+        
+                if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+        
+                    $log = new ApplicantSubmissionLog;
+                    $log->student_id = $student->id;
+                    $log->program_level_id = $request->get('program_level_id');
+                    $log->study_academic_year_id = $study_ac_yr->id;
+                    $log->entry_type = 'Enrollment';
+                    $log->submitted = 1;
+                    $log->save();
+        
+                }else{
+        
+                    $error_log = new TCUApiErrorLog;
+                    $error_log->student_id = $student->id;
+                    $error_log->entry_type = 'Enrollment';
+                    $error_log->window_id = $study_ac_yr->id;
+                    $error_log->program_level_id = $request->get('program_level_id');
+                    $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                    $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
+                    $error_log->save();
+        
+                }
+            }
         }
 
         return redirect()->back()->with('message','Enrolled students submitted successfully');
@@ -580,61 +652,189 @@ class GraduantController extends Controller
      * Download enrolled students
      */
     public function downloadEnrolledStudents(Request $request)
-    {
-         $nta_level = NTALevel::find($request->get('nta_level_id'));
+    { 
+         $award = Award::find($request->get('program_level_id'));
+         $staff = User::find(Auth::user()->id)->staff;
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$nta_level->name.'.csv',
+                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$award->name.'-'.date('Y-m-d'.'\T'.'h:i:s').'.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
 
-              $list = Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-              })->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+              $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')
+                             ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                             ->whereHas('campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                             ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                     'academicStatus:id,name','applicant:id,entry_mode,index_number','campusProgram.campus:id,code','campusProgram.program.award:id,name','annualRemarks:id,student_id,year_of_study'])
+                             ->where('year_of_study',$request->get('year_of_study'))->get();
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
              $callback = function() use ($list) 
               {
-                  $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Award Category','Field Specialization','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Award Name','Registration Number','Institution Code','Programme Code']);
-                  foreach ($list as $student) { 
-                       foreach($student->campusProgram->program->departments as $dpt){
-                          if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
-                              $department = $dpt;
-                          }
-                       }
-                       $is_year_repeat = 'NO';
-                       foreach($student->annualRemarks as $remark){
-                             if($remark->year_of_study == $student->year_of_study){
-                                if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
-                                   $is_year_repeat = 'YES';
+                  $file_handle = fopen('php://output', 'w');   
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Award Category','Field Specialization','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Award Name','Registration Number','Institution Code','Programme Code','Status']);
+                    foreach ($list as $student) { 
+                        $is_year_repeat = 'NO';
+                        foreach($student->annualRemarks as $remark){
+                                if($remark->year_of_study == $student->year_of_study){
+                                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                                    $is_year_repeat = 'YES';
+                                    }
                                 }
-                             }
-                       }
+                        }
+                        $program_name_parts = explode(' ',$student->campusProgram->program->name); 
+                        $specialization_array = [];
+                        for($i = 3; $i < count($program_name_parts); $i++){
+                            $specialization_array[] = $program_name_parts[$i];
+                        }
+          
+                        $specialization = implode(' ',$specialization_array);
 
-                      fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
-                        $student->applicant->nationality,
-                        date('Y',strtotime($student->applicant->birth_date)),
+                        $year_of_study = null;
+                        if($student->year_of_study == 1){
+                            $year_of_study = 'First Year';
+                        }elseif($student->year_of_study == 2){
+                            $year_of_study = 'Second Year';
+                        }elseif($student->year_of_study == 3){
+                            $year_of_study = 'Third Year';
+                        }
+ 
+                        $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                                        ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                        $sponsorship = $loan_status? 'Private and Loans Board' : 'Private';
+    
+                        $f4indexno = $f6indexno = [];
+    
+                        foreach($student->applicant->nectaResultDetails as $detail){
+                            if($detail->exam_id == 1){
+                                $f4indexno[] = $detail->index_number;
+                            }
+                        }
+    
+                        $f4indexno = count($f4indexno) > 0? $f4indexno : $student->applicant->index_number;
+    
+                        if(is_array($f4indexno)){
+                            $f4indexno=implode(', ',$f4indexno);
+                        }
+                        fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
+                        $student->nationality,
+                        date('Y',strtotime($student->birth_date)),
                         $student->campusProgram->program->award->name,
-                        $department->name,
-                        $student->year_of_study,
+                        $specialization,
+                        $year_of_study,
                         $student->study_mode,
                         $is_year_repeat,
                         $student->applicant->entry_mode,
-                        'Private',
-                        $student->applicant->admission_year,
-                        $student->applicant->disabilityStatus->name,
-                        $student->applicant->index_number,
+                        $sponsorship,
+                        $student->registration_year.'/'.($student->registration_year + 1),
+                        $student->disabilityStatus->name,
+                        $f4indexno,
                         $student->campusProgram->program->name,
                         $student->registration_number,
-                        substr($student->campusProgram->regulator_code,0,2),
+                        $student->campusProgram->campus->code,
                         $student->campusProgram->regulator_code,
+                        $student->academicStatus->name,
                         ]);
-                  }
+                    }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
+
+        /**
+     * Download enrolled students
+     */
+    public function downloadSubmittedEnrolledStudents(Request $request)
+    { 
+        $award = Award::find($request->get('program_level_id'));
+        $staff = User::find(Auth::user()->id)->staff;
+        $headers = [
+                    'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                    'Content-type'        => 'text/csv',
+                    'Content-Disposition' => 'attachment; filename=Submitted-Enrolled-Students-Year-'.$request->get('year_of_study').'-'.$award->name.'-'.date('Y-m-d'.'\T'.'h:i:s').'.csv',
+                    'Expires'             => '0',
+                    'Pragma'              => 'public'
+            ];
+
+        $submitted_list = ApplicantSubmissionLog::select('student_id')->where('program_level_id',$request->get('program_level_id'))
+                                                ->where('study_academic_year_id',session('active_academic_year_id'))
+                                                ->where('campus_id',$staff->campus_id)->where('entry_type','Enrollment')
+                                                ->where('year_of_study',$request->get('year_of_study'))->get();
+        $submitted_list_ids = [];
+        foreach($submitted_list as $list){
+            $submitted_list_ids[] = $list->student_id;
+        }
+
+        $list = Student::select('id','first_name','middle_name','surname','gender','nationality','birth_date','disability_status_id','academic_status_id','campus_program_id','year_of_study','study_mode','applicant_id','registration_year','registration_number')
+                             ->whereIn('id',$submitted_list_ids)
+                             ->with(['applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                     'academicStatus:id,name','applicant:id,entry_mode,index_number','annualRemarks:id,student_id,year_of_study'])
+                             ->get();
+
+              # add headers for each column in the CSV download
+              // array_unshift($list, array_keys($list[0]));
+
+             $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');   
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Nationality','Date of Birth','Year of Study','Study Mode','Is Year Repeat','Entry Qualification','Sponsorship','Admission Year','Physical Challenges','F4 Index No','Registration Number','Programme','Status']);
+                    foreach ($list as $student) { 
+                        $is_year_repeat = 'NO';
+                        foreach($student->annualRemarks as $remark){
+                                if($remark->year_of_study == $student->year_of_study){
+                                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                                    $is_year_repeat = 'YES';
+                                    }
+                                }
+                        }
+
+                        $year_of_study = null;
+                        if($student->year_of_study == 1){
+                            $year_of_study = 'First Year';
+                        }elseif($student->year_of_study == 2){
+                            $year_of_study = 'Second Year';
+                        }elseif($student->year_of_study == 3){
+                            $year_of_study = 'Third Year';
+                        }
+ 
+                        $loan_status = LoanAllocation::where('index_number',$student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                                        ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                        $sponsorship = $loan_status? 'Private and Loans Board' : 'Private';
+    
+                        $f4indexno = [];
+    
+                        foreach($student->applicant->nectaResultDetails as $detail){
+                            if($detail->exam_id == 1){
+                                $f4indexno[] = $detail->index_number;
+                            }
+                        }
+    
+                        $f4indexno = count($f4indexno) > 0? $f4indexno : $student->applicant->index_number;
+    
+                        if(is_array($f4indexno)){
+                            $f4indexno=implode(', ',$f4indexno);
+                        }
+                        fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
+                        $student->nationality,
+                        date('Y',strtotime($student->birth_date)),
+                        $year_of_study,
+                        $student->study_mode,
+                        $is_year_repeat,
+                        $student->applicant->entry_mode,
+                        $sponsorship,
+                        $student->registration_year.'/'.($student->registration_year + 1),
+                        $student->disabilityStatus->name,
+                        $f4indexno,
+                        $student->registration_number,
+                        $student->campusProgram->code,
+                        $student->academicStatus->name,
+                        ]);
+                    }
                   fclose($file_handle);
               };
 

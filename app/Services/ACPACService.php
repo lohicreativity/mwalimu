@@ -7,10 +7,10 @@ class ACPACService{
 	private $serverName = "41.59.91.198";
     private $connectionOptions = [
 		"Database"=>"ARMSIntegration",
-		"Uid"=>"arms",
+		"Uid"=>"armsuser",
 		"Encrypt"=>"no",
 		"TrustServerCertificate"=>"yes",
-		"PWD"=>"mnma2o22"
+		"PWD"=>"arms2o23!"
 	];
 	private $connection;
 

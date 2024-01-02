@@ -9,6 +9,7 @@ use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
@@ -17,18 +18,15 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Application\Models\InternalTransfer;
-use App\Domain\Application\Models\NectaResultDetail;
-use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Settings\Models\Currency;
-use App\Domain\Settings\Models\Country;
-use App\Domain\Settings\Models\Region;
-use App\Domain\Settings\Models\Ward;
-use App\Domain\Settings\Models\DisabilityStatus;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
 use Auth, DomPDF, File, Storage, PDF;
 use Carbon\Carbon;
+use App\Utils\DateMaker;
+use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Application\Models\TCUApiErrorLog;
 
 class RegistrationController extends Controller
 {
@@ -452,7 +450,6 @@ class RegistrationController extends Controller
 	  public function downloadActiveStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
-
 		   $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
@@ -460,22 +457,70 @@ class RegistrationController extends Controller
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
-		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
-				  $query->where('id',$staff->department_id);
-			})->whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
+                                                                 ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                 ->whereHas('student.applicant',function($query) use($request,$staff){$query->where('program_level_id',$request->get('program_level'))->where('campus_id',$staff->campus_id);})
+                                                                 ->with(['student:id,first_name,middle_name,surname,gender,phone,birth_date,campus_program_id,registration_number,applicant_id,disability_status_id',
+                                                                         'student.campusProgram:id,program_id',
+                                                                         'student.campusProgram.program:id,code','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
+                                                                         'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                                                         'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
+                                                                         'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])->where('study_academic_year_id',session('active_academic_year_id'))
+                                                                 ->where('semester_id',session('active_semester_id'))->get() : 
+                                                     Registration::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                 ->whereHas('student.applicant',function($query) use($request, $staff){$query->where('program_level_id',$request->get('program_level'))->where('campus_id',$staff->campus_id);})
+                                                                 ->with(['student:id,first_name,middle_name,surname,gender,phone,birth_date,campus_program_id,registration_number,applicant_id,disability_status_id',
+                                                                         'student.campusProgram:id,program_id',
+                                                                         'student.campusProgram.program:id,code','student.disabilityStatus:id,name','student.applicant:id,entry_mode,index_number',
+                                                                         'student.applicant.nectaResultDetails'=>function($query){$query->select('id','applicant_id','index_number','exam_id')->where('verified',1);},
+                                                                         'student.applicant.nacteResultDetails'=>function($query){$query->select('id','applicant_id','registration_number','diploma_graduation_year','programme','avn')->where('verified',1);},
+                                                                         'student.applicant.outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);}])
+                                                                 ->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+ 
 		   $callback = function() use ($students)
-              {
-                  $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
-                  foreach ($students as $row) {
-                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number,$row->student->campusProgram->program->name]);
-                  }
-                  fclose($file_handle);
-              };
+            {
+                $file_handle = fopen('php://output', 'w');
+                fputcsv($file_handle, ['First Name','Middlename','Surname','Sex','Date of Birth','Disability','F4 Index#','F6 Index#','Registration Number','Program','Entry Mode','Sponsorship']);
+                foreach ($students as $row) {
+                    $loan_status = LoanAllocation::where('index_number',$row->student->applicant->index_number)->where(function($query){$query->where('meals_and_accomodation','>',0)->orWhere('books_and_stationeries','>',0)
+                                                 ->orWhere('tuition_fee','>',0)->orWhere('field_training','>',0)->orWhere('research','>',0);})->where('study_academic_year_id',session('active_academic_year_id'))->first();
+                    $sponsorship = $loan_status? 'Government' : 'Private';
+
+                    $f4indexno = $f6indexno = [];
+
+                    foreach($row->student->applicant->nectaResultDetails as $detail){
+                        if($detail->exam_id == 1){
+                            $f4indexno[] = $detail->index_number;
+                        }
+
+                        if($detail->exam_id == 2){
+                            $f6indexno[] = $detail->index_number;
+                        }
+                    }
+
+                    $f4indexno = count($f4indexno) > 0? $f4indexno : $row->student->applicant->index_number;
+
+                    foreach($row->student->applicant->nacteResultDetails as $detail){
+                        if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
+                            $f6indexno = $detail->avn;
+                            break;
+                        }
+                    }
+
+                    if(is_array($f4indexno)){
+                        $f4indexno=implode(', ',$f4indexno);
+                    }
+
+                    if(is_array($f6indexno)){
+                        $f6indexno=implode(', ',$f6indexno);
+                    }
+                    fputcsv($file_handle, [$row->student->first_name,$row->student->middle_name,$row->student->surname,$row->student->gender, DateMaker::toStandardDate($row->student->birth_date), 
+                                           $row->student->disabilityStatus->name,$f4indexno,$f6indexno,$row->student->registration_number,
+                                           $row->student->campusProgram->program->code,$row->student->applicant->entry_mode,$sponsorship
+                                            ]);
+                }
+                fclose($file_handle);
+            };
 
               return response()->stream($callback, 200, $headers);
 	  }
@@ -680,10 +725,16 @@ class RegistrationController extends Controller
 		if($request->has('study_academic_year_id')){
 			$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
 
-			$student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0)->where('status', 'REGISTERED');})
-					   ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
-					   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
-					   ->with('applicant','campusProgram.program','campusProgram.campus')->latest()->get();
+			$student = Student::select('id','registration_number','first_name','middle_name','surname','gender','phone','campus_program_id','signature','image','applicant_id','registration_year','year_of_study','created_at')
+                              ->whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0)->where('status', 'REGISTERED');})
+                              ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+                              ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
+                              ->with('applicant:id,campus_id,intake_id','applicant.intake:id,name','campusProgram:id,code')->latest()->paginate(200);
+
+            // $student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0)->where('status', 'REGISTERED');})
+            // ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+            // ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
+            // ->with('applicant','campusProgram.program','campusProgram.campus')->latest()->paginate(200);
 		}
 
 /*         if(count($student) == 0){
@@ -703,18 +754,59 @@ class RegistrationController extends Controller
             'awards'=>Award::all(),
             'campuses'=>Campus::all(),
 			'staff'=>User::find(Auth::user()->id)->staff,
+            'compose'=>0,
             'request'=>$request
         ];
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
     }
 
+    public function showPrintedIDCards(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
 
+        $cards = Registration::select('id','student_id','id_sn_no','id_print_date','printed_by_user_id')
+                               ->whereHas('student.applicant',function($query) use($staff,$request){$query->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id);})
+                               ->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('id_print_status',1)
+                               ->with(['student:id,first_name,middle_name,surname,gender,phone,registration_number,campus_program_id,user_id','student.campusProgram:id,code'])
+                               ->orderBy('id_print_date','DESC')->get();
+            
+
+        $data = [
+            'cards'=>$cards? $cards : [],
+            'semester'=>$semester,
+			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : StudyAcademicYear::where('status', 'ACTIVE')->first(),
+            'awards'=>Award::all(),
+            'campuses'=>Campus::all(),
+			'staff'=>User::find(Auth::user()->id)->staff,
+            'compose'=>0,
+            'request'=>$request
+        ];
+        return view('dashboard.registration.printed-id-cards',$data)->withTitle('Printed ID Cards');
+    }
+
+    public function composeIDCard(Request $request){
+        $data = [
+            'semester'=>Semester::where('status','ACTIVE')->first(),
+			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : StudyAcademicYear::where('status', 'ACTIVE')->first(),
+            'awards'=>Award::all(),
+            'campuses'=>Campus::all(),
+			'staff'=>User::find(Auth::user()->id)->staff,
+            'students'=>Student::select('id','signature','image','campus_program_id')->where('id',$request->id)->with('campusProgram:id,code')->paginate(1),
+            'compose'=>1,
+            'request'=>$request
+        ];
+        return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
+    }
     /**
      * Show ID Card
      */
     public function showIDCard(Request $request)
     {
-
+        $staff = User::find(Auth::user()->id)->staff;
         $student = Student::with('campusProgram.program','campusProgram.campus', 'applicant.intake')
         ->where('registration_number',str_replace('-','/',$request->get('registration_number')))->first();
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->with('academicYear')->first();
@@ -759,22 +851,23 @@ class RegistrationController extends Controller
             }
         }
 
-        // $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
-        // $newRegistrationNo = null;
-        // if(!$latestRegistrationNo){
-        //     $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
-        //     $newRegistrationNo = $registration->id_sn_no;
-        // }else{
-        //     $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
-        //     $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
-        //     $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
-        //     $newRegistrationNo = $registration->id_sn_no;
-        // }
-        // $registration->id_print_date = now();
-        // $registration->id_print_status = 1; $newRegistrationNo
-        // $registration->save();
+        $latestRegistrationNo = Registration::where('study_academic_year_id',$ac_year->id)->whereNotNull('id_sn_no')->orderBy('id_print_date', 'desc')->first();
+        $newRegistrationNo = null;
+        if(!$latestRegistrationNo){
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-000001';
+            $newRegistrationNo = $registration->id_sn_no;
+        }else{
+            $newRegNo = explode('-',$latestRegistrationNo->id_sn_no);
+            $newRegistrationNo = sprintf("%06d",$newRegNo[1]+1);
+            $registration->id_sn_no = 'SN:'.$ac_year->academicYear->year.'-'.$newRegistrationNo;
+            $newRegistrationNo = $registration->id_sn_no;
+        }
+        $registration->id_print_date = now();
+        $registration->printed_by_user_id = $staff->id;
+        $registration->id_print_status = 1; $newRegistrationNo;
+        $registration->save();
 
-        // IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
+        IdCardRequest::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
 
 
 
@@ -782,13 +875,13 @@ class RegistrationController extends Controller
             'student'=>$student,
             'semester'=>$semester,
             'study_academic_year'=>$ac_year,
-            'registration_no' => 123,
+            'registration_no' => $newRegistrationNo,
             'tuition_payment_check' => $tuition_payment_check
         ];
 
-        return view('dashboard.registration.reports.id-card',$data);
+         return view('dashboard.registration.reports.id-card',$data);
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
-            //    'format'=>'A7',
+               'format'=>'A7',
                'mode' => 'utf-8',
                'allow_charset_conversion' => true,
                'margin_top'=>0,
@@ -797,7 +890,7 @@ class RegistrationController extends Controller
                'margin_right'=>0,
                'orientation'=>'L',
                'display_mode'=>'fullpage',
-            //    'format'=>[500,400]
+               'format'=>[500,400]
         ]);
         return  $pdf->stream();
         //  return view('dashboard.registration.reports.id-card',$data);
@@ -910,4 +1003,93 @@ class RegistrationController extends Controller
         return  $pdf->stream();
     }
 
+    public function getTransferVerificationStatus(Request $request){
+        $staff = User::find(Auth::user()->id)->staff;
+        $study_ac_yr = StudyAcademicYear::select('id')->where('status','ACTIVE')->first();
+        $tcu_username = $tcu_token = null;
+        if($staff->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+  
+        }elseif($staff->campus_id == 2){
+            $tcu_username = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+  
+        }
+
+        $url = $request->get('transfer_type') == 'internal'? 'http://api.tcu.go.tz/applicants/getInternalTransferStatus' : 'http://api.tcu.go.tz/applicants/getInterInstitutionalTransferStatus';
+          $campus_program = CampusProgram::find($request->get('campus_program_id'));
+          $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                          <Request>
+                          <UsernameToken>
+                          <Username>'.$tcu_username.'</Username>
+                          <SessionToken>'.$tcu_token.'</SessionToken>
+                          </UsernameToken>
+                          <RequestParameters>
+                          <ProgrammeCode>'.$campus_program->regulator_code.'</ProgrammeCode>
+                          </RequestParameters>
+                          </Request>
+                          ';
+  
+            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+            $json = json_encode($xml_response);
+            $array = json_decode($json,TRUE);
+    
+            foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
+                $student = Student::select('id')
+                                  ->whereHas('applicant',function($query) use($data,$staff,$request){$query
+                                                        ->where('index_number',$data['f4indexno'])
+                                                        ->where('campus_id',$staff->campus_id)
+                                                        ->where('program_level_id',$request->get('program_level_id'));})
+                                  ->with('applicant:id')
+                                  ->latest()->first();
+                if($student){
+                    $transfer = null;
+                    if($request->get('transfer_type') == 'internal'){
+                        $transfer = InternalTransfer::where('student_id',$student->id)
+                        ->where('status','SUBMITTED')
+                        ->first();
+                    }else{
+                        $transfer = ExternalTransfer::where('applicant_id',$student->applicant->id)
+                        ->where('status','SUBMITTED')
+                        ->first();
+                    }
+
+                    if($transfer){
+                        if($data['VerificationStatusCode'] == 231)
+                        $transfer->status = 'APPROVED';
+                        elseif($data['VerificationStatusCode'] == 232){
+                            $transfer->status = 'DISAPPROVED';
+                        }else{
+                        $error_log = new TCUApiErrorLog;
+                        $error_log->student_id = $student->id;
+                        $error_log->entry_type = $request->get('transfer_type') == 'internal'? 'Internal Tranfer Status' : 'External Tranfer Status';
+                        $error_log->window_id = $study_ac_yr->id;
+                        $error_log->program_level_id = 4;
+                        $error_log->error_code = $array['Response']['ResponseParameters']['StatusCode'];
+                        $error_log->error_desc = $array['Response']['ResponseParameters']['StatusDescription'];
+                        $error_log->save();
+    
+                        }
+                        $transfer->save();
+                    }
+                }
+                return 1;
+            }
+      }
+
+      public function sendXmlOverPost($url,$xml_request)
+      {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            // For xml, change the content-type.
+            curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml"));
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_request);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+            // Send to remote and return data to caller.
+            $result = curl_exec($ch);
+            curl_close($ch);
+            return $result;
+      }
 }

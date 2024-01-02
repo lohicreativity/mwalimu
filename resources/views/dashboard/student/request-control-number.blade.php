@@ -73,7 +73,7 @@
           <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">List of Control Numbers</h3>
+              <h3 class="card-title">List of Pending Invoices</h3>
             </div>
             <div class="card-body">
                <table class="table table-bordered ss-paginated-table">
@@ -89,10 +89,10 @@
                   </thead>
                   <tbody>
                   @foreach($invoices as $invoice)
-                  @if($invoice->payable_type == 'student')
+                  @if($invoice->payable_type == 'student' && $invoice->gateway_payment_id == null)
                   <tr>
                       <td>{{ $invoice->applicable->academicYear->year }}</td>
-                      <td>{{ $invoice->feeType->name }}</td>
+                      <td>@if($invoice->feeType->name == 'Miscellaneous Income') Other Fees @else {{ $invoice->feeType->name }} @endif</td>
                       <td>{{ number_format($invoice->actual_amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ number_format($invoice->amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>

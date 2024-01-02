@@ -21,6 +21,7 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicantProgramSelection;
+use App\Jobs\RequestControlNumberJob;
 
 
 /*
@@ -34,6 +35,28 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 |
 */
 
+Route::get('/request-cn',function(){
+
+    /* App\Domain\Finance\Models\Invoice::whereNull('gateway_payment_id')
+    ->where('fee_type_id', 15)
+    ->where('payable_id', '>', 0)
+    ->whereDate('updated_at', '>=', '2023-12-20')
+    ->whereNotNull('control_no')
+    ->get()->each(function($invoice){
+        dd('init');
+        $inv = clone $invoice;
+
+        $invoice->reference_no = $inv->reference_no.'-NW';
+        $invoice->control_no = null;
+        $invoice->save();
+
+
+    });
+
+    dd('done'); */
+    
+    RequestControlNumberJob::dispatch();
+});
 
 Route::get('send-applicants', function (Request $request) {
 

@@ -133,48 +133,45 @@
                <div class="card-body">
 			      <table class="table table-bordered ss-paginated-table">
 				     <thead>
-					     <tr>
+					    <tr>
 						    <th>SN</th>
                 <th>Name</th>
                 <th>Sex</th>
                 <th>Index Number</th>
                 <th>Phone</th>
                 <th>Award</th>
-                @if($flag == 'NACTVET')
                 <th>Reason</th>
                 <th>Status</th>
-                @endif
                 <th>Action</th>
-						 </tr>
+						  </tr>
 					 </thead>
 					 <tbody>
 					    @foreach($applicants as $key => $applicant)
                 <tr>
-                    <td>{{ ($key + 1) }}</td>
-                    <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                    <td>{{ $applicant->gender }}</td>
-                    <td>{{ $applicant->index_number }}</td>
-                    <td>{{ $applicant->phone }}</td>
-                    <td>@if($applicant->program_level_id == 1) BTC @elseif($applicant->program_level_id == 2) OD @else BD @endif</td>
+                  <td>{{ ($key + 1) }}</td>
+                  <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                  <td>{{ $applicant->gender }}</td>
+                  <td>{{ $applicant->index_number }}</td>
+                  <td>{{ $applicant->phone }}</td>
+                  <td>@if($applicant->program_level_id == 1) BTC @elseif($applicant->program_level_id == 2) OD @else BD @endif</td>
                     @if($flag != 'TCU')
-                    <td>{{ $applicant->remarks }}</td>
-                    <td> @if(empty($applicant->submission_status)) PENDING @else {{$applicant->submission_status}} @endif </td>
+                      <td>{{ $applicant->remarks }}</td>
+                      <td> @if(empty($applicant->submission_status)) PENDING @else {{$applicant->submission_status}} @endif </td>
                     @endif
-                    <td>
-                      @if($flag == 'NACTVET')
+                  <td>
+                    @if($flag == 'NACTVET')
                       {!! Form::open(['url'=>'application/resubmit-nactvet-error-cases','class'=>'ss-form-processing']) !!}
                         @if($applicant->program_level_id == 1 || $applicant->program_level_id == 2)
                           {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
                         @endif </td>
+                    @elseif($flag == 'TCU')
+                      {!! Form::open(['url'=>'application/resubmit-tcu-correction-cases','class'=>'ss-form-processing']) !!}
+                        @if($applicant->program_level_id == 4)
+                          {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
+                        @endif </td>
+                    @endif
                 </tr>
-                @elseif($flag == 'TCU')
-                {!! Form::open(['url'=>'application/resubmit-tcu-correction-cases','class'=>'ss-form-processing']) !!}
-                @if($applicant->program_level_id == 4)
-                  {!! Form::checkbox('applicant_ids[]',$applicant->id,true) !!}
-                @endif </td>
-        </tr>
-        @endif
-						 @endforeach
+						  @endforeach
 
                 @if($errors_status  > 0)
                 <tr>

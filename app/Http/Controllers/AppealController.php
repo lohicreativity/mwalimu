@@ -28,6 +28,7 @@ use App\Models\User;
 use App\Utils\Util;
 use Carbon\Carbon;
 use Auth, Validator, DB;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class AppealController extends Controller
 {
@@ -593,7 +594,9 @@ class AppealController extends Controller
          }
 
           $appeals = Appeal::where('student_id',$student->id)->get();
-
+          $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+                                      ->where('campus_id',$student->applicant->campus_id)
+                                      ->count();
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
@@ -604,7 +607,8 @@ class AppealController extends Controller
          	'optional_programs'=>$optional_programs,
          	'year_of_study'=>$yr_of_study,
             'appeals'=>$appeals,
-            'student'=>$student
+            'student'=>$student,
+            'loan_status'=>$loan_status
          ];
          return view('dashboard.student.appeal-examination-results-report',$data)->withTitle('Examination Results');
     }
