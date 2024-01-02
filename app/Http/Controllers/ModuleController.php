@@ -63,13 +63,16 @@ class ModuleController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
+
 		$module = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first();
-		$existing_module_record = Module::with('departments')->where('id', $module->id)
-										->whereHas('departments', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})->first();
-		
-		if($existing_module_record){
-			return redirect()->back()->with('error','The module has already been assigned in '.$existing_module_record->departments[0]->name);
-		}
+        $existing_module_record = $module? Module::whereHas('departments', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
+                                                 ->where('id', $module->id)
+                                                 ->with('departments')
+                                                 ->first() : null;
+
+        if($existing_module_record){
+            return redirect()->back()->with('error','The module has already been assigned in '.$existing_module_record->departments[0]->name);
+        }            
 		
 		(new ModuleAction)->store($request);
 

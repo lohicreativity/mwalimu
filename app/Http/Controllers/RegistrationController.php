@@ -1036,12 +1036,11 @@ class RegistrationController extends Controller
             $array = json_decode($json,TRUE);
     
             foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
-                $student = Student::select('id')
+                $student = Student::select('id','applicant_id')
                                   ->whereHas('applicant',function($query) use($data,$staff,$request){$query
                                                         ->where('index_number',$data['f4indexno'])
                                                         ->where('campus_id',$staff->campus_id)
                                                         ->where('program_level_id',$request->get('program_level_id'));})
-                                  ->with('applicant:id')
                                   ->latest()->first();
                 if($student){
                     $transfer = null;
@@ -1050,7 +1049,7 @@ class RegistrationController extends Controller
                         ->where('status','SUBMITTED')
                         ->first();
                     }else{
-                        $transfer = ExternalTransfer::where('applicant_id',$student->applicant->id)
+                        $transfer = ExternalTransfer::where('applicant_id',$student->applicant_id)
                         ->where('status','SUBMITTED')
                         ->first();
                     }

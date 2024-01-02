@@ -4418,6 +4418,8 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
 
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+
+        return substr($ac_year->begin_date,2,2);
         if(!$ac_year){
             return redirect()->back()->with('error','No active academic year');
         }
