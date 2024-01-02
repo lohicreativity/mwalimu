@@ -5893,12 +5893,8 @@ class ApplicationController extends Controller
      */
     public function resetApplicantResults(Request $request)
     {   $staff = User::find(Auth::user()->id)->staff;
-        NectaResultDetail::disableForeignKeyConstraints();
-        NectaResult::disableForeignKeyConstraints();
         NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('verified',1)->update(['applicant_id'=>0]);
         NectaResult::where('applicant_id', $request->get('applicant_id'))->update(['applicant_id'=>0]);
-        NectaResultDetail::enableForeignKeyConstraints();
-        NectaResult::enableForeignKeyConstraints();
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->results_complete_status = 0;
         $applicant->rank_points = null;
