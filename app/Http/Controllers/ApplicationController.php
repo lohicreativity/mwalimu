@@ -4419,7 +4419,6 @@ class ApplicationController extends Controller
 
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
-        return substr($ac_year->begin_date,2,2);
         if(!$ac_year){
             return redirect()->back()->with('error','No active academic year');
         }
@@ -4472,7 +4471,7 @@ class ApplicationController extends Controller
         }else{
            $code = sprintf('%04d',1);
         }
-        $year = substr(date('Y'), 2);
+        $year = substr(date('Y'), 2); //substr($ac_year->begin_date,2,2)
 
         $prog_code = explode('.', $selection->campusProgram->code);
 
