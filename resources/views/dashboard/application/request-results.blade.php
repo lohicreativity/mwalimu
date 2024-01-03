@@ -185,7 +185,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add A-Level NECTA Results') }}</button>
+                  <button type="submit" class="btn btn-primary" @if(($selection_status === 1  && $applicant->is_transfered != 1) || count($o_level_necta_results) == 0) disabled = "true" @endif>{{ __('Add A-Level NECTA Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
