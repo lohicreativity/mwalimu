@@ -265,7 +265,8 @@
                         $nacte_reg_number = [
                           'placeholder'=>'NS0001/0002/2001',
                           'class'=>'form-control',
-                          'required'=>true
+                          'required'=>true,
+                          'readonly'=> count($o_level_necta_results) != 0? false : true
                         ];
 
                         $nacte_reg_no = null;
@@ -305,7 +306,7 @@
                  </div>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
+             <button type="submit" class="btn btn-primary" @if(($selection_status === 1  && $applicant->is_transfered != 1) || count($o_level_necta_results) == 0) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
                       </div>
@@ -321,7 +322,8 @@
                   $avn = [
                      'placeholder'=>'19NA0000003ME',
                      'class'=>'form-control',
-                     'required'=>true
+                     'required'=>true,
+                     'readonly'=> count($o_level_necta_results) != 0? false : true
                   ];
               @endphp
               {!! Form::open(['url'=>'application/get-nacte-results','class'=>'ss-form-processing-nacte']) !!}
@@ -365,7 +367,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add NACTVET Results') }}</button>
+                  <button type="submit" class="btn btn-primary" @if(($selection_status === 1  && $applicant->is_transfered != 1) || count($o_level_necta_results) == 0) disabled = "true" @endif>{{ __('Add NACTVET Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -382,7 +384,8 @@
                     $out_reg_number = [
                       'placeholder'=>'N18-642-0000',
                       'class'=>'form-control',
-                      'required'=>true
+                      'required'=>true,
+                      'readonly'=> count($o_level_necta_results) != 0? false : true
                     ];
                 @endphp
                 {!! Form::open(['url'=>'application/get-out-results','class'=>'ss-form-processing-out']) !!}
@@ -410,7 +413,7 @@
                   </div>
                 </div>
                 <div class="card-footer">
-              <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add OUT Results') }}</button>
+              <button type="submit" class="btn btn-primary" @if(($selection_status === 1  && $applicant->is_transfered != 1) || count($o_level_necta_results) == 0) disabled = "true" @endif>{{ __('Add OUT Results') }}</button>
               </div>
               {!! Form::close() !!}
               </div>
@@ -434,7 +437,7 @@
                   </label>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Update Status') }}</button>
+             <button type="submit" class="btn btn-primary" @if(($selection_status === 1  && $applicant->is_transfered != 1) || count($o_level_necta_results) == 0) disabled = "true" @endif>{{ __('Update Status') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
@@ -455,7 +458,8 @@
                   $nacte_reg_number = [
                      'placeholder'=>'NS0001/0002/2001',
                      'class'=>'form-control',
-                     'required'=>true
+                     'required'=>true,
+                     'readonly'=> count($o_level_necta_results) != 0? false : true
                   ];
 
                   $nacte_reg_no = null;
@@ -495,7 +499,7 @@
                  </div>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary" @if($selection_status === 1  && $applicant->is_transfered != 1) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
+             <button type="submit" class="btn btn-primary" @if(($selection_status === 1  && $applicant->is_transfered != 1) || count($o_level_necta_results) == 0) disabled = "true" @endif>{{ __('Add NACTVET Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
