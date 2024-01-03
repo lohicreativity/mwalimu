@@ -52,7 +52,8 @@
                   $index_number = [
                      'placeholder'=>'S0000/0000/2023 or EQ2022000000/2023',
                      'class'=>'form-control',
-                     'required'=>true
+                     'required'=> true,
+                     'readonly'=> count($o_level_necta_results) != 0? false : true
                   ];
 
                   $year = [

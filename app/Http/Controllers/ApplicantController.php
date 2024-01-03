@@ -103,11 +103,19 @@ class ApplicantController extends Controller
 ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first(); */
         $campus = Campus::find($request->get('campus_id'));
 
+        $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
+        if(!$app_window){
+           return redirect()->back()->with('error','Application window is inactive');
+        }
+
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',0)->first();
 
-        $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$request->get('campus_id'))->where(function($query){
-             $query->where('status','SELECTED')->orWhereIn('status',['ADMITTED','SUBMITTED','NOT SELECTED'])->orWhereNull('status');
-        })->latest()->first();
+        $appl = Applicant::where('index_number',$request->get('index_number'))
+                         ->where('campus_id',$request->get('campus_id'))
+                         ->where(function($query){$query->where('status','SELECTED')->orWhereIn('status',['ADMITTED','SUBMITTED','NOT SELECTED'])->orWhereNull('status');})
+                         ->where('intake_id',$app_window->intake_id)
+                         ->latest()
+                         ->first();
 
         if(!$appl && !$applicant){
             return redirect()->back()->with('error', 'Sorry, we do not have any record matches your index number. Please check with Admission Officer.');
@@ -121,12 +129,12 @@ class ApplicantController extends Controller
             if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
                // $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
+               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                               ->where('program_level_id',$applicant->program_level_id)
+                                               ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                               ->latest()
+                                               ->first();
                // $window = ApplicationWindow::whereHas('applicationBatches', function($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id)->latest();})
                //             ->where('campus_id', $request->get('campus_id'))
                //             ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
@@ -135,112 +143,78 @@ class ApplicantController extends Controller
             }elseif($applicant->program_level_id == 4){
                // $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
+               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                               ->where('program_level_id',$applicant->program_level_id)
+                                               ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                               ->latest()
+                                               ->first();
+
             }elseif($applicant->program_level_id == 5){
                // $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
+               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                               ->where('program_level_id',$applicant->program_level_id)
+                                               ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                               ->latest()
+                                               ->first();
             }
 
         }
 
         if($appl){
             if($appl->program_level_id == 1 || $appl->program_level_id == 2){
-               // $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-               // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $appl->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                               ->where('program_level_id',$appl->program_level_id)
+                                               ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                               ->latest()
+                                               ->first();
+
             }elseif($appl->program_level_id == 4){
-               // $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-               // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $appl->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                               ->where('program_level_id',$appl->program_level_id)
+                                               ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                               ->latest()
+                                               ->first();
+
             }elseif($appl->program_level_id == 5){
-               // $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-               // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $appl->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                               ->where('program_level_id',$appl->program_level_id)
+                                               ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                               ->latest()
+                                               ->first();
             }
          }
 
          if(Auth::attempt($credentials)){
-
             $new_to_campus_applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first();
 
             if($new_to_campus_applicant){
                if($new_to_campus_applicant->program_level_id == 1 || $new_to_campus_applicant->program_level_id == 2){
-                  // $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                  // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $new_to_campus_applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
-                  // $window = ApplicationWindow::whereHas('applicationBatches', function($query) use($new_to_campus_applicant){ $query->where('program_level_id', $new_to_campus_applicant->program_level_id)->latest();})
-                  //             ->where('campus_id', $request->get('campus_id'))
-                  //             ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                  //             ->where('status', 'ACTIVE')
-                  //             ->latest()->first();
+                  $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                                  ->where('program_level_id', $new_to_campus_applicant->program_level_id)
+                                                  ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                                  ->latest()
+                                                  ->first();
+
                }elseif($new_to_campus_applicant->program_level_id == 4){
-                  // $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                  // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $new_to_campus_applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
-                  // $window = ApplicationWindow::whereHas('applicationBatches', function($query) use($new_to_campus_applicant){ $query->where('program_level_id', $new_to_campus_applicant->program_level_id)->latest();})
-                  //             ->where('campus_id', $request->get('campus_id'))
-                  //             ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                  //             ->where('status', 'ACTIVE')
-                  //             ->latest()->first();
+                  $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                                  ->where('program_level_id',$new_to_campus_applicant->program_level_id)
+                                                  ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                                  ->latest()
+                                                  ->first();
+
                }elseif($new_to_campus_applicant->program_level_id == 5){
-                  // $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                  // ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
-               $app_window = ApplicationWindow::where('campus_id', $request->campus_id)->where('status', 'ACTIVE')->first();
-               if(!$app_window){
-                  return redirect()->back()->with('error','Application window is inactive');
-               }
-               $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-                  $new_to_campus_applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
-                  // $window = ApplicationWindow::whereHas('applicationBatches', function($query) use($new_to_campus_applicant){ $query->where('program_level_id', $new_to_campus_applicant->program_level_id)->latest();})
-                  //             ->where('campus_id', $request->get('campus_id'))
-                  //             ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                  //             ->where('status', 'ACTIVE')
-                  //             ->latest()->first();
+                  $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                                  ->where('program_level_id',$new_to_campus_applicant->program_level_id)
+                                                  ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                                  ->latest()
+                                                  ->first();
+
                }
             }
         }
-
-// Need to crosscheck this
-        // $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
-        // ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
-        // //->where('intake_id', $appl->intake_id)
-        // ->where('status','INACTIVE')->latest()->first();
 
         if(!$app_window && !$window_batch){
             return redirect()->back()->with('error','Application window already closed');
@@ -609,6 +583,10 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
+      $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
+      if(!$app_window){
+         return redirect()->back()->with('error','Application window is inactive');
+      }
       $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
       $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
@@ -631,57 +609,48 @@ class ApplicantController extends Controller
 
       if($applicant->status=='ADMITTED' || ($applicant->status=='SELECTED') && $regulator_selection){
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
+
          }elseif($applicant->program_level_id == 4){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
+
          }elseif($applicant->program_level_id == 5){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
          }
-            // $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
       }else{
 
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
+
          }elseif($applicant->program_level_id == 4){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
+
          }elseif($applicant->program_level_id == 5){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)->where('status', 'ACTIVE')->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
          }
 
          if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
@@ -1072,80 +1041,64 @@ class ApplicantController extends Controller
      */
     public function editNextOfKin(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
-        if($applicant->basic_info_complete_status == 0){
-            return redirect()->to('application/basic-information');
-        }
-        $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
-        if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
+      $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
+      if(!$app_window){
+         return redirect()->back()->with('error','Application window is inactive');
+      }
+
+      $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
+      if($applicant->basic_info_complete_status == 0){
+         return redirect()->to('application/basic-information');
+      }
+
+      $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+      if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
          //check active window
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                             ->where('program_level_id',$applicant->program_level_id)
+                                             ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                             ->latest()
+                                             ->first();
+
          }elseif($applicant->program_level_id == 4){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                             ->where('program_level_id',$applicant->program_level_id)
+                                             ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                             ->latest()
+                                             ->first();
+
          }elseif($applicant->program_level_id == 5){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                             ->where('program_level_id',$applicant->program_level_id)
+                                             ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                             ->latest()
+                                             ->first();
+
          }
 
-         // if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-         //    return redirect()->to('application/submission')->with('error','Application window already closed');
+         if(!$window_batch && $applicant->is_transfered != 1){
+               return redirect()->to('application/submission')->with('error','Application window already closed');
+         }
 
-         // }
+         if($applicant->batch_id != $batch->id){
+            return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
+         }
+      }
 
-            if(!$window_batch && $applicant->is_transfered != 1){
-                 return redirect()->to('application/submission')->with('error','Application window already closed');
-            }
-            if($applicant->batch_id != $batch->id){
-               return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
-           }
-        }
+      $data = [
+         'applicant'=>$applicant,
+         'campus'=>Campus::find(session('applicant_campus_id')),
+         'next_of_kin'=>NextOfKin::find($applicant->next_of_kin_id),
+         'countries'=>Country::all(),
+         'regions'=>Region::all(),
+         'districts'=>District::all(),
+         'wards'=>Ward::all(),
+         'disabilities'=>DisabilityStatus::all(),
+         'regulator_selection'=>false
+      ];
 
-        $data = [
-           'applicant'=>$applicant,
-           'campus'=>Campus::find(session('applicant_campus_id')),
-           'next_of_kin'=>NextOfKin::find($applicant->next_of_kin_id),
-           'countries'=>Country::all(),
-           'regions'=>Region::all(),
-           'districts'=>District::all(),
-           'wards'=>Ward::all(),
-           'disabilities'=>DisabilityStatus::all(),
-           'regulator_selection'=>false
-        ];
-
-        return view('dashboard.application.edit-next-of-kin',$data)->withTitle('Edit Next of Kin');
+      return view('dashboard.application.edit-next-of-kin',$data)->withTitle('Edit Next of Kin');
     }
 
     /**
@@ -1153,76 +1106,59 @@ class ApplicantController extends Controller
      */
     public function payments(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
-        $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
-        
-        if($applicant->is_transfered == 1){
-         return redirect()->to('application/submission');
-        }
+      $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
+      if(!$app_window){
+         return redirect()->back()->with('error','Application window is inactive');
+      }
 
-        if($applicant->is_tamisemi != 1){
+      $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->latest()->first();
+      
+      if($applicant->is_transfered == 1){
+         return redirect()->to('application/submission');
+      }
+
+      if($applicant->is_tamisemi != 1){
          //check if window is active
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
+
          }elseif($applicant->program_level_id == 4){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
+
          }elseif($applicant->program_level_id == 5){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
-            $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+                                            ->where('program_level_id',$applicant->program_level_id)
+                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                            ->latest()
+                                            ->first();
          }
 
-            if(!$window_batch && $applicant->is_transfered != 1){
-                 return redirect()->to('application/submission')->with('error','Application window already closed');
-            }
- /*            if($applicant->batch_id != $batch->id){
-               return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
-            } */
-        }
-        $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
-               $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
-        })->first();
-        $fee_amount = null;
-        if(str_contains(strtolower($applicant->programLevel->name),'master')){
-            $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application%')->where('name','LIKE','%Master%');})
-                                ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
-        }else{
-            $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application Fee%');})
-                                 ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
-        }
+         if(!$window_batch && $applicant->is_transfered != 1){
+               return redirect()->to('application/submission')->with('error','Application window already closed');
+         }
+      }
 
-        $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+      $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
+            $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
+      })->first();
+      $fee_amount = null;
+      if(str_contains(strtolower($applicant->programLevel->name),'master')){
+         $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application%')->where('name','LIKE','%Master%');})
+                              ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+      }else{
+         $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application Fee%');})
+                              ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+      }
+
+      $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
                       //check applicant program capacity
               $campus_progs = [];
@@ -1281,50 +1217,26 @@ class ApplicantController extends Controller
      */
     public function requestResults(Request $results)
     {
+      $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
+      if(!$app_window){
+         return redirect()->back()->with('error','Application window is inactive');
+      }
+
 		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
-      $index_number = $applicant->index_number;
 
       $selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id',$applicant->batch_id)->count();
 		if($applicant->is_transfered != 1){
          //check if window active
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
             $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
          }elseif($applicant->program_level_id == 4){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
             $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
          }elseif($applicant->program_level_id == 5){
-            // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-            //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-            //                         ->where('campus_id', $applicant->campus_id)
-            //                         ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-            //                         ->where('status', 'ACTIVE')
-            //                         ->latest()->first();
-            $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-            if(!$app_window){
-               return redirect()->back()->with('error','Application window is inactive');
-            }
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
             $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
          }
@@ -1337,17 +1249,17 @@ class ApplicantController extends Controller
          }
 		}
 
-        $data = [
+      $data = [
          'applicant'=>$applicant,
          'campus'=>Campus::find(session('applicant_campus_id')),
          'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->where('verified',1)->get(),
          'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->where('verified',1)->get(),
          'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
          'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
-		   'selection_status'=>$selection_status>0? 1 : 0,
+         'selection_status'=>$selection_status>0? 1 : 0,
          'regulator_selection'=>false
-        ];
-        return view('dashboard.application.request-results',$data)->withTitle('Request Results');
+      ];
+      return view('dashboard.application.request-results',$data)->withTitle('Request Results');
     }
 
     /**
@@ -1355,6 +1267,11 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
+      $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
+      if(!$app_window){
+         return redirect()->back()->with('error','Application window is inactive');
+      }
+
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
       if($applicant->is_transfered == 1 || $applicant->is_tamisemi == 1){
@@ -1400,47 +1317,19 @@ class ApplicantController extends Controller
       }
 		//check if window active
       if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-         // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-         //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-         //                         ->where('campus_id', $applicant->campus_id)
-         //                         ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-         //                         ->where('status', 'ACTIVE')
-         //                         ->latest()->first();
-         $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-         if(!$app_window){
-            return redirect()->back()->with('error','Application window is inactive');
-         }
          $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
          $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
       }elseif($applicant->program_level_id == 4){
-         // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-         //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-         //                         ->where('campus_id', $applicant->campus_id)
-         //                         ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-         //                         ->where('status', 'ACTIVE')
-         //                         ->latest()->first();
-         $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-         if(!$app_window){
-            return redirect()->back()->with('error','Application window is inactive');
-         }
          $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
          $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
+
       }elseif($applicant->program_level_id == 5){
-         // $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-         //                         ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
-         //                         ->where('campus_id', $applicant->campus_id)
-         //                         ->where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-         //                         ->where('status', 'ACTIVE')
-         //                         ->latest()->first();
-         $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
-         if(!$app_window){
-            return redirect()->back()->with('error','Application window is inactive');
-         }
          $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
          $applicant->program_level_id)->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))->latest()->first();
       }
 
-       if(!$window_batch){
+      if(!$window_batch){
          if($second_attempt_applicant){
             return redirect()->back()->with('error','Please wait for the application window to be openned');
          }
@@ -2334,6 +2223,10 @@ class ApplicantController extends Controller
      */
     public function uploadDocuments(Request $request)
     {
+      $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
+      if(!$app_window){
+         return redirect()->back()->with('error','Application window is inactive');
+      }
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
        $student = Student::where('applicant_id', $applicant->id)->first();
 
@@ -2373,6 +2266,7 @@ class ApplicantController extends Controller
                                     ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                                     ->where('status', 'ACTIVE')
                                     ->latest()->first();
+
          }elseif($applicant->program_level_id == 4){
             $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
                                     ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
@@ -2380,6 +2274,7 @@ class ApplicantController extends Controller
                                     ->where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                                     ->where('status', 'ACTIVE')
                                     ->latest()->first();
+                                    
          }elseif($applicant->program_level_id == 5){
             $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
                                     ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
@@ -2409,12 +2304,15 @@ class ApplicantController extends Controller
      */
     public function submission(Request $request)
       {
-        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
-        $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
-         $applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)
-                                ->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')
-                                ->where('batch_id',8)->first();
+         $applicants = Applicant::where('program_level_id', $applicant->program_level_id)
+                                ->where('submission_complete_status', 1)
+                                ->where('application_window_id', $applicant->application_window_id)
+                                ->whereNotNull('status')
+                                ->where('batch_id',8)
+                                ->first();
+                                
          $selection_status = !empty($applicants) ? true : false;
 
          $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
