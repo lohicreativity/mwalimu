@@ -4471,7 +4471,7 @@ class ApplicationController extends Controller
         }else{
            $code = sprintf('%04d',1);
         }
-        $year = substr(date('Y'), 2); //substr($ac_year->begin_date,2,2)
+        $year = substr($ac_year->begin_date,2,2);
 
         $prog_code = explode('.', $selection->campusProgram->code);
 
