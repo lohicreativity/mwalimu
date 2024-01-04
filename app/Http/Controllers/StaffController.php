@@ -396,7 +396,7 @@ class StaffController extends Controller
 				//$validity = strtotime($fee_amount->duration
 				$datediff = $now - $last_invoice;
 				$datediff = round(($datediff/(60 * 60 * 24)));				
-return $fee_amount->feeItem->feeType->duration;
+
 				if($fee_amount->feeItem->feeType->duration >= $datediff){
 					if($fee_type->gateway_payment_id == null){
 						return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
