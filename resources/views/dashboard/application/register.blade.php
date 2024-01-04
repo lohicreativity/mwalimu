@@ -42,7 +42,7 @@
             </div>
           </div>
         </div>
-        <span style='color:red' class='ss-font-sm'>Note: Required for Password Reseting</span>
+        <span style='color:red' class='ss-font-sm'>Note: Required for Password Resetting</span>
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="Email (Optional)">
           <div class="input-group-append">
