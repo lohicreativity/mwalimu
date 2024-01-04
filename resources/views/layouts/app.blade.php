@@ -193,9 +193,9 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 </script> -->
 
 <script>
-    var campu_id = 1;
-    $('#campuses').on('change',function(e){
-      campu_id = $(e.target).val();
+  var campus_id = 1;
+  $('#campuses').on('change',function(e){
+      campus_id = $(e.target).val();
   });
 
   $('#unit-categories').on('change',function(e){
@@ -270,7 +270,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         url:$(e.target).data('source-url'),
         data:{
         _token:$(e.target).data('token'),
-        campus_id: campu_id,
+        campus_id: campus_id,
         unit_category_id:$(e.target).val()
         }      
         }).done(function(data, status){
