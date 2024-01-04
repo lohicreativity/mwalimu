@@ -3785,19 +3785,23 @@ class ApplicationController extends Controller
                              ->first();
 
         $september_applicant = null;
-        if(ApplicationWindow::where('status','ACTIVE')->where('intake_id',2)->first()){
-            $september_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
-                                            ->where('index_number',$request->get('index_number'))
-                                            ->where('programs_complete_status',0)
-                                            ->latest()
-                                            ->first();
+        $march_intake = ApplicationWindow::where('status','ACTIVE')->where('intake_id',2)->first();
+
+        if(!empty($march_intake)){
+            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','September');})
+                                                  ->where('index_number',$request->get('index_number'))
+                                                  ->where('programs_complete_status',0)
+                                                  ->latest()
+                                                  ->first();
+        }else{
+            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
+                                                  ->where('index_number',$request->get('index_number'))
+                                                  ->where('programs_complete_status',0)
+                                                  ->latest()
+                                                  ->first();
         }
 
-        return Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
-        ->where('index_number',$request->get('index_number'))
-        ->where('programs_complete_status',0)
-        ->latest()
-        ->first();
+        return $previous_intake_applicant;
         $other = Applicant::where('index_number',$request->get('index_number'))
                           ->first();
 
