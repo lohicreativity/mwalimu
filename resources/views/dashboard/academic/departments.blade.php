@@ -195,7 +195,7 @@
 
                                 {{ $dept->name }}
                                 @break 
-                              @endif
+
                             @endif
                           @endforeach
                         </td>
