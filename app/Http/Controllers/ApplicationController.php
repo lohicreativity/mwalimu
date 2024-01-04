@@ -3797,7 +3797,7 @@ class ApplicationController extends Controller
                           ->first();
 
         if(!empty($other) && empty($september_applicant) && empty($graduate)){
-            return redirect()->back()->with('error','The index number has already been used.');
+            return redirect()->back()->with('error','The index number has already been used1.');
         }
 
         return 1;
