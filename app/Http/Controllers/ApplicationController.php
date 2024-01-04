@@ -3794,9 +3794,7 @@ class ApplicationController extends Controller
                                                   ->latest()
                                                   ->first();
         }else{
-            return 2;
-            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','September');})
-                                                  ->where('index_number',$request->get('index_number'))
+            $previous_intake_applicant = Applicant::where('index_number',$request->get('index_number'))
                                                   ->where('programs_complete_status',0)
                                                   ->latest()
                                                   ->first();
