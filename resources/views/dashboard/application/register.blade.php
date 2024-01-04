@@ -38,6 +38,15 @@
           <input type="text" name="surname" class="form-control" value="{{ old('surname') }}" placeholder="Surname" required>
           <div class="input-group-append">
             <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <span style='color:red' class='ss-font-sm'>Note: Required for Password Reseting</span>
+        <div class="input-group mb-3">
+          <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="Email (Optional)">
+          <div class="input-group-append">
+            <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>

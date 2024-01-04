@@ -3818,7 +3818,6 @@ class ApplicationController extends Controller
 
         if($previous_intake_applicant){
             if($previous_intake_applicant->results_complete_status == 1){
-                return 1;
                 DB::statement('SET FOREIGN_KEY_CHECKS=0');
                 NectaResultDetail::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);
                 NectaResult::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);
