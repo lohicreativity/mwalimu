@@ -265,7 +265,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         url:$(e.target).data('source-url'),
         data:{
         _token:$(e.target).data('token'),
-        campus_id: $('#campus_id').val(),
+        campus_id: 1,
         unit_category_id:$(e.target).val()
         }      
         }).done(function(data, status){
@@ -295,6 +295,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         url:$(e.target).data('source-url'),
         data:{
         _token:$(e.target).data('token'),
+        campus_id: $('#campus_id').val(),
         unit_category_id:$(e.target).val()
         }      
         }).done(function(data, status){
