@@ -193,7 +193,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 </script> -->
 
 <script>
-  $('#unit-campuses').on('change',function(e){
+  $('#campuses').on('change',function(e){
     var campu_id = $('#campus_id').val();
   });
 
