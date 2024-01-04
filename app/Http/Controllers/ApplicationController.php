@@ -3754,7 +3754,7 @@ class ApplicationController extends Controller
         $validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
-            'index_number'=>'required|unique:applicants',
+            'index_number'=>'required',
             'entry_mode'=>'required',
             'password'=>'required|min:8',
 			'password_confirmation'=>'same:password'
@@ -3779,8 +3779,30 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Incorrect index number');
         }
 
+        $graduate = Applicant::whereHas('student',function($query){$query
+                                                ->where('studentship_status_id',2);})
+                             ->where('index_number',$request->get('index_number'))
+                             ->first();
+
+        $september_applicant = null;
+        if(ApplicationWindow::where('status','ACTIVE')->where('intake_id',2)->first()){
+            $september_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
+                                            ->where('index_number',$request->get('index_number'))
+                                            ->where('programs_complete_status',0)
+                                            ->latest()
+                                            ->first();
+        }
+
+        $other = Applicant::where('index_number',$request->get('index_number'))
+                          ->first();
+
+        if(!empty($other) && empty($september_applicant) && empty($graduate)){
+            return redirect()->back()->with('error','The index number has already been used.');
+        }
+
+        return 1;
         DB::beginTransaction();
-        if($usr = User::where('username',$request->get('index_number'))->where('password',Hash::make($request->get('password')))->first()){
+        if($usr = User::where('username',$request->get('index_number'))->first()){
             $user = $usr;
         }else{
             $user = new User;
@@ -3792,17 +3814,57 @@ class ApplicationController extends Controller
         $role = Role::where('name','applicant')->first();
         $user->roles()->sync([$role->id]);
 
-        $applicant = new Applicant;
-        $applicant->first_name = strtoupper($request->get('first_name'));
-        $applicant->middle_name = strtoupper($request->get('middle_name'));
-        $applicant->surname = strtoupper($request->get('surname'));
-        $applicant->user_id = $user->id;
-        $applicant->campus_id = 0;
-        $applicant->index_number = strtoupper($request->get('index_number'));
-        $applicant->entry_mode = $request->get('entry_mode');
-        $applicant->program_level_id = $request->get('program_level_id');
-        // $applicant->intake_id = $request->get('intake_id');
-        $applicant->save();
+        if($september_applicant){
+            $september_applicant->first_name = strtoupper($request->get('first_name'));
+            $september_applicant->middle_name = strtoupper($request->get('middle_name'));
+            $september_applicant->surname = strtoupper($request->get('surname'));
+            $september_applicant->user_id = $user->id;
+            $september_applicant->campus_id = 0;
+            $september_applicant->index_number = strtoupper($request->get('index_number'));
+            $september_applicant->entry_mode = $request->get('entry_mode');
+            $september_applicant->program_level_id = $request->get('program_level_id');
+            $september_applicant->application_window_id = null;
+            $september_applicant->batch_id = null;
+            $september_applicant->intake_id = null;
+            $september_applicant->email = null;
+            $september_applicant->phone = null;
+            $september_applicant->birth_date = null;
+            $september_applicant->nationality = null;
+            $september_applicant->gender = null;
+            $september_applicant->disability_status_id = null;
+            $september_applicant->address = null;
+            $september_applicant->country_id = null;
+            $september_applicant->region_id = null;
+            $september_applicant->district_id = null;
+            $september_applicant->ward_id = null;
+            $september_applicant->street = null;
+            $september_applicant->nin = null;
+            $september_applicant->is_tcu_verified = null;
+            $september_applicant->diploma_certificate = null;
+            $september_applicant->basic_info_complete_status = 0;
+            $september_applicant->results_complete_status = 0;
+            $september_applicant->teacher_diploma_certificate = null;
+            $september_applicant->veta_certificate = null;
+            $september_applicant->veta_status = null;
+            $september_applicant->rank_points = null;
+            $september_applicant->nacte_reg_no = null;
+            $september_applicant->avn_no_results = null;
+            $september_applicant->teacher_certificate_status = null;
+            $september_applicant->next_of_kin_id = null;
+            $september_applicant->next_of_kin_complete_status = 0;
+            $september_applicant->save();
+        }else{
+            $applicant = new Applicant;
+            $applicant->first_name = strtoupper($request->get('first_name'));
+            $applicant->middle_name = strtoupper($request->get('middle_name'));
+            $applicant->surname = strtoupper($request->get('surname'));
+            $applicant->user_id = $user->id;
+            $applicant->campus_id = 0;
+            $applicant->index_number = strtoupper($request->get('index_number'));
+            $applicant->entry_mode = $request->get('entry_mode');
+            $applicant->program_level_id = $request->get('program_level_id');
+            $applicant->save();
+        }
         DB::commit();
 
         return redirect()->to('application/login')->with('message','Applicant registered successfully');
