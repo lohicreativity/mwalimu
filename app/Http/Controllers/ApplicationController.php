@@ -12,7 +12,6 @@ use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\Stream;
 use App\Domain\Academic\Models\Group;
 use App\Domain\Academic\Models\Department;
-use App\Domain\Academic\Models\Program;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
@@ -20,9 +19,6 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
-use App\Domain\Settings\Models\Region;
-use App\Domain\Settings\Models\District;
-use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\SpecialDate;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Domain\Registration\Models\Registration;
@@ -31,7 +27,6 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\InsuranceRegistration;
 use App\Domain\Application\Models\TamisemiStudent;
-use App\Domain\Application\Models\NextOfKin;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Application\Models\AdmissionAttachment;
@@ -51,10 +46,8 @@ use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Utils\Util;
 use App\Jobs\SendAdmissionLetterJob;
-use App\Jobs\GetNacteResultdetails;
 use App\Mail\AdmissionLetterCreated;
 use App\Mail\StudentAccountCreated;
-use App\Mail\TamisemiApplicantCreated;
 use NumberToWords\NumberToWords;
 use App\Utils\DateMaker;
 use App\Services\ACPACService;
@@ -65,10 +58,10 @@ use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Application\Models\ApplicationBatch;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\NacteResult;
-use App\Domain\Application\Models\ApplicantVerificationResult;
 use App\Domain\Application\Models\ApplicantFeedBackCorrection;
-use Illuminate\Http\Client\ConnectionException;
 use App\Domain\Application\Models\AdmissionReferenceNumber;
+use App\Domain\Application\Models\OutResult;
+use App\Domain\Application\Models\OutResultDetail;
 
 class ApplicationController extends Controller
 {
@@ -3791,12 +3784,14 @@ class ApplicationController extends Controller
             $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
                                                   ->where('index_number',$request->get('index_number'))
                                                   ->where('programs_complete_status',0)
+                                                  ->whereNull('is_tamisemi')
                                                   ->latest()
                                                   ->first();
         }else{
             $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','September');})
                                                   ->where('index_number',$request->get('index_number'))
                                                   ->where('programs_complete_status',0)
+                                                  ->whereNull('is_tamisemi')
                                                   ->latest()
                                                   ->first();
         }
@@ -3822,10 +3817,22 @@ class ApplicationController extends Controller
         $user->roles()->sync([$role->id]);
 
         if($previous_intake_applicant){
+            if($previous_intake_applicant->results_complete_status == 1){
+                DB::statement('SET FOREIGN_KEY_CHECKS=0');
+                NectaResultDetail::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);
+                NectaResult::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);
+
+                if($previous_intake_applicant->entry_mode == 'EQUIVALENT'){
+                    NacteResultDetail::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);
+                    NacteResult::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);
+                    OutResultDetail::where('applicant_id',$previous_intake_applicant->id)->update(['applicant_id'=>0]);;
+                }
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+            }
+            
             $previous_intake_applicant->first_name = strtoupper($request->get('first_name'));
             $previous_intake_applicant->middle_name = strtoupper($request->get('middle_name'));
             $previous_intake_applicant->surname = strtoupper($request->get('surname'));
-            $previous_intake_applicant->user_id = $user->id;
             $previous_intake_applicant->campus_id = 0;
             $previous_intake_applicant->index_number = strtoupper($request->get('index_number'));
             $previous_intake_applicant->entry_mode = $request->get('entry_mode');
@@ -3849,6 +3856,7 @@ class ApplicationController extends Controller
             $previous_intake_applicant->is_tcu_verified = null;
             $previous_intake_applicant->diploma_certificate = null;
             $previous_intake_applicant->basic_info_complete_status = 0;
+            $previous_intake_applicant->payment_complete_status = 0;
             $previous_intake_applicant->results_complete_status = 0;
             $previous_intake_applicant->teacher_diploma_certificate = null;
             $previous_intake_applicant->veta_certificate = null;
