@@ -90,7 +90,7 @@
                   <div class="form-group col-4">
                       {!! Form::label('','Campus') !!}
                       <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
-                      <select name="campus_id" class="form-control" required>
+                      <select name="campus_id" class="form-control" id="campuses" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                       <option value="">Select Campus</option>
                       @foreach($campuses as $cp)
                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
