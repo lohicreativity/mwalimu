@@ -26,11 +26,13 @@ class DepartmentController extends Controller
 	  
       if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
          $departments = Department::with('unitCategory')->get();
+         $faculties = Faculty::all();
          
       }elseif(Auth::user()->hasRole('admission-officer')) {
 
          $departments = Department::whereHas('campuses', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                   ->with('unitCategory')->get();
+         $faculties = Faculty::where('campus_id',$staff->campus_id)->get();
 
 /*          $departments = DB::table('departments')
          ->select('departments.*',  'unit_categories.id as categoryId', 'unit_categories.name as categoryName', 'campus_department.campus_id as campusId')
@@ -47,6 +49,7 @@ class DepartmentController extends Controller
            'campuses'         =>Campus::all(),
            'staff'            => $staff,
            'departments'      => $departments,
+           'faculties'        => $faculties
     	];
 
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
