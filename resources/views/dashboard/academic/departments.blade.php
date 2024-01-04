@@ -168,6 +168,7 @@
                         <th>Name</th>
                         <th>Abbreviation</th>
                         <th>Type</th>
+                        <th>Parent</th>
                         @if(Auth::user()->hasRole('administrator'))
                           <th>Campus</th>
                         @endif
@@ -181,6 +182,14 @@
                         <td>{{ $department->name }}</td>
                         <td>{{ $department->abbreviation }}</td>
                         <td>{{ $department->unitCategory->name }}</td>
+                        <td>
+                          @foreach($all_departments as $dept)
+                            @if($department->parent_id == $dept->id)
+                            {{ $dept->name }}
+                              @break
+                            @endif
+                          @endforeach
+                        </td>
                         @if(Auth::user()->hasRole('administrator'))
                           <td>
                             @foreach($department->campuses as $campus)
