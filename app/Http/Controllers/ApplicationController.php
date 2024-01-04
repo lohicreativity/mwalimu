@@ -3840,7 +3840,7 @@ class ApplicationController extends Controller
             $previous_intake_applicant->application_window_id = null;
             $previous_intake_applicant->batch_id = null;
             $previous_intake_applicant->intake_id = null;
-            $previous_intake_applicant->email = null;
+            $previous_intake_applicant->email =$request->get('email');
             $previous_intake_applicant->phone = null;
             $previous_intake_applicant->birth_date = null;
             $previous_intake_applicant->nationality = null;
