@@ -196,8 +196,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
   var campus_id = 1;
   $('#campuses').on('change',function(e){
       campus_id = $(e.target).val();
-      $('#unit-categories').reload();
-      $('#parents').reload();
+      $('#unit-categories').prop('selectedIndex',0);
+      $('#parents').prop('selectedIndex',0);
   });
 
   $('#unit-categories').on('change',function(e){
