@@ -3788,13 +3788,13 @@ class ApplicationController extends Controller
         $march_intake = ApplicationWindow::where('status','ACTIVE')->where('intake_id',2)->first();
 
         if(!empty($march_intake)){
-            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','September');})
+            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
                                                   ->where('index_number',$request->get('index_number'))
                                                   ->where('programs_complete_status',0)
                                                   ->latest()
                                                   ->first();
         }else{
-            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
+            $previous_intake_applicant = Applicant::whereDoesntHave('intake',function($query){$query->where('name','September');})
                                                   ->where('index_number',$request->get('index_number'))
                                                   ->where('programs_complete_status',0)
                                                   ->latest()
