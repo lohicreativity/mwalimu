@@ -184,17 +184,17 @@
                         <td>{{ $department->unitCategory->name }}</td>
                         <td>
                           @foreach($all_departments as $dept)
-                            @if($dept->id == $department->id && ($department->unit_category_id == 1 || $department->unit_category_id == 2))
+                            @if($department->unit_category_id == 1 || $department->unit_category_id == 2)
                               @foreach($faculties as $faculty)
                                 @if($department->parent_id == $faculty->id)
                                   {{ $faculty->name }}
                                   @break   
                                 @endif
                               @endforeach
-                            @else
-                              @if($dept->id == $department->id)
+                            @elseif($department->unit_category_id == 4)
+
                                 {{ $dept->name }}
-                                @break  
+                                @break 
                               @endif
                             @endif
                           @endforeach
