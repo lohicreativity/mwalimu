@@ -193,12 +193,12 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 </script> -->
 
 <script>
-  $('#campuses').on('change',function(e){
-    var campu_id = $('#campus_id').val();
-  });
+
 
   $('#unit-categories').on('change',function(e){
-
+    $('#campuses').on('change',function(e){
+    var campu_id = $('#campus_id').val();
+  });
     /* if($(e.target).val() == 1 || $(e.target).val() == 1) {
 
       $("#parent_input").empty();
