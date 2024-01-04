@@ -3793,11 +3793,12 @@ class ApplicationController extends Controller
                                             ->first();
         }
 
+        return $september_applicant;
         $other = Applicant::where('index_number',$request->get('index_number'))
                           ->first();
 
         if(!empty($other) && empty($september_applicant) && empty($graduate)){
-            return redirect()->back()->with('error','The index number has already been used1.');
+            return redirect()->back()->with('error','The index number has already been used.');
         }
 
         return 1;
