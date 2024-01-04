@@ -3808,7 +3808,6 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','The index number has already been used.');
         }
 
-        return 1;
         DB::beginTransaction();
         if($usr = User::where('username',$request->get('index_number'))->first()){
             $user = $usr;
