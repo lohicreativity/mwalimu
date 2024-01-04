@@ -3783,7 +3783,7 @@ class ApplicationController extends Controller
                                                 ->where('studentship_status_id',2);})
                              ->where('index_number',$request->get('index_number'))
                              ->first();
-
+return $graduate;
         $previous_intake_applicant = null;
         $march_intake = ApplicationWindow::where('status','ACTIVE')->where('intake_id',2)->first();
 
