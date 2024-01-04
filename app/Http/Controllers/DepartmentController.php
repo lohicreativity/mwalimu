@@ -25,13 +25,13 @@ class DepartmentController extends Controller
 	   $departments[] = null;
 	  
       if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
-         $departments = Department::with('unitCategory')->get();
+         $departments = Department::with('unitCategory')->latest()->get();
          $faculties = Faculty::all();
          
       }elseif(Auth::user()->hasRole('admission-officer')) {
 
          $departments = Department::whereHas('campuses', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                  ->with('unitCategory')->get();
+                                  ->with('unitCategory')->latest()->get();
          $faculties = Faculty::where('campus_id',$staff->campus_id)->get();
 
 /*          $departments = DB::table('departments')
