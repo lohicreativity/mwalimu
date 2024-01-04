@@ -192,9 +192,10 @@
                                 @endif
                               @endforeach
                             @elseif($dept->id == $department->id && $department->unit_category_id == 4)
-
+                              @if($department->parent_id == $dept->id)
                                 {{ $dept->name }}
                                 @break   
+                              @endif  
                             @endif
                           @endforeach
                         </td>
