@@ -3793,7 +3793,11 @@ class ApplicationController extends Controller
                                             ->first();
         }
 
-        return $september_applicant;
+        return Applicant::whereDoesntHave('intake',function($query){$query->where('name','March');})
+        ->where('index_number',$request->get('index_number'))
+        ->where('programs_complete_status',0)
+        ->latest()
+        ->first();
         $other = Applicant::where('index_number',$request->get('index_number'))
                           ->first();
 
