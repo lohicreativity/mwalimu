@@ -193,12 +193,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 </script> -->
 
 <script>
-
-
   $('#unit-categories').on('change',function(e){
-    $('#campuses').on('change',function(e){
-    var campu_id = $('#campus_id').val();
-  });
+
     /* if($(e.target).val() == 1 || $(e.target).val() == 1) {
 
       $("#parent_input").empty();
@@ -269,7 +265,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         url:$(e.target).data('source-url'),
         data:{
         _token:$(e.target).data('token'),
-        campus_id: campu_id,
+        campus_id: $('#campus_id').val(),
         unit_category_id:$(e.target).val()
         }      
         }).done(function(data, status){
