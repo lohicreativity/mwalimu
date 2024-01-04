@@ -371,6 +371,19 @@ class StaffController extends Controller
 		}
 
 		if($student){
+            if($request->fee_type_id == 10){
+                $fee_amount = ProgramFee::whereHas('campusProgram',function($query) use($student){$query->where('id',$student->campus_program_id);})
+                                        ->where('study_academic_year_id',$request->study_academic_year_id)
+                                        ->where('year_of_study',$student->year_of_study)
+                                        ->with('feeItem:name,id,fee_type_id')
+                                        ->first();  
+            }else{
+                $fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
+                                       ->where('study_academic_year_id',$request->study_academic_year_id)
+                                       ->with('feeItem:name,id,fee_type_id')
+                                       ->first();            
+            }
+
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
 			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')
 						->where('fee_type_id',$request->fee_type_id)->whereNotNull('control_no')
@@ -383,8 +396,8 @@ class StaffController extends Controller
 				//$validity = strtotime($fee_amount->duration
 				$datediff = $now - $last_invoice;
 				$datediff = round(($datediff/(60 * 60 * 24)));				
-
-				if($fee_amount->duration >= $datediff){
+return $fee_amount->feeItem->feeType->duration;
+				if($fee_amount->feeItem->feeType->duration >= $datediff){
 					if($fee_type->gateway_payment_id == null){
 						return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
 					}
