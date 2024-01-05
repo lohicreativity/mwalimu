@@ -340,7 +340,7 @@
                                         <div class="form-group col-4">
                                           {!! Form::label('','Department') !!}
                                           <select name="department_id" class="form-control" required>
-                                            <option value="">Select Department</option>
+                                            <option value="">Select Department/Unit</option>
                                             @php
                                               foreach($program->departments as $department){
                                                   if($department->pivot->campus_id == $campusProgram->campus_id){
