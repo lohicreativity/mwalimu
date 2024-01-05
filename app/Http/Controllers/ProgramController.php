@@ -133,7 +133,7 @@ class ProgramController extends Controller
             'name'=>'required',
             'code'=>'required'
         ]);
-
+return $request;
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
@@ -144,17 +144,17 @@ class ProgramController extends Controller
 
         // added by salim, check if program department exists to avoid duplicates in table program department
 
-        $check_program_department = DB::table('program_department')
-        ->where('program_id', $request->get('program_id'))
-        ->where('department_id', $request->get('department_id'))
-        ->where('campus_id', $request->get('campus_id'))
-        ->first();
+        // $check_program_department = DB::table('program_department')
+        // ->where('program_id', $request->get('program_id'))
+        // ->where('department_id', $request->get('department_id'))
+        // ->where('campus_id', $request->get('campus_id'))
+        // ->first();
 
-        if (!$check_program_department) {
-            return redirect()->back()->with('error','Program department already exists');
-        } else {
+        // if (!$check_program_department) {
+        //     return redirect()->back()->with('error','Program department already exists');
+        // } else {
             (new ProgramAction)->update($request);
-        }
+       // }
 
         
 
