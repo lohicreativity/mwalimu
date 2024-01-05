@@ -341,11 +341,6 @@
                                           {!! Form::label('','Department') !!}
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department</option>
-                                            @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
-                                              @foreach($department->campuses as $campus)
-                                                {{ $campus->name }}
-                                              @endforeach
-                                            @endif
                                             @php
                                               foreach($program->departments as $department){
                                                   if($department->pivot->campus_id == $campusProgram->campus_id){
@@ -355,7 +350,13 @@
                                               }
                                             @endphp
                                             @foreach($departments as $department)
-                                              <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @endif>{{ $department->name }}</option>
+                                              <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @endif>{{ $department->name }}
+                                                @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
+                                                  @foreach($department->campuses as $campus)
+                                                    {{ $campus->name }}
+                                                  @endforeach
+                                                @endif
+                                              </option>
                                             @endforeach
                                           </select>
                                         </div>
