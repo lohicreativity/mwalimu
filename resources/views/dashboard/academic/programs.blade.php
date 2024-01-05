@@ -338,7 +338,7 @@
                                     </div>
                                         <div class="row">
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Department') !!}
+                                          {!! Form::label('','Department/Unit') !!}
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department/Unit</option>
                                             @php
