@@ -263,18 +263,18 @@
                                 $campus_program_id = $campusProgram->id;
                               @endphp
                               @can('edit-programme')
-                              <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
+                              <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $campusProgram->id }}">
                                       <i class="fas fa-pencil-alt">
                                       </i>
                                       Edit {{ $campusProgram->code }} {{ $campus_program_id }}
                               </a>
                               @endcan
 
-                              <div class="modal fade" id="ss-edit-program-{{ $program->id }}">
+                              <div class="modal fade" id="ss-edit-program-{{ $campusProgram->id }}">
                                 <div class="modal-dialog modal-lg">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h4 class="modal-title">Edit Programme {{ $campusProgram->code }} {{ $campus_program_id }}</h4>
+                                      <h4 class="modal-title">Edit Programme {{ $campusProgram->code }} {{ $campusProgram->id }}</h4>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                       </button>
