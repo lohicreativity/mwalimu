@@ -224,7 +224,7 @@
                             <td>{{ $campusProgram->regulator_code }} </td>
                             @endif
                             <td>{{ $program->code }}</td>
-                            <td>{{ $campusProgram->code }}</td>
+                            <td>{{ $campusProgram->code }} {{ $campusProgram->id }}</td>
                             @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                             <td>@foreach($campuses as $campus)
                                         @if($campusProgram->campus_id == $campus->id)
@@ -329,7 +329,7 @@
                                           <div class="row">
                                             <div class="form-group col-4">
                                               {!! Form::label('','Code') !!}
-                                              {!! Form::text('code',$campusProgram->id,$code) !!}
+                                              {!! Form::text('code',$campusProgram->code $campusProgram->id,$code) !!}
                                             </div>
                                             <div class="form-group col-8">
                                               {!! Form::label('','Name') !!}
