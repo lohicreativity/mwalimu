@@ -80,7 +80,7 @@ class ProgramController extends Controller
 			
           }
         }
-
+return $programs[0];
     	$data = [
            'programs'=>$programs,
            'departments'=>$departments,
