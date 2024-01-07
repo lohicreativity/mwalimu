@@ -98,7 +98,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request)
     {
-
+return $request;
       if (Auth::user()->hasRole('administrator')) {
 
          $validation = Validator::make($request->all(),[
