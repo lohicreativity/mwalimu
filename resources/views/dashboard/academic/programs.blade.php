@@ -221,19 +221,19 @@
                       @foreach($program->campusPrograms as $campusProgram)
                         <tr>
                             @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
-                              <td>{{ $campusProgram->regulator_code }} </td>
+                            <td>{{ $campusProgram->regulator_code }} </td>
                             @endif
                             <td>{{ $program->code }}</td>
                             <td>{{ $campusProgram->code }}</td>
                             @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
-                              <td>@foreach($campuses as $campus)
-                                          @if($campusProgram->campus_id == $campus->id)
-                                              {{ substr($campus->name,0,-6) }} <br>
-                                              @break
-                                              
-                                          @endif
-                                  @endforeach
-                              </td>
+                            <td>@foreach($campuses as $campus)
+                                        @if($campusProgram->campus_id == $campus->id)
+                                            {{ substr($campus->name,0,-6) }} <br>
+                                            @break
+                                            
+                                        @endif
+                                @endforeach
+                            </td>
                             @endif
                             <td>
                               @foreach($program->departments as $department)
@@ -241,237 +241,246 @@
                                       {{ $department->name }}
                                   @endif
                               @endforeach
-                          </td>
+                            </td>
                             <td>
-                              @foreach($staffs as $staff) 
-                                @if($staff->department_id == $program->departments[0]->id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
+                              @foreach($staffs as $staff)
+                              @php
+                              foreach($program->departments as $department){
+                                  if($department->pivot->campus_id == $campusProgram->campus_id){
+                                      $department_id = $department->id;
+                                      $current_dept_id = $department->id;
+                                      break;
+                                  }
+                              }
+                              @endphp 
+                                @if($staff->department_id == $department_id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
                               @endforeach 
                             </td>
-                    @if(!Auth::user()->hasRole('hod'))
-                    <td>
-                      @can('edit-programme')
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                       </a>
-                      @endcan
+                            @if(!Auth::user()->hasRole('hod'))
+                            <td>
+                              @can('edit-programme')
+                              <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
+                                      <i class="fas fa-pencil-alt">
+                                      </i>
+                                      Edit
+                              </a>
+                              @endcan
 
-                       <div class="modal fade" id="ss-edit-program-{{ $program->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Edit Programme</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                                @php
-                                    $name = [
-                                       'placeholder'=>'Name',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-
-                                    $code = [
-                                       'placeholder'=>'Code',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-									
-									$regulator_code = [
-										 'placeholder'=>'Regulator Code',
-										 'class'=>'form-control'
-									  ];
-
-                                    $description = [
-                                       'placeholder'=>'Description',
-                                       'class'=>'form-control',
-                                       'rows'=>2,
-                                       'required'=>true
-                                    ];
-
-                                   $min_duration = [
-                                     'placeholder'=>'Min duration',
-                                     'class'=>'form-control',
-                                     'id'=>'ss-min-duration-'.$program->id,
-                                     'readonly'=>true,
-                                     'required'=>true
-                                  ];
-
-                                  $max_duration = [
-                                     'placeholder'=>'Max duration',
-                                     'class'=>'form-control',
-                                     'id'=>'ss-max-duration-'.$program->id,
-                                     'readonly'=>true,
-                                     'required'=>true
-                                  ];
-								  
-								  $programDeptIds = $current_dept_id = $nta_level_id = 0;
-								  foreach($program->departments as $dept){
-									  if($dept->pivot->campus_id === $campusProgram->campus_id){
-										  $programDeptIds = $dept->id;
-									  }
-								  }
-                                @endphp
-
-                                {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
-                                   <div class="row">
-                                    <div class="form-group col-4">
-                                      {!! Form::label('','Code') !!}
-                                      {!! Form::text('code',$campusProgram->code,$code) !!}
+                              <div class="modal fade" id="ss-edit-program-{{ $program->id }}">
+                                <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">Edit Programme</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
                                     </div>
-                                    <div class="form-group col-8">
-                                      {!! Form::label('','Name') !!}
-                                      {!! Form::text('name',$program->name,$name) !!}
+                                    <div class="modal-body">
+                                        @php
+                                          $name = [
+                                              'placeholder'=>'Name',
+                                              'class'=>'form-control',
+                                              'required'=>true
+                                          ];
 
-                                      {!! Form::input('hidden','program_id',$program->id) !!}
-                                      {!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
+                                          $code = [
+                                              'placeholder'=>'Code',
+                                              'class'=>'form-control',
+                                              'required'=>true
+                                          ];
+                        
+                                          $regulator_code = [
+                                            'placeholder'=>'Regulator Code',
+                                            'class'=>'form-control'
+                                            ];
+
+                                          $description = [
+                                              'placeholder'=>'Description',
+                                              'class'=>'form-control',
+                                              'rows'=>2,
+                                              'required'=>true
+                                          ];
+
+                                          $min_duration = [
+                                            'placeholder'=>'Min duration',
+                                            'class'=>'form-control',
+                                            'id'=>'ss-min-duration-'.$program->id,
+                                            'readonly'=>true,
+                                            'required'=>true
+                                          ];
+
+                                          $max_duration = [
+                                            'placeholder'=>'Max duration',
+                                            'class'=>'form-control',
+                                            'id'=>'ss-max-duration-'.$program->id,
+                                            'readonly'=>true,
+                                            'required'=>true
+                                          ];
+                          
+                                          $programDeptIds = $current_dept_id = $nta_level_id = 0;
+                                          foreach($program->departments as $dept){
+                                            if($dept->pivot->campus_id === $campusProgram->campus_id){
+                                              $programDeptIds = $dept->id;
+                                            }
+                                          }
+                                        @endphp
+
+                                        {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
+                                          <div class="row">
+                                            <div class="form-group col-4">
+                                              {!! Form::label('','Code') !!}
+                                              {!! Form::text('code',$campusProgram->code,$code) !!}
+                                            </div>
+                                            <div class="form-group col-8">
+                                              {!! Form::label('','Name') !!}
+                                              {!! Form::text('name',$program->name,$name) !!}
+
+                                              {!! Form::input('hidden','program_id',$program->id) !!}
+                                              {!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
+                                            </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="form-group col-12">
+                                                {!! Form::label('','Description') !!}
+                                                {!! Form::textarea('description',$program->description,$description) !!}
+                                              </div>
+                                            </div>
+                                                <div class="row">
+                                                <div class="form-group col-4">
+                                                  {!! Form::label('','Department/Unit') !!}
+                                                  <select name="department_id" class="form-control" required>
+                                                    <option value="">Select Department/Unit</option>
+                                                    @php
+                                                      foreach($program->departments as $department){
+                                                          if($department->pivot->campus_id == $campusProgram->campus_id){
+                                                              $department_id = $department->id;
+                                                              $current_dept_id = $department->id;
+                                                              break;
+                                                          }
+                                                      }
+                                                    @endphp
+                                                    @foreach($departments as $department)
+                                                      <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @endif>{{ $department->name }}
+                                                        @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
+                                                          @foreach($department->campuses as $campus)
+                                                            {{ $campus->name }}
+                                                          @endforeach
+                                                        @endif
+                                                      </option>
+                                                    @endforeach
+                                                  </select>
+                                                </div>
+                                                <div class="form-group col-4">
+                                                  {!! Form::label('','Min duration') !!}
+                                                  {!! Form::text('min_duration',$program->min_duration,$min_duration) !!}
+                                                </div>
+                                                <div class="form-group col-4">
+                                                  {!! Form::label('','Max duration') !!}
+                                                  {!! Form::text('max_duration',$program->max_duration,$max_duration) !!}
+                                                </div>
+                                              </div>
+                                              <div class="row">
+                                                <div class="form-group col-4">
+                                                  {!! Form::label('','NTA level') !!}
+                                                  <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}, #ss-nta-award-input-{{ $program->id }}"
+                                                    @if(App\Domain\Academic\Models\Program::hasBeenSelected($program)) disabled="disabled" @endif>
+                                                    <option value="">Select NTA level</option>
+                                                    @foreach($nta_levels as $level)
+                                                    <option value="{{ $level->id }}" @if($level->id == $program->nta_level_id) selected="selected" @endif>{{ $level->name }}</option>
+                                                    @endforeach
+                                                  </select>
+                                                </div>
+                                                <div class="form-group col-4">
+                                                  {!! Form::label('','Award') !!}
+                                                  <select name="award_id" class="form-control" required id="ss-nta-award-{{ $program->id }}" disabled="disabled">
+                                                    <option value="">Select Award</option>
+                                                    @foreach($awards as $award)
+                                                    <option value="{{ $award->id }}" @if($award->id == $program->award_id) selected="selected" @endif>{{ $award->name }}</option>
+                                                    @endforeach
+                                                  </select>
+
+                                                  {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
+                                                  {!! Form::input('hidden','current_department_id',$current_dept_id) !!}
+                                                  @if(App\Domain\Academic\Models\Program::hasBeenSelected($program))
+                                                  {!! Form::input('hidden','nta_level_id',$program->nta_level_id) !!} 
+                                                  @endif
+                                                </div>
+                                                <div class="form-group col-4">
+
+
+                              @if(count($program->campusPrograms) != 0)
+                              {!! Form::label('','Regulator Code') !!}
+                              {!! Form::text('regulator_code',$campusProgram->regulator_code,$regulator_code) !!}
+                              
+                              {!! Form::input('hidden','campus_program_id',$campusProgram->id) !!}
+                              @else
+                                {!! Form::label('','Regulator Code') !!}
+                              {!! Form::text('regulator_code',null,$regulator_code) !!}
+                              @endif
+                              
+                              {!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
+                              
+                              </div>
+                                              </div>
+                                              <div class="ss-form-actions">
+                                              <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                                              </div>
+                                        {!! Form::close() !!}
+
                                     </div>
+                                    <div class="modal-footer justify-content-between">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
-                                    <div class="row">
-                                      <div class="form-group col-12">
-                                        {!! Form::label('','Description') !!}
-                                        {!! Form::textarea('description',$program->description,$description) !!}
-                                      </div>
+                                  </div>
+                                  <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                              </div>
+                              <!-- /.modal -->
+                              @can('delete-programme')
+                              <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-program-{{ $program->id }}">
+                                      <i class="fas fa-trash">
+                                      </i>
+                                      Delete
+                              </a>
+                              @endcan
+
+                              <div class="modal fade" id="ss-delete-program-{{ $program->id }}">
+                                <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
                                     </div>
-                                        <div class="row">
-                                        <div class="form-group col-4">
-                                          {!! Form::label('','Department/Unit') !!}
-                                          <select name="department_id" class="form-control" required>
-                                            <option value="">Select Department/Unit</option>
-                                            @php
-                                              foreach($program->departments as $department){
-                                                  if($department->pivot->campus_id == $campusProgram->campus_id){
-                                                      $department_id = $department->id;
-                                                      $current_dept_id = $department->id;
-                                                      break;
-                                                  }
-                                              }
-                                            @endphp
-                                            @foreach($departments as $department)
-                                              <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @endif>{{ $department->name }}
-                                                @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
-                                                  @foreach($department->campuses as $campus)
-                                                    {{ $campus->name }}
-                                                  @endforeach
-                                                @endif
-                                              </option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                        <div class="form-group col-4">
-                                          {!! Form::label('','Min duration') !!}
-                                          {!! Form::text('min_duration',$program->min_duration,$min_duration) !!}
-                                        </div>
-                                        <div class="form-group col-4">
-                                          {!! Form::label('','Max duration') !!}
-                                          {!! Form::text('max_duration',$program->max_duration,$max_duration) !!}
-                                        </div>
-                                       </div>
-                                       <div class="row">
-                                        <div class="form-group col-4">
-                                          {!! Form::label('','NTA level') !!}
-                                          <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}, #ss-nta-award-input-{{ $program->id }}"
-                                            @if(App\Domain\Academic\Models\Program::hasBeenSelected($program)) disabled="disabled" @endif>
-                                            <option value="">Select NTA level</option>
-                                            @foreach($nta_levels as $level)
-                                            <option value="{{ $level->id }}" @if($level->id == $program->nta_level_id) selected="selected" @endif>{{ $level->name }}</option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                        <div class="form-group col-4">
-                                          {!! Form::label('','Award') !!}
-                                          <select name="award_id" class="form-control" required id="ss-nta-award-{{ $program->id }}" disabled="disabled">
-                                            <option value="">Select Award</option>
-                                            @foreach($awards as $award)
-                                            <option value="{{ $award->id }}" @if($award->id == $program->award_id) selected="selected" @endif>{{ $award->name }}</option>
-                                            @endforeach
-                                          </select>
-
-                                          {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
-                                          {!! Form::input('hidden','current_department_id',$current_dept_id) !!}
-                                          @if(App\Domain\Academic\Models\Program::hasBeenSelected($program))
-                                          {!! Form::input('hidden','nta_level_id',$program->nta_level_id) !!} 
-                                          @endif
-                                        </div>
-                                        <div class="form-group col-4">
-
-
-										    @if(count($program->campusPrograms) != 0)
-											{!! Form::label('','Regulator Code') !!}
-											{!! Form::text('regulator_code',$campusProgram->regulator_code,$regulator_code) !!}
-											
-											{!! Form::input('hidden','campus_program_id',$campusProgram->id) !!}
-											@else
-										    {!! Form::label('','Regulator Code') !!}
-											{!! Form::text('regulator_code',null,$regulator_code) !!}
-											@endif
-											
-											{!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
-											
-										  </div>
-                                       </div>
-                                      <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                                      </div>
-                                {!! Form::close() !!}
-
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                      @can('delete-programme')
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-program-{{ $program->id }}">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                       </a>
-                       @endcan
-
-                       <div class="modal fade" id="ss-delete-program-{{ $program->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="row">
-                                <div class="col-12">
-                                    <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this program from the list?</p>
-                                       <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('academic/program/'.$program->id.'/destroy') }}" class="btn btn-danger">Delete</a>
-                                         </div><!-- end of ss-form-controls -->
-                                      </div><!-- end of ss-confirmation-container -->
-                                  </div><!-- end of col-md-12 -->
-                               </div><!-- end of row -->
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                    </td>
+                                    <div class="modal-body">
+                                      <div class="row">
+                                        <div class="col-12">
+                                            <div id="ss-confirmation-container">
+                                              <p id="ss-confirmation-text">Are you sure you want to delete this program from the list?</p>
+                                              <div class="ss-form-controls">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <a href="{{ url('academic/program/'.$program->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                                </div><!-- end of ss-form-controls -->
+                                              </div><!-- end of ss-confirmation-container -->
+                                          </div><!-- end of col-md-12 -->
+                                      </div><!-- end of row -->
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                  <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                              </div>
+                              <!-- /.modal -->
+                            </td>
+                            @endif
+                        </tr>
+                      @endforeach
                     @endif
-                  </tr>
-                  @endforeach
-                  @endif
                   @endforeach
                   </tbody>
                 </table>
