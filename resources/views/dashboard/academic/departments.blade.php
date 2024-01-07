@@ -310,7 +310,7 @@
                                           @endforeach 
                                         </select>
                                       </div>
-                                      {!! Form::input('hidden','current_parent_id',$current_parent_id]) !!}
+                                      {!! Form::input('hidden','current_parent_id',$current_parent_id) !!}
                                     </div>
 
                                     @elseif(Auth::user()->hasRole('admission-officer'))
