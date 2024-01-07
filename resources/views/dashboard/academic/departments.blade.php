@@ -255,35 +255,7 @@
                                     @endphp
 
                                     {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
-                                    @php
-                                    $parent_name = $parent_id = null;
-                                    foreach($all_departments as $dept){
-                                      if($dept->id == $department->id && $department->unit_category_id == 1 ){
-                                        foreach($campuses as $campus){
-                                          if($department->parent_id == $campus->id){
-                                            $parent_name = $campus->name;
-                                            $parent_id = $department->parent_id;
-                                            break; 
-                                          }
-                                        }  
-                                      }elseif($dept->id == $department->id && $department->unit_category_id == 2 ){
-                                        foreach($faculties as $faculty){
-                                          if($department->parent_id == $faculty->id){
-                                            $parent_name = $faculty->name;
-                                            $parent_id = $department->parent_id;
-                                            break; 
-                                          }  
-                                        }
-                                      }elseif($department->unit_category_id == 4){
-                                        if($department->parent_id == $dept->id){
-                                          $parent_name == $dept->name;
-                                          $parent_id = $department->parent_id;
-                                        }
-                                      }
 
-           
-                                    }  
-                                  @endphp
                                     @if(Auth::user()->hasRole('admission-officer'))
                                       <input type="hidden" name="staff_campus" value="{{ $staff->campus_id }}">
                                     @endif
@@ -332,11 +304,41 @@
                                         <div id="parent_input"></div>
                                         <select name="parent_id" id="parents" class="form-control">
                                           <option value="">Select Parent</option>
-
+                                          @php
+                                          $parent_name = $parent_id = null;
+                                          foreach($all_departments as $dept){
+                                            if($dept->id == $department->id && $department->unit_category_id == 1 ){
+                                              foreach($campuses as $campus){
+                                                if($department->parent_id == $campus->id){
+                                                  $parent_name = $campus->name;
+                                                  $parent_id = $department->parent_id;
+                                                  break; 
+                                                }
+                                              }  
+                                            }elseif($dept->id == $department->id && $department->unit_category_id == 2 ){
+                                              foreach($faculties as $faculty){
+                                                if($department->parent_id == $faculty->id){
+                                                  $parent_name = $faculty->name;
+                                                  $parent_id = $department->parent_id;
+                                                  break; 
+                                                }  
+                                              }
+                                            }elseif($department->unit_category_id == 4){
+                                              if($department->parent_id == $dept->id){
+                                                $parent_name == $dept->name;
+                                                $parent_id = $department->parent_id;
+                                              }
+                                            }
+      
+                 
+                                          }  
+                                        @endphp
 
                                           @foreach($departments as $department)
+                                          @if($department->id == $parent_id)
                                           <option value="{{ $department->id }}" @if($department->parent_id == $department->id) selected = 'selected' @endif>{{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
+                                          @endif
                                           @endforeach 
                                         </select>
                                       </div>
