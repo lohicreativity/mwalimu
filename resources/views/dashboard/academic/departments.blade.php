@@ -361,7 +361,7 @@
                                           <option value="">Select Parent</option>
                                           @foreach($departments as $department)
                                             @if($department->id == $parent_id)
-                                              <option value="{{ $department->parent_id }}">{{ $department->name }} - {{ $parent_name }}</option>
+                                              <option value="{{ $department->parent_id }}">{{ $parent_name }} - {{ $parent_name }}</option>
                                             @endif
                                           @endforeach 
                                         </select>
