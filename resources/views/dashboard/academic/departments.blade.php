@@ -312,7 +312,7 @@
                                               foreach($campuses as $campus){
                                                 if($department->parent_id == $campus->id){
                                                   $parent_name = $campus->name;
-                                                  $parent_id = $dept->parent_id;
+                                                  $parent_id = $campus->id;
                                                   break; 
                                                 }
                                               }  
@@ -320,14 +320,14 @@
                                               foreach($faculties as $faculty){
                                                 if($department->parent_id == $faculty->id){
                                                   $parent_name = $faculty->name;
-                                                  $parent_id = $dept->parent_id;
+                                                  $parent_id = $faculty->id;
                                                   break; 
                                                 }  
                                               }
                                             }elseif($department->unit_category_id == 4){ //Unit
                                               if($department->parent_id == $dept->id){
                                                 $parent_name == $dept->name;
-                                                $parent_id = $dept->parent_id;
+                                                $parent_id = $dept->id;
                                               }
                                             }
       
