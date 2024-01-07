@@ -308,7 +308,7 @@
                                      'required'=>true
                                   ];
 								  
-								  $programDeptIds = $current_dept_id = 0;
+								  $programDeptIds = $current_dept_id = $nta_level_id = 0;
 								  foreach($program->departments as $dept){
 									  if($dept->pivot->campus_id === $staff->campus_id){
 										  $programDeptIds = $dept->id;
@@ -392,6 +392,9 @@
 
                                           {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
                                           {!! Form::input('hidden','current_department_id',$current_dept_id) !!}
+                                          @if(App\Domain\Academic\Models\Program::hasBeenSelected($program))
+                                          {!! Form::input('hidden','nta_level_id',$program->nta_level_id) !!} 
+                                          @endif
                                         </div>
                                         <div class="form-group col-4">
 
