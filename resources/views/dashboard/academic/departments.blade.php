@@ -307,31 +307,37 @@
                                           @foreach($departments as $department)
                                           @php
                                           $parent_name = null;
-                                          foreach($all_departments as $dept){
-                                            if($dept->id == $department->id && $department->unit_category_id == 1 ){
+
+                                            if($department->unit_category_id == 1 ){
                                               foreach($campuses as $campus){
                                                 if($department->parent_id == $campus->id){
                                                   $parent_name = $campus->name;
+                                                  $parent_id = $campus->id;
                                                   break; 
                                                 }
                                               }  
-                                            }elseif($dept->id == $department->id && $department->unit_category_id == 2 ){
+                                            }elseif($department->unit_category_id == 2 ){
                                               foreach($faculties as $faculty){
                                                 if($department->parent_id == $faculty->id){
                                                   $parent_name = $faculty->name;
+                                                  $parent_id = $faculty->id;
                                                   break; 
                                                 }  
                                               }
                                             }elseif($department->unit_category_id == 4){
-                                              if($department->parent_id == $dept->id){
-                                                $parent_name == $dept->name;
+                                              foreach($all_departments as $dept){
+                                                if($department->parent_id == $dept->id){
+                                                  $parent_name == $dept->name;
+                                                  $parent_id = $dept->id;
+                                                  break;
+                                                }
                                               }
                                             }
 
                  
                                           }  
                                         @endphp
-                                          <option value="{{ $department->id }}" @if($department->parent_id == $department->id) selected = 'selected' @endif>{{ $department->name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
+                                          <option value="{{ $department->id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
                                           @endforeach 
                                         </select>
