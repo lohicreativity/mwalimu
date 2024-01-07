@@ -80,7 +80,12 @@ class ProgramController extends Controller
 			
           }
         }
-
+foreach($programs as $program){
+    if($program->id == 30){
+        return $program;
+        break;
+    }
+}
     	$data = [
            'programs'=>$programs,
            'departments'=>$departments,
