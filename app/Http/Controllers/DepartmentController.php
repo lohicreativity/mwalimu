@@ -42,7 +42,7 @@ class DepartmentController extends Controller
          ->where('campuses.id', $staff->campus_id)
          ->get(); */ 
       }
-return $departments[0];
+
     	$data = [
            'unit_categories'  =>UnitCategory::all(),
            'all_departments'  =>Department::all(),
