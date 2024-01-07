@@ -25,7 +25,7 @@ class DepartmentController extends Controller
 	   $departments[] = null;
 	  
       if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
-         $departments = Department::with('unitCategory')->latest()->get();
+         $departments = Department::with(['unitCategory','campuses'])->latest()->get();
          $faculties = Faculty::all();
          
       }elseif(Auth::user()->hasRole('admission-officer')) {
@@ -42,7 +42,7 @@ class DepartmentController extends Controller
          ->where('campuses.id', $staff->campus_id)
          ->get(); */ 
       }
-return $departments;
+
     	$data = [
            'unit_categories'  =>UnitCategory::all(),
            'all_departments'  =>Department::all(),
