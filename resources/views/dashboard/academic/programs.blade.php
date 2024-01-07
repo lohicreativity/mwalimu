@@ -329,7 +329,7 @@
                                           <div class="row">
                                             <div class="form-group col-4">
                                               {!! Form::label('','Code') !!}
-                                              {!! Form::text('code',$campusProgram->code $campusProgram->id,$code) !!}
+                                              {!! Form::text('code',$campusProgram->code.'-'.$campusProgram->id,$code) !!}
                                             </div>
                                             <div class="form-group col-8">
                                               {!! Form::label('','Name') !!}
