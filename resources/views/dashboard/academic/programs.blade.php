@@ -219,6 +219,9 @@
                   @foreach($programs as $program)
                      @if(count($program->campusPrograms) != 0)
                       @foreach($program->campusPrograms as $campusProgram)
+                        @php                                
+                          $campus_program_id = $campusProgram->id;
+                        @endphp
                         <tr>
                             @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                             <td>{{ $campusProgram->regulator_code }} </td>
@@ -245,13 +248,14 @@
                             <td>
                               @foreach($staffs as $staff)
                               @php
-                              foreach($program->departments as $department){
-                                  if($department->pivot->campus_id == $campusProgram->campus_id){
-                                      $department_id = $department->id;
-                                      $current_dept_id = $department->id;
-                                      break;
-                                  }
-                              }
+                                foreach($program->departments as $department){
+                                    if($department->pivot->campus_id == $campusProgram->campus_id){
+                                        $department_id = $department->id;
+                                        $current_dept_id = $department->id;
+                                        break;
+                                    }
+                                }
+
                               @endphp 
                                 @if($staff->department_id == $department_id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
                               @endforeach 
@@ -262,7 +266,7 @@
                               <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
                                       <i class="fas fa-pencil-alt">
                                       </i>
-                                      Edit {{ $campusProgram->code }}
+                                      Edit {{ $campusProgram->code }} {{ $campus_program_id }}
                               </a>
                               @endcan
 
@@ -270,7 +274,7 @@
                                 <div class="modal-dialog modal-lg">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h4 class="modal-title">Edit Programme {{ $campusProgram->code }}</h4>
+                                      <h4 class="modal-title">Edit Programme {{ $campusProgram->code }} {{ $campus_program_id }}</h4>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                       </button>
@@ -323,6 +327,7 @@
                                               $programDeptIds = $dept->id;
                                             }
                                           }
+
                                         @endphp
 
                                         {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
