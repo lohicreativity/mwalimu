@@ -92,7 +92,7 @@ class Program extends Model
     {
         $status = false;
         $applicant_count = Applicant::whereHas('selections.campusProgram',function($query)use($program){$query->where('program_id',$program->id);})->count();
-        if($applicant_count != 0){
+        if($applicant_count == 0){
             $status = true;
         }
         return $status;
