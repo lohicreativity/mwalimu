@@ -219,9 +219,6 @@
                   @foreach($programs as $program)
                      @if(count($program->campusPrograms) != 0)
                       @foreach($program->campusPrograms as $campusProgram)
-                        @php                                
-                          $campus_program_id = $campusProgram->id;
-                        @endphp
                         <tr>
                             @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                             <td>{{ $campusProgram->regulator_code }} </td>
@@ -262,6 +259,9 @@
                             </td>
                             @if(!Auth::user()->hasRole('hod'))
                             <td>
+                              @php
+                                $campus_program_id = $campusProgram->id;
+                              @endphp
                               @can('edit-programme')
                               <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
                                       <i class="fas fa-pencil-alt">
