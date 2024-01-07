@@ -304,8 +304,9 @@
                                           @foreach($departments as $department)
                                           <option value="{{ $department->id }}">{{ $department->name }} - 
                                             @foreach($department->campuses as $campus)
-                                              @if($campus->department_id == $department->id)
+                                              @if($department->id == $campus->department_id)
                                                 {{ $campus->name}}
+                                                @break
                                               @endif
                                             @endforeach
                                           </option>
