@@ -310,7 +310,7 @@
 								  
 								  $programDeptIds = $current_dept_id = $nta_level_id = 0;
 								  foreach($program->departments as $dept){
-									  if($dept->pivot->campus_id === $staff->campus_id){
+									  if($dept->pivot->campus_id === $campusProgram->campus_id){
 										  $programDeptIds = $dept->id;
 									  }
 								  }
