@@ -304,6 +304,33 @@
                                         <div id="parent_input"></div>
                                         <select name="parent_id" id="parents" class="form-control">
                                           <option value="">Select Parent</option>
+                                          @php
+                                            $parent_name = null;
+                                            foreach($all_departments as $dept){
+                                              if($dept->id == $department->id && $department->unit_category_id == 1 ){
+                                                foreach($campuses as $campus){
+                                                  if($department->parent_id == $campus->id){
+                                                    $parent_name = $campus->name;
+                                                    break; 
+                                                  }
+                                                }  
+                                              }elseif($dept->id == $department->id && $department->unit_category_id == 2 ){
+                                                foreach($faculties as $faculty){
+                                                  if($department->parent_id == $faculty->id){
+                                                    $parent_name = $faculty->name;
+                                                    break; 
+                                                  }  
+                                                }
+                                              }elseif($department->unit_category_id == 4){
+                                                if($department->parent_id == $dept->id){
+                                                  $parent_name == $dept->name;
+                                                }
+                                              }
+
+                   
+                                            }  
+                                          @endphp
+
                                           @foreach($departments as $department)
                                           <option value="{{ $department->id }}" @if($department->parent_id == $department->id) selected = 'selected' @endif>{{ $department->name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
@@ -330,7 +357,7 @@
                                         <select name="parent_id" id="parents" class="form-control">
                                           <option value="">Select Parent</option>
                                           @foreach($departments as $department)
-                                          <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                          <option value="{{ $department->parent_id }}">{{ $department->name }} - {{ $parent_name }}</option>
                                           @endforeach 
                                         </select>
                                       </div>
