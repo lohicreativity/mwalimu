@@ -177,6 +177,9 @@
                     </thead>
                     <tbody>
                     @foreach($departments as $department)
+                      @php
+                        $current_parent_id = $department->id;
+                      @endphp
                       <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $department->name }}</td>
@@ -307,7 +310,7 @@
                                           @endforeach 
                                         </select>
                                       </div>
-                                      {!! Form::input('hidden','decoy_id',$staff->campus_id,['id'=>'campus_id']) !!}
+                                      {!! Form::input('hidden','current_parent_id',$current_parent_id]) !!}
                                     </div>
 
                                     @elseif(Auth::user()->hasRole('admission-officer'))
