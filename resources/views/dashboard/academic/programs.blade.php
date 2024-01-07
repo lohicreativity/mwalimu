@@ -308,7 +308,7 @@
                                      'required'=>true
                                   ];
 								  
-								  $programDeptIds = 0;
+								  $programDeptIds = $current_dept_id = 0;
 								  foreach($program->departments as $dept){
 									  if($dept->pivot->campus_id === $staff->campus_id){
 										  $programDeptIds = $dept->id;
@@ -345,6 +345,7 @@
                                               foreach($program->departments as $department){
                                                   if($department->pivot->campus_id == $campusProgram->campus_id){
                                                       $department_id = $department->id;
+                                                      $current_dept_id = $department->id;
                                                       break;
                                                   }
                                               }
@@ -389,6 +390,7 @@
                                           </select>
 
                                           {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
+                                          {!! Form::input('hidden','current_department_id',$current_dept_id) !!}
                                         </div>
                                         <div class="form-group col-4">
 
