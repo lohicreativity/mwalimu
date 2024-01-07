@@ -7,7 +7,6 @@ use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Repositories\Interfaces\ProgramInterface;
 use DB;
-use PhpOffice\PhpSpreadsheet\Shared\OLERead;
 
 class ProgramAction implements ProgramInterface{
 	
@@ -83,7 +82,10 @@ class ProgramAction implements ProgramInterface{
                 
 				$prog->save();		
 
-                DB::table('program_department')->where('program_id',$program->id)->where('department_id',Input::old('department_id'))->where('campus_id',$request->get('campus_id'))->delete();
-                $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+                DB::table('program_department')->where('program_id',$program->id)
+                                               ->where('department_id',$request->get('current_department_id'))
+                                               ->where('campus_id',$request->get('campus_id'))
+                                               ->update(['department_id'=>$request->get('department_id')]);
+                //$program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 }
