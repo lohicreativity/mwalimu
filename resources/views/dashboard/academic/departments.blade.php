@@ -302,13 +302,7 @@
                                         <select name="parent_id" id="parents" class="form-control">
                                           <option value="">Select Parent</option>
                                           @foreach($departments as $department)
-                                          <option value="{{ $department->id }}">{{ $department->name }} - 
-                                            @foreach($department->campuses as $campus)
-                                              @if($department->id == $campus->department_id)
-                                                {{ $campus->name}}
-                                                @break
-                                              @endif
-                                            @endforeach
+                                          <option value="{{ $department->id }}">{{ $department->name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
                                           @endforeach 
                                         </select>
