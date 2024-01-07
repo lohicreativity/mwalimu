@@ -304,33 +304,30 @@
                                         <div id="parent_input"></div>
                                         <select name="parent_id" id="parents" class="form-control">
                                           <option value="">Select Parent</option>
-                                          @foreach($departments as $department)
+                                          @foreach($all_departments as $dept)
                                           @php
-                                          $parent_name = 'Hello'; $parent_id = null;
+                                          $parent_name = $parent_id = null;
 
-                                            if($department->unit_category_id == 1 ){
+                                            if($dept->unit_category_id == 1 ){
                                               foreach($campuses as $campus){
-                                                if($department->parent_id == $campus->id){
+                                                if($dept->parent_id == $campus->id){
                                                   $parent_name = $campus->name;
                                                   $parent_id = $campus->id;
                                                   break; 
                                                 }
                                               }  
-                                            }elseif($department->unit_category_id == 2 ){
+                                            }elseif($dept->unit_category_id == 2 ){
                                               foreach($faculties as $faculty){
-                                                if($department->parent_id == $faculty->id){
+                                                if($dept->parent_id == $faculty->id){
                                                   $parent_name = $faculty->name;
                                                   $parent_id = $faculty->id;
                                                   break; 
                                                 }  
                                               }
-                                            }elseif($department->unit_category_id == 4){
-                                              foreach($all_departments as $dept){
-                                                if($department->parent_id == $dept->id){
-                                                  $parent_name == $dept->name;
-                                                  $parent_id = $dept->id;
-                                                  break;
-                                                }
+                                            }elseif($dept->unit_category_id == 4){
+                                              if($dept->parent_id == $dept->id){
+                                                $parent_name == $dept->name;
+                                                $parent_id = $dept->id;
                                               }
                                             } 
                                         @endphp
