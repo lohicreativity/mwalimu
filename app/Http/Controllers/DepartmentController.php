@@ -133,7 +133,7 @@ class DepartmentController extends Controller
                                ->first();
 
       if($department){
-         return redirect()->back()->with('error','Department name has already been used');
+         return redirect()->back()->with('error','Department name has already been used1');
       }
   return 1;
         try {
