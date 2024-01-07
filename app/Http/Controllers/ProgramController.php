@@ -128,12 +128,12 @@ class ProgramController extends Controller
      * Update specified program
      */
     public function update(Request $request)
-    {   
+    {
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
             'code'=>'required'
         ]);
-
+return $request;
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
