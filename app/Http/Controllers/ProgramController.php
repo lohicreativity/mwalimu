@@ -128,7 +128,7 @@ class ProgramController extends Controller
      * Update specified program
      */
     public function update(Request $request)
-    {
+    {   return $request;
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
             'code'=>'required'
