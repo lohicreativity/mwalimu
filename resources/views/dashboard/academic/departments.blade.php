@@ -335,9 +335,8 @@
                                         @endphp
 
                                           @foreach($departments as $department)
-                                          <option value="{{ $department->id }}" @if($department->parent_id == $department->id) selected = 'selected' @endif> @if($department->id == $parent_id)
-                                            {{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
-                                            @endif
+                                          
+                                          <option value="{{ $department->id }}" @if($department->parent_id == $department->id) selected = 'selected' @endif>{{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
                                           @endforeach 
                                         </select>
