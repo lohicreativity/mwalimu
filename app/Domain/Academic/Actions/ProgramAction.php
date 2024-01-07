@@ -53,39 +53,41 @@ class ProgramAction implements ProgramInterface{
 	}
 
 	public function update(Request $request){
+        if(!empty($request->get('nta_level_id'))){
+            $program = Program::find($request->get('program_id'));
+            $program->name = $request->get('name');
+            $program->code = $request->get('code');
+            // $program->department_id = $request->get('department_id');
+            $program->nta_level_id = $request->get('nta_level_id');
+            $program->award_id = $request->get('award_id');
+            $program->description = $request->get('description');
+            $program->min_duration = $request->get('min_duration');
+            $program->max_duration = $request->get('max_duration');
+            // $program->category = $request->get('category');
+            $program->save();
 
-		        $program = Program::find($request->get('program_id'));
-                $program->name = $request->get('name');
-                $program->code = $request->get('code');
-                // $program->department_id = $request->get('department_id');
-                $program->nta_level_id = $request->get('nta_level_id');
-                $program->award_id = $request->get('award_id');
-                $program->description = $request->get('description');
-                $program->min_duration = $request->get('min_duration');
-                $program->max_duration = $request->get('max_duration');
-                // $program->category = $request->get('category');
-                $program->save();
-				
-				$prog = CampusProgram::find($request->get('campus_program_id'));
-				$prog->program_id = $request->get('program_id');
-				//$prog->campus_id = $request->get('campus_id');
-                if($request->get('campus_id') == 1){
-                    $prog->code = $request->get('code');
-                }elseif($request->get('campus_id') == 2){
-                    $code = explode('.',$request->get('code'));
-                    $prog->code = $code[0].'Z.'.$code[1];
-                }elseif($request->get('campus_id') == 3){
-                    $code = explode('.',$request->get('code'));
-                    $prog->code = $code[0].'P.'.$code[1];
-                }
-				$prog->regulator_code = $request->get('regulator_code');
-                
-				$prog->save();		
+        }
+                    
+        $prog = CampusProgram::find($request->get('campus_program_id'));
+        $prog->program_id = $request->get('program_id');
+        //$prog->campus_id = $request->get('campus_id');
+        if($request->get('campus_id') == 1){
+            $prog->code = $request->get('code');
+        }elseif($request->get('campus_id') == 2){
+            $code = explode('.',$request->get('code'));
+            $prog->code = $code[0].'Z.'.$code[1];
+        }elseif($request->get('campus_id') == 3){
+            $code = explode('.',$request->get('code'));
+            $prog->code = $code[0].'P.'.$code[1];
+        }
+        $prog->regulator_code = $request->get('regulator_code');
+        
+        $prog->save();		
 
-                DB::table('program_department')->where('program_id',$program->id)
-                                               ->where('department_id',$request->get('current_department_id'))
-                                               ->where('campus_id',$request->get('campus_id'))
-                                               ->update(['department_id'=>$request->get('department_id')]);
-                //$program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+        DB::table('program_department')->where('program_id',$program->id)
+                                        ->where('department_id',$request->get('current_department_id'))
+                                        ->where('campus_id',$request->get('campus_id'))
+                                        ->update(['department_id'=>$request->get('department_id')]);
+        //$program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 }
