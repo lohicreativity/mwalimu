@@ -135,7 +135,7 @@ class DepartmentController extends Controller
       if($department){
          return redirect()->back()->with('error','Department name has already been used');
       }
-  
+  return 1;
         try {
 
          (new DepartmentAction)->update($request);
