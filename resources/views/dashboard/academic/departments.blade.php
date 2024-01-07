@@ -306,7 +306,7 @@
                                           <option value="">Select Parent</option>
                                           @foreach($departments as $department)
                                           @php
-                                          $parent_name = null;
+                                          $parent_name = $parent_id = null;
 
                                             if($department->unit_category_id == 1 ){
                                               foreach($campuses as $campus){
@@ -332,10 +332,7 @@
                                                   break;
                                                 }
                                               }
-                                            }
-
-                 
-                                          }  
+                                            } 
                                         @endphp
                                           <option value="{{ $department->id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
