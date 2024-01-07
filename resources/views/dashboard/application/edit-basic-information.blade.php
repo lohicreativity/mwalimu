@@ -144,7 +144,7 @@
                   $first_name = [
                      'placeholder'=>'First name',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::rmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                      'required'=>true
                   ];
 
@@ -157,7 +157,7 @@
                   $surname = [
                      'placeholder'=>'Surname',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::rmedResults($applicant)  || $applicant->is_tamisemi == 1? true : null,
                      'required'=>true
                   ];
 

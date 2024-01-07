@@ -373,7 +373,8 @@
                                        <div class="row">
                                         <div class="form-group col-4">
                                           {!! Form::label('','NTA level') !!}
-                                          <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}, #ss-nta-award-input-{{ $program->id }}">
+                                          <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}, #ss-nta-award-input-{{ $program->id }}"
+                                            @if(App\Domain\Academic\Models\Program::hasBeenSelected($program)) disabled="disabled" @endif>
                                             <option value="">Select NTA level</option>
                                             @foreach($nta_levels as $level)
                                             <option value="{{ $level->id }}" @if($level->id == $program->nta_level_id) selected="selected" @endif>{{ $level->name }}</option>
