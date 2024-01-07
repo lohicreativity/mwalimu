@@ -336,16 +336,7 @@
 
                                           @foreach($departments as $department)
                                           
-                                          <option value="{{ $department->id }}" @if($department->parent_id == $department->id) selected = 'selected' @endif>
-                                            @foreach($all_departments as $dept)
-                                              @if($department->unit_category_id == 4 && $department->parent_id == $dept->id && $department->id)
-                                            {{ $dept->name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
-                                            @break
-                                            @else
-                                              "Hello"
-                                              
-                                            @endif
-                                            @endforeach
+                                          <option value="{{ $department->id }}" @if($parent_id == $department->id) selected = 'selected' @endif>{{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
                                           </option>
                                           @endforeach 
                                         </select>
