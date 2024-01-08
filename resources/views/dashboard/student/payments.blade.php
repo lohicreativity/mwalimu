@@ -72,9 +72,13 @@
                        <td>{{ $receipt->control_no }}</td> 					   
                        <td>@if($receipt->feeType->name == 'Miscellaneous Income') Other Fees @else {{ $receipt->feeType->name }} @endif</td> 
                        <td>
-                          @if(str_contains($receipt->feeType->name,'Tuition'))
+                          @if(str_contains($receipt->feeType->name,'Tuition')) 
                             @if($tuition_fee_loan > 0)
-                              {{ number_format($programme_fee-$tuition_fee_loan,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+                              @if($tuition_fee_loan >= $programme_fee)
+                                0.00 <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+                              @else
+                                {{ number_format($programme_fee-$tuition_fee_loan,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
+                              @endif
                             @else
                               {{ number_format($receipt->amount,2) }} 														
                             @endif
@@ -96,7 +100,11 @@
                        <td>
 												@if ($receipt->gatewayPayment)
 													@if (str_contains($receipt->feeType->name,'Tuition'))
-														{{ number_format(($programme_fee-$tuition_fee_loan)-$total_paid_fee,2) }} 
+                            @if($tuition_fee_loan >= $programme_fee)
+                              0.00
+                            @else
+														  {{ number_format(($programme_fee-$tuition_fee_loan)-$total_paid_fee,2) }} 
+                            @endif
 													@else
 														{{ number_format($receipt->gatewayPayment->bill_amount-$receipt->gatewayPayment->paid_amount,2) }}
 													@endif
