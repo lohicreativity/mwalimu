@@ -2296,7 +2296,7 @@ class ApplicationController extends Controller
      * Upload documents
      */
     public function uploadDocuments(Request $request)
-    {return 1;
+    {
         if($request->get('document_name') == 'passport'){
             $validation = Validator::make($request->all(),[
                 'document'=>'required|mimes:png,jpeg,jpg'

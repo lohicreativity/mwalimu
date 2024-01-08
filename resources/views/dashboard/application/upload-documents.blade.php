@@ -60,12 +60,16 @@
                       <option value="passport">Passport Size Picture <span style="font-style:italic; color:red">(png, jpeg or jpg) - Optional</span></option>
                       <option value="birth_certificate">Birth Certificate (pdf, png, jpeg or jpg)</option>
                       <option value="o_level_certificate">O-Level Certificate (pdf, png, jpeg or jpg)</option>
-                      @if(($applicant->entry_mode == 'DIRECT' && str_contains($applicant->programLevel->name,'Bachelor')) || ($applicant->entry_mode == 'DIRECT' && str_contains($applicant->programLevel->name,'Diploma')))
+                      @if($applicant->entry_mode == 'DIRECT' && (str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Diploma') ||
+                          str_contains($applicant->programLevel->name,'Master'))
                       <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
-                      @if($applicant->diploma_certificate == null)
-                      <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
-                      @endif
+                        @if($applicant->diploma_certificate == null)
+                          <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
+                        @endif
+                      @elseif(str_contains($applicant->programLevel->name,'Master'))
+                        <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
+                        <option value="bachelor_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
                       @endif
                     </select>
                     </div>
