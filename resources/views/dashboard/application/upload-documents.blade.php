@@ -164,6 +164,24 @@
                         </td>
                       </tr>
                       @endif
+                      @if($applicant->diploma_certificate)
+                      <tr>
+                        <td>Bachelor Certificate</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=degree_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=degree_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
+                      @if($applicant->diploma_certificate)
+                      <tr>
+                        <td>Bachelor Transcript</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=degree_transcript') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=degree_transcript') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
                     </tbody>
                   </table>
                 </div>
