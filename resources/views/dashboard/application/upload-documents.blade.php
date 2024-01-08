@@ -64,8 +64,11 @@
                           str_contains($applicant->programLevel->name,'Master')))
                       <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
                         @if(str_contains($applicant->programLevel->name,'Master'))
-                        <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
-                        <option value="bachelor_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
+                          @if($applicant->entry_mode == 'DIRECT')
+                            <option value="bachelor_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
+                          @else
+                            <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
+                          @endif
                         @endif
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                         @if($applicant->diploma_certificate == null)
