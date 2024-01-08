@@ -63,13 +63,14 @@
                       @if($applicant->entry_mode == 'DIRECT' && (str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Diploma') ||
                           str_contains($applicant->programLevel->name,'Master')))
                       <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
+                        @if(str_contains($applicant->programLevel->name,'Master'))
+                        <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
+                        <option value="bachelor_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
+                        @endif
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                         @if($applicant->diploma_certificate == null)
                           <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
                         @endif
-                      @elseif(str_contains($applicant->programLevel->name,'Master'))
-                        <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
-                        <option value="bachelor_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
                       @endif
                     </select>
                     </div>
