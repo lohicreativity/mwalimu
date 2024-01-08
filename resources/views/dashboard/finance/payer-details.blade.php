@@ -162,7 +162,7 @@
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
 													@if($tuition_fee_loan > 0)
-														@if($tuition_fee_loan >= $programme_fee->amount_in_tzs )
+														@if($tuition_fee_loan >= $programme_fee)
 															0.00 <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
 														@else
 															{{ number_format($payments->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
@@ -177,11 +177,15 @@
 											   <td>
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
-														@foreach($total_paid_fee as $fee)
-															@if($payments->reference_no == $fee['reference_no'])
-																{{ number_format($fee['amount'],2) }}
-															@endif
-														@endforeach
+														@if($tuition_fee_loan >= $programme_fee)
+														0.00
+														@else
+															@foreach($total_paid_fee as $fee)
+																@if($payments->reference_no == $fee['reference_no'])
+																	{{ number_format(($programme_fee-$tuition_fee_loan) - $fee['amount'],2) }}
+																@endif
+															@endforeach
+														@endif
 													@else
 														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
 													@endif

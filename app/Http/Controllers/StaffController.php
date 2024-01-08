@@ -315,7 +315,7 @@ class StaffController extends Controller
                 'paid_receipts'=>$paid_receipts? $paid_receipts : [],
                 'total_paid_fee'=>$total_fee_paid_amount,
                 'tuition_fee_loan'=>$tuition_fee_loan,
-                'programme_fee'=>$programme_fee
+                'programme_fee'=>$programme_fee->amount_in_tzs
 			];
 
 		}else{
