@@ -158,7 +158,7 @@ class ApplicantAction implements ApplicantInterface{
                     }elseif($applicant->status == 'ADMITTED'){
                         if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate 
                             && ($applicant->degree_certificate || $applicant->degree_transcript)){
-                            $applicant->documents_complete_status = 0;
+                            $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
                         }
