@@ -61,7 +61,7 @@
                       <option value="birth_certificate">Birth Certificate (pdf, png, jpeg or jpg)</option>
                       <option value="o_level_certificate">O-Level Certificate (pdf, png, jpeg or jpg)</option>
                       @if($applicant->entry_mode == 'DIRECT' && (str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Diploma') ||
-                          str_contains($applicant->programLevel->name,'Master'))
+                          str_contains($applicant->programLevel->name,'Master')))
                       <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                         @if($applicant->diploma_certificate == null)
