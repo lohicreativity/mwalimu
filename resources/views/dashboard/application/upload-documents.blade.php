@@ -65,7 +65,8 @@
                       <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
                         @if(str_contains($applicant->programLevel->name,'Master'))
                           @if($applicant->entry_mode == 'DIRECT')
-                            <option value="bachelor_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
+                            <option value="degree_certificate">Bachelor Certificate (pdf, png, jpeg or jpg)</option>
+                            <option value="degree_transcript">Bachelor Transcript (pdf, png, jpeg or jpg)</option>
                           @else
                             <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
                           @endif
