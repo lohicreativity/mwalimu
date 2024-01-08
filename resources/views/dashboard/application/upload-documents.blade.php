@@ -164,7 +164,7 @@
                         </td>
                       </tr>
                       @endif
-                      @if($applicant->diploma_certificate)
+                      @if($applicant->degree_certificate)
                       <tr>
                         <td>Bachelor Certificate</td>
                         <td>
@@ -173,7 +173,7 @@
                         </td>
                       </tr>
                       @endif
-                      @if($applicant->diploma_certificate)
+                      @if($applicant->degree_transcript)
                       <tr>
                         <td>Bachelor Transcript</td>
                         <td>
