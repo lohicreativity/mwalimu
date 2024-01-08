@@ -162,7 +162,7 @@
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
 													@if($tuition_fee_loan > 0)
-														@if($tuition_fee_loan >= $programme_fee )
+														@if($tuition_fee_loan >= $programme_fee->amount_in_tzs )
 															0.00 <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
 														@else
 															{{ number_format($payments->amount,2) }} <span style="color: red">({{ number_format($tuition_fee_loan,2) }} from HESLB) </span>
