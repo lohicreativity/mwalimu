@@ -42,7 +42,7 @@ class LoanAllocationController extends Controller
     public function downloadAllocationTemplate()
     {
         try{
-           return response()->download(public_path().'/uploads/loan_allocation_template.csv');
+           return response()->download(public_path().'/uploads/loan_allocation_template_new.csv');
         }catch(\Exception $e){
             return redirect()->back()->with('error','Document could not be found');
         }
