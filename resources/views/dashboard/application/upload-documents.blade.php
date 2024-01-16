@@ -62,18 +62,33 @@
                       <option value="o_level_certificate">O-Level Certificate (pdf, png, jpeg or jpg)</option>
                       @if($applicant->entry_mode == 'DIRECT' && (str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Diploma') ||
                           str_contains($applicant->programLevel->name,'Master')))
-                      <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
+                        @if($applicant->a_level_certificate == null)
+                          <option value="a_level_certificate">A-Level Certificate (pdf, png, jpeg or jpg)</option>
+                        @endif
                         @if(str_contains($applicant->programLevel->name,'Master'))
                           @if($applicant->entry_mode == 'DIRECT')
-                            <option value="degree_certificate">Bachelor Certificate (pdf, png, jpeg or jpg) - Optional</option>
-                            <option value="degree_transcript">Bachelor Transcript (pdf, png, jpeg or jpg)</option>
+                            @if ($applicant->degree_certificate == null)
+                              <option value="degree_certificate">Bachelor Certificate (pdf, png, jpeg or jpg) - Optional</option>
+                            @endif
+                            @if ($applicant->degree_transcript == null)
+                              <option value="degree_transcript">Bachelor Transcript (pdf, png, jpeg or jpg)</option>
+                            @endif
+
                           @else
-                            <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
+                            @if ($applicant->diploma_certificate == null)
+                              <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>                              
+                            @endif
                           @endif
                         @endif
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                         @if($applicant->diploma_certificate == null)
                           <option value="diploma_certificate">Diploma Certificate (pdf, png, jpeg or jpg)</option>
+                        @endif
+                        @if ($applicant->degree_certificate == null)
+                          <option value="degree_certificate">Bachelor Certificate (pdf, png, jpeg or jpg) - Optional</option>
+                        @endif
+                        @if ($applicant->degree_transcript == null)
+                          <option value="degree_transcript">Bachelor Transcript (pdf, png, jpeg or jpg)</option>
                         @endif
                       @endif
                     </select>
