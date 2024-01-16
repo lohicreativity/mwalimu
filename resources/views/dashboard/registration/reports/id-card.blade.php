@@ -32,13 +32,12 @@
         @else
             <img style="width:3.4in;height:2.1in" src="{{ asset('img/WhatsApp Image 2023-10-16 at 14.42.44_9a95e42e.png') }}" />
         @endif
-    @elseif($student->applicant->campus_id == 3){
+    @elseif($student->applicant->campus_id == 3)
         @if ($tuition_payment_check)
             <img style="width:3.4in;height:2.1in" src="{{ asset('img/mnma-id-bg-semi 1&2 Pemba.png') }}" />
         @else
             <img style="width:3.4in;height:2.1in" src="{{ asset('img/mnma-id-bg-semi Pemba.png') }}" />
         @endif
-    }
     @endif
         @if(file_exists(public_path().'/avatars/'.$student->image))
             <img style="position:absolute;top:0.75in;left:0.11in;width:0.85in;height:1.01in" src="{{ asset('avatars/'.$student->image)}}" />
