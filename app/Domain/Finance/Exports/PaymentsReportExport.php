@@ -29,9 +29,9 @@ class PaymentsReportExport implements FromQuery, WithHeadings
                 $q->on('invoices.fee_type_id', '=', 'fee_types.id');
             })
             ->select('students.registration_number as Reg#', 'students.first_name as "First Name"','students.middle_name as "Middle Name"',
-                     'students.surname as Surname','students.gender as Sex','students.phone as Phone','students.year_of_study as "Year of Study"',
-                     'invoices.reference_no as Invoice#', 'invoices.control_no as Control#', 'paid_amount as "Amount Paid"','campus_program.code as "Programme Code"',
-                     'fee_types.name as "Fee Type"');
+                     'students.surname as Surname','students.gender as Sex','students.phone as Phone','students.year_of_study as "Year of Study"', 'campus_program.code as "Programme Code"',
+                     'invoices.reference_no as Invoice#', 'invoices.control_no as Control#', 'fee_types.name as "Fee Type"', 'paid_amount as "Amount Paid"'
+                     );
     }
 
     public function headings(): array
