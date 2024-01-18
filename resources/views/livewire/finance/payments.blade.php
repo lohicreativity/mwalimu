@@ -48,10 +48,10 @@
             <thead>
             <tr>
                 <th>Invoice Number</th>
-                <th>Payer</th>
+                <th>Payer Name</th>
                 <th>Payer ID</th>
                 <th>For</th>
-                <th>Amount</th>
+                <th>Paid Amount</th>
                 <th>Reference Number</th>
                 <th>Control Number</th>
                 <th>Receipt Number</th>

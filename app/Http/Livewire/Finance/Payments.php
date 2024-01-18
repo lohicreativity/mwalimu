@@ -76,6 +76,7 @@ class Payments extends Component
                         fn($q) => $q->where('applicable_id', $this->studyAcademicYear)->where('applicable_type', 'academic_year')
                     ));
             })
+            ->whereHas(function($query){$query->where('invoice.payable.applicant->campus_id',1);})
             ->when(filled($this->from), fn($q) => $q->whereBetween('gateway_payments.created_at', [$this->fromDate(), $this->toDate()]))
 
             ->with(['invoice.payable', 'invoice.feeType',]);
