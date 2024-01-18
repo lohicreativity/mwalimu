@@ -80,6 +80,12 @@ class Payments extends Component
             // ->join('applicants', function(JoinClause $q){
             //     $q->on('invoice.payable.applicant_id', '=', 'applicants.id')->where('campus_id', 1);
             // })
+            ->join('students', function(JoinClause $q){
+                $q->on('invoices.payable_id', '=', 'students.id');
+            })            
+            ->join('campus_program', function(JoinClause $q) {
+                $q->on('students.campus_program_id', '=', 'campus_program.id')->whereIn('campus_id', 1);
+            })
             ->when(filled($this->from), fn($q) => $q->whereBetween('gateway_payments.created_at', [$this->fromDate(), $this->toDate()]))
 
             ->with(['invoice.payable', 'invoice.feeType',]);
