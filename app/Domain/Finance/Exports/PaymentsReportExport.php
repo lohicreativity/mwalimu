@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Models\User;
+use Carbon\Auth;
 
 class PaymentsReportExport implements FromQuery, WithHeadings
 {
