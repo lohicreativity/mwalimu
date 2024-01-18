@@ -22,12 +22,14 @@ class PaymentsReportExport implements FromQuery, WithHeadings
             ->join('students', function(JoinClause $q){
                 $q->on('invoices.payable_id', '=', 'students.id')->where('payable_type', 'student');
             })
-            ->select('students.registration_number', 'invoices.reference_no', 'invoices.control_no as control_number', 'paid_amount');
+            ->select('students.registration_number as Reg#', 'students.first_name as "First Name"','students.middle_name as "Middle Name"',
+                     'students.surname as Surname','students.gender as Sex','students.phone as Phone','students.year_of_study as "Year of Study"',
+                     'invoices.reference_no as Invoice#', 'invoices.control_no as Control#', 'paid_amount as "Amount Paid"');
     }
 
     public function headings(): array
     {
-        return ['registration_number', 'reference_no', 'control_number', 'paid_amount'];
+        return ['Reg#', 'First Name', 'Middle Name', 'Surname', 'Sex', 'Phone', 'Year of Study', 'Invoice#', 'Control#', 'Amount Paid'];
     }
 
 }
