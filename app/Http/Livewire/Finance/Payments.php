@@ -9,6 +9,8 @@ use App\Domain\Finance\Models\GatewayPayment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\User;
+use Auth;
 
 class Payments extends Component
 {
@@ -63,6 +65,13 @@ class Payments extends Component
 
     public function gatewayPayment()
     {
+        $staff = User::find(Auth::user()->id)->staff;
+        if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
+            $campus_id = [1,2,3];
+        }else{
+            $campus_id = [$staff->campus_id];
+        }
+
         return GatewayPayment::query()
             ->when(filled($this->searchInput), function ($query) {
                 $query->where(function ($q){
@@ -80,7 +89,7 @@ class Payments extends Component
             ->join('invoices','gateway_payments.control_no','=','invoices.control_no')
             ->join('students','invoices.payable_id','=','students.id')
             ->join('campus_program','students.campus_program_id','=','campus_program.id')
-            ->where('campus_program.campus_id',2)
+            ->whereIn('campus_program.campus_id',$campus_id)
             ->with(['invoice.payable', 'invoice.feeType',]);
     }
 
