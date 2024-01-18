@@ -9,6 +9,7 @@ use App\Domain\Finance\Models\GatewayPayment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Query\JoinClause;
 
 class Payments extends Component
 {
@@ -76,7 +77,9 @@ class Payments extends Component
                         fn($q) => $q->where('applicable_id', $this->studyAcademicYear)->where('applicable_type', 'academic_year')
                     ));
             })
-            ->whereHas(function($query){$query->where('invoice.payable.applicant->campus_id',1);})
+            ->join('applicants', function(JoinClause $q){
+                $q->on('invoices.payable.applicant_id', '=', 'applicant.id')->where('campus_id', 1);
+            })
             ->when(filled($this->from), fn($q) => $q->whereBetween('gateway_payments.created_at', [$this->fromDate(), $this->toDate()]))
 
             ->with(['invoice.payable', 'invoice.feeType',]);
