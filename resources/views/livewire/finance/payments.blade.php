@@ -62,7 +62,7 @@
                 <tr>
                     <td>{{ $payment->bill_id }}</td>
                     <td>{{ $payment->invoice?->payable?->first_name }} {{ $payment->invoice?->payable?->middle_name }} {{ $payment->invoice?->payable?->surname }}</td>
-                    <td>{{ $payment->invoice->payable?->registration_number }}</td>
+                    <td>{{ $payment->invoice->payable }}</td>
                     <td>{{ $payment->invoice->feeType->name }}</td>
                     <td>{{ number_format($payment->paid_amount,2) }} {{ $payment->ccy }}</td>
                     <td>{{ $payment->pay_refId }}</td>
