@@ -81,7 +81,7 @@ class Payments extends Component
             //     $q->on('invoice.payable.applicant_id', '=', 'applicants.id')->where('campus_id', 1);
             // })
             ->join('students', function(JoinClause $q){
-                $q->on('invoices.payable_id', '=', 'students.id');
+                $q->on('invoice.payable_id', '=', 'students.id');
             })            
             ->join('campus_program', function(JoinClause $q) {
                 $q->on('students.campus_program_id', '=', 'campus_program.id')->where('campus_id', 1);
