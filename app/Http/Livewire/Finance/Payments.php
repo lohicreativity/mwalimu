@@ -80,7 +80,7 @@ class Payments extends Component
             ->join('invoices','gateway_payments.control_no','=','invoices.control_no')
             ->join('students','invoices.payable_id','=','students.id')
             ->join('campus_program','students.campus_program_id','=','campus_program.id')
-            ->where('campus_program.campus_id',1)
+            ->where('campus_program.campus_id',2)
             ->with(['invoice.payable', 'invoice.feeType',]);
     }
 
