@@ -18,7 +18,12 @@ class ACPACController extends Controller
     public function invoices(Request $request)
     {
         if($request->get('begin_date') && $request->get('end_date')){
-              $invoices = Invoice::has('payable')->where('payable_type','student')->with(['payable.campusProgram.program','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
+              $invoices = Invoice::has('payable')->where('payable_type','student')
+                  ->with(['payable.campusProgram.program','feeType'])
+                  ->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))
+                  ->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))
+                  ->where('applicable_id',$request->get('study_academic_year_id'))
+                  ->where('applicable_type','academic_year')->latest()->get();
         }else{
               $invoices = Invoice::has('payable')->where('payable_type','student')->with(['payable.campusProgram.program','feeType'])->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }
@@ -37,7 +42,7 @@ class ACPACController extends Controller
     public function downloadInvoices(Request $request)
     {
          $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
                       'Content-Disposition' => 'attachment; filename=INVOICES-.'.date('Y-m-d').'.csv',
                       'Expires'             => '0',
@@ -49,11 +54,11 @@ class ACPACController extends Controller
         }else{
               $invoices = Invoice::has('payable')->where('payable_type','student')->with(['payable.campusProgram.program','feeType'])->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }
-       $callback = function() use ($invoices) 
+       $callback = function() use ($invoices)
           {
               $file_handle = fopen('php://output', 'w');
               fputcsv($file_handle,['REFERENCE NUMBER','CUSTOMER ID','PAYER NAME','PROGRAMME','YEAR OF STUDY','BILL TYPE','BILL AMOUNT','CURRENCY','CONTROL NUMBER','DATE CREATED']);
-              foreach ($invoices as $invoice) { 
+              foreach ($invoices as $invoice) {
 
                   if($invoice->payable_type == 'student'){
                   $stud_reg = substr($invoice->payable->registration_number, 5);
@@ -124,7 +129,7 @@ class ACPACController extends Controller
     public function downloadReceipts(Request $request)
     {
          $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                       'Content-type'        => 'text/csv',
                       'Content-Disposition' => 'attachment; filename=RECEIPTS-.'.date('Y-m-d').'.csv',
                       'Expires'             => '0',
@@ -159,11 +164,11 @@ class ACPACController extends Controller
                ->get();
         }
 
-        $callback = function() use ($receipts) 
+        $callback = function() use ($receipts)
           {
               $file_handle = fopen('php://output', 'w');
               fputcsv($file_handle,['RECEIPT NUMBER','CUSTOMER ID','PAYER NAME','PROGRAMME','YEAR OF STUDY','BILL AMOUNT','PAID AMOUNT','CURRENCY','CONTROL NUMBER','DATE CREATED']);
-              foreach ($receipts as $receipt) { 
+              foreach ($receipts as $receipt) {
 
                   if($receipt->payable_type == 'student'){
                   $stud_reg = substr($receipt->registration_number, 5);
@@ -185,6 +190,6 @@ class ACPACController extends Controller
           };
 
           return response()->stream($callback, 200, $headers);
-        
+
     }
 }

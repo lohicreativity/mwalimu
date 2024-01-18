@@ -27,18 +27,20 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 
-  <link rel="stylesheet" type="text/css" 
+  <link rel="stylesheet" type="text/css"
      href="{{ asset('css/toastr.min.css') }}">
-  <link rel="stylesheet" type="text/css" 
+  <link rel="stylesheet" type="text/css"
      href="{{ asset('css/foundation-datepicker.min.css') }}">
-  <link rel="stylesheet" type="text/css" 
+  <link rel="stylesheet" type="text/css"
      href="{{ asset('css/select2.min.css') }}">
-  <link rel="stylesheet" type="text/css" 
+  <link rel="stylesheet" type="text/css"
      href="{{ asset('css/datatables.min.css') }}">
   <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css?version='.config('constants.VERSION')) }}">
+    @livewireStyles
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 
 
@@ -111,14 +113,14 @@ $('.assign-table').DataTable({
 
 <script>
 $(".check-all-btn").click(function(){
-  $('.assign-checkbox').each(function() { 
-		this.checked = true; 
+  $('.assign-checkbox').each(function() {
+		this.checked = true;
 	});
 });
 
 $(".uncheck-all-btn").click(function(){
-  $('.assign-checkbox').each(function() { 
-		this.checked = false; 
+  $('.assign-checkbox').each(function() {
+		this.checked = false;
 	});
 });
 </script>
@@ -160,12 +162,12 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 
          $($(e.target).find('input[name=results_container]').val()).html(element);
          $($(e.target).find('input[name=display_modal]').val()).modal('show');
-         
+
          $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.nacte_details.id);
          $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_reg_no]').val(data.nacte_details.registration_number);
 
          }
-         
+
      });
 });
 </script>
@@ -213,7 +215,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         _token:$(e.target).data('token'),
         campus_id: $('#campus_id').val(),
         unit_category_id:$(e.target).val()
-      }      
+      }
       }).done(function(data, status){
           if(status == "success") {
 
@@ -222,7 +224,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
               $("#parents").remove();
               $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>');
               $("#parent_input").append('<input type="hidden" name="parent_id" value="'+data.campus.id+'"></input>');
-              
+
             } else if('faculties' in data) {
 
               var element = '<option value="">Select Faculty</option>';
@@ -232,7 +234,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
               $($(e.target).data('target')).html(element);
 
             }
-      
+
           }
       }); */
 
@@ -246,7 +248,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         data:{
           _token:$(e.target).data('token'),
           unit_category_id:$(e.target).val()
-        }      
+        }
         }).done(function(data, status){
             if(status == "success") {
               if(data.campuses.length > 0){
@@ -259,7 +261,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
               }else{
                   $('#parent-label').hide();
                   $('#parents').hide();
-    
+
               }
             }
         });
@@ -274,21 +276,21 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         _token:$(e.target).data('token'),
         campus_id: campus_id,
         unit_category_id:$(e.target).val()
-        }      
+        }
         }).done(function(data, status){
           if(status == "success") {
             if(data.faculties.length > 0){
-              var element = '<option value="">Select Faculty</option>'; 
+              var element = '<option value="">Select Faculty</option>';
               for(var i=0; i<data.faculties.length; i++){
               element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
-              
+
               }
               $($(e.target).data('target')).html(element);
-              
+
             }else{
               $('#parent-label').hide();
               $('#parents').hide();
-              
+
             }
           }
         });
@@ -304,7 +306,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         _token:$(e.target).data('token'),
         campus_id: $('#campus_id').val(),
         unit_category_id:$(e.target).val()
-        }      
+        }
         }).done(function(data, status){
           if(status == "success") {
             if(data.departments.length > 0){
@@ -317,11 +319,11 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
             }else{
                 $('#parent-label').hide();
                 $('#parents').hide();
-  
+
             }
           }
         });
-      } 
+      }
 
 
     // $.ajax({
@@ -330,7 +332,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     // data:{
     //   _token:$(e.target).data('token'),
     //   unit_category_id:$(e.target).val()
-    // }      
+    // }
     // }).done(function(data, status){
     //     if(status == 'success'){
 
@@ -369,8 +371,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 
     //       }
 
-           
-    //     } 
+
+    //     }
     // });
 
   });
@@ -390,7 +392,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         data:{
           _token:$(e.target).data('token'),
           unit_category_id:$(e.target).val()
-        }      
+        }
         }).done(function(data, status){
             if(status == "success") {
               if(data.campuses.length > 0){
@@ -403,7 +405,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
               }else{
                   $('#parent-label').hide();
                   $('#parents').hide();
-    
+
               }
             }
         });
@@ -418,21 +420,21 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         _token:$(e.target).data('token'),
         campus_id: $('#campus_id').val(),
         unit_category_id:$(e.target).val()
-        }      
+        }
         }).done(function(data, status){
           if(status == "success") {
             if(data.faculties.length > 0){
-              var element = '<option value="">Select Faculty</option>'; 
+              var element = '<option value="">Select Faculty</option>';
               for(var i=0; i<data.faculties.length; i++){
               element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
-              
+
               }
               $($(e.target).data('target')).html(element);
-              
+
             }else{
               $('#parent-label').hide();
               $('#parents').hide();
-              
+
             }
           }
         });
@@ -448,7 +450,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
           _token:$(e.target).data('token'),
           campus_id: $('.modal #campus_id').val(),
           unit_category_id:$(e.target).val()
-          }      
+          }
         }).done(function(data, status){
           if(status == "success") {
             if(data.departments.length > 0){
@@ -459,20 +461,20 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
              /*  $($(e.target).data('target')).modal('.modal').html(element); */
               $('#parents').html(element);
               $('#ss-edit-department').modal('show');
-/*               
+/*
               $($(e.target).find('select[name=parent_id]').val()).html(element);
          $($(e.target).find('input[name=display_modal]').val()).modal('show');
-         
+
          $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.nacte_details.id);
          $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_reg_no]').val(data.nacte_details.registration_number); */
             }else{
                 $('.modal #parent-label').hide();
                 $('.modal #parents').hide();
-  
+
             }
           }
         });
-      } 
+      }
     });
 </script>
 
@@ -493,7 +495,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
   {
     "closeButton" : true,
     "progressBar" : true
-  } 
+  }
         @if(is_iterable($errors->all()))
         toastr.error("{{ implode('\n',$errors->all()) }}");
         @else
@@ -537,6 +539,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         toastr.warning("{{ session('warning') }}");
   @endif
 </script>
+
+@livewireScripts
 </body>
 </html>
 

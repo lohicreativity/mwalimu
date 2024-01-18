@@ -34,7 +34,7 @@ class UpdateGatewayPayment extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->handle();
+        //$this->handle();
     }
 
     /**
@@ -43,7 +43,7 @@ class UpdateGatewayPayment extends Command
      * @return int
      */
     public function handle()
-    {
+    {return 0;
         DB::beginTransaction();
         $gatepays = GatewayPayment::where('is_updated',0)->get();
         foreach($gatepays as $gatepay){

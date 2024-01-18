@@ -15,4 +15,9 @@ class GatewayPayment extends Model
      * Establish one to one relationship with gateway payments
      */
 
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'bill_id', 'reference_no');
+    }
+
 }
