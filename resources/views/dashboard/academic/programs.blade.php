@@ -330,8 +330,8 @@
                                         {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
                                           <div class="row">
                                             <div class="form-group col-4">
-                                              {!! Form::label('','Code') !!}
-                                              {!! Form::text('code',$campusProgram->code,$code) !!}
+                                              {!! Form::label('','General Code') !!}
+                                              {!! Form::text('code',$program->code,$code) !!}
                                             </div>
                                             <div class="form-group col-8">
                                               {!! Form::label('','Name') !!}
