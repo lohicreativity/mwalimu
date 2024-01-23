@@ -5054,6 +5054,7 @@ class ApplicationController extends Controller
             $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
             $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
 
+            return "$stud_reg - $stud_group - $stud_name - $applicant->address";
             if ($tuition_invoice) {
 
                 $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,
