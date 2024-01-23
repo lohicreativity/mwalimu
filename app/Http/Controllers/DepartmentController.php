@@ -25,7 +25,7 @@ class DepartmentController extends Controller
 	   $departments[] = null;
 	  
       if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
-         $departments = Department::with('unitCategory')->latest()->get();
+         $departments = Department::whereHas('campuses')->with('unitCategory')->latest()->get();
          $faculties = Faculty::all();
          
       }elseif(Auth::user()->hasRole('admission-officer')) {
@@ -42,10 +42,10 @@ class DepartmentController extends Controller
          ->where('campuses.id', $staff->campus_id)
          ->get(); */ 
       }
-
+return count($departments);
     	$data = [
            'unit_categories'  =>UnitCategory::all(),
-           'all_departments'  =>Department::all(),
+           'all_departments'  =>Department::where('parent_id','>',0)->get(),
            'campuses'         =>Campus::all(),
            'staff'            => $staff,
            'departments'      => $departments,
@@ -97,7 +97,7 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {
+    {return $request;
 
       if (Auth::user()->hasRole('administrator')) {
 
@@ -135,7 +135,7 @@ class DepartmentController extends Controller
       if($department){
          return redirect()->back()->with('error','Department name has already been used1');
       }
-  return 1;
+
         try {
 
          (new DepartmentAction)->update($request);

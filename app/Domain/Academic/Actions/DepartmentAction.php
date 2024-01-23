@@ -5,7 +5,7 @@ namespace App\Domain\Academic\Actions;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Repositories\Interfaces\DepartmentInterface;
-use Auth;
+use Auth, DB;
 
 class DepartmentAction implements DepartmentInterface{
 	

@@ -103,6 +103,7 @@
                         <option value="">Select Type</option>
                         @foreach($unit_categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
+
                         @endforeach
                       </select>
                     </div>
@@ -194,7 +195,7 @@
                                   @break   
                                 @endif
                               @endforeach
-                            @elseif($dept->id == $department->id && $department->unit_category_id == 2 )
+                            @elseif($dept->id == $department->id && $department->unit_category_id == 2 ) {{ $department }}
                               @foreach($faculties as $faculty)
                                 @if($department->parent_id == $faculty->id)
                                   {{ $faculty->name }}
@@ -283,7 +284,7 @@
                                       <div class="form-group col-4">
                                         {!! Form::label('','Campus') !!}
                                         <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
-                                        <select name="campus_id" class="form-control" id="campuses" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                                        <select name="campus_id" class="form-control" id="campuses-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                         <option value="">Select Campus</option>
                                         @foreach($campuses as $cp)
                                         <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
@@ -292,7 +293,7 @@
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Type') !!}
-                                        <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                                        <select name="unit_category_id" class="form-control" id="unit-categories-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                           <option value="">Select Type</option>
                                           @foreach($unit_categories as $category)
                                           <option value="{{ $category->id }}" @if($department->unit_category_id == $category->id) selected = 'selected' @endif>{{ $category->name }}</option>
@@ -300,9 +301,11 @@
                                         </select>
                                       </div>
                                       <div class="form-group col-4">
-                                        {!! Form::label('','Parent',array('id' => 'parent-label')) !!}
+                                        {!! Form::label('','Parent',array('id' => 'parent-label-edit')) !!}
+  
                                         <div id="parent_input"></div>
-                                        <select name="parent_id" id="parents" class="form-control">
+                                        <select name="parent_id" id="parents-edit" class="form-control">
+
                                           <option value="">Select Parent</option>
                                           @foreach($all_departments as $dept)
                                           @php
@@ -331,11 +334,13 @@
                                               }
                                             } 
                                         @endphp
-                                          <option value="{{ $department->id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $parent_name }} - @foreach($department->campuses as $campus) {{ $campus->name }} @endforeach
+
+                                          <option value="{{ $department->id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $dept->name }}
                                           </option>
                                           @endforeach 
                                         </select>
                                       </div>
+
                                       {!! Form::input('hidden','current_parent_id',$current_parent_id) !!}
                                     </div>
 
@@ -343,7 +348,7 @@
                                     <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Type') !!}
-                                        <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                                        <select name="unit_category_id" class="form-control" id="unit-categories-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                           <option value="">Select Type</option>
                                           @foreach($unit_categories as $category)
                                           <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -351,9 +356,9 @@
                                         </select>
                                       </div>
                                       <div class="form-group col-6">
-                                        {!! Form::label('','Parent',array('id' => 'parent-label')) !!}
+                                        {!! Form::label('','Parent',array('id' => 'parent-label-edit')) !!}
                                         <div id="parent_input_edit"></div>
-                                        <select name="parent_id" id="parents" class="form-control">
+                                        <select name="parent_id" id="parents-edit" class="form-control">
                                           <option value="">Select Parent</option>
                                           @foreach($departments as $department)
                                           <option value="{{ $department->id }}">{{ $department->name }}</option>
