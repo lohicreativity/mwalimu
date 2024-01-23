@@ -297,7 +297,7 @@
                                               <option value="{{ $cp->id }}">{{ $cp->name }}</option>
                                               @break
                                             @endif
-                                          @endif
+                                          @endforeach
                                         @endforeach
                                         </select>
                                       </div>
