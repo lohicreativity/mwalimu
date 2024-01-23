@@ -337,7 +337,7 @@
                                             } 
                                         @endphp
 
-                                          <option value="{{ $department->id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $dept->name }}
+                                          <option value="{{ $department->parent_id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $dept->name }}
                                           </option>
                                           @endforeach 
                                         </select>
