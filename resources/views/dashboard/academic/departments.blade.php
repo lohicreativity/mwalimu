@@ -254,6 +254,7 @@
                                         'class'=>'form-control',
                                         'rows'=>2
                                       ];
+                                      $current_edited_parent_id = $department->parent_id;
                                     @endphp
 
                                     {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
@@ -342,7 +343,7 @@
                                         </select>
                                       </div>
 
-                                      {!! Form::input('hidden','current_parent_id',$current_parent_id) !!}
+                                      {!! Form::input('hidden','current_parent_id',$current_edited_parent_id) !!}
                                     </div>
 
                                     @elseif(Auth::user()->hasRole('admission-officer'))
