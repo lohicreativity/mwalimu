@@ -196,7 +196,7 @@
                                 @endif
                               @endforeach
                             @elseif($dept->id == $department->id && $department->unit_category_id == 2 )
-                            {{ $dept->id }} {{ $department->id }}
+
                               @foreach($faculties as $faculty)
                                 @if($department->parent_id == $faculty->id)
                                   {{ $faculty->name }}
