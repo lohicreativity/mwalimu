@@ -97,7 +97,7 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {return $request;
+    {
 
       if (Auth::user()->hasRole('administrator')) {
 
@@ -133,7 +133,7 @@ class DepartmentController extends Controller
                                ->first();
 
       if($department){
-         return redirect()->back()->with('error','Department name has already been used1');
+         return redirect()->back()->with('error','Department name has already been used');
       }
 
         try {
