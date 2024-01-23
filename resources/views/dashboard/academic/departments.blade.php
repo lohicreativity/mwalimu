@@ -289,7 +289,15 @@
                                         <select name="campus_id" class="form-control" id="campuses-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                         <option value="">Select Campus</option>
                                         @foreach($campuses as $cp)
-                                        <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                                          @foreach($departments->campuses as $dept_camp)
+                                            @if($cp->id == $dept_camp->campus_id)
+                                              <option value="{{ $cp->id }}" selected="selected">{{ $cp->name }}</option>
+                                              @break
+                                            @else
+                                              <option value="{{ $cp->id }}">{{ $cp->name }}</option>
+                                              @break
+                                            @endif
+                                          @endif
                                         @endforeach
                                         </select>
                                       </div>
