@@ -337,7 +337,7 @@
                                             } 
                                         @endphp
 
-                                          <option value="{{ $department->parent_id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $dept->name }}
+                                          <option value="{{ $department->id }}" @if($department->parent_id == $parent_id) selected = 'selected' @endif>{{ $dept->name }}
                                           </option>
                                           @endforeach 
                                         </select>
@@ -362,7 +362,7 @@
                                         <div id="parent_input_edit"></div>
                                         <select name="parent_id" id="parents-edit" class="form-control">
                                           <option value="">Select Parent</option>
-                                          @foreach($departments as $department)
+                                          @foreach($all_departments as $department)
                                           <option value="{{ $department->id }}">{{ $department->name }}</option>
                                           @endforeach 
                                         </select>
