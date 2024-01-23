@@ -360,7 +360,7 @@
                                       <div class="form-group col-6">
                                         {!! Form::label('','Parent',array('id' => 'parent-label-edit')) !!}
                                         <div id="parent_input_edit"></div>
-                                        <select name="parent_id" id="parents-edit" class="form-control">
+                                        <select name="parent_id_edit" id="parents-edit" class="form-control">
                                           <option value="">Select Parent</option>
                                           @foreach($all_departments as $dept)
                                           <option value="{{ $dept->id }}">{{ $dept->name }}</option>
