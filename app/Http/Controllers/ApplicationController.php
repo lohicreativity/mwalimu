@@ -4654,6 +4654,9 @@ class ApplicationController extends Controller
 
                     $stud_group = 'C'.$stud_group[1].'Z9';
 
+                }elseif(str_contains(strtolower($selection->campusProgram->program->name), 'master')){
+                    $stud_group =$stud_group[0].$stud_group[1];
+                    
                 }
 
 
