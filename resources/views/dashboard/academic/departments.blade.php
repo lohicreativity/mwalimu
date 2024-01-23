@@ -284,7 +284,7 @@
                                     @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                                     <div class="row">
                                       <div class="form-group col-4">
-                                        {!! Form::label('','Campus') !!}
+                                        {!! Form::label('','Campus') !!} {{ $department->campuses[0] }}
                                         <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
                                         <select name="campus_id" class="form-control" id="campuses-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                         <option value="">Select Campus</option>
