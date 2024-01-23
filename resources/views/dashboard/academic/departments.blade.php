@@ -362,8 +362,8 @@
                                         <div id="parent_input_edit"></div>
                                         <select name="parent_id" id="parents-edit" class="form-control">
                                           <option value="">Select Parent</option>
-                                          @foreach($all_departments as $department)
-                                          <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                          @foreach($all_departments as $dept)
+                                          <option value="{{ $dept->id }}">{{ $dept->name }}</option>
                                           @endforeach 
                                         </select>
                                       </div>
