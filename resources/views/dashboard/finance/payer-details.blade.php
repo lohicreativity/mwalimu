@@ -139,7 +139,7 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">
-										@if(Auth::user()->hasRole('finance-oficer'))
+										@if(Auth::user()->hasRole('finance-officer'))
 											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a><br><br>
 										@endif									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
