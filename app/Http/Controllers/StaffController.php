@@ -242,13 +242,15 @@ class StaffController extends Controller
 		if(!empty($request->keyword)){
             $staff = User::find(Auth::user()->id)->staff;
 
-            $applicant = Applicant::select('id','campus_id')
-                                  ->where('index_number',$request->keyword)
-                                  ->where('campus_id',$staff->campus_id)
-                                  ->latest()->first();
-            $applicant_id = $applicant? $applicant->id : 0;
+
 
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
+                $applicant = Applicant::select('id','campus_id')
+                                        ->where('index_number',$request->keyword)
+                                        ->latest()->first();
+                
+                $applicant_id = $applicant? $applicant->id : 0;
+
                 $student_payer = Student::where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})
                                         ->with(['applicant','campusProgram.program','studentShipStatus'])->first();
@@ -259,6 +261,13 @@ class StaffController extends Controller
                                             ->latest()
                                             ->first();
             }else{
+                $applicant = Applicant::select('id','campus_id')
+                                        ->where('index_number',$request->keyword)
+                                        ->where('campus_id',$staff->campus_id)
+                                        ->latest()->first();
+
+                $applicant_id = $applicant? $applicant->id : 0;
+
                 $student_payer = Student::where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})
                                         ->whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
