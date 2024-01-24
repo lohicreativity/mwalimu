@@ -169,7 +169,7 @@
 
                                                             {!! Form::open(['url'=>'settings/faculty/update','class'=>'ss-form-processing']) !!}
                                                             <div class="row">
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-5">
                                                                     <div class="form-group">
                                                                         {!! Form::label('','Faculty Name') !!}
                                                                         {!! Form::text('name', $faculty->name, $name) !!}
@@ -177,9 +177,9 @@
                                                                         {!! Form::input('hidden','faculty_id', $faculty->id) !!}
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <div class="form-group">
-                                                                        {!! Form::label('','Faculty Abbreviation') !!}
+                                                                        {!! Form::label('','Abbreviation') !!}
                                                                         {!! Form::text('abbreviation', $faculty->abbreviation, $abbreviation) !!}
                                                                     </div>
                                                                 </div>
