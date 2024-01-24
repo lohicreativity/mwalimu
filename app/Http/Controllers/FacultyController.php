@@ -91,7 +91,7 @@ class FacultyController extends Controller
            }
         }
 
-
+return $request;
         (new FacultyAction)->update($request);
 
 
