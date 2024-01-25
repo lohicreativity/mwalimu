@@ -22,7 +22,7 @@ class DepartmentController extends Controller
     public function index()
     {
       $staff = User::find(Auth::user()->id)->staff;
-	   $departments[] = null;
+	   $departments[] = $faculties[] = null;
 	  
       if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
          $departments = Department::whereHas('campuses')->with(['unitCategory','campuses'])->latest()->get();
