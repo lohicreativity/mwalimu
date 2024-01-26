@@ -46,7 +46,7 @@ class ModuleAssignmentController extends Controller
 	public function index(Request $request)
 	{
     $staff = User::find(Auth::user()->id)->staff;
-    $campus_department[] = CampusProgram::select('department_id')->all();
+    $campus_department[] = CampusProgram::select('department_id')->get();
 						return count($campus_department);			
 		$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
