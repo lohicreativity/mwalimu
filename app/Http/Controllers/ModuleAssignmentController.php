@@ -32,6 +32,7 @@ use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Domain\Academic\Models\ModuleAssignmentRequest;
+use App\Domain\Settings\Models\CampusDepartment;
 use App\Mail\StaffModuleAssigned;
 use App\Models\User;
 use App\Utils\Util;
@@ -46,7 +47,7 @@ class ModuleAssignmentController extends Controller
 	public function index(Request $request)
 	{
     $staff = User::find(Auth::user()->id)->staff;
-    $campus_department[] = CampusProgram::select('department_id')->get();
+    $campus_department[] = CampusDepartment::select('department_id')->get();
 						return count($campus_department);			
 		$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
