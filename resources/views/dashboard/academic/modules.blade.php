@@ -115,8 +115,13 @@
                     {!! Form::label('','Department') !!}
                     <select name="department_id" class="form-control" required>
                       @foreach($departments as $department)
+                        @php
+                          $department_name = str_replace(' Of ',' of ',$department->name);
+                          $department_name = str_replace(' And ',' and ',$department_name);
+                          $department_name = str_replace(' In ',' in ',$department_name);
+                        @endphp
                       @if($staff->department_id == $department->id)
-                      <option value="{{ $department->id }}" selected="selected">{{ $department->name }}</option>
+                      <option value="{{ $department->id }}" selected="selected">{{ $department_name }}</option>
                       @endif
                       @endforeach
                     </select>
@@ -199,8 +204,13 @@
                   </thead>
                   <tbody>
                   @foreach($modules as $module)
+                    @php
+                      $module_name = str_replace(' Of ',' of ',$module->name);
+                      $module_name = str_replace(' And ',' and ',$module_name);
+                      $module_name = str_replace(' In ',' in ',$module_name);
+                    @endphp
                   <tr>
-                    <td>{{ $module->name }}</td>
+                    <td>{{ $module_name }}</td>
                     <td>{{ $module->code }}</td>
                     <td>{{ $module->credit }}</td>
                     <td>{{ $module->ntaLevel->name }}</td>

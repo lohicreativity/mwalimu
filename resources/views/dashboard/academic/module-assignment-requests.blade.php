@@ -105,9 +105,18 @@
                           </thead>
                           <tbody>  
                       @foreach($requests as $req)
+                        @php
+                          $module_name = str_replace(' Of ',' of ',$req->module->name);
+                          $module_name = str_replace(' And ',' and ',$module_name);
+                          $module_name = str_replace(' In ',' in ',$module_name);
 
+                          $program_name = str_replace(' Of ',' of ',$req->campusProgram->program->name);
+                          $program_name = str_replace(' And ',' and ',$program_name);
+                          $program_name = str_replace(' In ',' in ',$program_name);
+                          
+                        @endphp
                         <tr>
-                        <td>{{ $req->module->name }}
+                        <td>{{ $module_name }}
                           <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $req->user->staff->title }} {{ $req->user->staff->first_name }} {{ $req->user->staff->middle_name }} {{ $req->user->staff->surname }} - {{ $req->user->staff->campus->name }}</p>
                           @if($req->programModuleAssignment)
@@ -157,7 +166,7 @@
                             @endif
                           @endif
                         </td>
-                        <td>{{ $req->campusProgram->program->name }}</td>
+                        <td>{{ $program_name }}</td>
                         <td>{{ $req->module->code }}</td>
                         <td>{{ $req->programModuleAssignment->year_of_study }}</td>
                         <td>{{ $req->programModuleAssignment->semester->name }}</td>

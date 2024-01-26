@@ -84,9 +84,14 @@
 
 
             @if(count($assignments) != 0 && $study_academic_year)
+              @php
+                $department_name = str_replace(' Of ',' of ',$staff->department->name);
+                $department_name = str_replace(' And ',' and ',$department_name);
+                $department_name = str_replace(' In ',' in ',$department_name);
+              @endphp
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Module Assignment Requests - {{ $staff->department->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Module Assignment Requests - {{ $department_name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -106,9 +111,18 @@
                           </thead>
                           <tbody>  
                       @foreach($assignments as $assign)
+                        @php
+                          $module_name = str_replace(' Of ',' of ',$module->name);
+                          $module_name = str_replace(' And ',' and ',$module_name);
+                          $module_name = str_replace(' In ',' in ',$module_name);
 
+                          $program_name = str_replace(' Of ',' of ',$assign->programModuleAssignment->campusProgram->program->name);
+                          $program_name = str_replace(' And ',' and ',$program_name);
+                          $program_name = str_replace(' In ',' in ',$program_name);
+
+                        @endphp
                         <tr>
-                        <td>{{ $assign->module->name }}
+                        <td>{{ $module_name }}
                           <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $assign->user->staff->title }} {{ $assign->user->staff->first_name }} {{ $assign->user->staff->middle_name }} {{ $assign->user->staff->surname }} - {{ $assign->staff->campus->name }}</p>
                           @if($assign->programModuleAssignment)
