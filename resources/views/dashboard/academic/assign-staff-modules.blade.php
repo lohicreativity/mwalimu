@@ -67,12 +67,17 @@
                     <select name="campus_program_id" class="form-control" required>
                        <option value="">Select Programme</option>
                        @foreach($campus_programs as $prog)
+                          @php
+                            $prog_name = str_replace(' Of ',' of ',$prog->program->name);
+                            $prog_name = str_replace(' And ',' and ',$prog_name);
+                            $prog_name = str_replace(' In ',' in ',$prog_name);
+                          @endphp
                          @if(Auth::user()->hasRole('hod'))
                          @if($staff->campus_id == $prog->campus_id && App\Utils\Util::collectionContainsKey($prog->program->departments,$staff->department_id))
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->code }} - {{ $prog->campus->name }}</option>
+                         <option value="{{ $prog->id }}">{{ $prog_name }} - {{ $prog->code }} - {{ $prog->campus->name }}</option>
                          @endif
                          @else
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->code }} - {{ $prog->campus->name }}</option>
+                         <option value="{{ $prog->id }}">{{ $prog_name }} - {{ $prog->code }} - {{ $prog->campus->name }}</option>
                          @endif
                        @endforeach
                     </select>
@@ -115,9 +120,14 @@
 
 
             @if($study_academic_year && $campus_program)
+              @php
+                $program_name = str_replace(' Of ',' of ',$campus_program->program->name);
+                $program_name = str_replace(' And ',' and ',$program_name);
+                $program_name = str_replace(' In ',' in ',$program_name);
+              @endphp
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ $campus_program->program->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">{{ $program_name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -136,12 +146,16 @@
                           </thead>
                           <tbody>  
                       @foreach($campus_program->programModuleAssignments as $assign)
+                        @php
+                          $module_name = str_replace(' Of ',' of ',$assign->module->name);
+                          $module_name = str_replace(' And ',' and ',$module_name);
+                        @endphp
                         @for($i = 1; $i<=3; $i++)
 							@if($i == $assign->year_of_study)
 								@for($j = 1; $j<=2; $j++)
 									@if($j == $assign->semester->id)
                         <tr>
-                        <td>{{ $assign->module->name }}
+                        <td>{{ $module_name }}
 							  @if($module_assignment_requests)
 								  @foreach($module_assignment_requests as $request)
 									@if($request->module_id == $assign->module->id)
