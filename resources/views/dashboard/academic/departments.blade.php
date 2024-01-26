@@ -180,10 +180,11 @@
                     @foreach($departments as $department)
                       @php
                         $current_parent_id = $department->id;
+                        $dept_name = str_replace(' Of ',' of ',$department->name);
                       @endphp
                       <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $department->name }}</td>
+                        <td>{{ $dept_name }}</td>
                         <td>{{ $department->abbreviation }}</td>
                         <td>{{ $department->unitCategory->name }}</td>
                         <td>
