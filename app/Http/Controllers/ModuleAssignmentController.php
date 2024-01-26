@@ -79,7 +79,7 @@ class ModuleAssignmentController extends Controller
 	  //whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
      //               $query->where('d',$staff->department_id);
        //        })->
-       $x = Staff::whereHas('department.campuses')->with(['designation','campus','department'])->get();
+       $x = Staff::with(['designation','campus','department'])->get();
 return count($x);
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
