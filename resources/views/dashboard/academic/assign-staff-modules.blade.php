@@ -149,6 +149,7 @@
                         @php
                           $module_name = str_replace(' Of ',' of ',$assign->module->name);
                           $module_name = str_replace(' And ',' and ',$module_name);
+                          $module_name = str_replace(' In ',' in ',$module_name);
                         @endphp
                         @for($i = 1; $i<=3; $i++)
 							@if($i == $assign->year_of_study)
