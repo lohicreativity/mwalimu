@@ -21,7 +21,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Assessment Results') }} - {{ $module_assignment->module->name }} - {{ $module_assignment->module->code }}</h1>
+            @php
+              $module_name = str_replace(' Of ',' of ',$module_assignment->module->name);
+              $module_name = str_replace(' And ',' and ',$module_name);
+              $module_name = str_replace(' In ',' in ',$module_name);
+
+            @endphp
+            <h1>{{ __('Assessment Results') }} - {{ $module_name }} - {{ $module_assignment->module->code }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

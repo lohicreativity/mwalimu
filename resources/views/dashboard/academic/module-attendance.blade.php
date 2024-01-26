@@ -21,7 +21,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Attendance') }} - {{ $module_assignment->programModuleAssignment->module->name }} - {{ $module_assignment->programModuleAssignment->module->code }}</h1>
+            @php
+              $module_name = str_replace(' Of ',' of ',$module_assignment->programModuleAssignment->module->name);
+              $module_name = str_replace(' And ',' and ',$module_name);
+              $module_name = str_replace(' In ',' in ',$module_name);
+
+            @endphp
+            <h1>{{ __('Attendance') }} - {{ $module_name }} - {{ $module_assignment->programModuleAssignment->module->code }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -76,9 +82,12 @@
                     </thead>
                     <tbody>
                        
-                           @php
-                             $students_number = 0;
-                           @endphp
+                          @php
+                            $students_number = 0;
+                            $program_name = str_replace(' Of ',' of ',$campus_program->program->name);
+                            $program_name = str_replace(' And ',' and ',$program_name);
+                            $program_name = str_replace(' In ',' in ',$program_name);
+                          @endphp
                            @foreach($campus_program->students as $stud)
                              @if($stud->studentshipStatus)
                              @foreach($stud->registrations as $reg)
@@ -91,7 +100,9 @@
                              @endif
                            @endforeach
                        <tr>
-                        <td><a href="{{ url('academic/campus/campus-program/'.$campus_program->id.'/attendance?year_of_study='.$module_assignment->programModuleAssignment->year_of_study.'&study_academic_year_id='.$module_assignment->programModuleAssignment->study_academic_year_id.'&semester_id='.$module_assignment->programModuleAssignment->semester_id) }}" target="_blank">{{ $campus_program->program->name }} - Year {{ $module_assignment->programModuleAssignment->year_of_study }} ({{ $students_number }})</a>
+                        <td><a href="{{ url('academic/campus/campus-program/'.$campus_program->id.'/attendance?year_of_study='.$module_assignment->programModuleAssignment->year_of_study.
+                        '&study_academic_year_id='.$module_assignment->programModuleAssignment->study_academic_year_id.'&semester_id='.$module_assignment->programModuleAssignment->semester_id) }}" 
+                        target="_blank">{{ $program_name }} - Year {{ $module_assignment->programModuleAssignment->year_of_study }} ({{ $students_number }})</a>
                          </td>
                          <td>   
 
