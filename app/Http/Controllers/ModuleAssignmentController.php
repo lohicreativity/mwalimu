@@ -47,8 +47,8 @@ class ModuleAssignmentController extends Controller
 	public function index(Request $request)
 	{
     $staff = User::find(Auth::user()->id)->staff;
-    $campus_department = CampusDepartment::select('department_id')->get();
-						return $campus_department->department_id;			
+    // $campus_department = CampusDepartment::select('department_id')->get();
+	// 					return $campus_department->department_id;			
 		$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
@@ -79,7 +79,8 @@ class ModuleAssignmentController extends Controller
 	  //whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
      //               $query->where('d',$staff->department_id);
        //        })->
-
+       $x = Staff::whereHas('department.campuses')->with(['designation','campus','department'])->get();
+return count($x);
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
 
