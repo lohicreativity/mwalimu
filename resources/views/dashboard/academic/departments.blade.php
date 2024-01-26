@@ -181,6 +181,7 @@
                       @php
                         $current_parent_id = $department->id;
                         $dept_name = str_replace(' Of ',' of ',$department->name);
+                        $dept_name = str_replace(' And ',' and ',$dept_name);
                       @endphp
                       <tr>
                         <td>{{ $loop->iteration }}</td>
