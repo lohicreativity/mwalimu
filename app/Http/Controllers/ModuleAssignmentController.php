@@ -66,7 +66,7 @@ class ModuleAssignmentController extends Controller
            },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
            },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
-           'staffs'=>Staff::with(['designation','campus','department'])->get(),
+           'staffs'=>Staff::whereHas('department.campuses')->with(['designation','campus','department'])->get(),
            'semesters'=>Semester::all(),
            'staff'=>$staff,
 /* 		   'module_assignment_requets'=>ModuleAssignmentRequest::with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])
@@ -79,8 +79,6 @@ class ModuleAssignmentController extends Controller
 	  //whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
      //               $query->where('d',$staff->department_id);
        //        })->
-       $x = Staff::with(['designation','campus','department'])->get();
-return count($x);
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
 
