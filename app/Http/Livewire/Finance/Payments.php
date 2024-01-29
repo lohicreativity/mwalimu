@@ -80,7 +80,7 @@ class Payments extends Component
             })
             ->whereHas('invoice', function ($q){
                 $q->where('payable_id', '>', 0)->where('payable_type', 'student')
-                ->when(fn($q) => $q->where('fee_type_id', $this->feeTypeId))
+                ->when(filled($this->feeTypeId), fn($q) => $q->where('fee_type_id', $this->feeTypeId))
                     ->when(filled($this->studyAcademicYear), fn($q) => $q->where(
                         fn($q) => $q->where('applicable_id', $this->studyAcademicYear)->where('applicable_type', 'academic_year')
                     ));
