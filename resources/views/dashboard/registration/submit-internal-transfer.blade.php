@@ -150,8 +150,10 @@
                           {!! Form::close() !!}</tr>
                        @endforeach
 					   <tr>
-					     <td colspan="8"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button>  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-internal-transfer-status">Retrieve Trasnfer Status</a></td>
-
+              @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))
+					     <td colspan="8"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button>  
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-internal-transfer-status">Retrieve Transfer Status</a></td>
+              @endif
                <div class="modal fade" id="ss-internal-transfer-status">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">

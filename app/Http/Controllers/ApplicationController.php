@@ -4094,7 +4094,7 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','Application window not closed yet');
         }
 
-        if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('end_date','>=',implode('-', explode('-', now()->format('Y-m-d'))))->where('status','INACTIVE')->first()){
+        if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('end_date','>=',implode('-', explode('-', now()->format('Y-m-d'))))->where('status','INACTIVE')->latest()->first()){
              return redirect()->back()->with('error','Application window is not active');
         }
 
@@ -7533,7 +7533,7 @@ class ApplicationController extends Controller
 	 public function registerExternalTransfer(Request $request)
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
-		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
+		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first();
 
 		 $award = Award::where('name','LIKE','%Degree%')->first();
          if(!$award){
@@ -12558,7 +12558,7 @@ class ApplicationController extends Controller
   public function showAdmissionReferenceNumber(Request $request)
   {
       $staff = User::find(Auth::user()->id)->staff;
-      $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status','ACTIVE')->latest()->first();
+      $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status','ACTIVE')->first();
    //    $boolFlag = false
    //    foreach($app_window as $window){
    //       if($window->status == 'ACTIVE' && $window->intake->name == 'September'){
