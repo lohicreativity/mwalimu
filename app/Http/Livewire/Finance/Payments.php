@@ -88,7 +88,7 @@ class Payments extends Component
             ->where('gateway_payments.control_no','=','invoices.control_no')
             ->when(filled($this->from), fn($q) => $q->whereBetween('gateway_payments.created_at', [$this->fromDate(), $this->toDate()]))
             //->join('invoices','gateway_payments.control_no','=','invoices.control_no')
-            ->join('students','invoices.payable_id','=','students.id')
+            ->join('students','invoice.payable_id','=','students.id')
             ->join('campus_program','students.campus_program_id','=','campus_program.id')
             ->whereIn('campus_program.campus_id',$campus_id)
             ->with(['invoice.payable', 'invoice.feeType',]);
