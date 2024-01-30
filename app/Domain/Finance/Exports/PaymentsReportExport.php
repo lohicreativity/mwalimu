@@ -30,12 +30,12 @@ class PaymentsReportExport implements FromQuery, WithHeadings
             ->join('students', function(JoinClause $q){
                 $q->on('invoices.payable_id', '=', 'students.id')->where('invoices.payable_type', 'student');
             })            
-            // ->join('campus_program', function(JoinClause $q) use($campus_id){
-            //     $q->on('students.campus_program_id', '=', 'campus_program.id')->whereIn('campus_program.campus_id', $campus_id);
-            // })
-            // ->join('fee_types', function(JoinClause $q){
-            //     $q->on('invoices.fee_type_id', '=', 'fee_types.id');
-            // })
+            ->join('campus_program', function(JoinClause $q) use($campus_id){
+                $q->on('students.campus_program_id', '=', 'campus_program.id')->whereIn('campus_program.campus_id', $campus_id);
+            })
+            ->join('fee_types', function(JoinClause $q){
+                $q->on('invoices.fee_type_id', '=', 'fee_types.id');
+            })
             ->select('students.registration_number as "Registration Number"', 'students.first_name as "First Name"','students.middle_name as "Middle Name"',
                      'students.surname as Surname','students.gender as Sex','students.phone as Phone','students.year_of_study as "Year of Study"', 'campus_program.code as "Programme Code"',
                      'invoices.reference_no as "Invoice Number"', 'invoices.control_no as "Control Number"', 'fee_types.name as "Fee Type"', 'paid_amount as "Amount Paid"'
