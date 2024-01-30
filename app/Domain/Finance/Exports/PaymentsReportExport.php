@@ -28,7 +28,7 @@ class PaymentsReportExport implements FromQuery, WithHeadings
         }
         return $this->payment->join('invoices', 'gateway_payments.bill_id', '=', 'invoices.reference_no')
             ->join('students', function(JoinClause $q){
-                $q->on('invoices.payable_id', '=', 'students.id')->where('payable_type', 'student');
+                $q->on('invoices.payable_id', '=', 'students.id')->where('invoices.payable_type', 'student');
             })            
             ->join('campus_program', function(JoinClause $q) use($campus_id){
                 $q->on('students.campus_program_id', '=', 'campus_program.id')->whereIn('campus_program.campus_id', $campus_id);
