@@ -26,7 +26,8 @@ class PaymentsReportExport implements FromQuery, WithHeadings
         // }else{
         //     $campus_id = [$staff->campus_id];
         // }
-        return $this->payment->join('invoices', 'gateway_payments.bill_id', '=', 'invoices.reference_no')
+        return $this->payment
+        //->join('invoices', 'gateway_payments.bill_id', '=', 'invoices.reference_no')
             // ->join('students', function(JoinClause $q){
             //     $q->on('invoices.payable_id', '=', 'students.id')->where('payable_type', 'student');
             // })            
