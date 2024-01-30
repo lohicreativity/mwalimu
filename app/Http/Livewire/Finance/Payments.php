@@ -57,6 +57,8 @@ class Payments extends Component
 
     public function exportPayments(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
+        return
+            new PaymentsReportExport($this->gatewayPayment());
         return Excel::download(
             new PaymentsReportExport($this->gatewayPayment()),
             'payment-report.csv'
