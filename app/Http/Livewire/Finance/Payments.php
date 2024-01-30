@@ -90,7 +90,7 @@ class Payments extends Component
             // ->join('students','invoices.payable_id','=','students.id')
             // ->join('campus_program','students.campus_program_id','=','campus_program.id')
             // ->whereIn('campus_program.campus_id',$campus_id)
-            ->with(['invoice.payabl', 'invoice.feeType',]);
+            ->with(['invoice.payable', 'invoice.feeType',]);
     }
 
     public function render()
