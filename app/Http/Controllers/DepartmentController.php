@@ -25,7 +25,7 @@ class DepartmentController extends Controller
 	   $departments[] = $faculties[] = null;
 	  
       if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
-         $departments = Department::whereHas('campuses')->with(['unitCategory','campuses'])->latest()->get();
+         $departments = Department::whereHas('campuses')->with(['unitCategory','campuses'])->where('abbreviation','!=','HRM')->latest()->get();
          $faculties = Faculty::all();
          
       }elseif(Auth::user()->hasRole('admission-officer')) {
