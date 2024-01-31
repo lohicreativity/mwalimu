@@ -218,6 +218,11 @@ class StaffController extends Controller
         return Util::requestResponse($request,'Staff details updated successfully');
     }
 
+    public function resetPassword(Request $request)
+    {
+return $request;
+    }
+
     /**
      * Remove the specified staff
      */

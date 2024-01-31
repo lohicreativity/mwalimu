@@ -10,7 +10,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Reset your password</p>
 
-      <form action="{{ route('password.update') }}" method="POST">
+      <form action="{{ url('staff/reset-password') }}" method="POST">
         @csrf
         <div class="input-group mb-3">
           <input type="email" name="email" value="{{ $request->email }}" required autofocus class="form-control" placeholder="Email">
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password_confirmation" class="form-control" placeholder="Confirm Password">
+          <input type="password" class="form-control" placeholder="Confirm Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
