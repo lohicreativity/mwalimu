@@ -380,10 +380,11 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 
 <script>
   var campus_id = 1;
-  $('#campuses-edit').on('change',function(e){
+  $('#campuses-edit'+department_id:$(e.target).val()).on('change',function(e){
       campus_id = $(e.target).val();
-      $('#unit-categories-edit').prop('selectedIndex',0);
-      $('#parents-edit').prop('selectedIndex',0);
+      //$('#unit-categories-edit').prop('selectedIndex',0);
+      $('#unit-categories-edit'+department_id:$(e.target).val()).prop('selectedIndex',0);
+      $('#parents-edit'+department_id:$(e.target).val()).prop('selectedIndex',0);
   });
 
   $('#unit-categories-edit').on('change',function(e){
@@ -415,8 +416,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
             }
         });
       }else if($(e.target).val() == 2) {
-        $('#parent-label-edit').show();
-        $('#parents-edit').show();
+        $('#parent-label-edit'+department_id:$(e.target).val()).show();
+        $('#parents-edit'+department_id:$(e.target).val()).show();
 
         $.ajax({
         method:'POST',
@@ -445,8 +446,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         });
 
       }else if($(e.target).val() == 4) {
-        $('#parent-label-edit').show();
-        $('#parents-edit').show();
+        $('#parent-label-edit'+department_id:$(e.target).val()).show();
+        $('#parents-edit'+department_id:$(e.target).val()).show();
 
         $.ajax({
         method:'POST',

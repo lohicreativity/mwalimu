@@ -260,7 +260,7 @@
                                     @endphp
 
                                     {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
-
+                                    {!! Form::input('hidden','department_id',$department->id) !!}
                                     @if(Auth::user()->hasRole('admission-officer'))
                                       <input type="hidden" name="staff_campus" value="{{ $staff->campus_id }}">
                                     @endif
@@ -269,7 +269,7 @@
                                         {!! Form::label('','Name') !!}
                                         {!! Form::text('name',$department->name,$name) !!}
 
-                                        {!! Form::input('hidden','department_id',$department->id) !!}
+
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Abbreviation') !!}
@@ -288,7 +288,7 @@
                                       <div class="form-group col-4">
                                         {!! Form::label('','Campus') !!} 
                                         <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
-                                        <select name="campus_id" class="form-control" id="campuses-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                                        <select name="campus_id" class="form-control" id="campuses-edit-{{ $department->id }}" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                         <option value="">Select Campus</option>
                                         @foreach($campuses as $cp)
                                         <option value="{{ $cp->id }}" @if($department->campuses[0]->id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
@@ -297,7 +297,7 @@
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Type') !!}
-                                        <select name="unit_category_id" class="form-control" id="unit-categories-edit" data-target="#parents-edit" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                                        <select name="unit_category_id" class="form-control" id="unit-categories-edit" data-target="#parents-edit-{{ $department->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                           <option value="">Select Type</option>
                                           @foreach($unit_categories as $category)
                                           <option value="{{ $category->id }}" @if($department->unit_category_id == $category->id) selected = 'selected' @endif>{{ $category->name }}</option>
@@ -305,10 +305,10 @@
                                         </select>
                                       </div>
                                       <div class="form-group col-4">
-                                        {!! Form::label('','Parent',array('id' => 'parent-label-edit')) !!}
+                                        {!! Form::label('','Parent',array('id' => 'parent-label-edit-{{ $department->id }}')) !!}
   
                                         <div id="parent_input"></div>
-                                        <select name="parent_id" id="parents-edit" class="form-control">
+                                        <select name="parent_id" id="parents-edit-{{ $department->id }}" class="form-control">
 
                                           <option value="">Select Parent</option>
                                           @foreach($all_departments as $dept)
