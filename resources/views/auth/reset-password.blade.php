@@ -13,7 +13,7 @@
       <form action="{{ route('password.update') }}" method="POST">
         @csrf
         <div class="input-group mb-3">
-          <input type="email" name="email" value="old('email', $request->email)" required autofocus class="form-control" placeholder="Email">
+          <input type="email" name="email" value="{{ old('email') }}" required autofocus class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
