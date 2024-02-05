@@ -556,6 +556,7 @@ class ApplicantController extends Controller
                         }elseif($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT')){
                            return redirect()->to('application/upload-avn-documents');
                         }
+                        return 1;
                         return redirect()->to('application/submission');
                      }else{
                          return redirect()->to('application/select-programs');
@@ -670,7 +671,6 @@ class ApplicantController extends Controller
       }
 
       if(!$window_batch){
-         return 1;
          if(($applicant->status == null && $applicant->is_transfered != 1) || ($applicant->status == 'SELECTED' && !$regulator_selection)){
             return redirect()->to('application/submission')->with('error','Application window already closed');
          }
