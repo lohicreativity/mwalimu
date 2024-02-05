@@ -2285,7 +2285,7 @@ class ApplicantController extends Controller
          }
 
          if(!$application_window){
-               return redirect()->to('application/submission')->with('error','Application window already closed');
+               return redirect()->to('application/submission')->with('error','Application window already closed1');
           }
           if($applicant->batch_id != $batch->id){
             return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
