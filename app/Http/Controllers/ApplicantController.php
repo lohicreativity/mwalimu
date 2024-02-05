@@ -552,9 +552,9 @@ class ApplicantController extends Controller
                      if($applicant->programs_complete_status == 1){
                         if($applicant->documents_complete_status == 1 &&
                            ($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT'))){
-                           return 1; return redirect()->to('application/submission');
+                           return redirect()->to('application/submission');
                         }elseif($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT')){
-                           return 2; return redirect()->to('application/upload-avn-documents');
+                           return redirect()->to('application/upload-avn-documents');
                         }
                         return redirect()->to('application/submission');
                      }else{
@@ -655,6 +655,7 @@ class ApplicantController extends Controller
 
          if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!$window_batch){
+               return 1;
                if($applicant->status == null || ($applicant->status == 'SELECTED' && !$regulator_selection)){
                   return redirect()->to('application/submission')->with('error','Application window already closed');
                }
