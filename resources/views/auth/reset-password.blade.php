@@ -11,7 +11,7 @@
       <p class="login-box-msg">Reset your password</p>
 
       <form action="{{ route('password.update') }}" method="POST">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+        @csrf
         <div class="input-group mb-3">
           <input type="email" name="email" value="{{ $request->email }}" required autofocus class="form-control" placeholder="Email">
           <div class="input-group-append">
