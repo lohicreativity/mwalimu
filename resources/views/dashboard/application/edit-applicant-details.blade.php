@@ -205,8 +205,10 @@
                         @endif
                         <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
                         @if($invoice)
-                          <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
-                        </div>
+                          @if(!App\Domain\Application\Models\Applicant::hasPaidControlNumber($applicant))
+                            <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
+                          @endif
+                          </div>
                         @endif
                         {!! Form::close() !!}
                     @endif

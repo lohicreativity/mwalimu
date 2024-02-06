@@ -215,6 +215,28 @@ class Applicant extends Model
         return $status;
     }
 
+        /**
+     * Check if applicant has requested control number
+     */
+    public static function hasPaidControlNumber(Applicant $applicant)
+    {
+        $status = false;
+        $invoice = Invoice::where('payable_id',$applicant->id)
+                          ->where('payable_type','applicant')
+                          ->where('applicable_id',$applicant->application_window_id)
+                          ->whereNotNull('gateway_payment_id')
+                          ->latest()
+                          ->first();
+        //$invoice = Invoice::where('payable_id',$applicant->id)->whereNotNull('control_no')->where('payable_type','applicant')->latest()->first();
+        // $invoice = Invoice::whereHas('payable',function($query) use($applicant){
+        //            $query->where('user_id',$applicant->user_id);
+        // })->latest()->first();
+        if($invoice){
+            $status = true;
+        }
+        return $status;
+    }
+
     /** 
      * Check if applicant has confirmed results
      */
