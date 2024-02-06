@@ -3003,12 +3003,14 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
 
-         $student = null;
+         $student = $current_batch = null;
+         $batch = false;
          if($applicant){
-            $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();          
+            $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();
+            $current_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+            $batch = $applicant->batch_id != $current_batch->id? true : false;          
          }
          $student_id = $student? $student->id : 0;
-         $current_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
          
          $data = [
          'applicant'=> $applicant,
@@ -3016,7 +3018,7 @@ class ApplicantController extends Controller
 		   'countries'=>Country::all(),
          'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
                                                           ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first() : null,
-         'batch'=> $applicant->batch_id == $current_batch->id? true : false
+         'batch'=> $batch
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');

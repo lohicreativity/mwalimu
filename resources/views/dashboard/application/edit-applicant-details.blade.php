@@ -209,7 +209,7 @@
                               <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
                             @endif
                           @endif
-                          @if(!$batch)
+                          @if($batch)
                           <a href="{{ url('application/reset-applicant-application-batch?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Application Batch</a>
                           @endif
                         </div>
