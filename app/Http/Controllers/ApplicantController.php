@@ -2261,9 +2261,9 @@ class ApplicantController extends Controller
          //check if window active
          if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
             $application_window = ApplicationWindow::where('id', $applicant->application_window_id)
-                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id);})
+                                    ->whereHas('applicationBatches', function($query) use($applicant){ $query->where('id', $applicant->batch_id)->where('program_level_id', $applicant->program_level_id)
+                                                ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))));})
                                     ->where('campus_id', $applicant->campus_id)
-                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                                     ->where('status', 'ACTIVE')
                                     ->latest()->first();
 
