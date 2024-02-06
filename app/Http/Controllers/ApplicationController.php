@@ -6034,6 +6034,20 @@ class ApplicationController extends Controller
         return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
     }
 
+
+        /**
+     * Reset applicant's batch
+     */
+    public function resetApplicantApplicationBatch(Request $request)
+    {
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $current_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+        $applicant->batch_id = $current_batch->id;
+        $applicant->save();
+
+        return redirect()->to('application/application-dashboard')->with('message','Application window batch reset successfully');
+    }
+
     /**
      * Show insurance statuses
      */

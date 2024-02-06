@@ -3008,13 +3008,15 @@ class ApplicantController extends Controller
             $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();          
          }
          $student_id = $student? $student->id : 0;
-
+         $current_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+         
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
 		   'countries'=>Country::all(),
          'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
-                                                          ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first() : null
+                                                          ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first() : null,
+         'batch'=> $applicant->batch_id == $current_batch->id? true : false
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
