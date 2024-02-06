@@ -552,9 +552,9 @@ class ApplicantController extends Controller
                      if($applicant->programs_complete_status == 1){
                         if($applicant->documents_complete_status == 1 &&
                            ($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT'))){
-                           return 2; return redirect()->to('application/submission');
+                           return redirect()->to('application/submission');
                         }elseif($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT')){
-                          return 3;  return redirect()->to('application/upload-avn-documents');
+                          return redirect()->to('application/upload-avn-documents');
                         }
                         return redirect()->to('application/submission');
                      }else{
@@ -2285,11 +2285,13 @@ class ApplicantController extends Controller
          }
 
          if(!$application_window){
+            return 4;
                return redirect()->to('application/submission')->with('error','Application window already closed');
-          }
-          if($applicant->batch_id != $batch->id){
+         }
+         if($applicant->batch_id != $batch->id){
+            return 5;
             return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
-          }
+         }
        }
        $data = [
           'applicant'=>$applicant,
