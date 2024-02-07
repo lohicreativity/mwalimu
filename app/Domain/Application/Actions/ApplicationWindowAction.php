@@ -10,6 +10,7 @@ use App\Domain\Application\Repositories\Interfaces\ApplicationWindowInterface;
 use App\Utils\DateMaker;
 use Carbon\Carbon;
 use DB;
+use App\Domain\Application\Models\ApplicationBatch;
 
 class ApplicationWindowAction implements ApplicationWindowInterface{
 	
@@ -48,6 +49,30 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                                 $year->save();
                         }
                 }
+                $batch = new ApplicationBatch;
+                $batch->application_window_id = $window->id;
+                $batch->program_level = 1;
+                $batch->no = 1;
+                $batch->begin_date = $window->begin_date;
+                $batch->end_date = $window->end_date;
+                $batch->save();
+
+                $batch_bsc = new ApplicationBatch;
+                $batch_bsc->application_window_id = $window->id;
+                $batch_bsc->program_level = 1;
+                $batch_bsc->no = 1;
+                $batch_bsc->begin_date = $window->begin_date;
+                $batch_bsc->end_date = $window->bsc_end_date;
+                $batch_bsc->save();
+
+                $batch_msc = new ApplicationBatch;
+                $batch_msc->application_window_id = $window->id;
+                $batch_msc->program_level = 1;
+                $batch_msc->no = 1;
+                $batch_msc->begin_date = $window->begin_date;
+                $batch_msc->end_date = $window->msc_end_date;
+                $batch_msc->save();
+
                 DB::commit();
 	}
 

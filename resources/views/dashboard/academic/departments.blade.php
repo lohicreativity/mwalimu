@@ -228,6 +228,7 @@
                                   Edit
                           </a>
                           @endcan
+                          
                           <div class="modal fade" id="ss-edit-department-{{ $department->id }}">
                             <div class="modal-dialog modal-lg">
                               <div class="modal-content">
