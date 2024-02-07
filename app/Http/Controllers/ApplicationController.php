@@ -4855,8 +4855,8 @@ class ApplicationController extends Controller
 		}
 
 		$days = round($datediff / (60 * 60 * 24));
-return $days;
-        if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
+
+        if($days < 0 && $days > -7){
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Late Registration%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_id',$staff->campus_id)->first();
 
@@ -5175,7 +5175,7 @@ return $days;
 			}catch(Exception $e){}
 		}
         DB::commit();
-        if($days < 0){
+        if($days < 0 && $days > -7){
           return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id.'&registeredStudent=true')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
           return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id.'&registeredStudent=true')->with('message','Student registered successfully with registration number '.$student->registration_number);
