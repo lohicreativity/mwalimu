@@ -51,7 +51,7 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 }
                 $batch = new ApplicationBatch;
                 $batch->application_window_id = $window->id;
-                $batch->program_level = 1;
+                $batch->program_level_id = 1;
                 $batch->no = 1;
                 $batch->begin_date = $window->begin_date;
                 $batch->end_date = $window->end_date;
@@ -59,7 +59,7 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
 
                 $batch_bsc = new ApplicationBatch;
                 $batch_bsc->application_window_id = $window->id;
-                $batch_bsc->program_level = 1;
+                $batch_bsc->program_level_id = 4;
                 $batch_bsc->no = 1;
                 $batch_bsc->begin_date = $window->begin_date;
                 $batch_bsc->end_date = $window->bsc_end_date;
@@ -67,7 +67,7 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
 
                 $batch_msc = new ApplicationBatch;
                 $batch_msc->application_window_id = $window->id;
-                $batch_msc->program_level = 1;
+                $batch_msc->program_level_id = 5;
                 $batch_msc->no = 1;
                 $batch_msc->begin_date = $window->begin_date;
                 $batch_msc->end_date = $window->msc_end_date;
