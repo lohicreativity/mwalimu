@@ -4855,24 +4855,24 @@ class ApplicationController extends Controller
 		}
 
 		$days = round($datediff / (60 * 60 * 24));
-
+return $days;
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Late Registration%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_id',$staff->campus_id)->first();
 
             $student = Student::with(['applicant.country'])->find($student->id);
 
-			 if(!$fee_amount){
-				return redirect()->back()->with('error','No fee amount set for late registration');
-			 }
+            if(!$fee_amount){
+            return redirect()->back()->with('error','No fee amount set for late registration');
+            }
 
-			 if(str_contains($student->applicant->nationality,'Tanzania')){
-				 $amount = $fee_amount->amount_in_tzs * $days * (-1);
-				 $currency = 'TZS';
-			 }else{
-				 $amount = $fee_amount->amount_in_usd * $days * (-1);
-				 $currency = 'USD';
-			 }
+            if(str_contains($student->applicant->nationality,'Tanzania')){
+                $amount = $fee_amount->amount_in_tzs * $days * (-1);
+                $currency = 'TZS';
+            }else{
+                $amount = $fee_amount->amount_in_usd * $days * (-1);
+                $currency = 'USD';
+            }
 
             $invoice = new Invoice;
             $invoice->reference_no = 'MNMA-LR-'.time();
@@ -4916,7 +4916,7 @@ class ApplicationController extends Controller
                                     $approved_by,
                                     $fee_type->duration,
                                     $invoice->currency);
-            }
+        }
 
             $check_insurance = false;
             if(count($applicant->insurances) != 0){
@@ -5070,10 +5070,6 @@ class ApplicationController extends Controller
                                         '".$applicant->email."','".$next_of_kin_email."')");
             }
 
-        // return "INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".''."','STD','TSH','".$applicant->email."','".$next_of_kin_email."')";
-
-        // return $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','TSH','".$applicant->email."','".$next_of_kin_email."')");
-
         if ($tuition_invoice) {
             $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->control_no."',
             '".date('Y',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."',
@@ -5160,11 +5156,13 @@ class ApplicationController extends Controller
 
         Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Tuition%');
-        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)
+          ->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
         Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Miscellaneous%');
-        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)
+          ->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
 		$transfered_status = false;
 
