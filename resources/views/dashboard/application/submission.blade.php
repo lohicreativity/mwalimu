@@ -95,8 +95,8 @@
                       </div>
                 </div>
                 @else
-                  @if($applicant->submission_complete_status == 1 && $applicant->status == null)
-                      @if($applicant->status == null)
+                  @if($applicant->submission_complete_status == 1)
+                      @if(empty($applicant->status))
                           <div class="card card-default">
                               <div class="card-header">
                                 <h3 class="card-title">{{ __('Application Submission') }}</h3>
