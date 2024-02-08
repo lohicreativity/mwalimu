@@ -57,6 +57,14 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $batch->end_date = $window->end_date;
                 $batch->save();
 
+                $batch_od = new ApplicationBatch;
+                $batch_od->application_window_id = $window->id;
+                $batch_od->program_level_id = 2;
+                $batch_od->no = 1;
+                $batch_od->begin_date = $window->begin_date;
+                $batch_od->end_date = $window->bsc_end_date;
+                $batch_od->save();
+
                 $batch_bsc = new ApplicationBatch;
                 $batch_bsc->application_window_id = $window->id;
                 $batch_bsc->program_level_id = 4;
