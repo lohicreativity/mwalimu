@@ -62,7 +62,7 @@ class ApplicationBatchController extends Controller
                     }else if($ba->program_level_id == 5 && $ba->batch_no > $master_max){
                         $master_max = $ba->batch_no;
                     }
-
+                    return $certificate_max;
                 $batch_ids[] = $ba->id;                }
             }
         }
