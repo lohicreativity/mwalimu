@@ -43,7 +43,7 @@ class ApplicationBatchController extends Controller
 
             $batches[] = ApplicationBatch::where('application_window_id',$window->id)->latest()->get();
         }
-
+return $batches;
         $batch_ids = [];
         $certificate_max = 0;
         $diploma_max = 0;
@@ -64,6 +64,7 @@ class ApplicationBatchController extends Controller
                 }
                 $batch_ids[] = $ba->id;
             }
+            break;
         }
 
         $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
