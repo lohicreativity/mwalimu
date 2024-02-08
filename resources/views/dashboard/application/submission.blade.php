@@ -96,7 +96,8 @@
                 </div>
                 @else
                   @if($applicant->submission_complete_status == 1)
-                      @if($applicant->status == null)
+                      @if(empty($applicant->status))
+                      {{ $applicant }}
                           <div class="card card-default">
                               <div class="card-header">
                                 <h3 class="card-title">{{ __('Application Submission') }}</h3>
@@ -107,7 +108,7 @@
                                 <div class="row">
                                   <div class="col-12">
                                     <div class="alert alert-success" role="alert">
-                                      <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress.</h5>
+                                      <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress1.</h5>
                                     </div>
                                   </div>
                                   
@@ -129,7 +130,7 @@
                             <div class="row">
                               <div class="col-12">
                                 <div class="alert alert-success" role="alert">
-                                  <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress.</h5>
+                                  <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress2.</h5>
                                 </div>
                               </div>
                               
