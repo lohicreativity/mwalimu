@@ -49,6 +49,7 @@ use App\Domain\Application\Models\ApplicantSubmissionLog;
 use App\Domain\Application\Models\ApplicantFeedBackCorrection;
 use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Finance\Models\ProgramFee;
+use Laravel\Jetstream\Rules\Role;
 
 class ApplicantController extends Controller
 {
@@ -3083,7 +3084,7 @@ class ApplicantController extends Controller
 
         if($staff->campus_id == $applicant->campus_id || Auth::user()->hasRole('administrator')){
             $user = User::where('id',$applicant->user_id)->first();
-            if($user->username != $request->get('index_number')){
+            if(!strpos($user,'MNMA') && $user->username != $request->get('index_number')){
                $user->username = $request->get('index_number');
                $user->save();
             }
