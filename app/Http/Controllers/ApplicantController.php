@@ -624,50 +624,57 @@ class ApplicantController extends Controller
       //if($applicant->status != null){
 
       if($applicant->status=='ADMITTED' || ($applicant->status=='SELECTED') && $regulator_selection){
-         if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
-                                            ->where('program_level_id',$applicant->program_level_id)
-                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                            ->latest()
-                                            ->first();
+         $window_batch = ApplicationBatch::where('id', $applicant->batch_id)
+                                          ->where('program_level_id',$applicant->program_level_id)
+                                          ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                          ->first();
+         // if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
+         //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+         //                                    ->where('program_level_id',$applicant->program_level_id)
+         //                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         //                                    ->latest()
+         //                                    ->first();
 
-         }elseif($applicant->program_level_id == 4){
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
-                                            ->where('program_level_id',$applicant->program_level_id)
-                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                            ->latest()
-                                            ->first();
+         // }elseif($applicant->program_level_id == 4){
+         //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+         //                                    ->where('program_level_id',$applicant->program_level_id)
+         //                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         //                                    ->latest()
+         //                                    ->first();
 
-         }elseif($applicant->program_level_id == 5){
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
-                                            ->where('program_level_id',$applicant->program_level_id)
-                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                            ->latest()
-                                            ->first();
-         }
+         // }elseif($applicant->program_level_id == 5){
+         //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+         //                                    ->where('program_level_id',$applicant->program_level_id)
+         //                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         //                                    ->latest()
+         //                                    ->first();
+         // }
       }else{
+         $window_batch = ApplicationBatch::where('id', $applicant->batch_id)
+                                          ->where('program_level_id',$applicant->program_level_id)
+                                          ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                                          ->first();
+         // if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
+         //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+         //                                    ->where('program_level_id',$applicant->program_level_id)
+         //                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         //                                    ->latest()
+         //                                    ->first();
 
-         if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
-                                            ->where('program_level_id',$applicant->program_level_id)
-                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                            ->latest()
-                                            ->first();
+         // }elseif($applicant->program_level_id == 4){
+         //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+         //                                    ->where('program_level_id',$applicant->program_level_id)
+         //                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         //                                    ->latest()
+         //                                    ->first();
 
-         }elseif($applicant->program_level_id == 4){
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
-                                            ->where('program_level_id',$applicant->program_level_id)
-                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                            ->latest()
-                                            ->first();
-
-         }elseif($applicant->program_level_id == 5){
-            $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
-                                            ->where('program_level_id',$applicant->program_level_id)
-                                            ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-                                            ->latest()
-                                            ->first();
-         }
+         // }elseif($applicant->program_level_id == 5){
+         //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
+         //                                    ->where('program_level_id',$applicant->program_level_id)
+         //                                    ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         //                                    ->latest()
+         //                                    ->first();
+         // }
 
          if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!$window_batch){
@@ -755,7 +762,8 @@ class ApplicantController extends Controller
                   ->orWhere('status', 'PENDING');
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first(); */
 
-      $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($applicant, $app_window){
+      $app_window = ApplicationWindow::where('id', $applicant->application_window_id)->first();
+      $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($app_window){
             $query->where('year','LIKE','%'.date('Y',strtotime($app_window->begin_date)).'/%');})->first();
 
       $activeSemester = Semester::where('status', 'ACTIVE')->first();
