@@ -138,6 +138,7 @@
                      @endif
  
                       @can('delete-application-window')
+                      {{ $ba->batch_no }} {{ $certificate_max }}
                       @if(($ba->program_level_id == 1) && $ba->batch_no == $certificate_max)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
