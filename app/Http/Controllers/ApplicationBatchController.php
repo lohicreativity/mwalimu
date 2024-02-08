@@ -51,7 +51,6 @@ class ApplicationBatchController extends Controller
         $master_max = 0;
         foreach($batches as $key=>$batch){
             foreach($batch as $ba){
-                return $ba;
                 if($key < 3){
                     if($ba->program_level_id == 1 && $ba->batch_no > $certificate_max){
                         $certificate_max = $ba->batch_no;
@@ -64,6 +63,7 @@ class ApplicationBatchController extends Controller
                     }
                 }
                 $batch_ids[] = $ba->id;
+                return $certificate_max;
             }
         }
 
