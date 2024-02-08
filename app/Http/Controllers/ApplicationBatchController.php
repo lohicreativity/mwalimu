@@ -42,7 +42,6 @@ class ApplicationBatchController extends Controller
         foreach($windows as $window){
 
             $batches[] = ApplicationBatch::where('application_window_id',$window->id)->latest()->get();
-            return ApplicationBatch::where('application_window_id',$window->id)->latest()->get();
         }
 
         $batch_ids = [];
