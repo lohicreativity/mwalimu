@@ -2,6 +2,7 @@
 
 namespace App\Domain\Academic\Models;
 
+use App\Domain\Settings\Models\CampusDepartment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +24,7 @@ class Department extends Model
     {
         return $this->belongsToMany(Program::class,'program_department','department_id','program_id')->withPivot('campus_id');
     }
-	
+
 	/**
 	 * Establish one to many relationship with staff
 	 */
@@ -54,6 +55,11 @@ class Department extends Model
     public function campuses()
     {
         return $this->belongsToMany(Campus::class,'campus_department','department_id','campus_id');
+    }
+
+    public function campus()
+    {
+        return $this->hasOne(CampusDepartment::class, 'department_id');
     }
 
     /**

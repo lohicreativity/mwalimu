@@ -12,9 +12,14 @@ class CampusDepartment extends Model
 
     protected $table = 'campus_department';
 
-    public function department()
+    public function department(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(Department::class);
+        return $this->belongsTo(Department::class);
+    }
+
+    public function campus(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Campus::class);
     }
 
 }
