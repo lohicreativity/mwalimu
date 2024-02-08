@@ -95,7 +95,7 @@
                       </div>
                 </div>
                 @else
-                  @if($applicant->submission_complete_status == 1)
+                  @if($applicant->submission_complete_status == 1 && $applicant->status == null)
                       @if($applicant->status == null)
                           <div class="card card-default">
                               <div class="card-header">
