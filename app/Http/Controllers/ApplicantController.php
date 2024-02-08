@@ -132,7 +132,7 @@ class ApplicantController extends Controller
             ->latest()
             ->first();
          }else{
-            $window_batch = ApplicationBatch::where('id', $applicant->batch_id)
+            $window_batch = ApplicationBatch::where('id', $appl->batch_id)
             ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
             ->first();
          }
