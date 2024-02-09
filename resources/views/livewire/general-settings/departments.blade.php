@@ -25,8 +25,8 @@
 
                     @foreach($campusDepartments as $key => $campusDepartment)
                         @php
-                            $current_parent_id = $campusDepartment->id;
-                            $dept_name = str_replace(' Of ',' of ',$campusDepartment->name);
+                            $current_parent_id = $campusDepartment->department->id;
+                            $dept_name = str_replace(' Of ',' of ',$campusDepartment->department->name);
                             $dept_name = str_replace(' And ',' and ',$dept_name);
                         @endphp
                         <tr>
