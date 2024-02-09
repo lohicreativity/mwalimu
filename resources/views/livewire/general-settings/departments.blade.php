@@ -24,9 +24,14 @@
 
 
                     @foreach($campusDepartments as $key => $campusDepartment)
+                        @php
+                            $current_parent_id = $campusDepartment->id;
+                            $dept_name = str_replace(' Of ',' of ',$campusDepartment->name);
+                            $dept_name = str_replace(' And ',' and ',$dept_name);
+                        @endphp
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $campusDepartment->department->name }}</td>
+                            <td>{{ $dept_name }}</td>
                             <td>{{ $campusDepartment->department->abbreviation }}</td>
                             <td>{{ $campusDepartment->department->unitCategory->name }}</td>
                             <td>{{ $campusDepartment->department->parent?->name }}</td>
@@ -144,7 +149,7 @@
                                 </select>
                             </div>
 
-
+                            {!! Form::input('hidden','current_parent_id',$current_edited_parent_id) !!}
                         </div>
                         <div class="ss-form-actions">
                             <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
