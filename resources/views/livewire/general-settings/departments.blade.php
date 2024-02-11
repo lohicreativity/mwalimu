@@ -138,7 +138,6 @@
                             </div>
 
                             <div class="form-group col-4">
-                                {{ $parents }}
                                 {!! Form::label('','Parent',array('id' => 'parent-label-edit')) !!}
 
                                 <select wire:model="parent_id" name="parent_id" class="form-control">
