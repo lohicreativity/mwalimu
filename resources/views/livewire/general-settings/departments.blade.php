@@ -87,7 +87,7 @@
                               'class'=>'form-control',
                               'rows'=>2
                             ];
-                            $current_edited_parent_id = $selectedDepartment->parent_id;
+                            $current_edited_parent_id = $selectedDepartment->id;
                         @endphp
 
                         {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
