@@ -66,7 +66,10 @@ class Departments extends Component
 
                 1 => Campus::query()->orderBy('name')->get(),
 
-                2, 4 => $this->department()
+                2 => Faculty::query()->orderNy('name')
+                              ->where('campus_id',1)
+                              ->get(), 
+                4 => $this->department()
                     ->where('unit_category_id', $this->unit_category_id)
                     ->get(),
 
