@@ -67,7 +67,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
+                    @php
+                                                    $current_campus_id = $campus_id;
+                    @endphp
                     @if(filled($selectedDepartment))
                         @php
                             $name = [
@@ -88,7 +90,7 @@
                               'rows'=>2
                             ];
                             $current_edited_parent_id = $selectedDepartment->id;
-                            $current_campus_id = $campus_id;
+
                         @endphp
 
                         {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
