@@ -126,7 +126,7 @@ class DepartmentController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
+return $request;
       $department = Department::whereHas('campuses', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
                                ->where('parent_id','!=',$request->get('current_parent_id'))
                                ->where(function($query) use($request){$query->where('name',$request->get('name'))->orWhere('abbreviation',$request->get('abbreviation'));})
