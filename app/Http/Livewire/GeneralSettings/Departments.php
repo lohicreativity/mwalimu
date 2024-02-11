@@ -49,7 +49,6 @@ class Departments extends Component
         $this->campus_id = $campusDepartment->campus_id;
 
         $faculty = Faculty::query()
-        ->where('id',9)
         ->where('campus_id',$this->campus_id)
         ->first();
 
