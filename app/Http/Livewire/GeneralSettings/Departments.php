@@ -70,7 +70,7 @@ class Departments extends Component
                               ->where('campus_id',2)
                               ->get(), 
                 4 => $this->department()
-                    ->where('unit_category_id', $this->unit_category_id)
+                    ->where('unit_category_id', 2)
                     ->get(),
 
                 default => new Collection(),
