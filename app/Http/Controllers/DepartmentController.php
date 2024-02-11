@@ -98,7 +98,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request)
     {
-
+return $request;
       if (Auth::user()->hasRole('administrator')) {
 
          $validation = Validator::make($request->all(),[
@@ -117,8 +117,6 @@ class DepartmentController extends Controller
 
       }
 
-    	   
-
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
@@ -126,27 +124,18 @@ class DepartmentController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-return $request;
-      $department = Department::whereHas('campuses', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
-                               ->where('parent_id','!=',$request->get('current_parent_id'))
-                               ->where(function($query) use($request){$query->where('name',$request->get('name'))->orWhere('abbreviation',$request->get('abbreviation'));})
-                               ->first();
 
-      if($department){
-         return redirect()->back()->with('error','Department name has already been used1');
-      }
-
-        try {
+      try {
 
          (new DepartmentAction)->update($request);
 
          return Util::requestResponse($request,'Department updated successfully');
 
-        } catch (Exception $e) {
+      } catch (Exception $e) {
 
          return redirect()->back()->with('error','Department name has already been used');
-         
-        }
+      
+      }
 
         
     }

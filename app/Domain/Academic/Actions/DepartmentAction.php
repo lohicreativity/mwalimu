@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Repositories\Interfaces\DepartmentInterface;
 use Auth, DB;
+use App\Domain\Settings\Models\CampusDepartment;
 
 class DepartmentAction implements DepartmentInterface{
 	
@@ -31,10 +32,15 @@ class DepartmentAction implements DepartmentInterface{
         $department->name = $request->get('name');
         $department->description = $request->get('description');
         $department->abbreviation = $request->get('abbreviation');
-        $department->unit_category_id = $request->get('unit_category_id');
-        $department->parent_id = $request->get('parent_id');
         $department->save();
         //$department->campuses()->sync($request->get('campus_id'));
+
+        $campus_department = CampusDepartment::whereHas('department',function($query)use($department){
+                                                        $query->where('id',$department->id);})
+                                             ->where('campus_id',$request->get('current_campus_id'))
+                                             ->where('unit_category_id',$request->get('current_unit_category_id'))
+                                             ->where('parent_id', $request->get('current_parent_id'))
+                                             ->update(['campus_id'=>$request->get('campus_id'),'parent_id'=>$request->get('parent_id'),'unit_category_id'=>$request->get('unit_category_id')]);
 
         DB::table('campus_department')->where('department_id',$request->get('current_parent_id'))
                                       ->where('campus_id',$request->get('current_campus_id'))

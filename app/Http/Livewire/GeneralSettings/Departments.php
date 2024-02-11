@@ -28,6 +28,10 @@ class Departments extends Component
     public $campus_id;
 
     public $prev_campus_id;
+    
+    public $prev_unit_category_id;
+
+    public $prev_parent_id;
 
     public $parents;
 
@@ -73,6 +77,8 @@ class Departments extends Component
             ->first();
 
         $this->prev_campus_id = $campusDepartment->campus_id;
+        $this->prev_unit_category_id = $campusDepartment->unit_category_id;
+        $this->prev_parent_id = $campusDepartment->parent_id;
     }
     public function updatedUnitCategoryId()
     {

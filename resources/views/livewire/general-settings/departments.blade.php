@@ -69,6 +69,8 @@
                 <div class="modal-body">
                     @php
                         $current_campus_id = $prev_campus_id;
+                        $current_unit_category_id = $prev_unit_category_id;
+                        $current_parent_id = $prev_parent_id;
                     @endphp
 
                     @if(filled($selectedDepartment))
@@ -155,6 +157,9 @@
 
                             {!! Form::input('hidden','current_parent_id',$current_edited_parent_id) !!}
                             {!! Form::input('hidden','current_campus_id',$current_campus_id) !!}
+                            {!! Form::input('hidden','current_unit_category_id',$current_unit_category_id) !!}
+                            {!! Form::input('hidden','current_parent_id',$current_campus_id) !!}
+           
                         </div>
                         <div class="ss-form-actions">
                             <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
