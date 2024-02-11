@@ -36,9 +36,9 @@ class DepartmentAction implements DepartmentInterface{
         $department->save();
         //$department->campuses()->sync($request->get('campus_id'));
 
-        DB::table('campus_department')->where('department_id',$request->get('department_id'))
-                                      ->where('campus_id',$request->get('campus_id'))
-                                      ->update(['campus_id'=>$request->get('campus_id')]);
+        DB::table('campus_department')->where('department_id',$request->get('current_parent_id'))
+                                      ->where('campus_id',$request->get('current_campus_id'))
+                                      ->update(['campus_id'=>$request->get('current_campus_id'),'parent_id'=>$request->get('parent_id')]);
 //$program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 
 

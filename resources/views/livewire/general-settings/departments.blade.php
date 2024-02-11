@@ -26,6 +26,7 @@
                     @foreach($campusDepartments as $key => $campusDepartment)
                         @php
                             $current_parent_id = $campusDepartment->department->id;
+                            $current_campus_id = $campusDepartment->campus_id;
                             $dept_name = str_replace(' Of ',' of ',$campusDepartment->department->name);
                             $dept_name = str_replace(' And ',' and ',$dept_name);
                         @endphp
@@ -150,6 +151,7 @@
                             </div>
 
                             {!! Form::input('hidden','current_parent_id',$current_edited_parent_id) !!}
+                            {!! Form::input('hidden','current_campus_id',$current_campus_id) !!}
                         </div>
                         <div class="ss-form-actions">
                             <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
