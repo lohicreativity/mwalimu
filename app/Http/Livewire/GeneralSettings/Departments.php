@@ -64,7 +64,7 @@ class Departments extends Component
         if (filled($this->selectedDepartment)){
             $this->parents = match ((int)$this->unit_category_id) {
 
-                1 => Campus::query()->orderBy('name')->get(),
+                1 => Campus::query()->where('id',$this->campus_id)->get(),
 
                 2 => Faculty::query()->orderBy('name')
                               ->where('campus_id',$this->campus_id)
