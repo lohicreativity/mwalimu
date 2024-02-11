@@ -155,10 +155,9 @@
                                 </select>
                             </div>
 
-                            {!! Form::input('hidden','current_parent_id',$current_edited_parent_id) !!}
                             {!! Form::input('hidden','current_campus_id',$current_campus_id) !!}
                             {!! Form::input('hidden','current_unit_category_id',$current_unit_category_id) !!}
-                            {!! Form::input('hidden','current_parent_id',$current_campus_id) !!}
+                            {!! Form::input('hidden','current_parent_id',$current_parent_id) !!}
            
                         </div>
                         <div class="ss-form-actions">
