@@ -68,9 +68,9 @@
                 </div>
                 <div class="modal-body">
                     @php
-                                                    $current_campus_id = $campus_id;
+                                                    $current_campus_id = $prev_campus_id;
                     @endphp
-                    {{ $current_campus_id }}
+                    {{ $prev_campus_id }}
                     @if(filled($selectedDepartment))
                         @php
                             $name = [

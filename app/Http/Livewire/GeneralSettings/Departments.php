@@ -27,6 +27,8 @@ class Departments extends Component
 
     public $campus_id;
 
+    public $prev_campus_id;
+
     public $parents;
 
     public $faculty_parent_id;
@@ -60,8 +62,18 @@ class Departments extends Component
 
         $this->selectedDepartment = $campusDepartment->department;
         $this->getParent();
+        $this->setPrevCampus($campusDepartment);
     }
 
+    public function setPrevCampus($campusDepartment): void
+    {
+        $campusDepartment = CampusDepartment::query()
+            ->where('campus_id', $campusDepartment['campus_id'])
+            ->where('department_id', $campusDepartment['department_id'])
+            ->first();
+
+        $this->prev_campus_id = $campusDepartment->campus_id;
+    }
     public function updatedUnitCategoryId()
     {
         $this->getParent();
