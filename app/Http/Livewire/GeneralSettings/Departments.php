@@ -29,6 +29,8 @@ class Departments extends Component
 
     public $parents;
 
+    public $faculty_parent_id;
+
     public function department()
     {
         return Department::query()->orderBy('unit_category_id')
@@ -45,13 +47,26 @@ class Departments extends Component
 
         $this->unit_category_id = $campusDepartment->department->unit_category_id;
         $this->campus_id = $campusDepartment->campus_id;
-        $this->parent_id = match ($this->unit_category_id) {
-            1 => $campusDepartment->campus_id,
-            2, 4 => $campusDepartment->department->parent_id,
-        };
-
         $this->selectedDepartment = $campusDepartment->department;
         $this->getParent();
+    }
+
+    public function setSelectedFaculty($campusDepartment, $faculty_id)
+    {
+        $campusDepartment = CampusDepartment::query()
+        ->where('campus_id', $campusDepartment['campus_id'])
+        ->where('department_id', $campusDepartment['department_id'])
+        ->first();
+        
+        $faculty = Faculty::query()
+        ->where('id',$faculty_id)
+        ->where('campus_id',$this->campus_id)
+        ->first();
+        $this->parent_id = match ($this->unit_category_id) {
+            1 => $this->campus_id,
+            2 => $faculty->id, 
+            4 => $campusDepartment->department->id,
+        };
     }
 
     public function updatedUnitCategoryId()
