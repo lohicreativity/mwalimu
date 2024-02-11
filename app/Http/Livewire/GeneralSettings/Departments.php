@@ -51,15 +51,15 @@ class Departments extends Component
         $this->getParent();
     }
 
-    public function setSelectedFaculty($campusDepartment, $faculty_id)
+    public function setSelectedFaculty($campusDepartment)
     {
         $campusDepartment = CampusDepartment::query()
         ->where('campus_id', $campusDepartment['campus_id'])
         ->where('department_id', $campusDepartment['department_id'])
         ->first();
-        
+
         $faculty = Faculty::query()
-        ->where('id',$faculty_id)
+        ->where('id',9)
         ->where('campus_id',$this->campus_id)
         ->first();
         $this->parent_id = match ($this->unit_category_id) {
