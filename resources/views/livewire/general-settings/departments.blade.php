@@ -26,7 +26,6 @@
                     @foreach($campusDepartments as $key => $campusDepartment)
                         @php
                             $current_parent_id = $campusDepartment->department->id;
-                            $current_campus_id = $campusDepartment->campus_id;
                             $dept_name = str_replace(' Of ',' of ',$campusDepartment->department->name);
                             $dept_name = str_replace(' And ',' and ',$dept_name);
                         @endphp
@@ -89,6 +88,7 @@
                               'rows'=>2
                             ];
                             $current_edited_parent_id = $selectedDepartment->id;
+                            $current_campus_id = $campus_id;
                         @endphp
 
                         {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
