@@ -119,7 +119,7 @@
                         <div class="row">
                             <div class="form-group col-4">
                                 {!! Form::label('','Campus') !!}
-                                <select wire:model="campus_id" wire:click="setSelectedFaculty({{$campusDepartment,1}})" name="campus_id" class="form-control" required>
+                                <select wire:model="campus_id" name="campus_id" class="form-control" required>
                                     <option value="">Select Campus</option>
                                     @foreach($campuses as $cp)
                                         <option value="{{ $cp->id }}">{{ $cp->name }}</option>

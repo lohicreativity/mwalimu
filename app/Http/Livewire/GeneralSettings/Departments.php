@@ -47,26 +47,20 @@ class Departments extends Component
 
         $this->unit_category_id = $campusDepartment->department->unit_category_id;
         $this->campus_id = $campusDepartment->campus_id;
-        $this->selectedDepartment = $campusDepartment->department;
-        $this->getParent();
-    }
-
-    public function setSelectedFaculty($campusDepartment)
-    {
-        $campusDepartment = CampusDepartment::query()
-        ->where('campus_id', $campusDepartment['campus_id'])
-        ->where('department_id', $campusDepartment['department_id'])
-        ->first();
 
         $faculty = Faculty::query()
         ->where('id',9)
         ->where('campus_id',$this->campus_id)
         ->first();
+
         $this->parent_id = match ($this->unit_category_id) {
             1 => $this->campus_id,
             2 => $faculty->id, 
             4 => $campusDepartment->department->id,
         };
+
+        $this->selectedDepartment = $campusDepartment->department;
+        $this->getParent();
     }
 
     public function updatedUnitCategoryId()
