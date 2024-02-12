@@ -357,7 +357,7 @@ class AdmissionController extends Controller
         ->where('intake',$applicant->intake->name)->where('campus_id',$applicant->campus_id)->get();
 
         $orientation_date = null;
-        if(count($special_dates) == 0){
+        if(count($special_dates) > 0){
             foreach($special_dates as $special_date){
                 if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
                     $orientation_date = $special_date->date;

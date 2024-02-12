@@ -4499,19 +4499,30 @@ class ApplicationController extends Controller
         if(!$ac_year){
             return redirect()->back()->with('error','No active academic year');
         }
-        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
-        if(!$reg_date){
+
+        $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
+        $reg_dates = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
+        
+        $reg_date = null;
+        if(count($reg_dates) > 0){
+            foreach($reg_dates as $special_date){
+                if(in_array($selection->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                    $reg_date = $special_date->date;
+                }
+            }
+        }
+
+        if($reg_date ==  null){
             return redirect()->back()->with('error','Registration period has not been set');
         }
         $now = strtotime(date('Y-m-d'));
-        $reg_date_time = strtotime($reg_date->date);
+        $reg_date_time = strtotime($reg_date);
         $datediff = $reg_date_time - $now;
 
+        $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
             return redirect()->back()->with('error','Applicant cannot be registered. Registration period is over');
         }
-
-        $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
 
         if(empty($applicant->gender|| empty($applicant->disability_status_id))){
             return redirect()->back()->with('error','Sex of the applicant is required');
@@ -4527,8 +4538,6 @@ class ApplicationController extends Controller
         $applicant->medical_form_check = $request->get('medical_form_check')? 1 : 0;
         $applicant->registered_by_user_id = Auth::user()->id;
         $applicant->save();
-
-        $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
 
         $studentship_status = ($applicant->has_postponed == 1)? StudentshipStatus::where('name','POSTPONED')->first() : StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','FRESHER')->first();
