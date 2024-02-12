@@ -25,4 +25,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('staff/update-roles', [StaffController::class,'updateRoles']);
 	Route::post('staff/update-details', [StaffController::class,'updateDetails']);
 	Route::get('staff/{id}/destroy', [StaffController::class,'destroy']);
+	Route::get('reset-password-default', [StaffController::class,'resetPasswordDefaulty']);
 });

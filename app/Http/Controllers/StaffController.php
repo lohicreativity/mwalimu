@@ -542,5 +542,14 @@ class StaffController extends Controller
       
     return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
             
+    }
+
+    public function resetPasswordDefaulty($request){
+        $staff = Staff::where('user_id',$request->get('user_id'))->first();
+        $user = User::find($request->get('user_id'));
+        $user->password = Hash::make($staff->phone);
+        $user->save();
+
+        return redirect()->back()->with('message','Password reset successfully');
     }	
 }

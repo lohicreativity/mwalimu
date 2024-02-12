@@ -341,6 +341,7 @@
 
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                  <a href="{{ url('staff/reset-password-default?user_id='.$edit_staff->user_id) }}" class="btn btn-primary">Reset Password</a>
                 </div>
               {!! Form::close() !!}
             </div>
