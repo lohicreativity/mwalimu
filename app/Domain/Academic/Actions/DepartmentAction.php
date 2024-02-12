@@ -39,8 +39,8 @@ class DepartmentAction implements DepartmentInterface{
         }
         //$department->campuses()->sync($request->get('campus_id'));
 
-        CampusDepartment::whereHas('department',function($query)use($department){
-                                                        $query->where('id',$department->id);})
+        CampusDepartment::whereHas('department',function($query)use($request){
+                                                        $query->where('id',$request->get('department_id'));})
                                              ->where('campus_id',$request->get('current_campus_id'))
                                              ->where('unit_category_id',$request->get('current_unit_category_id'))
                                              ->where('parent_id', $request->get('current_parent_id'))
