@@ -120,7 +120,7 @@ class StudentController extends Controller
                                             ->sum('tuition_fee');
 
           $invoices = null;
-return $tuition_fee_loan;
+
           if(Registration::where('student_id', $student->id)
                          ->where('study_academic_year_id', $ac_year->id)
                          ->where('semester_id', $activeSemester->id)
@@ -133,7 +133,7 @@ return $tuition_fee_loan;
             if(!$program_fee){
                 return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
             }
-
+return $program_fee;
             $usd_currency = Currency::where('code','USD')->first();
 
             if(str_contains($student->nationality,'Tanzania')){
