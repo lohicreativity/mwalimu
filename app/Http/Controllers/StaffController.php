@@ -544,7 +544,7 @@ class StaffController extends Controller
             
     }
 
-    public function resetPasswordDefaulty($request){
+    public function resetPasswordDefaulty(Request $request){
         $staff = Staff::where('user_id',$request->get('user_id'))->first();
         $user = User::find($request->get('user_id'));
         $user->password = Hash::make($staff->phone);
