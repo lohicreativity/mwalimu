@@ -120,7 +120,7 @@ class StudentController extends Controller
                                             ->sum('tuition_fee');
 
           $invoices = null;
-
+return $tuition_fee_loan;
           if(Registration::where('student_id', $student->id)
                          ->where('study_academic_year_id', $ac_year->id)
                          ->where('semester_id', $activeSemester->id)
