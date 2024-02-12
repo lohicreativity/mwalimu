@@ -99,7 +99,7 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {            DB::table('program_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>14]);
+    {            return DB::table('program_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->first();
       DB::table('module_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>14]);
       
       $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
