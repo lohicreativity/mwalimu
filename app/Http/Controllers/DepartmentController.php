@@ -13,7 +13,8 @@ use App\Domain\Academic\Actions\DepartmentAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth, DB, Exception;
-use App\Domain\Settings\Models\CampusDepartment;
+use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\ModuleAssignmentRequest;
 
 class DepartmentController extends Controller
 {
@@ -98,7 +99,12 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {
+    {            DB::table('program_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>$similar_department->id]);
+      DB::table('module_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>$similar_department->id]);
+      
+      $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+
+      ModuleAssignmentRequest::where('department_id',$request->get('department_id'))->where('study_academic_year_id',$ac_year->id)->update(['department_id'=>$similar_department->id]);
       if (Auth::user()->hasRole('administrator')) {
 
          $validation = Validator::make($request->all(),[
