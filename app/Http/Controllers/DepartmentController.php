@@ -97,7 +97,7 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {
+    { return Department::where('name',$request->get('name'))->orWhere('abbreviation',$request->get('abbreviation'))->first();
       if (Auth::user()->hasRole('administrator')) {
 
          $validation = Validator::make($request->all(),[
