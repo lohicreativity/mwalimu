@@ -273,7 +273,7 @@
           </div><!--end of col-md-6 -->
           <div class="col-md-3">
              <div class="ss-left">
-                 <p class="ss-bold">Name of the Lecturer: <span style="font-style: normal">{{ $staff->title}} {{ $staff->first_name}} {{ $staff->surname}}</span></p>
+                 <p class="ss-bold">Name of the Lecturer: <span style="font-style: normal!important">{{ $staff->title}} {{ $staff->first_name}} {{ $staff->surname}}</span></p>
                  <p class="ss-bold">Signature: .............................</p>
                  <p class="ss-bold">Date: ..................................</p>
              </div>
