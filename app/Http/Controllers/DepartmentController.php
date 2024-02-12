@@ -97,7 +97,7 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    { if(Department::where('name',$request->get('name'))->orWhere('abbreviation',$request->get('abbreviation'))->first()){
+    { if(!Department::where('name',$request->get('name'))->orWhere('abbreviation',$request->get('abbreviation'))->first()){
 return 1;
     }
       if (Auth::user()->hasRole('administrator')) {
