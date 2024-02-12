@@ -128,7 +128,7 @@
                                 <select wire:model="campus_id" name="campus_id" class="form-control" required>
                                     <option value="">Select Campus</option>
                                     @foreach($campuses as $cp)
-                                        <option value="{{ $cp->id }}">{{ $cp->name }}</option>
+                                        <option value="{{ $cp->id }}" @if($cp->id == $current_campus_id) selected="selected" @endif>{{ $cp->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -138,7 +138,7 @@
                                 <select wire:model="unit_category_id" name="unit_category_id" class="form-control" required>
                                     <option value="">Select Type</option>
                                     @foreach($unit_categories as $category)
-                                        <option value="{{ $category->id }}" >{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" @if($category->id == $current_unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -149,7 +149,7 @@
                                 <select wire:model="parent_id" name="parent_id" class="form-control">
                                     <option value="">Select Parent</option>
                                     @foreach($parents as $parent)
-                                        <option value="{{ $parent->id }}" >{{ $parent->name }}
+                                        <option value="{{ $parent->id }}" @if($parent->id == $current_parent_id) selected="selected" @endif>{{ $parent->name }}
                                         </option>
                                     @endforeach
                                 </select>
