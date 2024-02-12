@@ -3978,7 +3978,7 @@ class ApplicationController extends Controller
             if(!$app_window){
                return redirect()->back()->with('error','Application window is inactive');
             }
-return 5;
+
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
             $applicant->program_level_id)->where('end_date','>=',  now()->format('Y-m-d'))->latest()->first();
             
