@@ -3975,6 +3975,7 @@ class ApplicationController extends Controller
             // ->where('msc_end_date','>=',now()->format('Y-m-d'))->first();
 
             $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status', 'ACTIVE')->first();
+            return $app_window;
             if(!$app_window){
                return redirect()->back()->with('error','Application window is inactive');
             }
@@ -4518,7 +4519,7 @@ class ApplicationController extends Controller
         $now = strtotime(date('Y-m-d'));
         $reg_date_time = strtotime($reg_date);
         $datediff = $reg_date_time - $now;
-return round($datediff / (60 * 60 * 24));
+//return round($datediff / (60 * 60 * 24));
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
             return redirect()->back()->with('error','Applicant cannot be registered. Registration period is over');
