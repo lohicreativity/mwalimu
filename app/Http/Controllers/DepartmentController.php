@@ -98,13 +98,7 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {return         CampusDepartment::whereHas('department',function($query)use($request){
-      $query->where('id',$request->get('department_id'));})
-->where('campus_id',$request->get('current_campus_id'))
-->where('unit_category_id',$request->get('current_unit_category_id'))
-->where('parent_id', $request->get('current_parent_id'))
-->first();
-
+    {
       if (Auth::user()->hasRole('administrator')) {
 
          $validation = Validator::make($request->all(),[
