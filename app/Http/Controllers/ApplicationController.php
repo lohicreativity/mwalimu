@@ -3927,7 +3927,7 @@ class ApplicationController extends Controller
      */
 
     public function selectApplicant(Request $request)
-    {
+    {return 1;
         $decision               = $request->get('decision_btn');
         $applicant_id           = $request->get('applicant_id');
         $application_window_id  = $request->get('application_window_id');
