@@ -99,12 +99,12 @@ class DepartmentController extends Controller
      * Update specified department
      */
     public function update(Request $request)
-    {            DB::table('program_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>$similar_department->id]);
-      DB::table('module_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>$similar_department->id]);
+    {            DB::table('program_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>1]);
+      DB::table('module_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>1]);
       
       $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
-      ModuleAssignmentRequest::where('department_id',$request->get('department_id'))->where('study_academic_year_id',$ac_year->id)->update(['department_id'=>$similar_department->id]);
+      ModuleAssignmentRequest::where('department_id',$request->get('department_id'))->where('study_academic_year_id',$ac_year->id)->update(['department_id'=>1]);
       if (Auth::user()->hasRole('administrator')) {
 
          $validation = Validator::make($request->all(),[
