@@ -133,7 +133,7 @@ class DepartmentController extends Controller
 
       } catch (Exception $e) {
 
-         return redirect()->back()->with('error','Department name has already been used');
+         return redirect()->back()->with('error','Abbreviation has already been used. Please change.');
       
       }
 
