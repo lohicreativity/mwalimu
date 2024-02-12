@@ -627,7 +627,9 @@ class ModuleAssignmentController extends Controller
     public function totalStudents(Request $request, $id)
     {
         try{
-            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus',
+                                                         'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])
+                                                         ->findOrFail($id);
             foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
@@ -721,7 +723,8 @@ class ModuleAssignmentController extends Controller
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                     'registrations'=>$registrations,
 					'semester'=>$module_assignment->programModuleAssignment->semester_id,
-					'cw_pass_mark'=>$module_assignment->programModuleAssignment->course_work_pass_score
+					'cw_pass_mark'=>$module_assignment->programModuleAssignment->course_work_pass_score,
+                    'staff'=>$module_assignment->staff,
                 ];
 
                 return view('dashboard.academic.reports.students-with-course-work',$data);
