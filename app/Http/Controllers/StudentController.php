@@ -133,7 +133,7 @@ class StudentController extends Controller
             if(!$program_fee){
                 return redirect()->back()->with('error','Programme fee has not been defined. Please contact the Admission Office.');
             }
-return $program_fee;
+
             $usd_currency = Currency::where('code','USD')->first();
 
             if(str_contains($student->nationality,'Tanzania')){
@@ -148,6 +148,14 @@ return $program_fee;
                                                 ->where('has_signed',1)
                                                 ->count();
 
+            if($student->academic_status_id == 8){
+              $loan = LoanAllocation::where('applicant_id',$student->applicant_id)->first(); 
+              if(empty($loan->registration_number)){
+                $loan->registration_number = $student->registration_number;
+                $loan->save();
+              }
+            }
+                                               
             if($tuition_fee_loan >= $program_fee_amount && $loan_signed_status >= 1){
               Registration::where('student_id',$student->id)
                           ->where('study_academic_year_id',$ac_year->id)

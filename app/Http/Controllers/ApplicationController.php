@@ -4501,7 +4501,7 @@ class ApplicationController extends Controller
         }
 
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
-        $reg_dates = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
+        $reg_dates = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->get();
         
         $reg_date = null;
         if(count($reg_dates) > 0){
