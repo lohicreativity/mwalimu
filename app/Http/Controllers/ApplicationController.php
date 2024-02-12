@@ -3927,7 +3927,7 @@ class ApplicationController extends Controller
      */
 
     public function selectApplicant(Request $request)
-    {return 1;
+    {
         $decision               = $request->get('decision_btn');
         $applicant_id           = $request->get('applicant_id');
         $application_window_id  = $request->get('application_window_id');
@@ -3942,9 +3942,9 @@ class ApplicationController extends Controller
         return redirect()->back()->with('error','This action cannot be performed now.');
        }
 
-        if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first()){
-            return redirect()->back()->with('error','Application window is not active');
-        }
+        // if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first()){
+        //     return redirect()->back()->with('error','Application window is not active');
+        // }
 
         $applicant = Applicant::select('id','program_level_id','status')->where('id',$request->get('applicant_id'))->with('programLevel:id,name')->first();
 
@@ -3975,11 +3975,10 @@ class ApplicationController extends Controller
             // ->where('msc_end_date','>=',now()->format('Y-m-d'))->first();
 
             $app_window = ApplicationWindow::where('campus_id', $staff->campus_id)->where('status', 'ACTIVE')->first();
-            return $app_window;
             if(!$app_window){
                return redirect()->back()->with('error','Application window is inactive');
             }
-
+return 5;
             $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)->where('program_level_id',
             $applicant->program_level_id)->where('end_date','>=',  now()->format('Y-m-d'))->latest()->first();
             
