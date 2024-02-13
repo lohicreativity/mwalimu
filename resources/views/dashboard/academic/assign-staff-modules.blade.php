@@ -112,7 +112,7 @@
                   @endcan
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Facilitator Approvals') }}</a></li>
                   @can('view-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Add/Edit Module') }}</a></li>
                   @endcan
                 </ul>
               </div>

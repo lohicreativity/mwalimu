@@ -51,7 +51,7 @@
                   @endcan
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Facilitator Approvals') }}</a></li>
                   @can('view-modules')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/modules') }}">{{ __('Add/Edit Modules') }}</a></li>
                   @endcan
                 </ul>
               </div>
@@ -61,7 +61,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add Module') }}</h3>
+                <h3 class="card-title">{{ __('Add/Edit Module') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
