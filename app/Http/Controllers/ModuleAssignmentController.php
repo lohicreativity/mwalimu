@@ -48,7 +48,11 @@ class ModuleAssignmentController extends Controller
 	{
     $staff = User::find(Auth::user()->id)->staff;
     // $campus_department = CampusDepartment::select('department_id')->get();
-	// 					return $campus_department->department_id;			
+	// 					return $campus_department->department_id;	
+    
+    // return ModuleAssignmentRequest::with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])
+    // ->latest()->where('study_academic_year_id',session('active_academic_year_id'))->latest()
+    // ->where('staff_id','=',0)->where('requested_by_user_id',$staff->id)->get();
 		$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
@@ -316,7 +320,6 @@ class ModuleAssignmentController extends Controller
             return redirect()->back()->with('error','No elective policy set for this academic year');
         }
 
-return $request;
         return (new ModuleAssignmentAction)->store($request);
 
         //return Util::requestResponse($request,'Module assignment created successfully');
