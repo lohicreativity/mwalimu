@@ -112,9 +112,6 @@
                           <tbody>  
                       @foreach($assignments as $assign)
                         @php
-                          $module_name = str_replace(' Of ',' of ',$module->name);
-                          $module_name = str_replace(' And ',' and ',$module_name);
-                          $module_name = str_replace(' In ',' in ',$module_name);
 
                           $program_name = str_replace(' Of ',' of ',$assign->programModuleAssignment->campusProgram->program->name);
                           $program_name = str_replace(' And ',' and ',$program_name);
@@ -122,9 +119,10 @@
 
                         @endphp
                         <tr>
-                        <td>{{ $module_name }}
+                        <td>{{ $program_name }}
                           <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $assign->user->staff->title }} {{ $assign->user->staff->first_name }} {{ $assign->user->staff->middle_name }} {{ $assign->user->staff->surname }} - {{ $assign->staff->campus->name }}</p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $assign->user->staff->title }} {{ $assign->user->staff->first_name }} {{ $assign->user->staff->middle_name }} 
+                              {{ $assign->user->staff->surname }} - {{ $assign->staff->campus->name }}</p>
                           @if($assign->programModuleAssignment)
                           @if(count($assign->programModuleAssignment->moduleAssignments) != 0)
                             

@@ -174,10 +174,14 @@
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
                             
                             @can('delete-module-facilitator')
-                            @if(App\Utils\Util::collectionContainsKey($assign->module->departments,$staff->department_id))
-                            <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
-                            @endif
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }} @if($modAssign->confirmed === 0) <span class="badge badge-warning">Rejected</span> @elseif($modAssign->confirmed === null) <span class="badge badge-warning">Pending Approval</span> @endif</p>
+                              @if(App\Utils\Util::collectionContainsKey($assign->module->departments,$staff->department_id))
+                                <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
+                              @endif
+                              <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }} 
+                                @if($modAssign->confirmed === 0) <span class="badge badge-warning">Rejected</span> 
+                                @elseif($modAssign->confirmed === null) <span class="badge badge-warning">Pending Approval</span> 
+                                @endif
+                              </p>
                             @endcan
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
