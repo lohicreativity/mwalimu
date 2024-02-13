@@ -44,12 +44,12 @@
            <div class="card-header">
                 <ul class="nav nav-tabs">
                   @can('view-module-assignments')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Assign/Request Facilitators') }}</a></li>
                   @endcan
                   @can('view-module-assignment-requests')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Facilitator Requests') }}</a></li>
                   @endcan
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Modules Assignment Confirmation') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Facilitator Approvals') }}</a></li>
                   @can('view-modules')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
                   @endcan
