@@ -61,7 +61,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add/Edit Module') }}</h3>
+                <h3 class="card-title">{{ __('Add Module') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
