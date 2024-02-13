@@ -316,7 +316,7 @@ class ModuleAssignmentController extends Controller
             return redirect()->back()->with('error','No elective policy set for this academic year');
         }
 
-
+return $request;
         return (new ModuleAssignmentAction)->store($request);
 
         //return Util::requestResponse($request,'Module assignment created successfully');
