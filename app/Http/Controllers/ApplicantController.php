@@ -3042,7 +3042,8 @@ class ApplicantController extends Controller
 		   'countries'=>Country::all(),
          'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
                                                           ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first() : null,
-         'batch'=> $batch
+         'batch'=> $batch,
+         'student'=>$student->id
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
