@@ -84,6 +84,7 @@
                 <i class="ion ion-stats-bars"></i>
               </div>
               <a href="{{ url('application/applicants/list?duration=today&status=progress&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('application/reset-applicant-previous-window-status') }}" class="btn btn-primary">Reset Previous Window Applicants' Status</a>
             </div>
           </div>
           <!-- ./col -->

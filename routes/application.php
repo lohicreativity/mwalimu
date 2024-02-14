@@ -104,6 +104,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('reset-applicant-password',[ApplicationController::class,'resetApplicantPassword']);
 	Route::get('reset-applicant-password-default',[ApplicationController::class,'resetApplicantPasswordDefault']);
     Route::get('reset-applicant-application-batch',[ApplicationController::class,'resetApplicantApplicationBatch']);
+    Route::get('reset-applicant-previous-window-status',[ApplicationController::class,'resetApplicantWindowStatus']);
 
 	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);
     Route::get('fetch-necta-results/{index_number}/{exam_id}',[NECTAServiceController::class,'getResults']);

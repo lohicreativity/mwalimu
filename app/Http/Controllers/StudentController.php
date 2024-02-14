@@ -151,7 +151,7 @@ class StudentController extends Controller
             if($student->academic_status_id == 8){
               $loan = LoanAllocation::where('applicant_id',$student->applicant_id)->first(); 
               if(empty($loan->registration_number)){
-                $loan->registration_number = $student->registration_number;
+                $loan->registration_number = $request->get('registration_number');
                 $loan->save();
               }
             }

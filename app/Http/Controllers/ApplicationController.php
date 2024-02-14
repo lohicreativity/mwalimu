@@ -6055,6 +6055,22 @@ class ApplicationController extends Controller
         return redirect()->to('application/application-dashboard')->with('message','Application window batch reset successfully');
     }
 
+
+            /**
+     * Reset applicant's batch
+     */
+    public function resetApplicantWindowStatus(Request $request)
+    {
+        $app_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest();
+        return Applicant::where('campus_id',$request->get('campus_id'))
+                        ->whereNull('status')
+                        ->where('application_window_id','!=',$app_window->id)
+                        ->where('program_level_id',$request->get('program_level_id'))
+                        ->get();
+
+        return redirect()->back()->with('message',"Students' application window reset is successful");
+    }
+
     /**
      * Show insurance statuses
      */
