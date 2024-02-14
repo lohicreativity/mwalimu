@@ -126,10 +126,10 @@
                             @if(count($department->campuses) == 1)
                               {{ $campus_name }}
                             @else
-                              @if($key == count($department->campuses))
+                              @if($key == count($department->campuses) - 1)
                                 {{ $campus_name}}
                               @else
-                                {{ $campus_name}} & &nbsp;
+                                {{ $campus_name}} &
                               @endif
                             @endif
                           @endforeach
