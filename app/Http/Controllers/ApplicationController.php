@@ -6076,6 +6076,7 @@ class ApplicationController extends Controller
                                 ->whereNull('status')
                                 ->where('application_window_id',$application_windows[1]->id)
                                 ->where('program_level_id',$request->get('program_level_id'))
+                                ->where('programs_complete_status',0)
                                 ->get();
         
                 $applicant_ids[] = null;
@@ -6083,9 +6084,16 @@ class ApplicationController extends Controller
                     $applicant_ids[] = $applicant->id;
                 }
 
-                return ApplicantProgramSelection::whereIn('applicant_id',$applicant_ids)->get();
+                ApplicantProgramSelection::whereIn('applicant_id',$applicant_ids)->delete();
+                Applicant::where('campus_id',$request->get('campus_id'))
+                         ->whereNull('status')
+                         ->where('application_window_id',$application_windows[1]->id)
+                         ->where('program_level_id',$request->get('program_level_id'))
+                         ->where('programs_complete_status',0)
+                         ->update(['campus_id'=>0,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,'is_tcu_added'=>null,'is_tcu_reason'=>null,
+                                   'payment_complete_status'=>0,'results_complete_status'=>0,'documents_complete_status'=>0]);
 
-                return redirect()->back()->with('message',"Applicants' application window reset is successful");
+                return redirect()->back()->with('message',"Reset of applicants' application window is successful");
 
             }else{
                 return redirect()->back()->with('message',"No current active application window");               
