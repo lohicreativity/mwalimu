@@ -119,7 +119,11 @@
                       <option value="{{ $department->id }}">{{ $department->name }}
                         @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
                           @foreach($department->campuses as $campus)
-                           {{ $campus->name }}
+                            @if(count($department->campuses) == 1)
+                              {{ $campus->name }}
+                            @else
+
+                            @endif
                           @endforeach
                         @endif
                       </option>

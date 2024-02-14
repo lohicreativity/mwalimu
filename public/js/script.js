@@ -1621,6 +1621,7 @@ $('#ss-reload-control-number').on('click',function(e){
         });
 });
 
+// Applicant students's control number
 $('#ss-reset-control-number').on('click',function(e){
     $.ajax({
       url:'/application/delete-applicant-invoice',

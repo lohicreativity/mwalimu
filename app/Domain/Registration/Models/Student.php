@@ -17,7 +17,6 @@ use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\DisabilityStatus;
-use App\Domain\Finance\Models\Invoice;
 
 class Student extends Model
 {
@@ -155,23 +154,4 @@ class Student extends Model
         return $this->belongsTo(DisabilityStatus::class,'disability_status_id');
     }
 
-        /**
-     * Check if applicant has requested control number
-     */
-    public static function hasRequestedControlNumber($student)
-    {
-        $status = false;
-        $invoice = Invoice::where('payable_id',$student)
-                          ->where('payable_type','student')
-                          ->latest()
-                          ->first();
-        //$invoice = Invoice::where('payable_id',$applicant->id)->whereNotNull('control_no')->where('payable_type','applicant')->latest()->first();
-        // $invoice = Invoice::whereHas('payable',function($query) use($applicant){
-        //            $query->where('user_id',$applicant->user_id);
-        // })->latest()->first();
-        if($invoice){
-            $status = true;
-        }
-        return $status;
-    }
 }
