@@ -6076,7 +6076,7 @@ class ApplicationController extends Controller
                                 ->whereNull('status')
                                 ->where('application_window_id',$application_windows[1]->id)
                                 ->where('program_level_id',$request->get('program_level_id'))
-                                ->get();
+                                ->count();
         
                 return redirect()->back()->with('message',"Applicants' application window reset is successful");
 
