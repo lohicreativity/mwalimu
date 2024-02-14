@@ -118,15 +118,19 @@
                       @foreach($departments as $department)
                       <option value="{{ $department->id }}">{{ $department->name }}
                         @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
-                          @foreach($department->campuses as $campus)
+                          @foreach($department->campuses as $key=>$campus)
+                            @php
+                              $campus = explode(' ', $campus->name);
+                              $campus_name = $campus[0];
+                            @endphp
                             @if(count($department->campuses) == 1)
-                              {{ $campus->name }}
+                              {{ $campus_name }}
                             @else
-                              @php
-                                $campus = explode(' ', $campus->name);
-                                $campus_name = $campus[0]
-                              @endphp
-                              {{ $campus_name}}
+                              @if($key == count($department->campuses))
+                                {{ $campus_name}}
+                              @else
+                                {{ $campus_name}} & &nbsp;
+                              @endif
                             @endif
                           @endforeach
                         @endif
