@@ -116,7 +116,12 @@
                     <select name="department_id" class="form-control" required>
                       <option value="">Select Department/Unit</option>
                       @foreach($departments as $department)
-                      <option value="{{ $department->id }}">{{ $department->name }}
+                        @php
+                          $department_name = str_replace(' Of ',' of ',$department->name);
+                          $department_name = str_replace(' And ',' and ',$department_name);
+                          $department_name = str_replace(' In ',' in ',$department_name);
+                        @endphp
+                      <option value="{{ $department->id }}">{{ $department_name }}
                         @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
                           @foreach($department->campuses as $key=>$campus)
                             @php
@@ -249,8 +254,13 @@
                             @endif
                             <td>
                               @foreach($program->departments as $department)
+                                  @php
+                                    $department_name = str_replace(' Of ',' of ',$department->name);
+                                    $department_name = str_replace(' And ',' and ',$department_name);
+                                    $department_name = str_replace(' In ',' in ',$department_name);
+                                  @endphp
                                   @if($department->pivot->campus_id == $campusProgram->campus_id)
-                                      {{ $department->name }}
+                                      {{ $department_name }}
                                   @endif
                               @endforeach
                             </td>
