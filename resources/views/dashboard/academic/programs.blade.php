@@ -125,7 +125,7 @@
                               @php
                                 $campus_name = substr($campus->name,-7);
                               @endphp
-                              {{ $campus_name}}
+                              {{ $campus_name}} 1
                             @endif
                           @endforeach
                         @endif
