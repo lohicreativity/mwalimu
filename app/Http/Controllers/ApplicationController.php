@@ -6072,12 +6072,19 @@ class ApplicationController extends Controller
             $application_windows = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest()->limit(2)->get();
 
             if($application_windows[0]->status == 'ACTIVE'){
-                return Applicant::where('campus_id',$request->get('campus_id'))
+                $applicants = Applicant::where('campus_id',$request->get('campus_id'))
                                 ->whereNull('status')
                                 ->where('application_window_id',$application_windows[1]->id)
                                 ->where('program_level_id',$request->get('program_level_id'))
                                 ->count();
         
+                $applicant_ids[] = null;
+                foreach($applicants as $applicant){
+                    $applicant_ids[] = $applicant->id;
+                }
+
+                return ApplicantProgramSelection::whereIn('applicant_id',$applicant_ids);
+
                 return redirect()->back()->with('message',"Applicants' application window reset is successful");
 
             }else{
