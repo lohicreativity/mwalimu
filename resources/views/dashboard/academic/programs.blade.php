@@ -356,13 +356,8 @@
                                               {!! Form::text('code',$program->code,$code) !!}
                                             </div>
                                             <div class="form-group col-8">
-                                              @php
-                                                $program_name = str_replace(' Of ',' of ',$program->name);
-                                                $$program_name = str_replace(' And ',' and ',$$program_name);
-                                                $$program_name = str_replace(' In ',' in ',$$program_name);
-                                              @endphp
                                               {!! Form::label('','Name') !!}
-                                              {!! Form::text('name',$program_name,$name) !!}
+                                              {!! Form::text('name',$program->name,$name) !!}
 
                                               {!! Form::input('hidden','program_id',$program->id) !!}
                                               {!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
