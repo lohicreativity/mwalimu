@@ -6083,7 +6083,7 @@ class ApplicationController extends Controller
                     $applicant_ids[] = $applicant->id;
                 }
 
-                return ApplicantProgramSelection::whereIn('applicant_id',$applicant_ids);
+                return ApplicantProgramSelection::whereIn('applicant_id',$applicant_ids)->get();
 
                 return redirect()->back()->with('message',"Applicants' application window reset is successful");
 
