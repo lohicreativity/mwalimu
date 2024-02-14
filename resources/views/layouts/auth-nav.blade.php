@@ -327,7 +327,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/reset-applicant-previous-window-status') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Reset Applicants Window</p>
+                  <p>Reset Windows</p>
                 </a>
               </li>
               @endcan

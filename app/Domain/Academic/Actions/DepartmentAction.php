@@ -35,6 +35,7 @@ class DepartmentAction implements DepartmentInterface{
         if($similar_department && $similar_department->id != $request->get('department_id')){
             DB::table('program_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>$similar_department->id]);
             DB::table('module_department')->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('current_campus_id'))->update(['department_id'=>$similar_department->id]);
+            DB::table('staffs')->where('department_id',$request->get('department_id'))->update(['department_id'=>$similar_department->id]);
             
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
