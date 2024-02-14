@@ -323,6 +323,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-reset-application-windows')
+              <li class="nav-item">
+                <a href="{{ url('application/reset-applicant-previous-window-status') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Reset Application Windows</p>
+                </a>
+              </li>
+              @endcan
               @can('view-application-batches')
               <li class="nav-item">
                 <a href="{{ url('application/application-batches?campus_id='.session('staff_campus_id')) }}" class="nav-link">

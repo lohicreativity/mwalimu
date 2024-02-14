@@ -6061,14 +6061,25 @@ class ApplicationController extends Controller
      */
     public function resetApplicantWindowStatus(Request $request)
     {
-        $app_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest();
-        return Applicant::where('campus_id',$request->get('campus_id'))
-                        ->whereNull('status')
-                        ->where('application_window_id','!=',$app_window->id)
-                        ->where('program_level_id',$request->get('program_level_id'))
-                        ->get();
+        if(empty($request->get('program_level_id'))){
+            $data = [
+                'awards'=>Award::all(),
+                'campuses'=>Campus::all(),
+             ];
+             return view('dashboard.application.reset-applicants-application-window',$data)->withTitle('Reset Application Windows');
 
-        return redirect()->back()->with('message',"Students' application window reset is successful");
+        }else{
+            $application_windows = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest()->limit(2)->get();
+            return $application_windows;
+            $app_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest();
+            return Applicant::where('campus_id',$request->get('campus_id'))
+                            ->whereNull('status')
+                            ->where('application_window_id','!=',$app_window->id)
+                            ->where('program_level_id',$request->get('program_level_id'))
+                            ->get();
+    
+            return redirect()->back()->with('message',"Students' application window reset is successful");
+        }
     }
 
     /**
