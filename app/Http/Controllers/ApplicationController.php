@@ -6070,15 +6070,19 @@ class ApplicationController extends Controller
 
         }else{
             $application_windows = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest()->limit(2)->get();
-            return $application_windows;
-            $app_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest();
-            return Applicant::where('campus_id',$request->get('campus_id'))
-                            ->whereNull('status')
-                            ->where('application_window_id','!=',$app_window->id)
-                            ->where('program_level_id',$request->get('program_level_id'))
-                            ->get();
-    
-            return redirect()->back()->with('message',"Students' application window reset is successful");
+
+            if($application_windows[0]->status == 'ACTIVE'){
+                return Applicant::where('campus_id',$request->get('campus_id'))
+                                ->whereNull('status')
+                                ->where('application_window_id',$application_windows[1]->id)
+                                ->where('program_level_id',$request->get('program_level_id'))
+                                ->get();
+        
+                return redirect()->back()->with('message',"Applicants' application window reset is successful");
+
+            }else{
+                return redirect()->back()->with('message',"No current active application window");               
+            }
         }
     }
 
