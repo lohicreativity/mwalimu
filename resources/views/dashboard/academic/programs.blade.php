@@ -356,8 +356,13 @@
                                               {!! Form::text('code',$program->code,$code) !!}
                                             </div>
                                             <div class="form-group col-8">
+                                              @php
+                                                $program_name = str_replace(' Of ',' of ',$program->name);
+                                                $$program_name = str_replace(' And ',' and ',$$program_name);
+                                                $$program_name = str_replace(' In ',' in ',$$program_name);
+                                              @endphp
                                               {!! Form::label('','Name') !!}
-                                              {!! Form::text('name',$program->name,$name) !!}
+                                              {!! Form::text('name',$program_name,$name) !!}
 
                                               {!! Form::input('hidden','program_id',$program->id) !!}
                                               {!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
@@ -384,10 +389,27 @@
                                                       }
                                                     @endphp
                                                     @foreach($departments as $department)
-                                                      <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @endif>{{ $department->name }}
+                                                      @php
+                                                        $department_name = str_replace(' Of ',' of ',$department->name);
+                                                        $department_name = str_replace(' And ',' and ',$department_name);
+                                                        $department_name = str_replace(' In ',' in ',$department_name);
+                                                      @endphp
+                                                      <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @endif>{{ $department_name }}
                                                         @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
-                                                          @foreach($department->campuses as $campus)
-                                                            {{ $campus->name }}
+                                                          @foreach($department->campuses as $key=>$campus)
+                                                            @php
+                                                              $campus = explode(' ', $campus->name);
+                                                              $campus_name = $campus[0];
+                                                            @endphp
+                                                            @if(count($department->campuses) == 1)
+                                                              {{ $campus_name }}
+                                                            @else
+                                                              @if($key == count($department->campuses) - 1)
+                                                                {{ $campus_name}}
+                                                              @else
+                                                                {{ $campus_name}} &
+                                                              @endif
+                                                            @endif
                                                           @endforeach
                                                         @endif
                                                       </option>
