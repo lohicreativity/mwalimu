@@ -122,7 +122,10 @@
                             @if(count($department->campuses) == 1)
                               {{ $campus->name }}
                             @else
-
+                              @php
+                                $campus_name = substr($campus->name,-7);
+                              @endphp
+                              {{ $campus_name}}
                             @endif
                           @endforeach
                         @endif
