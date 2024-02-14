@@ -17,6 +17,7 @@ use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\DisabilityStatus;
+use App\Domain\Finance\Models\Invoice;
 
 class Student extends Model
 {
