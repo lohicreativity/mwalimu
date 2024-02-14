@@ -123,9 +123,10 @@
                               {{ $campus->name }}
                             @else
                               @php
-                                $campus_name = substr($campus->name,-7);
+                                $campus = explode(' ', $campus->name);
+                                $campus_name = $campus[0]
                               @endphp
-                              {{ $campus_name}} 1
+                              {{ $campus_name}}
                             @endif
                           @endforeach
                         @endif
