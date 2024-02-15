@@ -26,11 +26,11 @@ class ProgramController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+       // if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
             $staffs = Staff::whereHas('user.roles',function($query){$query->where('name','hod');})->get();
-        }else{
-            $staffs = Staff::whereHas('user.roles',function($query){$query->where('name','hod');})->where('campus_id',$staff->campus_id)->get();
-        }
+        // }else{
+        //     $staffs = Staff::whereHas('user.roles',function($query){$query->where('name','hod');})->where('campus_id',$staff->campus_id)->get();
+        // }
 
         if(Auth::user()->hasRole('hod')){
 
