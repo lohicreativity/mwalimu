@@ -3036,7 +3036,7 @@ class ApplicantController extends Controller
                $batch = $applicant->batch_id != $current_batch->id? true : false;  
             }        
          }
-         $student_id = $student? $student->id : 0;
+         $student_id = $student? $student->id : null;
          
          return Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
             ->orWhere(function($q) use($student_id){$q->where('payable_id',$student_id)->where('payable_typ','student');});})->first();
