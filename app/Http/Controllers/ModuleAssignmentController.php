@@ -175,7 +175,7 @@ class ModuleAssignmentController extends Controller
 
             $data = [
                'module_assignment'=>$module_assignment,
-               'final_upload_status'=>$coursework_process_status,
+               'coursework_process_status'=>$coursework_process_status,
                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
                'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
                'staff'=>User::find(Auth::user()->id)->staff,
