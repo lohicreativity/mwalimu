@@ -3037,15 +3037,13 @@ class ApplicantController extends Controller
             }        
          }
          $student_id = $student? $student->id : null;
-         
-         return Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
-            ->orWhere(function($q) use($student_id){$q->where('payable_id',$student_id)->where('payable_typ','student');});})->first();
+
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
 		   'countries'=>Country::all(),
          'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
-                                                          ->orWhere('payable_id',$student_id)->where('payable_type','student');})->first() : null,
+                                                          ->orWhere(function($q) use($student_id){$q->where('payable_id',$student_id)->where('payable_typ','student');});})->first() : null,
          'batch'=> $batch,
          ];
 
