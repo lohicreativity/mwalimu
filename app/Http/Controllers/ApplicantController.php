@@ -3031,8 +3031,10 @@ class ApplicantController extends Controller
          $batch = false;
          if($applicant){
             $student = Student::select('id')->where('applicant_id',$applicant->id)->latest()->first();
-            $current_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
-            $batch = $applicant->batch_id != $current_batch->id? true : false;          
+            if($applicant->campus_id > 0){
+               $current_batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
+               $batch = $applicant->batch_id != $current_batch->id? true : false;  
+            }        
          }
          $student_id = $student? $student->id : 0;
          

@@ -192,11 +192,13 @@
                         <td>{{ $module->module->name }}</td>
                         <td>@if(count($module->moduleAssignments) != 0) {{ $module->moduleAssignments[0]->staff->title }} {{ $module->moduleAssignments[0]->staff->first_name }} {{ $module->moduleAssignments[0]->staff->surname }} @endif</td>
                         <td>@if(count($module->moduleAssignments) != 0) {{ $module->moduleAssignments[0]->staff->phone }} @endif</td>
-						@if(count($module->moduleAssignments) != 0)
-                        <td><a href="{{ url('academic/results/uploaded-modules/'.$module->id.'/students?result_type='.$request->get('results_type')) }}">@if($module->moduleAssignments[0]->course_work_process_status == 'PROCESSED') {{ count($module->examinationResults) }} @else 0 @endif</a></td>
-					    @else
-					    <td><a href="{{ url('academic/results/uploaded-modules/'.$module->id.'/students?result_type='.$request->get('results_type')) }}">0</a></td>
-						@endif
+						            @if(count($module->moduleAssignments) != 0)
+                        <td><a href="{{ url('academic/results/uploaded-modules/'.$module->id.'/students?result_type='.$request->get('results_type')) }}">
+                          @if($module->moduleAssignments[0]->course_work_process_status == 'PROCESSED') {{ count($module->examinationResults) }} @else 0 @endif</a>
+                        </td>
+                        @else
+                        <td><a href="{{ url('academic/results/uploaded-modules/'.$module->id.'/students?result_type='.$request->get('results_type')) }}">0</a></td>
+                        @endif
                       </tr>
                      @endforeach
                    </tbody>
