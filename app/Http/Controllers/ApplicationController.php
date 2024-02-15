@@ -10325,7 +10325,8 @@ class ApplicationController extends Controller
             $code = sprintf('%04d',1);
         }
 
-        $year = substr(date('Y'), 2);
+        //$year = substr(date('Y'), 2);
+        $year = substr($ac_year->begin_date,2,2);
         $prog_code = $stud_group = explode('.', $transfer_program->code);
         $program_code = $prog_code[0].'.'.$prog_code[1];
         
@@ -12144,9 +12145,10 @@ class ApplicationController extends Controller
 			}else{
 			   $code = sprintf('%04d',1);
 			}
-			$year = substr(date('Y'), 2);
-
-			$prog_code = explode('.', $selection->campusProgram->code);
+			//$year = substr(date('Y'), 2);
+            $year = substr($ac_year->begin_date,2,2);
+			
+            $prog_code = explode('.', $selection->campusProgram->code);
 
 			$program_code = $prog_code[0].'.'.$prog_code[1];
 

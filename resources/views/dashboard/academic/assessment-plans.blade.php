@@ -171,7 +171,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                @if(!$final_upload_status)
+                @if(!$coursework_process_status)
                 <a class="ss-color-danger ss-margin-bottom" href="#" data-toggle="modal" data-target="#ss-delete-plan-{{ $module_assignment->id }}">Reset Assessment Plan</a>
                 @endif
 

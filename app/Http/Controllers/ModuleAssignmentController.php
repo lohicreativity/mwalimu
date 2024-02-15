@@ -167,15 +167,15 @@ class ModuleAssignmentController extends Controller
             $module_assignment = ModuleAssignment::with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear'])->findOrFail($id);
             $policy = ExaminationPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
 
-            $final_upload_status = false;
+            $coursework_process_status = false;
 
-            if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
-                $final_upload_status = true;
+            if($module_assignment->course_work_process_status != null){
+                $coursework_process_status = true;
             }
 
             $data = [
                'module_assignment'=>$module_assignment,
-               'final_upload_status'=>$final_upload_status,
+               'final_upload_status'=>$coursework_process_status,
                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
                'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
                'staff'=>User::find(Auth::user()->id)->staff,
