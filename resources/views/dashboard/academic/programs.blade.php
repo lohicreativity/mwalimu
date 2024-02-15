@@ -276,7 +276,7 @@
                                 }
 
                               @endphp 
-                                @if($staff->department_id == $department_id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
+                                @if($staff->department_id == $department_id && $staff->campus_id == $campusProgram->campus_id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
                               @endforeach 
                             </td>
                             @if(!Auth::user()->hasRole('hod'))
