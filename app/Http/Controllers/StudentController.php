@@ -2352,6 +2352,7 @@ class StudentController extends Controller
     {
         $student = Student::find($request->get('student_id'));
         $invoice = Invoice::where('payable_id',$student->id)->where('payable_type','student')->latest()->first();
+        return $invoice;
          if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
            $invoice->payable_id = 0;
            $invoice->save();
