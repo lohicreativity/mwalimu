@@ -282,6 +282,7 @@ class ProgramModuleAssignmentController extends Controller
                             $query->where('campus_id',$staff->campus_id);
                       })->get();
     	}
+        return $$campus_program->program;
     	$data = [
             'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($ac_year_id),
             'campus_program'=>$campus_program,
