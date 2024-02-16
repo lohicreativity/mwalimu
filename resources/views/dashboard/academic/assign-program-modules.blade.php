@@ -123,8 +123,10 @@
                    <div class="row">
                    <div class="form-group col-8">
                     {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year, #ss-year-input" data-semester-target="#ss-semester, #ss-semester-input" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}" data-cw-min-mark-target="#ss-course-work-min-mark" data-cw-percentage-pass-target="#ss-course-work-percentage-pass" data-cw-pass-score-target="#ss-course-work-pass-score" data-final-min-mark-target="#ss-final-min-mark">
-                       <option value="">Select Module</option>
+                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year, #ss-year-input" data-semester-target="#ss-semester, #ss-semester-input" 
+                            data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}" data-cw-min-mark-target="#ss-course-work-min-mark" 
+                            data-cw-percentage-pass-target="#ss-course-work-percentage-pass" data-cw-pass-score-target="#ss-course-work-pass-score" data-final-min-mark-target="#ss-final-min-mark">
+                       <option value="">Select Moduled</option>
                        @foreach($modules as $module)
                        <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
                        @endforeach
