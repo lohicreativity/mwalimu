@@ -163,7 +163,7 @@
 
                 <div class="card-footer">
                   <button amount="submit" class="btn btn-primary">{{ __('Add Programme Fee') }}</button>
-                  @if(str_contains($ac_year->academicYear->year,(date('Y')-1)))
+                  @if(str_contains($ac_year->academicYear->year,(date('Y')-1)) && $ac_year->status == "")
                   <a href="{{ url('finance/program-fee/store-as-previous') }}" class="btn btn-primary">Assign As Previous</a>
                   @endif
                 </div>

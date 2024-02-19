@@ -2962,45 +2962,37 @@ class ApplicantController extends Controller
 
      public function applicantDetails(Request $request)
      {
-
          $staff = User::find(Auth::user()->id)->staff;
 
-        if (Auth::user()->hasRole('admission-officer')) {
+         if(Auth::user()->hasRole('admission-officer')){
 
             $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->where('campus_id',$staff->campus_id);
            })->latest()->first() : null;
 
-        }else{
-
+         }else{
             $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->latest()->first() : null;
 
-        }
+         }
 
-        if(!$applicant && !empty($request->get('index_number'))){
+         if(!$applicant && !empty($request->get('index_number'))){
             return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
-        }
+         }
 
-        $a_level = $request->get('index_number') ? NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first() : null;
+         $a_level = $request->get('index_number') ? NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first() : null;
+         $avn = $request->get('index_number') ? NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
+         $out = $request->get('index_number') ? OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
 
-        $avn = $request->get('index_number') ? NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
+         $data = [
+               'applicant'=> $applicant,
+               'a_level' => $a_level,
+               'avn' => $avn,
+               'out' => $out,
+               'awards'=>Award::all(),
+         ];
 
-        $out = $request->get('index_number') ? OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
-
-        $data = [
-            'applicant'=> $applicant,
-            'a_level' => $a_level,
-            'avn' => $avn,
-            'out' => $out,
-            'awards'=>Award::all(),
-        ];
-
-        return view('dashboard.application.applicant-details', $data)->withTitle('Applicant Details');
-
-
-
+         return view('dashboard.application.applicant-details', $data)->withTitle('Applicant Details');
      }
-
 
 
     /**
@@ -3008,21 +3000,17 @@ class ApplicantController extends Controller
      */
     public function editApplicantDetails(Request $request)
       {
-
-
          $staff = User::find(Auth::user()->id)->staff;
 
-        if (Auth::user()->hasRole('admission-officer')) {
+         if(Auth::user()->hasRole('admission-officer')){
 
             $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->where('campus_id',$staff->campus_id);
            })->latest()->first() : null;
 
-        }else{
-
+         }else{
             $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->latest()->first() : null;
-
-        }
+         }
          if(!$applicant && !empty($request->get('index_number'))){
             return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
@@ -3038,6 +3026,19 @@ class ApplicantController extends Controller
          }
          $student_id = $student? $student->id : null;
 
+         $application_windows = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest()->limit(2)->get();
+
+         $from_previous_window = false;
+         if($application_windows[0]->status == 'ACTIVE'){
+             $from_previous_window = Applicant::doesntHave('student')
+                                              ->where('campus_id',$request->get('campus_id'))
+                                              ->whereNotNull('status')
+                                              ->where('application_window_id',$application_windows[1]->id)
+                                              ->first();
+
+         }
+
+
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
@@ -3045,11 +3046,10 @@ class ApplicantController extends Controller
          'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where(function($query) use($applicant, $student_id){$query->where('payable_id',$applicant->id)->where('payable_type','applicant')
                                                           ->orWhere(function($q) use($student_id){$q->where('payable_id',$student_id)->where('payable_type','student');});})->first() : null,
          'batch'=> $batch,
+         'from_previous_window'=>$from_previous_window
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
-
-         // return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
       }
 
     /**

@@ -197,17 +197,20 @@
                         {!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}				
                     @endif
                         <div class="ss-form-actions">
-                        @if($applicant->campus_id != 0)
-                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                        @endif
-                        @if($applicant->programs_complete_status != 0 || $applicant->results_complete_status != 0)
-                          <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
-                        @endif
-                        <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
-                        @if($invoice)
-                          <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
+                          @if($applicant->campus_id != 0)
+                          <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                          @endif
+                          @if($applicant->programs_complete_status != 0 || $applicant->results_complete_status != 0)
+                            <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
+                          @endif
+                          <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
+                          @if($invoice)
+                            <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
+                          @endif
+                          @if($from_previous_window)
+                            <a href="{{ url('application/reset-applicant-window?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Application Window</a>
+                          @endif
                         </div>
-                        @endif
                         {!! Form::close() !!}
                     @endif
 
