@@ -6057,7 +6057,7 @@ class ApplicationController extends Controller
 
 
             /**
-     * Reset applicant's batch
+     * Reset applicants' previous application window
      */
     public function resetApplicantWindowStatus(Request $request)
     {
@@ -6100,6 +6100,60 @@ class ApplicationController extends Controller
             }
         }
     }
+
+
+                /**
+     * Reset applicant's batch
+     */
+    public function resetIndividualApplicantWindowStatus(Request $request)
+    {
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicants = Applicant::where('index_number',$applicant->index_number)->orWhere('user_id',$applicant->user_id)->get();
+
+        if(count($applicants) == 1){
+            ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+            Applicant::where('id',$applicant->id)
+                     ->update(['campus_id'=>0,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,'is_tcu_added'=>null,'is_tcu_reason'=>null,
+                            'payment_complete_status'=>0,'results_complete_status'=>0,'documents_complete_status'=>0,'programs_complete_status'=>0,
+                            'submission_complete_status'=>0]);
+        }else{
+            $admission_status = false;
+            foreach($applicants as $appl){
+                if($appl->status == 'ADMITTED'){
+                    $applicant = $appl;
+                    $admission_status = true;
+                    break;
+                }
+            }
+            foreach($applicants as $appl){
+                ApplicantProgramSelection::where('applicant_id',$appl->id)->delete();
+
+                if($admission_status && $appl->id == $applicant->id){
+                    Applicant::where('id',$appl->id)
+                             ->update(['campus_id'=>0,'intake_id'=>null,'is_tamisemi'=>null,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,
+                                    'is_tcu_added'=>null,'is_tcu_reason'=>null,'insurance_status'=>null,'hostel_status'=>null,'insurance_available_status'=>null,
+                                    'hostel_available_status'=>null,'payment_complete_status'=>0,'results_complete_status'=>0,'programs_complete_status'=>0,
+                                    'documents_complete_status'=>0,'veta_status'=>null,'submission_complete_status'=>0,'rank_points'=>null,'nacte_reg_no'=>null,
+                                    'status'=>null,'avn_no_results'=>null,'teacher_certificate_status'=>null,'multiple_admissions'=>null,'confirmation_status'=>null,
+                                    'admission_confirmation_status'=>null,'postponement_letter'=>null,'has_postponed'=>null,'is_transfered'=>0,'submitted_at'=>null]);
+                }else{
+                    if($appl->status == 'SELECTED'){
+                        Applicant::where('id',$appl->id)
+                                 ->update(['campus_id'=>0,'intake_id'=>null,'is_tamisemi'=>null,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,
+                                        'is_tcu_added'=>null,'is_tcu_reason'=>null,'insurance_status'=>null,'hostel_status'=>null,'insurance_available_status'=>null,
+                                        'hostel_available_status'=>null,'payment_complete_status'=>0,'results_complete_status'=>0,'programs_complete_status'=>0,
+                                        'documents_complete_status'=>0,'veta_status'=>null,'submission_complete_status'=>0,'rank_points'=>null,'nacte_reg_no'=>null,
+                                        'status'=>null,'avn_no_results'=>null,'teacher_certificate_status'=>null,'multiple_admissions'=>null,'confirmation_status'=>null,
+                                        'admission_confirmation_status'=>null,'postponement_letter'=>null,'has_postponed'=>null,'is_transfered'=>0,'submitted_at'=>null]);
+                    }else{
+                        Applicant::where('id',$appl->id)->delete();
+                    }
+                }
+            }
+        }
+        return redirect()->back()->with('message',"Reset of applicant's application window is successful");
+    }
+
 
     /**
      * Show insurance statuses
