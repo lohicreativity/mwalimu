@@ -3026,12 +3026,12 @@ class ApplicantController extends Controller
          }
          $student_id = $student? $student->id : null;
 
-         $application_windows = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest()->limit(2)->get();
-return $application_windows;
+         $application_windows = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->limit(2)->get();
+
          $from_previous_window = false;
          if($application_windows[0]->status == 'ACTIVE'){
              $from_previous_window = Applicant::doesntHave('student')
-                                              ->where('campus_id',$request->get('campus_id'))
+                                              ->where('campus_id',$staff->campus_id)
                                               ->whereNotNull('status')
                                               ->where('application_window_id',$application_windows[1]->id)
                                               ->first();
