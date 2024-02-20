@@ -6120,6 +6120,7 @@ class ApplicationController extends Controller
             $admission_status = false;
             foreach($applicants as $appl){
                 if($appl->status == 'ADMITTED'){
+                    return 1;
                     $applicant = $appl;
                     $admission_status = true;
                     break;
@@ -6129,7 +6130,6 @@ class ApplicationController extends Controller
                 ApplicantProgramSelection::where('applicant_id',$appl->id)->delete();
 
                 if($admission_status && $appl->id == $applicant->id){
-                    return 1;
                     Applicant::where('id',$appl->id)
                              ->update(['campus_id'=>0,'intake_id'=>null,'is_tamisemi'=>null,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,
                                     'is_tcu_added'=>null,'is_tcu_reason'=>null,'insurance_status'=>null,'hostel_status'=>null,'insurance_available_status'=>null,
