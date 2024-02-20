@@ -6113,14 +6113,16 @@ class ApplicationController extends Controller
         if(count($applicants) == 1){
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
             Applicant::where('id',$applicant->id)
-                     ->update(['campus_id'=>0,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,'is_tcu_added'=>null,'is_tcu_reason'=>null,
-                            'payment_complete_status'=>0,'results_complete_status'=>0,'documents_complete_status'=>0,'programs_complete_status'=>0,
-                            'submission_complete_status'=>0]);
+                     ->update(['campus_id'=>0,'intake_id'=>null,'is_tamisemi'=>null,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,
+                            'is_tcu_added'=>null,'is_tcu_reason'=>null,'insurance_status'=>null,'hostel_status'=>null,'insurance_available_status'=>null,
+                            'hostel_available_status'=>null,'payment_complete_status'=>0,'results_complete_status'=>0,'programs_complete_status'=>0,
+                            'documents_complete_status'=>0,'veta_status'=>null,'submission_complete_status'=>0,'rank_points'=>null,'nacte_reg_no'=>null,
+                            'status'=>null,'avn_no_results'=>null,'teacher_certificate_status'=>null,'multiple_admissions'=>null,'confirmation_status'=>null,
+                            'admission_confirmation_status'=>null,'postponement_letter'=>null,'has_postponed'=>null,'is_transfered'=>0,'submitted_at'=>null]);
         }else{
             $admission_status = false;
             foreach($applicants as $appl){
                 if($appl->status == 'ADMITTED'){
-                    return 1;
                     $applicant = $appl;
                     $admission_status = true;
                     break;
