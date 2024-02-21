@@ -1173,67 +1173,83 @@ class ApplicantController extends Controller
       $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
             $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
       })->first();
-      $fee_amount = null;
+      
+      $fee_amount = $invoice = null;
       if(str_contains(strtolower($applicant->programLevel->name),'master')){
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application%')->where('name','LIKE','%Master%');})
-                              ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+                                ->with(['feeItem.feeType'])
+                                ->where('study_academic_year_id',$study_academic_year->id)
+                                ->first();
+
+         $invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Application%')->where('name','LIKE','%Master%');})
+                           ->where('payable_id',$applicant->id)
+                           ->where('payable_type','applicant')
+                           ->first();
       }else{
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application Fee%');})
-                              ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+                                ->with(['feeItem.feeType'])
+                                ->where('study_academic_year_id',$study_academic_year->id)
+                                ->first();
+         
+         $invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
+                           ->where('payable_id',$applicant->id)
+                           ->where('payable_type','applicant')
+                           ->first();
       }
 
-      $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
-                      //check applicant program capacity
-              $campus_progs = [];
-              $available_progs = [];
-              if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0 && !str_contains(strtolower($applicant->programLevel->name),'master')){
-               $window = $applicant->applicationWindow;
-               $campus_programs = $window? $window->campusPrograms()
-                                                   ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
-                                                   ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
-                                                   ->where('campus_id', session('applicant_campus_id'))->get() : [];
-               $entry_requirements = null;
-               foreach($campus_programs as $prog){
-                  $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
-                                                         ->with('campusProgram:id,code')->first();
-               }
 
-               foreach($campus_programs as $prog){
+      //check applicant program capacity
+      $campus_progs = [];
+      $available_progs = [];
+      if($applicant->batch_id > 1 && $applicant->payment_complete_status == 0 && !str_contains(strtolower($applicant->programLevel->name),'master')){
+         $window = $applicant->applicationWindow;
+         $campus_programs = $window? $window->campusPrograms()
+                                             ->whereHas('program',function($query) use($applicant){$query->where('award_id',$applicant->program_level_id);})
+                                             ->with(['program','campus','entryRequirements'=>function($query) use($window){$query->where('application_window_id',$window->id);}])
+                                             ->where('campus_id', session('applicant_campus_id'))->get() : [];
+         $entry_requirements = null;
+         foreach($campus_programs as $prog){
+            $entry_requirements[] = EntryRequirement::select('id','campus_program_id','max_capacity')->where('application_window_id', $window->id)->where('campus_program_id',$prog->id)
+                                                   ->with('campusProgram:id,code')->first();
+         }
 
-                  $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
-                                                      ->where(function($query) {
-                                                         $query->where('applicant_program_selections.status', 'SELECTED')
-                                                               ->orWhere('applicant_program_selections.status', 'APPROVING');
-                                                      })
-                                                      ->count();
+         foreach($campus_programs as $prog){
 
-                                                      //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
-                  if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
+            $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $prog->id)
+                                                ->where(function($query) {
+                                                   $query->where('applicant_program_selections.status', 'SELECTED')
+                                                         ->orWhere('applicant_program_selections.status', 'APPROVING');
+                                                })
+                                                ->count();
 
-                     $campus_progs[] = $prog;
-                  }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
-                     $available_progs[] = $prog;
-                  }
-               }
+                                                //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;
+            if ($count_applicants_per_program >= $prog->entryRequirements[0]->max_capacity) {
+               $campus_progs[] = $prog;
+               
+            }else if($count_applicants_per_program < $prog->entryRequirements[0]->max_capacity){
+               $available_progs[] = $prog;
             }
+         }
+      }
 
-        $data = [
-           'applicant'=>$applicant,
-           'campus'=>Campus::find(session('applicant_campus_id')),
-           'fee_amount'=>$fee_amount,
-           'hostel_fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
-                  $query->where('name','LIKE','%Hostel%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
-           'invoice'=>$invoice,
-           'usd_currency'=>Currency::where('code','USD')->first(),
-           'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null,
-           'regulator_selection'=>false,
-           'available_progs'=>$available_progs ?? [],
-           'full_programs'=>$campus_progs ?? [],
-           'all_programs'=>$campus_programs?? []
-        ];
-        return view('dashboard.application.payments',$data)->withTitle('Payments');
+      $data = [
+         'applicant'=>$applicant,
+         'campus'=>Campus::find(session('applicant_campus_id')),
+         'fee_amount'=>$fee_amount,
+         'hostel_fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
+               $query->where('name','LIKE','%Hostel%');
+         })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
+         'invoice'=>$invoice,
+         'usd_currency'=>Currency::where('code','USD')->first(),
+         'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null,
+         'regulator_selection'=>false,
+         'available_progs'=>$available_progs ?? [],
+         'full_programs'=>$campus_progs ?? [],
+         'all_programs'=>$campus_programs?? []
+      ];
+
+      return view('dashboard.application.payments',$data)->withTitle('Payments');
     }
 
     /**
