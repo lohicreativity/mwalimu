@@ -6094,7 +6094,7 @@ class ApplicationController extends Controller
                 Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
                         ->whereIn('payable_id',$applicant_ids)
                         ->where('payable_type','applicant')
-                        ->update('payable_id',0);
+                        ->update(['payable_id'=>0]);
 
                 return redirect()->back()->with('message',"Reset of applicants' application window is successful");
 
@@ -6126,7 +6126,7 @@ class ApplicationController extends Controller
             Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
                     ->where('payable_id',$applicant->id)
                     ->where('payable_type','applicant')
-                    ->update('payable_id',0);
+                    ->update(['payable_id'=>0]);
         }else{
             $admission_status = false;
             foreach($applicants as $appl){
@@ -6141,7 +6141,7 @@ class ApplicationController extends Controller
                 Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
                         ->where('payable_id',$appl->id)
                         ->where('payable_type','applicant')
-                        ->update('payable_id',0);
+                        ->update(['payable_id'=>0]);
 
                 if($admission_status && $appl->id == $applicant->id){
                     Applicant::where('id',$appl->id)
