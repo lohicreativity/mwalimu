@@ -1681,7 +1681,8 @@ class ApplicantController extends Controller
                                 $det->verified == 1){
                                  $has_btc = true;
                                  $diploma_gpa = $det->diploma_gpa;
-                              }elseif(str_contains(strtolower($det->programme),'diploma') && $det->verified == 1){
+                              }elseif((str_contains(strtolower($det->programme),'diploma') || (str_contains(strtolower($det->programme),'certificate') && str_contains(strtolower($det->programme),'technician'))) && 
+                                       $det->verified == 1){
                                  $has_diploma = true;
                                  if($det->diploma_gpa >= 2){
                                     $pass_diploma = true;
@@ -1699,7 +1700,7 @@ class ApplicantController extends Controller
                               $det->verified == 1){
                               $has_btc = true;
                               $diploma_gpa = $det->diploma_gpa;
-                           }elseif(str_contains(strtolower($det->programme),'diploma') && $det->verified == 1){
+                           }elseif((str_contains(strtolower($det->programme),'diploma') || (str_contains(strtolower($det->programme),'certificate') && str_contains(strtolower($det->programme),'technician'))) && $det->verified == 1){
                               $has_diploma = true;
                               if($det->diploma_gpa >= 2){
                                  $pass_diploma = true;
