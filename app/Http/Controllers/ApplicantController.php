@@ -1676,7 +1676,9 @@ class ApplicantController extends Controller
                   if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level <= 4){
                      foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                            foreach($applicant->nacteResultDetails as $det){
-                              if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic') && $det->verified == 1){
+                              if(str_contains(strtolower($det->programme),strtolower($sub)) && 
+                                (str_contains(strtolower($det->programme),'basic') || (str_contains(strtolower($det->programme),'certificate') && !str_contains(strtolower($det->programme),'technician'))) && 
+                                $det->verified == 1){
                                  $has_btc = true;
                                  $diploma_gpa = $det->diploma_gpa;
                               }elseif(str_contains(strtolower($det->programme),'diploma') && $det->verified == 1){
@@ -1693,16 +1695,18 @@ class ApplicantController extends Controller
 
                   }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
                         foreach($applicant->nacteResultDetails as $det){
-                              if(str_contains(strtolower($det->programme),'basic') && $det->verified == 1){
-                                 $has_btc = true;
+                           if(str_contains(strtolower($det->programme),strtolower($sub)) && 
+                             (str_contains(strtolower($det->programme),'basic') || (str_contains(strtolower($det->programme),'certificate') && !str_contains(strtolower($det->programme),'technician'))) && 
+                              $det->verified == 1){
+                              $has_btc = true;
+                              $diploma_gpa = $det->diploma_gpa;
+                           }elseif(str_contains(strtolower($det->programme),'diploma') && $det->verified == 1){
+                              $has_diploma = true;
+                              if($det->diploma_gpa >= 2){
+                                 $pass_diploma = true;
                                  $diploma_gpa = $det->diploma_gpa;
-                              }elseif(str_contains(strtolower($det->programme),'diploma') && $det->verified == 1){
-                                 $has_diploma = true;
-                                 if($det->diploma_gpa >= 2){
-                                    $pass_diploma = true;
-                                    $diploma_gpa = $det->diploma_gpa;
-                                 }
                               }
+                           }
                         }
                   }
 
