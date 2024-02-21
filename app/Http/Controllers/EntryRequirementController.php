@@ -26,7 +26,7 @@ class EntryRequirementController extends Controller
       //$approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
       $requirements = EntryRequirement::where('application_window_id',$request->get('application_window_id'))->get();
       $campusProgramIds = [];
-      foreach ($requirements as $key => $req) {
+      foreach ($requirements as $req) {
         $campusProgramIds[] = $req->campus_program_id;
       }
     	$data = [
@@ -66,7 +66,7 @@ class EntryRequirementController extends Controller
            'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->count() == 0? false : true,
            'request'=>$request
     	];
-
+return EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(50);
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
     }
 
