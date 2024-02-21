@@ -200,7 +200,7 @@
                           @if($applicant->campus_id != 0)
                           <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                           @endif
-                          @if($applicant->status == null)
+                          @if($applicant->status == null && $applicant->submission_complete_status == 0)
                             <a href="{{ url('application/reset-applicant-results?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Results</a>
                           @endif
                           <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
