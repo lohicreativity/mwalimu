@@ -1695,8 +1695,7 @@ class ApplicantController extends Controller
 
                   }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
                         foreach($applicant->nacteResultDetails as $det){
-                           if(str_contains(strtolower($det->programme),strtolower($sub)) && 
-                             (str_contains(strtolower($det->programme),'basic') || (str_contains(strtolower($det->programme),'certificate') && !str_contains(strtolower($det->programme),'technician'))) && 
+                           if(str_contains(strtolower($det->programme),'basic') || (str_contains(strtolower($det->programme),'certificate') && !str_contains(strtolower($det->programme),'technician')) && 
                               $det->verified == 1){
                               $has_btc = true;
                               $diploma_gpa = $det->diploma_gpa;
