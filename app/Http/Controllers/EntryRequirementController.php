@@ -66,7 +66,7 @@ class EntryRequirementController extends Controller
            'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->count() == 0? false : true,
            'request'=>$request
     	];
-return $data;
+
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
     }
 
