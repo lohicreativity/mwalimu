@@ -6085,13 +6085,16 @@ class ApplicationController extends Controller
                 }
 
                 ApplicantProgramSelection::whereIn('applicant_id',$applicant_ids)->delete();
-                Applicant::where('campus_id',$request->get('campus_id'))
-                         ->whereNull('status')
-                         ->where('application_window_id',$application_windows[1]->id)
-                         ->where('program_level_id',$request->get('program_level_id'))
-                         ->where('programs_complete_status',0)
-                         ->update(['campus_id'=>0,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,'is_tcu_added'=>null,'is_tcu_reason'=>null,
-                                   'payment_complete_status'=>0,'results_complete_status'=>0,'documents_complete_status'=>0]);
+                Applicant::whereIn('id',$applicant_ids)
+                         ->update(['campus_id'=>0,'intake_id'=>null,'is_tamisemi'=>null,'application_window_id'=>null,'batch_id'=>null,'is_tcu_verified'=>null,
+                                    'is_tcu_added'=>null,'is_tcu_reason'=>null,'payment_complete_status'=>0,'results_complete_status'=>0,'programs_complete_status'=>0,
+                                    'documents_complete_status'=>0,'veta_status'=>null,'submission_complete_status'=>0,'rank_points'=>null,'nacte_reg_no'=>null,
+                                    'avn_no_results'=>null,'teacher_certificate_status'=>null,'submitted_at'=>null]);
+
+                Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
+                        ->whereIn('payable_id',$applicant_ids)
+                        ->where('payable_type','applicant')
+                        ->update('payable_id',0);
 
                 return redirect()->back()->with('message',"Reset of applicants' application window is successful");
 
@@ -6102,8 +6105,8 @@ class ApplicationController extends Controller
     }
 
 
-                /**
-     * Reset applicant's batch
+    /**
+     * Reset individual applicant's application window
      */
     public function resetIndividualApplicantWindowStatus(Request $request)
     {
@@ -6119,6 +6122,11 @@ class ApplicationController extends Controller
                             'documents_complete_status'=>0,'veta_status'=>null,'submission_complete_status'=>0,'rank_points'=>null,'nacte_reg_no'=>null,
                             'status'=>null,'avn_no_results'=>null,'teacher_certificate_status'=>null,'multiple_admissions'=>null,'confirmation_status'=>null,
                             'admission_confirmation_status'=>null,'postponement_letter'=>null,'has_postponed'=>null,'is_transfered'=>0,'submitted_at'=>null]);
+
+            Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
+                    ->where('payable_id',$applicant->id)
+                    ->where('payable_type','applicant')
+                    ->update('payable_id',0);
         }else{
             $admission_status = false;
             foreach($applicants as $appl){
@@ -6130,6 +6138,10 @@ class ApplicationController extends Controller
             }
             foreach($applicants as $appl){
                 ApplicantProgramSelection::where('applicant_id',$appl->id)->delete();
+                Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
+                        ->where('payable_id',$appl->id)
+                        ->where('payable_type','applicant')
+                        ->update('payable_id',0);
 
                 if($admission_status && $appl->id == $applicant->id){
                     Applicant::where('id',$appl->id)
