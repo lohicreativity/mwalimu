@@ -3031,7 +3031,7 @@ class ApplicantController extends Controller
          $student_id = $student? $student->id : null;
 
          $from_previous_window = false;
-         if(Auth::user()->hasRole('admission-officer')){
+         if(Auth::user()->hasRole('admission-officer') && !empty($request->get('index_number'))){
             $application_windows = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->limit(2)->get();
 
             if($application_windows[0]->status == 'ACTIVE'){
