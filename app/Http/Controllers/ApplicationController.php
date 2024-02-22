@@ -6113,6 +6113,10 @@ class ApplicationController extends Controller
                         ->where('payable_type','applicant')
                         ->update(['payable_id'=>0]);
 
+                NectaResultDetail::whereIn('applicant_id', $applicant_ids)->where('verified',1)->update(['verified'=>0]);
+                NacteResultDetail::whereIn('applicant_id', $applicant_ids)->where('verified',1)->update(['verified'=>0]);
+                OutResultDetail::whereIn('applicant_id', $applicant_ids)->where('verified',1)->update(['verified'=>0]);
+
                 return redirect()->back()->with('message',"Reset of applicants' application window is successful");
 
             }else{
@@ -6144,6 +6148,11 @@ class ApplicationController extends Controller
                     ->where('payable_id',$applicant->id)
                     ->where('payable_type','applicant')
                     ->update(['payable_id'=>0]);
+
+            NectaResultDetail::where('applicant_id', $applicant->id)->where('verified',1)->update(['verified'=>0]);
+            NacteResultDetail::where('applicant_id', $applicant->id)->where('verified',1)->update(['verified'=>0]);
+            OutResultDetail::where('applicant_id', $applicant->id)->where('verified',1)->update(['verified'=>0]);
+
         }else{
             $admission_status = false;
             foreach($applicants as $appl){
@@ -6155,10 +6164,15 @@ class ApplicationController extends Controller
             }
             foreach($applicants as $appl){
                 ApplicantProgramSelection::where('applicant_id',$appl->id)->delete();
+                
                 Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
                         ->where('payable_id',$appl->id)
                         ->where('payable_type','applicant')
                         ->update(['payable_id'=>0]);
+
+                NectaResultDetail::where('applicant_id', $appl->id)->where('verified',1)->update(['verified'=>0]);
+                NacteResultDetail::where('applicant_id', $appl->id)->where('verified',1)->update(['verified'=>0]);
+                OutResultDetail::where('applicant_id', $appl->id)->where('verified',1)->update(['verified'=>0]);
 
                 if($admission_status && $appl->id == $applicant->id){
                     Applicant::where('id',$appl->id)
