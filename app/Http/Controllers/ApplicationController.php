@@ -6197,7 +6197,7 @@ class ApplicationController extends Controller
                 }
             }
         }
-        return redirect()->back()->with('message',"Reset of applicant's application window is successful");
+        return redirect()->to('application/edit-applicant-details')->with('message',"Reset of applicant's application window is successful");
     }
 
 

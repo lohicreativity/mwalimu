@@ -233,7 +233,7 @@
                 @if(!$final_upload_status && $module->course_work_based == 1)
                  {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
                  <div class="ss-form-controls">
-                  <button type="submit" class="btn btn-primary">{{ __('Process Course Work') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Process Coursework') }}</button>
                  </div>
                  {!! Form::close() !!}
                 @endif
