@@ -64,7 +64,7 @@ class ModuleController extends Controller
            }
         }
 
-		$module = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first();
+		$module = Module::where('code',$request->get('code'))->orWhere('name',$request->get('name'))->first();
         $existing_module_record = $module? Module::whereHas('departments', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
                                                  ->where('id', $module->id)
                                                  ->with('departments')
@@ -132,7 +132,7 @@ class ModuleController extends Controller
             if(Auth::user()->hasRole('hod') && !Util::collectionContainsKey($module->departments,$staff->department_id)){
                 return redirect()->back()->with('error','Unable to delete module because this is not your department');
             }
-            
+
             if(ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
                    $query->where('course_work_process_status','PROCESSED');
                })->where('module_id',$module->id)->count() != 0){
