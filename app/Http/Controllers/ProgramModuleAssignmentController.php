@@ -418,7 +418,7 @@ class ProgramModuleAssignmentController extends Controller
                  $query->where('course_work_process_status','PROCESSED');
             }])->findOrFail($id);
             if(count($program->moduleAssignments) != 0){
-                return redirect()->back()->with('error','Cannot delete module with coursework 2');
+                return redirect()->back()->with('error','Cannot delete module with coursework');
             }
             $program->delete();
             return redirect()->back()->with('message','Program module assignment deleted successfully');
