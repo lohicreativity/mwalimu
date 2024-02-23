@@ -134,7 +134,8 @@ class ModuleController extends Controller
             }
             return ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
                 $query->where('course_work_process_status','PROCESSED');
-            })->where('module_id',$module->id)->get();
+            })->with('moduleAssignments')->where('module_id',$module->id)->get();
+
             if(ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
                    $query->where('course_work_process_status','PROCESSED');
                })->where('module_id',$module->id)->count() != 0){
