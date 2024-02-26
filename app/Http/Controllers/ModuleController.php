@@ -140,7 +140,7 @@ class ModuleController extends Controller
                                       ->where('module_id',$module->id)->count() != 0){
                 return redirect()->back()->with('error','Cannot delete module with coursework');
             }
-            $module->departments()->detach([$staff->department_id]);
+            $module->departments()->where('campus_id',$staff->campus_id)->detach([$staff->department_id]);
             ProgramModuleAssignment::whereHas('campusProgram',function($query) use ($staff){
                 $query->where('campus_id',$staff->campus_id);
             })->where('module_id',$module->id)->delete();
