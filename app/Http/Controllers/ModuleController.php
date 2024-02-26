@@ -138,6 +138,8 @@ class ModuleController extends Controller
                })->where('module_id',$module->id)->count() != 0){
                 return ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
                     $query->where('course_work_process_status','PROCESSED');
+                })->whereHas('campusProgram',function($query) use ($staff){
+                    $query->where('campus_id',$staff->campus_id);
                 })->where('module_id',$module->id)->get();
                 return redirect()->back()->with('error','Cannot delete module with coursework');
             }
