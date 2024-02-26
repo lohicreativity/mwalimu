@@ -6087,7 +6087,7 @@ class ApplicationController extends Controller
 
         }else{
             $application_windows = ApplicationWindow::where('campus_id',$request->get('campus_id'))->latest()->limit(2)->get();
-
+return $application_windows;
             if($application_windows[0]->status == 'ACTIVE'){
                 $applicants = Applicant::where('campus_id',$request->get('campus_id'))
                                 ->whereNull('status')
