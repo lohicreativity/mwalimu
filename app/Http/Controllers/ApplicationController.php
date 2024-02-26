@@ -6077,7 +6077,7 @@ class ApplicationController extends Controller
      * Reset applicants' previous application window
      */
     public function resetApplicantWindowStatus(Request $request)
-    {
+    { return 1;
         if(empty($request->get('program_level_id'))){
             $data = [
                 'awards'=>Award::all(),
