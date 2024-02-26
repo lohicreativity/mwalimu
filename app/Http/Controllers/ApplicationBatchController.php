@@ -167,9 +167,10 @@ class ApplicationBatchController extends Controller
         if($request->get('campus_id') != session('staff_campus_id')){
                 return redirect()->back()->with('error','You cannot update this application window because it does not belong to your campus');
         }
-return session('staff_campus_id');
-        if(ApplicationWindow::where('campus_id',session('staff_campus_id'))->where('status', 'INACTIVE')->latest()->first()){
-            return redirect()->back()->with('error','Application window is inactive');
+        if($appl = ApplicationWindow::where('campus_id',session('staff_campus_id'))->latest()->first()){
+            if($appl->status == 'INACTIVE'){
+                return redirect()->back()->with('error','Application window is inactive');
+            }
         }
         
         if(date('Y-m-d', strtotime($request->begin_date)) > date('Y-m-d', strtotime($request->end_date))){
