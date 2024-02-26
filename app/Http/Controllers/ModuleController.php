@@ -126,9 +126,9 @@ class ModuleController extends Controller
     public function destroy($id)
     {
         try{
+            $module = Module::with('departments')->findOrFail($id);
             $staff = User::find(Auth::user()->id)->staff;
-            $module = Module::with(['departments'=>function($query) use($staff){$query->where('campus_id',$staff->campus_id);}])->findOrFail($id);
-
+        
             if(Auth::user()->hasRole('hod') && !Util::collectionContainsKey($module->departments,$staff->department_id)){
                 return redirect()->back()->with('error','Unable to delete module because this is not your department');
             }
@@ -140,8 +140,8 @@ class ModuleController extends Controller
                                       ->where('module_id',$module->id)->count() != 0){
                 return redirect()->back()->with('error','Cannot delete module with coursework');
             }
-            $module->departments()->detach([$staff->department_id]);
-            //$module->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+            DB::table('module_department')->where('module_id',$module->id)->where('department_id',$staff->department_id)->where('campus_id',$staff->campus_id)->delete();
+ 
             ProgramModuleAssignment::whereHas('campusProgram',function($query) use ($staff){
                 $query->where('campus_id',$staff->campus_id);
             })->where('module_id',$module->id)->delete();
