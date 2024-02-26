@@ -127,8 +127,8 @@ class ModuleController extends Controller
     {
         try{
             $staff = User::find(Auth::user()->id)->staff;
-            $module = Module::with('departments',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})->findOrFail($id);
-        
+            $module = Module::with(['departments'=>function($query) use($staff){$query->where('campus_id',$staff->campus_id);}])->findOrFail($id);
+
             if(Auth::user()->hasRole('hod') && !Util::collectionContainsKey($module->departments,$staff->department_id)){
                 return redirect()->back()->with('error','Unable to delete module because this is not your department');
             }
