@@ -12,7 +12,7 @@ use App\Domain\Academic\Actions\ModuleAction;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use App\Utils\Util;
-use Validator, Auth, File;
+use Validator, Auth, DB;
 
 class ModuleController extends Controller
 {
