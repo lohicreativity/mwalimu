@@ -53,6 +53,7 @@ class ProgramAction implements ProgramInterface{
 	}
 
 	public function update(Request $request){
+        $program = null;
         if(!empty($request->get('nta_level_id'))){
             $program = Program::find($request->get('program_id'));
             $program->name = $request->get('name');
@@ -84,10 +85,14 @@ class ProgramAction implements ProgramInterface{
         
         $prog->save();		
 
-        DB::table('program_department')->where('program_id',$program->id)
-                                        ->where('department_id',$request->get('current_department_id'))
-                                        ->where('campus_id',$request->get('campus_id'))
-                                        ->update(['department_id'=>$request->get('department_id')]);
-        //$program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+        if($request->get('current_department_id') > 0){
+            DB::table('program_department')->where('program_id',$program->id)
+            ->where('department_id',$request->get('current_department_id'))
+            ->where('campus_id',$request->get('campus_id'))
+            ->update(['department_id'=>$request->get('department_id')]);
+        }else{
+            $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+        }
+
 	}
 }
