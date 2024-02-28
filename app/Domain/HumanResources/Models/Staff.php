@@ -5,7 +5,6 @@ namespace App\Domain\HumanResources\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Settings\Models\Country;
-use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\Campus;
@@ -14,10 +13,13 @@ use App\Domain\HumanResources\Models\Designation;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Staff extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'staffs';
 
