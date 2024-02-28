@@ -33,11 +33,11 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request)
     {
-		$staff = User::where('status','ACTIVE')->find(Auth::user()->id)->staff()->first();
-
-		if(!$staff){
-            return redirect()->back()->with('error','You do not have an account');
-		}
+		$staff = User::find(Auth::user()->id)->staff;
+e
+		// if(!$staff){
+        //     return redirect()->back()->with('error','You do not have an account');
+		// }
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
 		//$loan_beneficiaries = Student::whereHas('registrations', function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
