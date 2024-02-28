@@ -151,7 +151,7 @@
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 1 && $ba->batch_no != $certificate_max)
+                      @elseif($ba->program_level_id == 1)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
@@ -164,7 +164,7 @@
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 2 && $ba->batch_no != $diploma_max)
+                      @elseif($ba->program_level_id == 2)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
@@ -177,7 +177,7 @@
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 4 && $ba->batch_no != $bachelor_max)
+                      @elseif($ba->program_level_id == 4)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
@@ -190,7 +190,7 @@
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 5 && $ba->batch_no != $master_max)
+                      @elseif($ba->program_level_id == 5)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
