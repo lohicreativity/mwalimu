@@ -160,7 +160,8 @@ class HomeController extends Controller
     public function getProgramModules(Request $request)
     {
         $modules =  Module::whereHas('programModuleAssignments',function($query) use($request){
-                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
+                 ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
         })->get();
         if(count($modules) != 0){
             return response()->json(['status'=>'success','modules'=>$modules]);
