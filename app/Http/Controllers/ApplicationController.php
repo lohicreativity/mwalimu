@@ -1480,7 +1480,7 @@ class ApplicationController extends Controller
                                         ->where('verified',1);},
                                         'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
                                         'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
-        }else {
+        }else{
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id',
                             'nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id')
                         ->whereIn('id',$request->get('applicant_ids'))->whereIn('status', ['SELECTED','NOT SELECTED'])
@@ -1494,27 +1494,69 @@ class ApplicationController extends Controller
                                 'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
         }
 
+        if(count($applicants) > 0){
+            $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
+
+            if($batch->batch_no > 1){
+                if(Applicant::whereDoesntHave('selections',function($query) use($request, $batch){$query->whereIn('status',['SELECTED','PENDING','APPROVING'])
+                    ->where('application_window_id',$request->get('application_window_id'))
+                    ->where('batch_id',$batch->id);})
+                    ->where('programs_complete_status', 1)
+                    ->whereNull('status')
+                    ->where('program_level_id',$award->id)->where('batch_id',$batch->id)->count() >  0){
+                            $batch_id = $batch->id;
+                            $batch_no = $batch->batch_no;
+                        }else{
+                            $previous_batch = null;
+
+                            $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))
+                            ->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
+                            $batch_id = $previous_batch->id;
+                            $batch_no = $previous_batch->batch_no;
+
+                }
+            }else{
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;
+            }
+            
+            $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))
+            ->where('program_level_id',$award->id)->latest()->first();
+
+            if($current_batch->id == $batch_id){
+                $new_batch = new ApplicationBatch;
+                $new_batch->application_window_id = $request->get('application_window_id');
+                $new_batch->program_level_id = $request->get('award_id');
+                $new_batch->batch_no = $batch_no + 1;
+                $new_batch->begin_date = date('Y-m-d');
+                $new_batch->end_date = date('Y-m-d');
+
+                $new_batch->save();
+
+                Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)
+                          ->where('programs_complete_status',0)->update(['batch_id'=>$new_batch->id]);
+            }
 
             $count = 0;
             if(str_contains(strtolower($award->name),'bachelor')){
                 foreach($applicants as $applicant){
                     if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$applicant->program_level_id)
-                                             ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->count() == 0){
-
+                                                ->where('application_window_id',$applicant->application_window_id)->where('batch_id',$applicant->batch_id)->count() == 0){
+    
                         //$url='https://api.tcu.go.tz/applicants/submitProgramme';
                         $url='http://api.tcu.go.tz/applicants/submitProgramme';
-
+    
                         $selected_programs = array();
                         $approving_selection = null;
-
+    
                         foreach($applicant->selections as $selection){
                             $selected_programs[] = $selection->campusProgram->regulator_code;
                             if($selection->status == 'APPROVING'){
                                 $approving_selection = $selection;
-
+    
                             }
                         }
-
+    
                         $f6indexno = null;
                         $otherf4indexno = $otherf6indexno = [];
                         foreach($applicant->nectaResultDetails as $detail) {
@@ -1526,52 +1568,52 @@ class ApplicationController extends Controller
                                 }
                             }
                         }
-
+    
                         foreach($applicant->nacteResultDetails as $detail){
                             if($f6indexno == null && str_contains(strtolower($detail->programme),'diploma')){
                                 $f6indexno = $detail->avn;
                                 break;
                             }
                         }
-
+    
                         foreach($applicant->nectaResultDetails as $detail) {
                             if($detail->exam_id == 1 && $detail->index_number != $applicant->index_number){
                                 $otherf4indexno[]= $detail->index_number;
                             }
                         }
-
+    
                         if(is_array($selected_programs)){
                             $selected_programs=implode(', ',$selected_programs);
                         }
-
+    
                         if(is_array($otherf4indexno)){
                         $otherf4indexno=implode(', ',$otherf4indexno);
                         }
-
+    
                         if(is_array($otherf6indexno)){
                         $otherf6indexno=implode(', ',$otherf6indexno);
                         }
-
+    
                         $category = null;
                         if($applicant->entry_mode == 'DIRECT'){
                             $category = 'A';
-
+    
                         }else{
                             // Open university
                             if($applicant->outResultDetails){
                                 $category = 'F';
-
+    
                             }
-
+    
                             // Diploma holders
                             if($applicant->nacteResultDetails){
                                 $category = 'D';
-
+    
                             }
                         }
-
+    
                         if($approving_selection){
-
+    
                             $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                             <Request>
                                 <UsernameToken>
@@ -1598,9 +1640,9 @@ class ApplicationController extends Controller
                                     <Otherf6indexno>'.$otherf6indexno.'</Otherf6indexno>
                                 </RequestParameters>
                             </Request>';
-
+    
                         }else{
-
+    
                             $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                             <Request>
                                 <UsernameToken>
@@ -1632,11 +1674,11 @@ class ApplicationController extends Controller
                         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
                         $json = json_encode($xml_response);
                         $array = json_decode($json,TRUE);
-
+    
                         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
-
+    
                             Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-
+    
                             $log = new ApplicantSubmissionLog;
                             $log->applicant_id = $applicant->id;
                             $log->program_level_id = $request->get('program_level_id');
@@ -1658,40 +1700,40 @@ class ApplicationController extends Controller
                 }
             }elseif(str_contains(strtolower($award->name),'diploma') || str_contains(strtolower($award->name),'basic')){
                 $payment = NactePayment::select('reference_no')->where('campus_id', $staff->campus_id)->latest()->first();
-
+    
                 if(!$payment){
                     return redirect()->back()->with('error','No NACTVET payment set for this campus');
                 }
-
+    
                 $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_token);
-
+    
                 if(empty(json_decode($result)->params)){
                     return redirect()->back()->with('error','Invalid call to NACTVET account balance. Please try again.');
                 }elseif((json_decode($result)->params[0]->balance) < 5000) { // Needs to crosscheck this
                     return redirect()->back()->with('error','Insufficient balance. Please top up TZS '.count($applicants)*5000 - json_decode($result)->params[0]->balance.' to proceed.');
                 }
                 $count = 0;
-
+    
                 foreach($applicants as $applicant){
-
+    
                     $f6indexno = null;
                     foreach ($applicant->nectaResultDetails as $detail) {
                         if($detail->exam_id == 2 && $detail->verified == 1){
                         $f6indexno = $detail->index_number;
                         }
                     }
-
+    
                     $has_level5 = false;
                     $nta4_reg_no = $nta4_graduation_year = $nta5_reg_no = $nta5_graduation_year = null;
                     foreach($applicant->nacteResultDetails as $detail){
                         if(str_contains(strtolower($detail->programme),'basic')){
                             $nta4_reg_no = $detail->registration_number;
                             $nta4_graduation_year = $detail->diploma_graduation_year;
-
+    
                         }elseif(!str_contains(strtolower($detail->programme),'basic') && str_contains(strtolower($detail->programme),'certificate')){
                             $nta5_reg_no = $detail->registration_number;
                             $nta5_graduation_year = $detail->diploma_graduation_year;
-
+    
                             if($detail->diploma_gpa >= 2){
                                 $has_level5 = true;
                             }
@@ -1707,12 +1749,12 @@ class ApplicationController extends Controller
                             $programme_code = $selection->campusProgram->code;
                         }
                     }
-
+    
                         //API URL
                     $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
-
+    
                     $ch = curl_init($url);
-
+    
                     $level = null;
                     $string = $approving_selection->campusProgram->program->ntaLevel->name;
                     if($has_level5 || $applicant->program_level_id == 1){
@@ -1722,8 +1764,8 @@ class ApplicationController extends Controller
                         $last_character = (strlen($string) - 1);
                         $level = substr($string, $last_character) - 1;
                     }
-
-
+    
+    
                     $f4indexno = $f4_exam_year = null;
                     if(str_contains(strtolower($applicant->index_number),'eq')){
                         $f4_exam_year = explode('/',$applicant->index_number)[1];
@@ -1732,7 +1774,7 @@ class ApplicationController extends Controller
                         $f4_exam_year = explode('/', $applicant->index_number)[2];
                         $f4indexno = explode('/',$applicant->index_number)[0].'/'.explode('/',$applicant->index_number)[1];
                     }
-
+    
                     $f6_exam_year = null;
                     if(!empty($f6indexno)){
                         if(str_contains(strtolower($f6indexno),'eq')){
@@ -1743,7 +1785,7 @@ class ApplicationController extends Controller
                             $f6indexno = explode('/',$f6indexno)[0].'/'.explode('/',$f6indexno)[1];
                         }
                     }
-
+    
                     $impairment = null;
                     if($applicant->disability_status_id == 1){
                         $impairment = 'None';
@@ -1756,7 +1798,7 @@ class ApplicationController extends Controller
                     }elseif($applicant->disability_status_id == 10){
                         $impairment = 'Learning Difficulties';
                     }
-
+    
                     $data = array(
                         'heading' => array(
                             'authorization' => $nactvet_authorization_key,
@@ -1794,37 +1836,37 @@ class ApplicationController extends Controller
                                     'next_kin_phone' => '0'.substr($applicant->nextOfKin->phone,3),
                                     'next_kin_region' => $applicant->nextOfKin->region->name,
                                     'next_kin_relation' => $applicant->nextOfKin->relationship
-
+    
                                 )
                             ],
-
+    
                         )
                     );
-
+    
                     $payload = json_encode(array($data));
-
+    
                     //attach encoded JSON string to the POST fields
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
+    
                     //set the content type to application/json
                     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-
+    
                     //return response instead of outputting
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
+    
                     //execute the POST request
                     $result = curl_exec($ch);
-
+    
                     //close cURL resource
                     curl_close($ch);
-
-
+    
+    
                     if(isset(json_decode($result)->code)){
-
+    
                         if(json_decode($result)->code == 200){
-
+    
                             Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-
+    
                             $log = new ApplicantSubmissionLog;
                             $log->applicant_id = $applicant->id;
                             $log->program_level_id = $request->get('program_level_id');
@@ -1832,9 +1874,9 @@ class ApplicationController extends Controller
                             $log->batch_id = $applicant->batch_id;
                             $log->submitted = 1;
                             $log->save();
-
+    
                             $count++;
-
+    
                         }else{
                             $error_log = new ApplicantFeedBackCorrection;
                             $error_log->applicant_id = $applicant->id;
@@ -1849,6 +1891,7 @@ class ApplicationController extends Controller
                 $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.$nactvet_token);
                 NactePayment::where('reference_no',$payment->reference_no)->update(['balance'=>$payment->balance = json_decode($result)->params[0]->balance]);
             }
+        }
 
         return redirect()->back()->with('message',$count.' applicants have been successfully submitted.');
     }
@@ -3988,35 +4031,35 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Application window not closed yet');
         }
 
-        $batch_id = $batch_no = 0;
+        // $batch_id = $batch_no = 0;
 
-        $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
-        ->where('program_level_id',$applicant->program_level_id)->latest()->first();
+        // $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
+        // ->where('program_level_id',$applicant->program_level_id)->latest()->first();
 
-        if($batch->batch_no > 1){
-                    if(Applicant::whereDoesntHave('selections',function($query) use($request, $batch){$query->whereIn('status',['SELECTED','PENDING','APPROVING'])
-                        ->where('application_window_id',$request->get('application_window_id'))
-                        ->where('batch_id',$batch->id);})
-                        ->where('programs_complete_status', 1)
-                        ->where('application_window_id', $request->get('application_window_id'))
-                        ->whereNull('status')
-                        ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
-                                $batch_id = $batch->id;
-                                $batch_no = $batch->batch_no;
+        // if($batch->batch_no > 1){
+        //             if(Applicant::whereDoesntHave('selections',function($query) use($request, $batch){$query->whereIn('status',['SELECTED','PENDING','APPROVING'])
+        //                 ->where('application_window_id',$request->get('application_window_id'))
+        //                 ->where('batch_id',$batch->id);})
+        //                 ->where('programs_complete_status', 1)
+        //                 ->where('application_window_id', $request->get('application_window_id'))
+        //                 ->whereNull('status')
+        //                 ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
+        //                         $batch_id = $batch->id;
+        //                         $batch_no = $batch->batch_no;
 
-                            }else{
-                $previous_batch = null;
+        //                     }else{
+        //         $previous_batch = null;
 
-                $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))
-                ->where('program_level_id',$applicant->program_level_id)->where('batch_no', $batch->batch_no - 1)->first();
-                $batch_id = $previous_batch->id;
-                $batch_no = $previous_batch->batch_no;
+        //         $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))
+        //         ->where('program_level_id',$applicant->program_level_id)->where('batch_no', $batch->batch_no - 1)->first();
+        //         $batch_id = $previous_batch->id;
+        //         $batch_no = $previous_batch->batch_no;
 
-            }
-        }else{
-            $batch_id = $batch->id;
-            $batch_no = $batch->batch_no;
-        }
+        //     }
+        // }else{
+        //     $batch_id = $batch->id;
+        //     $batch_no = $batch->batch_no;
+        // }
 
         $campus_program = CampusProgram::select('id')->where('code',$program_code)->where('campus_id',$staff->campus_id)->first();
 
@@ -4028,22 +4071,22 @@ class ApplicationController extends Controller
                                           ApplicantProgramSelection::where('campus_program_id',$campus_program->id)->where('applicant_id', $applicant_id)
                                           ->where('application_window_id', $application_window_id)->update(['status' => 'APPROVING']);
 
-        $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))
-        ->where('program_level_id',$applicant->program_level_id)->latest()->first();
+        // $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))
+        // ->where('program_level_id',$applicant->program_level_id)->latest()->first();
 
-        if($current_batch->id == $batch_id){
-            $new_batch = new ApplicationBatch;
-            $new_batch->application_window_id = $request->get('application_window_id');
-            $new_batch->program_level_id = $applicant->program_level_id;
-            $new_batch->batch_no = $batch_no + 1;
-            $new_batch->begin_date = date('Y-m-d');
-            $new_batch->end_date = date('Y-m-d');
+        // if($current_batch->id == $batch_id){
+        //     $new_batch = new ApplicationBatch;
+        //     $new_batch->application_window_id = $request->get('application_window_id');
+        //     $new_batch->program_level_id = $applicant->program_level_id;
+        //     $new_batch->batch_no = $batch_no + 1;
+        //     $new_batch->begin_date = date('Y-m-d');
+        //     $new_batch->end_date = date('Y-m-d');
 
-            $new_batch->save();
+        //     $new_batch->save();
 
-            Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$applicant->program_level_id)
-                        ->where('programs_complete_status',0)->update(['batch_id'=>$new_batch->id]);
-        }
+        //     Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$applicant->program_level_id)
+        //                 ->where('programs_complete_status',0)->update(['batch_id'=>$new_batch->id]);
+        // }
 
         return redirect()->to('application/other-applicants')->with('message','Applicant selected successfully');
 
@@ -4111,19 +4154,19 @@ class ApplicationController extends Controller
                     ->whereNull('status')
                     ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() >  0){
                             $batch_id = $batch->id;
-                            $batch_no = $batch->batch_no;
+                            // $batch_no = $batch->batch_no;
                         }else{
                             $previous_batch = null;
 
                             $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))
                             ->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
                             $batch_id = $previous_batch->id;
-                            $batch_no = $previous_batch->batch_no;
+                            // $batch_no = $previous_batch->batch_no;
 
                 }
             }else{
                 $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;
+                // $batch_no = $batch->batch_no;
             }
 
         }
@@ -4247,22 +4290,22 @@ class ApplicationController extends Controller
         }
 
         if($selection_status){
-            $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))
-            ->where('program_level_id',$request->get('award_id'))->latest()->first();
+            // $current_batch = ApplicationBatch::select('id')->where('application_window_id', $request->get('application_window_id'))
+            // ->where('program_level_id',$request->get('award_id'))->latest()->first();
 
-            if($current_batch->id == $batch_id){
-                $new_batch = new ApplicationBatch;
-                $new_batch->application_window_id = $request->get('application_window_id');
-                $new_batch->program_level_id = $request->get('award_id');
-                $new_batch->batch_no = $batch_no + 1;
-                $new_batch->begin_date = date('Y-m-d');
-                $new_batch->end_date = date('Y-m-d');
+            // if($current_batch->id == $batch_id){
+            //     $new_batch = new ApplicationBatch;
+            //     $new_batch->application_window_id = $request->get('application_window_id');
+            //     $new_batch->program_level_id = $request->get('award_id');
+            //     $new_batch->batch_no = $batch_no + 1;
+            //     $new_batch->begin_date = date('Y-m-d');
+            //     $new_batch->end_date = date('Y-m-d');
 
-                $new_batch->save();
+            //     $new_batch->save();
 
-                Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('award_id'))
-                          ->where('programs_complete_status',0)->update(['batch_id'=>$new_batch->id]);
-            }
+            //     Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('award_id'))
+            //               ->where('programs_complete_status',0)->update(['batch_id'=>$new_batch->id]);
+            // }
 
             return redirect()->back()->with('message','Selection run successfully');
         }else{
