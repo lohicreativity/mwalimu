@@ -49,9 +49,9 @@ class ApplicationBatchController extends Controller
         $diploma_max = 0;
         $bachelor_max = 0;
         $master_max = 0;
-        return $batches;
-        foreach($batches as $batch){
-            foreach($batch as  $key=>$ba){
+        return $batches[0];
+        //foreach($batches as $batch){
+            foreach($batches[0] as  $key=>$ba){
                 if($key <= 3){
                     if($ba->program_level_id == 1 && $ba->batch_no > $certificate_max){
                         $certificate_max = $ba->batch_no;
@@ -65,7 +65,7 @@ class ApplicationBatchController extends Controller
                 }
                 $batch_ids[] = $ba->id;
             }
-        }
+        //}
 return $certificate_max;
         $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
         
