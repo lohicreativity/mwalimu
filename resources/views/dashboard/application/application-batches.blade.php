@@ -111,6 +111,13 @@
                         }
                       }
 
+                      $active_window = false;
+                      foreach($windows as $window){
+                        if($window == $ba->application_window_id && $window->status == 'ACTIVE'){
+                          $active_window = true;
+                          break;
+                        }
+                      }
 
                     @endphp
                       @if($ba->selection_released == 1)
@@ -138,13 +145,13 @@
                      @endif
  
                       @can('delete-application-window')
-                      @if($ba->program_level_id == 1 && $ba->batch_no == $certificate_max)
+                      @if($ba->program_level_id == 1 && $ba->batch_no == $certificate_max && $active_window)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 1 && $ba->batch_no != $certificate_max)
+                      @elseif($ba->program_level_id == 1 && $ba->batch_no != $certificate_max && !$active_window)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
