@@ -49,8 +49,8 @@ class ApplicationBatchController extends Controller
         $diploma_max = 0;
         $bachelor_max = 0;
         $master_max = 0;
-        foreach($batches as $key=>$batch){
-            foreach($batch as $ba){
+        foreach($batches as $batch){
+            foreach($batch as  $key=>$ba){
                 if($key <= 4){
                     if($ba->program_level_id == 1 && $ba->batch_no > $certificate_max){
                         $certificate_max = $ba->batch_no;
