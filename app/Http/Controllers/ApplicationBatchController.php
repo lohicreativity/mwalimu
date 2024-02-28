@@ -49,7 +49,7 @@ class ApplicationBatchController extends Controller
         $diploma_max = 0;
         $bachelor_max = 0;
         $master_max = 0;
-        return $batches[0];
+ 
         //foreach($batches as $batch){
             foreach($batches[0] as  $key=>$ba){
                 if($key <= 3){
