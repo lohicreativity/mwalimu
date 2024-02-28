@@ -158,39 +158,39 @@
                               Edit
                       </a>
                       @endif
-                      @if($ba->program_level_id == 2 && $ba->batch_no == $diploma_max)
+                      @if($ba->program_level_id == 2 && $ba->batch_no == $diploma_max && $active_window)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 2 && $ba->batch_no != $diploma_max)
+                      @elseif($ba->program_level_id == 2 && $ba->batch_no != $diploma_max && !$active_window)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
                       @endif
-                      @if($ba->program_level_id == 4 && $ba->batch_no == $bachelor_max)
+                      @if($ba->program_level_id == 4 && $ba->batch_no == $bachelor_max && $active_window)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 4 && $ba->batch_no != $bachelor_max)
+                      @elseif($ba->program_level_id == 4 && $ba->batch_no != $bachelor_max && !$active_window)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
                       @endif
-                      @if(($ba->program_level_id == 5) && $ba->batch_no == $master_max)
+                      @if(($ba->program_level_id == 5) && $ba->batch_no == $master_max && $active_window)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                       </a>
-                      @elseif($ba->program_level_id == 5 && $ba->batch_no != $master_max)
+                      @elseif($ba->program_level_id == 5 && $ba->batch_no != $master_max && !$active_window)
                       <a class="btn btn-info btn-sm disabled" href="#" data-toggle="modal" data-target="#ss-edit-batch-{{ $ba->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
