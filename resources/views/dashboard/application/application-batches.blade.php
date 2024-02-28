@@ -113,7 +113,7 @@
 
                       $active_window = false;
                       foreach($windows as $window){
-                        if($window == $ba->application_window_id && $window->status == 'ACTIVE'){
+                        if($window->id == $ba->application_window_id && $window->status == 'ACTIVE'){
                           $active_window = true;
                           break;
                         }
