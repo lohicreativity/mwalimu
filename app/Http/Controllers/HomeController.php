@@ -34,7 +34,6 @@ class HomeController extends Controller
     public function dashboard(Request $request)
     {
 		$staff = User::find(Auth::user()->id)->staff;
-e
 		// if(!$staff){
         //     return redirect()->back()->with('error','You do not have an account');
 		// }
