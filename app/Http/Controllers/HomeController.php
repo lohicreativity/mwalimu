@@ -33,7 +33,7 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request)
     {
-		$staff = User::find(Auth::user()->id)->staff()->where('status','ACTIVE')->first();
+		$staff = User::find(Auth::user()->id)->where('status','ACTIVE')->staff;
 		if(!$staff){
             return redirect()->back()->with('error','You do not have an account');
 		}
