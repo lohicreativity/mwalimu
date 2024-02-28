@@ -65,7 +65,7 @@ class ApplicationBatchController extends Controller
                 $batch_ids[] = $ba->id;
             }
         }
-
+return $certificate_max;
         $batch_ids = ApplicantProgramSelection::select('batch_id')->whereIn('status',['SELECTED','PENDING'])->whereIn('batch_id',$batch_ids)->get();
         
     	$data = [
