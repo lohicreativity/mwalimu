@@ -77,17 +77,25 @@
 			@endif		
 		@endif
 		
-          @if($loan_allocation)
-            @if($student->account_number == null)
-              <div class="alert alert-warning">Please provide Bank information.</div>
-            @endif
-            @if($loan_allocation->notification_sent == 1 && $loan_allocation->has_signed != 1)
-              <div class="alert alert-warning">Please visit loans office for signing your loan payment.</div>
-            @endif
-          @endif
-          @if($performance_report)
-            <div class="alert alert-success">Your performance report is ready.</div>
-          @endif
+    @if($loan_allocation)
+      @if($student->account_number == null)
+        <div class="alert alert-warning">Please provide Bank information.</div>
+      @endif
+      @if($loan_allocation->notification_sent == 1 && $loan_allocation->has_signed != 1)
+        <div class="alert alert-warning">Please visit loans office for signing your loan payment.</div>
+      @endif
+    @endif
+    @if($performance_report)
+      <div class="alert alert-success">Your performance report is ready.</div>
+    @endif
+
+    @if($student->applicant->admission_confirmation_status == 'PENDING') 
+      <div class="alert alert-warning">
+        Please click <a style="background-color: red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
+        href="{{ url('application/admission-confirmation') }}"> here</a> to confirm your admission. 
+      </div>
+    @endif 
+
           {{--
           @if(!$registration)
           <div class="card">
