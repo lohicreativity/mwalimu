@@ -748,7 +748,11 @@ $('.ss-select-tags').on('change',function(e){
               year = 1;
            }else if(code.substring(4,6) == '61'){
               year = 2;
-           }else if(code.substring(4,6) == '71'){
+              semester_id = 1;
+           }else if(code.substring(4,6) == '62'){
+            year = 2;
+            semester_id = 2;
+         }else if(code.substring(4,6) == '71'){
               year = 1;
               semester_id = 1;
            }else if(code.substring(4,6) == '72'){
