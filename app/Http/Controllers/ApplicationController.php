@@ -6706,7 +6706,8 @@ class ApplicationController extends Controller
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
            'regulator_selection'=>$regulator_selection,
-           'student'=>$student
+           'student'=>$student,
+           'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first()
         ];
         return view('dashboard.admission.admission-confirmation',$data)->withTitle('Admission Confirmation');
     }
