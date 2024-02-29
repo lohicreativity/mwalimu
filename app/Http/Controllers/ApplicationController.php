@@ -6684,9 +6684,10 @@ class ApplicationController extends Controller
      */
     public function showConfirmAdmission(Request $request)
     {
+        $student = null;
         if($request->get('student_confirmation',1)){
-            $applicant = User::find(Auth::user()->id)->student()->with('applicant')->first();
-            $applicant = $applicant->applicant;
+            $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+            $applicant = $student->applicant;
         }else{
             $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->latest()->first();
         }
@@ -6704,7 +6705,8 @@ class ApplicationController extends Controller
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
-           'regulator_selection'=>$regulator_selection
+           'regulator_selection'=>$regulator_selection,
+           'student'=>$student
         ];
         return view('dashboard.admission.admission-confirmation',$data)->withTitle('Admission Confirmation');
     }
