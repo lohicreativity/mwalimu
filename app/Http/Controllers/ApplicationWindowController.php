@@ -207,8 +207,7 @@ class ApplicationWindowController extends Controller
             $campusPrograms = 0;
             foreach($window->campusPrograms as $campus_program){
                 if(!str_contains(strtolower($campus_program->program->award->name),'master')){
-                    return 1;
-                    $campusPrograms+=$campusPrograms;
+                    $campusPrograms+=1;
                 }
             }
             return $campusPrograms;
