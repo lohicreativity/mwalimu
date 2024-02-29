@@ -741,10 +741,27 @@ $('.ss-select-tags').on('change',function(e){
        }
     }).done(function(data, success){
         if(data.status == 'success'){
+           var code = data.module.code.replace(" ","");
+           var semester_id = code.substring(5,6);
+           var year = 1;
+           if(code.substring(4,5) == '4' || code.substring(4,5) == '5' || code.substring(4,5) == '6'){
+              year = 2;
+           }else if(code.substring(4,6) == '71'){
+              year = 1;
+              semester_id = 1;
+           }else if(code.substring(4,6) == '72'){
+              year = 1;
+              semester_id = 2;
+           }else if(code.substring(4,6) == '73'){
+              year = 2;
+              semester_id = 1;
+           }else if(code.substring(4,6) == '74'){
+              year = 2;
+              semester_id = 2;
+           }else if(code.substring(4,5) == '8'){
+              year = 3;
+           }
 
-
-           $($(e.target).data('year-target')).val(year);
-           $($(e.target).data('semester-target')).val(semester_id);
 
            if(data.module.course_work_based == '0'){
               $($(e.target).data('cw-min-mark-target')).val(0);
