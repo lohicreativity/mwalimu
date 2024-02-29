@@ -204,7 +204,7 @@ class ApplicationWindowController extends Controller
                 $query->where('application_window_id',$window->id);
             })->count();
 
-            return $window->campusPrograms[0]->program;
+            return $window->campusPrograms[0]->program->award;
             if($campus_programs_count < count($window->campusPrograms)){
                 return redirect()->back()->with('error','You cannot activate the window because some offered programmes are missing entry requirements');
             }
