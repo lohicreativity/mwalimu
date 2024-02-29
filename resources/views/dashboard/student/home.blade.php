@@ -92,7 +92,7 @@
     @if($student->applicant->admission_confirmation_status == 'PENDING') 
       <div class="alert alert-warning">
         Please click <a style="background-color: red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
-        href="{{ url('application/admission-confirmation') }}"> here</a> to confirm your admission. 
+        href="{{ url('application/admission-confirmation?student_confirmation=1') }}"> here</a> to confirm your admission. 
       </div>
     @endif 
 
