@@ -210,8 +210,8 @@ class ApplicationWindowController extends Controller
                     $campusPrograms+=1;
                 }
             }
-            return $campusPrograms;
-            if($campus_programs_count < count($window->campusPrograms)){
+
+            if($campus_programs_count < $campusPrograms){
                 return redirect()->back()->with('error','You cannot activate the window because some offered programmes are missing entry requirements');
             }
 
@@ -219,7 +219,7 @@ class ApplicationWindowController extends Controller
                 return redirect()->back()->with('error','You cannot activate the window because it does not belong to your campus');
             }
 
-            if(count($window->campusPrograms) == 0){
+            if($campusPrograms == 0){
                 return redirect()->back()->with('error','You cannot activate the window because no offered programmes have been set');
             }
             $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($window){
