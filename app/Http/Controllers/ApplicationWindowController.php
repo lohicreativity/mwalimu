@@ -198,13 +198,19 @@ class ApplicationWindowController extends Controller
     public function activate($id)
     {
         try{
-            $window = ApplicationWindow::with(['campusPrograms.program.award'=>function($query){$query->where('id','!=',5);},'campusPrograms'])->findOrFail($id);
+            $window = ApplicationWindow::with('campusPrograms')->findOrFail($id);
 
             $campus_programs_count = CampusProgram::whereHas('entryRequirements',function($query) use($window){
                 $query->where('application_window_id',$window->id);
             })->count();
 
-            return count($window->campusPrograms);
+            $campusPrograms = 0;
+            foreach($window->campusPrograms as $campus_program){
+                if(!str_contains($campus_program->program->award,'Master')){
+                    $campusPrograms+=$campusPrograms;
+                }
+            }
+            return $campusPrograms;
             if($campus_programs_count < count($window->campusPrograms)){
                 return redirect()->back()->with('error','You cannot activate the window because some offered programmes are missing entry requirements');
             }
