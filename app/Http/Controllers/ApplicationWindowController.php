@@ -206,6 +206,7 @@ class ApplicationWindowController extends Controller
 
             $campusPrograms = 0;
             foreach($window->campusPrograms as $campus_program){
+                return 1;
                 if(!str_contains(strtolower($campus_program->program->award),'master')){
                     $campusPrograms+=$campusPrograms;
                 }
