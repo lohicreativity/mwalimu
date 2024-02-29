@@ -6704,7 +6704,7 @@ class ApplicationController extends Controller
 
         $data = [
            'applicant'=>$applicant,
-           'campus'=>Campus::find(session('applicant_campus_id')),
+           'campus'=>Campus::find($applicant->campus_id),
            'regulator_selection'=>$regulator_selection,
            'student'=>$student,
            'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
