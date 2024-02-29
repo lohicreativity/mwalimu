@@ -762,6 +762,8 @@ $('.ss-select-tags').on('change',function(e){
               year = 3;
            }
 
+           $($(e.target).data('year-target')).val(year);
+           $($(e.target).data('semester-target')).val(semester_id);
 
            if(data.module.course_work_based == '0'){
               $($(e.target).data('cw-min-mark-target')).val(0);
