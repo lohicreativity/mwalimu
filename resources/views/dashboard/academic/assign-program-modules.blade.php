@@ -128,7 +128,7 @@
                             data-cw-percentage-pass-target="#ss-course-work-percentage-pass" data-cw-pass-score-target="#ss-course-work-pass-score" data-final-min-mark-target="#ss-final-min-mark">
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
-                       <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
+                       <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }} {{ $module->id }}</option>
                        @endforeach
                     </select>
                     </div>
