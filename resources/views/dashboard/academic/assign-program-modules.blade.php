@@ -137,7 +137,11 @@
                       <select name="year_of_study" class="form-control" required id="ss-year" disabled="disabled">
                         <option>Select Year of Study</option>
                         @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
-                        <option value="{{ $i }}">{{ $i }}</option>
+                          @if($campus_program->program->nta_level_id == 3)
+                            <option value="{{ $i+1 }}">{{ $i+1 }}</option>
+                          @else
+                            <option value="{{ $i }}">{{ $i }}</option>
+                          @endif
                         @endfor
                       </select>
                       
