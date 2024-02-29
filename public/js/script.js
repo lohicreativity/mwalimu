@@ -743,9 +743,9 @@ $('.ss-select-tags').on('change',function(e){
         if(data.status == 'success'){
            var code = data.module.code.replace(" ","");
            var semester_id = code.substring(5,6);
-           var year = 0;
-           if(code.substring(4,5) == '4' || code.substring(4,5) == '5'){
-              year = 1;
+           var year = 1;
+           if(code.substring(4,5) == '4' || code.substring(4,5) == '5' || code.substring(4,5) == '6'){
+              year = 2;
            }else if(code.substring(4,5) == '6'){
               year = 2;
            }else if(code.substring(4,6) == '71'){
