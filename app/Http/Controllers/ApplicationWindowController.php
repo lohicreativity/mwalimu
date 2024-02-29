@@ -198,7 +198,7 @@ class ApplicationWindowController extends Controller
     public function activate($id)
     {
         try{
-            $window = ApplicationWindow::with(['campusPrograms','campusPrograms.program.award'=>function($query){$query->where('name','NOT LIKE','Master%');}])->findOrFail($id);
+            $window = ApplicationWindow::with(['campusPrograms.program.award'=>function($query){$query->where('name','NOT LIKE','Master%');},'campusPrograms'])->findOrFail($id);
 
             $campus_programs_count = CampusProgram::whereHas('entryRequirements',function($query) use($window){
                 $query->where('application_window_id',$window->id);
