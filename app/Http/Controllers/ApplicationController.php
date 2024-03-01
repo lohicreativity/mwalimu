@@ -6730,7 +6730,8 @@ class ApplicationController extends Controller
            }
         }
         $applicant = Applicant::find($request->get('applicant_id'));
-return $applicant;
+        $student_confirmation = $applicant->confirmation_status == 'PENDING'? true : false;
+
         $tcu_username = $tcu_token = null;
         if($applicant->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
@@ -6762,7 +6763,11 @@ return $applicant;
             $applicant->confirmation_status = 'CONFIRMED';
             $applicant->save();
 
-            return redirect()->back()->with('message','Admission confirmed successfully');
+            if($student_confirmation){
+                return redirect()->to('student/dashboard')->with('message','Admission confirmed successfully');
+            }else{
+                return redirect()->back()->with('message','Admission confirmed successfully');
+            }
         }else{
             return redirect()->back()->with('error','Unable to confirm admission');
         }
