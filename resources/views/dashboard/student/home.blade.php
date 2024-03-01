@@ -89,7 +89,7 @@
       <div class="alert alert-success">Your performance report is ready.</div>
     @endif
 
-    @if($student->applicant->confirmation_status == 'PENDING') 
+    @if($student->applicant->admission_confirmation_status == 'PENDING') 
       <div class="alert alert-warning">
         Please click <a style="background-color: red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
         href="{{ url('application/admission-confirmation?student_confirmation=1') }}"> here</a> to confirm your admission. 

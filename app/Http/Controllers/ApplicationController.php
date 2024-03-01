@@ -6242,6 +6242,17 @@ class ApplicationController extends Controller
         return redirect()->to('application/edit-applicant-details')->with('message',"Reset of applicant's application window is successful");
     }
 
+    /**
+     * Reset admission confirmation status to allow student to confirm
+     */
+    public function resetConfirmationStatus(Request $request)
+    {
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant->admission_confirmation_status = 'PENDING';
+        $applicant->save();
+
+        return redirect()->back()->with('message','Admission confirmation reset successfully');
+    }
 
     /**
      * Show insurance statuses
@@ -6761,6 +6772,7 @@ class ApplicationController extends Controller
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 212 || $array['Response']['ResponseParameters']['StatusCode'] == 214){
             $applicant->confirmation_status = 'CONFIRMED';
+            $applicant->admission_confirmation_status = 'CONFIRMED';
             $applicant->save();
 
             if($student_confirmation){
