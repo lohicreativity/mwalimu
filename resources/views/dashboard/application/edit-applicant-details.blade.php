@@ -210,7 +210,7 @@
                           @if($from_previous_window)
                             <a href="{{ url('application/reset-applicant-window?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Application Window</a>
                           @endif
-                          @if(Auth::user()->hasRole('administrator') && ($applicant->admission_confirmation_status == 'NOT CONFIRMED ANYWHERE' || $applicant->admission_confirmation_status == null)
+                          @if(Auth::user()->hasRole('administrator') && ($applicant->admission_confirmation_status == 'NOT CONFIRMED ANYWHERE' || $applicant->admission_confirmation_status == null))
                           <a href="{{ url('application/reset-applicant-confirmation?applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Confirmation Status</a>
                         @endif
                         </div>
