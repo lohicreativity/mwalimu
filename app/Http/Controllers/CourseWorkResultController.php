@@ -121,9 +121,9 @@ class CourseWorkResultController extends Controller
       try{
         	$module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
           
-          ModuleAssignment::where('id',$module_assignment->id)->update(['course_work_process_status'=>'PROCESSED','final_upload_status'=>'UPLOADED']);    
+         //  ModuleAssignment::where('id',$module_assignment->id)->update(['course_work_process_status'=>'PROCESSED','final_upload_status'=>'UPLOADED']);    
 
-          $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+         //  $module = Module::with('ntaLevel')->find($module_assignment->module_id);
         	// $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
 
         	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
