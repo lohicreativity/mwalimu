@@ -6684,7 +6684,7 @@ class ApplicationController extends Controller
      */
     public function showConfirmAdmission(Request $request)
     {
-        $student = null;
+        $student = $applicant = null;
         if($request->get('student_confirmation',1)){
             $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
             $applicant = $student->applicant;
@@ -6730,7 +6730,7 @@ class ApplicationController extends Controller
            }
         }
         $applicant = Applicant::find($request->get('applicant_id'));
-
+return $applicant;
         $tcu_username = $tcu_token = null;
         if($applicant->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
