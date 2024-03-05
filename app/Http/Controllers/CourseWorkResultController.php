@@ -42,7 +42,7 @@ class CourseWorkResultController extends Controller
             'redirect_url'=>$redirect_url,
 	          'staff'=>User::find(Auth::user()->id)->staff
 	        ];
-	        return view('dashboard.academic.edit-course-work-results',$data)->withTitle('Edit Course Work Results');
+	        return view('dashboard.academic.edit-course-work-results',$data)->withTitle('Edit CA Results');
         }catch(\Exception $e){
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

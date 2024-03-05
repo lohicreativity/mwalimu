@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Edit Course Work Results') }} - {{ $module_assignment->module->name }} - {{ $module_assignment->module->code }}</h1>
+            <h1>{{ __('Edit CA Results') }} - {{ $module_assignment->module->name }} - {{ $module_assignment->module->code }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('CA Edit Course Work Results') }}</li>
+              <li class="breadcrumb-item active">{{ __('Edit CA Results') }}</li>
             </ol>
           </div>
         </div>
@@ -42,8 +42,9 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header p-2">
-                 <h3>Edit Course Work Results</h3>
-              </div><!-- /.card-header -->
+                 <h3>Edit CA Results - {{ $student->surname}}, {{ (ucwords(strtolower($student->first_name))) }} {{ substr($student->middle_name,0,1) }} | {{ $student->registration_number}}</h3>
+           
+                </div><!-- /.card-header -->
               <!-- form start -->
               @php
                   $name = [
@@ -64,25 +65,26 @@
               @endphp
               {!! Form::open(['url'=>'academic/results/update-course-work-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
+                  {{ $results }}
                   @foreach($assessment_plans as $plan)
                     @foreach($results as $result)
                       @if($result->assessment_plan_id == $plan->id)
-                       @php
-                         $planIds[] = $plan->id;
-                       @endphp
-                  <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('',$plan->name) !!}
-                    {!! Form::text('plan_name_'.$plan->id,$plan->name,$name) !!}
-                    
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Marks') !!}
-                    {!! Form::text('plan_'.$plan->id.'_score',round(100*$result->score/$plan->weight,1),$marks) !!}
-                  </div>
-                  </div>
-                    @endif
-                   @endforeach
+                        @php
+                          $planIds[] = $plan->id;
+                        @endphp
+                        <div class="row">
+                        <div class="form-group col-6">
+                          {!! Form::label('',$plan->name) !!}
+                          {!! Form::text('plan_name_'.$plan->id,$plan->name,$name) !!}
+                          
+                        </div>
+                        <div class="form-group col-6">
+                          {!! Form::label('','Marks') !!}
+                          {!! Form::text('plan_'.$plan->id.'_score',round(100*$result->score/$plan->weight,1),$marks) !!}
+                        </div>
+                        </div>
+                      @endif
+                    @endforeach
                   @endforeach
                    @foreach($assessment_plans as $plan)
                       @if(!in_array($plan->id,$planIds))
