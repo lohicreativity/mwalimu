@@ -130,14 +130,14 @@ class CourseWorkResultController extends Controller
         	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         	foreach($assessment_plans as $plan){
         		if($request->has('plan_'.$plan->id.'_score')){
-              if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > 100){
+              if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
                   return redirect()->back()->with('error','Invalid score entered');
               }
     	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
     	    			$result = $res;
                         $result->student_id = $request->get('student_id');
                         $score_before = $result->score;
-                        $result->score = ($request->get('plan_'.$plan->id.'_score')*$plan->weight)/100;
+                        $result->score = $request->get('plan_'.$plan->id.'_score');
                         $result->assessment_plan_id = $plan->id;
                         $result->module_assignment_id = $request->get('module_assignment_id');
                         $result->uploaded_by_user_id = Auth::user()->id;
@@ -153,7 +153,7 @@ class CourseWorkResultController extends Controller
     	    		}else{
     	    			$result = new CourseWorkResult;
                         $result->student_id = $request->get('student_id');
-                        $result->score = ($request->get('plan_'.$plan->id.'_score')*$plan->weight)/100;
+                        $result->score = $request->get('plan_'.$plan->id.'_score');
                         $result->assessment_plan_id = $plan->id;
                         $result->module_assignment_id = $request->get('module_assignment_id');
                         $result->uploaded_by_user_id = Auth::user()->id;
@@ -167,7 +167,7 @@ class CourseWorkResultController extends Controller
         	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
 
 
-                    $course_work_count = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($request){
+                    $no_of_compulsory_tests = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($request){
                          $query->where('name','LIKE','%Test%');
                       })->where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->count();
 
@@ -177,8 +177,8 @@ class CourseWorkResultController extends Controller
                             $exam_result = $result;
                             $exam_result->module_assignment_id = $request->get('module_assignment_id');
                             $exam_result->student_id = $request->get('student_id');
-                            $exam_result->course_work_score = $course_work_count < 2? null : $course_work;
-                            if(is_null($course_work) || $course_work_count < 2){
+                            $exam_result->course_work_score = $no_of_compulsory_tests < 2? null : $course_work;
+                            if(is_null($course_work) || $no_of_compulsory_tests < 2){
                                $exam_result->course_work_remark = 'INCOMPLETE';
                             }else{
                                $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
@@ -191,8 +191,8 @@ class CourseWorkResultController extends Controller
                             $exam_result = new ExaminationResult;
                             $exam_result->module_assignment_id = $request->get('module_assignment_id');
                             $exam_result->student_id = $request->get('student_id');
-                            $exam_result->course_work_score = $course_work_count < 2? null : $course_work;
-                            if(is_null($course_work) || $course_work_count < 2){
+                            $exam_result->course_work_score = $no_of_compulsory_tests < 2? null : $course_work;
+                            if(is_null($course_work) || $no_of_compulsory_tests < 2){
                                $exam_result->course_work_remark = 'INCOMPLETE';
                             }else{
                                $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
