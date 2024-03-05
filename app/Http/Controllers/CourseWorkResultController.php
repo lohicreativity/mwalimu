@@ -33,6 +33,7 @@ class CourseWorkResultController extends Controller
     		if(count($assessment_plans) == 0){
     			return redirect()->back()->with('error','No assessment plan defined for this module');
     		}
+         return $student_id.' - '.$mod_assign_id;
 	        $data = [
 	          'student'=>Student::findOrFail($student_id),
 	          'assessment_plans'=>$assessment_plans,
