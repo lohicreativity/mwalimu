@@ -73,7 +73,7 @@ class ModuleController extends Controller
         if($existing_module_record){
             return redirect()->back()->with('error','The module has already been assigned in '.$existing_module_record->departments[0]->name);
         }            
-		return 1;
+
 		(new ModuleAction)->store($request);
 
         return Util::requestResponse($request,'Module created successfully');
