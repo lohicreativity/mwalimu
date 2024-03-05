@@ -64,7 +64,7 @@ class ModuleController extends Controller
            }
         }
 
-		$module = Module::where('code',$request->get('code'))->orWhere('name',$request->get('name'))->first();
+		$module = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first();
         $existing_module_record = $module? Module::whereHas('departments', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
                                                  ->where('id', $module->id)
                                                  ->with('departments')
