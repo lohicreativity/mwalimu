@@ -70,15 +70,10 @@ class ModuleController extends Controller
                                                  ->with('departments')
                                                  ->first() : null;
 
-                                                 return Module::whereHas('departments', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
-                                                 ->where('id', $module->id)
-                                                 ->with('departments')
-                                                 ->first();
-
         if($existing_module_record){
             return redirect()->back()->with('error','The module has already been assigned in '.$existing_module_record->departments[0]->name);
         }            
-		
+		return 1;
 		(new ModuleAction)->store($request);
 
         return Util::requestResponse($request,'Module created successfully');
