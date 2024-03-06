@@ -540,9 +540,11 @@ class ApplicationController extends Controller
         // Ready to be sent to regulators i.e. NACTVET and TCU
         $selected_applicants = $selected_applicant_new = [];
         if($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2){
-                $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->where('status','SELECTED')
+                $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->doesntHave('student')->whereDoesntHave('selections',function($query){$query->whereIn('status',['SELECTED','PENDING']);})->whereHas('selections',function($query){$query->where('status','APPROVING');})
+                                        ->where('status','SELECTED')
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))
+                                        ->where('programs_complete_status',1)
                                         ->get();
 
          }elseif($request->get('program_level_id') == 4){
@@ -568,7 +570,7 @@ class ApplicationController extends Controller
                 ->where('application_window_id',$request->get('application_window_id'))
                 ->where('program_level_id',$request->get('program_level_id'))
                 ->where('status','SUBMITTED')->count();
-return count($selected_applicant_new);
+return count($selected_applicant);
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
