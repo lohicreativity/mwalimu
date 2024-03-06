@@ -1465,7 +1465,7 @@ class ApplicationController extends Controller
             $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
             $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
         }
-
+return count($request->get('applicant_ids'));
         $applicants = [];
         if(str_contains(strtolower($award->name), 'certficate') || str_contains(strtolower($award->name), 'diploma')){
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','email','region_id','district_id','nationality','next_of_kin_id','disability_status_id','address','entry_mode','birth_date','intake_id','batch_id','program_level_id')
@@ -1493,7 +1493,7 @@ class ApplicationController extends Controller
                                 'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
                                 'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
         }
-return count($applicants);
+//return count($applicants);
         if(count($applicants) > 0){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
 
