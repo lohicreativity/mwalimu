@@ -1493,7 +1493,7 @@ class ApplicationController extends Controller
                                 'outResultDetails'=>function($query){$query->select('id','applicant_id')->where('verified',1);},'disabilityStatus:id,name',
                                 'nextOfKin:id,first_name,surname,region_id,relationship,address,phone','region:id,name','district:id,name','intake:id,name'])->get();
         }
-
+return $applicants;
         if(count($applicants) > 0){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
 
