@@ -1530,7 +1530,7 @@ class ApplicationController extends Controller
                 $new_batch->batch_no = $batch_no + 1;
                 $new_batch->begin_date = date('Y-m-d');
                 $new_batch->end_date = date('Y-m-d');
-return 1;
+
                 $new_batch->save();
 
                 Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)
