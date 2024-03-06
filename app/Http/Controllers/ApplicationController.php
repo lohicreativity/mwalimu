@@ -555,23 +555,21 @@ class ApplicationController extends Controller
                                             ->where('program_level_id',$request->get('program_level_id'))
                                             ->where('programs_complete_status',1)
                                             ->get();
+         }
+
          foreach($selected_applicants as $selected_applicant){
 
             if(ApplicantSubmissionLog::where('applicant_id',$selected_applicant->id)->where('application_window_id',$request->get('application_window_id'))
             ->where('batch_id',$selected_applicant->batch_id)->where('program_level_id',4)->count() == 0){
-        return 1;
                 $selected_applicant_new[] = $selected_applicant;
 
             }
          }
-         }
-
-
         $submission_status = Applicant::doesntHave('student')
                 ->where('application_window_id',$request->get('application_window_id'))
                 ->where('program_level_id',$request->get('program_level_id'))
                 ->where('status','SUBMITTED')->count();
-return count($selected_applicants);
+return count($selected_applicant_new);
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
