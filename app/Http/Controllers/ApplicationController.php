@@ -543,7 +543,6 @@ class ApplicationController extends Controller
                 $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id','index_number','status')->where('status','SELECTED')
                                         ->where('application_window_id',$request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))
-                                        ->where('programs_complete_status',1)
                                         ->get();
 
          }elseif($request->get('program_level_id') == 4){
