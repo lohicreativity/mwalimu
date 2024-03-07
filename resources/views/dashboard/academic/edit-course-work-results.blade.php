@@ -101,8 +101,6 @@
                   </div>
                     @endif
                    @endforeach
-
-
                 </div>
                 <!-- /.card-body -->
                 {!! Form::input('hidden','student_id',$student->id) !!}
@@ -110,6 +108,7 @@
                 {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
                 {!! Form::input('hidden','redirect_url',$redirect_url) !!}
                 {!! Form::input('hidden','ac_yr_id',$ac_yr_id) !!}
+                {!! Form::input('hidden','year_of_study',$year_of_study) !!}
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                 </div>
