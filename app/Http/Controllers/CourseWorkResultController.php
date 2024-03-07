@@ -22,7 +22,7 @@ class CourseWorkResultController extends Controller
      * Display form for editing cw components
      */
     public function edit(Request $request, $student_id, $mod_assign_id, $exam_id, $redirect_url = null)
-    { return $request->get('ac_yr_id');
+    { 
     	try{
             if(Auth::user()->hasRole('staff')){
               $module_assignment = ModuleAssignment::find($mod_assign_id);
@@ -42,7 +42,8 @@ class CourseWorkResultController extends Controller
 	          'results'=>CourseWorkResult::where('student_id',$student_id)->where('module_assignment_id',$mod_assign_id)->get(),
 	          'module_assignment'=>ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($mod_assign_id),
             'redirect_url'=>$redirect_url,
-	          'staff'=>User::find(Auth::user()->id)->staff
+	          'staff'=>User::find(Auth::user()->id)->staff,
+             'ac_yr_id'=>$request->get('ac_yr_id')
 	        ];
 	        return view('dashboard.academic.edit-course-work-results',$data)->withTitle('Edit CA Results');
         }catch(\Exception $e){
@@ -207,13 +208,19 @@ class CourseWorkResultController extends Controller
                  if($request->get('redirect_url')){
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
-return 2;
-                  $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
-                     $query->where('student_id',$student->id)
-                     ->where('study_academic_year_id',$ac_yr_id)
-                     ->where('year_of_study',$yr_of_study);
+
+                 return $$request->get('ac_yr_id');
+                 $semesters = 0;
+                 if(!empty($request->get('ac_yr_id'))){
+                  $semesters = Semester::with(['remarks'=>function($query) use ($request){
+                     $query->where('student_id',$request->get('student_id'))
+                     ->where('study_academic_year_id',$request->get('ac_yr_id'));
                   }])->get();
-                 return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+                 }
+
+                 if(count($semesters) > 0){
+                  return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+                 }
         }catch(\Exception $e){
 			return $e->getMessage();
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
