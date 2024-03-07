@@ -22,7 +22,7 @@ class CourseWorkResultController extends Controller
      * Display form for editing cw components
      */
     public function edit(Request $request, $student_id, $mod_assign_id, $exam_id, $redirect_url = null)
-    { 
+    { return $request->get('ac_yr_id');
     	try{
             if(Auth::user()->hasRole('staff')){
               $module_assignment = ModuleAssignment::find($mod_assign_id);
