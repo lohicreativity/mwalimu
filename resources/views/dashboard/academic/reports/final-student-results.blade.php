@@ -79,7 +79,7 @@
                       @endif
                       <td>
                         @foreach($years as $yr)
-                        <p class="ss-no-margin"><a href="{{ url('academic/results/'.$student->id.'/'.$yr->id.'/'.$key.'/show-student-results?study_year='.$key) }}">Results in Academic Year ({{ $yr->academicYear->year}})</a></p>
+                        <p class="ss-no-margin"><a href="{{ url('academic/results/'.$student->id.'/'.$yr->id.'/'.$key.'/show-student-results?') }}">Results in Academic Year ({{ $yr->academicYear->year}})</a></p>
                         @endforeach
                       </td>
                    </tr>
