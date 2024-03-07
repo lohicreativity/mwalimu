@@ -93,7 +93,7 @@
                       {!! Form::label('','Coursework score') !!}
                       {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
 
-                      <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id=1') }}" class="ss-margin-top">Edit Coursework</a>
+                      <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id) }}" class="ss-margin-top">Edit Coursework</a>
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Final score (/100)') !!}
