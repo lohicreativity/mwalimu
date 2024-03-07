@@ -32,7 +32,7 @@
                         <tr>
                             <td>{{ ++$key }}</td>
                             <td>{{ $dept_name }}</td>
-                            <td>{{ $campusDepartment->department->abbreviation }}</td>
+                            <td>{{ $campusDepartment }}</td>
                             <td>{{ $campusDepartment->department->unitCategory->name }}</td>
                             <td>{{ $campusDepartment->department->parent?->name }}</td>
                             <td>{{ $campusDepartment->campus->name }}</td>
