@@ -3804,7 +3804,7 @@ class ExaminationResultController extends Controller
      * Display student results 
      */
     public function showStudentResults(Request $request)
-    {
+    { return $request;
         return view('dashboard.academic.student-results')->withTitle('Student Results');
     }
 
