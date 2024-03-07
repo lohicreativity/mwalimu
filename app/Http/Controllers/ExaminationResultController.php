@@ -1015,7 +1015,7 @@ class ExaminationResultController extends Controller
      * Display form for editing results
      */
     public function edit(Request $request, $student_id,$ac_yr_id,$prog_id)
-    {return $request;
+    {
         try{
             $module_assignment = ModuleAssignment::with(['module','programModuleAssignment'])->where('program_module_assignment_id',$prog_id)->first();
             if(Auth::user()->hasRole('staff')){
