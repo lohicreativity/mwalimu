@@ -125,7 +125,7 @@ class DepartmentController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
+return $request;
       try {
 
          (new DepartmentAction)->update($request);
