@@ -43,7 +43,8 @@ class CourseWorkResultController extends Controller
 	          'module_assignment'=>ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($mod_assign_id),
             'redirect_url'=>$redirect_url,
 	          'staff'=>User::find(Auth::user()->id)->staff,
-             'ac_yr_id'=>$request->get('ac_yr_id')
+             'ac_yr_id'=>$request->get('ac_yr_id'),
+             'year_of_study'=>$request->get("year_of_study")
 	        ];
 	        return view('dashboard.academic.edit-course-work-results',$data)->withTitle('Edit CA Results');
         }catch(\Exception $e){
