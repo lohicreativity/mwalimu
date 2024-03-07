@@ -34,7 +34,16 @@
                             <td>{{ $dept_name }}</td>
                             <td>{{ $campusDepartment }}</td>
                             <td>{{ $campusDepartment->department->unitCategory->name }}</td>
-                            <td>{{ $campusDepartment->department->parent->name }}</td>
+                            <td>@if($campusDepartment->department->unitCategory->name == 'Department')
+                                    @foreach ($faculties as $faculty)
+                                        @if($faculty->id == $campusDepartment->parent_id)
+                                            {{ $faculty->name }}
+                                        @endif
+                                    @endforeach
+                                @else
+                                    {{ $campusDepartment->department->parent?->name }}                               
+                                @endif
+                            </td>
                             <td>{{ $campusDepartment->campus->name }}</td>
                             <td>
                                 @can('edit-department')

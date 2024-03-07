@@ -124,6 +124,7 @@ class Departments extends Component
             'unit_categories'  =>UnitCategory::all(),
             'all_departments'  => Department::where('parent_id','>',0)->get(),
             'campuses'         =>Campus::all(),
+            'faculties'        =>Faculty::all(),
             'staff'            => $staff,
             'campusDepartments'      => CampusDepartment::query()->with(['campus', 'department.unitCategory', 'department.parent'])->get(),
             ]);
