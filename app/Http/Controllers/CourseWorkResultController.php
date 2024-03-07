@@ -218,6 +218,7 @@ class CourseWorkResultController extends Controller
                  }
 
                  if(count($semesters) > 0){
+                  return 10;
                   return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
                  }
         }catch(\Exception $e){
