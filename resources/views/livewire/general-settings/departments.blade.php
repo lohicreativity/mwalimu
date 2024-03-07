@@ -40,6 +40,8 @@
                                             {{ $faculty->name }}
                                         @endif
                                     @endforeach
+                                @elseif($campusDepartment->department->unitCategory->name == 'Office')
+                                    {{ $campusDepartment->campus->name }}
                                 @else
                                     {{ $campusDepartment->department->parent?->name }}                               
                                 @endif
