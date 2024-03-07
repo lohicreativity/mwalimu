@@ -36,8 +36,15 @@
                             <td>{{ $campusDepartment->department->unitCategory->name }}</td>
                             <td>@if($campusDepartment->department->unitCategory->name == 'Department')
                                     @foreach ($faculties as $faculty)
+                                        @php
+                                            $faculty_name = str_replace(' Of ',' of ',$faculty->name);
+                                            $faculty_name = str_replace(' And ',' and ',$faculty_name);
+                                            $faculty_name = str_replace(' In ',' in ',$faculty_name);
+                                        @endphp
+
                                         @if($faculty->id == $campusDepartment->parent_id)
-                                            {{ $faculty->name }}
+                                            {{ $faculty_name }}
+                                            @break
                                         @endif
                                     @endforeach
                                 @elseif($campusDepartment->department->unitCategory->name == 'Office')
