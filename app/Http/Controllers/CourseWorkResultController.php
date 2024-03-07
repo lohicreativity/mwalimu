@@ -98,7 +98,7 @@ class CourseWorkResultController extends Controller
      * Update course work results
      */
     public function update(Request $request)
-    {   return 1;
+    {   
         $validations = [];
         $messages = [];
         $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
@@ -206,7 +206,7 @@ class CourseWorkResultController extends Controller
                  if($request->get('redirect_url')){
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
-
+return 2;
                  return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
         }catch(\Exception $e){
 			return $e->getMessage();
