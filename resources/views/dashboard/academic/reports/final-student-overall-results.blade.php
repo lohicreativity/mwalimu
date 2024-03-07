@@ -83,7 +83,7 @@
                  
                  @foreach($semesters as $key=>$semester)
 
-                   @if(count($semester->remarks) != 0)
+
                 <div class="row">
                 <div class="col-12">
                  <h4 class="ss-no-margin">{{ $semester->name }}</h4>
@@ -188,7 +188,7 @@
                           @endphp
                          @endif
                          @endif
-                        @endif
+
                       @endforeach
                     @endforeach
                     @foreach($optional_programs as $program)

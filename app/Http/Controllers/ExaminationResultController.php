@@ -3999,7 +3999,7 @@ class ExaminationResultController extends Controller
     {
          $student = Student::with(['campusProgram.program'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
-         $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study, $request){
+         $semesters = Semester::with(['remarks'=>function($query) use($student, $ac_yr_id, $yr_of_study, $request){
            $query->where('student_id',$student->id)->where('year_of_study',$yr_of_study)->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            });
