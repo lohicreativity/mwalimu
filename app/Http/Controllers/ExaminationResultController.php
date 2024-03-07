@@ -1041,7 +1041,8 @@ class ExaminationResultController extends Controller
                'result'=>$result,
                'policy'=>$policy,
                'student'=>$student,
-               'module_assignment'=>$module_assignment
+               'module_assignment'=>$module_assignment,
+               'year_of_study'=>$request->get('year_of_study')
             ];
             return view('dashboard.academic.edit-examination-results',$data)->withTitle('Edit Examination Results');
         }catch(\Exception $e){
