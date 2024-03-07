@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
 use Auth, Validator;
+use App\Domain\Academic\Models\Semester;
 
 class CourseWorkResultController extends Controller
 {
@@ -207,6 +208,11 @@ class CourseWorkResultController extends Controller
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
 return 2;
+                  $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
+                     $query->where('student_id',$student->id)
+                     ->where('study_academic_year_id',$ac_yr_id)
+                     ->where('year_of_study',$yr_of_study);
+                  }])->get();
                  return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
         }catch(\Exception $e){
 			return $e->getMessage();
