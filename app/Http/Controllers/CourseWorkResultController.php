@@ -209,15 +209,22 @@ class CourseWorkResultController extends Controller
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
 
-                 $semesters = 0;
+                 $semester_remark = false;
                  if(!empty($request->get('ac_yr_id'))){
                   $semesters = Semester::with(['remarks'=>function($query) use ($request){
                      $query->where('student_id',$request->get('student_id'))
                      ->where('study_academic_year_id',$request->get('ac_yr_id'));
                   }])->get();
+
+                  foreach($semesters as $semester){
+                     if(count($semester->remarks) > 1){
+                        $semester_remark = true;
+                        break;
+                     }
+                  }
                  }
 
-                 if(count($semesters->remarks) > 0){
+                 if($semester_remark){
                   return 10;
                   return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
                  }
