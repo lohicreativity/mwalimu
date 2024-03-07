@@ -209,7 +209,6 @@ class CourseWorkResultController extends Controller
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
 
-                 return $request->get('ac_yr_id');
                  $semesters = 0;
                  if(!empty($request->get('ac_yr_id'))){
                   $semesters = Semester::with(['remarks'=>function($query) use ($request){
