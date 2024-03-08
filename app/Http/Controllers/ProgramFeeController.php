@@ -68,9 +68,8 @@ class ProgramFeeController extends Controller
            'staff'=>$staff,
            'request'=>$request
     	];
-
-        return 3;
 	  }
+      return 4;
     	return view('dashboard.finance.program-fees',$data)->withTitle('Program Fees');
     }
 
