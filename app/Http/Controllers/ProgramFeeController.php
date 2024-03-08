@@ -52,14 +52,14 @@ class ProgramFeeController extends Controller
     	];		  
 	  }else{	  
     	$data = [
-           'fees'=>$request->get('query')? ProgramFee::wherehas('campusProgram',function($query) use($request){
-                $query->where('campus_id',$request->get('campus_id'));
+           'fees'=>$request->get('query')? ProgramFee::wherehas('campusProgram',function($query) use($staff){
+                $query->where('campus_id',$staff->campus_id);
            })->whereHas('studyAcademicYear.academicYear',function($query) use($request){
                 $query->where('year','LIKE','%'.$request->get('query').'%');
-           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : ProgramFee::wherehas('campusProgram',function($query) use($request){
-                $query->where('campus_id',$request->get('campus_id'));
+           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : ProgramFee::wherehas('campusProgram',function($query) use($staff){
+                $query->where('campus_id',$staff->campus_id);
            })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get(),
-           'campus_programs'=>CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get(),
+           'campus_programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
            'fee_items'=>FeeItem::all(),
            'ac_year'=>$study_ac_yr,
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
