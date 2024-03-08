@@ -50,7 +50,7 @@ class ProgramFeeController extends Controller
            'staff'=>$staff,
            'request'=>$request
     	];		  
-	  }else{	return 2;  
+	  }else{	  
     	$data = [
            'fees'=>$request->get('query')? ProgramFee::wherehas('campusProgram',function($query) use($request){
                 $query->where('campus_id',$request->get('campus_id'));
@@ -68,6 +68,8 @@ class ProgramFeeController extends Controller
            'staff'=>$staff,
            'request'=>$request
     	];
+
+        return 3;
 	  }
     	return view('dashboard.finance.program-fees',$data)->withTitle('Program Fees');
     }
