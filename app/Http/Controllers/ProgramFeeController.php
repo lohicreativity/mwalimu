@@ -69,6 +69,8 @@ class ProgramFeeController extends Controller
            'request'=>$request
     	];
 	  }
+
+      return $data;
     	return view('dashboard.finance.program-fees',$data)->withTitle('Program Fees');
     }
 
