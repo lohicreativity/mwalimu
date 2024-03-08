@@ -58,7 +58,7 @@ class ProgramFeeController extends Controller
                 $query->where('year','LIKE','%'.$request->get('query').'%');
            })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : ProgramFee::wherehas('campusProgram',function($query) use($staff){
                 $query->where('campus_id',$staff->campus_id);
-           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get(),
+           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
            'campus_programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
            'fee_items'=>FeeItem::all(),
            'ac_year'=>$study_ac_yr,
