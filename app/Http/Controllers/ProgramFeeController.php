@@ -22,7 +22,7 @@ class ProgramFeeController extends Controller
      * Display a list of amounts
      */
     public function index(Request $request)
-    {
+    { return 1;
       $staff = User::find(Auth::user()->id)->staff;
       $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first();
       if(!$application_window){

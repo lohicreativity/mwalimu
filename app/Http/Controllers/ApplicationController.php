@@ -11138,7 +11138,7 @@ class ApplicationController extends Controller
 
                 }
             }else{
-                return redirect()->back()->with('message','No applicants submitted to nactvet');
+                return redirect()->back()->with('message','No applicants retrieved from NACTVET');
             }
         }
             return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
