@@ -140,8 +140,7 @@
 
 									  <div class="card-body">
 										@if(Auth::user()->hasRole('finance-officer'))
-											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a>
-											@if($invoice)<a href="{{ url('student/reset-control-number?student_id='.$payer->id) }}" class="btn btn-primary">Reset Control Number</a> @endif <br><br>									  									  
+											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a>								  									  
 
 										@endif									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
@@ -302,8 +301,7 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">
-										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a>
-										@if($invoice)<a href="{{ url('student/reset-control-number?applicant_id='.$payer->id) }}" class="btn btn-primary">Reset Control Number</a> @endif <br><br>									  									  
+										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a>							  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 										  <thead>
 											<tr>
@@ -321,7 +319,7 @@
 											<tr>
 											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
-											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($invoice)<a href="{{ url('student/reset-control-number?control_no='.$payments->control_no) }}">Reset</a> @endif</td> 
+											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($invoice)<a href="{{ url('student/reset-control-number?control_no='.$payments->control_no) }}"> &nbsp; &nbsp; <span style="color: red; font-style:italic">Reset</a> @endif</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
