@@ -367,17 +367,15 @@
 											@endforeach
 										  </tbody>
 										 </table>
+										 <a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Reset Control Number</a> <br><br>
 									  </div>
 
 									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
 										<div class="card-body">
 
 										</div>
-										Reset Control Number1
 									  </div>
-									  Reset Control Number2
 									</div>
-									Reset Control Number3
 								</div>                                  
 							</div>
 						</div>
