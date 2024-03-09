@@ -381,6 +381,7 @@
 					</div>
 				</div>
 			  </div>
+			  Reset Control Number
 			  <!-- /.modal-content -->
 			</div> 
 		  <!-- /.modal -->			
