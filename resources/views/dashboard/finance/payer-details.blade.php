@@ -378,10 +378,12 @@
 								</div>                                  
 							</div>
 						</div>
+						Reset Control Number1
 					</div>
+					Reset Control Number2
 				</div>
+				Reset Control Number3
 			  </div>
-			  Reset Control Number
 			  <!-- /.modal-content -->
 			</div> 
 		  <!-- /.modal -->			
