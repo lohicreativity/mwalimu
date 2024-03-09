@@ -140,7 +140,9 @@
 
 									  <div class="card-body">
 										@if(Auth::user()->hasRole('finance-officer'))
-											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a><br><br>
+											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a>
+											@if($invoice)<a href="{{ url('student/reset-control-number?student_id='.$payer->id) }}" class="btn btn-primary">Reset Control Number</a> @endif <br><br>									  									  
+
 										@endif									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
@@ -301,7 +303,7 @@
 
 									  <div class="card-body">
 										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a>
-										@if($invoice)<a href="{{ url('student/reset-control-number?payer_id='.$payer->id) }}" class="btn btn-primary">Reset Control Number</a> @endif <br><br>									  									  
+										@if($invoice)<a href="{{ url('student/reset-control-number?applicant_id='.$payer->id) }}" class="btn btn-primary">Reset Control Number</a> @endif <br><br>									  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 										  <thead>
 											<tr>

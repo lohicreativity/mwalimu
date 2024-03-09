@@ -2350,11 +2350,8 @@ class StudentController extends Controller
      */
     public function resetControlNumber(Request $request)
     {
-      $student = Student::find($request->get('payer_id'));
-      $applicant = Applicant::find($request->get('payer_id'));
-
-      $invoice = $student? Invoice::where('payable_id',$student->id)->where('payable_type','student')->whereNull('gateway_payment_id')->latest()->first() : 
-                           Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->whereNull('gateway_payment_id')->latest()->first();
+      $invoice = !empty($request->get('student_id'))? Invoice::where('payable_id',$request->get('student_id'))->where('payable_type','student')->whereNull('gateway_payment_id')->latest()->first() : 
+                           Invoice::where('payable_id',$request->get('applicant_id'))->where('payable_type','applicant')->whereNull('gateway_payment_id')->latest()->first();
       $invoice->payable_id = 0;
       $invoice->save();
 
