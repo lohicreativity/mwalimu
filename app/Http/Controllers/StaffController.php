@@ -315,21 +315,25 @@ class StaffController extends Controller
             }
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
             
-            $tuition_fee_loan = null;
+            $tuition_fee_loan = $invoice = null;
             if($applicant_payer){
                 $tuition_fee_loan = LoanAllocation::where('applicant_id',$applicant->id)->where('year_of_study',1)->where('study_academic_year_id',$ac_year->academicYear->id)
                 ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
                 $programme_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$applicant_payer->selections[0]->campus_program_id)->first();
+                $invoice = Invoice::whereNull('gateway_payment_id')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
             }else{
                 $tuition_fee_loan = LoanAllocation::where('student_id',$student_payer->id)->where('year_of_study',$student_payer->year_of_study)->where('study_academic_year_id',$ac_year->academicYear->id)
                 ->where('campus_id',$student_payer->applicant->campus_id)->sum('tuition_fee');
                 $programme_fee = ProgramFee::select('amount_in_tzs')->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$student_payer->campus_program_id)->first();
 
+                $invoice = Invoice::whereNull('gateway_payment_id')->where('payable_id',$student_payer->id)->where('payable_type','student')->first();
+
             }
 
             $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
-			$data = [
+
+            $data = [
 				'payer'=>$student_payer? $student_payer : $applicant_payer,
 				'category'=>$student_payer? 'student' : 'applicant',
 				'applicant_payments'=>$paid_as_applicant? $paid_as_applicant : [],
@@ -337,7 +341,8 @@ class StaffController extends Controller
                 'paid_receipts'=>$paid_receipts? $paid_receipts : [],
                 'total_paid_fee'=>$total_fee_paid_amount,
                 'tuition_fee_loan'=>$tuition_fee_loan,
-                'programme_fee'=>$programme_fee->amount_in_tzs
+                'programme_fee'=>$programme_fee->amount_in_tzs,
+                'invoice'=>$invoice
 			];
 
 		}else{

@@ -301,7 +301,7 @@
 
 									  <div class="card-body">
 										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a>
-										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Reset Control Number</a> <br><br>									  									  
+										@if($invoice)<a href="{{ url('student/reset-control-number?student_id='.$payer->id) }}" class="btn btn-primary">Reset Control Number</a> @endif <br><br>									  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 										  <thead>
 											<tr>
