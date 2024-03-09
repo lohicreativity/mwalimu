@@ -149,7 +149,7 @@
 											<tr>
 											   <th>SN</th>					
 											   <th>Date</th>
-											   <th>Invoice#</th>
+											   <th>Control#</th>
 											   <th>Fee Type</th>										   
 											   <th>Fee Amount (TZS)</th>
 											   <th>Paid Amount (TZS)</th>
@@ -161,7 +161,7 @@
 											<tr>
 											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
-											   <td title="Control#: {{ $payments->control_no }}">{{ $payments->reference_no }}</td> 
+											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($invoice)<a href="{{ url('student/reset-control-number?control_no='.$payments->control_no) }}">Reset</a> @endif</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
@@ -321,7 +321,7 @@
 											<tr>
 											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
-											   <td title="Control#: {{ $payments->control_no }}">{{ $payments->reference_no }}</td> 
+											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($invoice)<a href="{{ url('student/reset-control-number?control_no='.$payments->control_no) }}">Reset</a> @endif</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
