@@ -621,7 +621,7 @@
           </div><!--end of col-md-6 -->
           <div class="col-md-3">
              <div class="ss-left">
-                 <p class="ss-bold">Name of the Lecturer: .................................</p>
+                 <p class="ss-bold">Name of Examination Officer: .................................</p>
                  <p class="ss-bold">Signature: .............................</p>
                  <p class="ss-bold">Date: ..................................</p>
              </div>
