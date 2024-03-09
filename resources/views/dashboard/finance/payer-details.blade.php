@@ -300,7 +300,8 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">
-										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a> <br><br>									  									  
+										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a>
+										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Reset Control Number</a> <br><br>									  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 										  <thead>
 											<tr>
@@ -367,7 +368,6 @@
 											@endforeach
 										  </tbody>
 										 </table>
-										 <a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Reset Control Number</a> <br><br>
 									  </div>
 
 									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
