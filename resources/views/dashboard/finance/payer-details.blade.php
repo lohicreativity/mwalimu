@@ -373,16 +373,16 @@
 										<div class="card-body">
 
 										</div>
+										Reset Control Number1
 									  </div>
+									  Reset Control Number2
 									</div>
+									Reset Control Number3
 								</div>                                  
 							</div>
 						</div>
-						Reset Control Number1
 					</div>
-					Reset Control Number2
 				</div>
-				Reset Control Number3
 			  </div>
 			  <!-- /.modal-content -->
 			</div> 
