@@ -2350,7 +2350,6 @@ class StudentController extends Controller
      */
     public function resetControlNumber(Request $request)
     {
-      return $request->get('payer_id');
       $student = Student::find($request->get('payer_id'));
       $applicant = Applicant::find($request->get('payer_id'));
 
