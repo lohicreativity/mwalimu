@@ -160,7 +160,7 @@
 											<tr>
 											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
-											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($invoice)<a href="{{ url('student/reset-control-number?control_no='.$payments->control_no) }}">Reset</a> @endif</td> 
+											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($payments->gateway_payment_id == null)<a href="{{ url('student/reset-control-number?reference_no='.$payments->reference_no) }}"> &nbsp; &nbsp; <span style="color: red; font-style:italic">Reset</a> @endif</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
@@ -319,7 +319,7 @@
 											<tr>
 											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
-											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($payments->gateway_payment_id == null)<a href="{{ url('student/reset-control-number?control_no='.$payments->control_no) }}"> &nbsp; &nbsp; <span style="color: red; font-style:italic">Reset</a> @endif</td> 
+											   <td title="Invoice#: {{ $payments->reference_no }}">{{ $payments->control_no }} @if($payments->gateway_payment_id == null)<a href="{{ url('student/reset-control-number?reference_no='.$payments->reference_no) }}"> &nbsp; &nbsp; <span style="color: red; font-style:italic">Reset</a> @endif</td> 
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>
 												@if(str_contains($payments->feeType->name,'Tuition'))
