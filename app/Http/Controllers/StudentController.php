@@ -2349,7 +2349,7 @@ class StudentController extends Controller
      * Reset control number
      */
     public function resetControlNumber(Request $request)
-    { return $request->get('control_no');
+    { 
       $invoice = Invoice::where('control_no',$request->get('control_no'))->first();
       $invoice->payable_id = 0;
       $invoice->save();

@@ -307,7 +307,7 @@
 											<tr>
 											   <th>SN</th>					
 											   <th>Date</th>
-											   <th>Invoice#</th>
+											   <th>Control#</th>
 											   <th>Fee Type</th>										   
 											   <th>Fee Amount</th>
 											   <th>Paid Amount</th>
