@@ -1018,10 +1018,10 @@ class ExaminationResultController extends Controller
     {
         try{
             $module_assignment = ModuleAssignment::with(['module','programModuleAssignment'])->where('program_module_assignment_id',$prog_id)->first();
-            if(Auth::user()->hasRole('staff')){
+            if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
               
               if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
-                  return redirect()->back()->with('error','Unable to edit results because results already processed');
+                  return redirect()->back()->with('error','Unable to edit results because final results already inserted');
               }
             }
 
