@@ -550,13 +550,9 @@
              <h3 class="ss-bold">KEYS</h3>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
-                     <tr>
-                       <td class="ss-bold">Key Name</td>
-                       <td class="ss-bold">Description</td>
-                     </tr>
-                     <tr>
-                      <td>FE</td>
-                      <td>Final Exam</td>
+                    <tr>
+                      <td class="ss-bold">Key Name</td>
+                      <td class="ss-bold">Description</td>
                     </tr>
                     <tr>
                       <td>CA</td>
@@ -565,16 +561,20 @@
                     <tr>
                       <td>DS</td>
                       <td>Direct SUP</td>
-                     </tr>
+                    </tr>
+                    <tr>
+                      <td>FE</td>
+                      <td>Final Exam</td>
+                    </tr>
                     <tr>
                       <td>GD</td>
                       <td>Grade</td>
                     </tr>
-                     <tr>
-                       <td>I</td>
-                       <td>Incomplete CW + FE</td>
-                     </tr>
-                     <tr>
+                    <tr>
+                      <td>I</td>
+                      <td>Incomplete CW + FE</td>
+                    </tr>
+                    <tr>
                       <td>IC</td>
                       <td>Incomplete Coursework</td>
                     </tr>
@@ -582,15 +582,15 @@
                       <td>IF</td>
                       <td>Incomplete Final Exam</td>
                     </tr>
-                     <tr>
-                       <td>INC</td>
-                       <td>Incomplete Student Results</td>
-                     </tr>
-                     <tr>
+                    <tr>
+                      <td>INC</td>
+                      <td>Incomplete Student Results</td>
+                    </tr>
+                    <tr>
                       <td>N/A</td>
                       <td>Not Applicable</td>
                     </tr>
-                     <tr>
+                    <tr>
                       <td>PASS</td>
                       <td>Passed all Modules</td>
                     </tr>
@@ -602,18 +602,18 @@
                       <td>RETAKE</td>
                       <td>Repeat Course Semester/Year - No Promotion</td>
                     </tr>
-                     <tr>
-                       <td>SUPP</td>
-                       <td>Supplementary Status</td>
-                     </tr>
-                     <tr>
-                       <td>CARRY</td>
-                       <td>Repeat Course Semester/Year - With Promotion</td>
-                     </tr>
-                     <tr>
-                       <td>TT</td>
-                       <td>Total</td>
-                     </tr>
+                    <tr>
+                      <td>SUPP</td>
+                      <td>Supplementary Status</td>
+                    </tr>
+                    <tr>
+                      <td>CARRY</td>
+                      <td>Repeat Course Semester/Year - With Promotion</td>
+                    </tr>
+                    <tr>
+                      <td>TT</td>
+                      <td>Total</td>
+                    </tr>
                   </table>
            </div><!-- end of table-responsive -->
           </div>
