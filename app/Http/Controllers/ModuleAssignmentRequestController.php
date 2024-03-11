@@ -20,6 +20,7 @@ class ModuleAssignmentRequestController extends Controller
      */
     public function index(Request $request)
     {
+        return ModuleAssignmentRequest::with('campusProgram')->first();
     	$staff = User::find(Auth::user()->id)->staff()->with(['department'])->first();
     	$data = [
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
