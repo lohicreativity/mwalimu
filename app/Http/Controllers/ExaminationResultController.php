@@ -3768,7 +3768,7 @@ class ExaminationResultController extends Controller
              return redirect()->back()->with('error','You are not allowed to view this module results');
           }
       }
-return 10;
+
     	$students = Student::whereHas('studentshipStatus',function($query){
           $query->where('name','ACTIVE');
       })->whereHas('moduleAssignments.programModuleAssignment.campusProgram',function($query) use ($staff){
