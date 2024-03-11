@@ -555,52 +555,60 @@
                        <td class="ss-bold">Description</td>
                      </tr>
                      <tr>
-                       <td>IC</td>
-                       <td>Incomplete Coursework</td>
+                      <td>FE</td>
+                      <td>Final Exam</td>
+                    </tr>
+                    <tr>
+                      <td>CA</td>
+                      <td>Continous Assessment</td>
+                    </tr>
+                    <tr>
+                      <td>DS</td>
+                      <td>Direct SUP</td>
                      </tr>
-                     <tr>
-                       <td>IF</td>
-                       <td>Incomplete Final Exam</td>
-                     </tr>
-                     <tr>
-                       <td>DS</td>
-                       <td>Direct SUP</td>
-                     </tr>
+                    <tr>
+                      <td>GD</td>
+                      <td>Grade</td>
+                    </tr>
                      <tr>
                        <td>I</td>
                        <td>Incomplete CW + FE</td>
                      </tr>
                      <tr>
+                      <td>IC</td>
+                      <td>Incomplete Coursework</td>
+                    </tr>
+                    <tr>
+                      <td>IF</td>
+                      <td>Incomplete Final Exam</td>
+                    </tr>
+                     <tr>
                        <td>INC</td>
                        <td>Incomplete Student Results</td>
                      </tr>
+                     <tr>
+                      <td>N/A</td>
+                      <td>Not Applicable</td>
+                    </tr>
+                     <tr>
+                      <td>PASS</td>
+                      <td>Passed all Modules</td>
+                    </tr>
+                    <tr>
+                      <td>POST</td>
+                      <td>Postponed</td>
+                    </tr>
+                    <tr>
+                      <td>RETAKE</td>
+                      <td>Repeat Course Semester/Year - No Promotion</td>
+                    </tr>
                      <tr>
                        <td>SUPP</td>
                        <td>Supplementary Status</td>
                      </tr>
                      <tr>
-                       <td>PASS</td>
-                       <td>Passed all Modules</td>
-                     </tr>
-                     <tr>
-                       <td>RETAKE</td>
-                       <td>Repeat Course Semester/Year - No Promotion</td>
-                     </tr>
-                     <tr>
                        <td>CARRY</td>
                        <td>Repeat Course Semester/Year - With Promotion</td>
-                     </tr>
-                     <tr>
-                       <td>FE</td>
-                       <td>Final Exam</td>
-                     </tr>
-                     <tr>
-                       <td>CA</td>
-                       <td>Continous Assessment</td>
-                     </tr>
-                     <tr>
-                       <td>GD</td>
-                       <td>Grade</td>
                      </tr>
                      <tr>
                        <td>TT</td>
