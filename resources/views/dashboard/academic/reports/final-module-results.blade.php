@@ -217,7 +217,7 @@
                     <tr>
                       <td>{{ $key+1 }}</td>
                       <td>{{ $student->registration_number }}</td>
-                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
+                      <td>{{ $student->surname }}, {{ ucwords(strtolower($student->first_name)) }} {{ substr($student->middle_name,1,1) }}</td>
                       @foreach($student->examinationResults as $result)
                         @if($result->module_assignment_id == $module_assignment->id)
                         <td>@if($result->course_work_score){{ $result->course_work_score }} @else - @endif</td>
