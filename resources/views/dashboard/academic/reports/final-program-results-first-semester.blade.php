@@ -559,6 +559,10 @@
                       <td>Continous Assessment</td>
                     </tr>
                     <tr>
+                      <td>CARRY</td>
+                      <td>Repeat Course Semester/Year - With Promotion</td>
+                    </tr>
+                    <tr>
                       <td>DS</td>
                       <td>Direct SUP</td>
                     </tr>
@@ -605,10 +609,6 @@
                     <tr>
                       <td>SUPP</td>
                       <td>Supplementary Status</td>
-                    </tr>
-                    <tr>
-                      <td>CARRY</td>
-                      <td>Repeat Course Semester/Year - With Promotion</td>
                     </tr>
                     <tr>
                       <td>TT</td>
