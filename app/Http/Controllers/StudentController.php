@@ -2350,10 +2350,10 @@ class StudentController extends Controller
      */
     public function resetControlNumber(Request $request)
     { 
-      //$staff = User::find(Auth::user()->id)->staff;
+      $staff = User::find(Auth::user()->id)->staff;
       $invoice = Invoice::where('reference_no',$request->get('reference_no'))->first();
       $invoice->payable_id = 0; 
-     // $invoice->reset_by_staff_id = $staff->id;
+      $invoice->reset_by_staff_id = $staff->id;
       $invoice->save();
 
       return redirect()->back()->with('message','Control number reset successfully');
