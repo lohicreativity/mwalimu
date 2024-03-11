@@ -20,12 +20,12 @@ class ModuleAssignmentRequestController extends Controller
      */
     public function index(Request $request)
     {
-        return ModuleAssignmentRequest::with('campusProgram')->first();
     	$staff = User::find(Auth::user()->id)->staff()->with(['department'])->first();
     	$data = [
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'requests'=>ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
+           'requests'=>ModuleAssignmentRequest::whereHas('campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                              ->whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
                     $query->where('id',$staff->department_id);
                })->with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
            'staffs'=>Staff::with(['campus','designation'])->where('campus_id',$staff->campus_id)->get(),
