@@ -282,10 +282,10 @@
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; @if(!empty($payer->birth_date)) {{ $payer->birth_date }} @else @endif
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; @if(!empty($payer->nationality)) {{ $payer->nationality }}	@else @endif										  
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; @if(!empty($payer->disabilityStatus->name)) {{ $payer->disabilityStatus->name }} @else @endif
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; @if(!empty($payer->entry_mode)) {{ $payer->entry_mode }} @else @endif	 												  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; @if(!empty($payer->entry_mode)) {{ ucwords(strtolower($payer->entry_mode)) }} @else @endif	 												  
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; @if(!empty($payer->address)) {{ $payer->address }} @else @endif	 	
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; @if(!empty($payer->ward->name)) {{ $payer->ward->name }},&nbsp; @else @endif 
-											  @if(!empty($payer->region->name)) {{ $payer->region->name }},&nbsp; @else @endif 
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; @if(!empty($payer->ward->name)) {{ ucwords(strtolower($payer->ward->name)) }},&nbsp; @else @endif 
+											  @if(!empty($payer->region->name)) {{ ucwords(strtolower($payer->region->name)) }},&nbsp; @else @endif 
 											  @if(!empty($payer->country->name)) {{ $payer->country->name }} @else @endif	
 										</div>
 									  </div>
