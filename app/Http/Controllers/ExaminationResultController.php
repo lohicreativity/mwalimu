@@ -3816,10 +3816,13 @@ class ExaminationResultController extends Controller
      */
     public function showStudentResultsReport(Request $request)
     {
-    	$student = Student::whereHas('studentshipStatus',function($query){
-           $query->where('name','ACTIVE');
-      })->with(['campusProgram.program.departments'])->where('registration_number',$request->get('registration_number'))->first();
       $staff = User::find(Auth::user()->id)->staff;
+    	$student = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                        ->with(['campusProgram.program.departments'])
+                        ->where('registration_number',$request->get('registration_number'))
+                        ->first();
+
       if(!$student){
           return redirect()->back()->with('error','No student found with searched registration number');
       }
