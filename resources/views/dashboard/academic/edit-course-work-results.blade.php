@@ -86,23 +86,7 @@
                       @endif
                     @endforeach
                   @endforeach
-                  {{ $planIds }}
-                   @foreach($assessment_plans as $plan)
-                      @if(!in_array($plan->id,$planIds))
-                      {{ $planIds }}
-                  <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('',$plan->name) !!}
-                    {!! Form::text('plan_name_'.$plan->id.'_score',$plan->name,$name) !!}
 
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Marks') !!}
-                    {!! Form::text('plan_'.$plan->id.'_score',null,$marks) !!}
-                  </div>
-                  </div>
-                    @endif
-                   @endforeach
                 </div>
                 <!-- /.card-body -->
                 {!! Form::input('hidden','student_id',$student->id) !!}
