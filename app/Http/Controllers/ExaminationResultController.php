@@ -158,7 +158,6 @@ class ExaminationResultController extends Controller
             }
           }
         }
-        return 10;
 
         $student_buffer = [];
         $annual_credit = 0;
