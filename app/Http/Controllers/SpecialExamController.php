@@ -271,8 +271,6 @@ class SpecialExamController extends Controller
         if (sizeof($opted_modules) == 0 && $program_options > 0) {
             return redirect()->back()->with('error','You have not opted any optional modules');
         }
-
-        return 10;
         
         // if ($request->get('mod_assign_'.$assign->id) ) {
         //     return redirect()->back()->with('error','You have');
