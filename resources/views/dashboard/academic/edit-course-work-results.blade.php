@@ -88,6 +88,7 @@
                   @endforeach
                    @foreach($assessment_plans as $plan)
                       @if(!in_array($plan->id,$planIds))
+                      {{ $planIds }}
                   <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('',$plan->name) !!}
