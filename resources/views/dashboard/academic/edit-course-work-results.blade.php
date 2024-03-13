@@ -65,7 +65,6 @@
               @endphp
               {!! Form::open(['url'=>'academic/results/update-course-work-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
-{{ $results }}
                   @foreach($assessment_plans as $plan)
                     @foreach($results as $result)
                       @if($result->assessment_plan_id == $plan->id)
