@@ -251,7 +251,7 @@ class SpecialExamController extends Controller
         }
 
         $student = Student::find($request->get('student_id'))->with('campusProgram');
-return 1;
+return $student->campusProgram->id;
         $opted_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
             $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
             ->where('semester_id',session('active_semester_id'))
