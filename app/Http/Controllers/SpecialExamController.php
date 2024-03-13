@@ -262,7 +262,7 @@ class SpecialExamController extends Controller
         if($exam_process_status){
             return redirect()->back()->with('error','You cannot postpone at this stage.');
         }
-        return 10;
+
         $program_options = ProgramModuleAssignment::where('campus_program_id',$student->campusProgram->id)
                                                   ->where('study_academic_year_id',session('active_academic_year_id'))
                                                   ->where('semester_id',session('active_semester_id'))
