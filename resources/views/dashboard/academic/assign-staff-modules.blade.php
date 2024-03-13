@@ -161,6 +161,7 @@
 								  @foreach($module_assignment_requests as $request)
                     @if($request->module_id == $assign->module->id)
                       <p class="ss-font-xs ss-no-margin ss-italic ss-color-danger ss-right"> Awaiting for response </p>
+                      @break
                     @endif
 								  @endforeach
 								  

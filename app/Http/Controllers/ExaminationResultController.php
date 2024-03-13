@@ -3753,9 +3753,7 @@ class ExaminationResultController extends Controller
      */
     public function showModuleResultsReport(Request $request)
     {
-    	$module_assignment = ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) use ($request){
-         $query->where('id',$request->get('campus_program_id'));
-      })->whereHas('programModuleAssignment',function($query) use ($request){
+    	$module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($request){
     		     $query->where('campus_program_id',$request->get('campus_program_id'));
     	    })->with(['programModuleAssignment.semester'])->where('module_id',$request->get('module_id'))->with('module.ntaLevel','programModuleAssignment.campusProgram.program.departments','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
