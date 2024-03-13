@@ -86,6 +86,7 @@
                       @endif
                     @endforeach
                   @endforeach
+                  {{ $planIds }}
                    @foreach($assessment_plans as $plan)
                       @if(!in_array($plan->id,$planIds))
                       {{ $planIds }}
