@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentProgramModuleAssignment;
 use App\Domain\Academic\Actions\SpecialExamAction;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Models\User;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
@@ -251,7 +252,13 @@ class SpecialExamController extends Controller
         }
 
         $student = Student::find($request->get('student_id'));
-return $student->campusProgram;
+        $program_options = ProgramModuleAssignment::where('campus_program_id',$student->campusProgram->id)
+                                                  ->where('study_academic_year_id',session('active_academic_year_id'))
+                                                  ->where('semester_id',session('active_semester_id'))
+                                                  ->where('year_of_study',$student->year_of_study)
+                                                  ->where('category','OPTIONAL')
+                                                  ->count();
+
         $opted_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
             $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
             ->where('semester_id',session('active_semester_id'))
@@ -261,11 +268,11 @@ return $student->campusProgram;
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get();
 
-        if (sizeof($opted_modules) == 0) {
+        if (sizeof($opted_modules) == 0 && $program_options > 0) {
             return redirect()->back()->with('error','You have not opted any optional modules');
         }
 
-        
+        return 10;
         
         // if ($request->get('mod_assign_'.$assign->id) ) {
         //     return redirect()->back()->with('error','You have');
