@@ -138,6 +138,7 @@ class ExaminationResultController extends Controller
 
         foreach($module_assignments as $assign){
           if($assign->programModuleAssignment->category == 'COMPULSORY'){
+            return 1;
           	if($assign->course_work_process_status != 'PROCESSED' && $assign->module->course_work_based == 1){
               DB::rollback();
           		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
@@ -147,6 +148,7 @@ class ExaminationResultController extends Controller
           		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
           	}
           }else{
+            return 2;
             $exam_student_count = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->count();
             if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0 && $assign->module->course_work_based == 1){
               DB::rollback();
