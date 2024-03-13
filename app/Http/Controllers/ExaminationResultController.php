@@ -137,7 +137,6 @@ class ExaminationResultController extends Controller
 
 
         foreach($module_assignments as $assign){
-         return $module_assignments;
           if($assign->programModuleAssignment->category == 'COMPULSORY'){
           	if($assign->course_work_process_status != 'PROCESSED' && $assign->module->course_work_based == 1){
               DB::rollback();
@@ -159,6 +158,7 @@ class ExaminationResultController extends Controller
             }
           }
         }
+        return 10;
 
         $student_buffer = [];
         $annual_credit = 0;
