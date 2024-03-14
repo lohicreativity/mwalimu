@@ -180,6 +180,7 @@ class ExaminationResultController extends Controller
                                                           ->where('category','COMPULSORY')
                                                           ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)
                                                           ->get();
+                                                          return $core_programs;
       	    	}
     	    }else{
     	    	$core_programs = ProgramModuleAssignment::with(['module'])
@@ -188,9 +189,9 @@ class ExaminationResultController extends Controller
                                                     ->where('category','COMPULSORY')
                                                     ->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
                                                     ->get();
-                                                    return $core_programs;
-    	    }
 
+    	    }
+return 0;
             if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                    $query->where('campus_program_id',$campus_program->id)
                    ->where('category','COMPULSORY');
