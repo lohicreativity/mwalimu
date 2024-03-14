@@ -95,10 +95,12 @@
 
                       <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
                     </div>
-                    <div class="form-group col-4">
-                      {!! Form::label('','Final score (/100)') !!}
-                      {!! Form::text('final_score',round($result->final_score*100/$result->moduleAssignment->programModuleAssignment->final_min_mark,1),$final_score) !!}
-                    </div>
+                    @if($result->final_remark == 'FAIL' || $result->final_remark == 'PASS')
+                      <div class="form-group col-4">
+                        {!! Form::label('','Final scor') !!}
+                        {!! Form::text('final_score',round($result->final_score*100/$result->moduleAssignment->programModuleAssignment->final_min_mark,1),$final_score) !!}
+                      </div>
+                    @endif
                     <div class="form-group col-4">
 
                       @if($result->supp_processed_at && ($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL'))
