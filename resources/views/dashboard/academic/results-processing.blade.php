@@ -129,7 +129,7 @@
                        @foreach($campus_programs as $program)
                           @if(App\Utils\Util::collectionContainsKey($program->program->departments,$staff->department_id))
                           @for($i = 1; $i <= $program->program->min_duration; $i++)
-                          <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->code }} - Year {{ $i }}</option>
+                          <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
                           @endfor
                           @endif
                        @endforeach
