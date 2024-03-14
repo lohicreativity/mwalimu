@@ -96,6 +96,8 @@ class ExaminationResultController extends Controller
      */
     public function process(Request $request)
     {
+      ini_set('memory_limit', '-1');
+      set_time_limit(120);
       $special_exam = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
       $special_exam = Postponement::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
@@ -180,18 +182,17 @@ class ExaminationResultController extends Controller
                                                           ->where('category','COMPULSORY')
                                                           ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)
                                                           ->get();
-                                                          return $core_programs;
       	    	}
-    	    }else{
-    	    	$core_programs = ProgramModuleAssignment::with(['module'])
-                                                    ->where('study_academic_year_id',$assignment->study_academic_year_id)
-                                                    ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
-                                                    ->where('category','COMPULSORY')
-                                                    ->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
-                                                    ->get();
+    	      }else{
+    	    	   $core_programs = ProgramModuleAssignment::with(['module'])
+                                                      ->where('study_academic_year_id',$assignment->study_academic_year_id)
+                                                      ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
+                                                      ->where('category','COMPULSORY')
+                                                      ->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
+                                                      ->get();
 
-    	    }
-return 0;
+    	      }
+
             if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                    $query->where('campus_program_id',$campus_program->id)
                    ->where('category','COMPULSORY');
@@ -242,15 +243,15 @@ return 0;
       		foreach($core_programs as $prog){
       			if($request->get('semester_id') != 'SUPPLEMENTARY'){
       			   if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
-  	    			   $annual_credit += $prog->module->credit;
-      	     	 }
-      	    }else{
-      	         $annual_credit += $prog->module->credit;
-      	    }
+  	    			      $annual_credit += $prog->module->credit;
+      	     	   }
+               }else{
+                  $annual_credit += $prog->module->credit;
+               }
 
-     		    if($prog->semester_id == $request->get('semester_id')){
-  			      $total_credit += $prog->module->credit;
-  		      }
+     		      if($prog->semester_id == $request->get('semester_id')){
+  			         $total_credit += $prog->module->credit;
+  		         }
       		}
 
       		foreach($results as $key=>$result){
