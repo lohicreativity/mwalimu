@@ -229,6 +229,8 @@ class ExaminationResultController extends Controller
       		if($request->get('semester_id') != 'SUPPLEMENTARY'){
                    $semester = Semester::find($request->get('semester_id'));
               }
+
+              return 123;
       		foreach($core_programs as $prog){
       			if($request->get('semester_id') != 'SUPPLEMENTARY'){
       			   if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
