@@ -107,7 +107,7 @@ class CourseWorkResultController extends Controller
         $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         foreach($assessment_plans as $plan){
            if($request->has('plan_'.$plan->id.'_score')){
-              $validations['plan_'.$plan->id.'_score'] = 'numeric|min:0|max:100';
+              $validations['plan_'.$plan->id.'_score'] = 'sometimes|numeric|min:0|max:100';
               $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
            }
         }
