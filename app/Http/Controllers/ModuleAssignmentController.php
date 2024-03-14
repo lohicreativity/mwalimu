@@ -1128,7 +1128,7 @@ class ModuleAssignmentController extends Controller
                     }
                     if(count($invalid_students) != 0){
                          session()->flash('invalid_students',$invalid_students);
-                         return redirect()->back()->with('error','Uploaded students do not exists');
+                         return redirect()->back()->with('error','Uploaded students do not exist');
                     }
                 }
               }
@@ -1292,17 +1292,26 @@ class ModuleAssignmentController extends Controller
 
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                  ->where('status','POSTPONED')
+                                                  ->first();
 
 
-                      $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
-                            $query->where('module_id',$module->id);
-                      })->where('student_id',$student->id)->first();
+                      $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                                     ->where('student_id',$student->id)
+                                                     ->first();
 
-                      $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){
-                            $query->where('module_id',$module->id);
-                      })->where('student_id',$student->id)->first();
+                      $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                                   ->where('student_id',$student->id)
+                                                   ->first();
+                                                   
+                      $course_work_status = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))
+                                                            ->where('student_id',$student->id)
+                                                            ->where('assessment_plan_id',$plan->id)
+                                                            ->first();
 
+                      $res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first();
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
@@ -1325,14 +1334,25 @@ class ModuleAssignmentController extends Controller
                       if($special_exam || $postponement){
                          $result_log->final_remark = 'POSTPONED';
                       }else{
-                         $result_log->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
+                        if($res){
+                            if($res->course_work_remark == 'PASS' || $res->course_work_remark == 'FAIL'){
+                                $result_log->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
+
+                            }else{
+                                if($res->course_work_remark == null){
+                                    $result_log->final_remark = 'INCOMPLETE';
+                                }else{
+                                    $result_log->final_remark = $res->course_work_remark;
+                                }
+                            }
+                        }
                       }
                       
                       $result_log->final_uploaded_at = now();
                       $result_log->uploaded_by_user_id = Auth::user()->id;
                       $result_log->save();
                       
-                      if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                      if($res){
                           $result = $res;
                       }else{
                          $result = new ExaminationResult;
@@ -1358,7 +1378,16 @@ class ModuleAssignmentController extends Controller
                       if($special_exam || $postponement){
                          $result->final_remark = 'POSTPONED';
                       }else{
-                         $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                        if($result->course_work_remark == 'PASS' || $result->course_work_remark == 'FAIL'){
+                            $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+
+                        }else{
+                            if($result->course_work_remark == null){
+                                $result->final_remark = 'INCOMPLETE';
+                            }else{
+                                $result->final_remark = $result->course_work_remark;
+                            }
+                        }
                       }
                       $result->final_uploaded_at = now();
                       $result->uploaded_by_user_id = Auth::user()->id;

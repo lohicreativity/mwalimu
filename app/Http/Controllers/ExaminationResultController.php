@@ -35,6 +35,7 @@ use App\Domain\Settings\Models\Intake;
 use App\Models\User;
 use App\Utils\Util;
 use Auth, DB, Validator, PDF;
+use App\Domain\Academic\Models\CourseWorkResult;
 
 class ExaminationResultController extends Controller
 {
@@ -242,47 +243,50 @@ class ExaminationResultController extends Controller
   		      }
       		}
 
-      		  foreach($results as $key=>$result){
-      			$student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
-                  
-      			
-                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
-           	        $query->where('student_id',$student->id);
-                      })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
-                 
-                 
-                 $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
-                 $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
-                 $student_buffer[$student->id]['total_credit'] = $total_credit;
-                 $student_buffer[$student->id]['opt_credit'] = 0;
-                 $student_buffer[$student->id]['opt_prog'] = 0;
-                 $student_buffer[$student->id]['opt_prog_status'] = true;
-                 //$student_buffer[$student->id]['results'] = [];
+      		foreach($results as $key=>$result){
+      		   $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
 
-                 $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first();
+               $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){$query->where('student_id',$student->id);})
+                                                           ->with(['module'])
+                                                           ->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
+                                                           ->where('semester_id',$request->get('semester_id'))
+                                                           ->where('category','OPTIONAL')
+                                                           ->get();
+               
+               $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
+               $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
+               $student_buffer[$student->id]['total_credit'] = $total_credit;
+               $student_buffer[$student->id]['opt_credit'] = 0;
+               $student_buffer[$student->id]['opt_prog'] = 0;
+               $student_buffer[$student->id]['opt_prog_status'] = true;
+               //$student_buffer[$student->id]['results'] = [];
 
-                 foreach($optional_programs as $prog){
-                     $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
-                     $student_buffer[$student->id]['opt_prog'] += 1;
-                 }
-                 if($elective_policy){
-                 if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
+               $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))
+               ->where('semester_id',$request->get('semester_id'))->first();
+
+               foreach($optional_programs as $prog){
+                  $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
+                  $student_buffer[$student->id]['opt_prog'] += 1;
+               }
+
+               if($elective_policy){
+                  if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
                      $student_buffer[$student->id]['opt_prog_status'] = false;
-                 }
-                 }
-                 // $student_buffer[$student->id]['opt_prog_status'] = $elective_policy->number_of_options ;
-                 $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
+                  }
+               }
+                  // $student_buffer[$student->id]['opt_prog_status'] = $elective_policy->number_of_options ;
+                  $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
                   if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
-                      $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+                     $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
                   }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
-                          $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+                     $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
                   }else{
-                          $processed_result = ExaminationResult::find($result->id);
+                     $processed_result = ExaminationResult::find($result->id);
                   }
 
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                      $processed_result->total_score = null;
+                     $processed_result->total_score = null;
                   }else{
                      
                   //   $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
@@ -292,13 +296,19 @@ class ExaminationResultController extends Controller
                   // 	$processed_result->total_score = round($result->course_work_score + $result->final_score);
 
                      if ($assignment->module->course_work_based == 1) {
-                        $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                        $course_work = CourseWorkResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->sum('score');
 
+                        if(is_null($course_work)){
+                           $processed_result->course_work_remark = 'INCOMPLETE';
+                        }else{
+                           $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                        }
+
+                        //$processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
                         $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
-
                         $processed_result->total_score = round($result->course_work_score + $result->final_score);
-                     } else {
 
+                     } else {
                         $processed_result->course_work_remark = 'N/A';
                         $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
                         $processed_result->total_score = $result->final_score;
@@ -307,31 +317,35 @@ class ExaminationResultController extends Controller
                   }
 
                   $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)
-                  ->where('study_academic_year_id',$assignment->studyAcademicYear->id)
-                  ->where('min_score','<=',round($processed_result->total_score))
-                  ->where('max_score','>=',round($processed_result->total_score))
-                  ->first();
+                                                 ->where('study_academic_year_id',$assignment->studyAcademicYear->id)
+                                                 ->where('min_score','<=',round($processed_result->total_score))
+                                                 ->where('max_score','>=',round($processed_result->total_score))
+                                                 ->first();
 
 
     
                   if(!$grading_policy){
-                     return $assignment->module->name;
                      return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
                   }
                   
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                   	$processed_result->grade = null;
-                      $processed_result->point = null;
-                      if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
-                          $processed_result->final_exam_remark = $processed_result->final_remark;
-                      }
-                      if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
-                          $processed_result->final_exam_remark = $processed_result->course_work_remark;
-                      }
+                     $processed_result->point = null;
+
+                     if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                        $processed_result->final_exam_remark = $processed_result->final_remark;
+                     }
+                     if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                        $processed_result->final_exam_remark = $processed_result->course_work_remark;
+                     }
                   }else{
-                  	$processed_result->grade = $grading_policy? $grading_policy->grade : null;
-                      $processed_result->point = $grading_policy? $grading_policy->point : null;
-                      if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
+                     if($processed_result->final_remark != 'PASS' || $processed_result->final_remark != 'FAIL' ){
+                        $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
+                     }
+
+                     $processed_result->grade = $grading_policy? $grading_policy->grade : null;
+                     $processed_result->point = $grading_policy? $grading_policy->point : null;
+                     if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
 
                         if ($processed_result->supp_processed_at) {
                            $processed_result->final_exam_remark = 'PASS';
@@ -345,62 +359,57 @@ class ExaminationResultController extends Controller
 
                         }
 
-                           // $processed_result->final_exam_remark = 'FAIL';
-                           // $processed_result->grade = 'F';
-                           // $processed_result->point = 0;
-
-                         
-                      }else{
-                        $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-                      }
-                      
-                      if($request->get('semester_id') == 'SUPPLEMENTARY'){
+                        // $processed_result->final_exam_remark = 'FAIL';
+                        // $processed_result->grade = 'F';
+                        // $processed_result->point = 0;
 
                         
-
+                     }else{
+                        $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                     }
+                      
+                     if($request->get('semester_id') == 'SUPPLEMENTARY'){
                         if($processed_result->supp_score){ 
-                             if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
-                                 $processed_result->grade = 'F';
-                                 $processed_result->point = 0;
-                                 $processed_result->supp_remark = 'FAIL';
-                             }else{
-                                $processed_result->grade = 'C';
-                                $processed_result->point = 2;
-                                $processed_result->supp_remark = 'PASS';
-                             }
+                           if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
+                              $processed_result->grade = 'F';
+                              $processed_result->point = 0;
+                              $processed_result->supp_remark = 'FAIL';
+                           }else{
+                              $processed_result->grade = 'C';
+                              $processed_result->point = 2;
+                              $processed_result->supp_remark = 'PASS';
+                           }
 
+                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
+                              if($assignment->programModuleAssignment->year_of_study == 1){
+                                 if($processed_result->retakable_id != null){
+                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                 }else{
+                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                                 }
+                              }else{
+                                 if($processed_result->retakable_id != null){
+                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                 }else{
+                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                 }
+                              } 
+                           }else{
+                              if($processed_result->retakable_id != null){
+                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                              }else{
+                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                              }
+                           }
+                              
+                           $processed_result->supp_processed_at = now();
+                           $processed_result->supp_processed_by_user_id = Auth::user()->id;
 
-                          	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                                  if($assignment->programModuleAssignment->year_of_study == 1){
-                                       if($processed_result->retakable_id != null){
-                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                       }else{
-                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
-                                       }
-                                  }else{
-                                       if($processed_result->retakable_id != null){
-                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                       }else{
-                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                                       }
-                                  }
-                                  
-                          	}else{
-                                  if($processed_result->retakable_id != null){
-                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                  }else{
-                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                                  }
-                          	}
-                            
-                          	$processed_result->supp_processed_at = now();
-                          	$processed_result->supp_processed_by_user_id = Auth::user()->id;
-                        	}else{
-                            if($processed_result->supp_remark == 'INCOMPLETE'){
-                                $processed_result->final_exam_remark = 'INCOMPLETE';
-                            }
-                          }
-
+                        }else{
+                           if($processed_result->supp_remark == 'INCOMPLETE'){
+                              $processed_result->final_exam_remark = 'INCOMPLETE';
+                           }
+                        }
                      }
                   }
 
@@ -425,47 +434,43 @@ class ExaminationResultController extends Controller
 
 
                   if($processed_result->final_exam_remark == 'RETAKE'){
-                      		if($hist = RetakeHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
-                      			$history = $hist;
-                      		}else{
-                      			$history = new RetakeHistory;
-                      		}
+                     if($hist = RetakeHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
+                        $history = $hist;
+                     }else{
+                        $history = new RetakeHistory;
+                     }
 
-                      		$history->student_id = $student->id;
-                      		$history->study_academic_year_id = $request->get('study_academic_year_id');
-                      		$history->module_assignment_id = $assignment->id;
-                      		$history->examination_result_id = $processed_result->id;
-                      		$history->save();
+                     $history->student_id = $student->id;
+                     $history->study_academic_year_id = $request->get('study_academic_year_id');
+                     $history->module_assignment_id = $assignment->id;
+                     $history->examination_result_id = $processed_result->id;
+                     $history->save();
 
-                            $exam_row = ExaminationResult::find($processed_result->id);
-                            $exam_row->retakable_id = $history->id;
-                            $exam_row->retakable_type = 'retake_history';
-                            $exam_row->save();
-                      	}
+                     $exam_row = ExaminationResult::find($processed_result->id);
+                     $exam_row->retakable_id = $history->id;
+                     $exam_row->retakable_type = 'retake_history';
+                     $exam_row->save();
+                  }
 
-                      	if($processed_result->final_exam_remark == 'CARRY'){
-                      		if($hist = CarryHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
-                      			$history = $hist;
-                      		}else{
-                      			$history = new CarryHistory;
-                      		}
+                  if($processed_result->final_exam_remark == 'CARRY'){
+                     if($hist = CarryHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
+                        $history = $hist;
+                     }else{
+                        $history = new CarryHistory;
+                     }
 
+                     $history->student_id = $student->id;
+                     $history->study_academic_year_id = $request->get('study_academic_year_id');
+                     $history->module_assignment_id = $assignment->id;
+                     $history->examination_result_id = $processed_result->id;
+                     
+                     $history->save();
 
-                      		$history->student_id = $student->id;
-                      		$history->study_academic_year_id = $request->get('study_academic_year_id');
-                      		$history->module_assignment_id = $assignment->id;
-                      		$history->examination_result_id = $processed_result->id;
-                           
-                      		$history->save();
-
-                            $exam_row = ExaminationResult::find($processed_result->id);
-                            $exam_row->retakable_id = $history->id;
-                            $exam_row->retakable_type = 'carry_history';
-                            $exam_row->save();
-                           
-                           
-                      	}
-
+                     $exam_row = ExaminationResult::find($processed_result->id);
+                     $exam_row->retakable_id = $history->id;
+                     $exam_row->retakable_type = 'carry_history';
+                     $exam_row->save();
+                  }
       		  }
       	   }
           
