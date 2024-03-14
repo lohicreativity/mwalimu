@@ -58,7 +58,6 @@
                      'class'=>'form-control',
                      'min'=>0,
                      'steps'=>'any',
-                     'required'=>true
                   ];
 
                   $planIds = [];
