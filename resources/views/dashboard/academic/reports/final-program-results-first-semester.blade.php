@@ -316,7 +316,7 @@
                               @if($result->supp_processed_at)
                               N/A
                               @else 
-                                @if($result->final_score) 
+                                @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS')) 
                                 {{ $result->final_score }} 
                                 @else - @endif
                               @endif
