@@ -33,9 +33,7 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $prog = ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('campus_program_id',$request->get('campus_program_id'))
 											   ->where('year_of_study',$request->get('year_of_study'))
 											   ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('policy_assigned',1)
-											   ->whereHas('campusProgram',function($query) use($campus){
-                         $query->where('campus_id',$campus->id);
-                     })->first();
+											   ->whereHas('campusProgram',function($query) use($campus){$query->where('campus_id',$campus->id);})->first();
                 if($prog){
                       $assignment->course_work_min_mark = $prog->course_work_min_mark;
                       $assignment->course_work_percentage_pass = $prog->course_work_percentage_pass;
@@ -102,16 +100,16 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->policy_assigned = 1;
                 $assignment->save();
 
-                ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->update([
-                        'course_work_min_mark'=>$request->get('course_work_min_mark'),
-                        'course_work_pass_score'=>$request->get('course_work_pass_score'),
-                        'course_work_percentage_pass'=>$request->get('course_work_percentage_pass'),
-                        'final_min_mark'=>$request->get('final_min_mark'),
-                        'final_pass_score'=>$request->get('final_pass_score'),
-                        'final_percentage_pass'=>$request->get('final_percentage_pass'),
-                        'module_pass_mark'=>$request->get('module_pass_mark'),
-                        'policy_assigned'=>1
-                ]);
+                // ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->update([
+                //         'course_work_min_mark'=>$request->get('course_work_min_mark'),
+                //         'course_work_pass_score'=>$request->get('course_work_pass_score'),
+                //         'course_work_percentage_pass'=>$request->get('course_work_percentage_pass'),
+                //         'final_min_mark'=>$request->get('final_min_mark'),
+                //         'final_pass_score'=>$request->get('final_pass_score'),
+                //         'final_percentage_pass'=>$request->get('final_percentage_pass'),
+                //         'module_pass_mark'=>$request->get('module_pass_mark'),
+                //         'policy_assigned'=>1
+                // ]);
 
                 ProgramModuleAssignmentRequest::whereHas('programModuleAssignment',function($query) use ($request){
                         $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'));

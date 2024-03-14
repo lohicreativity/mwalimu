@@ -97,8 +97,8 @@
                     </div>
                     @if($result->final_remark == 'FAIL' || $result->final_remark == 'PASS')
                       <div class="form-group col-4">
-                        {!! Form::label('','Final scor') !!}
-                        {!! Form::text('final_score',round($result->final_score*100/$result->moduleAssignment->programModuleAssignment->final_min_mark,1),$final_score) !!}
+                        {!! Form::label('','Final Score') !!}
+                        {!! Form::text('final_score',$result->final_score,$final_score) !!}
                       </div>
                     @endif
                     <div class="form-group col-4">
