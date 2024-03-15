@@ -127,7 +127,7 @@
                     @if(session('invalid_students'))
                     <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
                       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <p>The following students do not study this module. Please, remove them from your CSV file.</p>
+                        <p>The following students do not study this module. Please remove them from your CSV file.</p>
                       @foreach(session('invalid_students') as $key=>$stud)
                         <p> {{ ($key+1) }}. {{ $stud->registration_number }} - {{ $stud->first_name }} {{ $stud->middle_name }} {{ $stud->surname }} </p>
                       @endforeach
