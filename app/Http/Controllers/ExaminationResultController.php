@@ -109,7 +109,7 @@ class ExaminationResultController extends Controller
 
     	DB::beginTransaction();
 
-    	$campus_program = CampusProgram::select('id','campus_id')->with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
+    	$campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
 
       if(ResultPublication::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
 		  ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->where('status','PUBLISHED')->count() != 0){
