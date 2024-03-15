@@ -178,13 +178,15 @@ class ExaminationResultController extends Controller
 
          if($request->get('semester_id') != 'SUPPLEMENTARY'){
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-               $core_programs = ProgramModuleAssignment::with(['module'])
+               $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
+                                                         ->with(['module:id,credit'])
                                                          ->where('study_academic_year_id',$assignment->study_academic_year_id)
                                                          ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
                                                          ->where('category','COMPULSORY')->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)
                                                          ->get();
             }else{
-               $core_programs = ProgramModuleAssignment::with(['module'])
+               $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
+                                                         ->with(['module:id,credit'])
                                                          ->where('study_academic_year_id',$assignment->study_academic_year_id)
                                                          ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
                                                          ->where('semester_id',$semester->id)
@@ -193,7 +195,8 @@ class ExaminationResultController extends Controller
                                                          ->get();
             }
          }else{
-            $core_programs = ProgramModuleAssignment::with(['module'])
+            $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
+                                                   ->with(['module:id,credit'])
                                                    ->where('study_academic_year_id',$assignment->study_academic_year_id)
                                                    ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
                                                    ->where('category','COMPULSORY')
@@ -202,16 +205,17 @@ class ExaminationResultController extends Controller
 
          }
 
-         if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
-                  $query->where('campus_program_id',$campus_program->id)
-                  ->where('category','COMPULSORY');
-            })->whereNotNull('final_uploaded_at')
-            ->distinct()
-            ->count('module_assignment_id') < count($core_programs)){
+         if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
+                                                                                                                               ->where('category','COMPULSORY');})
+                             ->whereNotNull('final_uploaded_at')
+                             ->distinct()
+                             ->count('module_assignment_id') < count($core_programs)){
                
-               $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
-                  $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
-               })->whereNotNull('final_uploaded_at')->distinct()->get(['module_assignment_id']);
+               $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
+                                                                                                                                                        ->where('category','COMPULSORY');})
+                                                      ->whereNotNull('final_uploaded_at')
+                                                      ->distinct()
+                                                      ->get(['module_assignment_id']);
                $available_program_ids = [];
                $missing_programs = [];
                foreach($available_programs as $pr){
@@ -228,9 +232,9 @@ class ExaminationResultController extends Controller
          }
 
          $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)
-         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-         ->where('semester_id',$request->get('semester_id'))
-         ->first();
+                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                          ->where('semester_id',$request->get('semester_id'))
+                                          ->first();
 
          if($elective_policy){
             if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
@@ -493,13 +497,15 @@ class ExaminationResultController extends Controller
           if($request->get('semester_id') != 'SUPPLEMENTARY'){
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
-              $core_programs = ProgramModuleAssignment::with(['module'])
+              $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
+                                                      ->with(['module:id,credit'])
                                                       ->where('study_academic_year_id',$assign->study_academic_year_id)
                                                       ->where('year_of_study',$assign->programModuleAssignment->year_of_study)
                                                       ->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
                                                       ->get();
             }else{
-              $core_programs = ProgramModuleAssignment::with(['module'])
+              $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
+                                                      ->with(['module:id,credit'])
                                                       ->where('study_academic_year_id',$assign->study_academic_year_id)
                                                       ->where('year_of_study',$assign->programModuleAssignment->year_of_study)
                                                       ->where('semester_id',$semester->id)->where('category','COMPULSORY')
@@ -507,7 +513,8 @@ class ExaminationResultController extends Controller
                                                       ->get();
             }
           }else{
-            $core_programs = ProgramModuleAssignment::with(['module'])
+            $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
+                                                    ->with(['module:id,credit'])
                                                     ->where('study_academic_year_id',$assign->study_academic_year_id)
                                                     ->where('year_of_study',$assign->programModuleAssignment->year_of_study)
                                                     ->where('category','COMPULSORY')
