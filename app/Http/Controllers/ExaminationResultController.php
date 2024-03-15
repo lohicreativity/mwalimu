@@ -307,15 +307,15 @@ class ExaminationResultController extends Controller
                   // 	$processed_result->total_score = round($result->course_work_score + $result->final_score);
 
                      if ($assignment->module->course_work_based == 1) {
-                        $course_work = CourseWorkResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->sum('score');
+                        // $course_work = CourseWorkResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->sum('score');
 
-                        if(is_null($course_work)){
-                           $processed_result->course_work_remark = 'INCOMPLETE';
-                        }else{
-                           $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
-                        }
+                        // if(is_null($course_work)){
+                        //    $processed_result->course_work_remark = 'INCOMPLETE';
+                        // }else{
+                        //    $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                        // }
 
-                        //$processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                        $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
                         $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
                         $processed_result->total_score = round($result->course_work_score + $result->final_score);
 
