@@ -309,7 +309,9 @@
                                 class="ss-custom-grey ss-center ss-font-xs" 
                               @elseif(count($result->changes) != 0) 
                                 class="ss-center ss-custom-lightblue ss-font-xs" 
-                              @else 
+                              @elseif($result->course_work_remark == 'FAIL') 
+                                class="ss-center ss-font-xs" 
+                              @else
                                 class="ss-center ss-font-xs" 
                               @endif>
 
