@@ -325,7 +325,7 @@ class ExaminationResultController extends Controller
                   $processed_result->total_score = round($result->course_work_score + $result->final_score);
                   
                   if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
-                     $processed_result->total_score = round($result->course_work_score);
+                     $processed_result->total_score = null;
                   }
 
                }else{
