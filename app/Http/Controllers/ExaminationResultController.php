@@ -554,7 +554,7 @@ class ExaminationResultController extends Controller
             }
          }
       }
-        return  $student_buffer[$student->id]['annual_credit'].''.count($student_buffer[$student->id]['annual_results']);
+        return  $student_buffer[$student->id]['total_credit'].''.count($student_buffer[$student->id]['results']);
         foreach($student_buffer as $key=>$buffer){         
                  $pass_status = 'PASS';
                  $supp_exams = [];
