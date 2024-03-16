@@ -216,51 +216,51 @@
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold ss-font-sm" rowspan="2">SN</td>
+                      <td class="ss-bold ss-font-xs" rowspan="2">SN</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-bold ss-font-sm" rowspan="2">Reg. No.</td>
+                      <td class="ss-bold ss-font-xs" rowspan="2">Reg. No.</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-bold ss-font-sm" rowspan="2">Name</td>
+                      <td class="ss-bold ss-font-xs" rowspan="2">Name</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold ss-font-sm" rowspan="2">Sex</td>
+                      <td class="ss-bold ss-font-xs" rowspan="2">Sex</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
+                      <td class="ss-bold ss-font-xs" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
                       @endforeach
                       <td colspan="5"></td>
                     </tr>
                     <tr>
                       
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm">CA</td>
-                      <td class="ss-bold ss-font-sm">FE</td>
-                      <td class="ss-bold ss-font-sm">TT</td>
-                      <td class="ss-bold ss-font-sm">GD</td>
+                      <td class="ss-bold ss-font-xs">CA</td>
+                      <td class="ss-bold ss-font-xs">FE</td>
+                      <td class="ss-bold ss-font-xs">TT</td>
+                      <td class="ss-bold ss-font-xs">GD</td>
                       @endforeach
                       
-                      <td class="ss-bold ss-font-sm">GPA</td>
-                      <td class="ss-bold ss-font-sm">Points</td>
-                      <td class="ss-bold ss-font-sm">Credits</td>
-                      <td class="ss-bold ss-font-sm">Remark</td>
-                      <td class="ss-bold ss-font-sm">Classification</td>
+                      <td class="ss-bold ss-font-xs">GPA</td>
+                      <td class="ss-bold ss-font-xs">Points</td>
+                      <td class="ss-bold ss-font-xs">Credits</td>
+                      <td class="ss-bold ss-font-xs">Remark</td>
+                      <td class="ss-bold ss-font-xs">Classification</td>
                     </tr>
                     
                     
 
                     @foreach($students as $key=>$student)
                     <tr>
-                      <td class="ss-font-sm">{{ $key+1 }}</td>
+                      <td class="ss-font-xs">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-font-sm">{{ $student->registration_number }}</td>
+                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-font-sm">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
+                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-font-sm">{{ $student->gender }}</td>
+                      <td class="ss-font-xs">{{ $student->gender }}</td>
                       @endif
                          
 
