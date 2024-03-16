@@ -87,7 +87,7 @@
       .table > thead > tr > td,
       .table > tbody > tr > td,
       .table > tfoot > tr > td {
-        padding: 8px;
+        padding: 2px;
         line-height: 1.42857143;
         vertical-align: top;
         border-top: 1px solid #ddd;
