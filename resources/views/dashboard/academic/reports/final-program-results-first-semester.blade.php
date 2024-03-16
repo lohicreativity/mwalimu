@@ -306,18 +306,22 @@
 
                             <td 
                               @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-xs" 
+                                class="ss-custom-grey ss-center ss-font-xs" 
                               @elseif(count($result->changes) != 0) 
-                              class="ss-center ss-custom-lightblue ss-font-xs" 
+                                class="ss-center ss-custom-lightblue ss-font-xs" 
                               @else 
-                              class="ss-center ss-font-xs" 
+                                class="ss-center ss-font-xs" 
                               @endif>
 
                               @if($result->supp_processed_at)
                               N/A
                               @else 
-                                @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS')) 
-                                {{ $result->final_score }} 
+                                @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
+                                  @if($result->course_work_remark == 'FAIL')
+                                    -
+                                  @else 
+                                  {{ $result->final_score }} 
+                                  @else
                                 @else - @endif
                               @endif
                               

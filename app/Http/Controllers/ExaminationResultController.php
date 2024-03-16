@@ -323,6 +323,10 @@ class ExaminationResultController extends Controller
                   }
 
                   $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                  
+                  if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
+                     $processed_result->total_score = round($result->course_work_score);
+                  }
 
                }else{
                   $processed_result->course_work_remark = 'N/A';
@@ -338,7 +342,7 @@ class ExaminationResultController extends Controller
                                              ->first();
 
             if(!$grading_policy){
-               return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
+               return redirect()->back()->with('error','Some NTA levels are missing grading policies');
             }
                
             if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
@@ -369,6 +373,12 @@ class ExaminationResultController extends Controller
                      $processed_result->final_exam_remark = 'FAIL';
                      $processed_result->grade = 'F';
                      $processed_result->point = 0;
+
+                     if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
+                        $processed_result->final_exam_remark = 'FAIL';
+                        $processed_result->grade = 'F';
+                        $processed_result->point = 0;
+                     }
                   }
                }else{
                   $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
