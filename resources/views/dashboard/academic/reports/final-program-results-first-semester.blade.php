@@ -321,7 +321,7 @@
                                     -
                                   @else 
                                   {{ $result->final_score }} 
-                                  @else
+                                  @endif
                                 @else - @endif
                               @endif
                               
