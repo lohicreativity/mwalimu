@@ -90,11 +90,11 @@
         padding: 2px;
         line-height: 1.42857143;
         vertical-align: top;
-        border-top: 1px solid #ddd;
+        border-top: 1px solid #000000;
       }
       .table > thead > tr > th {
         vertical-align: bottom;
-        border-bottom: 2px solid #ddd;
+        border-bottom: 2px solid #000000;
       }
       .table > caption + thead > tr:first-child > th,
       .table > colgroup + thead > tr:first-child > th,
@@ -105,7 +105,7 @@
         border-top: 0;
       }
       .table > tbody + tbody {
-        border-top: 2px solid #ddd;
+        border-top: 2px solid #000000;
       }
       .table .table {
         background-color: #fff;
@@ -116,10 +116,10 @@
       .table-condensed > thead > tr > td,
       .table-condensed > tbody > tr > td,
       .table-condensed > tfoot > tr > td {
-        padding: 5px;
+        padding: 2px;
       }
       .table-bordered {
-        border: 1px solid #ddd;
+        border: 1px solid #000000;
       }
       .table-bordered > thead > tr > th,
       .table-bordered > tbody > tr > th,
@@ -127,7 +127,7 @@
       .table-bordered > thead > tr > td,
       .table-bordered > tbody > tr > td,
       .table-bordered > tfoot > tr > td {
-        border: 1px solid #ddd;
+        border: 1px solid #000000;
       }
       .table-bordered > thead > tr > th,
       .table-bordered > thead > tr > td {
