@@ -305,7 +305,7 @@
                             </td>
 
                             <td 
-                              @if($result->final_remark == 'FAIL' && !$result->supp_processed_at && !$result->course_work_remark == 'FAIL') 
+                              @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
                                 class="ss-custom-grey ss-center ss-font-xs" 
                               @elseif(count($result->changes) != 0) 
                                 class="ss-center ss-custom-lightblue ss-font-xs" 
