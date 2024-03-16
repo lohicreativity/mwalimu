@@ -305,13 +305,15 @@
                             </td>
 
                             <td 
-                              @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
-                                class="ss-custom-grey ss-center ss-font-xs" 
+                              @if($result->final_remark == 'FAIL' && !$result->supp_processed_at)
+                                @if($result->course_work_remark == 'FAIL')
+                                  class="ss-center ss-font-xs" 
+                                @else
+                                  class="ss-custom-grey ss-center ss-font-xs" 
+                                @endif
                               @elseif(count($result->changes) != 0) 
                                 class="ss-center ss-custom-lightblue ss-font-xs" 
-                              @elseif($result->course_work_remark == 'FAIL') 
-                                class="ss-center ss-font-xs" 
-                              @else
+                              @else 
                                 class="ss-center ss-font-xs" 
                               @endif>
 
