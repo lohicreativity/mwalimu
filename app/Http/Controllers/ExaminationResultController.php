@@ -159,8 +159,12 @@ class ExaminationResultController extends Controller
                                              ->where('campus_program_id',$campus_program->id)->count(); 
                                           
                   if(count($postponed_students) == $active_students){
+                     $student_ids = [];
+                     foreach($postponed_students as $student){
+                        $student_ids[] = $student->id;
+                     }
                      ExaminationResult::where('module_assignment_id',$assign->id)
-                                       ->whereIn('student_id',$postponed_students->id)
+                                       ->whereIn('student_id',$student_ids)
                                        ->where('exam_type','FINAL')
                                        ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
                   }
