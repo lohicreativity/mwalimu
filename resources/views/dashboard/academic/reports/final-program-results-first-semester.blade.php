@@ -595,7 +595,7 @@
                       <td>Incomplete Final Exam</td>
                     </tr>
                     <tr>
-                      <td>INC</td>
+                      <td>INCO</td>
                       <td>Incomplete Student Results</td>
                     </tr>
                     <tr>
