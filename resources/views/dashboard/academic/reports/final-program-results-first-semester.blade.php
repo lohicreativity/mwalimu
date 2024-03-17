@@ -245,7 +245,7 @@
                       <td class="ss-bold ss-font-xs">Points</td>
                       <td class="ss-bold ss-font-xs">Credits</td>
                       <td class="ss-bold ss-font-xs">Remark</td>
-                      <td class="ss-bold ss-font-xs">Class</td>
+                      <td class="ss-bold ss-font-xs">Classification</td>
                     </tr>
                     
                     
@@ -397,7 +397,7 @@
                         @if($student->semesterRemarks[0]->remark) @if($student->semesterRemarks[0]->remark == 'INCOMPLETE'){{ substr($student->semesterRemarks[0]->remark,1,3) }} @else {{ $student->semesterRemarks[0]->remark }} @endif @else N/A @endif 
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->class) {{ str_replace('Class','',$student->semesterRemarks[0]->class) }} @else N/A @endif 
+                        @if($student->semesterRemarks[0]->class) {{ $student->semesterRemarks[0]->class }} @else N/A @endif 
                       @endif</td>
                     </tr>
                     @endforeach
