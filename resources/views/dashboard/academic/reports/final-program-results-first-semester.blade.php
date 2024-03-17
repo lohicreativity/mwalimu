@@ -169,7 +169,7 @@
         font-size: 13px;
      }
      .ss-font-xs{
-        font-size: 10.8px;
+        font-size: 10.7px;
      }
      .ss-letter-head{
         /*margin-bottom: 20px;*/
