@@ -163,9 +163,11 @@ class ExaminationResultController extends Controller
                      foreach($postponed_students as $student){
                         $student_ids[] = $student->id;
                      }
+                     return $student_ids;
                      ExaminationResult::where('module_assignment_id',$assign->id)
                                        ->whereIn('student_id',$student_ids)
                                        ->where('exam_type','FINAL')
+                                       ->where('exam_category','FIRST')
                                        ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
                   }
 
