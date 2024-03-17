@@ -564,7 +564,8 @@ class ExaminationResultController extends Controller
          $carry_exams = [];
          $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
          if(isset($buffer['results'])){
-            foreach($buffer['results'] as $key=>$res){
+            $key = 0;
+            foreach($buffer['results'] as $res){
                if($res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
                   $pass_status = 'I';
                   break;
@@ -584,6 +585,7 @@ class ExaminationResultController extends Controller
                   if($key == count($buffer['results'])-1){
                      $pass_status = 'INC';
                   }
+                  $key++;
                }
 
                if($res->final_exam_remark == 'POSTPONED'){
