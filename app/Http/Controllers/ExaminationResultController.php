@@ -177,17 +177,35 @@ class ExaminationResultController extends Controller
                }
             }
          }else{
-            $exam_student_count = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->count();
-            if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0 && $assign->module->course_work_based == 1){
+            $opted_students = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->get();
+            if($assign->course_work_process_status != 'PROCESSED' && count($opted_students) != 0 && $assign->module->course_work_based == 1){
                return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
             }
-            if($assign->final_upload_status == null && $exam_student_count != 0){
+            if($assign->final_upload_status == null && count($opted_students) != 0){
+               if($request->get('semester_id') != 'SUPPLEMENTARY'){
+                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                   ->where('semester_id',$semester->id)
+                                                   ->where('module_assignment_id',$assign->id)
+                                                   ->where('type','FINAL')
+                                                   ->where('status','APPROVED')->count();
+                  
+                  $active_students = count($opted_students);
+
+               }else{
+                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                   ->where('semester_id',$semester->id)
+                                                   ->where('module_assignment_id',$assign->id)
+                                                   ->where('type','SUPPLEMENTARY')
+                                                   ->where('status','APPROVED')->count();
+
+                  $active_students = Student::whereIn('id',$opted_students->id)
+                                             ->whereNotIn('academic_status_id',[1,5,6,7])
+                                             ->count(); 
+               }
                return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
             }
          }
       }
-
-      return 'Crossed';
 
       $student_buffer = [];
       $annual_credit = 0;
