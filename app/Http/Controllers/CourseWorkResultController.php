@@ -107,10 +107,8 @@ class CourseWorkResultController extends Controller
         $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         foreach($assessment_plans as $plan){
            if($request->has('plan_'.$plan->id.'_score')){
-               if($request->get('plan_'.$plan->id.'_score') != '-'){
-                  $validations['plan_'.$plan->id.'_score'] = 'alpha_num|min:0|max:100';
-                  $messages['plan_'.$plan->id.'_score.alpha_num'] = $plan->name.' must be a number or a dash';
-               }
+               $validations['plan_'.$plan->id.'_score'] = 'alpha_num|min:0|max:100';
+               $messages['plan_'.$plan->id.'_score.alpha_num'] = $plan->name.' must be a number or a dash';
            }
         }
 
