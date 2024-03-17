@@ -108,7 +108,7 @@
                          <tr>
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
+                          <td>{{ $program->module->name }} mimi</td>
                           <td></td>
                           <td></td>
                           <td></td>
