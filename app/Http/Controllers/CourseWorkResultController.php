@@ -142,7 +142,6 @@ class CourseWorkResultController extends Controller
                   if($request->get('plan_'.$plan->id.'_score') == null){
                      $result->delete();
                   }else{
-                     return 12;
                      $result->student_id = $request->get('student_id');
                      $score_before = $result->score;
                      $result->score = $request->get('plan_'.$plan->id.'_score');
