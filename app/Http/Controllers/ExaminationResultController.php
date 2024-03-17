@@ -131,7 +131,7 @@ class ExaminationResultController extends Controller
                                                                                                                                                    ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                                    ->where('semester_id',$semester->id);})
                                                //->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
-                                               ->with('module.ntaLevel:id,name','studyAcademicYear:id')
+                                               ->with('module.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                ->get();
       }
@@ -146,7 +146,22 @@ class ExaminationResultController extends Controller
                return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
             }
             if($assign->final_upload_status == null){
-               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+               $postponed_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                            ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                            ->whereHas('examinationResults.moduleAssignment.specialExams',function($query) use($request,$semester,$assign) {$query->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                                                                                                                        ->where('semester_id',$semester->id)
+                                                                                                                                                        ->where('module_assignment_id',$assign->id);})
+                                            ->where('campus_program_id',$campus_program->id)->count();
+                                            
+               $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                         ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                         ->where('studentship_status_id',1)
+                                         ->where('campus_program_id',$campus_program->id)->count();
+                                         
+               return $active_students.' - '.$postponed_students;                           
+               if($postponed_students != $active_students){
+                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+               }
             }
          }else{
             $exam_student_count = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->count();
@@ -158,6 +173,8 @@ class ExaminationResultController extends Controller
             }
          }
       }
+
+      return 'Crossed';
 
       $student_buffer = [];
       $annual_credit = 0;

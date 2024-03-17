@@ -19,6 +19,7 @@ use App\Utils\Util;
 use App\Utils\SystemLocation;
 use Validator, Auth, DB;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Academic\Models\ExaminationResult;
 
 class SpecialExamController extends Controller
 {
@@ -218,14 +219,15 @@ class SpecialExamController extends Controller
         	return redirect()->back()->with('error','Special exam already exists');
         }
 
-        if($request->get('type') == 'FINAL' && ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) {$query->where('campus_program_id',$student->campus_program_id);})
+        $student = Student::select('campus_program_id')->where('id',$request->get('student_id'))->first();
+        if($request->get('type') == 'FINAL' && ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) use($student){$query->where('campus_program_id',$student->campus_program_id);})
                                                           ->whereHas('programModuleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                                           ->where('semester_id',$request->get('semester_id'))
                                                           ->where('final_upload_status','UPLOADED')
                                                           ->where('id',$request->get('module_assignment_id'))->count() > 0){
             return redirect()->back()->with('error','You cannot postpone because final results for this module have already been uploaded');                                                                        
         }
-        if($request->get('type') == 'SUPPLEMENTARY' && ExamResult::whereHas('moduleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+        if($request->get('type') == 'SUPPLEMENTARY' && ExaminationResult::whereHas('moduleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                                                  ->where('module_assignment_id',$request->get('module_assignment_id'))
                                                                  ->whereNotNull('supp_score')->orwhereNotNull('supp_remark')->count() > 0){
             return redirect()->back()->with('error','You cannot postpone because supplementary results for this module have already been uploaded');    
