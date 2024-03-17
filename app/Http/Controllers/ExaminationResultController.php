@@ -163,7 +163,7 @@ class ExaminationResultController extends Controller
                      foreach($postponed_students as $student){
                         $student_ids[] = $student->student_id;
                      }
-                     return $student_ids;
+
                      ExaminationResult::where('module_assignment_id',$assign->id)
                                        ->whereIn('student_id',$student_ids)
                                        ->where('exam_type','FINAL')
