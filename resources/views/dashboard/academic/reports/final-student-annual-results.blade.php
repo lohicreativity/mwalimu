@@ -123,7 +123,7 @@
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
                          <tr>
                           <td>{{ $count }}</td>
-                          <td>@if($result->final_exam_remark != 'POSTPONED')<a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study) }}">{{ $result->moduleAssignment->module->code }}</a> @else {{ $result->moduleAssignment->module->code }} @endif</td>
+                          <td>@if($result->final_exam_remark != 'POSTPONED')<a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study) }}">{{ $result->moduleAssignment->module->code }}</a> @else {{ $result->moduleAssignment->module->code }} 12 @endif</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>
                             @if(!$result->supp_processed_at) 
