@@ -146,12 +146,10 @@ class ExaminationResultController extends Controller
                return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
             }
             if($assign->final_upload_status == null){
-               $postponed_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                            ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                            ->whereHas('examinationResults.moduleAssignment.specialExams',function($query) use($request,$semester,$assign) {$query->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                                                                                                                        ->where('semester_id',$semester->id)
-                                                                                                                                                        ->where('module_assignment_id',$assign->id);})
-                                            ->where('campus_program_id',$campus_program->id)->count();
+               $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                ->where('semester_id',$semester->id)
+                                                ->where('module_assignment_id',$assign->id)
+                                                ->where('status','APPROVED')->count();
                                             
                $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                          ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
