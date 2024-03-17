@@ -56,7 +56,7 @@
                   $marks = [
                      'placeholder'=>'Marks',
                      'class'=>'form-control',
-                     'min'=>0,
+
                      'steps'=>'any',
                   ];
 
