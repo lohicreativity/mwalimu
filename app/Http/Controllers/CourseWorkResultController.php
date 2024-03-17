@@ -101,7 +101,7 @@ class CourseWorkResultController extends Controller
      * Update course work results
      */
     public function update(Request $request)
-    {   return $request;
+    {   
         $validations = [];
         $messages = [];
         $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
@@ -113,7 +113,7 @@ class CourseWorkResultController extends Controller
                }
            }
         }
-
+return 3;
         $validation = Validator::make($request->all(),$validations,$messages);
 
         if($validation->fails()){
