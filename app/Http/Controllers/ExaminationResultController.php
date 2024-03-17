@@ -151,28 +151,42 @@ class ExaminationResultController extends Controller
                                                    ->where('semester_id',$semester->id)
                                                    ->where('module_assignment_id',$assign->id)
                                                    ->where('type','FINAL')
-                                                   ->where('status','APPROVED')->count();
+                                                   ->where('status','APPROVED')->get();
 
                   $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                              ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
                                              ->where('studentship_status_id',1)
                                              ->where('campus_program_id',$campus_program->id)->count(); 
+                                          
+                  if(count($postponed_students) == $active_students){
+                     ExaminationResult::where('module_assignment_id',$assign->id)
+                                       ->whereIn('student_id',$postponed_students->id)
+                                       ->where('exam_type','FINAL')
+                                       ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
+                  }
 
                }else{
                   $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                    ->where('semester_id',$semester->id)
                                                    ->where('module_assignment_id',$assign->id)
                                                    ->where('type','SUPPLEMENTARY')
-                                                   ->where('status','APPROVED')->count();
+                                                   ->where('status','APPROVED')->get();
 
                   $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                              ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
                                              ->where('studentship_status_id',1)
                                              ->whereNotIn('academic_status_id',[1,5,6,7])
                                              ->where('campus_program_id',$campus_program->id)->count(); 
+
+                  if(count($postponed_students) == $active_students){
+                     ExaminationResult::where('module_assignment_id',$assign->id)
+                                       ->whereIn('student_id',$postponed_students->id)
+                                       ->where('exam_type','SUPPLEMENTARY')
+                                       ->update(['final_uploaded_at'=>now(),'sup_remark'=>'POSTPONED']);
+                  }
                }
                                                                                         
-               if($postponed_students != $active_students){
+               if(count($postponed_students) != $active_students){
                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
                }
             }
@@ -202,7 +216,10 @@ class ExaminationResultController extends Controller
                                              ->whereNotIn('academic_status_id',[1,5,6,7])
                                              ->count(); 
                }
-               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+
+               if($postponed_students != $active_students){
+                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+               }
             }
          }
       }
@@ -239,30 +256,30 @@ class ExaminationResultController extends Controller
 
       }
 
-      // if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
-      //                   ->where('category','COMPULSORY');})
-      //                   ->whereNotNull('final_uploaded_at')
-      //                   ->distinct()
-      //                   ->count('module_assignment_id') < count($core_programs)){
+      if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
+                        ->where('category','COMPULSORY');})
+                        ->whereNotNull('final_uploaded_at')
+                        ->distinct()
+                        ->count('module_assignment_id') < count($core_programs)){
 
-      //    $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
-      //                                           ->where('category','COMPULSORY');})
-      //                                           ->whereNotNull('final_uploaded_at')
-      //                                           ->distinct()
-      //                                           ->get(['module_assignment_id']);
-      //    $available_program_ids = [];
-      //    $missing_programs = [];
-      //    foreach($available_programs as $pr){
-      //       $available_program_ids[] = $pr->moduleAssignment->programModuleAssignment->id;
-      //    }
-      //    foreach($core_programs as $prog){
-      //       if(!in_array($prog->id, $available_program_ids)){
-      //          $missing_programs[] = $prog->module->code;
-      //       }
-      //    }
+         $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
+                                                ->where('category','COMPULSORY');})
+                                                ->whereNotNull('final_uploaded_at')
+                                                ->distinct()
+                                                ->get(['module_assignment_id']);
+         $available_program_ids = [];
+         $missing_programs = [];
+         foreach($available_programs as $pr){
+            $available_program_ids[] = $pr->moduleAssignment->programModuleAssignment->id;
+         }
+         foreach($core_programs as $prog){
+            if(!in_array($prog->id, $available_program_ids)){
+               $missing_programs[] = $prog->module->code;
+            }
+         }
 
-      //    return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
-      // }
+         return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
+      }
 
       $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)
                                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
