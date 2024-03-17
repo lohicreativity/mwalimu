@@ -156,8 +156,7 @@ class ExaminationResultController extends Controller
                $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                          ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
                                          ->where('studentship_status_id',1)
-                                         ->where('campus_program_id',$campus_program->id)->count();
-                   return $assign->id;                      
+                                         ->where('campus_program_id',$campus_program->id)->count();                   
                return $active_students.' - '.$postponed_students;                           
                if($postponed_students != $active_students){
                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
