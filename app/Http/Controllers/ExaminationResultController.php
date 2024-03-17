@@ -566,7 +566,7 @@ class ExaminationResultController extends Controller
          if(isset($buffer['results'])){
             foreach($buffer['results'] as $res){
                if($res->final_exam_remark == 'INCOMPLETE'){
-                   $pass_status = 'INCO';
+                   $pass_status = 'INCOMPLETE';
                    break;
                }
 
