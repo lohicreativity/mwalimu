@@ -296,7 +296,7 @@
                               @else 
                                 @if($assignment->module->course_work_based == 1)
                                   @if($result->course_work_score) 
-                                  {{ $result->course_work_score }} 
+                                  {{ round($result->course_work_score) }} 
                                   @else - @endif
                                 @else
                                 N/A
@@ -324,7 +324,7 @@
                                   @if($result->course_work_remark == 'FAIL')
                                     -
                                   @else 
-                                  {{ $result->final_score }} 
+                                  {{ round($result->final_score) }} 
                                   @endif
                                 @else - @endif
                               @endif
