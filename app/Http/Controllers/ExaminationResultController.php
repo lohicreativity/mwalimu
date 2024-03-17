@@ -171,8 +171,7 @@ class ExaminationResultController extends Controller
                                              ->whereNotIn('academic_status_id',[1,5,6,7])
                                              ->where('campus_program_id',$campus_program->id)->count(); 
                }
-                                                              
-               return $active_students.' - '.$postponed_students;                           
+                                                                                        
                if($postponed_students != $active_students){
                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
                }
