@@ -566,6 +566,14 @@ class ExaminationResultController extends Controller
          if(isset($buffer['results'])){
             $key = 0;
             foreach($buffer['results'] as $res){
+               
+               if($res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
+                  if($key == count($buffer['results'])-1){
+                     $pass_status = 'INC';
+                  }
+                  $key++;
+               }
+               
                if($res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
                   $pass_status = 'I';
                   break;
@@ -579,13 +587,6 @@ class ExaminationResultController extends Controller
                if(!$res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
                   $pass_status = 'IF';
                   break;
-               }
-
-               if($res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
-                  if($key == count($buffer['results'])-1){
-                     $pass_status = 'INC';
-                  }
-                  $key++;
                }
 
                if($res->final_exam_remark == 'POSTPONED'){
