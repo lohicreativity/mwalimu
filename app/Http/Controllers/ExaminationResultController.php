@@ -146,15 +146,32 @@ class ExaminationResultController extends Controller
                return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
             }
             if($assign->final_upload_status == null){
-               $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->where('semester_id',$semester->id)
-                                                ->where('module_assignment_id',$assign->id)
-                                                ->where('status','APPROVED')->count();
-                                            
-               $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                         ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                         ->where('studentship_status_id',1)
-                                         ->where('campus_program_id',$campus_program->id)->count();                   
+               if($request->get('semester_id') != 'SUPPLEMENTARY'){
+                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                   ->where('semester_id',$semester->id)
+                                                   ->where('module_assignment_id',$assign->id)
+                                                   ->where('type','FINAL')
+                                                   ->where('status','APPROVED')->count();
+
+                  $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                             ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                             ->where('studentship_status_id',1)
+                                             ->where('campus_program_id',$campus_program->id)->count(); 
+
+               }else{
+                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                   ->where('semester_id',$semester->id)
+                                                   ->where('module_assignment_id',$assign->id)
+                                                   ->where('type','SUPPLEMENTARY')
+                                                   ->where('status','APPROVED')->count();
+
+                  $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                             ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                             ->where('studentship_status_id',1)
+                                             ->whereNotIn('academic_status_id',[1,5,6,7])
+                                             ->where('campus_program_id',$campus_program->id)->count(); 
+               }
+                                                              
                return $active_students.' - '.$postponed_students;                           
                if($postponed_students != $active_students){
                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
