@@ -161,7 +161,7 @@ class ExaminationResultController extends Controller
                   if(count($postponed_students) == $active_students){
                      $student_ids = [];
                      foreach($postponed_students as $student){
-                        $student_ids[] = $student->id;
+                        $student_ids[] = $student->student_id;
                      }
                      return $student_ids;
                      ExaminationResult::where('module_assignment_id',$assign->id)
