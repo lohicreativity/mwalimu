@@ -565,25 +565,9 @@ class ExaminationResultController extends Controller
          $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
          if(isset($buffer['results'])){
             foreach($buffer['results'] as $res){
-               // if($res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
-               //    if($key == count($buffer['results'])-1){
-               //       $pass_status = 'INC';
-               //    }
-               // }
-
-               if($res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
-                  $pass_status = 'I';
-                  break;
-               }
-
-               if($res->course_work_remark == 'INCOMPLETE' && !$res->final_remark == 'INCOMPLETE'){
-                  $pass_status = 'IC';
-                  break;
-               }
-
-               if(!$res->course_work_remark == 'INCOMPLETE' && $res->final_remark == 'INCOMPLETE'){
-                  $pass_status = 'IF';
-                  break;
+               if($res->final_exam_remark == 'INCOMPLETE'){
+                   $pass_status = 'INCO';
+                   break;
                }
 
                if($res->final_exam_remark == 'POSTPONED'){
