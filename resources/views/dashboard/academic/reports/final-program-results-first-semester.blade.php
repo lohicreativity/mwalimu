@@ -394,7 +394,7 @@
                         @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else N/A @endif 
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->remark) @if($student->semesterRemarks[0]->remark == 'INCOMPLETE'){{ substr($student->semesterRemarks[0]->remark,1,3) }} @else {{ $student->semesterRemarks[0]->remark }} @endif @else N/A @endif 
+                        @if($student->semesterRemarks[0]->remark) @if($student->semesterRemarks[0]->remark == 'INCOMPLETE'){{ substr($student->semesterRemarks[0]->remark,0,4) }} @else {{ $student->semesterRemarks[0]->remark }} @endif @else N/A @endif 
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->class) {{ $student->semesterRemarks[0]->class }} @else N/A @endif 
