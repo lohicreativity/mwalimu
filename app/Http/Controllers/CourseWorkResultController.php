@@ -107,7 +107,7 @@ class CourseWorkResultController extends Controller
         $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         foreach($assessment_plans as $plan){
            if($request->has('plan_'.$plan->id.'_score')){
-              $validations['plan_'.$plan->id.'_score'] = 'numeric|nullable|min:0|max:100';
+              $validations['plan_'.$plan->id.'_score'] = 'numeric|nullable|min:0|max:100'; //nullable
               $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
            }
         }
@@ -138,33 +138,39 @@ class CourseWorkResultController extends Controller
               }
     	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
     	    			$result = $res;
-                        $result->student_id = $request->get('student_id');
-                        $score_before = $result->score;
-                        $result->score = $request->get('plan_'.$plan->id.'_score');
-                        $result->assessment_plan_id = $plan->id;
-                        $result->module_assignment_id = $request->get('module_assignment_id');
-                        $result->uploaded_by_user_id = Auth::user()->id;
-                        $result->save();
 
-                        $change = new ExaminationResultChange;
-                        $change->resultable_id = $result->id;
-                        $change->from_score = $score_before;
-                        $change->to_score = $result->score;
-                        $change->resultable_type = 'course_work_result';
-                        $change->user_id = Auth::user()->id;
-                        $change->save();
+                  if($request->get('plan_'.$plan->id.'_score') == null){
+                     $result->delete();
+                  }else{
+                     $result->student_id = $request->get('student_id');
+                     $score_before = $result->score;
+                     $result->score = $request->get('plan_'.$plan->id.'_score');
+                     $result->assessment_plan_id = $plan->id;
+                     $result->module_assignment_id = $request->get('module_assignment_id');
+                     $result->uploaded_by_user_id = Auth::user()->id;
+                  }
+
+                  $result->save();
+
+                  $change = new ExaminationResultChange;
+                  $change->resultable_id = $result->id;
+                  $change->from_score = $score_before;
+                  $change->to_score = $request->get('plan_'.$plan->id.'_score') == null? null : $result->score;
+                  $change->resultable_type = 'course_work_result';
+                  $change->user_id = Auth::user()->id;
+
+                  $change->save();
     	    		}else{
-    	    			$result = new CourseWorkResult;
-                        $result->student_id = $request->get('student_id');
-                        $result->score = $request->get('plan_'.$plan->id.'_score');
-                        $result->assessment_plan_id = $plan->id;
-                        $result->module_assignment_id = $request->get('module_assignment_id');
-                        $result->uploaded_by_user_id = Auth::user()->id;
-                        $result->save();
-    	    		}
-    	    		
-
-                    
+                  if($request->get('plan_'.$plan->id.'_score') != null){
+                     $result = new CourseWorkResult;
+                     $result->student_id = $request->get('student_id');
+                     $result->score = $request->get('plan_'.$plan->id.'_score');
+                     $result->assessment_plan_id = $plan->id;
+                     $result->module_assignment_id = $request->get('module_assignment_id');
+                     $result->uploaded_by_user_id = Auth::user()->id;
+                     $result->save();
+                  }
+    	    		}         
         	  }
         	}
         	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');

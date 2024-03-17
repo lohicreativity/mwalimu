@@ -108,7 +108,7 @@
                          <tr>
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }} mimi</td>
+                          <td>{{ $program->module->name }}</td>
                           <td></td>
                           <td></td>
                           <td></td>
@@ -131,7 +131,7 @@
                                 {{ $result->moduleAssignment->module->code }} 
                               @endif
                           </td>
-                          <td>{{ $result->moduleAssignment->module->name }} sasdf</td>
+                          <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>
                             @if(!$result->supp_processed_at) 
                               @if($result->course_work_score) 
