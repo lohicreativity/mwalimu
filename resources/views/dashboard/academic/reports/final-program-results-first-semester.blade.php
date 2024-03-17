@@ -166,10 +166,10 @@
          margin-bottom: 20px;
      }
      .ss-font-sm{
-        font-size: 13px;
+        font-size: 12px;
      }
      .ss-font-xs{
-        font-size: 11px;
+        font-size: 10px;
      }
      .ss-letter-head{
         /*margin-bottom: 20px;*/
