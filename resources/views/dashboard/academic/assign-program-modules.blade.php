@@ -154,6 +154,7 @@
                        <option value="">Select Category</option>
                        <option value="COMPULSORY">Compulsory</option>
                        <option value="OPTIONAL">Optional</option>
+                       <option value="OTHER">Other</option>
                     </select>
                     </div>
                     <div class="form-group col-4">
@@ -373,6 +374,7 @@
                                          <option value="">Select Category</option>
                                          <option value="COMPULSORY" @if($assignment->category == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
                                          <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
+                                         <option value="OTHER" @if($assignment->category == 'OTHER') selected="selected" @endif>Other</option>
                                       </select>
                                       </div>
                                       <div class="form-group col-4">
