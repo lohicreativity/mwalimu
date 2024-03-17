@@ -140,7 +140,6 @@ class CourseWorkResultController extends Controller
     	    			$result = $res;
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
-                     return 100;
                      $result->delete();
                   }else{
                      $result->student_id = $request->get('student_id');
@@ -149,9 +148,8 @@ class CourseWorkResultController extends Controller
                      $result->assessment_plan_id = $plan->id;
                      $result->module_assignment_id = $request->get('module_assignment_id');
                      $result->uploaded_by_user_id = Auth::user()->id;
+                     $result->save();
                   }
-
-                  $result->save();
 
                   $change = new ExaminationResultChange;
                   $change->resultable_id = $result->id;
