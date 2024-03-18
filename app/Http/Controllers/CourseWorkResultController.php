@@ -139,8 +139,15 @@ class CourseWorkResultController extends Controller
     	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
     	    			$result = $res;
                   $score_before = $result->score;
-                  
+
                   if($request->get('plan_'.$plan->id.'_score') == null){
+                     if(CourseWorkResult::whereHas('assessmentPlan',function($query) use ($module_assignment){$query->where('name','LIKE','%Test%');})
+                                        ->where('module_assignment_id',$module_assignment->id)
+                                        ->where('student_id',$request->get('student_id'))
+                                        ->first()){
+                        ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->where('exam_type','FINAL')->update(['course_work_remark'=>'INCOMPLETE']);
+                     }
+                     
                      $result->delete();
                   }else{
                      $result->student_id = $request->get('student_id');
