@@ -235,7 +235,7 @@ class CourseWorkResultController extends Controller
                            break;
                         }
                      }
-
+return $semester_remark;
                      if($semester_remark){
                         return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
                      }else{
