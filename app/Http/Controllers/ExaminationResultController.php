@@ -2105,14 +2105,14 @@ class ExaminationResultController extends Controller
                      if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
                         return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
                      } else {
-                        $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                        $result->final_score = $request->get('final_score');
                      }
 
                   }else{
                      $result->final_score = null;
                   }
                   if($request->get('appeal_score')){
-                     $result->appeal_score = ($request->get('appeal_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                     $result->appeal_score = $request->get('appeal_score');
                   }
                   if($request->get('appeal_supp_score')){
                      $result->appeal_supp_score = $request->get('appeal_supp_score');
@@ -2169,14 +2169,14 @@ class ExaminationResultController extends Controller
                   if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
                      return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
                   } else {
-                     $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                     $result->final_score = $request->get('final_score');
                   }
 
                   }else{
                      $result->final_score = null;
                   }
                 if($request->get('appeal_score')){
-                   $result->appeal_score = ($request->get('appeal_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                   $result->appeal_score = $request->get('appeal_score');
                 }
                 if($request->get('appeal_supp_score')){
                    $result->appeal_supp_score = $request->get('appeal_supp_score');
