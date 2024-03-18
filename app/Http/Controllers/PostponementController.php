@@ -141,18 +141,18 @@ class PostponementController extends Controller
                                                           ->where('semester_id',$request->get('semester_id'));})
                                                           ->where('final_upload_status','UPLOADED')->count();
 
-            if($request->get('category') == 'SEMESTER' && (SemesterRemark::where('student_id',$request->get('student_id'))
-            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-            ->where('semester_id',$request->get('semester_id'))->count() > 0 || $final_result_upload_status > 0)){
+            // if($request->get('category') == 'SEMESTER' && (SemesterRemark::where('student_id',$request->get('student_id'))
+            // ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+            // ->where('semester_id',$request->get('semester_id'))->count() > 0 || $final_result_upload_status > 0)){
 
-              return redirect()->back()->with('error','You cannot postpone this semester because final results have already been uploaded');
+            //   return redirect()->back()->with('error','You cannot postpone this semester because final results have already been uploaded');
 
-            }elseif($request->get('category') == 'ANNUAL' && (SemesterRemark::where('student_id',$request->get('student_id'))
-                                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() > 0 || $final_result_upload_status > 0)){
+            // }elseif($request->get('category') == 'ANNUAL' && (SemesterRemark::where('student_id',$request->get('student_id'))
+            //                                               ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() > 0 || $final_result_upload_status > 0)){
 
-              return redirect()->back()->with('error','You cannot postpone this academic year because you already have final results');  
+            //   return redirect()->back()->with('error','You cannot postpone this academic year because you already have final results');  
 
-            }
+            // }
         }
 
     	$validation = Validator::make($request->all(),[
