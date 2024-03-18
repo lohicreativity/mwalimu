@@ -44,7 +44,7 @@
 			@endif
 			@if($special_exams_hod_count != 0)
 				<div class="alert alert-warning">You have pending exam postponement requests
-					Please <a href="{{ url('academic/special_exams?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
+					Please <a href="{{ url('academic/special-exams?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
 				</div>
 			@endif
 			@if($module_assignment_requests !=0)
