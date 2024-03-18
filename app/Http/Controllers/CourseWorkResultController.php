@@ -228,9 +228,9 @@ class CourseWorkResultController extends Controller
                         $query->where('student_id',$request->get('student_id'))
                         ->where('study_academic_year_id',$request->get('ac_yr_id'));
                      }])->get();
-return $semesters[0]->remarks;
+
                      foreach($semesters as $semester){
-                        if(count($semester->remarks) > 1){
+                        if(count($semester->remarks) > 0){ // Originally was 1, why? Changed to allow exam reprocessing
                            $semester_remark = true;
                            break;
                         }
