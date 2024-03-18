@@ -95,7 +95,7 @@ class ExaminationResultController extends Controller
      * Process results
      */
     public function process(Request $request)
-    {
+    { return 1;
       ini_set('memory_limit', '-1');
       set_time_limit(120);
       $special_exam = SpecialExam::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
@@ -337,13 +337,12 @@ class ExaminationResultController extends Controller
          foreach($results as $result){
             $examined_students[] = $result->student_id;
          }
+
          foreach($enrolled_students as $student){
             if(!in_array($student->id, $examined_students)){
                $missing_students[] = $student->id;
             }
          }
-
-         return $missing_students;
 
          foreach($results as $key=>$result){
             $student = Student::select('id','campus_program_id')->with(['campusProgram.program.ntaLevel'])->find($result->student_id);
