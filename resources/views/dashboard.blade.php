@@ -43,7 +43,7 @@
 				</div>
 			@endif
 			@if($special_exams_hod_count != 0)
-				<div class="alert alert-warning">You have pending exam postponement requests
+				<div class="alert alert-warning">You have pending exam postponement requests.
 					Please <a href="{{ url('academic/special-exams?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
 				</div>
 			@endif
@@ -54,8 +54,15 @@
         @endif
 
         @if(Auth::user()->hasRole('arc'))
-			@if($postponements_arc_count != 0 || $special_exams_arc_count != 0)
-				<div class="alert alert-warning">You have pending postponement requests</div>
+			@if($postponements_arc_count != 0)
+				<div class="alert alert-warning">You have pending postponement requests.
+					Please <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
+				</div>
+			@endif
+			@if($special_exams_arc_count != 0)
+				<div class="alert alert-warning">You have pending exam postponement requests.
+					Please <a href="{{ url('academic/special-exams?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
+				</div>
 			@endif
 			@if($resumptions_arc_count != 0)
 				<div class="alert alert-warning">You have pending resumptions requests</div>
