@@ -11109,7 +11109,7 @@ class ApplicationController extends Controller
         }
         foreach($campus_programs as $program){
             $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$verification_key);
-            
+            return $result;
             if($result['code'] == 200){
                 $no_of_applicants = 0;
                 foreach ($result['params'] as $res) {
