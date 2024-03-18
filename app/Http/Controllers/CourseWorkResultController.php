@@ -141,13 +141,12 @@ class CourseWorkResultController extends Controller
                   $score_before = $result->score;
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
-                     if(CourseWorkResult::whereHas('assessmentPlan',function($query) use ($plan){$query->where('id',$plan->id)->where('name','LIKE','%Test%');})
-                                        ->where('module_assignment_id',$module_assignment->id)
-                                        ->where('student_id',$request->get('student_id'))
-                                        ->first()){
-                                          return 100;
-                        ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->where('exam_type','FINAL')->update(['course_work_remark'=>'INCOMPLETE']);
-                     }
+                     // if(CourseWorkResult::whereHas('assessmentPlan',function($query) use ($plan){$query->where('id',$plan->id)->where('name','LIKE','%Test%');})
+                     //                    ->where('module_assignment_id',$module_assignment->id)
+                     //                    ->where('student_id',$request->get('student_id'))
+                     //                    ->first()){
+                     //    ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->where('exam_type','FINAL')->update(['course_work_remark'=>'INCOMPLETE']);
+                     // }
 
                      $result->delete();
                   }else{
@@ -190,6 +189,7 @@ class CourseWorkResultController extends Controller
                         if($result = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where(function($query){
 							$query->where('exam_type','FINAL')->orWhere('exam_type','APPEAL');
 						})->first()){
+                     return $no_of_compulsory_tests;
                             $exam_result = $result;
                             $exam_result->module_assignment_id = $request->get('module_assignment_id');
                             $exam_result->student_id = $request->get('student_id');
