@@ -37,8 +37,15 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         @if(Auth::user()->hasRole('hod'))
-			@if($postponements_hod_count != 0 || $special_exams_hod_count != 0)
-				<div class="alert alert-warning">You have pending postponement requests</div>
+			@if($postponements_hod_count != 0)
+				<div class="alert alert-warning">You have pending postponement requests.
+					Please <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
+				</div>
+			@endif
+			@if($special_exams_hod_count != 0)
+				<div class="alert alert-warning">You have pending exam postponement requests
+					Please <a href="{{ url('academic/special_exams?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.
+				</div>
 			@endif
 			@if($module_assignment_requests !=0)
 				<div class="alert alert-warning">You have a request for a facilitator. 
