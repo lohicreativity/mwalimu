@@ -141,7 +141,7 @@ class CourseWorkResultController extends Controller
                   $score_before = $result->score;
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
-                     return CourseWorkResult::whereHas('assessmentPlan',function($query) use ($module_assignment){$query->where('name','LIKE','%Test%');})
+                     return CourseWorkResult::whereHas('assessmentPlan',function($query) use ($plan){$query->where('id',$plan->id)->where('name','LIKE','%Test%');})
                      ->where('module_assignment_id',$module_assignment->id)
                      ->where('student_id',$request->get('student_id'))
                      ->first();
