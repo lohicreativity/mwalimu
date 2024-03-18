@@ -219,7 +219,6 @@ class CourseWorkResultController extends Controller
                         }
 
                  if($request->get('redirect_url')){
-                  return 1;
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
 
