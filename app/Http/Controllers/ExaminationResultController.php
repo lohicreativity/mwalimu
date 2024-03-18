@@ -328,6 +328,13 @@ class ExaminationResultController extends Controller
                                        ->where('module_assignment_id',$assignment->id)
                                        ->get();
 
+         $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                     ->whereHas('registrations',function($query) use($assignment){$query->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
+                                                                                                               ->where('semester_id',$assignment->programModuleAssignment->semester_id);})
+                                     ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)->get('id');
+
+                                     return $enrolled_students;
+
          foreach($results as $key=>$result){
             $student = Student::select('id','campus_program_id')->with(['campusProgram.program.ntaLevel'])->find($result->student_id);
 

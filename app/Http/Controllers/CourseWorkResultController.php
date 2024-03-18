@@ -230,7 +230,7 @@ class CourseWorkResultController extends Controller
                      }])->get();
 
                      foreach($semesters as $semester){
-                        if(count($semester->remarks) > 0){ // Originally was 1, why? Changed to allow exam reprocessing
+                        if(count($semester->remarks) > 0){ // Originally was 1, why? Changed to 0 to allow exam reprocessing
                            $semester_remark = true;
                            break;
                         }
