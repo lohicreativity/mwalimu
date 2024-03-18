@@ -335,7 +335,7 @@ class ExaminationResultController extends Controller
 
          $examined_students = $missing_students = [];
          foreach($results as $result){
-            $examined_students = $result->student_id;
+            $examined_students[] = $result->student_id;
          }
          foreach($enrolled_students as $student){
             if(!in_array($student->id, $examined_students)){
