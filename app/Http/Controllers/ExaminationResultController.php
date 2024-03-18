@@ -325,25 +325,25 @@ class ExaminationResultController extends Controller
          $results = ExaminationResult::select('id','student_id','exam_type','exam_category','course_work_score','course_work_remark','final_score','final_remark','retakable_id')
                                        ->whereHas('student.applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                        ->with(['retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
-                                       ->where('module_assignment_id',572)
+                                       ->where('module_assignment_id',$assignment->id)
                                        ->get();
 
-         $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                     ->whereHas('registrations',function($query) use($assignment){$query->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
-                                                                                                               ->where('semester_id',$assignment->programModuleAssignment->semester_id);})
-                                     ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)->get('id');
+         // $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+         //                             ->whereHas('registrations',function($query) use($assignment){$query->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
+         //                                                                                                       ->where('semester_id',$assignment->programModuleAssignment->semester_id);})
+         //                             ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)->get('id');
 
-         $examined_students = $missing_students = [];
-         foreach($results as $result){
-            $examined_students[] = $result->student_id;
-         }
-         foreach($enrolled_students as $student){
-            if(!in_array($student->id, $examined_students)){
-               $missing_students[] = $student->id;
-            }
-         }
+         // $examined_students = $missing_students = [];
+         // foreach($results as $result){
+         //    $examined_students[] = $result->student_id;
+         // }
+         // foreach($enrolled_students as $student){
+         //    if(!in_array($student->id, $examined_students)){
+         //       $missing_students[] = $student->id;
+         //    }
+         // }
 
-         return $missing_students;
+         // return $missing_students;
 
          foreach($results as $key=>$result){
             $student = Student::select('id','campus_program_id')->with(['campusProgram.program.ntaLevel'])->find($result->student_id);
