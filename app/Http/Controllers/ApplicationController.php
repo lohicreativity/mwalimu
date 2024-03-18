@@ -11107,11 +11107,11 @@ class ApplicationController extends Controller
         }else{
             return redirect()->back()->with('message','campus key is unknown');
         }
+        $no_of_applicants = 0;
         foreach($campus_programs as $program){
             $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.$verification_key);
-            return $result;
+
             if($result['code'] == 200){
-                $no_of_applicants = 0;
                 foreach ($result['params'] as $res) {
                     //if(str_contains(strtolower($res['verification_status'].'approved')){
                 if(Applicant::where('index_number',$res['username'])
@@ -11138,12 +11138,13 @@ class ApplicationController extends Controller
                             }
 
                 }
-            }else{
-                return redirect()->back()->with('message','No applicants retrieved from NACTVET');
             }
         }
-            return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
-
+        if($no_of_applicants == 0){
+            return redirect()->back()->with('message','No applicants retrieved from NACTVET');
+        }else{
+            return redirect()->back()->with('message',$no_of_applicants.' verified applicants retrieved successfully from NACTVET');
+        }
     }
 
     public function showRegulatorFailedCase(Request $request){
