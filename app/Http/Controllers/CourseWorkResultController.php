@@ -189,7 +189,6 @@ class CourseWorkResultController extends Controller
                         if($result = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where(function($query){
 							$query->where('exam_type','FINAL')->orWhere('exam_type','APPEAL');
 						})->first()){
-                     return $no_of_compulsory_tests;
                             $exam_result = $result;
                             $exam_result->module_assignment_id = $request->get('module_assignment_id');
                             $exam_result->student_id = $request->get('student_id');
@@ -220,6 +219,7 @@ class CourseWorkResultController extends Controller
                         }
 
                  if($request->get('redirect_url')){
+                  return 1;
                     return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
                  }
 
