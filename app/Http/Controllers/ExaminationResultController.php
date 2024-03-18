@@ -333,7 +333,6 @@ class ExaminationResultController extends Controller
                                                                                                                ->where('semester_id',$assignment->programModuleAssignment->semester_id);})
                                      ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)->get('id');
 
-                                     return count($enrolled_students);
          $examined_students = $missing_students = [];
          foreach($results as $result){
             $examined_students = $result->student_id;
