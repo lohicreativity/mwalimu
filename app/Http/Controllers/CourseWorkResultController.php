@@ -224,6 +224,7 @@ class CourseWorkResultController extends Controller
 
                  $semester_remark = false;
                  if(!empty($request->get('ac_yr_id'))){
+                  return 200;
                      $semesters = Semester::with(['remarks'=>function($query) use ($request){
                         $query->where('student_id',$request->get('student_id'))
                         ->where('study_academic_year_id',$request->get('ac_yr_id'));

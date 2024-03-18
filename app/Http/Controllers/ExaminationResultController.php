@@ -319,7 +319,7 @@ class ExaminationResultController extends Controller
          $total_credit += $prog->module->credit;
          }
       }
-return 1;
+
       DB::beginTransaction();
       foreach ($module_assignments as $assignment) {
          $results = ExaminationResult::select('id','student_id','exam_type','exam_category','course_work_score','course_work_remark','final_score','final_remark','retakable_id')
