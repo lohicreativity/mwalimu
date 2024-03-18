@@ -334,6 +334,17 @@ class ExaminationResultController extends Controller
                                      ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)->get('id');
 
                                      return count($enrolled_students);
+         $examined_students = $missing_students = [];
+         foreach($results as $result){
+            $examined_students = $result->student_id;
+         }
+         foreach($enrolled_students as $student){
+            if(!in_array($student->id, $examined_students)){
+               $missing_students[] = $student->id;
+            }
+         }
+
+         return $missing_students;
 
          foreach($results as $key=>$result){
             $student = Student::select('id','campus_program_id')->with(['campusProgram.program.ntaLevel'])->find($result->student_id);
