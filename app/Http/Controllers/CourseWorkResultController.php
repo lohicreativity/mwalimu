@@ -138,12 +138,12 @@ class CourseWorkResultController extends Controller
               }
     	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
     	    			$result = $res;
-
+                  $score_before = $result->score;
+                  
                   if($request->get('plan_'.$plan->id.'_score') == null){
                      $result->delete();
                   }else{
                      $result->student_id = $request->get('student_id');
-                     $score_before = $result->score;
                      $result->score = $request->get('plan_'.$plan->id.'_score');
                      $result->assessment_plan_id = $plan->id;
                      $result->module_assignment_id = $request->get('module_assignment_id');
