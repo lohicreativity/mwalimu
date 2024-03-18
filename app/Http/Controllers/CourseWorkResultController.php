@@ -237,7 +237,6 @@ class CourseWorkResultController extends Controller
                      }
 
                      if($semester_remark){
-                        return 100;
                         return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
                      }else{
                         return redirect()->to('academic/results/'.$request->get("student_id").'/'.$request->get("ac_yr_id").'/'.$request->get("year_of_study").'/show-student-results')->with('message','Marks updated successfully');
