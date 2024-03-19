@@ -25,6 +25,7 @@ class CourseWorkResultController extends Controller
     { 
     	try{
             if(Auth::user()->hasRole('staff') && (!Auth::user()->hasRole('hod') || !Auth::user()->hasRole('examination-officer'))){
+               return 1;
               $module_assignment = ModuleAssignment::find($mod_assign_id);
               if($module_assignment->final_upload_status == 'UPLOADED'){
                   return redirect()->back()->with('error','Unable to edit coursework because final results already uploaded');

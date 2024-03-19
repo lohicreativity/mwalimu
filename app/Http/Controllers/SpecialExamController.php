@@ -256,14 +256,14 @@ class SpecialExamController extends Controller
 
         $student = Student::find($request->get('student_id'));
 
-        $exam_process_status = ExaminationProcessRecord::where('campus_program_id',$student->campusProgram->id)
-                                                       ->where('study_academic_year_id',session('active_academic_year_id'))
-                                                       ->where('semester_id',session('active_semester_id'))
-                                                       ->where('year_of_study',$student->year_of_study)
-                                                       ->first();
-        if($exam_process_status){
-            return redirect()->back()->with('error','You cannot postpone at this stage.');
-        }
+        // $exam_process_status = ExaminationProcessRecord::where('campus_program_id',$student->campusProgram->id)
+        //                                                ->where('study_academic_year_id',session('active_academic_year_id'))
+        //                                                ->where('semester_id',session('active_semester_id'))
+        //                                                ->where('year_of_study',$student->year_of_study)
+        //                                                ->first();
+        // if($exam_process_status){
+        //     return redirect()->back()->with('error','You cannot postpone at this stage.');
+        // }
 
         $program_options = ProgramModuleAssignment::where('campus_program_id',$student->campusProgram->id)
                                                   ->where('study_academic_year_id',session('active_academic_year_id'))
