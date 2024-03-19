@@ -218,11 +218,11 @@
                     <thead>
                       <tr>
                         <th>SN</th>
-                        @if($request->get('reg_display_type') == 'SHOW')<th>Reg. No.</th>@endif
-                        @if($request->get('name_display_type') == 'SHOW')<th>Name</th>@endif
-                        @if($request->get('gender_display_type') == 'SHOW')<th>Sex</th>@endif
+                        @if($request->get('reg_display_type') == 'SHOW')<th class="ss-bold ss-font-xs">Reg. No.</th>@endif
+                        @if($request->get('name_display_type') == 'SHOW')<th class="ss-bold ss-font-xs">Name</th>@endif
+                        @if($request->get('gender_display_type') == 'SHOW')<th class="ss-bold ss-font-xs">Sex</th>@endif
                         @foreach($module_assignments as $assignment)
-                        <th>{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
+                        <th class="ss-bold ss-font-xs">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
                         @endforeach
 
                         @foreach($module_assignments as $assignment)
