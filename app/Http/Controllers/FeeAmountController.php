@@ -123,24 +123,25 @@ class FeeAmountController extends Controller
      */
     public function assignAsPrevious(Request $request)
     {
-         $previous_ac_year = StudyAcademicYear::latest()->offset(1)->first();
-         $study_academic_year = StudyAcademicYear::latest()->first();
+        $staff = User::find(Auth::user()->id)->staff;
+        $previous_ac_year = StudyAcademicYear::latest()->offset(1)->first();
+        $study_academic_year = StudyAcademicYear::latest()->first();
 
-         if(!$previous_ac_year){
-              return redirect()->back()->with('error','No previous academic year');
-         }
-         $amounts = FeeAmount::where('study_academic_year_id',$previous_ac_year->id)->get();
-         return $amounts;
-         foreach($amounts as $amt){
-             $amount = new FeeAmount;
-             $amount->amount_in_tzs = $amt->amount_in_tzs;
-             $amount->amount_in_usd = $amt->amount_in_usd;
-             $amount->fee_item_id = $amt->fee_item_id;
-             $amount->study_academic_year_id = $study_academic_year->id;
-             $amount->campus_id = $amt->campus_id;
-             $amount->save();
-         }
-         return redirect()->back()->with('message','Fee amounts assigned as previous successfully');
+        if(!$previous_ac_year){
+            return redirect()->back()->with('error','No previous academic year');
+        }
+        $amounts = FeeAmount::where('study_academic_year_id',$previous_ac_year->id)->where('campus_id',$staff->campus_id)->get();
+        return $amounts;
+        foreach($amounts as $amt){
+            $amount = new FeeAmount;
+            $amount->amount_in_tzs = $amt->amount_in_tzs;
+            $amount->amount_in_usd = $amt->amount_in_usd;
+            $amount->fee_item_id = $amt->fee_item_id;
+            $amount->study_academic_year_id = $study_academic_year->id;
+            $amount->campus_id = $amt->campus_id;
+            $amount->save();
+        }
+        return redirect()->back()->with('message','Fee amounts assigned as previous successfully');
     }
 
     /**
