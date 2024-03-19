@@ -217,14 +217,14 @@
                   <table class="table table-condensed table-bordered">
                     <thead>
                       <tr>
-                        <th class="ss-bold ss-font-xs">SN</th>
-                        @if($request->get('reg_display_type') == 'SHOW')<th class="ss-bold ss-font-xs">Reg. No.</th>@endif
-                        @if($request->get('name_display_type') == 'SHOW')<th class="ss-bold ss-font-xs">Name</th>@endif
-                        @if($request->get('gender_display_type') == 'SHOW')<th class="ss-bold ss-font-xs">Sex</th>@endif
+                        <th class="ss-bold ss-font-xs" rowspan="2">SN</th>
+                        @if($request->get('reg_display_type') == 'SHOW')<th class="ss-bold ss-font-xs" rowspan="2">Reg. No.</th>@endif
+                        @if($request->get('name_display_type') == 'SHOW')<th class="ss-bold ss-font-xs" rowspan="2">Name</th>@endif
+                        @if($request->get('gender_display_type') == 'SHOW')<th class="ss-bold ss-font-xs" rowspan="2">Sex</th>@endif
                         @foreach($module_assignments as $assignment)
-                        <th class="ss-bold ss-font-xs">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
+                        <th class="ss-bold ss-font-xs" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
                         @endforeach
-
+                        
                       <tr>
                       <tr>
                         @foreach($module_assignments as $assignment)
