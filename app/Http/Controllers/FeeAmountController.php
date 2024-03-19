@@ -123,7 +123,7 @@ class FeeAmountController extends Controller
      */
     public function assignAsPrevious(Request $request)
     {
-         $previous_ac_year = StudyAcademicYear::latest()->offset(2)->first();
+         $previous_ac_year = StudyAcademicYear::latest()->offset(1)->first();
          return $previous_ac_year;
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          if(!$previous_ac_year){
