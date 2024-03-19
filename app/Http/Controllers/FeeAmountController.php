@@ -51,8 +51,9 @@ class FeeAmountController extends Controller
            'fee_items'=>$fee_items,
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'staff'=>$staff,
-           'previous_yr'=>FeeAmount::distinct('study_academic_year_id')->count(),
-           'campuses'=>Campus::all()
+           'previous_yr'=>FeeAmount::where('campus_id',$staff->campus_id)->distinct('study_academic_year_id')->count(),
+           'campuses'=>Campus::all(),
+           'current_fees'=>FeeAmount::where('campus_id',$staff->campus_id)->where('study_academic_year_id',$amounts[0]->study_academic_year_id)->count()
     	];
     	return view('dashboard.finance.fee-amounts',$data)->withTitle('Fee Amounts');
     }
@@ -80,7 +81,6 @@ class FeeAmountController extends Controller
            }
         }
 
-
         (new FeeAmountAction)->store($request);
 
         return Util::requestResponse($request,'Fee amount created successfully');
@@ -103,6 +103,7 @@ class FeeAmountController extends Controller
             return redirect()->back()->with('error','Fee amount cannot be edited. It has already been used');     
             
         }
+        
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
