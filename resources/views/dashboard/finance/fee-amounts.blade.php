@@ -130,7 +130,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Fee Amounts') }}</h3><br>
-                @if($previous_yr > 1)
+                @if($previous_yr > 1 && $current_fees == 0)
                 <a href="{{ url('finance/fee-amount/assign-as-previous') }}" class="btn btn-primary">Assign As Previous</a>
                 @endif
               </div>
