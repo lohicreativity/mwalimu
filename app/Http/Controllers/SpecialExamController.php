@@ -31,7 +31,7 @@ class SpecialExamController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
             $special_exams = SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                                ->whereNull('approved_by_user_id')->whereNull('recommended_by_user_id')->latest()->paginate(20);        
+                                                ->whereNull('approved_by_user_id')->whereNotNull('recommended_by_user_id')->latest()->paginate(20);        
         }elseif(Auth::user()->hasRole('examination-officer')){
             $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
