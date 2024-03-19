@@ -130,8 +130,8 @@ class FeeAmountController extends Controller
         if(!$previous_ac_year){
             return redirect()->back()->with('error','No previous academic year');
         }
+        
         $amounts = FeeAmount::where('study_academic_year_id',$previous_ac_year->id)->where('campus_id',$staff->campus_id)->get();
-        return $amounts;
         foreach($amounts as $amt){
             $amount = new FeeAmount;
             $amount->amount_in_tzs = $amt->amount_in_tzs;
