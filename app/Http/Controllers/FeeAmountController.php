@@ -36,10 +36,10 @@ class FeeAmountController extends Controller
             }
 
             $amounts = FeeAmount::with(['feeItem','campus'])->where('campus_id',$staff->campus_id)
-            ->whereIn('study_academic_year_id',$yrIds)->get();
+            ->whereIn('study_academic_year_id',$yrIds)->latest()->get();
         }else{
             $amounts = FeeAmount::with(['feeItem','campus'])->where('campus_id',$staff->campus_id)
-            ->where('study_academic_year_id',$request->study_academic_year_id)->get();
+            ->where('study_academic_year_id',$request->study_academic_year_id)->latest()->get();
         }
 
         if(!Auth::user()->hasRole('administrator') && !Auth::user()->hasRole('arc') && !Auth::user()->hasRole('finance-officer') && count($amounts) == 0){
