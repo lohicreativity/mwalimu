@@ -98,16 +98,20 @@ class ExaminationResultController extends Controller
     { 
       ini_set('memory_limit', '-1');
       set_time_limit(120);
-      $special_exam = SpecialExam::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
-      $special_exam = Postponement::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
+      $staff = User::find(Auth::user()->id)->staff;
+      $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
+      $special_exam = SpecialExam::select('id')->whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                                ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
+                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
+      $special_exam = Postponement::select('id')->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                                ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
+                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
       if ($special_exam) {
          return redirect()->back()->with('error','There is pending request for special exams or postponement');
       }
-
-    	$campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
 
       if(ResultPublication::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
 		  ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->where('status','PUBLISHED')->count() != 0){
