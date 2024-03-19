@@ -111,10 +111,15 @@
                       @endphp
                     @foreach($core_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
+                          @php
+                            $module_name = str_replace(' Of ',' of ',$program->module->name);
+                            $module_name = str_replace(' And ',' and ',$module_name);
+                            $module_name = str_replace(' In ',' in ',$module_name);
+                          @endphp
                          <tr>
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
+                          <td>{{ $module_name }}</td>
                           <td></td>
                           <td></td>
                           <td></td>
