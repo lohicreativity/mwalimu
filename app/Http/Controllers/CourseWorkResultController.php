@@ -24,7 +24,7 @@ class CourseWorkResultController extends Controller
     public function edit(Request $request, $student_id, $mod_assign_id, $exam_id, $redirect_url = null)
     { 
     	try{
-            if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
+            if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod') || (Auth::user()->hasRole('staff') && !Auth::user()->hasRole('admission-officer'))){
                return 1;
               $module_assignment = ModuleAssignment::find($mod_assign_id);
               if($module_assignment->final_upload_status == 'UPLOADED'){
