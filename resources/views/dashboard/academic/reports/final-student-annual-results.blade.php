@@ -65,10 +65,16 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <p class="ss-no-margin"><strong>Student Name:</strong> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
-                 <p class="ss-no-margin"><strong>Programme:</strong> {{ $student->campusProgram->program->name }}</p>
-                 <p class="ss-no-margin"><strong>Registration Number:</strong> {{ $student->registration_number }}</p>
-                 <p class="ss-no-margin"><strong>Year of Study:</strong> {{ $student->year_of_study }}</p><br>
+                @php
+                $programme_name = str_replace(' Of ',' of ',$student->campusProgram->program->name);
+                $programme_name = str_replace(' And ',' and ',$programme_name);
+                $programme_name = str_replace(' In ',' in ',$programme_name);
+  
+                @endphp
+                <p class="ss-no-margin"><strong>Student Name:</strong> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
+                <p class="ss-no-margin"><strong>Programme:</strong> {{ $programme_name }}</p>
+                <p class="ss-no-margin"><strong>Registration Number:</strong> {{ $student->registration_number }}</p>
+                <p class="ss-no-margin"><strong>Year of Study:</strong> {{ $student->year_of_study }}</p><br>
 
                  @php
                     $programIds = [];
