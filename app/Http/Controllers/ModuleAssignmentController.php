@@ -1038,7 +1038,7 @@ class ModuleAssignmentController extends Controller
                   $destination = public_path('assessment_results_uploads/');
               }
 
-              
+              return $plan;
               $request->file('results_file')->move($destination, $request->file('results_file')->getClientOriginalName());
 
               $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
