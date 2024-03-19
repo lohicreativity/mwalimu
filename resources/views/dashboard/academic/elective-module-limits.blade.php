@@ -146,7 +146,9 @@
                     <th>Study Academic Year</th>
                     <th>Semester</th>
                     <th>Deadline</th>
+                    @if(Auth::user()->hasRole('admission-officer'))
                     <th>Actions</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -157,129 +159,131 @@
                     <td>{{ $limit->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $limit->semester->name }}</td>
                     <td>{{ $limit->deadline }}</td>
-                    <td>
-                      @can('edit-elective-deadline')
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-limit-{{ $limit->id }}">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                       </a>
-                       @endcan
+                    @if(Auth::user()->hasRole('admission-officer'))
+                      <td>
+                        @can('edit-elective-deadline')
+                        <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-limit-{{ $limit->id }}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Edit
+                        </a>
+                        @endcan
 
-                       <div class="modal fade" id="ss-edit-limit-{{ $limit->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit Elective (Option) Selection Deadline</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              @php
-                                  $deadline = [
-                                     'class'=>'form-control ss-datepicker',
-                                     'placeholder'=>'Deadline',
-                                     'autofocus'=>'off',
-                                     'required'=>true
-                                  ];
-                               @endphp
-                               {!! Form::open(['url'=>'academic/elective-module-limit/update','class'=>'ss-form-processing']) !!}
+                        <div class="modal fade" id="ss-edit-limit-{{ $limit->id }}">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit Elective (Option) Selection Deadline</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                @php
+                                    $deadline = [
+                                      'class'=>'form-control ss-datepicker',
+                                      'placeholder'=>'Deadline',
+                                      'autofocus'=>'off',
+                                      'required'=>true
+                                    ];
+                                @endphp
+                                {!! Form::open(['url'=>'academic/elective-module-limit/update','class'=>'ss-form-processing']) !!}
 
-                               <div class="row">
-                                  <div class="form-group col-6">
-                                    {!! Form::label('','Campus') !!}
-                                    <select name="campus_id" class="form-control" required>
-                                       <option value="">Select Campus</option>
-                                       @foreach($campuses as $campus)
-                                       <option value="{{ $campus->id }}" @if($campus->id == $limit->campus_id) selected="selected" @else disabled="disabled" @endif>{{ $campus->name }}</option>
-                                       @endforeach
-                                    </select>
-                                  </div>
-                                  <div class="form-group col-6">
-                                    {!! Form::label('','Semester') !!}
-                                    <select name="semester_id" class="form-control" required>
-                                       <option value="">Select Semester</option>
-                                       @foreach($semesters as $semester)
-                                       <option value="{{ $semester->id }}" @if($limit->semester_id == $semester->id) selected="selected" @else disabled="disabled" @endif>{{ $semester->name }}</option>
-                                       @endforeach
-                                    </select>
-                                  </div>
-                               </div>
-                               <div class="row">
-                                <div class="form-group col-6">
-                                    {!! Form::label('','Award') !!}
-                                    <select name="award_id" class="form-control" required>
-                                       <option value="">Select Award</option>
-                                       @foreach($awards as $award)
-                                       <option value="{{ $award->id }}" @if($limit->award_id == $award->id) selected="selected" @else disabled="disabled" @endif>{{ $award->name }}</option>
-                                       @endforeach
-                                    </select>
-                                  </div>
-                                <div class="form-group col-6">
-                                   {!! Form::label('','Deadline') !!}
-                                   {!! Form::text('deadline',App\Utils\DateMaker::toStandardDate($limit->deadline),$deadline) !!}
-
-                                   {!! Form::input('hidden','study_academic_year_id',$limit->study_academic_year_id) !!}
-
-                                   {!! Form::input('hidden','elective_module_limit_id',$limit->id) !!}
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Campus') !!}
+                                      <select name="campus_id" class="form-control" required>
+                                        <option value="">Select Campus</option>
+                                        @foreach($campuses as $campus)
+                                        <option value="{{ $campus->id }}" @if($campus->id == $limit->campus_id) selected="selected" @else disabled="disabled" @endif>{{ $campus->name }}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Semester') !!}
+                                      <select name="semester_id" class="form-control" required>
+                                        <option value="">Select Semester</option>
+                                        @foreach($semesters as $semester)
+                                        <option value="{{ $semester->id }}" @if($limit->semester_id == $semester->id) selected="selected" @else disabled="disabled" @endif>{{ $semester->name }}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
                                 </div>
-                              </div>
-                               <div class="ss-form-actions">
-                               <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                              </div>
-                               {!! Form::close() !!}
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                      
-                      @can('delete-elective-deadline')
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-limit-{{ $limit->id }}">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                       </a>
-                      @endcan
+                                <div class="row">
+                                  <div class="form-group col-6">
+                                      {!! Form::label('','Award') !!}
+                                      <select name="award_id" class="form-control" required>
+                                        <option value="">Select Award</option>
+                                        @foreach($awards as $award)
+                                        <option value="{{ $award->id }}" @if($limit->award_id == $award->id) selected="selected" @else disabled="disabled" @endif>{{ $award->name }}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                  <div class="form-group col-6">
+                                    {!! Form::label('','Deadline') !!}
+                                    {!! Form::text('deadline',App\Utils\DateMaker::toStandardDate($limit->deadline),$deadline) !!}
 
-                       <div class="modal fade" id="ss-delete-limit-{{ $limit->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
+                                    {!! Form::input('hidden','study_academic_year_id',$limit->study_academic_year_id) !!}
+
+                                    {!! Form::input('hidden','elective_module_limit_id',$limit->id) !!}
+                                  </div>
+                                </div>
+                                <div class="ss-form-actions">
+                                <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                                </div>
+                                {!! Form::close() !!}
+                              </div>
+                              <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
                             </div>
-                            <div class="modal-body">
-                              <div class="row">
-                                <div class="col-12">
-                                    <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this deadline from the list?</p>
-                                       <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('academic/elective-module-limit/'.$limit->id.'/destroy') }}" class="btn btn-danger">Delete</a>
-                                         </div><!-- end of ss-form-controls -->
-                                      </div><!-- end of ss-confirmation-container -->
-                                  </div><!-- end of col-md-12 -->
-                               </div><!-- end of row -->
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
+                            <!-- /.modal-content -->
                           </div>
-                          <!-- /.modal-content -->
+                          <!-- /.modal-dialog -->
                         </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                    </td>
+                        <!-- /.modal -->
+                        
+                        @can('delete-elective-deadline')
+                        <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-limit-{{ $limit->id }}">
+                                <i class="fas fa-trash">
+                                </i>
+                                Delete
+                        </a>
+                        @endcan
+
+                        <div class="modal fade" id="ss-delete-limit-{{ $limit->id }}">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-12">
+                                      <div id="ss-confirmation-container">
+                                        <p id="ss-confirmation-text">Are you sure you want to delete this deadline from the list?</p>
+                                        <div class="ss-form-controls">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                          <a href="{{ url('academic/elective-module-limit/'.$limit->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                          </div><!-- end of ss-form-controls -->
+                                        </div><!-- end of ss-confirmation-container -->
+                                    </div><!-- end of col-md-12 -->
+                                </div><!-- end of row -->
+                              </div>
+                              <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                            <!-- /.modal-content -->
+                          </div>
+                          <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                      </td>
+                    @endif
                   </tr>
                   @endforeach
                   
