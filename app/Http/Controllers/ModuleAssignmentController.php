@@ -1038,7 +1038,6 @@ class ModuleAssignmentController extends Controller
                   $destination = public_path('assessment_results_uploads/');
               }
 
-              return $plan;
               $request->file('results_file')->move($destination, $request->file('results_file')->getClientOriginalName());
 
               $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
@@ -1306,10 +1305,10 @@ class ModuleAssignmentController extends Controller
                                                    ->where('student_id',$student->id)
                                                    ->first();
                                                    
-                      $course_work_status = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))
-                                                            ->where('student_id',$student->id)
-                                                            ->where('assessment_plan_id',$plan->id)
-                                                            ->first();
+                    //   $course_work_status = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))
+                    //                                         ->where('student_id',$student->id)
+                    //                                         ->where('assessment_plan_id',$plan->id)
+                    //                                         ->first();
 
                       $res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first();
                       $result_log = new ExaminationResultLog;
