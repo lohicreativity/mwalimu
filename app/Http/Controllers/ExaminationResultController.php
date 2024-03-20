@@ -272,18 +272,16 @@ class ExaminationResultController extends Controller
                foreach($module_assignment_buffer as $key=>$module_buffer){
 
                   if($module_assignment_buffer[$result->module_assignment_id]){
-                     $course_work_based = $module_buffer['course_work_based'];
-                     $final_pass_score = $module_buffer['final_pass_score'];
-                     $course_work_pass_score = $module_buffer['course_work_pass_score'];
-                     $module_pass_mark = $module_buffer['module_pass_mark'];
+                     $course_work_based = $module_buffer[$result->module_assignment_id]['course_work_based'];
+                     $final_pass_score = $module_buffer[$result->module_assignment_id]['final_pass_score'];
+                     $course_work_pass_score = $module_buffer[$result->module_assignment_id]['course_work_pass_score'];
+                     $module_pass_mark = $module_buffer[$result->module_assignment_id]['module_pass_mark'];
                      $x = $module_assignment_buffer[$result->module_assignment_id];
                      break;
                   }
                }
 
-               if($result->module_assignment_id == 693 && $student->id == 1314){
-                  return $x.' - '.$final_pass_score;
-               }
+
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                   $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
