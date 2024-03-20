@@ -159,7 +159,7 @@ class ExaminationResultController extends Controller
          $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = 0;
 
          foreach($module_assignments as $module_assignment){
-            return $module_assignment->category;
+            return $module_assignment;
             if($module_assignment->category == 'COMPULSORY'){
                $no_of_compulsory_modules += 1;
                $total_credits += $module_assignment->programModuleAssignment->module->credit;
