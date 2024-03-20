@@ -170,6 +170,7 @@ class ExaminationResultController extends Controller
             }elseif($module_assignment->category == 'OPTIONAL'){
                $no_of_optional_modules += 1;
                $optional_modules[] = $module_assignment;
+
             }elseif($module_assignment->programModuleAssignment->category == 'OTHER'){
                $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
                $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
@@ -268,7 +269,6 @@ class ExaminationResultController extends Controller
             foreach($results as $result){
 
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
-return $module_assignment_buffer;
                foreach($module_assignment_buffer as $key=>$module_buffer){
                   if($module_assignment_buffer[$key]){
                      $course_work_based = $module_buffer['course_work_based'];
@@ -307,7 +307,7 @@ return $module_assignment_buffer;
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
                }else{
-return $final_pass_score.' - '.$result->final_score;
+
                      $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
 
 
