@@ -256,17 +256,16 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-return $module_assignment_buffer[536];
+            
             foreach($results as $result){
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
-               foreach($module_assignment_buffer as $module_buffer){
-                  if($module_buffer[$result->module_assignment_id]){
-                     $course_work_based = $module_buffer['course_work_based'];
-                     $final_pass_score = $module_buffer['final_pass_score'];
-                     $course_work_pass_score = $module_buffer['course_work_pass_score'];
-                     $module_pass_mark = $module_buffer['module_pass_mark'];
-                     break;
-                  }
+
+               if($module_assignment_buffer[$result->module_assignment_id]){
+                  $course_work_based = $module_assignment_buffer['course_work_based'];
+                  $final_pass_score = $module_assignment_buffer['final_pass_score'];
+                  $course_work_pass_score = $module_assignment_buffer['course_work_pass_score'];
+                  $module_pass_mark = $module_assignment_buffer['module_pass_mark'];
+                  break;
                }
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
