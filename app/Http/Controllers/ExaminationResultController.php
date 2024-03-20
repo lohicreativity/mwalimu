@@ -309,6 +309,10 @@ class ExaminationResultController extends Controller
                   }
                }else{
 
+                  if($result->module_assignment_id == 693){
+                     return $final_pass_score.' - '.$result->final_score;
+                  }
+
                      $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
 
 
