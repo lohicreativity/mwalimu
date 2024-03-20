@@ -122,7 +122,7 @@ class ExaminationResultController extends Controller
       $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
       $semester = Semester::find($request->get('semester_id'));
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
-         $module_assignments = ModuleAssignment::select('cateogry')->whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
+         $module_assignments = ModuleAssignment::select('category')->whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                          ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                          ->where('semester_id',$semester->id);})
                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
