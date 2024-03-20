@@ -258,7 +258,7 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-            
+
             $student_results = [];
             foreach($results as $result){
 
@@ -302,7 +302,7 @@ class ExaminationResultController extends Controller
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
                }else{
-
+return $final_pass_score.' - '.$result->final_score;
                      $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
 
 
