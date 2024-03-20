@@ -383,7 +383,12 @@ class ExaminationResultController extends Controller
                         $processed_result->retakable_type = 'carry_history';
                      }
                   }else{
-                     $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'FAIL';
+                     if($processed_result->final_remark != 'FAIL'){
+                        $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                     }else{
+                        $processed_result->final_exam_remark = 'FAIL';
+                     }
+
                   }
                }
                $processed_result->final_processed_by_user_id = Auth::user()->id;
