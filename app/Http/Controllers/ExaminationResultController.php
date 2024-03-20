@@ -270,8 +270,8 @@ class ExaminationResultController extends Controller
 
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
                foreach($module_assignment_buffer as $key=>$module_buffer){
-                  return $key.' - '.$result->module_assignment_id;
-                  if($module_assignment_buffer[$key]){
+
+                  if($module_assignment_buffer[$result->module_assignment_id]){
                      $course_work_based = $module_buffer['course_work_based'];
                      $final_pass_score = $module_buffer['final_pass_score'];
                      $course_work_pass_score = $module_buffer['course_work_pass_score'];
