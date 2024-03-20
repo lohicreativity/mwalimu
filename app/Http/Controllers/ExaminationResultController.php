@@ -160,6 +160,7 @@ class ExaminationResultController extends Controller
 
          foreach($module_assignments as $module_assignment){
             if($module_assignment->category == 'COMPULSORY'){
+               return 1;
                $no_of_compulsory_modules += 1;
                $total_credits += $module_assignment->programModuleAssignment->module->credit;
                $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
