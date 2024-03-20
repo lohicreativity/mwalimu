@@ -228,6 +228,7 @@ class ExaminationResultController extends Controller
                $missing_cases[] = $student->id;
             }
 
+            $total_optional_credits = 0;
             if(count($optional_modules) > 0){
                $break = false;
                foreach($optional_modules as $optional){
@@ -239,7 +240,7 @@ class ExaminationResultController extends Controller
                               return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
                            }
 
-                           $total_credits += $optional->programModuleAssignment->module->credit;
+                           $total_optional_credits += $optional->programModuleAssignment->module->credit;
                            $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $optional->module->course_work_based;
                            $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $optional->programModuleAssignment->final_pass_score;
                            $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $optional->programModuleAssignment->course_work_pass_score;
@@ -419,15 +420,15 @@ class ExaminationResultController extends Controller
             $remark->student_id = $student->id;
             $remark->semester_id = $request->get('semester_id');
             $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-return $student_results[0]->moduleAssignment->module;
+
             if($remark->remark != 'PASS'){
                $remark->gpa = null;
             }else{
-               $remark->gpa = Util::computeGPA($total_credits,$student_results);
+               $remark->gpa = Util::computeGPA($total_credits + $total_optional_credits,$student_results);
             }
 
-            $remark->point = Util::computeGPAPoints($total_credits, $student_results);
-            $remark->credit = $total_credits;
+            $remark->point = Util::computeGPAPoints($total_credits + $total_optional_credits, $student_results);
+            $remark->credit = $total_credits + $total_optional_credits;
             $remark->year_of_study = $year_of_study;
 
             foreach($gpa_classes as $gpa_class){
