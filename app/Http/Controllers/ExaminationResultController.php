@@ -303,13 +303,6 @@ class ExaminationResultController extends Controller
 
 
                   $processed_result->grade = $processed_result->point = null;
-                  foreach($grading_policy as $policy){
-                     if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
-                        $processed_result->grade = $policy->grade;
-                        $processed_result->point = $policy->point;
-                        break;
-                     }
-                  }
 
                   if($course_work_based == 1){
                      $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
@@ -334,6 +327,13 @@ class ExaminationResultController extends Controller
                      $processed_result->total_score = $result->final_score;
                   }
                
+                  foreach($grading_policy as $policy){
+                     if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
+                        $processed_result->grade = $policy->grade;
+                        $processed_result->point = $policy->point;
+                        break;
+                     }
+                  }
                   if($processed_result->course_work_remark == 'FAIL'){
                      $processed_result->final_exam_remark = null; // CARRY or RETAKE
 
