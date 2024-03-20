@@ -276,7 +276,7 @@ class ExaminationResultController extends Controller
                      $final_pass_score = $module_buffer['final_pass_score'];
                      $course_work_pass_score = $module_buffer['course_work_pass_score'];
                      $module_pass_mark = $module_buffer['module_pass_mark'];
-                     $x = $module_assignment_buffer;
+                     $x = $module_assignment_buffer[$result->module_assignment_id];
                      break;
                   }
                }
