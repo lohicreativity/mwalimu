@@ -55,7 +55,6 @@ class Util {
     */
    public static function computeGPA($total_credits, $results)
    {
-    return $results[0];
        $total_weights = 0;
        foreach($results as $res){
           $total_weights += ($res->point*$res->moduleAssignment->module->credit);
