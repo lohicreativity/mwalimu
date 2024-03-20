@@ -267,21 +267,14 @@ class ExaminationResultController extends Controller
 
             $student_results = [];
             foreach($results as $result){
-               $x = null;
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
-               //foreach($module_assignment_buffer as $key=>$module_buffer){
-//return $module_buffer[$result->module_assignment_id];
-                  if($module_assignment_buffer[$result->module_assignment_id]){
-                     $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
-                     $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
-                     $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
-                     $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
-                     $x = $module_assignment_buffer[$result->module_assignment_id];
 
-                  }
-               //}
-
-
+               if($module_assignment_buffer[$result->module_assignment_id]){
+                  $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
+                  $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
+                  $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
+                  $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
+               }
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                   $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
@@ -312,9 +305,9 @@ class ExaminationResultController extends Controller
                   }
                }else{
 
-                  if($result->module_assignment_id == 693 && $student->id == 1314){
-                     return $final_pass_score.' - '.$result->final_score;
-                  }
+                  // if($result->module_assignment_id == 693 && $student->id == 1314){
+                  //    return $final_pass_score.' - '.$result->final_score;
+                  // }
 
                      $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
 
