@@ -309,7 +309,7 @@ class ExaminationResultController extends Controller
                   }
                }else{
 
-                  if($result->module_assignment_id == 693){
+                  if($result->module_assignment_id == 693 && $student->id == 1314){
                      return $final_pass_score.' - '.$result->final_score;
                   }
 
