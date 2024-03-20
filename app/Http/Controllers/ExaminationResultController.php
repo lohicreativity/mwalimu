@@ -398,10 +398,10 @@ class ExaminationResultController extends Controller
                $student_results[] =  $processed_result;        // Adding students with all his/her results || Because we are dealing with a student, we just add results
             }
 
-            $pass_status = null;
+            $pass_status = 'PASS'; 
             $supp_exams = $retake_exams = $carry_exams = [];
             foreach($student_results as $result){
-               $pass_status = 'PASS';         
+                       
                if($result->final_exam_remark == 'INCOMPLETE'){
                      $pass_status = 'INCOMPLETE';
                      break;
