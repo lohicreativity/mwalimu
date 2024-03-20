@@ -269,7 +269,7 @@ class ExaminationResultController extends Controller
                      break;
                   }
                }
-return $course_work_based;
+
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                   $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
    
