@@ -119,592 +119,316 @@ class ExaminationResultController extends Controller
 
       }
 
-      $annual_module_assignments = [];
+      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
       $semester = Semester::find($request->get('semester_id'));
-      if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-         $annual_module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program){$query->where('campus_program_id',$campus_program->id)
-                                                                                                                                         ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                                //->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
-                                                ->with('module.ntaLevel:id,name','programModuleAssignment.campusProgram.program','studyAcademicYear')
-                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->get();
-      }
-
-    	if($request->get('semester_id') != 'SUPPLEMENTARY'){
-    	   $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
-                                                                                                                                                   ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
-                                                                                                                                                   ->where('semester_id',$semester->id);})
-                                               //->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
-                                               ->with('module.ntaLevel:id,name','studyAcademicYear:id','specialExams')
+      if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
+         $module_assignments = ModuleAssignment::select('cateogry')->whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
+                                                                                                                                         ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
+                                                                                                                                         ->where('semester_id',$semester->id);})
                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                               ->with('module.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                                ->get();
-      }
-        	
-      if(count($module_assignments) == 0){
-          return redirect()->back()->with('error','No results to process');
-      }
 
-      DB::beginTransaction();
-      foreach($module_assignments as $assign){
-         if($assign->programModuleAssignment->category == 'COMPULSORY'){
-            if($assign->course_work_process_status != 'PROCESSED' && $assign->module->course_work_based == 1){
-               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-            }
-            if($assign->final_upload_status == null){
-               if($request->get('semester_id') != 'SUPPLEMENTARY'){
-                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                   ->where('semester_id',$semester->id)
-                                                   ->where('module_assignment_id',$assign->id)
-                                                   ->where('type','FINAL')
-                                                   ->where('status','APPROVED')->get();
+         $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')->where('nta_level_id',$module_assignments[0]->module->ntaLevel->id)
+                                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                        ->get();
 
-                  $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                             ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                             ->where('studentship_status_id',1)
-                                             ->where('campus_program_id',$campus_program->id)->count(); 
-                                          
-                  if(count($postponed_students) == $active_students){
-                     $student_ids = [];
-                     foreach($postponed_students as $student){
-                        $student_ids[] = $student->student_id;
-                     }
-
-                     ExaminationResult::where('module_assignment_id',$assign->id)
-                                       ->whereIn('student_id',$student_ids)
-                                       ->where('exam_type','FINAL')
-                                       ->where('exam_category','FIRST')
-                                       ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
-                  }
-
-               }else{
-                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                   ->where('semester_id',$semester->id)
-                                                   ->where('module_assignment_id',$assign->id)
-                                                   ->where('type','SUPPLEMENTARY')
-                                                   ->where('status','APPROVED')->get();
-
-                  $active_students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                             ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                             ->where('studentship_status_id',1)
-                                             ->whereNotIn('academic_status_id',[1,5,6,7])
-                                             ->where('campus_program_id',$campus_program->id)->count(); 
-
-                  if(count($postponed_students) == $active_students){
-                     ExaminationResult::where('module_assignment_id',$assign->id)
-                                       ->whereIn('student_id',$postponed_students->id)
-                                       ->where('exam_type','SUPPLEMENTARY')
-                                       ->update(['final_uploaded_at'=>now(),'sup_remark'=>'POSTPONED']);
-                  }
-               }
-                                                                                        
-               if(count($postponed_students) != $active_students){
-                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-               }
-            }
-         }else{
-            $opted_students = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->get();
-            if($assign->course_work_process_status != 'PROCESSED' && count($opted_students) != 0 && $assign->module->course_work_based == 1){
-               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-            }
-            if($assign->final_upload_status == null && count($opted_students) != 0){
-               if($request->get('semester_id') != 'SUPPLEMENTARY'){
-                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                   ->where('semester_id',$semester->id)
-                                                   ->where('module_assignment_id',$assign->id)
-                                                   ->where('type','FINAL')
-                                                   ->where('status','APPROVED')->count();
-                  
-                  $active_students = count($opted_students);
-
-               }else{
-                  $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                   ->where('semester_id',$semester->id)
-                                                   ->where('module_assignment_id',$assign->id)
-                                                   ->where('type','SUPPLEMENTARY')
-                                                   ->where('status','APPROVED')->count();
-
-                  $opted_student_ids = [];                                 
-                  foreach($opted_students as $student){
-                     $opted_student_ids[] = $student->student_id;
-                  }
-
-                  $active_students = Student::whereIn('id',$opted_student_ids)
-                                             ->whereNotIn('academic_status_id',[1,5,6,7])
-                                             ->count(); 
-               }
-
-               if($postponed_students != $active_students){
-                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-               }
-            }
-         }
-      }
-
-      $student_buffer = [];
-      $annual_credit = 0;
-
-      if($request->get('semester_id') != 'SUPPLEMENTARY'){
-         if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-            $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
-                                                      ->with(['module:id,credit'])
-                                                      ->where('study_academic_year_id',$module_assignments[0]->study_academic_year_id)
-                                                      ->where('year_of_study',$module_assignments[0]->programModuleAssignment->year_of_study)
-                                                      ->where('category','COMPULSORY')->where('campus_program_id',$module_assignments[0]->programModuleAssignment->campus_program_id)
-                                                      ->get();
-         }else{
-            $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
-                                                      ->with(['module:id,credit'])
-                                                      ->where('study_academic_year_id',$module_assignments[0]->study_academic_year_id)
-                                                      ->where('year_of_study',$module_assignments[0]->programModuleAssignment->year_of_study)
-                                                      ->where('semester_id',$semester->id)
-                                                      ->where('category','COMPULSORY')
-                                                      ->where('campus_program_id',$module_assignments[0]->programModuleAssignment->campus_program_id)
-                                                      ->get();
-         }
-      }else{
-         $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
-                                                ->with(['module:id,credit'])
-                                                ->where('study_academic_year_id',$module_assignments[0]->study_academic_year_id)
-                                                ->where('year_of_study',$module_assignments[0]->programModuleAssignment->year_of_study)
-                                                ->where('category','COMPULSORY')
-                                                ->where('campus_program_id',$module_assignments[0]->programModuleAssignment->campus_program_id)
-                                                ->get();
-
-      }
-
-      if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
-                        ->where('category','COMPULSORY');})
-                        ->whereNotNull('final_uploaded_at')
-                        ->distinct()
-                        ->count('module_assignment_id') < count($core_programs)){
-
-         $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
-                                                ->where('category','COMPULSORY');})
-                                                ->whereNotNull('final_uploaded_at')
-                                                ->distinct()
-                                                ->get(['module_assignment_id']);
-         $available_program_ids = [];
-         $missing_programs = [];
-         foreach($available_programs as $pr){
-            $available_program_ids[] = $pr->moduleAssignment->programModuleAssignment->id;
-         }
-         foreach($core_programs as $prog){
-            if(!in_array($prog->id, $available_program_ids)){
-               $missing_programs[] = $prog->module->code;
-            }
-         }
-
-         return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
-      }
-
-      $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)
-                                       ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                       ->where('semester_id',$request->get('semester_id'))
-                                       ->first();
-
-      if($elective_policy){
-         if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id)
-                                                                                                                                 ->where('category','OPTIONAL');})->whereNotNull('final_uploaded_at')
-                              ->distinct()
-                              ->count('module_assignment_id') < $elective_policy->number_of_options){
-            return redirect()->back()->with('error','Some optional modules are missing final marks');
-         }
-      }
-      $total_credit = 0;
-
-      if($request->get('semester_id') != 'SUPPLEMENTARY'){
-         $semester = Semester::find($request->get('semester_id'));
-      }
-
-      foreach($core_programs as $prog){
-         if($request->get('semester_id') != 'SUPPLEMENTARY'){
-            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
-               $annual_credit += $prog->module->credit;
-            }
-         }else{
-            $annual_credit += $prog->module->credit;
-         }
-
-         if($prog->semester_id == $request->get('semester_id')){
-         $total_credit += $prog->module->credit;
-         }
-      }
-
-      foreach ($module_assignments as $assignment) {
-         $results = ExaminationResult::select('id','student_id','exam_type','exam_category','course_work_score','course_work_remark','final_score','final_remark','retakable_id')
-                                       ->whereHas('student.applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                       ->with(['retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
-                                       ->where('module_assignment_id',$assignment->id)
-                                       ->get();
-
-         $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                     ->whereHas('registrations',function($query) use($assignment){$query->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
-                                                                                                               ->where('semester_id',$assignment->programModuleAssignment->semester_id);})
-                                     ->where('campus_program_id',$assignment->programModuleAssignment->campus_program_id)->get('id');
-
-         $examined_students = $missing_students = [];
-         foreach($results as $result){
-            $examined_students[] = $result->student_id;
-         }
+         $gpa_classes = GPAClassification::where('nta_level_id',$module_assignments[0]->module->ntaLevel->id)
+                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                         ->get();
          
-         foreach($enrolled_students as $student){
-            if(!in_array($student->id, $examined_students)){
-               $missing_students[] = $student->id;
+         foreach($module_assignments as $module_assignment){
+            $module_assignmentIDs[] = $module_assignment->id;
+         }
+
+         $total_modules = count($module_assignments);
+         $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = 0;
+
+         foreach($module_assignments as $module_assignment){
+            if($module_assignment->category == 'COMPULSORY'){
+               $no_of_compulsory_modules += 1;
+               $total_credits += $module_assignment->programModuleAssignment->module->credit;
+               $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
+               $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
+               $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
+               $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
+
+            }elseif($module_assignment->category == 'OPTIONAL'){
+               $no_of_optional_modules += 1;
+               $optional_modules[] = $module_assignment;
             }
          }
 
-         foreach($results as $key=>$result){
-            $student = Student::select('id','campus_program_id')->with(['campusProgram.program.ntaLevel'])->find($result->student_id);
-
-            $optional_programs = ProgramModuleAssignment::select('id','module_id')
-                                                         ->whereHas('optedStudents',function($query) use($student){$query->where('student_id',$student->id);})
-                                                         ->with(['module:id,credit'])
-                                                         ->where('study_academic_year_id',$assignment->study_academic_year_id)
-                                                         ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
-                                                         ->where('semester_id',$request->get('semester_id'))
-                                                         ->where('category','OPTIONAL')
-                                                         ->get();
-            
-            $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
-            $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
-            $student_buffer[$student->id]['total_credit'] = $total_credit;
-            $student_buffer[$student->id]['opt_credit'] = 0;
-            $student_buffer[$student->id]['opt_prog'] = 0;
-            $student_buffer[$student->id]['opt_prog_status'] = true;
-            $student_buffer[$student->id]['annual_credit'] = 0;
-            //$student_buffer[$student->id]['results'] = [];
-
-            if($optional_programs){
-               $elective_policy = ElectivePolicy::select('number_of_options')->where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))
-               ->where('semester_id',$request->get('semester_id'))->first();
-   
-               foreach($optional_programs as $prog){
-                  $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
-                  $student_buffer[$student->id]['opt_prog'] += 1;
-               }
-   
-               if($elective_policy){
-                  if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
-                     $student_buffer[$student->id]['opt_prog_status'] = false;
-                  }
-               }                                               
-            }
-
-            $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
-
-            if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
-               $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
-
-            }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
-               $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
-
-            }else{
-               $processed_result = ExaminationResult::find($result->id);
-
-            }
-
-            if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-               $processed_result->total_score = null;
-
-            }else{
-               $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
-               
-               if($assignment->module->course_work_based == 1){
-                  $course_work = CourseWorkResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->sum('score');
-
-                  if(is_null($course_work)){
-                     $processed_result->course_work_remark = 'INCOMPLETE';
-                  }else{
-                     $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
-                  }
-
-                  $processed_result->total_score = round($result->course_work_score + $result->final_score);
-                  
-                  if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
-                     $processed_result->total_score = null;
-                  }
-
-               }else{
-                  $processed_result->course_work_remark = 'N/A';
-                  $processed_result->total_score = $result->final_score;
-
-               }
-            }
-
-            $grading_policy = GradingPolicy::select('grade','point')->where('nta_level_id',$assignment->module->ntaLevel->id)
-                                             ->where('study_academic_year_id',$assignment->studyAcademicYear->id)
-                                             ->where('min_score','<=',round($processed_result->total_score))
-                                             ->where('max_score','>=',round($processed_result->total_score))
+         if($no_of_optional_modules > 0){
+            $elective_policy = ElectivePolicy::select('number_of_options')
+                                             ->where('campus_program_id',$campus_program->id)
+                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                             ->where('semester_id',$request->get('semester_id'))
                                              ->first();
 
-            if(!$grading_policy){
-               return redirect()->back()->with('error','Some NTA levels are missing grading policies');
-            }
-               
-            if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-               if($result->course_work_remark == 'INCOMPLETE'){
-                  $processed_result->grade = 'IC';
-               }elseif($result->final_remark == 'INCOMPLETE'){
-                  $processed_result->grade = 'IF';
-               }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
-                  $processed_result->grade = 'I';
-               }
-               $processed_result->point = null;
+            $number_of_options = $elective_policy->number_of_options;
+            $no_of_expected_modules = $total_modules - ($no_of_optional_modules - $number_of_options);
 
-               if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
-                  $processed_result->final_exam_remark = $processed_result->final_remark;
-               }
-               if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
-                  $processed_result->final_exam_remark = $processed_result->course_work_remark;
-               }
-            }else{
-               if($processed_result->final_remark != 'PASS' || $processed_result->final_remark != 'FAIL' ){
-                  $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
-               }
-
-               $processed_result->grade = $grading_policy? $grading_policy->grade : null;
-               $processed_result->point = $grading_policy? $grading_policy->point : null;
-               if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
-
-                  if($processed_result->supp_processed_at){
-                     $processed_result->final_exam_remark = 'PASS';
-                     $processed_result->grade = 'C';
-                     $processed_result->point = 1;
-                  }else{
-
-                     $processed_result->final_exam_remark = 'FAIL';
-                     $processed_result->grade = 'F';
-                     $processed_result->point = 0;
-
-                     if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
-                        $processed_result->final_exam_remark = 'FAIL';
-                        $processed_result->grade = 'F';
-                        $processed_result->point = 0;
-                     }
-                  }
-               }else{
-                  $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-               }
-                  
-               if($request->get('semester_id') == 'SUPPLEMENTARY'){
-                  if($processed_result->supp_score){ 
-                     if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
-                        $processed_result->grade = 'F';
-                        $processed_result->point = 0;
-                        $processed_result->supp_remark = 'FAIL';
-                     }else{
-                        $processed_result->grade = 'C';
-                        $processed_result->point = 2;
-                        $processed_result->supp_remark = 'PASS';
-                     }
-
-                     if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                        if($assignment->programModuleAssignment->year_of_study == 1){
-                           if($processed_result->retakable_id != null){
-                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                           }else{
-                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
-                           }
-                        }else{
-                           if($processed_result->retakable_id != null){
-                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                           }else{
-                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                           }
-                        } 
-                     }else{
-                        if($processed_result->retakable_id != null){
-                           $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                        }else{
-                           $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                        }
-                     }
-   
-                     $processed_result->supp_processed_at = now();
-                     $processed_result->supp_processed_by_user_id = Auth::user()->id;
-
-                  }else{
-                     if($processed_result->supp_remark == 'INCOMPLETE'){
-                        $processed_result->final_exam_remark = 'INCOMPLETE';
-                     }
-                  }
-               }
-            }
-
-            if($result->exam_type == 'SUPP'){
-               $processed_result->total_score = $result->final_score;
-               $processed_result->grade = 'C';
-            }
-            
-            if($result->exam_category == 'CARRY'){
-               $processed_result->course_work_score = null;
-               $processed_result->course_work_remark = null;
-            }
-
-            $processed_result->final_processed_by_user_id = Auth::user()->id;
-            $processed_result->final_processed_at = now();
-            $processed_result->save();
-
-            $student_buffer[$student->id]['results'][] =  $processed_result;
-            $student_buffer[$student->id]['annual_results'][] =  $processed_result;
-
-            if($processed_result->final_exam_remark == 'RETAKE'){
-               if($hist = RetakeHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
-                  $history = $hist;
-               }else{
-                  $history = new RetakeHistory;
-               }
-
-               $history->student_id = $student->id;
-               $history->study_academic_year_id = $request->get('study_academic_year_id');
-               $history->module_assignment_id = $assignment->id;
-               $history->examination_result_id = $processed_result->id;
-               $history->save();
-
-               $exam_row = ExaminationResult::find($processed_result->id);
-               $exam_row->retakable_id = $history->id;
-               $exam_row->retakable_type = 'retake_history';
-               $exam_row->save();
-            }
-
-            if($processed_result->final_exam_remark == 'CARRY'){
-               if($hist = CarryHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
-                  $history = $hist;
-               }else{
-                  $history = new CarryHistory;
-               }
-
-               $history->student_id = $student->id;
-               $history->study_academic_year_id = $request->get('study_academic_year_id');
-               $history->module_assignment_id = $assignment->id;
-               $history->examination_result_id = $processed_result->id;
-               
-               $history->save();
-
-               $exam_row = ExaminationResult::find($processed_result->id);
-               $exam_row->retakable_id = $history->id;
-               $exam_row->retakable_type = 'carry_history';
-               $exam_row->save();
-            }
-         }
-      }
-          
-      foreach ($annual_module_assignments as $assign) {
-         $annual_results = ExaminationResult::where('module_assignment_id',$assign->id)->get();
-         if($request->get('semester_id') != 'SUPPLEMENTARY'){
-            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-               $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
-                                                      ->with(['module:id,credit'])
-                                                      ->where('study_academic_year_id',$assign->study_academic_year_id)
-                                                      ->where('year_of_study',$assign->programModuleAssignment->year_of_study)
-                                                      ->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
-                                                      ->get();
-            }else{
-               $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
-                                                      ->with(['module:id,credit'])
-                                                      ->where('study_academic_year_id',$assign->study_academic_year_id)
-                                                      ->where('year_of_study',$assign->programModuleAssignment->year_of_study)
-                                                      ->where('semester_id',$semester->id)->where('category','COMPULSORY')
-                                                      ->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
-                                                      ->get();
-            }
          }else{
-         $core_programs = ProgramModuleAssignment::select('id','semester_id','module_id')
-                                                   ->with(['module:id,credit'])
-                                                   ->where('study_academic_year_id',$assign->study_academic_year_id)
-                                                   ->where('year_of_study',$assign->programModuleAssignment->year_of_study)
-                                                   ->where('category','COMPULSORY')
-                                                   ->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
-                                                   ->get();
+            $no_of_expected_modules = $total_modules;
          }
 
+         $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
+         $module_assignments = null;
 
-         $annual_credit = 0; 
-         foreach($core_programs as $prog){
-            if($request->get('semester_id') != 'SUPPLEMENTARY'){
-                  if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
-                     $annual_credit += $prog->module->credit;
+         // THE QUERY SKIPS RETAKE AND CARRY CASES
+         $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                     ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                     ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
+                                                                                                                    ->where('semester_id',$request->get('semester_id'));}) // can simplify replace this with 1 because of semester 1
+                                     ->where('campus_program_id',$campus_program->id)
+                                     ->get('id');
+
+         $missing_cases = [];
+         DB::beginTransaction();
+         foreach($enrolled_students as $student){
+            $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
+                                        ->where('student_id',$student->id)
+                                        ->with(['retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
+                                        ->get();
+
+            if(count($results) != $no_of_expected_modules){
+               $missing_cases[] = $student->id;
+            }
+
+            if(count($optional_modules) > 0){
+               $break = false;
+               foreach($optional_modules as $optional){
+                  foreach($results as $result){
+                     $counter = 0;
+                     if($counter != $number_of_options){
+                        if($result->module_assignment_id == $optional->id){
+                           $total_credits += $optional->programModuleAssignment->module->credit;
+                           $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $optional->module->course_work_based;
+                           $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $optional->programModuleAssignment->final_pass_score;
+                           $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $optional->programModuleAssignment->course_work_pass_score;
+                           $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $optional->programModuleAssignment->module_pass_mark;
+                           $counter++;
+                        }
+                     }else{
+                        $break = true;
+                        break;
+                     }
+                  }
+                  if($break){
+                     break;
+                  }
+               }
+            }
+
+            foreach($results as $result){
+               $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
+               foreach($module_assignment_buffer as $module_buffer){
+                  if($module_buffer[$result->module_assignment_id]){
+                     $course_work_based = $module_buffer['course_work_based'];
+                     $final_pass_score = $module_buffer['final_pass_score'];
+                     $course_work_pass_score = $module_buffer['course_work_pass_score'];
+                     $module_pass_mark = $module_buffer['module_pass_mark'];
+                     break;
+                  }
+               }
+
+               if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
+                  $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+   
+               }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
+                  $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+   
+               }else{
+                  $processed_result = $result;
+               }
+
+               if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                  if($result->course_work_remark == 'INCOMPLETE'){
+                     $processed_result->grade = 'IC';
+                  }elseif($result->final_remark == 'INCOMPLETE'){
+                     $processed_result->grade = 'IF';
+                  }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
+                     $processed_result->grade = 'I';
+                  }
+                  $processed_result->point = null;
+                  $processed_result->total_score = null;
+   
+                  if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                     $processed_result->final_exam_remark = $processed_result->final_remark;
+                  }
+                  if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                     $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
                }else{
-                     $annual_credit += $prog->module->credit;
-               }
-         }
+                  if($processed_result->final_remark != 'PASS' || $processed_result->final_remark != 'FAIL' ){
+                     $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
+                  }
 
-         foreach($annual_results as $key=>$result){
+                  $processed_result->grade = $processed_result->point = null;
+                  foreach($grading_policy as $policy){
+                     if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
+                        $processed_result->grade = $policy->grade;
+                        $processed_result->point = $policy->point;
+                        break;
+                     }
+                  }
 
-            $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
+                  if($course_work_based == 1){
+                     $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
+
+                     if(is_null($course_work)){
+                        $processed_result->course_work_remark = 'INCOMPLETE';
+                     }else{
+                        $processed_result->course_work_remark = $course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                     }
+
+                     if($processed_result->course_work_remark == 'PASS'){
+                        $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                     }elseif($processed_result->course_work_remark == 'FAIL'){
+                        $processed_result->total_score = null;
+                     }
+                     
+                     if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
+                        $processed_result->total_score = null;
+                     }
+                  }else{
+                     $processed_result->course_work_remark = 'N/A';
+                     $processed_result->total_score = $result->final_score;
+                  }
                
-            $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
-               $query->where('student_id',$student->id);
-                  })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
-            
-            if(!isset($student_buffer[$student->id]['results'])){
-               $student_buffer[$student->id]['results'] = [];
-               $student_buffer[$student->id]['total_credit'] = 0;
+                  if($processed_result->course_work_remark == 'FAIL'){
+                     $processed_result->final_exam_remark = null; // CARRY or RETAKE
+
+                     if($processed_result->final_exam_remark == 'RETAKE'){
+
+                        $history = new RetakeHistory;
+
+                        $history->student_id = $student->id;
+                        $history->study_academic_year_id = $request->get('study_academic_year_id');
+                        $history->module_assignment_id = $processed_result->module_assignment_id;
+                        $history->examination_result_id = $processed_result->id;
+                        $history->save();
+         
+                        $processed_result->retakable_id = $history->id;
+                        $processed_result->retakable_type = 'retake_history';
+
+                     }elseif($processed_result->final_exam_remark == 'CARRY'){
+                        $history = new CarryHistory;
+
+                        $history->student_id = $student->id;
+                        $history->study_academic_year_id = $request->get('study_academic_year_id');
+                        $history->module_assignment_id = $processed_result->module_assignment_id;
+                        $history->examination_result_id = $processed_result->id;
+                        $history->save();
+
+                        $processed_result->retakable_id = $history->id;
+                        $processed_result->retakable_type = 'carry_history';
+                     }
+                  }else{
+                     $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                  }
+               }
+               $processed_result->final_processed_by_user_id = Auth::user()->id;
+               $processed_result->final_processed_at = now();
+               $processed_result->save();
+
+               $student_results[] =  $processed_result;        // Adding students with all his/her results || Because we are dealing with a student, we just add results
             }
 
-            // undefined array key "opt_prog_status" toyota
+            foreach($student_results as $result){         
+               $pass_status = 'PASS';
+               $supp_exams = $retake_exams = $carry_exams = [];
 
-            $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
-            $student_buffer[$student->id]['annual_results'][] =  $result;
-            $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
-            $student_buffer[$student->id]['annual_credit'] = $annual_credit;
-            $student_buffer[$student->id]['opt_prog_status'] = true;
-            $student_buffer[$student->id]['opt_credit'] = 0;
-
-            foreach($optional_programs as $prog){
-               $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
-               $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
-            }
-         }
-      }
-
-      foreach($student_buffer as $key=>$buffer){         
-         $pass_status = 'PASS';
-         $supp_exams = [];
-         $retake_exams = [];
-         $carry_exams = [];
-         $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
-         if(isset($buffer['results'])){
-            foreach($buffer['results'] as $res){
-               if($res->final_exam_remark == 'INCOMPLETE'){
-                   $pass_status = 'INCOMPLETE';
-                   break;
+               if($result->final_exam_remark == 'INCOMPLETE'){
+                     $pass_status = 'INCOMPLETE';
+                     break;
                }
 
-               if($res->final_exam_remark == 'POSTPONED'){
-                   $pass_status = 'POSTPONED';
-                   break;
+               if($result->final_exam_remark == 'POSTPONED'){
+                     $pass_status = 'POSTPONED';
+                     break;
                }
 
-               if($res->final_exam_remark == 'RETAKE'){
-                   $pass_status = 'RETAKE'; 
-                   $retake_exams[] = $res->moduleAssignment->module->code;
-                   break;
+               if($result->final_exam_remark == 'RETAKE'){
+                     $pass_status = 'RETAKE'; 
+                     $retake_exams[] = $result->moduleAssignment->module->code;
+                     break;
                }  
 
-               if($res->final_exam_remark == 'CARRY'){
-                   $pass_status = 'CARRY'; 
-                   $carry_exams[] = $res->moduleAssignment->module->code;
-                   break;
-               } 
-
-               if($res->final_exam_remark == 'REPEAT'){
-                  $pass_status = 'REPEAT'; 
-                  break;
+               if($result->final_exam_remark == 'CARRY'){
+                     $pass_status = 'CARRY'; 
+                     $carry_exams[] = $result->moduleAssignment->module->code;
+                     break;
                }
 
-               if($res->final_exam_remark == 'FAIL'){
-                   $pass_status = 'SUPP'; 
-                   $supp_exams[] = $res->moduleAssignment->module->code;
+               if($result->final_exam_remark == 'FAIL'){
+                     $pass_status = 'SUPP'; 
+                     $supp_exams[] = $result->moduleAssignment->module->code;
                }   
             }
 
-            if($request->get('semester_id') != 'SUPPLEMENTARY'){
-               if($rem = SemesterRemark::where('student_id',$key)
+            if($rem = SemesterRemark::where('student_id',$student->id)
+                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                    ->where('semester_id',$request->get('semester_id'))
+                                    ->where('year_of_study',$year_of_study)
+                                    ->first()){
+               $remark = $rem;  
+            }else{
+               $remark = new SemesterRemark;
+            }
+
+            $remark->study_academic_year_id = $request->get('study_academic_year_id');
+            $remark->student_id = $student->id;
+            $remark->semester_id = $request->get('semester_id');
+            $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+
+            if($remark->remark != 'PASS'){
+               $remark->gpa = null;
+            }else{
+               $remark->gpa = Util::computeGPA($total_credits,$student_results);
+            }
+
+            $remark->point = Util::computeGPAPoints($total_credits, $student_results);
+            $remark->credit = $total_credits;
+            $remark->year_of_study = $year_of_study;
+
+            foreach($gpa_classes as $gpa_class){
+               if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
+                  if($remark->gpa && $gpa_class){
+                     $remark->class = $gpa_class->name;
+                  }else{
+                     $remark->class = null;
+                  }
+                  break;
+               }
+            }
+
+            $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
+            $remark->save();
+      
+            if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
+                  ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->first()){
+               $publication = $pub;
+
+            }else{
+               $publication = new ResultPublication;
+               $publication->study_academic_year_id = $request->get('study_academic_year_id');
+               $publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
+               $publication->type = $request->get('semester_id') == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
+               $publication->campus_id = $campus_program->campus_id;
+               $publication->nta_level_id = $campus_program->program->nta_level_id;
+               $publication->published_by_user_id = Auth::user()->id;
+               $publication->save();
+            }
+         }
+
+         if(count($missing_cases) > 0){
+            foreach($missing_cases as $student){
+               if($rem = SemesterRemark::where('student_id',$student->id)
                                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                        ->where('semester_id',$request->get('semester_id'))
-                                       ->where('year_of_study',$buffer['year_of_study'])
+                                       ->where('year_of_study',$year_of_study)
                                        ->first()){
                   $remark = $rem;  
                }else{
@@ -712,407 +436,26 @@ class ExaminationResultController extends Controller
                }
 
                $remark->study_academic_year_id = $request->get('study_academic_year_id');
-               $remark->student_id = $key;
+               $remark->student_id = $student->id;
                $remark->semester_id = $request->get('semester_id');
-               $remark->remark = ($buffer['opt_prog_status'])? $pass_status : 'INCOMPLETE';
-
-               if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
-                  $remark->gpa = null;
-               }else{
-                  $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
-               }
-
-               $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
-               $remark->credit = $buffer['total_credit'];
-               $remark->year_of_study = $buffer['year_of_study'];
-               $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)
-                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                             ->where('min_gpa','<=',bcdiv($remark->gpa,1,1))
-                                             ->where('max_gpa','>=',bcdiv($remark->gpa,1,1))
-                                             ->first();
-
-               if($remark->gpa && $gpa_class){
-                  $remark->class = $gpa_class->name;
-               }else{
-                  $remark->class = null;
-               }
-
-               $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
-               $remark->save();
-            }
-
-            if($request->get('semester_id') == 'SUPPLEMENTARY'){
-
-               $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-
-               foreach ($sem_remarks as $rem) {
-                  $mod_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$rem){
-                        $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$rem->semester_id);
-                     })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
-                  $query->where('program_id',$campus_program->program->id);
-                     })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-
-                  $stud_buffer = [];
-                  $ann_credit = 0;
-
-                  $elective_policy = ElectivePolicy::where('campus_program_id',$rem->student->campus_program_id)->where('study_academic_year_id',$rem->study_academic_year_id)->where('semester_id',$rem->semester_id)->first();
-
-                  foreach ($mod_assignments as $assignment) {
-                     $results = ExaminationResult::whereHas('student.applicant',function($query) use($request){
-                              $query->where('intake_id',$request->get('intake_id'));
-                     })->with(['retakeHistory.retakableResults'=>function($query){
-                              $query->latest();
-                           },'carryHistory.carrableResults'=>function($query){
-                              $query->latest();
-                           }])->where('module_assignment_id',$assignment->id)->where('student_id',$key)->get();
-            
-                     $core_programs = ProgramModuleAssignment::with(['module'])
-                                                            ->where('study_academic_year_id',$assignment->study_academic_year_id)
-                                                            ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
-                                                            ->where('category','COMPULSORY')
-                                                            ->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)
-                                                            ->get();
-
-                     $tot_credit = 0;
-
-                     foreach($core_programs as $prog){
-                        $ann_credit += $prog->module->credit;
-
-                        if($prog->semester_id == $rem->semester_id){
-                           $tot_credit += $prog->module->credit;
-                        }
-                     }
-
-                     foreach($results as $resKey=>$result){
-
-                        $std = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
-                              
-                        
-                        $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($std){$query->where('student_id',$std->id);})
-                                                                     ->with(['module'])
-                                                                     ->where('study_academic_year_id',$assignment->study_academic_year_id)
-                                                                     ->where('year_of_study',$assignment->programModuleAssignment->year_of_study)
-                                                                     ->where('semester_id',$rem->semester_id)->where('category','OPTIONAL')
-                                                                     ->get();
-
-                        $stud_buffer[$key]['total_credit'] = $total_credit;
-                        $stud_buffer[$key]['opt_credit'] = 0;
-                        $stud_buffer[$key]['opt_prog_status'] = true;
-                        $stud_buffer[$key]['opt_prog'] = 0;
-                        $stud_buffer[$key]['results'][] = $result;
-
-                        foreach($optional_programs as $prog){
-                              $stud_buffer[$key]['opt_credit'] += $prog->module->credit;
-                              $stud_buffer[$key]['opt_prog'] += 1; 
-                        }
-
-                        if($elective_policy){									 
-                           if($stud_buffer[$key]['opt_prog_status'] < $elective_policy->number_of_options){
-                              $stud_buffer[$key]['opt_prog_status'] = false;
-                           }
-                        }
-                        
-                        $stud_buffer[$key]['total_credit'] = $stud_buffer[$key]['opt_credit'] + $tot_credit;           
-
-                     }
-                  }
-
-                  foreach($stud_buffer as $bufKey=>$buf){
-
-                     $sem_pass_status = 'PASS';
-                     $supp_exams = [];
-                     $retake_exams = [];
-                     $carry_exams = [];
-                     if(isset($buf['results'])){
-                        foreach($buf['results'] as $res){
-                           if($res->final_exam_remark == 'INCOMPLETE'){
-                              $sem_pass_status = 'INCOMPLETE';
-                              break;
-                           }
-
-                           if($res->final_exam_remark == 'POSTPONED'){
-                              $sem_pass_status = 'POSTPONED';
-                              break;
-                           }
-
-                           if($res->final_exam_remark == 'RETAKE'){
-                              $sem_pass_status = 'RETAKE'; 
-                              $retake_exams[] = $res->moduleAssignment->module->code;
-                              break;
-                           }  
-
-                           if($res->final_exam_remark == 'CARRY'){
-                              $sem_pass_status = 'CARRY'; 
-                              $carry_exams[] = $res->moduleAssignment->module->code;
-                              break;
-                           } 
-
-                           if($res->final_exam_remark == 'REPEAT'){
-                              $sem_pass_status = 'REPEAT'; 
-                              break;
-                           }
-
-                           if($res->final_exam_remark == 'FAIL'){
-                              $sem_pass_status = 'SUPP'; 
-                              $supp_exams[] = $res->moduleAssignment->module->code;
-                           }   
-                        }
-                     }
-                  }
-
-                  $remark = SemesterRemark::find($rem->id);
-                  $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                  $remark->student_id = $key;
-                  $remark->remark = ($stud_buffer[$key]['opt_prog_status'])? $sem_pass_status : 'INCOMPLETE';
-
-                  if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
-                        $remark->gpa = null;
-                  }else{
-                     $remark->gpa = Util::computeGPA($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results']);
-                  }
-
-                  $remark->point = Util::computeGPAPoints($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results']);
-                  $remark->credit = $stud_buffer[$key]['total_credit'];
-                  $remark->year_of_study = $buffer['year_of_study'];
-                  $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
-                  $remark->save();
-               }  
-
-               $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-
-               if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
-                  $remark = $rm;
-                  $remark->student_id = $key;
-                  $remark->year_of_study = $buffer['year_of_study'];
-                  $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                  $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                  
-                  if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
-                     $remark->gpa = null;
-
-                  }else{
-
-                     $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
-
-                     if($remark->gpa < 2.0){
-                        $remark->remark = 'FAIL&DISCO';
-                     }
-
-                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
-                     $remark->credit = $buffer['annual_credit'];
-                  } 
-                  $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)
-                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->where('min_gpa','<=',bcdiv($remark->gpa,1,1))
-                                                ->where('max_gpa','>=',bcdiv($remark->gpa,1,1))
-                                                ->first();
-
-                  if($remark->gpa && $gpa_class){
-                     $remark->class = $gpa_class->name;
-                  }else{
-                     $remark->class = null;
-                  }
-                  $remark->save();
-
-                  $status = AcademicStatus::where('name',$remark->remark)->first();
-
-                  $stud = Student::find($key);
-                  $stud->academic_status_id = $status->id;
-                  $stud->save();
-               }
-
-               if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
-               
-                  $sem_remarks = SemesterRemark::where('student_id',$key)->get();
-                  $results = ExaminationResult::where('student_id',$key)->get();
-                  $points = 0;
-                  $credits = 0;
-
-                  foreach($results as $rs){
-                        if(!is_null($rs->point)){
-                           $points += ($rs->point*$rs->moduleAssignment->programModuleAssignment->module->credit);
-                           $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
-                        }   
-                  }
-                  
-                  $overall_gpa = $credits != 0? bcdiv($points/$credits, 1,1) : null;
-                  $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)
-                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->where('min_gpa','<=',bcdiv($overall_gpa,1,1))
-                                                ->where('max_gpa','>=',bcdiv($overall_gpa,1,1))
-                                                ->first();
-
-                  if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study){
-                     $overall_remark = $gpa_class->name;
-
-                     if($rm = OverallRemark::where('student_id',$key)->first()){
-                        $remark = $rm;
-                     }else{
-                        $remark = new OverallRemark;
-                     }
-                     $remark->student_id = $key;
-                     $remark->point = $points;
-                     $remark->credit = $credits;
-                     $remark->gpa = Util::getOverallRemark($sem_remarks) != 'POSTPONED' || Util::getOverallRemark($sem_remarks) != 'INCOMPLETE'? $overall_gpa : null;
-                     
-                     if(Util::getOverallRemark($sem_remarks) == 'POSTPONED'){
-                        $remark->remark = null;
-                        $remark->class = null;
-                     }else{
-                        $remark->remark = Util::getOverallRemark($sem_remarks);
-                        $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || 
-                                          Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
-                     }
-                     $remark->save();
-                  }
-               }
-                        
-            }else{
-               $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-               //if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-                     
-               if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
-                  $remark = $rm;
-                  
-               }else{
-                  $remark = new AnnualRemark;
-               }
-
-               $remark->student_id = $key;
-               $remark->year_of_study = $buffer['year_of_study'];
-               $remark->study_academic_year_id = $request->get('study_academic_year_id');
-               $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-               //removed duplicate remark of incomplete
-               if($remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
-                  if($remark->remark == 'SUPP'){
-                     $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
-                     if($remark->gpa < 2.0){
-                        $remark->remark = 'FAIL&DISCO';
-                        $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
-                        $remark->credit = $buffer['annual_credit'];
-                     }else{
-                        $remark->gpa = null;
-                     }
-                  }else {
-                     $remark->gpa = null;
-                  }
-               }else{
-                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
-                  if($remark->gpa < 2.0){
-                     $remark->remark = 'FAIL&DISCO';
-                  }
-                  $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
-                  $remark->credit = $buffer['annual_credit'];
-               }
-               if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
-               //update annual remark
-               //   $remark->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
-                  $remark->remark = $sem_remarks[0]->remark;
-               }
-               $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)
-                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                             ->where('min_gpa','<=',bcdiv($remark->gpa,1,1))
-                                             ->where('max_gpa','>=',bcdiv($remark->gpa,1,1))
-                                             ->first();
-
-               if($remark->gpa && $gpa_class){
-                  $remark->class = $gpa_class->name;
-               }else{
-                  $remark->class = null;
-               }
-               $remark->save();
-
-               $status = AcademicStatus::where('name',$remark->remark)->first();
-               $stud = Student::find($key);
-               $stud->academic_status_id = $status->id;
-               $stud->save();
-
-               if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
-         
-                  $sem_remarks = SemesterRemark::where('student_id',$key)->get();
-                  $results = ExaminationResult::where('student_id',$key)->get();
-                  $points = 0;
-                  $credits = 0;
-
-                  foreach($results as $rs){
-                        if(!is_null($rs->point)){
-                           $points += ($rs->point*$rs->moduleAssignment->programModuleAssignment->module->credit);
-                           $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
-                        }   
-                  }
-               
-                  $overall_gpa = $credits != 0? bcdiv($points/$credits, 1,1) : null;
-                  $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)
-                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->where('min_gpa','<=',bcdiv($overall_gpa,1,1))
-                                                ->where('max_gpa','>=',bcdiv($overall_gpa,1,1))
-                                                ->first();
-
-                  if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study){
-                     $overall_remark = $gpa_class->name;
-
-                     if($rm = OverallRemark::where('student_id',$key)->first()){
-                        $remark = $rm;
-                     }else{
-                        $remark = new OverallRemark;
-                     }
-                     $remark->student_id = $key;
-                     $remark->point = $points;
-                     $remark->credit = $credits;
-                     $remark->gpa = Util::getOverallRemark($sem_remarks) != 'POSTPONED' || Util::getOverallRemark($sem_remarks) != 'INCOMPLETE'? $overall_gpa : null;
-                     
-                     if(Util::getOverallRemark($sem_remarks) == 'POSTPONED'){
-                        $remark->remark = null;
-                        $remark->class = null;
-                     }else{
-                        $remark->remark = Util::getOverallRemark($sem_remarks);
-                        $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || 
-                                          Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
-                     }
-                     $remark->save();
-                  }
-               }
-               ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',0)->where('nta_level_id',$campus_program->program->nta_level_id)->delete();
-            }
-         }
-
-         if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
-               ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->first()){
-         $publication = $pub;
-            }else{
-               $publication = new ResultPublication;
-            $publication->study_academic_year_id = $request->get('study_academic_year_id');
-            $publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
-            $publication->type = $request->get('semester_id') == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
-            $publication->campus_id = $campus_program->campus_id;
-            $publication->nta_level_id = $campus_program->program->nta_level_id;
-            $publication->published_by_user_id = Auth::user()->id;
-            $publication->save();
-         }
-      }
-
-      if(count($missing_students) > 0){
-         foreach($missing_students as $student_id){
-            if($request->get('semester_id') != 'SUPPLEMENTARY'){
-               $remark = SemesterRemark::where('student_id',$student_id)
-                                       ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                       ->where('semester_id',$request->get('semester_id'))
-                                       ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
-                                       ->first();
-
                $remark->remark = 'INCOMPLETE';
                $remark->gpa = null;
                $remark->class = null;
                $remark->save();
             }
          }
+
+      }elseif(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+
+      }elseif($request->get('semester_id') == 'SUPPLEMENTARY'){
+
       }
 
       $process = new ExaminationProcessRecord;
       $process->study_academic_year_id = $request->get('study_academic_year_id');
       $process->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
-      $process->year_of_study = explode('_',$request->get('campus_program_id'))[2];
-      $process->campus_program_id = explode('_',$request->get('campus_program_id'))[0];
+      $process->year_of_study = $year_of_study;
+      $process->campus_program_id = $campus_program->id;
       $process->save();
       DB::commit();
 
