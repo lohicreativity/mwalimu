@@ -256,15 +256,15 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-            
+
             foreach($results as $result){
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
 
                if($module_assignment_buffer[$result->module_assignment_id]){
-                  $course_work_based = $module_assignment_buffer['course_work_based'];
-                  $final_pass_score = $module_assignment_buffer['final_pass_score'];
-                  $course_work_pass_score = $module_assignment_buffer['course_work_pass_score'];
-                  $module_pass_mark = $module_assignment_buffer['module_pass_mark'];
+                  $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
+                  $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
+                  $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
+                  $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
                   break;
                }
 
