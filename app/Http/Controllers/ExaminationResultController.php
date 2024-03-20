@@ -278,7 +278,7 @@ class ExaminationResultController extends Controller
                   $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
    
                }else{
-                  $processed_result = $result;
+                  $processed_result = ExaminationResult::find($result->id);
                }
 
                if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
