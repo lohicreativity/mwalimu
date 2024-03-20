@@ -159,7 +159,6 @@ class ExaminationResultController extends Controller
          $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = 0;
 
          foreach($module_assignments as $module_assignment){
-            return $module_assignment;
             if($module_assignment->category == 'COMPULSORY'){
                $no_of_compulsory_modules += 1;
                $total_credits += $module_assignment->programModuleAssignment->module->credit;
@@ -167,7 +166,7 @@ class ExaminationResultController extends Controller
                $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
                $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
                $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
-
+return 1000;
             }elseif($module_assignment->category == 'OPTIONAL'){
                $no_of_optional_modules += 1;
                $optional_modules[] = $module_assignment;
