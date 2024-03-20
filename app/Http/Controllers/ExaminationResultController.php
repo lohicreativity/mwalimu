@@ -124,6 +124,7 @@ class ExaminationResultController extends Controller
       DB::beginTransaction();
       $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $missing_cases = [];
       $semester = Semester::find($request->get('semester_id'));
+      
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
          $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                          ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
@@ -131,6 +132,16 @@ class ExaminationResultController extends Controller
                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                ->with('module.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                                ->get();
+                                               
+         $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
+
+                                               // THE QUERY SKIPS RETAKE AND CARRY CASES
+         $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                     ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                     ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
+                                                                                                                    ->where('semester_id',$request->get('semester_id'));}) // can simplify replace this with 1 because of semester 1
+                                     ->where('campus_program_id',$campus_program->id)
+                                     ->get('id');
 
          $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')->where('nta_level_id',$module_assignments[0]->module->ntaLevel->id)
                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
@@ -160,6 +171,35 @@ class ExaminationResultController extends Controller
                $no_of_optional_modules += 1;
                $optional_modules[] = $module_assignment;
             }
+
+            if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1 && $module_assignment->category != 'OPTIONAL'){
+               return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
+            }
+
+            if($module_assignment->final_upload_status == null){
+               $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                ->where('semester_id',$semester->id)
+                                                ->where('module_assignment_id',$module_assignment->id)
+                                                ->where('type','FINAL')
+                                                ->where('status','APPROVED')->get();
+                                       
+               if(count($postponed_students) == count($enrolled_students)){
+                  $student_ids = [];
+                  foreach($postponed_students as $student){
+                     $student_ids[] = $student->student_id;
+                  }
+
+                  ExaminationResult::where('module_assignment_id',$module_assignment->id)
+                                    ->whereIn('student_id',$student_ids)
+                                    ->where('exam_type','FINAL')
+                                    ->where('exam_category','FIRST')
+                                    ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
+               }
+
+               if(count($postponed_students) != count($enrolled_students)){
+                  return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
+               }
+            }
          }
 
          if($no_of_optional_modules > 0){
@@ -176,16 +216,7 @@ class ExaminationResultController extends Controller
             $no_of_expected_modules = $total_modules;
          }
 
-         $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
          $module_assignments = null;
-
-         // THE QUERY SKIPS RETAKE AND CARRY CASES
-         $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                     ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                     ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
-                                                                                                                    ->where('semester_id',$request->get('semester_id'));}) // can simplify replace this with 1 because of semester 1
-                                     ->where('campus_program_id',$campus_program->id)
-                                     ->get('id');
 
          foreach($enrolled_students as $student){
             $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
@@ -204,6 +235,10 @@ class ExaminationResultController extends Controller
                      $counter = 0;
                      if($counter != $number_of_options){
                         if($result->module_assignment_id == $optional->id){
+                           if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
+                              return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
+                           }
+
                            $total_credits += $optional->programModuleAssignment->module->credit;
                            $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $optional->module->course_work_based;
                            $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $optional->programModuleAssignment->final_pass_score;
