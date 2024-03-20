@@ -134,7 +134,7 @@ class ExaminationResultController extends Controller
                                                ->get();
                                                
          $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
-
+         $ntaLevel = $module_assignments[0]->module->ntaLevel->name;
                                                // THE QUERY SKIPS RETAKE AND CARRY CASES
          $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                      ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
@@ -345,7 +345,17 @@ class ExaminationResultController extends Controller
                      }
                   }
                   if($processed_result->course_work_remark == 'FAIL'){
-                     $processed_result->final_exam_remark = null; // CARRY or RETAKE
+                     if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7') || Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 5')){
+                        if($year_of_study == 1){
+                           $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'CARRY';
+                           
+                        }else{
+                           $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'RETAKE';
+                           
+                        } 
+                     }else{
+                        $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'RETAKE';
+                     }
 
                      if($processed_result->final_exam_remark == 'RETAKE'){
 
