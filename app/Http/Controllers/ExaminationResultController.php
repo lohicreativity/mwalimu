@@ -219,7 +219,6 @@ class ExaminationResultController extends Controller
          $module_assignments = null;
 
          foreach($enrolled_students as $student){
-            return $module_assignment_buffer;
             $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                         ->where('student_id',$student->id)
                                         ->with(['retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
