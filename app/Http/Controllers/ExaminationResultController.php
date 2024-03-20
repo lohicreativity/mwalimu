@@ -295,10 +295,10 @@ class ExaminationResultController extends Controller
                   if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
-               }
-                  if($processed_result->final_remark != 'PASS' || $processed_result->final_remark != 'FAIL' ){
+               }else{
+
                      $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
-                  }
+
 
                   $processed_result->grade = $processed_result->point = null;
                   foreach($grading_policy as $policy){
@@ -363,7 +363,7 @@ class ExaminationResultController extends Controller
                   }else{
                      $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                   }
-               
+               }
                $processed_result->final_processed_by_user_id = Auth::user()->id;
                $processed_result->final_processed_at = now();
                $processed_result->save();
