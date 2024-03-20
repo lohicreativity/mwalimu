@@ -282,7 +282,7 @@ class ExaminationResultController extends Controller
                }
 
                if($result->module_assignment_id == 693 && $student->id == 1314){
-                  return $x;
+                  return $x.' - '.$final_pass_score;
                }
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
