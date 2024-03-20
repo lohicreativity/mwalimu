@@ -259,13 +259,11 @@ class ExaminationResultController extends Controller
 
             foreach($results as $result){
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
-return $module_assignment_buffer[$result->module_assignment_id];
-               if($module_assignment_buffer[$result->module_assignment_id]){
-                  $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
-                  $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
-                  $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
-                  $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
-               }
+
+               $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
+               $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
+               $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
+               $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                   $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
