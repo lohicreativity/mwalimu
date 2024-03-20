@@ -265,7 +265,6 @@ class ExaminationResultController extends Controller
                   $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
                   $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
-                  break;
                }
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
