@@ -122,7 +122,7 @@ class ExaminationResultController extends Controller
 
       }
       DB::beginTransaction();
-      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $missing_cases = [];
+      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $missing_cases = $student_results = [];
       $semester = Semester::find($request->get('semester_id'));
       
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
