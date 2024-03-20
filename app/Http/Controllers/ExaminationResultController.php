@@ -267,7 +267,7 @@ class ExaminationResultController extends Controller
 
             $student_results = [];
             foreach($results as $result){
-
+               $x = null;
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
                foreach($module_assignment_buffer as $key=>$module_buffer){
 
@@ -276,8 +276,13 @@ class ExaminationResultController extends Controller
                      $final_pass_score = $module_buffer['final_pass_score'];
                      $course_work_pass_score = $module_buffer['course_work_pass_score'];
                      $module_pass_mark = $module_buffer['module_pass_mark'];
+                     $x = $module_assignment_buffer;
                      break;
                   }
+               }
+
+               if($result->module_assignment_id == 693 && $student->id == 1314){
+                  return $x;
                }
 
                if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
