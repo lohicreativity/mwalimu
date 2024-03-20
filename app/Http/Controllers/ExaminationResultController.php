@@ -256,7 +256,7 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-
+return $module_assignment_buffer;
             foreach($results as $result){
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
                foreach($module_assignment_buffer as $module_buffer){
