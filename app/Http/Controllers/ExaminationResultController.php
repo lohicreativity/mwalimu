@@ -300,7 +300,6 @@ class ExaminationResultController extends Controller
 
 
                   $processed_result->grade = $processed_result->point = null;
-                  return $grading_policy;
                   foreach($grading_policy as $policy){
                      if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
                         $processed_result->grade = $policy->grade;
