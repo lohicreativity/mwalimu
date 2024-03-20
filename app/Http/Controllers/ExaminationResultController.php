@@ -122,7 +122,7 @@ class ExaminationResultController extends Controller
 
       }
       DB::beginTransaction();
-      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $missing_cases = $student_results = [];
+      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
       $semester = Semester::find($request->get('semester_id'));
       
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
@@ -219,6 +219,7 @@ class ExaminationResultController extends Controller
          $module_assignments = null;
 
          foreach($enrolled_students as $student){
+            $missing_cases = [];
             $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                         ->where('student_id',$student->id)
                                         ->with(['retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
@@ -257,8 +258,10 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-
+            
+            $student_results = [];
             foreach($results as $result){
+
                $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
 
                foreach($module_assignment_buffer as $key=>$module_buffer){
@@ -278,7 +281,7 @@ class ExaminationResultController extends Controller
                   $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
    
                }else{
-                  $processed_result = ExaminationResult::find($result->id);
+                  $processed_result = $result;
                }
 
                if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
