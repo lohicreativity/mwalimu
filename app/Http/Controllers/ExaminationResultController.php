@@ -309,7 +309,7 @@ class ExaminationResultController extends Controller
                   //    return $final_pass_score.' - '.$result->final_score;
                   // }
 
-                     $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
+                  $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
 
 
                   $processed_result->grade = $processed_result->point = null;
@@ -383,7 +383,7 @@ class ExaminationResultController extends Controller
                         $processed_result->retakable_type = 'carry_history';
                      }
                   }else{
-                     $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                     $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'FAIL';
                   }
                }
                $processed_result->final_processed_by_user_id = Auth::user()->id;
