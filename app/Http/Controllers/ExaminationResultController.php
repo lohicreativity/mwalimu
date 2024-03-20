@@ -344,6 +344,11 @@ class ExaminationResultController extends Controller
                         break;
                      }
                   }
+
+                  if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
+                     $processed_result->grade = 'F';
+                     $processed_result->point = 0;
+                  }
                   if($processed_result->course_work_remark == 'FAIL'){
                      if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7') || Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 5')){
                         if($year_of_study == 1){
