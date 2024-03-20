@@ -118,8 +118,8 @@ class ExaminationResultController extends Controller
          return redirect()->back()->with('error','Unable to process because results already published');
 
       }
-
-      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
+      DB::beginTransaction();
+      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $missing_cases = [];
       $semester = Semester::find($request->get('semester_id'));
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
          $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
@@ -184,8 +184,6 @@ class ExaminationResultController extends Controller
                                      ->where('campus_program_id',$campus_program->id)
                                      ->get('id');
 
-         $missing_cases = [];
-         DB::beginTransaction();
          foreach($enrolled_students as $student){
             $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                         ->where('student_id',$student->id)
@@ -424,8 +422,8 @@ class ExaminationResultController extends Controller
          }
 
          if(count($missing_cases) > 0){
-            foreach($missing_cases as $student){
-               if($rem = SemesterRemark::where('student_id',$student->id)
+            foreach($missing_cases as $student_id){
+               if($rem = SemesterRemark::where('student_id',$student_id)
                                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                        ->where('semester_id',$request->get('semester_id'))
                                        ->where('year_of_study',$year_of_study)
@@ -436,7 +434,7 @@ class ExaminationResultController extends Controller
                }
 
                $remark->study_academic_year_id = $request->get('study_academic_year_id');
-               $remark->student_id = $student->id;
+               $remark->student_id = $student_id;
                $remark->semester_id = $request->get('semester_id');
                $remark->remark = 'INCOMPLETE';
                $remark->gpa = null;
