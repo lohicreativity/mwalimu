@@ -166,6 +166,7 @@ class ExaminationResultController extends Controller
                $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
                $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
                $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
+               
             }elseif($module_assignment->category == 'OPTIONAL'){
                $no_of_optional_modules += 1;
                $optional_modules[] = $module_assignment;
@@ -200,7 +201,7 @@ class ExaminationResultController extends Controller
                }
             }
          }
-return $module_assignment_buffer;
+
          if($no_of_optional_modules > 0){
             $elective_policy = ElectivePolicy::select('number_of_options')
                                              ->where('campus_program_id',$campus_program->id)
