@@ -170,6 +170,11 @@ class ExaminationResultController extends Controller
             }elseif($module_assignment->category == 'OPTIONAL'){
                $no_of_optional_modules += 1;
                $optional_modules[] = $module_assignment;
+            }elseif($module_assignment->programModuleAssignment->category == 'OTHER'){
+               $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
+               $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
+               $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
+               $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
             }
 
             if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1 && $module_assignment->category != 'OPTIONAL'){
