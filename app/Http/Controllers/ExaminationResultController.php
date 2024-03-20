@@ -419,7 +419,7 @@ class ExaminationResultController extends Controller
             $remark->student_id = $student->id;
             $remark->semester_id = $request->get('semester_id');
             $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-return $student_results;
+return $student_results[0]->moduleAssignment;
             if($remark->remark != 'PASS'){
                $remark->gpa = null;
             }else{
