@@ -114,6 +114,7 @@ class ExaminationResultController extends Controller
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
       if ($special_exam) {
+         $special_exam = null;
          return redirect()->back()->with('error','There is pending request for special exams or postponement');
       }
 
@@ -136,11 +137,13 @@ class ExaminationResultController extends Controller
                                                
          $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
          $ntaLevel = $module_assignments[0]->module->ntaLevel->name;
+         
                                                // THE QUERY SKIPS RETAKE AND CARRY CASES
          $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                      ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                      ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
-                                                                                                                    ->where('semester_id',$request->get('semester_id'));}) // can simplify replace this with 1 because of semester 1
+                                                                                                                    ->where('semester_id',$request->get('semester_id')) // can simplify replace this with 1 because of semester 1
+                                                                                                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                      ->where('campus_program_id',$campus_program->id)
                                      ->get('id');
 
@@ -151,17 +154,18 @@ class ExaminationResultController extends Controller
          $gpa_classes = GPAClassification::where('nta_level_id',$module_assignments[0]->module->ntaLevel->id)
                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                          ->get();
-         
+
          foreach($module_assignments as $module_assignment){
             $module_assignmentIDs[] = $module_assignment->id;
          }
 
          $total_modules = count($module_assignments);
-         $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = 0;
+         $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = $assignment_id = 0;
 
          foreach($module_assignments as $module_assignment){
             if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
                $no_of_compulsory_modules += 1;
+               $assignment_id = $module_assignment->id;
                $total_credits += $module_assignment->programModuleAssignment->module->credit;
                $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
                $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
@@ -491,6 +495,7 @@ class ExaminationResultController extends Controller
             }
          }
 
+         $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
          if(count($missing_cases) > 0){
             foreach($missing_cases as $student_id){
                if($rem = SemesterRemark::where('student_id',$student_id)
@@ -517,6 +522,73 @@ class ExaminationResultController extends Controller
 
       }elseif($request->get('semester_id') == 'SUPPLEMENTARY'){
 
+      }
+
+      $known_missing_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','DECEASED');})
+      ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+      ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
+                                                                                     ->where('semester_id',$request->get('semester_id'))
+                                                                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'));}) // can simplify replace this with 1 because of semester 1
+      ->where('campus_program_id',$campus_program->id)
+      ->with('studentshipStatus:name')
+      ->get('id');
+
+      if(count($known_missing_cases) > 0){
+         $casesIDs = [];
+         foreach($known_missing_cases as $case){
+            $casesIDs[] = $case->id;
+         }
+
+         $postponements = Postponement::whereIn('student_id',$casesIDs)
+                                      ->where('status','POSTPONED')
+                                      ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                      ->where('semester_id',$request->get('semester_id'))
+                                      ->get();
+         foreach($known_missing_cases as $student){
+            $studentship_status = $student->studentshipStatus->name;
+
+            $exam_result = new ExaminationResult;
+            $exam_result->module_assignment_id = $assignment_id;
+            $exam_result->student_id = $student->id;
+            if($studentship_status == 'POSTPONED'){
+               foreach($postponements as $post){
+                  if($post->student_id == $student->id && $post->category == 'SEMESTER'){
+                     $exam_result->final_exam_remark = 'SPOS';
+                     break;
+                  }elseif($post->student_id == $student->id && $post->category == 'YEAR'){
+                     $exam_result->final_exam_remark = 'YPOS';
+                     break;
+                  }
+               }
+            }else{
+               $exam_result->final_exam_remark = 'DECD';
+            }
+
+            $exam_result->uploaded_by_user_id = Auth::user()->id;
+            $exam_result->processed_by_user_id = Auth::user()->id;
+            $exam_result->processed_at = now();
+            $exam_result->save();
+            
+
+            if($rem = SemesterRemark::where('student_id',$student->id)
+                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                    ->where('semester_id',$request->get('semester_id'))
+                                    ->where('year_of_study',$year_of_study)
+                                    ->first()){
+               $remark = $rem;  
+            }else{
+               $remark = new SemesterRemark;
+            }
+
+            $remark->study_academic_year_id = $request->get('study_academic_year_id');
+            $remark->student_id = $student->id;
+            $remark->semester_id = $request->get('semester_id');
+            $remark->remark = $exam_result->final_exam_remark;
+            $remark->gpa = null;
+            $remark->class = null;
+            $remark->save();
+         }
+         $known_missing_cases = null;
       }
 
       $process = new ExaminationProcessRecord;
