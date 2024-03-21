@@ -3616,7 +3616,7 @@ class ExaminationResultController extends Controller
                                                  ->where('category','!=','OPTIONAL')
                                                  ->where('campus_program_id',$student->campus_program_id)
                                                  ->get();
-         return $student->campus_program_id;
+
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
          	   $query->where('id',$student_id);
              })->with(['module'])
@@ -3625,14 +3625,25 @@ class ExaminationResultController extends Controller
              ->where('category','OPTIONAL')
              ->get();
 
-          $annual_remark = AnnualRemark::where('student_id',$student_id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
+         $program_module_assignIDs = [];
+         foreach($core_programs as $modules){
+            $program_module_assignIDs[] = $modules->id;
+         }
+
+         foreach($optional_programs as $modules){
+            $program_module_assignIDs[] = $modules->id;
+         }
+
+         $annual_remark = AnnualRemark::where('student_id',$student_id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
          // if(count($optional_programs) == 0){
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
 
-         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){
-                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','!=','OPTIONAL');
-                 })->get();
+         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){$query->where('study_academic_year_id',$ac_yr_id)
+                                                                                                                                          ->where('year_of_study',$yr_of_study)
+                                                                                                                                          ->where('category','!=','OPTIONAL');})
+                                                 ->whereIn('program_module_assignment_id',$program_module_assignIDs)
+                                                 ->get();
             $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
                      $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
                 })->get();
