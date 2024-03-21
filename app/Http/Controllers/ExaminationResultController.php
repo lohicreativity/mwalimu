@@ -3653,7 +3653,7 @@ class ExaminationResultController extends Controller
                    }
                 }
               }
-              
+              return $moduleIds;
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
