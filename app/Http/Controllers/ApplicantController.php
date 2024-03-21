@@ -677,7 +677,7 @@ class ApplicantController extends Controller
          // }
 
          if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
-            if(!$window_batch){return 1000;
+            if(!$window_batch){
                if($applicant->status == null || ($applicant->status == 'SELECTED' && !$regulator_selection)){
                   return redirect()->to('application/submission')->with('error','Application window already closed');
                }
@@ -755,7 +755,7 @@ class ApplicantController extends Controller
                                        ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING');})
                                        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function($query) {$query->whereIn('status', ['SELECTED','PENDING'])->first();}])
                                        ->where('campus_id',session('applicant_campus_id'))->latest()->first();
-return $check_selected_applicant;
+
 		/* ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
