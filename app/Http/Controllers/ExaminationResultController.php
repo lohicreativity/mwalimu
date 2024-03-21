@@ -1449,7 +1449,7 @@ class ExaminationResultController extends Controller
      * Store examination results
      */
     public function store(Request $request)
-    {
+    {return 1;
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|nullable|min:0|max:100',
