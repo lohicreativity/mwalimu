@@ -243,16 +243,16 @@ class ExaminationResultController extends Controller
                   foreach($results as $result){
                      $counter = 0;
                      if($counter != $number_of_options){
-                        if($result->module_assignment_id == $optional->id){ return 3;
+                        if($result->module_assignment_id == $optional->id){
                            if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
                               return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
                            }
 
                            $total_optional_credits += $optional->programModuleAssignment->module->credit;
-                           $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $optional->module->course_work_based;
-                           $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $optional->programModuleAssignment->final_pass_score;
-                           $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $optional->programModuleAssignment->course_work_pass_score;
-                           $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $optional->programModuleAssignment->module_pass_mark;
+                           $module_assignment_buffer[$optional->id]['course_work_based'] = $optional->module->course_work_based;
+                           $module_assignment_buffer[$optional->id]['final_pass_score'] = $optional->programModuleAssignment->final_pass_score;
+                           $module_assignment_buffer[$optional->id]['course_work_pass_score'] = $optional->programModuleAssignment->course_work_pass_score;
+                           $module_assignment_buffer[$optional->id]['module_pass_mark'] = $optional->programModuleAssignment->module_pass_mark;
                            $counter++;
                         }
                      }else{
