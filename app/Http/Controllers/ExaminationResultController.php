@@ -1625,7 +1625,7 @@ class ExaminationResultController extends Controller
                   $result = $res;
                   $result->module_assignment_id = $request->get('module_assignment_id');
                   $result->student_id = $request->get('student_id');
-                  if(!empty($request->get('final_score'))){return 1;
+                  if(!empty($request->get('final_score'))){
                      $result->course_work_score = $request->get('course_work_score');
                      $score_before = $result->final_score;
                   
@@ -1635,7 +1635,7 @@ class ExaminationResultController extends Controller
                         $result->final_score = $request->get('final_score');
                      }
 
-                  }else{
+                  }else{return 2;
                      if($result->course_work_score == null){
                         $result->delete();
                      }else{
