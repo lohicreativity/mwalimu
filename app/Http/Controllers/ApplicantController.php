@@ -598,7 +598,7 @@ class ApplicantController extends Controller
      * Edit basic information
      */
     public function editBasicInfo(Request $request)
-    {
+    { return 1;
       $app_window = ApplicationWindow::where('campus_id', session('applicant_campus_id'))->where('status', 'ACTIVE')->first();
       if(!$app_window){
          return redirect()->back()->with('error','Application window is inactive');
