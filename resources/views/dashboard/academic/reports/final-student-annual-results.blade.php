@@ -252,15 +252,20 @@
                         @if(isset($missing_modules[$semester->id]))
                           @if(count($missing_modules[$semester->id]) != 0)
                             @foreach($semester->remarks as $remark)
-                            {{ $remark->remark }}
                               @if($remark->remark == 'INCOMPLETE')
                               <tr>
-                                  @if($num_options != $opt)
-                                  <td colspan="8">
-                                    <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
-                                    {{ __('Add Results') }}
-                                    </a>
-                                  </td>
+                                  @if($missing_modules[$semester->id]->category == 'OPTIONAL' && $num_options != $opt)
+                                    <td colspan="8">
+                                      <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
+                                      {{ __('Add Results') }}
+                                      </a>
+                                    </td>
+                                  @elseif($missing_modules[$semester->id]->category != 'OPTIONAL')
+                                    <td colspan="8">
+                                      <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
+                                      {{ __('Add Results') }}
+                                      </a>
+                                    </td>
                                   @endif
                                   
                                   
