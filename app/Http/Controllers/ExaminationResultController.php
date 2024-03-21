@@ -3695,7 +3695,7 @@ class ExaminationResultController extends Controller
               ->where('status', 'PUBLISHED')
               ->where('type', 'SUPP')
               ->get();
-
+return $missing_modules;
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
