@@ -57,7 +57,6 @@
             @if($regulator_selection && $selection_released_status->selection_released == 1)
 
               @if($check_selected_applicant)
-              hello
                   @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED' )
                     <div class="alert alert-danger">
                       <h3 class="text-white" style="font-size: 18px!important;">

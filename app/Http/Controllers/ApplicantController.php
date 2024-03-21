@@ -679,7 +679,7 @@ class ApplicantController extends Controller
          // }
 
          if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
-            if(!$window_batch){
+            if(!$window_batch){return 20000;
                if($applicant->status == null || ($applicant->status == 'SELECTED' && !$regulator_selection)){
                   return redirect()->to('application/submission')->with('error','Application window already closed');
                }
