@@ -168,7 +168,7 @@ class ExaminationResultController extends Controller
                $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
                $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
 
-            }elseif($module_assignment->programModuleAssignment->category == 'OPTIONAL'){ return 1;
+            }elseif($module_assignment->programModuleAssignment->category == 'OPTIONAL'){ 
                $no_of_optional_modules += 1;
                $optional_modules[] = $module_assignment;
 
@@ -235,7 +235,7 @@ class ExaminationResultController extends Controller
             if(count($results) != $no_of_expected_modules){
                $missing_cases[] = $student->id;
             }
-
+return $optional_modules;
             $total_optional_credits = 0;
             if(count($optional_modules) > 0){ 
                $break = false;
