@@ -106,168 +106,169 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @php
-                        $count = 1;
-                      @endphp
-                    @foreach($core_programs as $program)
-                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
                         @php
-                          $count += 1;
+                          $count = 1;
                         @endphp
-                       @endif
-                      @foreach($results as $result)
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>@if($result->final_exam_remark != 'POSTPONED')
-                                <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study) }}">
-                                  {{ $result->moduleAssignment->module->code }}
-                                </a> 
-                              @else 
-                                {{ $result->moduleAssignment->module->code }} 
-                              @endif
-                          </td>
-                          <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>
-                            @if(!$result->supp_processed_at) 
-                              @if($result->course_work_score) 
-                                {{ $result->course_work_score }} 
-                              @else - @endif 
-                            @else 
-                              N/A 
-                            @endif
-                          </td>
-                          <td 
-                              @if($result->exam_type == 'APPEAL') 
-                                class="ss-grey" 
-                              @endif>
-
-                              @if(!$result->supp_processed_at)
-
-                                @if($result->final_score && ($result->final_remark == 'PASS' || $result->final_remark == 'FAIL')) 
-                                {{ $result->final_score }} 
-                                @else - @endif
-
-                              @else 
-                              N/A 
-                              @endif
-                          </td>
-                          <td>
-                              @if(!$result->supp_processed_at) 
-                                @if($result->total_score) 
-                                  {{ round($result->total_score) }} 
-                                @else - @endif 
-                              @else 
-                                {{ round($result->supp_score) }}
-                              @endif
-                          </td>
-                          <td>
-                              @if($result->supp_score && !$supp_publish_status)
-                                F
-                              @else
-
-                                @if($result->supp_processed_at)
-
-                                  @if($result->grade) 
-                                    {{ $result->grade }}*
-                                  @else - @endif
-
-
-                                @else
-                                  @if($result->grade) 
-                                  {{ $result->grade }} 
-                                  @else - @endif
-                                @endif
-                              @endif
-                            
-                          </td>
-                          <td>{{ $result->final_exam_remark }}</td>
-                        </tr>
-                          @php
-                            $count += 1;
-                          @endphp
-                         @endif
-                      @endforeach
-                    @endforeach
-                    @foreach($optional_programs as $program)
-                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
-                        {{--
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        @php
-                          $count += 1;
-                        @endphp
-                        --}}
-                       @endif
-                       @foreach($results as $result)
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>@if($result->final_exam_remark != 'POSTPONED')<a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study) }}">{{ $result->moduleAssignment->module->code }}</a> @else {{ $result->moduleAssignment->module->code }} @endif</td>
-                          <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) @if($result->course_work_score) {{ $result->course_work_score }} @else - @endif @else N/A @endif</td>
-                          <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) @if($result->total_score) {{ round($result->total_score) }} @else - @endif @else {{ round($result->supp_score) }}@endif</td>
-                          <td>
-
-                          @if($result->supp_processed_at)
-                            @if($result->grade) 
-                              {{ $result->grade }}*
-                            @else - @endif
-
-                            @else
-                            @if($result->grade) 
-                            {{ $result->grade }} 
-                            @else - @endif
-                          @endif
-
-
-                          </td>
-                          <td>{{ $result->final_exam_remark }}</td>
-                        </tr>
-                          @php
-                            $count += 1;
-                          @endphp
-                         @endif
-                      @endforeach
-                     @endforeach
-                      @if(isset($missing_modules[$semester->id]))
-                        @if(count($missing_modules[$semester->id]) != 0)
-                          @foreach($semester->remarks as $remark)
-                            @if($remark->remark == 'INCOMPLETE')
+                        @foreach($core_programs as $program)
+                          @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                             <tr>
-                                @if($num_options != $opt)
-                                <td colspan="8">
-                                  <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
-                                  {{ __('Add Results') }}
-                                  </a>
-                                </td>
-                                @endif
-                                
-                                
+                              <td>{{ $count }}</td>
+                              <td>{{ $program->module->code }}</td>
+                              <td>{{ $program->module->name }}</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
                             </tr>
+                            @php
+                              $count += 1;
+                            @endphp
+                          @endif
+                          @foreach($results as $result)
+                            @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                                <tr>
+                                  <td>{{ $count }}</td>
+                                  <td>@if($result->final_exam_remark != 'POSTPONED')
+                                        <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study) }}">
+                                          {{ $result->moduleAssignment->module->code }}
+                                        </a> 
+                                      @else 
+                                        {{ $result->moduleAssignment->module->code }} 
+                                      @endif
+                                  </td>
+                                  <td>{{ $result->moduleAssignment->module->name }}</td>
+                                  <td>
+                                    @if(!$result->supp_processed_at) 
+                                      @if($result->course_work_score) 
+                                        {{ $result->course_work_score }} 
+                                      @else - @endif 
+                                    @else 
+                                      N/A 
+                                    @endif
+                                  </td>
+                                  <td 
+                                      @if($result->exam_type == 'APPEAL') 
+                                        class="ss-grey" 
+                                      @endif>
+
+                                      @if(!$result->supp_processed_at)
+
+                                        @if($result->final_score && ($result->final_remark == 'PASS' || $result->final_remark == 'FAIL')) 
+                                        {{ $result->final_score }} 
+                                        @else - @endif
+
+                                      @else 
+                                      N/A 
+                                      @endif
+                                  </td>
+                                  <td>
+                                      @if(!$result->supp_processed_at) 
+                                        @if($result->total_score) 
+                                          {{ round($result->total_score) }} 
+                                        @else - @endif 
+                                      @else 
+                                        {{ round($result->supp_score) }}
+                                      @endif
+                                  </td>
+                                  <td>
+                                      @if($result->supp_score && !$supp_publish_status)
+                                        F
+                                      @else
+
+                                        @if($result->supp_processed_at)
+
+                                          @if($result->grade) 
+                                            {{ $result->grade }}*
+                                          @else - @endif
+
+
+                                        @else
+                                          @if($result->grade) 
+                                          {{ $result->grade }} 
+                                          @else - @endif
+                                        @endif
+                                      @endif
+                                    
+                                  </td>
+                                  <td>{{ $result->final_exam_remark }}</td>
+                                </tr>
+                                @php
+                                  $count += 1;
+                                @endphp
+                              @endif
+                          @endforeach
+                        @endforeach
+                        @foreach($optional_programs as $program)
+                          @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
+                            {{--
+                            <tr>
+                              <td>{{ $count }}</td>
+                              <td>{{ $program->module->code }}</td>
+                              <td>{{ $program->module->name }}</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            @php
+                              $count += 1;
+                            @endphp
+                            --}}
+                          @endif
+                          @foreach($results as $result)
+                            @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                              <tr>
+                                  <td>{{ $count }}</td>
+                                  <td>@if($result->final_exam_remark != 'POSTPONED')<a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study) }}">{{ $result->moduleAssignment->module->code }}</a> @else {{ $result->moduleAssignment->module->code }} @endif</td>
+                                  <td>{{ $result->moduleAssignment->module->name }}</td>
+                                  <td>@if(!$result->supp_processed_at) @if($result->course_work_score) {{ $result->course_work_score }} @else - @endif @else N/A @endif</td>
+                                  <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
+                                  <td>@if(!$result->supp_processed_at) @if($result->total_score) {{ round($result->total_score) }} @else - @endif @else {{ round($result->supp_score) }}@endif</td>
+                                  <td>
+
+                                  @if($result->supp_processed_at)
+                                    @if($result->grade) 
+                                      {{ $result->grade }}*
+                                    @else - @endif
+
+                                    @else
+                                    @if($result->grade) 
+                                    {{ $result->grade }} 
+                                    @else - @endif
+                                  @endif
+
+
+                                  </td>
+                                  <td>{{ $result->final_exam_remark }}</td>
+                                </tr>
+                                @php
+                                  $count += 1;
+                                @endphp
                             @endif
                           @endforeach
+                        @endforeach
+                        @if(isset($missing_modules[$semester->id]))
+                        kjjklljk
+                          @if(count($missing_modules[$semester->id]) != 0)
+                            @foreach($semester->remarks as $remark)
+                              @if($remark->remark == 'INCOMPLETE')
+                              <tr>
+                                  @if($num_options != $opt)
+                                  <td colspan="8">
+                                    <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
+                                    {{ __('Add Results') }}
+                                    </a>
+                                  </td>
+                                  @endif
+                                  
+                                  
+                              </tr>
+                              @endif
+                            @endforeach
+                          @endif
                         @endif
-                      @endif
                     </tbody>
                  </table>
                </div>
