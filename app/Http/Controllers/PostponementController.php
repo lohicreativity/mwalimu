@@ -38,7 +38,7 @@ class PostponementController extends Controller
                                                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                                  ->whereNotNull('recommendation')
                                                                  ->whereNotNull('recommended_by_user_id')
-          ->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
+                                                                 ->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }elseif(Auth::user()->hasRole('hod')){
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){$query->where('first_name','LIKE','%'.$request->get('query').'%')
                                                                                                                            ->orWhere('middle_name','LIKE','%'.$request->get('query').'%')
@@ -146,7 +146,7 @@ class PostponementController extends Controller
 
         if($request->get('category') == 'SEMESTER' || $request->get('category') == 'ANNUAL'){
             $student = Student::where('id',$request->get('student_id'));
-            $final_result_upload_status = ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) {$query->where('campus_program_id',$student->campus_program_id);})
+            $final_result_upload_status = ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) use($student){$query->where('campus_program_id',$student->campus_program_id);})
                                                           ->whereHas('programModuleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                           ->where('semester_id',$request->get('semester_id'));})
                                                           ->where('final_upload_status','UPLOADED')->count();
@@ -181,7 +181,6 @@ class PostponementController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
 
         (new PostponementAction)->store($request);
 
