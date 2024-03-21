@@ -27,10 +27,16 @@ class PostponementController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
-            $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
-                $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-          })->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() 
-          : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
+            $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){$query->where('first_name','LIKE','%'.$request->get('query').'%')
+                                                                                                                          ->orWhere('middle_name','LIKE','%'.$request->get('query').'%')
+                                                                                                                          ->orWhere('surname','LIKE','%'.$request->get('query').'%')
+                                                                                                                          ->orWhere('registration_number','LIKE','%'.$request->get('query').'%');})
+                                                                 ->with(['student','StudyAcademicYear.academicYear','semester'])
+                                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                                 ->get() : 
+                                                     Postponement::with(['student','StudyAcademicYear.academicYear','semester'])
+                                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                                 ->whereNotNull('recommendation')
           ->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }elseif(Auth::user()->hasRole('hod')){
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){$query->where('first_name','LIKE','%'.$request->get('query').'%')
