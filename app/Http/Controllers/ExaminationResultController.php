@@ -3631,7 +3631,7 @@ class ExaminationResultController extends Controller
          // }
 
          $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){
-                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
+                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','!=','OPTIONAL');
                  })->get();
             $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
                      $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
@@ -3653,7 +3653,7 @@ class ExaminationResultController extends Controller
                    }
                 }
               }
-              return $moduleIds;
+return $moduleIds;
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
