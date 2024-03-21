@@ -122,54 +122,54 @@
               @endif
 
               @if($applicant->multiple_admissions == 0)
-              @if($applicant->confirmation_status != 'CANCELLED')
-              <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Cancel Admission') }}</h3>
-              </div>
-              <div class="card-body">
-              <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> 
-              Congratulations! You have been successfully selected.</h3>
-              </div>
-              </div>
-              
-              <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Cancel Admission') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
+                  @if($applicant->confirmation_status != 'CANCELLED')
+                  <div class="card card-default">
+                  <div class="card-header">
+                    <h3 class="card-title">{{ __('Cancel Admission') }}</h3>
+                  </div>
+                  <div class="card-body">
+                  <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> 
+                  Congratulations! You have been successfully selected.</h3>
+                  </div>
+                  </div>
+                  
+                  <div class="card card-default">
+                  <div class="card-header">
+                    <h3 class="card-title">{{ __('Cancel Admission') }}</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <!-- form start -->
 
-              {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
-                <div class="card-body">
+                  {!! Form::open(['url'=>'application/cancel-admission','class'=>'ss-form-processing']) !!}
+                    <div class="card-body">
 
-                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Cancel Admission') }}</button>
-                </div>
-              {!! Form::close() !!}
-              </div>
+                    {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                    </div>
+                    <div class="card-footer">
+                      <button type="submit" class="btn btn-primary">{{ __('Cancel Admission') }}</button>
+                    </div>
+                  {!! Form::close() !!}
+                  </div>
 
-              @elseif($applicant->confirmation_status == 'CANCELLED')
-              <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Restore Cancelled Admission') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
+                  @elseif($applicant->confirmation_status == 'CANCELLED')
+                  <div class="card card-default">
+                  <div class="card-header">
+                    <h3 class="card-title">{{ __('Restore Cancelled Admission') }}</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <!-- form start -->
 
-              {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
-                <div class="card-body">
+                  {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
+                    <div class="card-body">
 
-                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Restore Cancelled Admission') }}</button>
-                </div>
-              {!! Form::close() !!}
-              </div>
-              @endif
+                    {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                    </div>
+                    <div class="card-footer">
+                      <button type="submit" class="btn btn-primary">{{ __('Restore Cancelled Admission') }}</button>
+                    </div>
+                  {!! Form::close() !!}
+                  </div>
+                  @endif
               @endif
           </div>
         </div>
