@@ -3616,7 +3616,7 @@ class ExaminationResultController extends Controller
                                                  ->where('category','!=','OPTIONAL')
                                                  ->where('campus_program_id',$student->campus_program_id)
                                                  ->get();
-         
+         return $student->campus_program_id;
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
          	   $query->where('id',$student_id);
              })->with(['module'])
