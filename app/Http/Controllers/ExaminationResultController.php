@@ -100,9 +100,9 @@ class ExaminationResultController extends Controller
       set_time_limit(120);
 
       $staff = User::find(Auth::user()->id)->staff;
-      if($staff->id != 2){
-         return redirect()->back()->with('error','You are not allowed to process examination results at the moment'); 
-      }
+      // if($staff->id != 2){
+      //    return redirect()->back()->with('error','You are not allowed to process examination results at the moment'); 
+      // }
       $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
       $special_exam = SpecialExam::select('id')->whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
