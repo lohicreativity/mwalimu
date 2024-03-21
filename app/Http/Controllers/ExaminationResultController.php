@@ -537,45 +537,18 @@ class ExaminationResultController extends Controller
     { 
         try{
             $student = Student::findOrFail($student_id);
-            $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])
-            ->where('student_id',$student->id)->where('module_assignment_id',$request->get('module_assignment_id'))
-            ->get();
-            $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study,$semester_id){
-                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('semester_id',$semester_id);
-                 })->get();
-            $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study,$semester_id){
-                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->where('semester_id',$semester_id);
-                })->get();
 
-              $moduleIds = [];
+            if(!empty($request->get('module_assignment_id'))){
 
-              foreach ($core_program_modules as $module) {
-                foreach($results as $result){
-                   if($result->module_assignment_id == $module->id){
-                      $moduleIds[] = $module->id;
-                   }
-                }
-              }
-
-              foreach ($opt_program_modules as $module) {
-                foreach($results as $result){
-                   if($result->module_assignment_id == $module->id){
-                      $moduleIds[] = $module->id;
-                   }
-                }
-              }
-              
-              $missing_modules = [];
-              foreach ($core_program_modules as $module) {
-                 if(!in_array($module->id, $moduleIds)){
-                    $missing_modules[] = $module;
-                 }
-              }
-              foreach ($opt_program_modules as $module) {
-                 if(!in_array($module->id, $moduleIds)){
-                    $missing_modules[] = $module;
-                 }
-              }
+               $missing_modules = ModuleAssignment::where('id',$request->get('module_assignment_id'))->get();
+            }else{
+               $missing_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study,$semester_id,$student){$query->where('study_academic_year_id',$ac_yr_id)
+                                                                                                                                                       ->where('year_of_study',$yr_of_study)
+                                                                                                                                                       ->where('category','OPTIONAL')
+                                                                                                                                                       ->where('semester_id',$semester_id)
+                                                                                                                                                       ->where('campus_program_id',$student->campus_program_id);})
+                                                 ->get();
+            }
 
             $data = [
                'missing_modules'=>$missing_modules,
