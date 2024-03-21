@@ -242,7 +242,7 @@ class ExaminationResultController extends Controller
                foreach($optional_modules as $optional){
                   foreach($results as $result){
                      $counter = 0;
-                     if($counter != $number_of_options){ return 2;
+                     if($counter != $number_of_options){
                         if($result->module_assignment_id == $optional->id){ return 3;
                            if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
                               return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
