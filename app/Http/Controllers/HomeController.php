@@ -86,7 +86,7 @@ class HomeController extends Controller
 					}				
 				}				
 			}			
-		}		
+		}		return 1;
 
         $data = [
            'staff'=>$staff,
