@@ -250,9 +250,9 @@
                           @endforeach
                         @endforeach
                         @if(isset($missing_modules[$semester->id]))
-                        kjjklljk
                           @if(count($missing_modules[$semester->id]) != 0)
                             @foreach($semester->remarks as $remark)
+                            {{ $remark->remark }}
                               @if($remark->remark == 'INCOMPLETE')
                               <tr>
                                   @if($num_options != $opt)
