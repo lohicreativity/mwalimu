@@ -3644,9 +3644,11 @@ class ExaminationResultController extends Controller
                                                                                                                                           ->where('category','!=','OPTIONAL');})
                                                  ->whereIn('program_module_assignment_id',$program_module_assignIDs)
                                                  ->get();
-            $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
-                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
-                })->get();
+         $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){$query->where('study_academic_year_id',$ac_yr_id)
+                                                                                                                                        ->where('year_of_study',$yr_of_study)
+                                                                                                                                        ->where('category','OPTIONAL');})
+                                                ->whereIn('program_module_assignment_id',$program_module_assignIDs)
+                                                ->get();
 
               $moduleIds = [];
               foreach ($core_program_modules as $module) {
@@ -3672,7 +3674,7 @@ class ExaminationResultController extends Controller
                     $i++;
                  }
               }
-              return count($core_program_modules).' - '.$i;
+
               foreach ($opt_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
