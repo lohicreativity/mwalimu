@@ -57,6 +57,7 @@ class ExaminationResultController extends Controller
          $second_semester_publish_status = true;
       }
 	  $staff = User::find(Auth::user()->id)->staff;
+     $exam_process_records = null;
      if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('administrator')){
          $exam_process_records = ExaminationProcessRecord::with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
       
