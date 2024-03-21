@@ -241,7 +241,7 @@ class ExaminationResultController extends Controller
                $break = false;
                foreach($optional_modules as $optional){
                   foreach($results as $result){
-                     $counter = 0; return 1;
+                     $counter = 0;
                      if($counter != $number_of_options){ return 2;
                         if($result->module_assignment_id == $optional->id){ return 3;
                            if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
