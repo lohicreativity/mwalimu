@@ -90,9 +90,9 @@ class HomeController extends Controller
 
         $data = [
            'staff'=>$staff,
-           'postponements_arc_count'=>Postponement::whereNull('postponed_by_user_id')->whereNotNull('recommended_by_user_id')->count(),
-           'resumptions_arc_count'=>Postponement::whereNotNull('postponed_by_user_id')->whereNotNull('resumed_by_user_id')->count(),
-           'special_exams_arc_count'=>SpecialExamRequest::whereNull('approved_by_user_id')->whereNotNull('recommended_by_user_id')->count(),
+           'postponements_arc_count'=>Postponement::whereNull('postponed_by_user_id')->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->count(),
+           'resumptions_arc_count'=>Postponement::whereNotNull('postponed_by_user_id')->whereNotNull('resumption_recommendation')->whereNotNull('resumed_by_user_id')->count(),
+           'special_exams_arc_count'=>SpecialExamRequest::whereNull('approved_by_user_id')->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->count(),
            'postponements_hod_count'=>Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('department_id', $staff->department_id);})
 									->whereNull('recommended_by_user_id')->count(),
