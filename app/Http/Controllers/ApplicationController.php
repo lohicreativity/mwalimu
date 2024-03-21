@@ -6696,7 +6696,7 @@ class ApplicationController extends Controller
     public function showConfirmAdmission(Request $request)
     {
         $student = $applicant = null;
-        if($request->get('student_confirmation') == 1){
+        if($request->get('student_confirmation',1)){
             $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
             $applicant = $student->applicant;
         }else{
