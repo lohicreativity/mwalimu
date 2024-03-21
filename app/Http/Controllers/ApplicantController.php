@@ -696,7 +696,7 @@ class ApplicantController extends Controller
          if(($applicant->status == null && $applicant->is_transfered != 1) || ($applicant->status == 'SELECTED' && !$regulator_selection)){ 
             return redirect()->to('application/submission')->with('error','Application window already closed');
          }
-         if(($applicant->multiple_admissions !== null || $applicant->multiple_admissions > 0) && $applicant->status == 'SELECTED'){ return 1;
+         if($applicant->multiple_admissions > 0 && $applicant->status == 'SELECTED'){ return 1;
             return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
          }
       }else{
