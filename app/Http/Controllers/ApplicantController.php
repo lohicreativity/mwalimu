@@ -628,8 +628,6 @@ class ApplicantController extends Controller
                                           ->where('program_level_id',$applicant->program_level_id)
                                           ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                                           ->first();
-
-                                          return $window_batch;
          // if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
          //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
          //                                    ->where('program_level_id',$applicant->program_level_id)
@@ -678,8 +676,8 @@ class ApplicantController extends Controller
          //                                    ->first();
          // }
 
-         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){return 111;
-            if(!$window_batch){return 20000;
+         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
+            if(!$window_batch){return 1000;
                if($applicant->status == null || ($applicant->status == 'SELECTED' && !$regulator_selection)){
                   return redirect()->to('application/submission')->with('error','Application window already closed');
                }
