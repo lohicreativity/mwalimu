@@ -57,7 +57,7 @@
                   $final_score = [
                      'placeholder'=>'Final score',
                      'class'=>'form-control',
-
+                     'required'=>false
                   ];
 
                   $supp_score = [
