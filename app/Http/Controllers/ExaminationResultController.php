@@ -1449,10 +1449,10 @@ class ExaminationResultController extends Controller
      * Store examination results
      */
     public function store(Request $request)
-    {return 1;
+    {
         try{
             $validation = Validator::make($request->all(),[
-                'final_score'=>'numeric|nullable|min:0|max:100',
+                'final_score'=>'numeric|min:0|max:100',
             ]);
 
             if($validation->fails()){
@@ -1506,11 +1506,7 @@ class ExaminationResultController extends Controller
                 $result->course_work_score = $request->get('course_work_score');
                 $result->final_score = $request->get('final_score');
                 }else{
-                   if($result->course_work_score == null){
-                     $result->delete();
-                   }else{
-                     $result->final_score = null; 
-                   }
+                   $result->final_score = null;
                 }
                 if($request->get('supp_score')){
                    $result->supp_score = $request->get('supp_score');
@@ -1570,7 +1566,7 @@ class ExaminationResultController extends Controller
     {
         try{
             $validation = Validator::make($request->all(),[
-                'final_score'=>'numeric|min:0|max:100',
+                'final_score'=>'numeric|nullable|min:0|max:100',
                 'supp_score'=>'min:0|max:100',
             ]);
 
@@ -1630,8 +1626,8 @@ class ExaminationResultController extends Controller
                   $result->module_assignment_id = $request->get('module_assignment_id');
                   $result->student_id = $request->get('student_id');
                   if($request->has('final_score')){
-                  $result->course_work_score = $request->get('course_work_score');
-                  $score_before = $result->final_score;
+                     $result->course_work_score = $request->get('course_work_score');
+                     $score_before = $result->final_score;
                   
                      if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
                         return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
@@ -1640,7 +1636,11 @@ class ExaminationResultController extends Controller
                      }
 
                   }else{
-                     $result->final_score = null;
+                     if($result->course_work_score == null){
+                        $result->delete();
+                     }else{
+                        $result->final_score =null;
+                     }
                   }
                   if($request->get('appeal_score')){
                      $result->appeal_score = $request->get('appeal_score');
