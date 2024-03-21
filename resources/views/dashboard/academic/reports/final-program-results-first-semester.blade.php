@@ -217,7 +217,7 @@
                   <table class="table table-condensed table-bordered">
                     <thead>
                       <tr>
-                        <th  class="ss-bold ss-font-xs" rowspan="2">SN</th>
+                        <th class="ss-bold ss-font-xs" rowspan="4">SN</th>
                         @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="2">Reg. No.</th>@endif
                         @if($request->get('name_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="2">Name</th>@endif
                         @if($request->get('gender_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="2">Sex</th>@endif
