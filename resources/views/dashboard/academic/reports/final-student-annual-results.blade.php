@@ -254,13 +254,14 @@
                             @foreach($semester->remarks as $remark)
                               @if($remark->remark == 'INCOMPLETE')
                               <tr>
-                                  @if($missing_modules[$semester->id]->category == 'OPTIONAL' && $num_options != $opt)
+                                @foreach($missing_modules[1] as $missing_module)
+                                  @if($missing_module->programModuleAssignment->category == 'OPTIONAL' && $num_options != $opt)
                                     <td colspan="8">
                                       <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
                                       {{ __('Add Results') }}
                                       </a>
                                     </td>
-                                  @elseif($missing_modules[$semester->id]->category != 'OPTIONAL')
+                                  @elseif($missing_module->programModuleAssignment->category != 'OPTIONAL')
                                     <td colspan="8">
                                       <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
                                       {{ __('Add Results') }}
