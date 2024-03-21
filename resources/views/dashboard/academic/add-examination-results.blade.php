@@ -74,7 +74,7 @@
                       <select name="module_assignment_id" class="form-control" required>
                           <option value="">Select Module</option>
                           @foreach($missing_modules as $module)
-                          <option value="{{ $module->id }}">{{ $module->programModuleAssignment->module->code }}</option>
+                          <option value="{{ $module->id }}" @if(count($missing_modules) == 1) selected="selected" @endif>{{ $module->programModuleAssignment->module->code }}</option>
                           @endforeach
                       </select>
                     </div>
