@@ -624,11 +624,12 @@ class ApplicantController extends Controller
       //if($applicant->status != null){
 
       if($applicant->status=='ADMITTED' || ($applicant->status=='SELECTED') && $regulator_selection){
-         return 10000;
          $window_batch = ApplicationBatch::where('id', $applicant->batch_id)
                                           ->where('program_level_id',$applicant->program_level_id)
                                           ->where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                                           ->first();
+
+                                          return $window_batch;
          // if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
          //    $window_batch = ApplicationBatch::where('application_window_id', $app_window->id)
          //                                    ->where('program_level_id',$applicant->program_level_id)
