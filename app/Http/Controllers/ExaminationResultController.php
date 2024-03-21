@@ -538,7 +538,7 @@ class ExaminationResultController extends Controller
         try{
             $student = Student::findOrFail($student_id);
             $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])
-            ->where('student_id',$student->id)->where('module_assign_id',$request->get('module_assignment_id'))
+            ->where('student_id',$student->id)->where('module_assignment_id',$request->get('module_assignment_id'))
             ->get();
             $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study,$semester_id){
                    $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('semester_id',$semester_id);
