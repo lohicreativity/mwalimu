@@ -1452,7 +1452,7 @@ class ExaminationResultController extends Controller
     {
         try{
             $validation = Validator::make($request->all(),[
-                'final_score'=>'numeric|min:0|max:100',
+                'final_score'=>'numeric|nullable|min:0|max:100',
             ]);
 
             if($validation->fails()){
@@ -1506,7 +1506,11 @@ class ExaminationResultController extends Controller
                 $result->course_work_score = $request->get('course_work_score');
                 $result->final_score = $request->get('final_score');
                 }else{
-                   $result->final_score = null;
+                   if($result->course_work_score == null){
+                     $result->delete();
+                   }else{
+                     $result->final_score = null; 
+                   }
                 }
                 if($request->get('supp_score')){
                    $result->supp_score = $request->get('supp_score');
