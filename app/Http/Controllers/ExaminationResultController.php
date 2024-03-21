@@ -3653,7 +3653,7 @@ class ExaminationResultController extends Controller
                    }
                 }
               }
-return $moduleIds;
+
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
@@ -3665,7 +3665,6 @@ return $moduleIds;
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
                  }
               }
-
          
               $num_options = DB::table('elective_policies')
               ->where('campus_program_id', $student->campus_program_id)
