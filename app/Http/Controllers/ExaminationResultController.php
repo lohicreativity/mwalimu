@@ -158,7 +158,7 @@ class ExaminationResultController extends Controller
 
          $total_modules = count($module_assignments);
          $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = 0;
-return $module_assignments;
+
          foreach($module_assignments as $module_assignment){
             if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
                $no_of_compulsory_modules += 1;
@@ -208,7 +208,7 @@ return $module_assignments;
                }
             }
          }
-
+return $module_assignment_buffer;
          if($no_of_optional_modules > 0){
             $elective_policy = ElectivePolicy::select('number_of_options')
                                              ->where('campus_program_id',$campus_program->id)
