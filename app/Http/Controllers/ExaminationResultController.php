@@ -3661,7 +3661,7 @@ class ExaminationResultController extends Controller
                     $i++;
                  }
               }
-              return $i;
+              return count($core_program_modules).' - '.$i;
               foreach ($opt_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
