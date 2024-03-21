@@ -225,7 +225,8 @@
                         <th class="ss-bold ss-font-xs" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
                         @endforeach
                         <th colspan="5"></th>
-
+                      <tr>
+                      <tr>
                         @foreach($module_assignments as $assignment)
                         <th class="ss-bold ss-font-xs">CA</th>
                         <th class="ss-bold ss-font-xs">FE</th>
