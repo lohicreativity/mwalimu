@@ -693,14 +693,14 @@ class ApplicantController extends Controller
       }
 
       if(!$window_batch){
-         if(($applicant->status == null && $applicant->is_transfered != 1) || ($applicant->status == 'SELECTED' && !$regulator_selection)){
+         if(($applicant->status == null && $applicant->is_transfered != 1) || ($applicant->status == 'SELECTED' && !$regulator_selection)){ return 1;
             return redirect()->to('application/submission')->with('error','Application window already closed');
          }
-         if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
+         if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){ return 2;
             return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
          }
       }else{
-         if($applicant->status != null && $applicant->status != 'SUBMITTED' && !$regulator_selection){
+         if($applicant->status != null && $applicant->status != 'SUBMITTED' && !$regulator_selection){ return 3;
             return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
          }
       }
