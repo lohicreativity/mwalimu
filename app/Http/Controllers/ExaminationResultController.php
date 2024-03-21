@@ -3656,6 +3656,7 @@ class ExaminationResultController extends Controller
 
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
+               return $module->id;
                  if(!in_array($module->id, $moduleIds)){
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
                  }
