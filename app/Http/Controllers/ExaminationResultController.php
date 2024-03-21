@@ -2657,14 +2657,13 @@ class ExaminationResultController extends Controller
 	    	        })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
 	    	    	$query->where('program_id',$campus_program->program->id);
 	    	        })->with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear','programModuleAssignment'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-
-                if(ModuleAssignment::whereHas('examinationResults',function($query){
-                     $query->whereNull('final_processed_at');
-                })->whereHas('programModuleAssignment',function($query) use($request){
-                     $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
-                })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
-                     $query->where('program_id',$campus_program->program->id);
-                })->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){return 2;
+return $module_assignments->id;
+                if(ModuleAssignment::whereHas('examinationResults',function($query){$query->whereNull('final_processed_at');})
+                                   ->whereHas('programModuleAssignment',function($query) use($request){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
+                                                                                                             ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
+                                                                                                             ->where('semester_id',$request->get('semester_id'));})
+                                 //   ->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
+                                   ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
                    return redirect()->back()->with('error','Results not processed');
                 }
 
