@@ -263,7 +263,7 @@
                                     </td>
                                   @elseif($missing_module->programModuleAssignment->category != 'OPTIONAL')
                                     <td colspan="8">
-                                      <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
+                                      <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results?module_assignment_id'.$missing_module->id) }}">
                                       {{ __('Add Results') }}
                                       </a>
                                     </td>
