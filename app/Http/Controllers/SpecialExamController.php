@@ -31,16 +31,16 @@ class SpecialExamController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
             $special_exams = SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                                ->whereNotNull('recommended_by_user_id')->latest()->paginate(20);        
+                                               ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->paginate(20);        
         }elseif(Auth::user()->hasRole('examination-officer')){
             $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                                ->whereNull('approved_by_user_id')->latest()->paginate(20); 
+                                                ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->paginate(20); 
         }elseif(Auth::user()->hasRole('hod')){
             $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
                                                 ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                                ->whereNull('approved_by_user_id')->latest()->paginate(20); 
+                                                ->latest()->paginate(20); 
         }
         
         if(count($special_exams) == 0){
