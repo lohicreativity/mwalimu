@@ -1621,11 +1621,11 @@ class ExaminationResultController extends Controller
             if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
             ->where('student_id',$request->get('student_id'))
             ->where('exam_type',$request->get('exam_type'))
-            ->first()){return 1;
+            ->first()){
                   $result = $res;
                   $result->module_assignment_id = $request->get('module_assignment_id');
                   $result->student_id = $request->get('student_id');
-                  if($request->has('final_score')){
+                  if($request->has('final_score')){return 1;
                      $result->course_work_score = $request->get('course_work_score');
                      $score_before = $result->final_score;
                   
