@@ -209,7 +209,7 @@
                   @if(!Auth::user()->hasRole('hod'))
                     @if(!$request->get('query'))
                      <tr>
-                       <td colspan="9">
+                       <td colspan="10">
                         
                         <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
                         <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
