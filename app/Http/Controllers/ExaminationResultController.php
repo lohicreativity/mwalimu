@@ -3654,13 +3654,14 @@ class ExaminationResultController extends Controller
                 }
               }
 
-              $missing_modules = [];
+              $missing_modules = []; $i = 0;
               foreach ($core_program_modules as $module) {
-               return $module->id;
                  if(!in_array($module->id, $moduleIds)){
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
+                    $i++;
                  }
               }
+              return $i;
               foreach ($opt_program_modules as $module) {
                  if(!in_array($module->id, $moduleIds)){
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
