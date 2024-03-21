@@ -1637,6 +1637,7 @@ class ExaminationResultController extends Controller
 
                   }else{
                      if($result->course_work_score == null){
+                        return 1;
                         $result->delete();
                      }else{
                         $result->final_score =null;
