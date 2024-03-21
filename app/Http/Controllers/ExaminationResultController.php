@@ -1449,7 +1449,7 @@ class ExaminationResultController extends Controller
      * Store examination results
      */
     public function store(Request $request)
-    {return 1;
+    {
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
@@ -1504,7 +1504,7 @@ class ExaminationResultController extends Controller
                 $result->student_id = $request->get('student_id');
                 if($request->has('final_score')){
                 $result->course_work_score = $request->get('course_work_score');
-                $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                $result->final_score = $request->get('final_score');
                 }else{
                    $result->final_score = null;
                 }
