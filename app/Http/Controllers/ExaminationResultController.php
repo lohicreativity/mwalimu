@@ -534,7 +534,7 @@ class ExaminationResultController extends Controller
      * Display form for adding results
      */
     public function create(Request $request, $student_id,$ac_yr_id,$yr_of_study, $semester_id)
-    { return $request;
+    { 
         try{
             $student = Student::findOrFail($student_id);
             $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])
