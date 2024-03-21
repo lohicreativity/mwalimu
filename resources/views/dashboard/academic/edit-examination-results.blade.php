@@ -58,7 +58,7 @@
                      'placeholder'=>'Final score',
                      'class'=>'form-control',
                      'steps'=>'any',
-                     'required'=>true
+                     'min'=>0
                   ];
 
               @endphp
