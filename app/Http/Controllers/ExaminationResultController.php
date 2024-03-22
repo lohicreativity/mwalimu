@@ -1961,7 +1961,7 @@ class ExaminationResultController extends Controller
      * Process student results
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
-    {         
+    {         return $request;
       try{
          DB::beginTransaction();
          $student = Student::findOrFail($student_id);
@@ -1969,8 +1969,9 @@ class ExaminationResultController extends Controller
          $semester = Semester::find($request->get('semester_id'));
 
          if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
-            $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$yr_of_study){$query->where('campus_program_id',$student->campus_program_id)
-                                                                                                                                          ->where('year_of_study',$yr_of_study);})
+            $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$yr_of_study,$semester){$query->where('campus_program_id',$student->campus_program_id)
+                                                                                                                                          ->where('year_of_study',$yr_of_study)
+                                                                                                                                          ->where('semester_id',$semester->id);})
                                                    //->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
                                                    ->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')
                                                    ->where('study_academic_year_id',$ac_yr_id)
