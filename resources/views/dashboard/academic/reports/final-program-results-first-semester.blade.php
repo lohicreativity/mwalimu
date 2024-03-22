@@ -208,8 +208,8 @@
               <div class="ss-letter-head  ss-center">
                <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
 			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">				<br>   
-               <span class="ss-bold" style="font-size:12pt">{{ $campus->name }}</span>
-               <p class="ss-bold" style="font-size:12pt">{{ $department->name }}</p>
+               <span class="ss-bold" style="font-size:12pt">{{ $campus->name }}</span> <br>
+               <span class="ss-bold" style="font-size:12pt">{{ $department->name }}</span>
                <h4>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h4>
                <p class="ss-bold" style="font-size:12pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
               </div>
