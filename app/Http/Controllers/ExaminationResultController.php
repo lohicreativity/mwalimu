@@ -1975,7 +1975,7 @@ class ExaminationResultController extends Controller
                                                   ->get();
 
             
-return 1;
+return $module_assignments;
              $annual_module_assignments = $module_assignments;
 
         
