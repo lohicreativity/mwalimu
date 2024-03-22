@@ -393,11 +393,11 @@
                           @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
                               {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
                           @elseif($student->semesterRemarks[0]->remark == 'POSTPONED EXAM')
-                              EPOS
+                              POSE
                           @elseif($student->semesterRemarks[0]->remark == 'POSTPONED SEMESTER')
-                              SPOS
+                              POSS
                           @elseif($student->semesterRemarks[0]->remark == 'POSTPONED YEAR')
-                              YPOS
+                              POSY
                           @elseif($student->semesterRemarks[0]->remark == 'DECEASED')
                               DECD
                           @else {{ $student->semesterRemarks[0]->remark }} @endif @else N/A @endif 
@@ -582,6 +582,10 @@
                       <td>Direct SUP</td>
                     </tr>
                     <tr>
+                      <td>DECD</td>
+                      <td>Deceased</td>
+                    </tr>
+                    <tr>
                       <td>FE</td>
                       <td>Final Exam</td>
                     </tr>
@@ -614,8 +618,16 @@
                       <td>Passed all Modules</td>
                     </tr>
                     <tr>
-                      <td>POST</td>
-                      <td>Postponed</td>
+                      <td>POSE</td>
+                      <td>Postponed Exam</td>
+                    </tr>
+                    <tr>
+                      <td>POSS</td>
+                      <td>Postponed Semester</td>
+                    </tr>
+                    <tr>
+                      <td>POSY</td>
+                      <td>Postponed Year</td>
                     </tr>
                     <tr>
                       <td>RETAKE</td>
