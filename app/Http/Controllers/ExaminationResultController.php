@@ -1592,10 +1592,6 @@ class ExaminationResultController extends Controller
                $result->supp_score = $request->get('supp_score');
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
-            }else{
-               $result->supp_score = null;
-               $result->supp_processed_by_user_id = Auth::user()->id;
-               $result->supp_processed_at = null;
             }
             
             $result->exam_type = $request->get('exam_type');
@@ -1609,7 +1605,7 @@ class ExaminationResultController extends Controller
 
             if($special_exam && !$request->get('final_score')){
                $result->final_remark = 'POSTPONED';
-            }elseif(!$special_exam && $request->get('final_score')){
+            }elseif(!$special_exam && !$request->get('final_score')){
                $result->final_remark = 'INCOMPLETE';
             }else{
                $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
