@@ -580,10 +580,6 @@
                       <td>Direct SUP</td>
                     </tr>
                     <tr>
-                      <td>DECD</td>
-                      <td>Deceased</td>
-                    </tr>
-                    <tr>
                       <td>FE</td>
                       <td>Final Exam</td>
                     </tr>
