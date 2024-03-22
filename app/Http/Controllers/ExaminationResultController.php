@@ -1532,10 +1532,10 @@ class ExaminationResultController extends Controller
      * Store examination results
      */
     public function store(Request $request)
-    {return $request;
+    {
         try{
             $validation = Validator::make($request->all(),[
-                'final_score'=>'numeric|min:0|max:100',
+                'final_score'=>'numeric|nullable|min:0|max:100',
             ]);
 
             if($validation->fails()){
@@ -1545,7 +1545,7 @@ class ExaminationResultController extends Controller
                   return redirect()->back()->withInput()->withErrors($validation->messages());
                }
             }
-
+            return $request;
             DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
