@@ -218,7 +218,7 @@
                     <thead>
                       <tr>
                         <th class="ss-bold ss-font-xs" rowspan="3">SN</th>
-                        @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Reg. No.</th>@endif
+                        @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Registration Number</th>@endif
                         @if($request->get('name_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Name</th>@endif
                         @if($request->get('gender_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Sex</th>@endif
                         @foreach($module_assignments as $assignment)
