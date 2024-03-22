@@ -350,7 +350,9 @@
                                 class="ss-custom-grey-- ss-center ss-font-xs" 
                               @else class="ss-center ss-font-xs" 
                               @endif>
-                              
+                              @if($student->semesterRemarks[0]->remark == 'DECEASED')
+                              -
+                              @else
                                 @if($result->supp_processed_at)
                                   
                                   @if($result->grade) 
@@ -364,7 +366,7 @@
                                     {{ $result->grade }} 
                                   @else - @endif
                                 @endif
-                              
+                              @endif
                               
                           </td>
                           
