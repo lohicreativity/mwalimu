@@ -1545,7 +1545,10 @@ class ExaminationResultController extends Controller
                   return redirect()->back()->withInput()->withErrors($validation->messages());
                }
             }
-            return $request;
+            if($request->has('final_score')){
+return 1;
+            }
+            return 2;
             DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
@@ -1557,84 +1560,93 @@ class ExaminationResultController extends Controller
             // }
 
             $student = Student::with('options')->find($request->get('student_id'));
-            $elective_policy = ElectivePolicy::where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->first();
-            if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->count() >= $elective_policy->number_of_options && $module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                return redirect()->back()->with('error','Number of options in elective policy has reached maximum limit');
-            }
 
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->where('program_module_assignment_id',$module_assignment->program_module_assignment_id)->count() == 0){
+               $elective_policy = ElectivePolicy::where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->first();
+               if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->count() >= $elective_policy->number_of_options && $module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                   return redirect()->back()->with('error','Number of options in elective policy has reached maximum limit');
+               }
+
+               if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->where('program_module_assignment_id',$module_assignment->program_module_assignment_id)->count() == 0){
                     $student->options()->attach([$module_assignment->program_module_assignment_id]);
-                }
+               }
             }
 
-            $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
+            $special_exam = SpecialExam::where('student_id',$student->id)
+                                       ->where('module_assignment_id',$module_assignment->id)
+                                       ->where('type',$request->get('exam_type'))
+                                       ->where('status','APPROVED')
+                                       ->first();
 
-            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
-                  $query->where('module_id',$module->id);
-            })->where('student_id',$student->id)->first();
+            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                           ->where('student_id',$student->id)
+                                           ->first();
 
-            $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){
-                            $query->where('module_id',$module->id);
-                      })->where('student_id',$student->id)->first();
+            $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                         ->where('student_id',$student->id)
+                                         ->first();
 
             if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where('exam_type',$request->get('exam_type'))->first()){
                   $result = $res;
-              }else{
+            }else{
                   $result = new ExaminationResult;
-              }
-              $result->module_assignment_id = $request->get('module_assignment_id');
-                $result->student_id = $request->get('student_id');
-                if($request->has('final_score')){
-                $result->course_work_score = $request->get('course_work_score');
-                $result->final_score = $request->get('final_score');
-                }else{
-                   $result->final_score = null;
-                }
-                if($request->get('supp_score')){
-                   $result->supp_score = $request->get('supp_score');
-                   $result->supp_processed_by_user_id = Auth::user()->id;
-                   $result->supp_processed_at = now();
-                }else{
-                   $result->supp_score = null;
-                   $result->supp_processed_by_user_id = Auth::user()->id;
-                   $result->supp_processed_at = null;
-                }
-                $result->exam_type = $request->get('exam_type');
-                if($carry_history){
-                   $result->exam_category = 'CARRY';
-                }
+            }
+            
+            $result->module_assignment_id = $request->get('module_assignment_id');
+            $result->student_id = $request->get('student_id');
 
-                if($retake_history){
-                   $result->exam_category = 'RETAKE';
-                }
+            if($request->has('final_score')){
+               $result->course_work_score = $request->get('course_work_score');
+               $result->final_score = $request->get('final_score');
+            }else{
+               $result->final_score = null;
+            }
 
-                if($special_exam && !$request->get('final_score')){
-                   $result->final_remark = 'POSTPONED';
-                }else{
-                   $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-                }
-                if($result->supp_score){
-                   $result->final_exam_remark = $$module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
-                }
-                if(!$result->course_work_score){
-                   $result->course_work_remark = 'INCOMPLETE';
-                   $result->final_exam_remark = 'INCOMPLETE';
-                }
-                $result->final_uploaded_at = now();
-                $result->uploaded_by_user_id = Auth::user()->id;
-                $result->save();
-                DB::commit();
+            if($request->get('supp_score')){
+               $result->supp_score = $request->get('supp_score');
+               $result->supp_processed_by_user_id = Auth::user()->id;
+               $result->supp_processed_at = now();
+            }else{
+               $result->supp_score = null;
+               $result->supp_processed_by_user_id = Auth::user()->id;
+               $result->supp_processed_at = null;
+            }
+            
+            $result->exam_type = $request->get('exam_type');
+            if($carry_history){
+               $result->exam_category = 'CARRY';
+            }
 
-                if($request->get('supp_score')){
-                    $process_type = 'SUPP';
-                }else{
-                    $process_type = null;
-                }
+            if($retake_history){
+               $result->exam_category = 'RETAKE';
+            }
 
-                $this->processStudentResults($request, null, $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
+            if($special_exam && !$request->get('final_score')){
+               $result->final_remark = 'POSTPONED';
+            }else{
+               $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+            }
+            if($result->supp_score){
+               $result->final_exam_remark = $$module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+            }
+            if(!$result->course_work_score){
+               $result->course_work_remark = 'INCOMPLETE';
+               $result->final_exam_remark = 'INCOMPLETE';
+            }
+            $result->final_uploaded_at = now();
+            $result->uploaded_by_user_id = Auth::user()->id;
+            $result->save();
+            DB::commit();
 
-                return redirect()->to('academic/results/'.$student->id.'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->id.'/edit-student-results')->with('message','Results added successfully');
+            if($request->get('supp_score')){
+               $process_type = 'SUPP';
+            }else{
+               $process_type = null;
+            }
+
+            $this->processStudentResults($request, null, $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
+
+            return redirect()->to('academic/results/'.$student->id.'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->id.'/edit-student-results')->with('message','Results added successfully');
 
         }catch(\Exception $e){
             return $e->getMessage();
