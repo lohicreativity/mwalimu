@@ -418,7 +418,7 @@ class ExaminationResultController extends Controller
                }
 
                if($result->final_exam_remark == 'POSTPONED'){
-                     $pass_status = 'POSTPONED';
+                     $pass_status = 'POSTPONED EXAM';
                      break;
                }
 
@@ -564,15 +564,15 @@ class ExaminationResultController extends Controller
             if($studentship_status == 'POSTPONED'){
                foreach($postponements as $post){
                   if($post->student_id == $student->id && $post->category == 'SEMESTER'){
-                     $exam_result->final_exam_remark = 'SPOS';
+                     $exam_result->final_exam_remark = 'POSTPONED SEMESTER';
                      break;
                   }elseif($post->student_id == $student->id && $post->category == 'YEAR'){
-                     $exam_result->final_exam_remark = 'YPOS';
+                     $exam_result->final_exam_remark = 'POSTPONED YEAR';
                      break;
                   }
                }
             }else{
-               $exam_result->final_exam_remark = 'DECD';
+               $exam_result->final_exam_remark = 'DECEASED';
             }
 
             $exam_result->uploaded_by_user_id = Auth::user()->id;
