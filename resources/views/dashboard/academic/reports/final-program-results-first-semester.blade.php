@@ -398,8 +398,6 @@
                               POSS
                           @elseif($student->semesterRemarks[0]->remark == 'POSTPONED YEAR')
                               POSY
-                          @elseif($student->semesterRemarks[0]->remark == 'DECEASED')
-                              DECD
                           @else {{ $student->semesterRemarks[0]->remark }} @endif @else N/A @endif 
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
