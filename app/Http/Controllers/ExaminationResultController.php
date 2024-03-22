@@ -1960,7 +1960,7 @@ class ExaminationResultController extends Controller
     /**
      * Process student results
      */
-    public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type)
+    public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
          
          try{
