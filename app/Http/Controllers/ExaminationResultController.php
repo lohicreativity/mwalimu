@@ -530,7 +530,7 @@ class ExaminationResultController extends Controller
                                                                                      ->where('semester_id',$request->get('semester_id'))
                                                                                      ->where('study_academic_year_id',$request->get('study_academic_year_id'));}) // can simplify replace this with 1 because of semester 1
       ->where('campus_program_id',$campus_program->id)
-      ->with('studentshipStatus:id,name')
+      ->with('studentshipStatus')
       ->get('id');
 
       if(count($known_missing_cases) > 0){
@@ -545,6 +545,7 @@ class ExaminationResultController extends Controller
                                       ->where('semester_id',$request->get('semester_id'))
                                       ->get();
          foreach($known_missing_cases as $student){
+            return $student;
             $studentship_status = $student->studentshipStatus->name;
 
             $exam_result = new ExaminationResult;
