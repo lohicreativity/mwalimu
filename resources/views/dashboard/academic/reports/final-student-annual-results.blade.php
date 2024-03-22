@@ -253,8 +253,14 @@
                           @if(count($missing_modules[$semester->id]) != 0)
                             @foreach($semester->remarks as $remark)
                               @if($remark->remark == 'INCOMPLETE')
+                              @php
+                                $module_assignmentIDS = [];
+                                foreach($missing_modules[$semester->id] as $assign){
+                                  $module_assignmentIDS[] = $assign->id;
+                                }
+                              @endphp
                               <tr>
-                                @foreach($missing_modules[1] as $missing_module)
+                                @foreach($missing_modules[$semester->id] as $missing_module)
                                   @if($missing_module->programModuleAssignment->category == 'OPTIONAL' && $num_options != $opt)
                                     <td colspan="8">
                                       <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">
@@ -264,7 +270,7 @@
                                     @break
                                   @elseif($missing_module->programModuleAssignment->category != 'OPTIONAL')
                                     <td colspan="8">
-                                      <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results?module_assignment_id='.$missing_module->id) }}">
+                                      <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results?module_assignment_id='.$module_assignmentIDS) }}">
                                       {{ __('Add Results') }}
                                       </a>
                                     </td>
