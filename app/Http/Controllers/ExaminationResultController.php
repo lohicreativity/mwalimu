@@ -1545,7 +1545,10 @@ class ExaminationResultController extends Controller
                   return redirect()->back()->withInput()->withErrors($validation->messages());
                }
             }
-
+if(!$request->get('final_score')){
+return 1;
+}
+return 2;
             DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
             $final_process_status = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->first();
@@ -1582,56 +1585,51 @@ class ExaminationResultController extends Controller
             }else{
                   $result = new ExaminationResult;
             }
+           
+            $result->module_assignment_id = $request->get('module_assignment_id');
+            $result->student_id = $request->get('student_id');
+            $result->course_work_score = $request->get('course_work_score');
+            $result->final_score = $request->get('final_score');
 
-            if(empty($request->get('final_score')) && $result->coursework_score == null){
-               $result->delete();
-               return $result;
-            }else{           
-               $result->module_assignment_id = $request->get('module_assignment_id');
-               $result->student_id = $request->get('student_id');
-               $result->course_work_score = $request->get('course_work_score');
-               $result->final_score = $request->get('final_score');
-
-               if($request->get('supp_score')){
-                  $result->supp_score = $request->get('supp_score');
-                  $result->supp_processed_by_user_id = Auth::user()->id;
-                  $result->supp_processed_at = now();
-               }else{
-                  $result->supp_score = null;
-                  $result->supp_processed_by_user_id = Auth::user()->id;
-                  $result->supp_processed_at = null;
-               }
-               
-               $result->exam_type = $request->get('exam_type');
-               if($carry_history){
-                  $result->exam_category = 'CARRY';
-               }
-
-               if($retake_history){
-                  $result->exam_category = 'RETAKE';
-               }
-
-               if($special_exam && !$request->get('final_score')){
-                  $result->final_remark = 'POSTPONED';
-               }else{
-                  $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-               }
-               if($result->supp_score){
-                  $result->final_exam_remark = $$module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
-               }
-               if(!$result->course_work_score){
-                  $result->course_work_remark = 'INCOMPLETE';
-                  $result->final_exam_remark = 'INCOMPLETE';
-               }
-               
-               $result->final_uploaded_at = now();
-               $result->uploaded_by_user_id = Auth::user()->id;
-               if($final_process_status){
-                  $result->final_processed_by_user_id = Auth::user()->id;
-                  $result->final_processed_at = now();
-               }
-               $result->save();
+            if($request->get('supp_score')){
+               $result->supp_score = $request->get('supp_score');
+               $result->supp_processed_by_user_id = Auth::user()->id;
+               $result->supp_processed_at = now();
+            }else{
+               $result->supp_score = null;
+               $result->supp_processed_by_user_id = Auth::user()->id;
+               $result->supp_processed_at = null;
             }
+            
+            $result->exam_type = $request->get('exam_type');
+            if($carry_history){
+               $result->exam_category = 'CARRY';
+            }
+
+            if($retake_history){
+               $result->exam_category = 'RETAKE';
+            }
+
+            if($special_exam && !$request->get('final_score')){
+               $result->final_remark = 'POSTPONED';
+            }else{
+               $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+            }
+            if($result->supp_score){
+               $result->final_exam_remark = $$module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+            }
+            if(!$result->course_work_score){
+               $result->course_work_remark = 'INCOMPLETE';
+               $result->final_exam_remark = 'INCOMPLETE';
+            }
+            
+            $result->final_uploaded_at = now();
+            $result->uploaded_by_user_id = Auth::user()->id;
+            if($final_process_status){
+               $result->final_processed_by_user_id = Auth::user()->id;
+               $result->final_processed_at = now();
+            }
+            $result->save();
 
             DB::commit();
 
