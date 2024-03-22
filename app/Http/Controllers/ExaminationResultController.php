@@ -1962,7 +1962,7 @@ class ExaminationResultController extends Controller
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
-         
+         return 1;
          try{
             DB::beginTransaction();
             $student = Student::findOrFail($student_id);
