@@ -1960,7 +1960,7 @@ class ExaminationResultController extends Controller
     /**
      * Process student results
      */
-    public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type)
+    public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
          
          try{
@@ -2155,6 +2155,15 @@ class ExaminationResultController extends Controller
                            $processed_result->final_exam_remark = $processed_result->course_work_remark;
                         }
 
+
+                        $processed_result->grade = null;
+                        $processed_result->point = null;
+                      if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                          $processed_result->final_exam_remark = $processed_result->final_remark;
+                      }
+                      if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                          $processed_result->final_exam_remark = $processed_result->course_work_remark;
+                      }
                     } else {
 
                         $processed_result->grade = $grading_policy? $grading_policy->grade : null;
