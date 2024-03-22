@@ -350,7 +350,7 @@
                                 class="ss-custom-grey-- ss-center ss-font-xs" 
                               @else class="ss-center ss-font-xs" 
                               @endif>
-                              @if($student->semesterRemarks[0]->remark == 'DECEASED')
+                              @if($student->semesterRemarks[0]->remark == 'DECEASED' || $student->semesterRemarks[0]->remark == 'POSTPONED SEMESTER' || $student->semesterRemarks[0]->remark == 'POSTPONED YEAR')
                               -
                               @else
                                 @if($result->supp_processed_at)
