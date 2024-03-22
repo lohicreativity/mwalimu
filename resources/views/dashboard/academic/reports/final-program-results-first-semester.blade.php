@@ -208,10 +208,10 @@
               <div class="ss-letter-head  ss-center">
                <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
 			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">				   
-               <h3>{{ $campus->name }}</h3>
-               <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
-               <p class="ss-bold" style="font-size:15pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+               <h4>{{ $campus->name }}</h4>
+               <h4>{{ $department->name }}</h4>
+               <h5>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h5>
+               <p class="ss-bold" style="font-size:12pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
