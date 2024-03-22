@@ -1635,7 +1635,7 @@ class ExaminationResultController extends Controller
                   $process_type = 'SUPP';
                }else{
                   $process_type = null;
-               }
+               }return 2;
                $this->processStudentResults($request, null, $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
             }
            
@@ -1962,7 +1962,7 @@ class ExaminationResultController extends Controller
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
-         return 1;
+         
          try{
             DB::beginTransaction();
             $student = Student::findOrFail($student_id);
