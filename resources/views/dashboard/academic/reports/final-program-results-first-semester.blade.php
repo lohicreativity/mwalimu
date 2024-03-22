@@ -359,10 +359,9 @@
 
 
                                 @else 
-                                  @if($result->final_exam_remark == 'PASS' || $result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'INCOMPLETE')
-                                    @if($result->grade) 
-                                      {{ $result->grade }} 
-                                    @else - @endif
+                                  
+                                  @if($result->grade) 
+                                    MMM 
                                   @else - @endif
                                 @endif
                               
