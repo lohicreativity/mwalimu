@@ -547,9 +547,20 @@ class ExaminationResultController extends Controller
          foreach($known_missing_cases as $student){
             $studentship_status = $student->studentshipStatus->name;
 
-            $exam_result = new ExaminationResult;
+            if($result = ExaminationResult::where('student_id',$student->id)
+                                          ->where('module_assignment_id',$assignment_id)
+                                          ->where('exam_type','FINAL')
+                                          ->where('exam_category','FIRST')->first()){
+               $exam_result = $result;
+
+            }else{
+               $exam_result = new ExaminationResult;
+            }
+
             $exam_result->module_assignment_id = $assignment_id;
             $exam_result->student_id = $student->id;
+            $exam_result->exam_type = 'FINAL';
+            $exam_result->exam_category = 'FIRST';
             if($studentship_status == 'POSTPONED'){
                foreach($postponements as $post){
                   if($post->student_id == $student->id && $post->category == 'SEMESTER'){
