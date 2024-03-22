@@ -2138,6 +2138,7 @@ class ExaminationResultController extends Controller
                     }
                     
                     if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                     return 1;
                         if($result->course_work_remark == 'INCOMPLETE'){
                            $processed_result->grade = 'IC';
                         }elseif($result->final_remark == 'INCOMPLETE'){
@@ -2156,7 +2157,7 @@ class ExaminationResultController extends Controller
                         }
 
                     } else {
-
+return 2;
                         $processed_result->grade = $grading_policy? $grading_policy->grade : null;
                         $processed_result->point = $grading_policy? $grading_policy->point : null;
 
