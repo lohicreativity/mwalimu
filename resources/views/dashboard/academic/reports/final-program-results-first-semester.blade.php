@@ -361,7 +361,7 @@
                                 @else 
                                   
                                   @if($result->grade) 
-                                    MMM 
+                                    {{ $result->grade }} 
                                   @else - @endif
                                 @endif
                               
