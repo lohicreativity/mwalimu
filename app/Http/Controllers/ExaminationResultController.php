@@ -1582,10 +1582,10 @@ class ExaminationResultController extends Controller
             }else{
                   $result = new ExaminationResult;
             }
-return $result;
+
             if(empty($request->get('final_score')) && $result->coursework_score == null){
                $result->delete();
-               
+               return $result;
             }else{           
                $result->module_assignment_id = $request->get('module_assignment_id');
                $result->student_id = $request->get('student_id');
