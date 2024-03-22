@@ -563,7 +563,7 @@ class ExaminationResultController extends Controller
             }else{
                $exam_result->final_exam_remark = 'DECD';
             }
-return 10;
+
             $exam_result->uploaded_by_user_id = Auth::user()->id;
             $exam_result->final_processed_by_user_id = Auth::user()->id;
             $exam_result->final_processed_at = now();
