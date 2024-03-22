@@ -565,8 +565,8 @@ class ExaminationResultController extends Controller
             }
 
             $exam_result->uploaded_by_user_id = Auth::user()->id;
-            $exam_result->processed_by_user_id = Auth::user()->id;
-            $exam_result->processed_at = now();
+            $exam_result->final_processed_by_user_id = Auth::user()->id;
+            $exam_result->final_processed_at = now();
             $exam_result->save();
             
 
