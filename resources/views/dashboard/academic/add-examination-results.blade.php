@@ -83,7 +83,7 @@
                       {!! Form::text('course_work_score',null,$course_work_score) !!}
                     </div>
                     <div class="form-group col-3">
-                      {!! Form::label('','Final score') !!}
+                      {!! Form::label('','Final scor') !!}
                       {!! Form::text('final_score',null,$final_score) !!}
                     </div>
                     <div class="form-group col-3">
