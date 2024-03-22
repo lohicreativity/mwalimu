@@ -2153,7 +2153,7 @@ class ExaminationResultController extends Controller
             }
 
             if($rem = SemesterRemark::where('student_id',$student->id)
-                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                    ->where('study_academic_year_id',$ac_yr_id)
                                     ->where('semester_id',$request->get('semester_id'))
                                     ->where('year_of_study',$year_of_study)
                                     ->first()){
@@ -2162,7 +2162,7 @@ class ExaminationResultController extends Controller
                $remark = new SemesterRemark;
             }
 
-            $remark->study_academic_year_id = $request->get('study_academic_year_id');
+            $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $student->id;
             $remark->semester_id = $request->get('semester_id');
             $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
@@ -2190,6 +2190,7 @@ class ExaminationResultController extends Controller
 
             $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
             $remark->save();
+            DB::commit();
          }
          return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
       }catch(\Exception $e){
