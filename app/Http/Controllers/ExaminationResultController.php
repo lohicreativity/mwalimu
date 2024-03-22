@@ -1551,7 +1551,7 @@ class ExaminationResultController extends Controller
             $final_process_status = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->first();
             $module = Module::with('ntaLevel')->find($module_assignment->module_id);
             $student = Student::with('options')->find($request->get('student_id'));
-return $final_process_status;
+
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                $elective_policy = ElectivePolicy::where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->first();
                if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->count() >= $elective_policy->number_of_options && $module_assignment->programModuleAssignment->category == 'OPTIONAL'){
@@ -1582,7 +1582,7 @@ return $final_process_status;
             }else{
                   $result = new ExaminationResult;
             }
-
+return $result;
             if(empty($request->get('final_score')) && $result->coursework_score == null){
                $result->delete();
                
