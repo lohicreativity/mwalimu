@@ -184,7 +184,7 @@
 
 
                                         @else
-                                          @if($result->grade) 
+                                          @if($result->grade && $result->final_exam_remark != 'INCOMPLETE') 
                                           {{ $result->grade }} 
                                           @else - @endif
                                         @endif
@@ -232,10 +232,10 @@
                                     @if($result->grade) 
                                       {{ $result->grade }}*
                                     @else - @endif
-fsdf
+
                                   @else
                                     @if($result->grade && $result->final_exam_remark != 'INCOMPLETE') 
-                                    {{ $result->grade }}  ddfasf
+                                    {{ $result->grade }}  
                                     @else - @endif
                                   @endif
 
