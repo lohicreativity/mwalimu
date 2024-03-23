@@ -1532,7 +1532,7 @@ class ExaminationResultController extends Controller
      * Store examination results
      */
     public function store(Request $request)
-    {return 1;
+    {
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|nullable|min:0|max:100',
@@ -1631,6 +1631,7 @@ class ExaminationResultController extends Controller
             DB::commit();
 
             if($final_process_status){
+               return 2;
                if($request->get('supp_score')){
                   $process_type = 'SUPP';
                }else{
