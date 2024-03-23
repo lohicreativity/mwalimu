@@ -225,7 +225,7 @@ class CourseWorkResultController extends Controller
                $exam_result->module_assignment_id = $request->get('module_assignment_id');
                $exam_result->student_id = $request->get('student_id');
                $exam_result->course_work_score = $no_of_compulsory_tests < 2? null : $course_work;
-               if($no_of_compulsory_tests < 2){
+               if($course_work && $no_of_compulsory_tests < 2){
                   $exam_result->course_work_remark = 'INCOMPLETE';
                }elseif(is_null($course_work)){
                   $exam_result->course_work_remark = null;
