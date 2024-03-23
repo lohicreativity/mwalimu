@@ -142,8 +142,9 @@ class CourseWorkResultController extends Controller
                   $score_before = $result->score;
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
-                     $result->delete();
                      $no_of_components_without_course_work++;
+                     $result->delete();
+
                   }else{
                      $result->student_id = $request->get('student_id');
                      $result->score = $request->get('plan_'.$plan->id.'_score');
