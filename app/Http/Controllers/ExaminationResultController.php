@@ -2000,8 +2000,8 @@ class ExaminationResultController extends Controller
                }else{
                   $processed_result = $result;
                }
-
-               if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == null || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){return 1;
+return $processed_result;
+               if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == null || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                   if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                      $processed_result->grade = 'IC';
                   }elseif($result->final_remark == 'INCOMPLETE'){
@@ -2020,7 +2020,7 @@ class ExaminationResultController extends Controller
                   if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
-               }else{return 2;
+               }else{
 
                   // if($result->module_assignment_id == 693 && $student->id == 1314){
                   //    return $final_pass_score.' - '.$result->final_score;
