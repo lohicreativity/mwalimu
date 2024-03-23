@@ -3886,13 +3886,13 @@ class ExaminationResultController extends Controller
       if(Auth::user()->hasRole('examination-officer')){
           
           if($student->campusProgram->campus_id != $staff->campus_id){
-             return redirect()->back()->with('error','Student not in the same campus.');
+             return redirect()->back()->with('error','Student not in your campus.');
           }
       }
       
       if(!Auth::user()->hasRole('staff') && Auth::user()->hasRole('hod')){
         if(!Util::collectionContainsKey($student->campusProgram->program->departments, $staff->department_id)){
-           return redirect()->back()->with('error','Student not in the same deprtment.');
+           return redirect()->back()->with('error','Student not in your deprtment.');
         }
       }
       
