@@ -2037,9 +2037,9 @@ class ExaminationResultController extends Controller
                      if(is_null($course_work)){
                         $processed_result->course_work_remark = 'INCOMPLETE';
                         $processed_result->grade = 'IC';
-                     }else{
+                     }else{return 1;
                         $processed_result->course_work_remark = $course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
-                        if( $result->final_remark == 'INCOMPLETE'){
+                        if($result->final_remark == 'INCOMPLETE'){
                            $processed_result->grade = 'IF';
                         }
                      }
