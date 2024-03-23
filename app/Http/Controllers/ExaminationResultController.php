@@ -1725,9 +1725,9 @@ class ExaminationResultController extends Controller
 
                   }else{
                      if($result->course_work_score == null){
-                        $retake_history->delete();
-                        $carry_history->delete();
-                        $result->delete();
+                        $retake_history? $retake_history->delete() : null;
+                        $carry_history? $carry_history->delete() : null;
+                        $result? $result->delete() : null;
                      }else{
                         $result->final_score =null;
                      }
