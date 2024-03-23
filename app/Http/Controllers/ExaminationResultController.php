@@ -1952,7 +1952,7 @@ class ExaminationResultController extends Controller
      * Process student results
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
-    { return 1;
+    { 
       try{
          DB::beginTransaction();
          $student = Student::findOrFail($student_id);
@@ -2002,6 +2002,7 @@ class ExaminationResultController extends Controller
                }
 
                if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == null || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                  return 2;
                   if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                      $processed_result->grade = 'IC';
                   }elseif($result->final_remark == 'INCOMPLETE'){
