@@ -1805,7 +1805,6 @@ class ExaminationResultController extends Controller
             if($special_exam && !$request->get('final_score')){
                $result->final_remark = 'POSTPONED';
             }else{
-               return 1;
                $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
             }
             if($result->supp_score){

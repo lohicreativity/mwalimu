@@ -233,8 +233,8 @@
                                       {{ $result->grade }}*
                                     @else - @endif
 
-                                    @else
-                                    @if($result->grade) 
+                                  @else
+                                    @if($result->grade && $result->final_exam_remark != 'INCOMPLETE') 
                                     {{ $result->grade }} 
                                     @else - @endif
                                   @endif
