@@ -137,11 +137,11 @@ class CourseWorkResultController extends Controller
               if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
                   return redirect()->back()->with('error','Invalid score entered');
               }
-    	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
+    	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){ return 1;
     	    			$result = $res;
                   $score_before = $result->score;
 
-                  if($request->get('plan_'.$plan->id.'_score') == null){
+                  if($request->get('plan_'.$plan->id.'_score') == null){ return 1;
                      $no_of_components_without_course_work++;
                      $result->delete();
 
