@@ -188,11 +188,11 @@ class CourseWorkResultController extends Controller
                                                    ->where('student_id',$request->get('student_id'))
                                                    ->count();
 
-         $special_exam = SpecialExam::where('student_id',$request->get('student_id'))
-                                    ->where('module_assignment_id',$module_assignment->id)
-                                    ->where('type',$request->get('exam_type'))
-                                    ->where('status','APPROVED')
-                                    ->first();
+         // $special_exam = SpecialExam::where('student_id',$request->get('student_id'))
+         //                            ->where('module_assignment_id',$module_assignment->id)
+         //                            ->where('type',$request->get('exam_type'))
+         //                            ->where('status','APPROVED')
+         //                            ->first();
 
          $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
                                         ->where('student_id',$request->get('student_id'))
@@ -219,7 +219,7 @@ class CourseWorkResultController extends Controller
 
                   $retake_history? $retake_history->delete() : null;
                   $carry_history? $carry_history->delete() : null;
-                  $exam_result->delete();
+
                }
             }else{
                $exam_result->module_assignment_id = $request->get('module_assignment_id');
