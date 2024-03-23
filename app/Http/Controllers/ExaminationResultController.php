@@ -2013,10 +2013,13 @@ class ExaminationResultController extends Controller
                   $processed_result = $result;
                }
 
-               if($result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                  if($result->final_remark == 'INCOMPLETE'){
+               if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                  if($result->course_work_remark == 'INCOMPLETE' && $course_work_based == 1){
+                     $processed_result->grade = 'IC';
+                  }elseif($result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IF';
-                  }elseif($course_work_based != 1 && $result->final_remark == 'INCOMPLETE'){
+                  }elseif($result->course_work_remark == 'INCOMPLETE' && $course_work_based == 1 && $result->final_remark == 'INCOMPLETE' || 
+                         ($course_work_based != 1 && $result->final_remark == 'INCOMPLETE')){
                      $processed_result->grade = 'I';
                   }
                   $processed_result->point = null;
@@ -2034,13 +2037,6 @@ class ExaminationResultController extends Controller
 
                   if($course_work_based == 1){
                      $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
-
-                     if($result->course_work_remark == 'INCOMPLETE'){
-                        $processed_result->grade = 'IC';
-
-                     }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
-                        $processed_result->grade = 'I';
-                     }
 
                      if(is_null($course_work)){
                         $processed_result->course_work_remark = 'INCOMPLETE';
