@@ -134,14 +134,15 @@ class CourseWorkResultController extends Controller
          $no_of_components = $no_of_components_without_course_work = 0;
         	foreach($assessment_plans as $plan){
         		if($request->has('plan_'.$plan->id.'_score')){
-              if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
-                  return redirect()->back()->with('error','Invalid score entered');
-              }
-    	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){ return 1;
-    	    			$result = $res;
+               if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
+                     return redirect()->back()->with('error','Invalid score entered');
+               }
+
+               if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
+                  $result = $res;
                   $score_before = $result->score;
 
-                  if($request->get('plan_'.$plan->id.'_score') == null){ return 1;
+                  if($request->get('plan_'.$plan->id.'_score') == null){
                      $no_of_components_without_course_work++;
                      $result->delete();
 
@@ -162,7 +163,7 @@ class CourseWorkResultController extends Controller
                   $change->user_id = Auth::user()->id;
 
                   $change->save();
-    	    		}else{
+               }else{
                   if($request->get('plan_'.$plan->id.'_score') != null){
                      $result = new CourseWorkResult;
                      $result->student_id = $request->get('student_id');
@@ -172,9 +173,12 @@ class CourseWorkResultController extends Controller
                      $result->uploaded_by_user_id = Auth::user()->id;
                      $result->save();
                   }
-    	    		}         
-        	  }
-           $no_of_components++;
+               }         
+        	   }
+            if($request->get('plan_'.$plan->id.'_score') == null){
+               $no_of_components_without_course_work++;
+            }
+            $no_of_components++;
         	}
 
         	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
