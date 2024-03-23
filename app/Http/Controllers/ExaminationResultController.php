@@ -2018,8 +2018,7 @@ class ExaminationResultController extends Controller
                      $processed_result->grade = 'IC';
                   }elseif($result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IF';
-                  }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE' || 
-                          $result->course_work_remark == null && $result->final_remark == null){
+                  }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'I';
                   }
                   $processed_result->point = null;
