@@ -2012,15 +2012,16 @@ class ExaminationResultController extends Controller
                }
 
                if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                  if($result->final_remark == 'INCOMPLETE' && $result->course_work_remark != 'INCOMPLETE'){
+                  if($result->course_work_remark == 'INCOMPLETE'){
+                     $processed_result->grade = 'IC';
+                  }elseif($result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IF';
-                  }elseif($result->course_work_remark == 'INCOMPLETE' && $course_work_based == 1 && $result->final_remark == 'INCOMPLETE' || 
-                         ($course_work_based != 1 && $result->final_remark == 'INCOMPLETE')){
+                  }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'I';
                   }
                   $processed_result->point = null;
                   $processed_result->total_score = null;
-
+   
                   if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
                      $processed_result->final_exam_remark = $processed_result->final_remark;
                   }
@@ -2036,13 +2037,23 @@ class ExaminationResultController extends Controller
 
                      if(is_null($course_work)){
                         $processed_result->course_work_remark = 'INCOMPLETE';
-                        $processed_result->grade = 'IC';
-                     }else{return 1;
+                     }else{
                         $processed_result->course_work_remark = $course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
-                        if($result->final_remark == 'INCOMPLETE'){
-                           $processed_result->grade = 'IF';
-                        }
                      }
+
+                     if($processed_result->course_work_remark == 'PASS'){
+                        $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                     }elseif($processed_result->course_work_remark == 'FAIL'){
+                        $processed_result->total_score = null;
+                     }
+                     
+                     if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
+                        $processed_result->total_score = null;
+                     }
+                  }else{
+                     $processed_result->course_work_remark = 'N/A';
+                     $processed_result->total_score = $result->final_score;
+                  }
 
                      if($processed_result->course_work_remark == 'PASS'){
                         $processed_result->total_score = round($result->course_work_score + $result->final_score);
