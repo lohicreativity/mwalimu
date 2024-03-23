@@ -130,6 +130,8 @@ class CourseWorkResultController extends Controller
          $module = Module::with('ntaLevel')->find($module_assignment->module_id);
          
         	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
+
+         $no_of_components = $no_of_components_without_course_work = 0;
         	foreach($assessment_plans as $plan){
         		if($request->has('plan_'.$plan->id.'_score')){
               if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
@@ -141,6 +143,7 @@ class CourseWorkResultController extends Controller
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
                      $result->delete();
+                     $no_of_components_without_course_work++;
                   }else{
                      $result->student_id = $request->get('student_id');
                      $result->score = $request->get('plan_'.$plan->id.'_score');
@@ -170,6 +173,7 @@ class CourseWorkResultController extends Controller
                   }
     	    		}         
         	  }
+           $no_of_components++;
         	}
 
         	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
@@ -204,8 +208,8 @@ class CourseWorkResultController extends Controller
 
          }
 
-         if($exam_result){  return $course_work.' - '.$exam_result->course_work_score;
-            if(is_null($course_work) && is_null($exam_result->course_work_score)){                 
+         if($exam_result){
+            if($no_of_components == $no_of_components_without_course_work && is_null($exam_result->course_work_score)){                 
                if(is_null($exam_result->final_score)){
 
                   $retake_history? $retake_history->delete() : null;
