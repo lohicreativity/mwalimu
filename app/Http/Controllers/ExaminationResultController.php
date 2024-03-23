@@ -1722,10 +1722,6 @@ class ExaminationResultController extends Controller
                $result->supp_score = $request->get('supp_score');
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
-            }else{ return 1;
-               $result->supp_score = null;
-               $result->supp_processed_by_user_id = Auth::user()->id;
-               $result->supp_processed_at = null;
             }
             
             $result->exam_type = $request->get('exam_type');
@@ -1748,6 +1744,10 @@ class ExaminationResultController extends Controller
                $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
             }
 
+            if($final_process_status){
+               $result->final_processed_by_user_id = Auth::user()->id;
+               $result->final_processed_at = now();
+            }
             $result->final_uploaded_at = now();
             $result->uploaded_by_user_id = Auth::user()->id;
             $result->save();
