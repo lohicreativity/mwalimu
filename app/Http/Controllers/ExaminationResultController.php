@@ -2010,9 +2010,9 @@ class ExaminationResultController extends Controller
                }else{
                   $processed_result = $result;
                }
-return $processed_result;
+
                if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == null || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                  if($result->course_work_remark == 'INCOMPLETE'){
+                  if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                      $processed_result->grade = 'IC';
                   }elseif($result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IF';
