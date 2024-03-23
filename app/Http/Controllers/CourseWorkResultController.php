@@ -182,7 +182,7 @@ class CourseWorkResultController extends Controller
         	}
 
         	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
-
+return $course_work;
          $no_of_compulsory_tests = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($request){$query->where('name','LIKE','%Test%');})
                                                    ->where('module_assignment_id',$request->get('module_assignment_id'))
                                                    ->where('student_id',$request->get('student_id'))
