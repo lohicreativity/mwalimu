@@ -1631,13 +1631,14 @@ class ExaminationResultController extends Controller
             DB::commit();
 
             if($final_process_status){
-               return 2;
+
                if($request->get('supp_score')){
                   $process_type = 'SUPP';
                }else{
                   $process_type = null;
                }
-               $this->processStudentResults($request, null, $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
+               //$this->processStudentResults($request, null, $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
+               return redirect()->to('academic/results/'. $student->id.'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
             }
            
             return redirect()->to('academic/results/'.$student->id.'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->id.'/edit-student-results')->with('message','Results added successfully');
