@@ -2002,7 +2002,6 @@ class ExaminationResultController extends Controller
                }
 
                if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == null || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                  return 2;
                   if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                      $processed_result->grade = 'IC';
                   }elseif($result->final_remark == 'INCOMPLETE'){
@@ -2021,7 +2020,7 @@ class ExaminationResultController extends Controller
                   if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
-               }else{
+               }
 
                   // if($result->module_assignment_id == 693 && $student->id == 1314){
                   //    return $final_pass_score.' - '.$result->final_score;
@@ -2030,7 +2029,7 @@ class ExaminationResultController extends Controller
                   $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
 
 
-                  $processed_result->grade = $processed_result->point = null;
+                  //$processed_result->grade = $processed_result->point = null;
 
                   if($course_work_based == 1){
                      $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
@@ -2113,7 +2112,7 @@ class ExaminationResultController extends Controller
                      }
 
                   }
-               }
+               
                $processed_result->final_processed_by_user_id = Auth::user()->id;
                $processed_result->final_processed_at = now();
                $processed_result->save();
