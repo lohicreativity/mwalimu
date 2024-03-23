@@ -219,17 +219,19 @@ class CourseWorkResultController extends Controller
 
                   $retake_history? $retake_history->delete() : null;
                   $carry_history? $carry_history->delete() : null;
-
+                  $exam_result->course_work_remark = null;
+                  $exam_result->final_remark = null;
                }
             }else{
                $exam_result->module_assignment_id = $request->get('module_assignment_id');
                $exam_result->student_id = $request->get('student_id');
                $exam_result->course_work_score = $no_of_compulsory_tests < 2? null : $course_work;
-               if($course_work && $no_of_compulsory_tests < 2){ return 1;
+               if($course_work && $no_of_compulsory_tests < 2){
                   $exam_result->course_work_remark = 'INCOMPLETE';
-               }elseif(is_null($course_work)){ return 2;
+               }elseif(is_null($course_work)){
                   $exam_result->course_work_remark = null;
-               }else{
+               } 
+               else{
                   $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                }
                $exam_result->uploaded_by_user_id = Auth::user()->id;
