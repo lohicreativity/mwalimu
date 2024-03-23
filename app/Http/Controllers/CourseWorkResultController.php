@@ -236,7 +236,7 @@ class CourseWorkResultController extends Controller
                $exam_result->processed_by_user_id = Auth::user()->id;
                $exam_result->processed_at = now();
                $exam_result->save();
-            }return $exam_result;
+            }
    
             if($request->get('redirect_url')){
                return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
