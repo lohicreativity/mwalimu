@@ -1680,9 +1680,9 @@ class ExaminationResultController extends Controller
 
             $student = Student::find($request->get('student_id'));
             $studentship_status = DB::table('studentship_statuses')
-            ->select('name')
-            ->where('id', '=', $student->studentship_status_id)
-            ->get();
+                                    ->select('name')
+                                    ->where('id', '=', $student->studentship_status_id)
+                                    ->get();
 
             // $student = Student::whereHas('studentshipStatus', function($query) use($request) {
             //    $query->where('student_id',$request->get('student_id'));
@@ -1696,24 +1696,33 @@ class ExaminationResultController extends Controller
             // ->where('students.id', '=', $request->get('student_id'))
             // ->get();
 
-            $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
+            $special_exam = SpecialExam::where('student_id',$student->id)
+                                       ->where('module_assignment_id',$module_assignment->id)
+                                       ->where('type',$request->get('exam_type'))
+                                       ->where('status','APPROVED')
+                                       ->first();
 
-            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
-                  $query->where('module_id',$module->id);
-            })->where('student_id',$student->id)->first();
+            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                           ->where('student_id',$student->id)
+                                           ->first();
 
-            $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){
-                            $query->where('module_id',$module->id);
-                      })->where('student_id',$student->id)->first();
+            $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                         ->where('student_id',$student->id)
+                                         ->first();
 
-            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
-            ->where('student_id',$request->get('student_id'))
-            ->where('exam_type',$request->get('exam_type'))
-            ->first()){
+            if($res = ExaminationResult::where('module_assignment_id',$module_assignment->id)
+                                       ->where('student_id',$student->id)
+                                       ->where('exam_type',$request->get('exam_type'))
+                                       ->first()){
                   $result = $res;
-                  $result->module_assignment_id = $request->get('module_assignment_id');
-                  $result->student_id = $request->get('student_id');
-                  if(!empty($request->get('final_score'))){
+                  $result->module_assignment_id = $module_assignment->id;
+                  $result->student_id = $student->id;
+                  if(empty($request->get('final_score')) && $result->course_work_score == null){
+                     $retake_history? $retake_history->delete() : null;
+                     $carry_history? $carry_history->delete() : null;
+                     $result? $result->delete() : null;
+
+                  }else{
                      $result->course_work_score = $request->get('course_work_score');
                      $score_before = $result->final_score;
                   
@@ -1723,75 +1732,67 @@ class ExaminationResultController extends Controller
                         $result->final_score = $request->get('final_score');
                      }
 
-                  }else{
-                     if($result->course_work_score == null){
-                        $retake_history? $retake_history->delete() : null;
-                        $carry_history? $carry_history->delete() : null;
-                        $result? $result->delete() : null;
-                     }else{
-                        $result->final_score =null;
+                     if($request->get('appeal_score')){
+                        $result->appeal_score = $request->get('appeal_score');
                      }
-                  }
-                  if($request->get('appeal_score')){
-                     $result->appeal_score = $request->get('appeal_score');
-                  }
-                  if($request->get('appeal_supp_score')){
-                     $result->appeal_supp_score = $request->get('appeal_supp_score');
-                  }
-                  if($request->get('supp_score')){
-                     $result->exam_type = 'SUPP';
-                     $result->supp_score = $request->get('supp_score');
-                     $result->supp_processed_by_user_id = Auth::user()->id;
-                     $result->supp_processed_at = now();
-                  }else{
-                     $result->supp_score = null;
-                     $result->supp_processed_by_user_id = Auth::user()->id;
-                     $result->supp_processed_at = null;
-                  }
-                  $result->exam_type = $request->get('exam_type');
-                  if($carry_history){
-                     $result->exam_category = 'CARRY';
-                  }
-                  if($retake_history){
-                     $result->exam_category = 'RETAKE';
-                  }
-                  if($special_exam && !$request->get('final_score')){
-                     $result->final_remark = 'POSTPONED';
-                  }else{
-                     $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-                  }
-                  if($result->supp_score && $result->retakable_type == 'carry_history'){
-                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
-                  } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
-                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'RETAKE';
-                  } else if ($result->supp_score) {
-                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
-                  }
-                  $result->final_uploaded_at = now();
-                  $result->uploaded_by_user_id = Auth::user()->id;
-                  $result->save();
-                  
-                  if(!Auth::user()->hasRole('hod')){
-                      $change = new ExaminationResultChange;
-                      $change->resultable_id = $result->id;
-                      $change->from_score = $score_before;
-                      $change->to_score = $result->final_score;
-                      $change->resultable_type = 'examination_result';
-                      $change->user_id = Auth::user()->id;
-                      $change->save();
+                     if($request->get('appeal_supp_score')){
+                        $result->appeal_supp_score = $request->get('appeal_supp_score');
+                     }
+                     if($request->get('supp_score')){
+                        $result->exam_type = 'SUPP';
+                        $result->supp_score = $request->get('supp_score');
+                        $result->supp_processed_by_user_id = Auth::user()->id;
+                        $result->supp_processed_at = now();
+                     }else{
+                        $result->supp_score = null;
+                        $result->supp_processed_by_user_id = Auth::user()->id;
+                        $result->supp_processed_at = null;
+                     }
+                     $result->exam_type = $request->get('exam_type');
+                     if($carry_history){
+                        $result->exam_category = 'CARRY';
+                     }
+                     if($retake_history){
+                        $result->exam_category = 'RETAKE';
+                     }
+                     if($special_exam && !$request->get('final_score')){
+                        $result->final_remark = 'POSTPONED';
+                     }else{
+                        $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                     }
+                     if($result->supp_score && $result->retakable_type == 'carry_history'){
+                        $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
+                     } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
+                        $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'RETAKE';
+                     } else if ($result->supp_score) {
+                        $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                     }
+                     $result->final_uploaded_at = now();
+                     $result->uploaded_by_user_id = Auth::user()->id;
+                     $result->save();
+                     
+                     if(!Auth::user()->hasRole('hod')){
+                        $change = new ExaminationResultChange;
+                        $change->resultable_id = $result->id;
+                        $change->from_score = $score_before;
+                        $change->to_score = $result->final_score;
+                        $change->resultable_type = 'examination_result';
+                        $change->user_id = Auth::user()->id;
+                        $change->save();
+                     }
                   }
               }else{
                   $result = new ExaminationResult;
                   $result->module_assignment_id = $request->get('module_assignment_id');
                   $result->student_id = $request->get('student_id');
                   if($request->has('final_score')){
-                  $result->course_work_score = $request->get('course_work_score');
+                     $result->course_work_score = $request->get('course_work_score');
 
-                  if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
-                     return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
-                  } else {
-                     $result->final_score = $request->get('final_score');
-                  }
+                     if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
+                        return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
+                     } else {
+                        $result->final_score = $request->get('final_score');
+                     }
 
                   }else{
                      $result->final_score = null;
