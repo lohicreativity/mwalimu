@@ -208,7 +208,7 @@ class CourseWorkResultController extends Controller
 
          }
 
-         if($exam_result){
+         if($exam_result){ return $no_of_components.' == '.$no_of_components_without_course_work;
             if($no_of_components == $no_of_components_without_course_work && is_null($exam_result->course_work_score)){                 
                if(is_null($exam_result->final_score)){
 
