@@ -2011,13 +2011,15 @@ class ExaminationResultController extends Controller
                   $processed_result = $result;
                }
 
-               if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+               if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == null || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                   if($result->course_work_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IC';
                   }elseif($result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IF';
                   }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'I';
+                  }elseif($result->course_work_remark == null){
+                     $processed_result->grade = null;
                   }
                   $processed_result->point = null;
                   $processed_result->total_score = null;
