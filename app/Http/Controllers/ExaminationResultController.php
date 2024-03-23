@@ -1582,7 +1582,7 @@ class ExaminationResultController extends Controller
             }else{
                   $result = new ExaminationResult;
             }
-           return $result;
+           
             $result->module_assignment_id = $request->get('module_assignment_id');
             $result->student_id = $request->get('student_id');
             $result->course_work_score = $request->get('course_work_score');
@@ -1725,6 +1725,8 @@ class ExaminationResultController extends Controller
 
                   }else{
                      if($result->course_work_score == null){
+                        $$retake_history->delete();
+                        $carry_history->delete();
                         $result->delete();
                      }else{
                         $result->final_score =null;
