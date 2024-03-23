@@ -204,7 +204,7 @@ class CourseWorkResultController extends Controller
 
          }
 
-         if($exam_result){  return 1;
+         if($exam_result){  return $course_work.' - '.$exam_result->course_work_score;
             if(is_null($course_work) && is_null($exam_result->course_work_score)){                 
                if(is_null($exam_result->final_score)){
 
