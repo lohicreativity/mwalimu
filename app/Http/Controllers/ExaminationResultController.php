@@ -2016,7 +2016,7 @@ return $result;
                if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                   if($result->course_work_remark == 'INCOMPLETE' && $course_work_based == 1){
                      $processed_result->grade = 'IC';
-                  }elseif($result->final_remark == 'INCOMPLETE'){
+                  }elseif($result->final_remark == 'INCOMPLETE' && $result->course_work_remark != 'INCOMPLETE'){
                      $processed_result->grade = 'IF';
                   }elseif($result->course_work_remark == 'INCOMPLETE' && $course_work_based == 1 && $result->final_remark == 'INCOMPLETE' || 
                          ($course_work_based != 1 && $result->final_remark == 'INCOMPLETE')){
