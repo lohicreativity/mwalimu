@@ -235,7 +235,7 @@
 
                                   @else
                                     @if($result->grade && $result->final_exam_remark != 'INCOMPLETE') 
-                                    {{ $result->grade }} 
+                                    {{ $result->grade }}  ddfasf
                                     @else - @endif
                                   @endif
 
