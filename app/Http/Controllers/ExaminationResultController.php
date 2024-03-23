@@ -2007,7 +2007,7 @@ class ExaminationResultController extends Controller
                }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                   $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
 
-               }else{ return 1;
+               }else{
                   $processed_result = $result;
                }
 return $processed_result;
