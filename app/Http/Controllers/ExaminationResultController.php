@@ -2029,7 +2029,14 @@ class ExaminationResultController extends Controller
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
                }else{
+
+                  // if($result->module_assignment_id == 693 && $student->id == 1314){
+                  //    return $final_pass_score.' - '.$result->final_score;
+                  // }
+
                   $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
+
+
                   $processed_result->grade = $processed_result->point = null;
 
                   if($course_work_based == 1){
@@ -2040,20 +2047,6 @@ class ExaminationResultController extends Controller
                      }else{
                         $processed_result->course_work_remark = $course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
                      }
-
-                     if($processed_result->course_work_remark == 'PASS'){
-                        $processed_result->total_score = round($result->course_work_score + $result->final_score);
-                     }elseif($processed_result->course_work_remark == 'FAIL'){
-                        $processed_result->total_score = null;
-                     }
-                     
-                     if($processed_result->course_work_remark == 'FAIL' && !$processed_result->supp_processed_at){
-                        $processed_result->total_score = null;
-                     }
-                  }else{
-                     $processed_result->course_work_remark = 'N/A';
-                     $processed_result->total_score = $result->final_score;
-                  }
 
                      if($processed_result->course_work_remark == 'PASS'){
                         $processed_result->total_score = round($result->course_work_score + $result->final_score);
