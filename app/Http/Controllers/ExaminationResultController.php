@@ -1722,7 +1722,7 @@ class ExaminationResultController extends Controller
                $result->supp_score = $request->get('supp_score');
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
-            }else{
+            }else{ return 1;
                $result->supp_score = null;
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = null;
