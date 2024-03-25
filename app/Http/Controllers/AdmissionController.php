@@ -504,7 +504,6 @@ class AdmissionController extends Controller
                 $applicant->save();
             }else{
                 //return $program_fee->feeItem;
-                return $program_fee;
                 $programFeeInvoiceRequestedCheck = Invoice::where('payable_id', $applicant->id)->where('payable_type','applicant')->where('fee_type_id', $program_fee->feeItem->feeType->id)
                 ->where('applicable_id', $study_academic_year->id)->where('payable_type', 'applicant')->where('applicable_type', 'academic_year')->first(); 
 
