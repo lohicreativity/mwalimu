@@ -493,7 +493,11 @@ class StudentController extends Controller
 
           $annual_remark = AnnualRemark::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
 
-          $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->where('nta_level_id',$student->campusProgram->program->nta_level_id)->get();
+          $publications = ResultPublication::where('campus_id',$student->applicant->campus_id)
+                                           ->where('study_academic_year_id',$ac_yr_id)
+                                           ->where('status','PUBLISHED')
+                                           ->where('nta_level_id',$student->campusProgram->program->nta_level_id)
+                                           ->get();
          // if(count($optional_programs) == 0){
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
