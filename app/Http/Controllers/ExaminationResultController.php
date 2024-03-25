@@ -220,7 +220,6 @@ class ExaminationResultController extends Controller
                                              ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                              ->where('semester_id',$request->get('semester_id'))
                                              ->first();
-
             $number_of_options = $elective_policy->number_of_options;
             $no_of_expected_modules = $total_modules - ($no_of_optional_modules - $number_of_options);
 
@@ -229,7 +228,6 @@ class ExaminationResultController extends Controller
          }
 
          $module_assignments = null;
-
          foreach($enrolled_students as $student){
             $missing_cases = [];
             $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
@@ -251,8 +249,8 @@ class ExaminationResultController extends Controller
                         if($result->module_assignment_id == $optional->id){
                            if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
                               return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
+                           
                            }
-
                            $total_optional_credits += $optional->programModuleAssignment->module->credit;
                            $module_assignment_buffer[$optional->id]['course_work_based'] = $optional->module->course_work_based;
                            $module_assignment_buffer[$optional->id]['final_pass_score'] = $optional->programModuleAssignment->final_pass_score;
@@ -273,7 +271,7 @@ class ExaminationResultController extends Controller
 
             $student_results = [];
             foreach($results as $result){
-               $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = 0;
+               $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
 
                if($module_assignment_buffer[$result->module_assignment_id]){
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
@@ -310,14 +308,7 @@ class ExaminationResultController extends Controller
                      $processed_result->final_exam_remark = $processed_result->course_work_remark;
                   }
                }else{
-
-                  // if($result->module_assignment_id == 693 && $student->id == 1314){
-                  //    return $final_pass_score.' - '.$result->final_score;
-                  // }
-
                   $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
-
-
                   $processed_result->grade = $processed_result->point = null;
 
                   if($course_work_based == 1){
@@ -326,7 +317,7 @@ class ExaminationResultController extends Controller
                      if(is_null($course_work)){
                         $processed_result->course_work_remark = 'INCOMPLETE';
                      }else{
-                        $processed_result->course_work_remark = $course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                        $processed_result->course_work_remark = $course_work_pass_score <= round($processed_result->course_work_score) ? 'PASS' : 'FAIL';
                      }
 
                      if($processed_result->course_work_remark == 'PASS'){
@@ -355,6 +346,7 @@ class ExaminationResultController extends Controller
                      $processed_result->grade = 'F';
                      $processed_result->point = 0;
                   }
+
                   if($processed_result->course_work_remark == 'FAIL'){
                      if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7') || Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 5')){
                         if($year_of_study == 1){
@@ -369,9 +361,7 @@ class ExaminationResultController extends Controller
                      }
 
                      if($processed_result->final_exam_remark == 'RETAKE'){
-
                         $history = new RetakeHistory;
-
                         $history->student_id = $student->id;
                         $history->study_academic_year_id = $request->get('study_academic_year_id');
                         $history->module_assignment_id = $processed_result->module_assignment_id;
@@ -383,7 +373,6 @@ class ExaminationResultController extends Controller
 
                      }elseif($processed_result->final_exam_remark == 'CARRY'){
                         $history = new CarryHistory;
-
                         $history->student_id = $student->id;
                         $history->study_academic_year_id = $request->get('study_academic_year_id');
                         $history->module_assignment_id = $processed_result->module_assignment_id;
@@ -399,20 +388,18 @@ class ExaminationResultController extends Controller
                      }else{
                         $processed_result->final_exam_remark = 'FAIL';
                      }
-
                   }
                }
                $processed_result->final_processed_by_user_id = Auth::user()->id;
                $processed_result->final_processed_at = now();
                $processed_result->save();
 
-               $student_results[] =  $processed_result;        // Adding students with all his/her results || Because we are dealing with a student, we just add results
+               $student_results[] =  $processed_result;
             }
 
             $pass_status = 'PASS'; 
             $supp_exams = $retake_exams = $carry_exams = [];
             foreach($student_results as $result){
-                       
                if($result->final_exam_remark == 'INCOMPLETE'){
                      $pass_status = 'INCOMPLETE';
                      break;
@@ -580,7 +567,6 @@ class ExaminationResultController extends Controller
             $exam_result->final_processed_by_user_id = Auth::user()->id;
             $exam_result->final_processed_at = now();
             $exam_result->save();
-            
 
             if($rem = SemesterRemark::where('student_id',$student->id)
                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
