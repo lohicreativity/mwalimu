@@ -105,7 +105,7 @@ class NextOfKinController extends Controller
                     ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
 
                     if(!$medical_insurance_fee){
-                    return redirect()->back()->with('error','Medical insurance fee has not been defined');
+                    return redirect()->back()->with('error','Medical insurance/NHIF fee has not been defined');
                     }
 
                     $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
@@ -380,7 +380,7 @@ class NextOfKinController extends Controller
          ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
 
          if(!$medical_insurance_fee){
-         return redirect()->back()->with('error','Medical insurance fee has not been defined');
+         return redirect()->back()->with('error','Medical insurance/NHIF fee has not been defined');
          }
 
          $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)

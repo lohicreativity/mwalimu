@@ -594,6 +594,7 @@ class ExaminationResultController extends Controller
             $remark->study_academic_year_id = $request->get('study_academic_year_id');
             $remark->student_id = $student->id;
             $remark->semester_id = $request->get('semester_id');
+            $remark->year_of_study = $year_of_study;
             $remark->remark = $exam_result->final_exam_remark;
             $remark->gpa = null;
             $remark->class = null;

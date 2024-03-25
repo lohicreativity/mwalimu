@@ -107,7 +107,7 @@
                             </label>
                           </div>
                         </div>
-                      @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                      @elseif($assign->programModuleAssignment->category == 'COMPULSORY' || $assign->programModuleAssignment->category == 'OTHER')
                         <div class="col-3">
                           <div class="checkbox">
                             <label>
@@ -140,7 +140,7 @@
                                   </label>
                                 </div>
                               </div>
-                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY' || $assign->programModuleAssignment->category == 'OTHER')
                               <div class="col-3">
                                 <div class="checkbox">
                                   <label>
