@@ -380,6 +380,7 @@ class ProgramModuleAssignmentController extends Controller
      */
     public function update(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
     	$validation = Validator::make($request->all(),[
             'year_of_study'=>'required',
         ]);
@@ -399,7 +400,10 @@ class ProgramModuleAssignmentController extends Controller
             }
         }
 
-        if(ResultPublication::where('semester_id',$request->get('semester_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','PUBLISHED')->count() != 0){
+        if(ResultPublication::where('semester_id',$request->get('semester_id'))
+                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                            ->where('campus_id', $staff->campus_id)
+                            ->where('status','PUBLISHED')->count() != 0){
              return redirect()->back()->with('error','Unable to edit programme module. Results already published');
         }
         

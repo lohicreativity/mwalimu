@@ -92,179 +92,137 @@
                         $count = 1;
                       @endphp
                     @foreach($core_programs as $program)
-                       {{--
-                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        @php
-                          $count += 1;
-                        @endphp
-                       @endif
-                       --}}
                       @foreach($results as $result)
                         @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
 
                         @else
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-
-                         @if($result->retakeHistory)
-                           @if(count($result->retakeHistory->retakableResults) != 0)
-
-                           @foreach($result->retakeHistory->retakableResults as $key=>$res)
-                              @if($key == 0)
-                                 <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
-                                    <td>{{ $count }}</td>
-                                    <td>{{ $res->moduleAssignment->module->code }}</td>
-                                    <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
-                                    <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
-                                  </tr>
-                                    @php
-                                      $count += 1;
-                                    @endphp
+                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                            @if($result->retakeHistory)
+                              @if(count($result->retakeHistory->retakableResults) != 0)
+                                @foreach($result->retakeHistory->retakableResults as $key=>$res)
+                                    @if($key == 0)
+                                      <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                                          <td>{{ $count }}</td>
+                                          <td>{{ $res->moduleAssignment->module->code }}</td>
+                                          <td>{{ $res->moduleAssignment->module->name }}</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                          <td>{{ $res->grade }}</td>
+                                          <td>{{ $res->final_exam_remark }}</td>
+                                        </tr>
+                                          @php
+                                            $count += 1;
+                                          @endphp
+                                    @endif
+                                @endforeach
                               @endif
-                           @endforeach
-
-                           @endif
-                         @elseif($result->carryHistory)
-                           @if(count($result->carryHistory->carrableResults) != 0)
-
-                           @foreach($result->carryHistory->carrableResults as $key=>$res)
-                              @if($key == 0)
-                                 <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
-                                    <td>{{ $count }}</td>
-                                    <td>{{ $res->moduleAssignment->module->code }}</td>
-                                    <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
-                                    <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
-                                  </tr>
-                                    @php
-                                      $count += 1;
-                                    @endphp
+                            @elseif($result->carryHistory)
+                              @if(count($result->carryHistory->carrableResults) != 0)
+                                @foreach($result->carryHistory->carrableResults as $key=>$res)
+                                    @if($key == 0)
+                                      <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                                          <td>{{ $count }}</td>
+                                          <td>{{ $res->moduleAssignment->module->code }}</td>
+                                          <td>{{ $res->moduleAssignment->module->name }}</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                          <td>{{ $res->grade }}</td>
+                                          <td>{{ $res->final_exam_remark }}</td>
+                                      </tr>
+                                      @php
+                                        $count += 1;
+                                      @endphp
+                                    @endif
+                                @endforeach
                               @endif
-                           @endforeach
-
-                           @endif
-                         @else
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $result->moduleAssignment->module->code }}</td>
-                          <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
-                          <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
-                        </tr>
-                          @php
-                            $count += 1;
-                          @endphp
-                         @endif
-                         @endif
-                         @endif
+                            @else
+                                <tr>
+                                  <td>{{ $count }}</td>
+                                  <td>{{ $result->moduleAssignment->module->code }}</td>
+                                  <td>{{ $result->moduleAssignment->module->name }}</td>
+                                  <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
+                                  <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
+                                  <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
+                                  <td>{{ $result->grade }}</td>
+                                  <td>{{ $result->final_exam_remark }}</td>
+                                </tr>
+                                @php
+                                  $count += 1;
+                                @endphp
+                            @endif
+                          @endif
+                        @endif
                       @endforeach
                     @endforeach
-                    @foreach($optional_programs as $program)
-                       {{--
-                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        @php
-                          $count += 1;
-                        @endphp
-                       @endif
-                       --}}
-                       @foreach($results as $result)
-                         @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
+                      @foreach($optional_programs as $program)
+                        @foreach($results as $result)
+                          @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
 
-                         @else
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                          @else
+                            @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                              @if($result->retakeHistory)
+                                @if(count($result->retakeHistory->retakableResults) != 0)
 
-                         @if($result->retakeHistory)
-                           @if(count($result->retakeHistory->retakableResults) != 0)
+                                  @foreach($result->retakeHistory->retakableResults as $key=>$res)
+                                    @if($key == 0)
+                                      <tr>
+                                          <td>{{ $count }}</td>
+                                          <td>{{ $res->moduleAssignment->module->code }}</td>
+                                          <td>{{ $res->moduleAssignment->module->name }}</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                          <td>{{ $res->grade }}</td>
+                                          <td>{{ $res->final_exam_remark }}</td>
+                                        </tr>
+                                          @php
+                                            $count += 1;
+                                          @endphp
+                                    @endif
+                                  @endforeach
 
-                           @foreach($result->retakeHistory->retakableResults as $key=>$res)
-                              @if($key == 0)
-                                 <tr>
-                                    <td>{{ $count }}</td>
-                                    <td>{{ $res->moduleAssignment->module->code }}</td>
-                                    <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
-                                    <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
-                                  </tr>
-                                    @php
-                                      $count += 1;
-                                    @endphp
+                                @endif
+                              @elseif($result->carryHistory)
+                                @if(count($result->carryHistory->carrableResults) != 0)
+                                  @foreach($result->carryHistory->carrableResults as $key=>$res)
+                                    @if($key == 0)
+                                      <tr>
+                                          <td>{{ $count }}</td>
+                                          <td>{{ $res->moduleAssignment->module->code }}</td>
+                                          <td>{{ $res->moduleAssignment->module->name }}</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
+                                          <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                          <td>{{ $res->grade }}</td>
+                                          <td>{{ $res->final_exam_remark }}</td>
+                                        </tr>
+                                          @php
+                                            $count += 1;
+                                          @endphp
+                                    @endif
+                                  @endforeach
+                                @endif
+                              @else
+                                <tr>
+                                  <td>{{ $count }}</td>
+                                  <td>{{ $result->moduleAssignment->module->code }}</td>
+                                  <td>{{ $result->moduleAssignment->module->name }}</td>
+                                  <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
+                                  <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
+                                  <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
+                                  <td>{{ $result->grade }}</td>
+                                  <td>{{ $result->final_exam_remark }}</td>
+                                </tr>
+                                @php
+                                  $count += 1;
+                                @endphp
                               @endif
-                           @endforeach
-
-                           @endif
-                         @elseif($result->carryHistory)
-                           @if(count($result->carryHistory->carrableResults) != 0)
-
-                           @foreach($result->carryHistory->carrableResults as $key=>$res)
-                              @if($key == 0)
-                                 <tr>
-                                    <td>{{ $count }}</td>
-                                    <td>{{ $res->moduleAssignment->module->code }}</td>
-                                    <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
-                                    <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
-                                  </tr>
-                                    @php
-                                      $count += 1;
-                                    @endphp
-                              @endif
-                           @endforeach
-
-                           @endif
-                         @else
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $result->moduleAssignment->module->code }}</td>
-                          <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
-                          <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
-                        </tr>
-                          @php
-                            $count += 1;
-                          @endphp
-                         @endif
-                         @endif
-                         @endif
+                            @endif
+                          @endif
+                        @endforeach
                       @endforeach
-                     @endforeach
                     </tbody>
                  </table>
                </div>
@@ -294,25 +252,25 @@
                </div>
                  
                    @if($annual_remark && $key == (count($semesters)-1))
-                   <div class="col-6">
-                    <p class="ss-bold">Annual Remark</p>
-                     <table class="table table-bordered">
-                   <thead>
-                      <tr>
-                        <th>Remark</th>
-                        <th>GPA</th>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      <tr>
-                        <td><strong>{{ $annual_remark->remark }}</strong></td>
-                        <td>@if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</td>
-                       </tr>
-                   </tbody>
-                 </table>
-                 <br>
-               </div>
-                   @endif
+                    <div class="col-6">
+                      <p class="ss-bold">Annual Remark</p>
+                      <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                              <th>Remark</th>
+                              <th>GPA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td><strong>{{ $annual_remark->remark }}</strong></td>
+                              <td>@if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</td>
+                            </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                    </div>
+                  @endif
                    
                  </div>
                  @else

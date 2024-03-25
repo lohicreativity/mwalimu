@@ -580,7 +580,7 @@ class StudentController extends Controller
                })->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
                 })->get();
 
-            $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->get();
+            $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->where('campus_id',$student->applicant->campus_id)->get();
 
               $moduleIds = [];
               foreach ($core_program_modules as $module) {

@@ -1067,7 +1067,8 @@ class ExaminationResultController extends Controller
      * Display form for editing results
      */
     public function edit(Request $request, $student_id,$ac_yr_id,$prog_id)
-    {
+    { 
+      $staff = User::find(Auth::user()->id)->staff;
         try{
             $module_assignment = ModuleAssignment::with(['module','programModuleAssignment'])->where('program_module_assignment_id',$prog_id)->first();
             if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
@@ -1079,7 +1080,12 @@ class ExaminationResultController extends Controller
 
             if(Auth::user()->hasRole('hod')){
               
-              if(ResultPublication::where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('nta_level_id',$module_assignment->module->nta_level_id)->where('status','PUBLISHED')->count() != 0){
+              if(ResultPublication::where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                 ->where('nta_level_id',$module_assignment->module->nta_level_id)
+                                 ->where('campus_id', $staff->campus_id)
+                                 ->where('status','PUBLISHED')
+                                 ->count() != 0){
                   return redirect()->back()->with('error','Unable to edit results because results already published');
               }
             }
