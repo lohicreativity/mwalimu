@@ -545,7 +545,7 @@
                         <td class="ss-font-xs">{{ $modKey }}</td>
                         <td class="ss-font-xs">{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                            <td class="ss-center ss-font-xs">{{ $mod['grades'][$pol->grade] }}({{ round($mod['grades_perc'][$pol->grade],0) }}%)</td>
+                            <td class="ss-font-xs">{{ $mod['grades'][$pol->grade] }}({{ round($mod['grades_perc'][$pol->grade],0) }}%)</td>
                         @endforeach
                         <td class="ss-font-xs">{{ $mod['inc_count'] }}({{ round($mod['inc_rate'],0) }}%)</td>
                         <td class="ss-font-xs">{{ $mod['ic_count'] }}({{ round($mod['ic_rate'],0) }}%)</td>
@@ -563,22 +563,22 @@
 
          <div class="row">
         <div class="col-md-8">
-             <h3 class="ss-bold">KEYS</h3>
+             <h4 class="ss-bold">KEYS</h4>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold">Key Name</td>
-                      <td class="ss-bold">Description</td>
+                      <td class="ss-bold ss-font-xs">Key Name</td>
+                      <td class="ss-bold ss-font-xs">Description</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>CA</td>
                       <td>Continous Assessment</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>CARRY</td>
                       <td>Repeat Course Semester/Year - With Promotion</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>DS</td>
                       <td>Direct SUP</td>
                     </tr>
