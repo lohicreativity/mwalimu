@@ -145,10 +145,9 @@ class CourseWorkResultController extends Controller
                   }else{
                      $result->score = $request->get('plan_'.$plan->id.'_score');
                      $result->uploaded_by_user_id = Auth::user()->id;
-
+                     $result->save();
                   }
-                  $result->save();
-                  
+
                   $change = new ExaminationResultChange;
                   $change->resultable_id = $result->id;
                   $change->from_score = $score_before;
