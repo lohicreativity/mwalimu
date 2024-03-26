@@ -1953,7 +1953,7 @@ class ExaminationResultController extends Controller
          $student = Student::findOrFail($student_id);
          $semester = Semester::find($request->get('semester_id'));
          $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find($student->campus_program_id);
-
+         $$missing_cases = [];
          if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$yr_of_study,$semester){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                                    ->where('year_of_study',$yr_of_study)
@@ -1974,7 +1974,7 @@ class ExaminationResultController extends Controller
                                             ->where('study_academic_year_id',$ac_yr_id)
                                             ->get();
 
-            $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $$missing_cases = []; 
+            $module_assignmentIDs = $optional_modules = $module_assignment_buffer = []; 
             $total_modules = count($module_assignments);                  
             $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = $assignment_id = 0;
 
