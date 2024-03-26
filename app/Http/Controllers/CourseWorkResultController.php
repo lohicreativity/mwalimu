@@ -191,7 +191,7 @@ class CourseWorkResultController extends Controller
 
          if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)
                                        ->where('student_id',$request->get('student_id'))
-                                       ->where(function($query){$query->where('exam_type','FINA')->orWhere('exam_type','APPEAL');})
+                                       ->where(function($query){$query->where('exam_type','FINAL')->orWhere('exam_type','APPEAL');})
                                        ->first()){
             $exam_result = $result;
 
@@ -199,8 +199,9 @@ class CourseWorkResultController extends Controller
             $exam_result = new ExaminationResult;
 
          }
-return $exam_result;
-         if(count($exam_result) > 0){
+
+         if($exam_result){
+            return 1;
             if($no_of_components == $no_of_components_without_course_work){                 
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
