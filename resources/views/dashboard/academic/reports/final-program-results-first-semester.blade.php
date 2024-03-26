@@ -522,7 +522,7 @@
         </div>
 
         <div class="row">
-        <div class="col-md-12"> <br> <br>
+        <div class="col-md-12"> <br>
             <span class="ss-bold" style="font-size:12pt"> PERFORMANCE SUMMARY </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
