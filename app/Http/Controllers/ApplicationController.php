@@ -5406,7 +5406,7 @@ class ApplicationController extends Controller
          if(!$application_window){
              return redirect()->back()->with('error','No corresponding application window');
          }
-         return $application_window;
+
          $applicants_loan_status = [];
          if ($request->get('program_level_id')) {
 
