@@ -418,7 +418,7 @@
         </div><!-- end of row -->
         <div class="row">
         <div class="col-md-12">
-             <h4 class="ss-bold">PROGRAMME MODULES RESULTS SUMMARY BY SEX</h4>
+          <span class="ss-bold" style="font-size:12pt"> PROGRAMME MODULES RESULTS SUMMARY BY SEX </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
@@ -523,7 +523,7 @@
 
         <div class="row">
         <div class="col-md-12">
-             <h4 class="ss-bold">PERFORMANCE SUMMARY</h4>
+            <span class="ss-bold" style="font-size:12pt"> PERFORMANCE SUMMARY </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
