@@ -394,7 +394,7 @@ class ExaminationResultController extends Controller
                $processed_result->final_processed_by_user_id = Auth::user()->id;
                $processed_result->final_processed_at = now();
                $processed_result->save();
-
+return $module_assignment_buffer[$result->module_assignment_id]['category'];
                if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
                   $student_results[] =  $processed_result;
                }
