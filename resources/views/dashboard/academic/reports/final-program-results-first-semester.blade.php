@@ -562,7 +562,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
              <h4 class="ss-bold">KEYS</h4>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
