@@ -163,7 +163,7 @@ class ExaminationResultController extends Controller
          $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = $assignment_id = 0;
 
          foreach($module_assignments as $module_assignment){
-            
+            $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
             if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
                $no_of_compulsory_modules += 1;
                $assignment_id = $module_assignment->id;
@@ -178,7 +178,6 @@ class ExaminationResultController extends Controller
                $optional_modules[] = $module_assignment;
 
             }elseif($module_assignment->programModuleAssignment->category == 'OTHER'){
-               $module_assignment_buffer[$module_assignment->id]['category'] = 'OTHER';
                $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
                $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
                $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
@@ -394,11 +393,11 @@ class ExaminationResultController extends Controller
                $processed_result->final_processed_by_user_id = Auth::user()->id;
                $processed_result->final_processed_at = now();
                $processed_result->save();
-return $module_assignment_buffer[$result->module_assignment_id];
+
                if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
                   $student_results[] =  $processed_result;
                }
-               return 2;
+
             }
 
             $pass_status = 'PASS'; 
