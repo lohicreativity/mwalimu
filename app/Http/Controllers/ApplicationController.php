@@ -5397,7 +5397,7 @@ class ApplicationController extends Controller
     {    $applicant_loan_status = null;
          $staff = User::find(Auth::user()->id)->staff;
          $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
-         return $ac_year;
+
          if(!$ac_year){
             return redirect()->back()->with('error','No active academic year');
          }
@@ -5406,6 +5406,7 @@ class ApplicationController extends Controller
          if(!$application_window){
              return redirect()->back()->with('error','No corresponding application window');
          }
+         return $application_window;
          $applicants_loan_status = [];
          if ($request->get('program_level_id')) {
 
