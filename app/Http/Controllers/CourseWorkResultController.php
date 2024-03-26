@@ -200,7 +200,7 @@ class CourseWorkResultController extends Controller
 
          }
 
-         if($exam_result){
+         if(!empty($exam_result)){
             return 1;
             if($no_of_components == $no_of_components_without_course_work){                 
                $retake_history? $retake_history->delete() : null;
