@@ -561,8 +561,8 @@
         </div>
         </div>
 
-         <div class="row">
-        <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6">
              <h4 class="ss-bold">KEYS</h4>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
@@ -582,59 +582,59 @@
                       <td>DS</td>
                       <td>Direct SUP</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>FE</td>
                       <td>Final Exam</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>GD</td>
                       <td>Grade</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>I</td>
                       <td>Incomplete CW + FE</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>IC</td>
                       <td>Incomplete Coursework</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>IF</td>
                       <td>Incomplete Final Exam</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>INCO</td>
                       <td>Incomplete Student Results</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>N/A</td>
                       <td>Not Applicable</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>PASS</td>
                       <td>Passed all Modules</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>POSE</td>
                       <td>Postponed Exam</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>POSS</td>
                       <td>Postponed Semester</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>POSY</td>
                       <td>Postponed Year</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>RETAKE</td>
                       <td>Repeat Course Semester/Year - No Promotion</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>SUPP</td>
                       <td>Supplementary Status</td>
                     </tr>
-                    <tr>
+                    <tr class="ss-font-xs">
                       <td>TT</td>
                       <td>Total</td>
                     </tr>
