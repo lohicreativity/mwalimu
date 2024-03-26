@@ -644,14 +644,14 @@
         </div>
 
         <div class="row">
-        <div class="col-md-9">
-             <div class="ss-left">
-                 <p class="ss-bold">Name of Head of Department: .................................</p>
-                 <p class="ss-bold">Signature: ..............................</p>
-                 <p class="ss-bold">Date: ..................................</p>
-             </div>
+          <div class="col-md-4">
+              <div class="ss-left">
+                  <p class="ss-bold">Name of Head of Department: {{ $staff->surname}}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->surname,0,1)}}</p>
+                  <p class="ss-bold">Signature: ..............................</p>
+                  <p class="ss-bold">Date: ..................................</p>
+              </div>
           </div><!--end of col-md-6 -->
-          <div class="col-md-3">
+          <div class="col-md-4">
              <div class="ss-left">
                  <p class="ss-bold">Name of Examination Officer: .................................</p>
                  <p class="ss-bold">Signature: .............................</p>
