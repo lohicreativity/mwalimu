@@ -239,7 +239,7 @@ class ExaminationResultController extends Controller
             if(count($results) != $no_of_expected_modules){
                $missing_cases[] = $student->id;
             }
-return 1;
+
             $total_optional_credits = 0;
             if(count($optional_modules) > 0){ 
                $break = false;
@@ -394,7 +394,7 @@ return 1;
                $processed_result->final_processed_by_user_id = Auth::user()->id;
                $processed_result->final_processed_at = now();
                $processed_result->save();
-
+return 2;
                if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
                   $student_results[] =  $processed_result;
                }
