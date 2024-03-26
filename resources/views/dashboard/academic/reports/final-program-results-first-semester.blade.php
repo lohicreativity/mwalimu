@@ -563,7 +563,7 @@
 
         <div class="row">
           <div class="col-md-4">
-             <h4 class="ss-bold">KEYS</h4>
+            <span class="ss-bold" style="font-size:12pt"> KEYS </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                     <tr>
@@ -642,7 +642,7 @@
            </div><!-- end of table-responsive -->
           </div>
         </div>
-        <div class="row"> &nbsp; </div>
+
         <div class="row">
           <div class="col-md-9">
               <div class="ss-left">
