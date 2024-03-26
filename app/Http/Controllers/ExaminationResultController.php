@@ -1976,7 +1976,8 @@ class ExaminationResultController extends Controller
 
             $module_assignmentIDs = [];   
             $total_modules = count($module_assignments);                  
-            $total_credits = $no_of_compulsory_modules = $no_of_optional_modules = 0;
+            $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = $assignment_id = 0;
+
             foreach($module_assignments as $module_assignment){
                $module_assignmentIDs[] = $module_assignment->id;
                if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
