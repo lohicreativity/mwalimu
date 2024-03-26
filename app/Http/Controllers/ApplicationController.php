@@ -5396,7 +5396,7 @@ class ApplicationController extends Controller
     public function applicantsRegistration(Request $request)
     {    $applicant_loan_status = null;
          $staff = User::find(Auth::user()->id)->staff;
-         $ac_year = StudyAcademicYear::with('academicYear')->first()->latest();
+         $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
          return $ac_year;
          if(!$ac_year){
             return redirect()->back()->with('error','No active academic year');
