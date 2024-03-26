@@ -394,7 +394,7 @@ class ExaminationResultController extends Controller
                $processed_result->final_processed_at = now();
                $processed_result->save();
 
-               if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
+               if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
                   $student_results[] =  $processed_result;
                }
 
@@ -1983,6 +1983,7 @@ class ExaminationResultController extends Controller
 
             foreach($module_assignments as $module_assignment){
                $module_assignmentIDs[] = $module_assignment->id;
+               $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
                if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
                   $no_of_compulsory_modules += 1;
                   $assignment_id = $module_assignment->id;
@@ -2200,7 +2201,9 @@ class ExaminationResultController extends Controller
                $processed_result->final_processed_at = now();
                $processed_result->save();
 
-               $student_results[] =  $processed_result;
+               if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
+                  $student_results[] =  $processed_result;
+               }
             }
 
             $pass_status = 'PASS'; 
