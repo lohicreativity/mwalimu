@@ -1974,7 +1974,7 @@ class ExaminationResultController extends Controller
                                             ->where('study_academic_year_id',$ac_yr_id)
                                             ->get();
 
-            $module_assignmentIDs = $optional_modules = $module_assignment_buffer = []; 
+            $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $$missing_cases = []; 
             $total_modules = count($module_assignments);                  
             $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = $assignment_id = 0;
 
