@@ -2007,7 +2007,7 @@ class ExaminationResultController extends Controller
    
                if($module_assignment->final_upload_status == null){
                   $postpone_status = SpecialExam::where('student_id',)
-                                                   ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                   ->where('study_academic_year_id',$ac_yr_id)
                                                    ->where('semester_id',$semester->id)
                                                    ->where('module_assignment_id',$module_assignment->id)
                                                    ->where('type','FINAL')
@@ -2022,8 +2022,8 @@ class ExaminationResultController extends Controller
             if($no_of_optional_modules > 0){
                $elective_policy = ElectivePolicy::select('number_of_options')
                                                 ->where('campus_program_id',$campus_program->id)
-                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->where('semester_id',$request->get('semester_id'))
+                                                ->where('study_academic_year_id',$ac_yr_id)
+                                                ->where('semester_id',$semester->id)
                                                 ->first();
                $number_of_options = $elective_policy->number_of_options;
                $no_of_expected_modules = $total_modules - ($no_of_optional_modules - $number_of_options);
@@ -2166,7 +2166,7 @@ class ExaminationResultController extends Controller
                      if($processed_result->final_exam_remark == 'RETAKE'){
                         $history = new RetakeHistory;
                         $history->student_id = $student->id;
-                        $history->study_academic_year_id = $request->get('study_academic_year_id');
+                        $history->study_academic_year_id = $ac_yr_id;
                         $history->module_assignment_id = $processed_result->module_assignment_id;
                         $history->examination_result_id = $processed_result->id;
                         $history->save();
@@ -2177,7 +2177,7 @@ class ExaminationResultController extends Controller
                      }elseif($processed_result->final_exam_remark == 'CARRY'){
                         $history = new CarryHistory;
                         $history->student_id = $student->id;
-                        $history->study_academic_year_id = $request->get('study_academic_year_id');
+                        $history->study_academic_year_id = $ac_yr_id;
                         $history->module_assignment_id = $processed_result->module_assignment_id;
                         $history->examination_result_id = $processed_result->id;
                         $history->save();
@@ -2232,8 +2232,8 @@ class ExaminationResultController extends Controller
             }
 
             if($rem = SemesterRemark::where('student_id',$student->id)
-                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                    ->where('semester_id',$request->get('semester_id'))
+                                    ->where('study_academic_year_id',$ac_yr_id)
+                                    ->where('semester_id',$semester->id)
                                     ->where('year_of_study',$year_of_study)
                                     ->first()){
                $remark = $rem;  
@@ -2241,9 +2241,9 @@ class ExaminationResultController extends Controller
                $remark = new SemesterRemark;
             }
 
-            $remark->study_academic_year_id = $request->get('study_academic_year_id');
+            $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $student->id;
-            $remark->semester_id = $request->get('semester_id');
+            $remark->semester_id = $semester->id;
             $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
             if($remark->remark != 'PASS'){
@@ -2270,15 +2270,15 @@ class ExaminationResultController extends Controller
             $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
             $remark->save();
       
-            if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
+            if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('semester_id',$semester->id)
                   ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->first()){
                $publication = $pub;
 
             }else{
                $publication = new ResultPublication;
-               $publication->study_academic_year_id = $request->get('study_academic_year_id');
-               $publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
-               $publication->type = $request->get('semester_id') == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
+               $publication->study_academic_year_id = $ac_yr_id;
+               $publication->semester_id = $semester->id == 'SUPPLEMENTARY'? 0 : $semester->id;
+               $publication->type = $semester->id == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
                $publication->campus_id = $campus_program->campus_id;
                $publication->nta_level_id = $campus_program->program->nta_level_id;
                $publication->published_by_user_id = Auth::user()->id;
