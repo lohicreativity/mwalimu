@@ -199,9 +199,9 @@ class CourseWorkResultController extends Controller
             $exam_result = new ExaminationResult;
 
          }
-return $exam_result;
+
          if(!empty($exam_result)){
-            return 1;
+            return 100;
             if($no_of_components == $no_of_components_without_course_work){                 
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
