@@ -1998,7 +1998,6 @@ class ExaminationResultController extends Controller
                   $optional_modules[] = $module_assignment;
    
                }elseif($module_assignment->programModuleAssignment->category == 'OTHER'){
-                  $total_credits += $module_assignment->programModuleAssignment->module->credit;
                   $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
                   $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->programModuleAssignment->final_pass_score;
                   $module_assignment_buffer[$module_assignment->id]['course_work_pass_score'] = $module_assignment->programModuleAssignment->course_work_pass_score;
