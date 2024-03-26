@@ -191,7 +191,7 @@ class CourseWorkResultController extends Controller
 
          if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)
                                        ->where('student_id',$request->get('student_id'))
-                                       ->where(function($query){$query->where('exam_type','FINAL')->orWhere('exam_type','APPEAL');})
+                                       ->where(function($query){$query->where('exam_type','FINA')->orWhere('exam_type','APPEAL');})
                                        ->first()){
             $exam_result = $result;
 
