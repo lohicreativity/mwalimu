@@ -108,11 +108,16 @@ class CourseWorkResultController extends Controller
       $validations = [];
       $messages = [];
       $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
+      $no_of_components = $no_of_components_without_course_work = 0;
       foreach($assessment_plans as $plan){
          if($request->has('plan_'.$plan->id.'_score')){
             $validations['plan_'.$plan->id.'_score'] = 'numeric|nullable|min:0|max:100'; //nullable
             $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
          }
+         if($request->get('plan_'.$plan->id.'_score') == null){
+            $no_of_components_without_course_work++;
+         }
+         $no_of_components++;
       }
 
       $validation = Validator::make($request->all(),$validations,$messages);
@@ -127,7 +132,6 @@ class CourseWorkResultController extends Controller
       try{
         	$module_assignment = ModuleAssignment::with('module:id')->findOrFail($request->get('module_assignment_id'));
 
-         $no_of_components = $no_of_components_without_course_work = 0;
         	foreach($assessment_plans as $plan){
         		if($request->has('plan_'.$plan->id.'_score')){
                if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
@@ -139,7 +143,6 @@ class CourseWorkResultController extends Controller
                   $score_before = $result->score;
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
-                     $no_of_components_without_course_work++;
                      $result->delete();
 
                   }else{
@@ -168,10 +171,6 @@ class CourseWorkResultController extends Controller
                   }
                }         
         	   }
-            if($request->get('plan_'.$plan->id.'_score') == null){
-               $no_of_components_without_course_work++;
-            }
-            $no_of_components++;
         	}
 
         	$course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->sum('score');
