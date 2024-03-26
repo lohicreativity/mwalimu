@@ -199,7 +199,7 @@ class CourseWorkResultController extends Controller
             $exam_result = new ExaminationResult;
 
          }
-
+return $exam_result;
          if(!empty($exam_result)){
             return 1;
             if($no_of_components == $no_of_components_without_course_work){                 
