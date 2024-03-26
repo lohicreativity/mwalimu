@@ -512,14 +512,15 @@ class ExaminationResultController extends Controller
 
       }
 
+      // Need to check postponement ni ya kipindi gani to establish if it is valid or an incomplete case
       $known_missing_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','DECEASED');})
-      ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-      ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
-                                                                                     ->where('semester_id',$request->get('semester_id'))
-                                                                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'));}) // can simplify replace this with 1 because of semester 1
-      ->where('campus_program_id',$campus_program->id)
-      ->with('studentshipStatus:id,name')
-      ->get();
+                                    ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                    ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
+                                                                                                                  ->where('semester_id',$request->get('semester_id'))
+                                                                                                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+                                    ->where('campus_program_id',$campus_program->id)
+                                    ->with('studentshipStatus:id,name')
+                                    ->get();
 
       if(count($known_missing_cases) > 0){
          $casesIDs = [];

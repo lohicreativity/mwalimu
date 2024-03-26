@@ -105,31 +105,27 @@ class CourseWorkResultController extends Controller
      */
     public function update(Request $request)
     {   
-        $validations = [];
-        $messages = [];
-        $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
-        foreach($assessment_plans as $plan){
-           if($request->has('plan_'.$plan->id.'_score')){
-              $validations['plan_'.$plan->id.'_score'] = 'numeric|nullable|min:0|max:100'; //nullable
-              $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
-           }
-        }
+      $validations = [];
+      $messages = [];
+      $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
+      foreach($assessment_plans as $plan){
+         if($request->has('plan_'.$plan->id.'_score')){
+            $validations['plan_'.$plan->id.'_score'] = 'numeric|nullable|min:0|max:100'; //nullable
+            $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
+         }
+      }
 
-        $validation = Validator::make($request->all(),$validations,$messages);
+      $validation = Validator::make($request->all(),$validations,$messages);
 
-        if($validation->fails()){
-           if($request->ajax()){
-              return response()->json(array('error_messages'=>$validation->messages()));
-           }else{
-              return redirect()->back()->withInput()->withErrors($validation->messages());
-           }
-        }
-
+      if($validation->fails()){
+         if($request->ajax()){
+            return response()->json(array('error_messages'=>$validation->messages()));
+         }else{
+            return redirect()->back()->withInput()->withErrors($validation->messages());
+         }
+      }
       try{
-        	$module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
-         $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-         
-        	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
+        	$module_assignment = ModuleAssignment::with('module:id')->findOrFail($request->get('module_assignment_id'));
 
          $no_of_components = $no_of_components_without_course_work = 0;
         	foreach($assessment_plans as $plan){
@@ -147,10 +143,7 @@ class CourseWorkResultController extends Controller
                      $result->delete();
 
                   }else{
-                     $result->student_id = $request->get('student_id');
                      $result->score = $request->get('plan_'.$plan->id.'_score');
-                     $result->assessment_plan_id = $plan->id;
-                     $result->module_assignment_id = $request->get('module_assignment_id');
                      $result->uploaded_by_user_id = Auth::user()->id;
                      $result->save();
                   }
@@ -169,7 +162,7 @@ class CourseWorkResultController extends Controller
                      $result->student_id = $request->get('student_id');
                      $result->score = $request->get('plan_'.$plan->id.'_score');
                      $result->assessment_plan_id = $plan->id;
-                     $result->module_assignment_id = $request->get('module_assignment_id');
+                     $result->module_assignment_id = $module_assignment->id;
                      $result->uploaded_by_user_id = Auth::user()->id;
                      $result->save();
                   }
@@ -181,28 +174,22 @@ class CourseWorkResultController extends Controller
             $no_of_components++;
         	}
 
-        	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
+        	$course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->sum('score');
 
-         $no_of_compulsory_tests = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($request){$query->where('name','LIKE','%Test%');})
-                                                   ->where('module_assignment_id',$request->get('module_assignment_id'))
+         $no_of_compulsory_tests = CourseWorkResult::whereHas('assessmentPlan',function($query){$query->where('name','LIKE','%Test%');})
+                                                   ->where('module_assignment_id',$module_assignment->id)
                                                    ->where('student_id',$request->get('student_id'))
                                                    ->count();
 
-         // $special_exam = SpecialExam::where('student_id',$request->get('student_id'))
-         //                            ->where('module_assignment_id',$module_assignment->id)
-         //                            ->where('type',$request->get('exam_type'))
-         //                            ->where('status','APPROVED')
-         //                            ->first();
-
-         $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+         $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module_assignment){$query->where('module_id',$module_assignment->module->id);})
                                         ->where('student_id',$request->get('student_id'))
                                         ->first();
 
-         $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+         $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module_assignment){$query->where('module_id',$module_assignment->module->id);})
                                       ->where('student_id',$request->get('student_id'))
                                       ->first();
 
-         if($result = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
+         if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)
                                        ->where('student_id',$request->get('student_id'))
                                        ->where(function($query){$query->where('exam_type','FINAL')->orWhere('exam_type','APPEAL');})
                                        ->first()){
@@ -213,55 +200,70 @@ class CourseWorkResultController extends Controller
 
          }
 
-         if($exam_result){
-            if($no_of_components == $no_of_components_without_course_work && is_null($exam_result->course_work_score)){                 
-               if(is_null($exam_result->final_score)){
-
-                  $retake_history? $retake_history->delete() : null;
-                  $carry_history? $carry_history->delete() : null;
-                  $exam_result->course_work_remark = null;
-                  $exam_result->final_remark = null;
-               }
+         if(count($exam_result) > 0){
+            if($no_of_components == $no_of_components_without_course_work){                 
+               $retake_history? $retake_history->delete() : null;
+               $carry_history? $carry_history->delete() : null;
+               $exam_result->course_work_remark = 'INCOMPLETE';
+               $exam_result->final_remark = is_null($exam_result->final_score)? 'INCOMPLETE' : $exam_result->final_remark;
             }else{
-               $exam_result->module_assignment_id = $request->get('module_assignment_id');
-               $exam_result->student_id = $request->get('student_id');
                $exam_result->course_work_score = $course_work;
-               if($course_work && $no_of_compulsory_tests < 2 || is_null($course_work)){
-                  $exam_result->course_work_remark = null;
-               } 
-               else{
+               
+               if($course_work && $no_of_compulsory_tests < 2){
+                  $exam_result->course_work_remark = 'INCOMPLETE';
+               }else{
                   $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                }
-               $exam_result->uploaded_by_user_id = Auth::user()->id;
-               $exam_result->processed_by_user_id = Auth::user()->id;
-               $exam_result->processed_at = now();
-               $exam_result->save();
             }
-   
-            if($request->get('redirect_url')){
-               return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
-            }
-   
-            $semester_remark = false;
-            if(!empty($request->get('ac_yr_id'))){
-               $semesters = Semester::with(['remarks'=>function($query) use ($request){
-                  $query->where('student_id',$request->get('student_id'))
-                  ->where('study_academic_year_id',$request->get('ac_yr_id'));
-               }])->get();
-   
-               foreach($semesters as $semester){
-                  if(count($semester->remarks) > 0){ // Originally was 1, why? Changed to 0 to allow exam reprocessing
-                     $semester_remark = true;
-                     break;
-                  }
-               }
-   
-               if($semester_remark){
-                  return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+         }else{
+            if($no_of_components == $no_of_components_without_course_work){
+               $exam_result->course_work_score = null;                 
+               $exam_result->course_work_remark = 'INCOMPLETE';
+               $exam_result->final_remark = is_null($exam_result->final_score)? 'INCOMPLETE' : $exam_result->final_remark;
+
+            }else{
+               $exam_result->module_assignment_id = $module_assignment->id;
+               $exam_result->student_id = $request->get('student_id');
+               $exam_result->course_work_score = $course_work;
+               if($course_work && $no_of_compulsory_tests < 2){
+                  $exam_result->course_work_remark = 'INCOMPLETE';
                }else{
-                  return redirect()->to('academic/results/'.$request->get("student_id").'/'.$request->get("ac_yr_id").'/'.$request->get("year_of_study").'/show-student-results')->with('message','Marks updated successfully');
-                  
+                  $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                }
+            }
+         }
+         $exam_result->uploaded_by_user_id = Auth::user()->id;
+         $exam_result->processed_by_user_id = Auth::user()->id;
+         $exam_result->processed_at = now();
+         if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->first()){
+            $exam_result->final_processed_by_user_id = Auth::user()->id;
+            $exam_result->final_processed_at = now();
+         }
+         $exam_result->save();
+
+         if($request->get('redirect_url')){
+            return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
+         }
+
+         $semester_remark = false;
+         if(!empty($request->get('ac_yr_id'))){
+            $semesters = Semester::with(['remarks'=>function($query) use ($request){
+               $query->where('student_id',$request->get('student_id'))
+               ->where('study_academic_year_id',$request->get('ac_yr_id'));
+            }])->get();
+
+            foreach($semesters as $semester){
+               if(count($semester->remarks) > 0){ // Originally was 1, why? Changed to 0 to allow exam reprocessing
+                  $semester_remark = true;
+                  break;
+               }
+            }
+
+            if($semester_remark){
+               return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+            }else{
+               return redirect()->to('academic/results/'.$request->get("student_id").'/'.$request->get("ac_yr_id").'/'.$request->get("year_of_study").'/show-student-results')->with('message','Marks updated successfully');
+               
             }
          }
         }catch(\Exception $e){
