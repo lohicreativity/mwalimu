@@ -164,9 +164,10 @@ class CourseWorkResultController extends Controller
                      $result->assessment_plan_id = $plan->id;
                      $result->module_assignment_id = $module_assignment->id;
                      $result->uploaded_by_user_id = Auth::user()->id;
-                     $result->save();
+
                   }
-               }         
+               }
+               $result->save();         
         	   }
             if($request->get('plan_'.$plan->id.'_score') == null){
                $no_of_components_without_course_work++;
