@@ -1953,7 +1953,7 @@ class ExaminationResultController extends Controller
          $student = Student::findOrFail($student_id);
          $semester = Semester::find($request->get('semester_id'));
          $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find($student->campus_program_id);
-         $$missing_cases = [];
+         $missing_cases = [];
          if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$yr_of_study,$semester){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                                    ->where('year_of_study',$yr_of_study)
