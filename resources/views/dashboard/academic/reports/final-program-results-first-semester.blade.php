@@ -440,40 +440,40 @@
                       </tr>
                       <tr>
                         @foreach($grading_policies as $policy)
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
                         @endforeach
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
-                        <td class="ss-bold ss-font-xs">M</td>
-                        <td class="ss-bold ss-font-xs">F</td>
-                        <td class="ss-bold ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
+                        <td class="ss-center ss-font-xs">M</td>
+                        <td class="ss-center ss-font-xs">F</td>
+                        <td class="ss-center ss-font-xs">TT</td>
                       </tr>
                       @foreach($modules as $modKey=>$mod)
                       <tr>
