@@ -4554,7 +4554,7 @@ class ApplicationController extends Controller
                 }
             }
         }
-return $reg_date;
+
         if($reg_date ==  null){
             return redirect()->back()->with('error','Registration period has not been set');
         }
@@ -4566,7 +4566,7 @@ return $reg_date;
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
             return redirect()->back()->with('error','Applicant cannot be registered. Registration period is over');
         }
-
+return 1;
         if(empty($applicant->gender|| empty($applicant->disability_status_id))){
             return redirect()->back()->with('error','Sex of the applicant is required');
         }
