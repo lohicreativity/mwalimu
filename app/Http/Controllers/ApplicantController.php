@@ -935,7 +935,7 @@ class ApplicantController extends Controller
          }
       }
                
-      if($medical_insurance_fee ){
+      if($medical_insurance_fee &&  $students_union_fee && $caution_money_fee && $medical_examination_fee && $registration_fee ){
          $ready_for_admission = true;
          return 1;
       }
