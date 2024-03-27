@@ -259,7 +259,7 @@
 
         <br>
         <div class="row" style="float:left; width: 78%">
-            <div class="col-md-6">
+            <div class="col-md-8">
               <span class="ss-italic ss-font-xs">When replying please mention:</span> <br>
               <span class="ss-bold">Ref. No.:</span>  {{ strtoupper($reference_number) }}<br><br>
               <span>{{ $applicant->address }}</span> <br>
@@ -281,7 +281,7 @@
 
               <p>Please observe the following instructions.</p>
               <ol>
-<li>  That you should pay annual tuition fee of <strong>{{ $program_fee_words }} ({{ $currency }} {{ number_format($program_fee) }}/= ) only</strong> (accommodation exclusive). 
+<li>  That you should pay annual tuition fee of <strong>{{ $program_fee_words }} ({{ $currency }} {{ number_format($program_fee) }}/=) only</strong> (accommodation exclusive). 
       Fees may be paid <strong>either</strong> in one or two installments at the rate of 60%, equivalent to <strong>{{ $currency }} {{ number_format(0.6*$program_fee) }}/=</strong> (payable in the first 
       semester) and 40%, equivalent to <strong>{{ $currency }} {{ number_format(0.4*$program_fee) }}/=</strong> (payable in the second semester). Each installment should 
       be paid at the beginning of a Semester.</li>
