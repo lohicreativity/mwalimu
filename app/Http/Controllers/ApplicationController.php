@@ -6262,7 +6262,8 @@ class ApplicationController extends Controller
         $app->status = 'ADMITTED';
         $app->documents_complete_status = 0;
         $app->save();
-        redirect()->back()->with('message','Admission package sent successfully');
+
+        return redirect()->back()->with('message','Admission package sent successfully');
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error','There is a problem. Please contact Admission Office');
