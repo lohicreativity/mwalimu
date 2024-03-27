@@ -6232,7 +6232,7 @@ class ApplicationController extends Controller
             'students_union_fee' => str_contains($applicant->nationality, 'Tanzania') ? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
             'welfare_emergence_fund' => str_contains($applicant->nationality, 'Tanzania') ? $welfare_emergence_fund->amount_in_tzs : $welfare_emergence_fund->amount_in_usd,
         ];
-            return $data;
+
         if(str_contains(strtolower($applicant->selections[0]->campusProgram->program->award->name), 'master')){
 
             $pdf = PDF::loadView('dashboard.application.reports.msc-admission-letter', $data, [], [
