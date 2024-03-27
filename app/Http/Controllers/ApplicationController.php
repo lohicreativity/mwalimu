@@ -4537,10 +4537,10 @@ class ApplicationController extends Controller
         DB::beginTransaction();
         $staff = User::find(Auth::user()->id)->staff;
 
-        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
 
         if(!$ac_year){
-            return redirect()->back()->with('error','No active academic year');
+            return redirect()->back()->with('error','No academic year');
         }
 
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
@@ -4554,7 +4554,7 @@ class ApplicationController extends Controller
                 }
             }
         }
-
+return $reg_date;
         if($reg_date ==  null){
             return redirect()->back()->with('error','Registration period has not been set');
         }
