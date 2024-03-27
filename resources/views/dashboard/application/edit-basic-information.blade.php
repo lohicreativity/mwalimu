@@ -84,12 +84,10 @@
                         <h3 class="text-white" style="font-size: 18px!important;">
                         <i class="fa fa-times-circle"></i>
                         @if($applicant->multiple_admissions == 1) 
-                          Please click <a style="background-color:red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
-                          href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> Cancel Admission</a> to cancel your admission or <a style="background-color: red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
-                          href="{{ url('application/admission-confirmation') }}"> Manage Confirmation</a> to manage your confirmation. 
+                          Please click <a href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> here</a> to cancel your admission or 
+                                       <a href="{{ url('application/admission-confirmation') }}"> here</a> to manage your confirmation. 
                           @else
-                          Please click <a style="background-color:red; text-decoration:none; border-radius:3px; padding:0 4px 4px; font-size:16px!important" 
-                          href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> Cancel Admission</a> to cancel your admission. 
+                          Please click <a href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> here</a> to cancel your admission. 
                           @endif 
                         </h3>
                       </div>      
