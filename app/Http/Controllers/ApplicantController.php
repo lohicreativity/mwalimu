@@ -795,7 +795,7 @@ class ApplicantController extends Controller
 		}
 
 
-
+return $program_fee;
 
 
       $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
@@ -936,7 +936,7 @@ class ApplicantController extends Controller
       }
                
       if($medical_insurance_fee &&  $students_union_fee && $caution_money_fee && $medical_examination_fee && $registration_fee && 
-         $identity_card_fee && $late_registration_fee && $welfare_emergence_fund &&  $quality_assurance_fee && $reference_number){
+         $identity_card_fee && $late_registration_fee && $welfare_emergence_fund &&  $quality_assurance_fee && $program_fee && $reference_number){
          $ready_for_admission = true;
          return 1;
       }
