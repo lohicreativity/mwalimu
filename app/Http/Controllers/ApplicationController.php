@@ -5938,7 +5938,7 @@ class ApplicationController extends Controller
 
 
     public function selfSendAdmissionLetter(Request $request)
-    {
+    {return $request;
         $applicant = Applicant::where('id', $request->get('applicant_id'))->first();
 
         try {
@@ -6263,7 +6263,7 @@ class ApplicationController extends Controller
         $app->documents_complete_status = 0;
         $app->save();
         redirect()->back()->with('message','Admission package sent successfully');
-        
+
         } catch (\Exception $e) {
             return redirect()->back()->with('error','There is a problem. Please contact Admission Office');
         }

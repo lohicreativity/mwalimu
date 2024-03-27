@@ -176,7 +176,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('download-admission-letter',[ApplicationController::class,'downloadAdmissionLetter']);
 
     Route::post('send-admission-letter',[ApplicationController::class,'sendAdmissionLetter']);
-    Route::get('send-individual-admission-letter',[ApplicationController::class,'sendIndividualAdmissionLetter']);
+    Route::get('self-send-admission-letter',[ApplicationController::class,'selfSendAdmissionLetter']);
     Route::post('update-applicant-nva',[ApplicantController::class,'updateNVAStatus']);
     Route::get('other-information',[ApplicantController::class,'showOtherInformation']);
     Route::post('update-insurance-status',[ApplicantController::class,'updateInsuranceStatus']);
