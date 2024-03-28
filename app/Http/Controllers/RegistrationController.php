@@ -431,7 +431,7 @@ class RegistrationController extends Controller
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
-			  ->where('semester_id',session('active_semester_id'))->latest()->get();
+			  ->where('semester_id',session('active_semester_id'))->latest();
 			}
 		   $data = [
 		    'active_students'=>$active_students,

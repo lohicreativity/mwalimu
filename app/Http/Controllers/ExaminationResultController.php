@@ -138,11 +138,10 @@ class ExaminationResultController extends Controller
          $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
          $ntaLevel = $module_assignments[0]->module->ntaLevel->name;
          
-                                               // THE QUERY SKIPS RETAKE AND CARRY CASES
          $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                      ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                      ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
-                                                                                                                    ->where('semester_id',$request->get('semester_id')) // can simplify replace this with 1 because of semester 1
+                                                                                                                    ->where('semester_id',1) 
                                                                                                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                      ->where('campus_program_id',$campus_program->id)
                                      ->get('id');
@@ -512,7 +511,59 @@ class ExaminationResultController extends Controller
       }elseif(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
       }elseif($request->get('semester_id') == 'SUPPLEMENTARY'){
+         //Write a query to take all students with supp, postponed (current students), retake and carry (previous students) status of a campus programme
+         $sup_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                   ->whereHas('academicStatus',function($query){$query->where('name','SUPP');})
+                                   ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                   ->whereHas('registrations')
+                                   ->where('campus_program_id',$campus_program->id)
+                                   ->get('id');
 
+
+         $special_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                 ->whereHas('academicStatus',function($query){$query->where('name','POSTPONED');})
+                                 ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                 ->whereHas('registrations')
+                                 ->where('campus_program_id',$campus_program->id)
+                                 ->get('id');
+
+         $carry_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                               ->whereHas('academicStatus',function($query){$query->where('name','CARRY');})
+                               ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                               ->whereHas('registrations')
+                               ->where('campus_program_id',$campus_program->id)
+                               ->get('id');
+
+         $retake_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                ->whereHas('academicStatus',function($query){$query->where('name','RETAKE');})
+                                ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                ->whereHas('registrations')
+                                ->where('campus_program_id',$campus_program->id)
+                                ->get('id');
+
+                                // Need to consider whether it is first or second semester
+         if(count($sup_cases) > 0){
+            foreach($sup_cases as $student){
+               $results = ExaminationResult::where('student_id',$student->id)->get();
+                  foreach($results as $result){
+                     if($result->final_exam_remark == 'FAIL'){
+
+                     }
+
+                     $student_results = $result;
+                  }
+            }
+         }
+
+         // foreach($failed_students as $failed_student){
+         //    $results = ExaminationResult::where('student_id',$failed_student->id)
+         //                               //  ->orWhereHas('retakeHistory', function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id')-1);})
+         //                               //  ->orWhereHas('carryHistory', function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id')-1);})
+         //                                ->with(['retakeHistory.studyAcademicYear'=>function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id')-1);},
+         //                                        'retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
+         //                                ->get();
+
+         // }
       }
 
       // Need to check postponement ni ya kipindi gani to establish if it is valid or an incomplete case
