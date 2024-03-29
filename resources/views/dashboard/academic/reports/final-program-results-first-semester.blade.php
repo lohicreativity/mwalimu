@@ -461,9 +461,6 @@
                     </tbody>
                   </table>
                 </div><!-- end of table-responsive -->
-                
-
-
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
@@ -660,16 +657,16 @@
         </div>
 
         <div class="row">
-          <div class="col-md-7">
+          <div class="col-md-8">
               <div class="ss-left">
                   <p class="ss-bold">Name of Head of Department: <span style="font-style: normal"> {{ strtoupper($staff->surname) }}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->middle_name,0,1)}} </span></p>
                   <p class="ss-bold">Signature: ..............................</p>
                   <p class="ss-bold">Date: ..................................</p>
               </div>
           </div><!--end of col-md-6 -->
-          <div class="col-md-5">
+          <div class="col-md-4">
              <div class="ss-left">
-                 <p class="ss-bold">Name of Examination Officer: ...............................</p>
+                 <p class="ss-bold">Name of Examination Officer: ........................</p>
                  <p class="ss-bold">Signature: .............................</p>
                  <p class="ss-bold">Date: ..................................</p>
              </div>
