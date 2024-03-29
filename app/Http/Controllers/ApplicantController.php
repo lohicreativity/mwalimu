@@ -742,7 +742,7 @@ class ApplicantController extends Controller
                                            ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
 
 		$invoices = $program_fee = null;
-      if($applicant->selections){
+      if(count($applicant->selections) > 0){
          $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)
                                   ->where('year_of_study',1)
                                   ->where('campus_program_id',$applicant->selections[0]->campus_program_id)
