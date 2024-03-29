@@ -402,7 +402,7 @@ class RegistrationController extends Controller
 	  * Show active students
 	  */
 	  public function showActiveStudents(Request $request)
-	  {
+	  {return 1;
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $active_students = null;
 		   if(Auth::user()->hasRole('hod')){
