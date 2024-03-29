@@ -686,14 +686,14 @@
               <div class="ss-left">
                   <p>Head of Department: <span class="font-weight-normal"> {{ strtoupper($staff->surname) }}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->middle_name,0,1)}} </span></p>
                   <p >Signature: ......................................................</p>
-                  <p >Date: ...............................................................</p>
+                  <p >Date: .............................................................</p>
               </div>
           </div><!--end of col-md-6 -->
           <div class="col-md-4">
              <div class="ss-left">
                  <p >Examination Officer: ......................................</p>
-                 <p >Signature: .......................................................</p>
-                 <p >Date: ................................................................</p>
+                 <p >Signature: ......................................................</p>
+                 <p >Date: ..............................................................</p>
              </div>
           </div><!--end of col-md-6 -->
         </div><!-- end of row -->
