@@ -597,7 +597,7 @@
                         <td class="ss-font-sm"> {{ $male_upsecond_class_cases }}</td>
                         <td class="ss-font-sm">{{ $female_upsecond_class_cases }}</td>
                         <td class="ss-font-sm">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                        <td class="ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100,2) }}</td>
                       @elseif(strtolower($class) == 'second class'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
                         <td class="ss-font-sm"> {{ $male_second_class_cases }}</td>
