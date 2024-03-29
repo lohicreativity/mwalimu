@@ -2455,7 +2455,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'semesterRemarks.semester','examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
-              },'examinationResults.changes','applicant:program_level_id'])->where('campus_program_id',$campus_program->id)->get();
+              },'examinationResults.changes','applicant:id,program_level_id'])->where('campus_program_id',$campus_program->id)->get();
            }else{
               $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
