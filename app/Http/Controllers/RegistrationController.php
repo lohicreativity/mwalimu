@@ -406,20 +406,42 @@ class RegistrationController extends Controller
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $active_students = null;
 		   if(Auth::user()->hasRole('hod')){
-			  $active_students = Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
+			  $active_students = Registration::select('id','student_id')->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('id',$staff->department_id);})
 			  ->whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-			  ->with(['student.applicant.nextOfKin','student.applicant.nextOfKin.country','student.applicant.nextOfKin.region','student.applicant.nextOfKin.ward','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
-			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
+			  ->with(['student:id,applicant_id,first_name,middle_name,surname,gender,campus_program_id,registration_number,studentship_status_id,phone,email',
+                      'student.applicant:id,index_number,program_level_id,next_of_kin_id,gender,birth_date,nationality,country_id,region_id,district_id,ward_id,entry_mode,disability_status_id,address',
+                      'student.applicant.nextOfKin:id,first_name,middle_name,surname,gender,phone,nationality,address,country_id,region_id,district_id,ward_id',
+                      'student.applicant.nextOfKin.country:id,name',
+                      'student.applicant.nextOfKin.region:id,name',
+                      'student.applicant.nextOfKin.ward:id,name',
+                      'student.applicant.nacteResultDetails:id,applicant_id,verified,avn',
+                      'student.applicant.nectaResultDetails:id,applicant_id,exam_id,verified,index_number',
+                      'student.campusProgram.program:id,code',
+			          'student.applicant.disabilityStatus:id,name',
+                      'student.applicant.country:id,name',
+                      'student.applicant.region:id,name',
+                      'student.applicant.ward:id,name'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->latest()->get();
 		   }elseif(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-			  $active_students = Registration::whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+			  $active_students = Registration::select('id','student_id')->whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-			  ->with(['student.applicant.nextOfKin','student.applicant.nextOfKin.country','student.applicant.nextOfKin.region','student.applicant.nextOfKin.ward','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
-			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
+			  ->with(['student:id,applicant_id,first_name,middle_name,surname,gender,campus_program_id,registration_number,studentship_status_id,phone,email',
+                      'student.applicant:id,index_number,program_level_id,next_of_kin_id,gender,birth_date,nationality,country_id,region_id,district_id,ward_id,entry_mode,disability_status_id,address',
+                      'student.applicant.nextOfKin:id,first_name,middle_name,surname,gender,phone,nationality,address,country_id,region_id,district_id,ward_id',
+                      'student.applicant.nextOfKin.country:id,name',
+                      'student.applicant.nextOfKin.region:id,name',
+                      'student.applicant.nextOfKin.ward:id,name',
+                      'student.applicant.nacteResultDetails:id,applicant_id,verified,avn',
+                      'student.applicant.nectaResultDetails:id,applicant_id,exam_id,verified,index_number',
+                      'student.campusProgram.program:id,code',
+			          'student.applicant.disabilityStatus:id,name',
+                      'student.applicant.country:id,name',
+                      'student.applicant.region:id,name',
+                      'student.applicant.ward:id,name'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->latest()->get();
