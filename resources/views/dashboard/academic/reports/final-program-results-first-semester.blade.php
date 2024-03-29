@@ -484,6 +484,7 @@
                    </table>
                 </div><!-- end of table-responsive -->
           </div>
+          <div class="col-md-1"> </div>
           <div class="col-md-3"><br>
             <span class="ss-bold" style="font-size:8pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
               <div class="table-responsive">
