@@ -477,7 +477,7 @@
         </div><!-- end of row -->
         <div class="row">
           <div class="col-md-4" style='padding-right:10px'>
-            <span class="ss-bold" style="font-size:8pt"> KEYS </span> <br>
+            <span class="ss-bold" style="font-size:7pt"> KEYS </span> <br>
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
                     <tr>
@@ -556,7 +556,7 @@
            </div><!-- end of table-responsive -->
           </div>
           <div class="col-md-4" style='padding-right:10px;  float:left'>
-            <span class="ss-bold" style="font-size:8pt"> MODULE CODE/NAME </span> <br>
+            <span class="ss-bold" style="font-size:7pt"> MODULE CODE/NAME </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
@@ -574,7 +574,7 @@
           </div>
 
           <div class="col-md-3">
-            <span class="ss-bold" style="font-size:8pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
+            <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
                   <tr>
