@@ -809,7 +809,7 @@ class ApplicantController extends Controller
       }
 
       $ready_for_admission = false;
-      if($applicant->status == 'SELECTED' && count($applicant->selections[0]) > 0){
+      if($applicant->status == 'SELECTED' && count($applicant->selections) > 0){
          if($applicant->selections[0]->status == 'SELECTED'){
             $orientation_date = null;
             $special_dates = SpecialDate::where('name','Orientation')
