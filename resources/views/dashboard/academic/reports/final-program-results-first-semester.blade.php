@@ -564,8 +564,8 @@
                 </div><!-- end of table-responsive -->
           </div>
 
-          <div class="col-md-3"><br>
-            <span class="ss-bold" style="font-size:8pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
+          <div class="col-md-4"><br>
+            <span class="ss-bold" style="font-size:8pt"> DISTRIBUTION OF EXAMINATION RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
                   <tr>
