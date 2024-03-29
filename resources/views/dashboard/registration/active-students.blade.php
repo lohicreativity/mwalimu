@@ -109,10 +109,10 @@
                           @php($avn = null)
                         
                           @foreach($reg->student->applicant->nectaResultDetails as $detail)
-                            @if($detail->exam_id == 2) @php ($fiv_index = $detail->index_number) @endif
+                            @if($detail->exam_id == 2 && $detail->verified == 1) @php ($fiv_index = $detail->index_number) @endif
                           @endforeach
                           @foreach($reg->student->applicant->nacteResultDetails as $detail)
-                            @php ($avn = $detail->avn)
+                            @if($detail->verified == 1) @php ($avn = $detail->avn) @endif
                           @endforeach 
                         
                           @if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
