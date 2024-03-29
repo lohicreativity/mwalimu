@@ -243,9 +243,14 @@
                     </thead>
                     <tbody>
                     
-                    
+                      @php
+                        $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
+                        $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
+                        $male_failed_cases = $female_failed_cases = 0;
+                      @endphp
 
                     @foreach($students as $key=>$student)
+
                     <tr>
                       <td class="ss-font-xs">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
@@ -257,7 +262,6 @@
                       @if($request->get('gender_display_type') == 'SHOW')
                       <td class="ss-font-xs">{{ $student->gender }}</td>
                       @endif
-                         
 
                       @foreach($module_assignments as $asKey=>$assignment)
 
@@ -393,6 +397,41 @@
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->remark) 
+                          @if($student->semesterRemarks[0]->remark == 'SUPP')
+                            @if($student->gender == 'F') @php $female_failed_cases++; @endphp
+                            @elseif($student->gender == 'M') @php $male_failed_cases++; @endphp
+                            @endif
+                          @elseif($student->semesterRemarks[0]->remark == 'INCOMPLETE')
+                            @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
+                            @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
+                            @endif
+                          @elseif($student->semesterRemarks[0]->remark == 'CARRY')
+                            @if($student->gender == 'F') @php $female_carry_cases++; @endphp
+                            @elseif($student->gender == 'M') @php $male_carry_cases++; @endphp
+                            @endif
+                          @elseif($student->semesterRemarks[0]->remark == 'RETAKE')
+                            @if($student->gender == 'F') @php $female_retake_cases++; @endphp
+                            @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
+                            @endif
+                          @elseif($student->semesterRemarks[0]->remark == 'DISCO')
+                            @if($student->gender == 'F') @php $female_disco_cases++; @endphp
+                            @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
+                            @endif
+                          @elseif($student->semesterRemarks[0]->remark == 'PASS')
+                            @if(str_contains(strtolower($student->semesterRemarks[0]->remark),'first'))
+                              @if($student->gender == 'F') @php $female_first_class_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $male_first_class_cases++; @endphp
+                              @endif
+                            @if(str_contains(strtolower($student->semesterRemarks[0]->remark),'upper second'))
+                              @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
+                              @endif
+                            @endif
+                          @elseif(str_contains($student->semesterRemarks[0]->remark, 'POSTPONE'))
+                            @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
+                            @elseif($student->gender == 'M') @php $male_postponement_cases++; @endphp
+                            @endif
+                          @endif
                           @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
                               {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
                           @elseif($student->semesterRemarks[0]->remark == 'POSTPONED EXAM')
@@ -439,40 +478,85 @@
                     <td class="ss-bold ss-font-xs">Total</td>
                     <td class="ss-bold ss-font-xs">Percentage</td>
                   </tr>
-                  @foreach($modules as $modKey=>$mod)
-                  <tr>
-                    <td class="ss-font-xs">{{ $mod['ML']['ic_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['ic_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ic_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['if_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['if_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['if_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['inc_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['inc_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['inc_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['pst_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['pst_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['pst_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['ds_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['ds_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ds_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['total_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['total_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['total_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['pass_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['pass_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['pass_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['fail_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['fail_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['fail_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['fail_fe_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['fail_fe_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['fail_fe_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['ML']['retake_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['FL']['retake_count'] }}</td>
-                    <td class="ss-font-xs">{{ $mod['retake_count'] }}</td>
-                  </tr>
+                  @foreach($classifications as $class)
+                    <tr>
+                      @if(str_contains(strtolower($class, 'first')))
+                        <td class="ss-font-xs">{{ $class->name }}</td>
+                        <td class="ss-font-xs"> {{ $male_first_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $female_first_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $male_first_class_cases + $female_first_class_cases }}</td>
+                        <td class="ss-font-xs">{{ round((($male_first_class_cases + $female_first_class_cases)/count($students))*100) }}</td>
+                      @elseif(str_contains(strtolower($class, 'upper second')))
+                        <td class="ss-font-xs">{{ $class->name }}</td>
+                        <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                      @elseif(strtolower($class, 'second class')))
+                        <td class="ss-font-xs">{{ $class->name }}</td>
+                        <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                      @elseif(str_contains(strtolower($class, 'lower')))
+                        <td class="ss-font-xs">{{ $class->name }}</td>
+                        <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                      @elseif(str_contains(strtolower($class, 'pass')))
+                        <td class="ss-font-xs">{{ $class->name }}</td>
+                        <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
+                        <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                      @endif
+                    </tr>
                   @endforeach
+                    <tr>
+                      <td class="ss-font-xs">Supplementary</td>
+                      <td class="ss-font-xs">{{ $male_failed_cases }}</td>
+                      <td class="ss-font-xs">{{ $female_failed_cases }}</td>
+                      <td class="ss-font-xs">{{ $male_failed_cases + $female_failed_cases }}</td>
+                      <td class="ss-font-xs">{{ round((($male_failed_cases + $female_failed_cases)/count($students))*100) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="ss-font-xs">Retake</td>
+                      <td class="ss-font-xs">{{ $male_retake_cases }}</td>
+                      <td class="ss-font-xs">{{ $female_retake_cases }}</td>
+                      <td class="ss-font-xs">{{ $male_retake_cases + $female_retake_cases }}</td>
+                      <td class="ss-font-xs">{{ round((($male_retake_cases + $female_retake_cases)/count($students))*100) }}</td>
+                    </tr>
+                    @if($student->applicant->program_level_id == 4)
+                    <tr>
+                      <td class="ss-font-xs">Carry</td>
+                      <td class="ss-font-xs">{{ $male_carry_cases }}</td>
+                      <td class="ss-font-xs">{{ $female_carry_cases }}</td>
+                      <td class="ss-font-xs">{{ $male_carry_cases + $female_carry_cases }}</td>
+                      <td class="ss-font-xs">{{ round((($male_carry_cases + $female_carry_cases)/count($students))*100) }}</td>
+                    </tr>
+                    @endif
+                    <tr>
+                      <td class="ss-font-xs">Incomplete</td>
+                      <td class="ss-font-xs">{{ $male_incomplete_cases }}</td>
+                      <td class="ss-font-xs">{{ $female_incomplete_cases }}</td>
+                      <td class="ss-font-xs">{{ $male_incomplete_cases + $female_incomplete_cases }}</td>
+                      <td class="ss-font-xs">{{ round((($male_incomplete_cases + $female_incomplete_cases)/count($students))*100) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="ss-font-xs">Postponement</td>
+                      <td class="ss-font-xs">{{ $male_postponement_cases }}</td>
+                      <td class="ss-font-xs">{{ $female_postponement_cases }}</td>
+                      <td class="ss-font-xs">{{ $male_postponement_cases + $female_postponement_cases }}</td>
+                      <td class="ss-font-xs">{{ round((($male_postponement_cases + $female_postponement_cases)/count($students))*100) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="ss-font-xs">Discoqualification</td>
+                      <td class="ss-font-xs">{{ $male_disco_cases }}</td>
+                      <td class="ss-font-xs">{{ $female_disco_cases }}</td>
+                      <td class="ss-font-xs">{{ $male_disco_cases + $female_disco_cases }}</td>
+                      <td class="ss-font-xs">{{ round((($male_disco_cases + $female_disco_cases)/count($students))*100) }}</td>
+                    </tr>
                 </table>
               </div><!-- end of table-responsive -->
           </div>

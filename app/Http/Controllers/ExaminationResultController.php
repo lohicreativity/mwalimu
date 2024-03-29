@@ -2489,12 +2489,13 @@ class ExaminationResultController extends Controller
         }
 
         $classifications = GPAClassification::where('nta_level_id',$students[0]->applicant->program_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-return $classifications;
+
         if(count($students) != 0){
            if(count($students[0]->examinationResults) == 0){
               return redirect()->back()->with('error','No results processed yet for this programme');
            }
         }
+
         $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)
         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
         ->orderBy('max_score','DESC')
@@ -2985,7 +2986,8 @@ return $classifications;
            'year_of_study'=>explode('_',$request->get('campus_program_id'))[2],
            'grading_policies'=>$grading_policies,
            'staff'=>User::find(Auth::user()->id)->staff,
-           'request'=>$request
+           'request'=>$request,
+           'classifications'=>$classifications
         ];
 
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
