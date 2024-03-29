@@ -427,14 +427,15 @@ class RegistrationController extends Controller
 			  $active_students = Registration::whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-			  ->with(['student.applicant.nextOfKin','student.applicant.nextOfKin.country','student.applicant.nextOfKin.region','student.applicant.nextOfKin.ward','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
+			  ->with(['student:id,applicant_id,firname,middle_name,surname,gender,campus_program_id,registration_number','student.applicant:id,index_number,next_of_kin_id,gender,birth_date,nationality,country_id,district_id,ward_id,entry_mode,disability_status_id',
+                      'student.applicant.nextOfKin','student.applicant.nextOfKin.country','student.applicant.nextOfKin.region','student.applicant.nextOfKin.ward','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
 			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->latest()->limit(1)->get();
 			}
 
-            return $active_students;
+
 		   $data = [
 		    'active_students'=>$active_students,
 			'semester'=>Semester::find(session('active_semester_id')),

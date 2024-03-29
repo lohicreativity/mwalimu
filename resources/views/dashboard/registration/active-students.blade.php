@@ -44,7 +44,7 @@
                  <h3 class="card-title">{{ __('Select Academic Year') }}</h3>
                </div>
               <!-- /.card-header -->
-               <div class="card-body">
+                <div class="card-body">
                   {!! Form::open(['url'=>'registration/active-students','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
                    <div class="form-group col-6">
@@ -61,9 +61,9 @@
                     <select name="program_level_id" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
-                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
-                      <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
-                      @endif
+                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                          <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                        @endif
                       @endforeach
                     </select>
                   </div>
@@ -73,156 +73,147 @@
                    </div>
  
                   {!! Form::close() !!} 
-               </div>
+                </div>
              </div>
              <!-- /.card -->
              		   
             @if(count($active_students) != 0)
-             <div class="card">
-               <div class="card-header">
-                 <h3 class="card-title">{{ __('Active Students') }}</h3><br>
-				 <a href="{{ url('registration/download-active-students?program_level='.$request->get('program_level_id')) }}" class="btn btn-primary">Download List</a>
-               </div>
+              <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('Active Students') }}</h3><br>
+				            <a href="{{ url('registration/download-active-students?program_level='.$request->get('program_level_id')) }}" class="btn btn-primary">Download List</a>
+                </div>
                <!-- /.card-header -->
-               <div class="card-body">
-
+                <div class="card-body">
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
-                        <tr>
-                          <th>SN</th>
-                          <th>Name</th>
-                          <th>Sex</th>
-						  <th>Form IV Index# </th>
-						  <th>Form VI Index#/AVN </th>						  
-                          <th>Reg#</th>
-                          <th>Programme</th>
-                        </tr>
+                      <tr>
+                        <th>SN</th>
+                        <th>Name</th>
+                        <th>Sex</th>
+                        <th>Form IV Index# </th>
+                        <th>Form VI Index#/AVN </th>						  
+                        <th>Reg#</th>
+                        <th>Programme</th>
+                      </tr>
                     </thead>
                     <tbody>
-                 @foreach($active_students as $key=>$reg)
-                   <tr>
-					  <td>{{($key+1)}} </td>
-					  <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $reg->student->id }}">{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</a></td>
-                      <td>{{ $reg->student->gender }}</td>
-					  <td>{{ $reg->student->applicant->index_number }}</td>
-					  <td>
-						@php($fiv_index = null)
-						@php($avn = null)
-						
-						@foreach($reg->student->applicant->nectaResultDetails as $detail)
-							@if($detail->exam_id == 2) @php ($fiv_index = $detail->index_number) @endif
-						@endforeach
-						@foreach($reg->student->applicant->nacteResultDetails as $detail)
-							 @php ($avn = $detail->avn)
-						@endforeach 
-						
-						@if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
-						@elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
-						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; <br>{{ $avn}}
-						@endif
-					  </td>
-                      <td>{{ $reg->student->registration_number }}</td>
-                      <td>{{ $reg->student->campusProgram->code }}</td>
-                   </tr>
-                 @endforeach
-                   </tbody>
+                    @foreach($active_students as $key=>$reg)
+                      <tr>
+                        <td>{{($key+1)}} </td>
+                        <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $reg->student->id }}">{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</a></td>
+                                  <td>{{ $reg->student->gender }}</td>
+                        <td>{{ $reg->student->applicant->index_number }}</td>
+                        <td>
+                          @php($fiv_index = null)
+                          @php($avn = null)
+                        
+                          @foreach($reg->student->applicant->nectaResultDetails as $detail)
+                            @if($detail->exam_id == 2) @php ($fiv_index = $detail->index_number) @endif
+                          @endforeach
+                          @foreach($reg->student->applicant->nacteResultDetails as $detail)
+                            @php ($avn = $detail->avn)
+                          @endforeach 
+                        
+                          @if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
+                          @elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
+                          @elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; <br>{{ $avn}}
+                          @endif
+                        </td>
+                        <td>{{ $reg->student->registration_number }}</td>
+                        <td>{{ $reg->student->campusProgram->code }}</td>
+                      </tr>
+                    @endforeach
+                    </tbody>
                   </table>
-                  
-               </div>
-            </div>
+                </div>
+              </div>
 			
-			     @foreach($active_students as $reg)
-                    <div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $reg->student->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content modal-lg">
-							<div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
+			        @foreach($active_students as $reg)
+                <div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $reg->student->id }}">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content modal-lg">
+							        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span> </button>
+                      </div>
+                      <div class="modal-body">
+                        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+                        <!-- <div class="container bootstrap snippets bootdey"> -->
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-3 col-sm-3">
+                              <div class="text-center">
+                                <img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$reg->student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" alt="Student Picture">                
+                              </div> <!-- /.thumbnail -->
+                            </div> <!-- /.col -->
+                            <div class="col-md-9 col-sm-9">
+                              <h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
+                              <h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
+                              <hr>
+                              <ul style="list-style-type: none; inline">
+                                <li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $reg->student->email }}</li>
+                                <li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $reg->student->phone }}</li>
+                              </ul>
+                              <hr>
+                              <div class="accordion" id="student-accordion">
+                                <div class="card">
+                                  <div class="card-header" id="ss-address">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseAddress" aria-expanded="true" aria-controls="collapseAddress">
+                                    &nbsp; More Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+                                    </button>
+                                  </div>
+
+                                  <div id="collapseAddress" class="collapse" aria-labelledby="ss-address" data-parent="#student-accordion">
+                                    <div class="card-body">
+
+                                      @if($reg->student->applicant)
+                                        &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->gender == 'M') Male @elseif($reg->student->applicant->gender == 'F') Female @endif
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $reg->student->applicant->birth_date }}
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nationality }}											  
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $reg->student->applicant->disabilityStatus->name }}
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $reg->student->applicant->entry_mode }}	 												  
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->address }}	 	
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->ward->name }},&nbsp; {{ $reg->student->applicant->region->name }},&nbsp; {{ $reg->student->applicant->country->name }}	 	 
+                                      @endif
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div class="card">
+                                  <div class="card-header" id="ss-next-of-kin">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+                                    &nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+                                    </button>
+                                  </div>
+
+                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
+                                    <div class="card-body">
+
+                                      @if($reg->student->applicant->nextOfKin)
+                                        &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->nextOfKin->gender == 'M') Male @elseif($reg->student->applicant->nextOfKin->gender == 'F') Female @endif
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}											  
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}	
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}
+                                        <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->ward->name }},&nbsp; {{ $reg->student->applicant->nextOfKin->region->name }},&nbsp; {{ $reg->student->applicant->nextOfKin->country->name }}	 	 
+                                                                
+                                      @endif
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>                                  
                             </div>
-                            <div class="modal-body">
-
-								<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-								<!-- <div class="container bootstrap snippets bootdey"> -->
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-3 col-sm-3">
-											<div class="text-center">
-												<img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$reg->student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" alt="Student Picture">
-												                 
-											</div> <!-- /.thumbnail -->
-
-										</div> <!-- /.col -->
-
-
-										<div class="col-md-9 col-sm-9">
-											<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
-											<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
-											<hr>
-											<ul style="list-style-type: none; inline">
-												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $reg->student->email }}</li>
-												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $reg->student->phone }}</li>
-											</ul>
-											<hr>
-
-											<div class="accordion" id="student-accordion">
-												<div class="card">
-												  <div class="card-header" id="ss-address">
-													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseAddress" aria-expanded="true" aria-controls="collapseAddress">
-														&nbsp; More Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
-													  </button>
-												  </div>
-
-												  <div id="collapseAddress" class="collapse" aria-labelledby="ss-address" data-parent="#student-accordion">
-													<div class="card-body">
-
-													  @if($reg->student->applicant)
-														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->gender == 'M') Male @elseif($reg->student->applicant->gender == 'F') Female @endif
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $reg->student->applicant->birth_date }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nationality }}											  
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $reg->student->applicant->disabilityStatus->name }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $reg->student->applicant->entry_mode }}	 												  
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->address }}	 	
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->ward->name }},&nbsp; {{ $reg->student->applicant->region->name }},&nbsp; {{ $reg->student->applicant->country->name }}	 	 
-													  @endif
-													</div>
-												  </div>
-												</div>
-												
-												<div class="card">
-												  <div class="card-header" id="ss-next-of-kin">
-													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
-														&nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
-													  </button>
-												  </div>
-
-												  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
-													<div class="card-body">
-
-													  @if($reg->student->applicant->nextOfKin)
-														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->nextOfKin->gender == 'M') Male @elseif($reg->student->applicant->nextOfKin->gender == 'F') Female @endif
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}											  
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}	
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->ward->name }},&nbsp; {{ $reg->student->applicant->nextOfKin->region->name }},&nbsp; {{ $reg->student->applicant->nextOfKin->country->name }}	 	 
-																										  
-													   @endif
-													</div>
-												  </div>
-												</div>
-											</div>                                  
-										</div>
-									</div>
-								</div>
-							</div>
                           </div>
+								        </div>
+							        </div>
+                    </div>
                           <!-- /.modal-content -->
-						</div> 
+						      </div> 
                       <!-- /.modal -->
-					 </div>
-                 @endforeach
+					      </div>
+              @endforeach
             @endif
            </div>
           </div>
