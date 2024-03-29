@@ -467,7 +467,7 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
 
-          <div style='padding-right:5px; float:left'><br>
+          <div style='padding-right:5px; '><br>
             <span class="ss-bold" style="font-size:8pt"> KEYS </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
