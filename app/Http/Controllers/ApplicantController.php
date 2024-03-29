@@ -798,10 +798,6 @@ class ApplicantController extends Controller
          }
 		}
 
-
-
-
-
       $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
       $ac_year += 1;
 
@@ -812,137 +808,138 @@ class ApplicantController extends Controller
           return redirect()->back()->with('error','Study academic year has not been created');
       }
 
-      if($applicant->status == 'SELECTED' && $applicant->selections[0]->status == 'SELECTED'){
-         $orientation_date = null;
-         $special_dates = SpecialDate::where('name','Orientation')
-                                     ->where('study_academic_year_id',$study_academic_year->id)
-                                     ->where('intake',$applicant->intake->name)
-                                     ->where('campus_id',$applicant->campus_id)
-                                     ->get();
-   
-         $orientation_date = null;
-         if(count($special_dates) != 0){
-             foreach($special_dates as $special_date){
-                 $specialDateFlag = false;
-                 if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
-                     $specialDateFlag = true;
-   
-                 }else{
-                     $orientation_date = $special_date->date;
-                     break;
-                 }
-             }
-             if($specialDateFlag){
-                 return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
-             }
-         }
-   
-         $ready_for_admission = false;
-         
-         $medical_insurance_fee =  $students_union_fee = $caution_money_fee = $medical_examination_fee = $registration_fee = 
-         $identity_card_fee = $late_registration_fee = $welfare_emergence_fund =  $quality_assurance_fee = $reference_number = null;
-   
-         if($orientation_date){
-            // Checks for Masters
-            if($applicant->program_level_id == 5){
-               $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
-   
-               $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                  ->where('name','LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
-   
-               $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                  ->where('name','LIKE','%Master%')->where('name','LIKE','%Caution Money%');})->first();
-   
-               $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                     ->where('name','LIKE','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
-   
-               $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%Master%')->where('name','LIKE','%Registration%');})->first();
-   
-               $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                  ->where('name','LIKE','%Master%')->where('name','LIKE','%New ID Card%');})->first();
-   
-               $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%Master%')->where('name','LIKE','%Late Registration%');})->first();
-   
-               $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%Master%')->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergency%');})->first();
-   
-               $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                                                   ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                   ->where('name','LIKE','%Master%')->where('name','LIKE','%TCU%');})->first();
-   
-            // Checks for Undergraduates
-            }else{
-               $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+      $ready_for_admission = false;
+      if($applicant->status == 'SELECTED' && count($applicant->selections[0]) > 0){
+         if($applicant->selections[0]->status == 'SELECTED'){
+            $orientation_date = null;
+            $special_dates = SpecialDate::where('name','Orientation')
+                                        ->where('study_academic_year_id',$study_academic_year->id)
+                                        ->where('intake',$applicant->intake->name)
+                                        ->where('campus_id',$applicant->campus_id)
+                                        ->get();
+      
+            $orientation_date = null;
+            if(count($special_dates) != 0){
+                foreach($special_dates as $special_date){
+                    $specialDateFlag = false;
+                    if(!in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($special_date->applicable_levels))){
+                        $specialDateFlag = true;
+      
+                    }else{
+                        $orientation_date = $special_date->date;
+                        break;
+                    }
+                }
+                if($specialDateFlag){
+                    return redirect()->back()->with('error','Orientation date for '.$applicant->selections[0]->campusProgram->program->award->name.' has not been defined');
+                }
+            }
+            
+            $medical_insurance_fee =  $students_union_fee = $caution_money_fee = $medical_examination_fee = $registration_fee = 
+            $identity_card_fee = $late_registration_fee = $welfare_emergence_fund =  $quality_assurance_fee = $reference_number = null;
+      
+            if($orientation_date){
+               // Checks for Masters
+               if($applicant->program_level_id == 5){
+                  $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                   ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
                   ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
-   
-               $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                  ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
-   
-               $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                  ->where('name','LIKE','%Caution Money%');})->first();
-   
-               $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+      
+                  $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                      ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                     ->where('name','LIKE','%Medical Examination%');})->first();
-   
-               $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%Registration%');})->first();
-   
-               $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->where('name','LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+      
+                  $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                     ->where('name','LIKE','%Master%')->where('name','LIKE','%Caution Money%');})->first();
+      
+                  $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                        ->where('name','LIKE','%Master%')->where('name','LIKE','%Medical Examination%');})->first();
+      
+                  $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
                   ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                  ->where('name','LIKE','%New ID Card%');})->first();
-   
-               $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%Late Registration%');})->first();
-   
-               $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-               ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-               ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergency%');})->first();
-   
-               if($request->get('program_level_id') == 4){
+                  ->where('name','LIKE','%Master%')->where('name','LIKE','%Registration%');})->first();
+      
+                  $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                     ->where('name','LIKE','%Master%')->where('name','LIKE','%New ID Card%');})->first();
+      
+                  $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                  ->where('name','LIKE','%Master%')->where('name','LIKE','%Late Registration%');})->first();
+      
+                  $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                  ->where('name','LIKE','%Master%')->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergency%');})->first();
+      
                   $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                                                         ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                         ->where('name','LIKE','%TCU%');})->first();
+                                                      ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                                      ->where('name','LIKE','%Master%')->where('name','LIKE','%TCU%');})->first();
+      
+               // Checks for Undergraduates
                }else{
-                  $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
-                                                         ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
-                                                         ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
+                  $medical_insurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                     ->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');})->first();
+      
+                  $students_union_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                     ->where('name','NOT LIKE','%Master%')->where('name','LIKE','%student%')->where('name','LIKE','%Union%')->orWhere('name','LIKE','%MASO%');})->first();
+      
+                  $caution_money_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                     ->where('name','LIKE','%Caution Money%');})->first();
+      
+                  $medical_examination_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                        ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                        ->where('name','LIKE','%Medical Examination%');})->first();
+      
+                  $registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                  ->where('name','LIKE','%Registration%');})->first();
+      
+                  $identity_card_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                     ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                     ->where('name','LIKE','%New ID Card%');})->first();
+      
+                  $late_registration_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                  ->where('name','LIKE','%Late Registration%');})->first();
+      
+                  $welfare_emergence_fund = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                  ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                  ->where('name','LIKE','%Welfare%')->where('name','LIKE','%Fund%')->orWhere('name','LIKE','%Emergency%');})->first();
+      
+                  if($request->get('program_level_id') == 4){
+                     $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                                            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                                            ->where('name','LIKE','%TCU%');})->first();
+                  }else{
+                     $quality_assurance_fee = FeeAmount::select('amount_in_tzs','amount_in_usd')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)
+                                                            ->whereHas('feeItem',function($query) use($applicant){$query->where('campus_id',$applicant->campus_id)
+                                                            ->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
+                  }
+               }
+      
+               $admission_references = AdmissionReferenceNumber::where('study_academic_year_id', $study_academic_year->id)
+                                                               ->where('intake', $applicant->intake->name)
+                                                               ->where('campus_id', $applicant->campus_id)
+                                                               ->get();
+               
+               foreach($admission_references as $reference){
+                  if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($reference->applicable_levels))){
+                     $reference_number = $reference->name;
+                     break;
+                  }
                }
             }
-   
-            $admission_references = AdmissionReferenceNumber::where('study_academic_year_id', $study_academic_year->id)
-                                                            ->where('intake', $applicant->intake->name)
-                                                            ->where('campus_id', $applicant->campus_id)
-                                                            ->get();
-            
-            foreach($admission_references as $reference){
-               if(in_array($applicant->selections[0]->campusProgram->program->award->name, unserialize($reference->applicable_levels))){
-                  $reference_number = $reference->name;
-                  break;
-               }
+                     
+            if($medical_insurance_fee &&  $students_union_fee && $caution_money_fee && $medical_examination_fee && $registration_fee && 
+               $identity_card_fee && $late_registration_fee && $welfare_emergence_fund &&  $quality_assurance_fee && $program_fee && $reference_number){
+               $ready_for_admission = true;
+      
             }
-         }
-                  
-         if($medical_insurance_fee &&  $students_union_fee && $caution_money_fee && $medical_examination_fee && $registration_fee && 
-            $identity_card_fee && $late_registration_fee && $welfare_emergence_fund &&  $quality_assurance_fee && $program_fee && $reference_number){
-            $ready_for_admission = true;
-   
          }
       }
 
