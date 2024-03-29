@@ -206,12 +206,12 @@
         <div class="row">
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
-               <span class="ss-bold" style="font-size:9pt">THE MWALIMU NYERERE MEMORIAL ACADEMY</span> <br>
-			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="6%">				<br>   
-               <span class="ss-bold" style="font-size:8pt">{{ $campus->name }}</span> <br>
-               <span class="ss-bold" style="font-size:8pt">{{ $department->name }}</span> <br>
-               <span class="ss-bold" style="font-size:8pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
-               <p style="font-size:8pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+               <span class="ss-bold" style="font-size:8pt">THE MWALIMU NYERERE MEMORIAL ACADEMY</span> <br>
+			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="5%">				<br>   
+               <span class="ss-bold" style="font-size:7pt">{{ $campus->name }}</span> <br>
+               <span class="ss-bold" style="font-size:7pt">{{ $department->name }}</span> <br>
+               <span class="ss-bold" style="font-size:7pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
+               <p style="font-size:7pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
