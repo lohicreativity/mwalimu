@@ -467,7 +467,7 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-3">
             <span class="ss-bold" style="font-size:12pt"> DISTRIBUTION OF EXAMINATION RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
