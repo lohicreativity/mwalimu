@@ -467,16 +467,16 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <span class="ss-bold" style="font-size:12pt"> DISTRIBUTION OF EXAMINATION RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
                   <tr>
-                    <td class="ss-bold ss-font-xs">Class/Remark</td>
-                    <td class="ss-bold ss-font-xs">Male</td>
-                    <td class="ss-bold ss-font-xs">Female</td>
-                    <td class="ss-bold ss-font-xs">Total</td>
-                    <td class="ss-bold ss-font-xs">Percentage</td>
+                    <td class="ss-bold ss-font-xs">CLASS/REMARK</td>
+                    <td class="ss-bold ss-font-xs">MALE</td>
+                    <td class="ss-bold ss-font-xs">FEMALE</td>
+                    <td class="ss-bold ss-font-xs">TOTAL</td>
+                    <td class="ss-bold ss-font-xs">PERCENTAGE</td>
                   </tr>
                   @foreach($classifications as $class)
                     <tr>
