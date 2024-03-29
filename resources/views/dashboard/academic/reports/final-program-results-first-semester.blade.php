@@ -235,8 +235,8 @@
                         @endforeach
                         
                         <th class="ss-bold ss-font-xs">GPA</th>
-                        <th class="ss-bold ss-font-xs"> POINTS</th>
-                        <th class="ss-bold ss-font-xs">CREDITS</th>
+                        <th class="ss-bold ss-font-xs"> PTS</th>
+                        <th class="ss-bold ss-font-xs">CRD</th>
                         <th class="ss-bold ss-font-xs">REMARK</th>
                         <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
                       </tr>
