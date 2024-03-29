@@ -472,74 +472,74 @@
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold ss-font-xm">Name</td>
-                      <td class="ss-bold ss-font-xm">Description</td>
+                      <td class="ss-bold ss-font-sm">Name</td>
+                      <td class="ss-bold ss-font-sm">Description</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>CA</td>
                       <td>Continous Assessment</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>CARRY</td>
                       <td>Repeat Course Semester/Year - With Promotion</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>DS</td>
                       <td>Direct SUP</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>FE</td>
                       <td>Final Exam</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>GD</td>
                       <td>Grade</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>I</td>
                       <td>Incomplete CW + FE</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>IC</td>
                       <td>Incomplete Coursework</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>IF</td>
                       <td>Incomplete Final Exam</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>INCO</td>
                       <td>Incomplete Student Results</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>N/A</td>
                       <td>Not Applicable</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>PASS</td>
                       <td>Passed all Modules</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>POSE</td>
                       <td>Postponed Exam</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>POSS</td>
                       <td>Postponed Semester</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>POSY</td>
                       <td>Postponed Year</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>RETAKE</td>
                       <td>Repeat Course Semester/Year - No Promotion</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>SUPP</td>
                       <td>Supplementary Status</td>
                     </tr>
-                    <tr class="ss-font-xm">
+                    <tr class="ss-font-sm">
                       <td>TT</td>
                       <td>Total</td>
                     </tr>
