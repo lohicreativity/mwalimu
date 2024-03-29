@@ -467,8 +467,25 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
+          <div class="col-md-3"> <br>
+            <span class="ss-bold" style="font-size:8pt"> PERFORMANCE SUMMARY </span> <br>
+                <div class="table-responsive">
+                   <table class="table table-condensed table-bordered">
+                      <tr>
+                        <td class="ss-bold ss-font-sm">Code</td>
+                        <td class="ss-bold ss-font-sm">Name</td>
+                      </tr>
+                      @foreach($modules as $modKey=>$mod)
+                      <tr>
+                        <td class="ss-font-sm">{{ $modKey }}</td>
+                        <td class="ss-font-sm">{{ $mod['name'] }}</td>
+                      </tr>
+                      @endforeach
+                   </table>
+                </div><!-- end of table-responsive -->
+          </div>
           <div class="col-md-3">
-            <span class="ss-bold" style="font-size:9pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
+            <span class="ss-bold" style="font-size:8pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
                   <tr>
@@ -561,47 +578,6 @@
               </div><!-- end of table-responsive -->
           </div>
         </div>
-
-        <div class="row">
-        <div class="col-md-12"> <br>
-            <span class="ss-bold" style="font-size:12pt"> PERFORMANCE SUMMARY </span> <br>
-                <div class="table-responsive">
-                   <table class="table table-condensed table-bordered">
-                      <tr>
-                        <td class="ss-bold ss-font-xs">Code</td>
-                        <td class="ss-bold ss-font-xs">Name</td>
-                        @foreach($grading_policies as $policy)
-                        <td class="ss-bold ss-font-xs">{{ $policy->grade }}</td>
-                        @endforeach
-                        <td class="ss-bold ss-font-xs">I</td>
-                        <td class="ss-bold ss-font-xs">IC</td>
-                        <td class="ss-bold ss-font-xs">IF</td>
-                        <td class="ss-bold ss-font-xs">POST</td>
-                        <td class="ss-bold ss-font-xs">DS</td>
-                        <td class="ss-bold ss-font-xs">Pass</td>
-                        <td class="ss-bold ss-font-xs">Fail</td>
-                      </tr>
-                      @foreach($modules as $modKey=>$mod)
-                      <tr>
-                        <td class="ss-font-xs">{{ $modKey }}</td>
-                        <td class="ss-font-xs">{{ $mod['name'] }}</td>
-                        @foreach($grading_policies as $pol)
-                            <td class="ss-font-xs">{{ $mod['grades'][$pol->grade] }}({{ round($mod['grades_perc'][$pol->grade],0) }}%)</td>
-                        @endforeach
-                        <td class="ss-font-xs">{{ $mod['inc_count'] }}({{ round($mod['inc_rate'],0) }}%)</td>
-                        <td class="ss-font-xs">{{ $mod['ic_count'] }}({{ round($mod['ic_rate'],0) }}%)</td>
-                        <td class="ss-font-xs">{{ $mod['if_count'] }}({{ round($mod['if_rate'],0) }}%)</td>
-                        <td class="ss-font-xs">{{ $mod['pst_count'] }}({{ round($mod['pst_rate'],0) }}%)</td>
-                        <td class="ss-font-xs">{{ $mod['ds_count'] }}({{ round($mod['ds_rate'],0) }}%)</td>
-                        <td class="ss-font-xs">{{ $mod['pass_count'] }}({{ round($mod['pass_rate'],0) }}%)</td>
-                        <td class="ss-font-xs">{{ $mod['fail_count'] }}({{ round($mod['fail_rate'],0) }}%)</td>
-                      </tr>
-                      @endforeach
-                   </table>
-                </div><!-- end of table-responsive -->
-        </div>
-        </div>
-
         <div class="row">
           <div class="col-md-4">
             <span class="ss-bold" style="font-size:12pt"> KEYS </span> <br>
