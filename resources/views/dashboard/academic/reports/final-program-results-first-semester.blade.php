@@ -668,7 +668,7 @@
              <div class="ss-left">
                  <p class="ss-bold">Examination Officer: ......................................</p>
                  <p class="ss-bold">Signature: ................................................</p>
-                 <p class="ss-bold">Date: .....................................................</p>
+                 <p class="ss-bold">Date: ...............................................................</p>
              </div>
           </div><!--end of col-md-6 -->
         </div><!-- end of row -->
