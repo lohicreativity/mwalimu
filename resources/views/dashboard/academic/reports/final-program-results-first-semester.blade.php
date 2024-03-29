@@ -169,7 +169,7 @@
         font-size: 13px;
      }
      .ss-font-xs{
-        font-size: 9px;
+        font-size: 8px;
      }
      .ss-letter-head{
         /*margin-bottom: 20px;*/
@@ -206,12 +206,12 @@
         <div class="row">
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
-               <h5>THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
-			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="5%">				<br>   
-               <span class="ss-bold" style="font-size:10pt">{{ $campus->name }}</span> <br>
-               <span class="ss-bold" style="font-size:10pt">{{ $department->name }}</span> <br>
-               <span class="ss-bold" style="font-size:10pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
-               <p style="font-size:10pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+               <span class="ss-bold" style="font-size:10pt">THE MWALIMU NYERERE MEMORIAL ACADEMY</span> <br>
+			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="7%">				<br>   
+               <span class="ss-bold" style="font-size:9pt">{{ $campus->name }}</span> <br>
+               <span class="ss-bold" style="font-size:9pt">{{ $department->name }}</span> <br>
+               <span class="ss-bold" style="font-size:9pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
+               <p style="font-size:9pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
