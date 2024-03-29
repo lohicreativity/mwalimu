@@ -2487,7 +2487,8 @@ class ExaminationResultController extends Controller
                 $query->whereIn('module_assignment_id',$assignmentIds);
               },'specialExams','examinationResults.changes','examinationResults.moduleAssignment.specialExams'])->where('campus_program_id',$campus_program->id)->get();
         }
-
+return $students;
+        $classifications = GPAClassification::where('nta_level_id',1)->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
         if(count($students) != 0){
            if(count($students[0]->examinationResults) == 0){
