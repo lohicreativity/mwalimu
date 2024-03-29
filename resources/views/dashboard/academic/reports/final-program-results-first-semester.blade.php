@@ -234,9 +234,9 @@
                         <th class="ss-bold ss-font-xs">GD</th>
                         @endforeach
                         
-                        <th class="ss-bold ss-font-xs">GPA</th>
-                        <th class="ss-bold ss-font-xs"> PTS</th>
-                        <th class="ss-bold ss-font-xs">CRD</th>
+                        <th class="ss-center ss-bold ss-font-xs">GPA</th>
+                        <th class="ss-center ss-bold ss-font-xs"> PTS</th>
+                        <th class="ss-center ss-bold ss-font-xs">CRD</th>
                         <th class="ss-bold ss-font-xs">REMARK</th>
                         <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
                       </tr>
@@ -382,13 +382,13 @@
                       
                       @endforeach
                       
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-center ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else - @endif 
                       @endif</td>
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-center ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else - @endif 
                       @endif</td>
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-center ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else - @endif 
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
