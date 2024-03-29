@@ -207,7 +207,7 @@
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
                <span class="ss-bold" style="font-size:8pt">THE MWALIMU NYERERE MEMORIAL ACADEMY</span> <br>
-			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="5%">				   
+			         <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="5%">				<br>   
                <span class="ss-bold" style="font-size:7pt">{{ $campus->name }}</span> <br>
                <span class="ss-bold" style="font-size:7pt">{{ $department->name }}</span> <br>
                <span class="ss-bold" style="font-size:7pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
