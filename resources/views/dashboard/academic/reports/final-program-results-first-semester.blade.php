@@ -480,31 +480,31 @@
                   </tr>
                   @foreach($classifications as $class)
                     <tr>
-                      @if(str_contains(strtolower($class, 'first')))
+                      @if(str_contains(strtolower($class), 'first'))
                         <td class="ss-font-xs">{{ $class->name }}</td>
                         <td class="ss-font-xs"> {{ $male_first_class_cases }}</td>
                         <td class="ss-font-xs">{{ $female_first_class_cases }}</td>
                         <td class="ss-font-xs">{{ $male_first_class_cases + $female_first_class_cases }}</td>
                         <td class="ss-font-xs">{{ round((($male_first_class_cases + $female_first_class_cases)/count($students))*100) }}</td>
-                      @elseif(str_contains(strtolower($class, 'upper second')))
+                      @elseif(str_contains(strtolower($class), 'upper second'))
                         <td class="ss-font-xs">{{ $class->name }}</td>
                         <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
-                      @elseif(strtolower($class, 'second class')))
+                      @elseif(strtolower($class), 'second class'))
                         <td class="ss-font-xs">{{ $class->name }}</td>
                         <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
-                      @elseif(str_contains(strtolower($class, 'lower')))
+                      @elseif(str_contains(strtolower($class), 'lower'))
                         <td class="ss-font-xs">{{ $class->name }}</td>
                         <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
-                      @elseif(str_contains(strtolower($class, 'pass')))
+                      @elseif(str_contains(strtolower($class), 'pass'))
                         <td class="ss-font-xs">{{ $class->name }}</td>
                         <td class="ss-font-xs"> {{ $male_upsecond_class_cases }}</td>
                         <td class="ss-font-xs">{{ $female_upsecond_class_cases }}</td>
