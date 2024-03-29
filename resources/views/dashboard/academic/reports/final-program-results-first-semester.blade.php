@@ -246,7 +246,7 @@
                       @php
                         $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
                         $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
-                        $male_failed_cases = $female_failed_cases = = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
+                        $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
                       @endphp
 
                     @foreach($students as $key=>$student)
