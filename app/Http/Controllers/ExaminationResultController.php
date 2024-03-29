@@ -2467,7 +2467,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'examinationResults'=>function($query) use($assignmentIds){
               	$query->whereIn('module_assignment_id',$assignmentIds);
-              },'examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
+              },'examinationResults.changes','applicant:id,program_level_id'])->where('campus_program_id',$campus_program->id)->get();
           }
         }else{
 /* 			whereHas('studentshipStatus',function($query){
@@ -2485,11 +2485,11 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
-              },'specialExams','examinationResults.changes','examinationResults.moduleAssignment.specialExams'])->where('campus_program_id',$campus_program->id)->get();
+              },'specialExams','examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])->where('campus_program_id',$campus_program->id)->get();
         }
-return $students[0];
-        $classifications = GPAClassification::where('nta_level_id',1)->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
+        $classifications = GPAClassification::where('nta_level_id',$students[0]->applicant->program_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+return $classifications;
         if(count($students) != 0){
            if(count($students[0]->examinationResults) == 0){
               return redirect()->back()->with('error','No results processed yet for this programme');
