@@ -666,7 +666,7 @@
           </div><!--end of col-md-6 -->
           <div class="col-md-4">
              <div class="ss-left">
-                 <p class="ss-bold">Examination Officer: ...................................</p>
+                 <p class="ss-bold">Examination Officer: ......................................</p>
                  <p class="ss-bold">Signature: .............................</p>
                  <p class="ss-bold">Date: ..................................</p>
              </div>
