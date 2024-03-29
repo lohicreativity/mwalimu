@@ -546,7 +546,7 @@
                   </table>
            </div><!-- end of table-responsive -->
           </div>
-          <div style='padding-right:10px;  float:left; width:30%'> <br>
+          <div style='padding-right:10px;  float:left; width:40%'> <br>
             <span class="ss-bold" style="font-size:8pt"> MODULE CODE/NAME </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
