@@ -467,7 +467,7 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
-          <div class="col-md-3"> <br>
+          <div class="col-md-4"> <br>
             <span class="ss-bold" style="font-size:8pt"> PERFORMANCE SUMMARY </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
