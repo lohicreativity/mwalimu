@@ -427,7 +427,7 @@ class RegistrationController extends Controller
 			  $active_students = Registration::select('id','student_id')->whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-			  ->with(['student:id,applicant_id,first_name,middle_name,surname,gender,campus_program_id,registration_number,studentship_status_id,phone,email',
+			  ->with(['student:id,applicant_id,first_name,middle_name,surname,gender,image,campus_program_id,registration_number,studentship_status_id,phone,email',
                       'student.applicant:id,index_number,program_level_id,next_of_kin_id,gender,birth_date,nationality,country_id,region_id,district_id,ward_id,entry_mode,disability_status_id,address',
                       'student.applicant.nextOfKin:id,first_name,middle_name,surname,gender,phone,nationality,address,country_id,region_id,district_id,ward_id',
                       'student.applicant.nextOfKin.country:id,name',
