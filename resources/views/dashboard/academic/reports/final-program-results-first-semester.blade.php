@@ -455,7 +455,7 @@
                           @else {{ $student->semesterRemarks[0]->remark }} 
                           @endif
                         @endif 
-                      @endif</td>
+                      </td>
                     </tr>
                     @endforeach
                     </tbody>
