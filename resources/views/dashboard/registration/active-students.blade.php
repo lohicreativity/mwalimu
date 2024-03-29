@@ -92,7 +92,7 @@
                         <th>Name</th>
                         <th>Sex</th>
                         <th>Form IV Index# </th>
-                        <th>Form VI Index#/AVN </th>						  
+                        @if($active_students[0]->student->applicant->program_level_id != 1)<th>Form VI Index#/AVN </th>	@endif					  
                         <th>Reg#</th>
                         <th>Programme</th>
                       </tr>
@@ -104,22 +104,24 @@
                         <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $reg->student->id }}">{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</a></td>
                                   <td>{{ $reg->student->gender }}</td>
                         <td>{{ $reg->student->applicant->index_number }}</td>
-                        <td>
-                          @php($fiv_index = null)
-                          @php($avn = null)
-                        
-                          @foreach($reg->student->applicant->nectaResultDetails as $detail)
-                            @if($detail->exam_id == 2 && $detail->verified == 1) @php ($fiv_index = $detail->index_number) @endif
-                          @endforeach
-                          @foreach($reg->student->applicant->nacteResultDetails as $detail)
-                            @if($detail->verified == 1) @php ($avn = $detail->avn) @endif
-                          @endforeach 
-                        
-                          @if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
-                          @elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
-                          @elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; <br>{{ $avn}}
-                          @endif
-                        </td>
+                        @if($reg->student->applicant->program_level_id != 1)
+                          <td>
+                            @php($fiv_index = null)
+                            @php($avn = null)
+                          
+                            @foreach($reg->student->applicant->nectaResultDetails as $detail)
+                              @if($detail->exam_id == 2 && $detail->verified == 1) @php ($fiv_index = $detail->index_number) @endif
+                            @endforeach
+                            @foreach($reg->student->applicant->nacteResultDetails as $detail)
+                              @if($detail->verified == 1) @php ($avn = $detail->avn) @endif
+                            @endforeach 
+                          
+                            @if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
+                            @elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
+                            @elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; <br>{{ $avn}}
+                            @endif
+                          </td>
+                        @endif
                         <td>{{ $reg->student->registration_number }}</td>
                         <td>{{ $reg->student->campusProgram->code }}</td>
                       </tr>
