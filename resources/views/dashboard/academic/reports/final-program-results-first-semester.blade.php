@@ -470,80 +470,80 @@
           <div class="col-md-4" style='padding-right:10px'><br>
             <span class="ss-bold" style="font-size:8pt"> KEYS </span> <br>
                 <div class="table-responsive">
-                   <table class="table table-condensed table-bordered">
+                  <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold ss-font-xs">Name</td>
-                      <td class="ss-bold ss-font-xs">Description</td>
+                      <td class="ss-bold ss-font-xm">Name</td>
+                      <td class="ss-bold ss-font-xm">Description</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>CA</td>
                       <td>Continous Assessment</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>CARRY</td>
                       <td>Repeat Course Semester/Year - With Promotion</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>DS</td>
                       <td>Direct SUP</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>FE</td>
                       <td>Final Exam</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>GD</td>
                       <td>Grade</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>I</td>
                       <td>Incomplete CW + FE</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>IC</td>
                       <td>Incomplete Coursework</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>IF</td>
                       <td>Incomplete Final Exam</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>INCO</td>
                       <td>Incomplete Student Results</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>N/A</td>
                       <td>Not Applicable</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>PASS</td>
                       <td>Passed all Modules</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>POSE</td>
                       <td>Postponed Exam</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>POSS</td>
                       <td>Postponed Semester</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>POSY</td>
                       <td>Postponed Year</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>RETAKE</td>
                       <td>Repeat Course Semester/Year - No Promotion</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>SUPP</td>
                       <td>Supplementary Status</td>
                     </tr>
-                    <tr class="ss-font-xs">
+                    <tr class="ss-font-xm">
                       <td>TT</td>
                       <td>Total</td>
                     </tr>
-                  </table>
+                    </table>
            </div><!-- end of table-responsive -->
           </div>
           <div class="col-md-4" style='padding-right:10px;  float:left'> <br>
@@ -660,14 +660,14 @@
         </div>
 
         <div class="row">
-          <div class="col-md-9">
-              <div class="ss-left">
+          <div class="col-md-8">
+              <div class="ss-right">
                   <p class="ss-bold">Name of Head of Department: <span style="font-style: normal"> {{ strtoupper($staff->surname) }}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->middle_name,0,1)}} </span></p>
                   <p class="ss-bold">Signature: ..............................</p>
                   <p class="ss-bold">Date: ..................................</p>
               </div>
           </div><!--end of col-md-6 -->
-          <div class="col-md-3">
+          <div class="col-md-4">
              <div class="ss-left">
                  <p class="ss-bold">Name of Examination Officer: ...............................</p>
                  <p class="ss-bold">Signature: .............................</p>
