@@ -429,7 +429,7 @@ class RegistrationController extends Controller
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
 			  ->with(['student:id,applicant_id,first_name,middle_name,surname,gender,campus_program_id,registration_number,studentship_status_id,phone,email',
                       'student.applicant:id,index_number,next_of_kin_id,gender,birth_date,nationality,country_id,region_id,district_id,ward_id,entry_mode,disability_status_id,address',
-                      'student.applicant.nextOfKin:id,first_name,middle_name,surname,gender,phone,nationality,address,country_id,region_id,district_id,ward_id',
+                      'student.applicant.nextOfKin',
                       'student.applicant.nextOfKin.country:id,name',
                       'student.applicant.nextOfKin.region:id,name',
                       'student.applicant.nextOfKin.ward:id,name',
