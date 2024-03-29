@@ -418,23 +418,23 @@
                             @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
                             @endif
                           @elseif($student->semesterRemarks[0]->remark == 'PASS')
-                            @if(str_contains(strtolower($student->semesterRemarks[0]->remark),'first'))
+                            @if(str_contains(strtolower($student->semesterRemarks[0]->class),'first'))
                               @if($student->gender == 'F') @php $female_first_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_first_class_cases++; @endphp
                               @endif
-                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->remark),'upper second'))
+                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'upper second'))
                               @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
                               @endif
-                            @elseif(strtolower($student->semesterRemarks[0]->remark) == 'second class'))
+                            @elseif(strtolower($student->semesterRemarks[0]->class) == 'second class'))
                               @if($student->gender == 'F') @php $female_second_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_second_class_cases++; @endphp
                               @endif
-                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->remark),'lower second'))
+                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'lower second'))
                               @if($student->gender == 'F') @php $female_lwsecond_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_lwsecond_class_cases++; @endphp
                               @endif
-                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->remark),'pass'))
+                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'pass'))
                               @if($student->gender == 'F') @php $female_pass_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
                               @endif
