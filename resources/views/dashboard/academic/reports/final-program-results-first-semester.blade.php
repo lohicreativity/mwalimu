@@ -218,9 +218,9 @@
                     <thead>
                       <tr>
                         <th class="ss-bold ss-font-xs" rowspan="3">SN</th>
-                        @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Registration Number</th>@endif
-                        @if($request->get('name_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Name</th>@endif
-                        @if($request->get('gender_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">Sex</th>@endif
+                        @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">REGISTRATION NUMBER</th>@endif
+                        @if($request->get('name_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">NAME</th>@endif
+                        @if($request->get('gender_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">SEX</th>@endif
                         @foreach($module_assignments as $assignment)
                         <th class="ss-bold ss-font-xs" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
                         @endforeach
@@ -235,10 +235,10 @@
                         @endforeach
                         
                         <th class="ss-bold ss-font-xs">GPA</th>
-                        <th class="ss-bold ss-font-xs">Points</th>
-                        <th class="ss-bold ss-font-xs">Credits</th>
-                        <th class="ss-bold ss-font-xs">Remark</th>
-                        <th class="ss-bold ss-font-xs">Classification</th>
+                        <th class="ss-bold ss-font-xs"> POINTS</th>
+                        <th class="ss-bold ss-font-xs">CREDITS</th>
+                        <th class="ss-bold ss-font-xs">REMARK</th>
+                        <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
                       </tr>
                     </thead>
                     <tbody>
