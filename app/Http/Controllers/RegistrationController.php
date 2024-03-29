@@ -402,7 +402,7 @@ class RegistrationController extends Controller
 	  * Show active students
 	  */
 	  public function showActiveStudents(Request $request)
-	  {return 1;
+	  {
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $active_students = null;
 		   if(Auth::user()->hasRole('hod')){
@@ -424,6 +424,7 @@ class RegistrationController extends Controller
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->latest()->get();
 			}else{
+                return 1;
 			  $active_students = Registration::whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
@@ -433,8 +434,6 @@ class RegistrationController extends Controller
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->latest()->get();
 			}
-
-            return $active_students;
 		   $data = [
 		    'active_students'=>$active_students,
 			'semester'=>Semester::find(session('active_semester_id')),
