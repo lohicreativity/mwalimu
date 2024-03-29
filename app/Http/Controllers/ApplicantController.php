@@ -741,11 +741,15 @@ class ApplicantController extends Controller
 		$tuition_fee_loan = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)
                                            ->where('campus_id',$applicant->campus_id)->sum('tuition_fee');
 
-		$invoices = null;
-      $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)
-                               ->where('year_of_study',1)
-                               ->where('campus_program_id',$applicant->selections[0]->campus_program_id)
-                               ->first();
+		$invoices = $program_fee = null;
+      if($applicant->selections){
+         $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)
+                                  ->where('year_of_study',1)
+                                  ->where('campus_program_id',$applicant->selections[0]->campus_program_id)
+                                  ->first();
+
+      }
+
 		if($registrationStatus){
 
          if(!$program_fee){
