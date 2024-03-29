@@ -467,7 +467,7 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
 
-          <div style='padding-right:5px; '><br>
+          <div style='padding-right:5px; float:left'><br>
             <span class="ss-bold" style="font-size:8pt"> KEYS </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
@@ -565,7 +565,7 @@
           </div>
 
           <div><br>
-            <span class="ss-bold" style="font-size:8pt"> DISTRIBUTION OF EXAMINATION RESULTS BY SEX </span> <br>
+            <span class="ss-bold" style="font-size:8pt; float:left"> DISTRIBUTION OF EXAMINATION RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
                   <tr>
