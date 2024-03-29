@@ -246,7 +246,7 @@
                       @php
                         $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
                         $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
-                        $male_failed_cases = $female_failed_cases = 0;
+                        $male_failed_cases = $female_failed_cases = = $female_pass_cases = = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
                       @endphp
 
                     @foreach($students as $key=>$student)
@@ -426,6 +426,18 @@
                               @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
                               @endif
+                            @elseif(strtolower($student->semesterRemarks[0]->remark) == 'second class'))
+                              @if($student->gender == 'F') @php $female_second_class_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $male_second_class_cases++; @endphp
+                              @endif
+                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->remark),'lower second'))
+                              @if($student->gender == 'F') @php $female_lwsecond_class_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $male_lwsecond_class_cases++; @endphp
+                              @endif
+                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->remark),'pass'))
+                              @if($student->gender == 'F') @php $female_pass_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
+                              @endif
                             @endif
                           @elseif(str_contains($student->semesterRemarks[0]->remark, 'POSTPONE'))
                             @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
@@ -588,22 +600,22 @@
                         <td class="ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
                       @elseif(strtolower($class) == 'second class'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
-                        <td class="ss-font-sm"> {{ $male_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                        <td class="ss-font-sm"> {{ $male_second_class_cases }}</td>
+                        <td class="ss-font-sm">{{ $female_second_class_cases }}</td>
+                        <td class="ss-font-sm">{{ $male_second_class_cases + $female_second_class_cases }}</td>
+                        <td class="ss-font-sm">{{ round((($male_second_class_cases + $female_second_class_cases)/count($students))*100) }}</td>
                       @elseif(str_contains(strtolower($class), 'lower'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
-                        <td class="ss-font-sm"> {{ $male_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                        <td class="ss-font-sm"> {{ $male_lwsecond_class_cases }}</td>
+                        <td class="ss-font-sm">{{ $female_lwsecond_class_cases }}</td>
+                        <td class="ss-font-sm">{{ $male_lwsecond_class_cases + $female_lwsecond_class_cases }}</td>
+                        <td class="ss-font-sm">{{ round((($male_lwsecond_class_cases + $female_lwsecond_class_cases)/count($students))*100) }}</td>
                       @elseif(str_contains(strtolower($class), 'pass'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
-                        <td class="ss-font-sm"> {{ $male_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
-                        <td class="ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100) }}</td>
+                        <td class="ss-font-sm"> {{ $male_pass_cases }}</td>
+                        <td class="ss-font-sm">{{ $female_pass_cases }}</td>
+                        <td class="ss-font-sm">{{ $male_pass_cases + $female_pass_cases }}</td>
+                        <td class="ss-font-sm">{{ round((($male_pass_cases + $female_pass_cases)/count($students))*100) }}</td>
                       @endif
                     </tr>
                   @endforeach
