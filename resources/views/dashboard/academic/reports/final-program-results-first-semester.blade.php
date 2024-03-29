@@ -422,7 +422,7 @@
                               @if($student->gender == 'F') @php $female_first_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_first_class_cases++; @endphp
                               @endif
-                            @if(str_contains(strtolower($student->semesterRemarks[0]->remark),'upper second'))
+                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->remark),'upper second'))
                               @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
                               @endif
@@ -455,7 +455,7 @@
                           @else {{ $student->semesterRemarks[0]->remark }} 
                           @endif
                         @endif 
-                      </td>
+                      @endif</td>
                     </tr>
                     @endforeach
                     </tbody>
