@@ -83,7 +83,7 @@
                       {!! Form::label('','Amount (TZS)') !!}
                       {!! Form::text('amount',null,$amount) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-4"> {{ ($registration_number) }}
                       {!! Form::label('','Registration Number') !!}
                       {!! Form::text('registration_number',null,$registration_number) !!} 
                     </div>
@@ -125,7 +125,7 @@
                   <tbody>
                   <tr>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
-                    <td>{{ $registration_number }}</td>	
+                    <td>{{ $student->phone }}</td>	
                     <td>{{ $student->registration_number }}</td>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
