@@ -442,7 +442,7 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-            return 1;
+
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;

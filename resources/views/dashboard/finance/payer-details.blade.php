@@ -140,7 +140,8 @@
 
 									  <div class="card-body">
 										@if(Auth::user()->hasRole('finance-officer'))
-											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a>	<br><br>								  									  
+											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a>	
+											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Request a Control Number</a> <br><br>								  									  
 
 										@endif									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
