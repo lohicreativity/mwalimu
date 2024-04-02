@@ -442,7 +442,10 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-
+return $fee_type;
+            if($fee_type->name == 'Accommodation Fee'){
+                $amount = $fee_type->amount;
+            }
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
