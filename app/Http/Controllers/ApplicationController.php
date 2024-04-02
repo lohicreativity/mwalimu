@@ -3841,7 +3841,7 @@ class ApplicationController extends Controller
 
         $other = Applicant::where('index_number',$request->get('index_number'))
                           ->first();
-
+return $previous_intake_applicant;
         if($other && !$previous_intake_applicant && !$graduate){
             return redirect()->back()->with('error','The index number has already been used.');
         }
