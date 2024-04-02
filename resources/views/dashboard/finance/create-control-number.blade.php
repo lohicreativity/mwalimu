@@ -85,7 +85,7 @@
                     </div>
                     <div class="form-group col-4"> 
                       {!! Form::label('','Registration Number') !!}
-                      {!! Form::text('registration_number',null,$registration_number) !!} 
+                      {!! Form::text('registration_number',$request,$registration_number) !!} 
                     </div>
                 </div>
                 </div>
@@ -98,7 +98,7 @@
             </div>
             <!-- /.card -->
             @endcan
-{{ $request }}
+
             @if($student)
             <div class="card">
               <div class="card-header">
