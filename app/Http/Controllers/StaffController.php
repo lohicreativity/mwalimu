@@ -442,7 +442,7 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-return $fee_type;
+return $fee_type->gatewayPayment->paid_amount;
             if(str_contains(strtolower($fee_amount->feeItem->name), 'accommodation')){
                 $amount = $fee_amount->amount_in_tzs - $fee_type;
             }
