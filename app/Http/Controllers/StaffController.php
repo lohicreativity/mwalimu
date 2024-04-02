@@ -442,16 +442,19 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-return $fee_type->gatewayPayment->paid_amount;
-            if(str_contains(strtolower($fee_amount->feeItem->name), 'accommodation')){
-                $amount = $fee_amount->amount_in_tzs - $fee_type;
+
+            if(str_contains(strtolower($fee_amount->feeItem->name), 'accommodation') || str_contains(strtolower($fee_amount->feeItem->name), 'tuition')){
+                $amount = $fee_amount->amount_in_tzs - $fee_type->gatewayPayment->paid_amount;
+            }else{
+                $amount = $request->amount;
             }
+
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
 			$invoice->reference_no = 'MNMA-'.$fee_amount->feeItem->feeType->code.'-'.time();
 
-            $invoice->amount = $request->amount;
+            $invoice->amount = $amount;
             $invoice->actual_amount = $invoice->amount;
             $invoice->currency = 'TZS';
 			$invoice->payable_id = $student->id;
