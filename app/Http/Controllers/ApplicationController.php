@@ -3693,7 +3693,12 @@ class ApplicationController extends Controller
         $fee_amount = FeeAmount::with(['feeItem.feeType'])->find($request->get('fee_amount_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
-        $invoiceRequestCheck = Invoice::where('payable_id', $applicant->id)->where('payable_type', 'applicant')->where('applicable_id', $applicant->application_window_id)->where('applicable_type', 'application_window')->where('fee_type_id', $fee_amount->feeItem->fee_type_id)->first();
+        $invoiceRequestCheck = Invoice::where('payable_id', $applicant->id)
+                                      ->where('payable_type', 'applicant')
+                                      ->where('applicable_id', $applicant->application_window_id)
+                                      ->where('applicable_type', 'application_window')
+                                      ->where('fee_type_id', $fee_amount->feeItem->fee_type_id)
+                                      ->first();
 
         if(!$invoiceRequestCheck){
             $invoice = new Invoice;
@@ -3743,7 +3748,7 @@ class ApplicationController extends Controller
                                       $fee_type->duration,
                                       $invoice->currency);
         }else{
-            return redirect()->back()->with('error','Control number already requesed, Please use the control number already requested for payments');
+            return redirect()->back()->with('error','Please use the control number already requested for payments');
         }
 
   }

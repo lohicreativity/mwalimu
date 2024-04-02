@@ -436,15 +436,13 @@ class StaffController extends Controller
 				$datediff = $now - $last_invoice;
 				$datediff = round(($datediff/(60 * 60 * 24)));				
 
-				if($fee_amount->feeItem->feeType->duration >= $datediff){
-					if($fee_type->gateway_payment_id == null){
-						return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
-					}
-					if($fee_type->gatewayPayment->paid_amount < $fee_type->gatewayPayment->bill_amount){
-						return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
-					}
-				}
+				// if($fee_amount->feeItem->feeType->duration >= $datediff){
+				// 	if($fee_type->gateway_payment_id == null || $fee_type->gatewayPayment->paid_amount < $fee_type->gatewayPayment->bill_amount){
+				// 		return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
+				// 	}
+				// }
 			}
+            return 1;
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
