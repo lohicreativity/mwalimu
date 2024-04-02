@@ -442,8 +442,8 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-return $fee_amount;
-            if($fee_type->name == 'Accommodation Fee'){
+return $fee_amount->fee_item->name;
+            if(str_contains(strtolower($fee_amount->fee_item->name), 'accommodation')){
                 $amount = $fee_type->amount;
             }
 			DB::beginTransaction();
