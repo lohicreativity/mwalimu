@@ -83,7 +83,7 @@
                       {!! Form::label('','Amount (TZS)') !!}
                       {!! Form::text('amount',null,$amount) !!}
                     </div>
-                    <div class="form-group col-4"> {{ ($registration_number) }}
+                    <div class="form-group col-4"> 
                       {!! Form::label('','Registration Number') !!}
                       {!! Form::text('registration_number',null,$registration_number) !!} 
                     </div>
@@ -98,7 +98,7 @@
             </div>
             <!-- /.card -->
             @endcan
-
+{{ $registration_number }}
             @if($student)
             <div class="card">
               <div class="card-header">
