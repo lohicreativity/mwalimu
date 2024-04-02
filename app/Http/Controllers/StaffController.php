@@ -442,9 +442,9 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-return $fee_amount->feeItem->name;
+return $fee_type;
             if(str_contains(strtolower($fee_amount->feeItem->name), 'accommodation')){
-                $amount = $fee_type->amount;
+                $amount = $fee_amount->amount_in_tzs - $fee_type;
             }
 			DB::beginTransaction();
 					
