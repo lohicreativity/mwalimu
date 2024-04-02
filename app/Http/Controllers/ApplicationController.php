@@ -3845,7 +3845,7 @@ class ApplicationController extends Controller
         if($other && !$previous_intake_applicant && !$graduate){
             return redirect()->back()->with('error','The index number has already been used.');
         }
-
+return 'hello';
         DB::beginTransaction();
         if($usr = User::where('username',$request->get('index_number'))->first()){
             $user = $usr;

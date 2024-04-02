@@ -231,7 +231,7 @@ class ExaminationResultController extends Controller
             $missing_cases = [];
             $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                         ->where('student_id',$student->id)
-                                        ->with(['retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
+                                        ->with(['retakeHistory.retakableResults'=>function($query) use($request){$query->where('study_academic_year',$request->get('study_academic_year_id') - 1);}])
                                         ->get();
 
             if(count($results) != $no_of_expected_modules){
@@ -279,16 +279,13 @@ class ExaminationResultController extends Controller
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
                }
 
-               if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
-                  $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
-   
-               }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
-                  $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+               if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
+                  $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
    
                }else{
                   $processed_result = $result;
                }
-
+//crosscheck if retake exam comes with course_work_remark -- IT SHOULDN'T
                if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                   if($result->course_work_remark == 'INCOMPLETE'){
                      $processed_result->grade = 'IC';
@@ -346,17 +343,14 @@ class ExaminationResultController extends Controller
                      $processed_result->point = 0;
                   }
 
+                  //crosscheck of retake exam comes with course_work_remark -- IT SHOULDN'T
                   if($processed_result->course_work_remark == 'FAIL'){
-                     if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7') || Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 5')){
+                     if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7')){
                         if($year_of_study == 1){
-                           $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'CARRY';
-                           
-                        }else{
-                           $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'RETAKE';
-                           
-                        } 
+                           $processed_result->final_exam_remark = 'CARRY';
+                        }
                      }else{
-                        $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->final_score? 'PASS' : 'RETAKE';
+                        $processed_result->final_exam_remark = 'RETAKE';
                      }
 
                      if($processed_result->final_exam_remark == 'RETAKE'){
@@ -370,7 +364,9 @@ class ExaminationResultController extends Controller
                         $processed_result->retakable_id = $history->id;
                         $processed_result->retakable_type = 'retake_history';
 
-                     }elseif($processed_result->final_exam_remark == 'CARRY'){
+                     }
+
+                     if($processed_result->final_exam_remark == 'CARRY'){
                         $history = new CarryHistory;
                         $history->student_id = $student->id;
                         $history->study_academic_year_id = $request->get('study_academic_year_id');
@@ -563,6 +559,18 @@ class ExaminationResultController extends Controller
          //                                        'retakeHistory.retakableResults'=>function($query){$query->latest();},'carryHistory.carrableResults'=>function($query){$query->latest();}])
          //                                ->get();
 
+         // }
+
+         // if($processed_result->final_exam_remark == 'CARRY'){
+         //    $history = new CarryHistory;
+         //    $history->student_id = $student->id;
+         //    $history->study_academic_year_id = $request->get('study_academic_year_id');
+         //    $history->module_assignment_id = $processed_result->module_assignment_id;
+         //    $history->examination_result_id = $processed_result->id;
+         //    $history->save();
+
+         //    $processed_result->retakable_id = $history->id;
+         //    $processed_result->retakable_type = 'carry_history';
          // }
       }
 
