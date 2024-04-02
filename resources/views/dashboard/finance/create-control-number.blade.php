@@ -85,7 +85,7 @@
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Registration Number') !!}
-                      {!! Form::text('registration_number',$registration_number,$registration_number) !!} 
+                      {!! Form::text('registration_number',null,$registration_number) !!} 
                     </div>
                 </div>
                 </div>
@@ -125,7 +125,7 @@
                   <tbody>
                   <tr>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
-                    <td>{{ $student->phone }}</td>	
+                    <td>{{ $registration_number }}</td>	
                     <td>{{ $student->registration_number }}</td>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
