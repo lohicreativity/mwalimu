@@ -509,10 +509,10 @@ class StaffController extends Controller
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 			'fee_types'=>FeeType::all(),
 			'invoice'=>$request->get('registration_number')? Invoice::with('feeType')->where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[],
-            'registration_number'=> !empty($request->get('keyword'))? $request->get('keyword') : 'null'
+            'request'=> $request->get('keyword')
 		];
 			
-        return view('dashboard.finance.create-control-number',$data)->withTItle('Create Control Number');
+        return view('dashboard.finance.create-control-number',$data)->withTitle('Create Control Number');
     }
 
     /**

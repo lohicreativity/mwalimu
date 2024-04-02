@@ -98,7 +98,7 @@
             </div>
             <!-- /.card -->
             @endcan
-{{ $registration_number }}
+{{ $request }}
             @if($student)
             <div class="card">
               <div class="card-header">
