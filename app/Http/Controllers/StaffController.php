@@ -503,7 +503,7 @@ class StaffController extends Controller
 			$student = Student::with(['applicant','studentShipStatus'])->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 					   ->where('registration_number', $request->get('registration_number'))->first();
 		}
-
+return $request->get('keyword');
 		$data = [
 			'student'=>$request->get('registration_number')? $student : [],
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
