@@ -57,65 +57,65 @@
             @if($regulator_selection && $selection_released_status->selection_released == 1)
 
               @if($check_selected_applicant)
-                  @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED' )
-                    <div class="alert alert-danger">
+                @if($check_selected_applicant->selections[0]->status == 'PENDING' && $applicant->status == 'NOT SELECTED' )
+                  <div class="alert alert-danger">
+                    <h3 class="text-white" style="font-size: 18px!important;">
+                      <i class="fa fa-times-circle"></i> 
+                      Sorry, you have not been selected this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
+                    </h3>
+                  </div>
+                @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED' && $check_selected_applicant->selections[0]->status == 'SELECTED')
+                    <div class="alert alert-success">
+                      <h3 class="text-white" style="font-size: 17px!important;"><i class="fa fa-check-circle"></i> 
+                      Congratulations! You have been successfully selected for {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme. 
+                      @if($applicant->multiple_admissions === null || $applicant->multiple_admissions === 0 || $applicant->confirmation_status === 'CONFIRMED') 
+                      Please 
+                        @if($ready_for_admission) click <a href="{{ url('application/self-send-admission-letter?applicant_id='.$applicant->id) }}">here</a> to proceed with admission process or <a href="{{ url('application/admission-confirmation') }}">here</a> to cancel the admission.
+                        @else wait for admission package or click <a href="{{ url('application/admission-confirmation') }}">here</a> to cancel the admission. @endif 
+                      @elseif($applicant->confirmation_status === null) Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
+                    </div>
+                @elseif($applicant->status == 'ADMITTED' && !$student)
+                    <div class="alert alert-success">
+
+                  @if($applicant->confirmation_status != 'CANCELLED')
+                    <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                      Congratulations! You have been successfully admitted to the {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
+                    </h3>
+                    @if($applicant->program_level_id == 4)
+                    <div>
                       <h3 class="text-white" style="font-size: 18px!important;">
-                        <i class="fa fa-times-circle"></i> 
-                        Sorry, you have not been selected this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
+                      <i class="fa fa-times-circle"></i>
+                      @if($applicant->multiple_admissions == 1) 
+                        Please click <a href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> here</a> to cancel your admission or 
+                                      <a href="{{ url('application/admission-confirmation') }}"> here</a> to manage your confirmation. 
+                        @else
+                        Please click <a href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> here</a> to cancel your admission. 
+                        @endif 
                       </h3>
-                    </div>
-                  @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED' && $check_selected_applicant->selections[0]->status == 'SELECTED')
-                      <div class="alert alert-success">
-                        <h3 class="text-white" style="font-size: 17px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations! You have been successfully selected for {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme. 
-                        @if($applicant->multiple_admissions === null || $applicant->multiple_admissions === 0 || $applicant->confirmation_status === 'CONFIRMED') 
-                        Please 
-                          @if($ready_for_admission) click <a href="{{ url('application/self-send-admission-letter?applicant_id='.$applicant->id) }}">here</a> to proceed with admission process or <a href="{{ url('application/admission-confirmation') }}">here</a> to cancel the admission.
-                          @else wait for admission package or click <a href="{{ url('application/admission-confirmation') }}">here</a> to cancel the admission. @endif 
-                        @elseif($applicant->confirmation_status === null) Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
-                      </div>
-                  @elseif($applicant->status == 'ADMITTED' && !$student)
-                      <div class="alert alert-success">
+                    </div>      
 
-                    @if($applicant->confirmation_status != 'CANCELLED')
-                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                        Congratulations! You have been successfully admitted to the {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.
-                      </h3>
-                      @if($applicant->program_level_id == 4)
-                      <div>
-                        <h3 class="text-white" style="font-size: 18px!important;">
-                        <i class="fa fa-times-circle"></i>
-                        @if($applicant->multiple_admissions == 1) 
-                          Please click <a href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> here</a> to cancel your admission or 
-                                       <a href="{{ url('application/admission-confirmation') }}"> here</a> to manage your confirmation. 
-                          @else
-                          Please click <a href="{{ url('application/cancel-admission?applicant_id='.$applicant->id) }}"> here</a> to cancel your admission. 
-                          @endif 
-                        </h3>
-                      </div>      
-
-                      @endif
-                    @else
-                     @if($applicant->program_level_id == 4)
-                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-times-circle"></i> 
-                          You had been admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme BUT unfortunately you CANCELLED the admission.
-                      </h3>
-                      <div style="float:left; width:36%"> 
-                        <h3 class="text-white" style="font-size: 18px!important;">
-                          <i class="fa fa-check-circle"></i> 
-                          If you wish to restore your admission, please click 
-                        </h3> 
-                      </div>
-                      <div style="position:relative; bottom:5px">
-                        {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
-                        {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                         <button type="submit" class="btn btn-danger">{{ __('Restore Admission') }}</button>
-                        {!! Form::close() !!} 
-                      </div>
-                      @endif
                     @endif
+                  @else
+                    @if($applicant->program_level_id == 4)
+                    <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-times-circle"></i> 
+                        You had been admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme BUT unfortunately you CANCELLED the admission.
+                    </h3>
+                    <div style="float:left; width:36%"> 
+                      <h3 class="text-white" style="font-size: 18px!important;">
+                        <i class="fa fa-check-circle"></i> 
+                        If you wish to restore your admission, please click 
+                      </h3> 
                     </div>
+                    <div style="position:relative; bottom:5px">
+                      {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
+                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                        <button type="submit" class="btn btn-danger">{{ __('Restore Admission') }}</button>
+                      {!! Form::close() !!} 
+                    </div>
+                    @endif
                   @endif
+                  </div>
+                @endif
               @else
                 @if($applicant->is_transfered != 1)
                   <div class="alert alert-danger">

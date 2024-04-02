@@ -127,6 +127,12 @@ class ApplicationBatchController extends Controller
 
     public function edit(Request $request){
         $batch = ApplicationBatch::where('id', $request->get('batch_id'))->first();
+        $pending_applicants = ApplicantProgramSelection::where('batch_id', $request->get('batch_id'))
+                                                       ->where('status','APPROVING')->first();
+        if(!empty($pending_applicants->id)){
+            return redirect()->back()->with('error','Some of applicants have not been retrieved from the regulator.');
+        }
+        
         ApplicationBatch::where('id', $request->get('batch_id'))->update(['selection_released'=>$request->get('status')]);
         if($request->get('status') == 1){
             Applicant::whereHas('selections', function($query) {$query->where('status','SELECTED');})->where('status', 'SUBMITTED')->update(['status'=>'SELECTED']);
