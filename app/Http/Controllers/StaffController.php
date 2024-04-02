@@ -442,7 +442,7 @@ class StaffController extends Controller
 				// 	}
 				// }
 			}
-return $fee_type;
+return $fee_amount;
             if($fee_type->name == 'Accommodation Fee'){
                 $amount = $fee_type->amount;
             }
