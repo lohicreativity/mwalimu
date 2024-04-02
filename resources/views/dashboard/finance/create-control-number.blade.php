@@ -47,11 +47,21 @@
               <!-- /.card-header -->
               <!-- form start -->
               @php
+                if(!empty($request)){
+                  $registration_number = [
+                     'placeholder'=>'MNMA/BTC.COD/0000/23',
+                     'class'=>'form-control',
+                     'required'=>true,
+                     'readonly'=>true
+                  ];
+                }else{
                   $registration_number = [
                      'placeholder'=>'MNMA/BTC.COD/0000/23',
                      'class'=>'form-control',
                      'required'=>true
                   ];
+                }
+
                   $amount = [
                      'placeholder'=>'Amount in TZS',
                      'class'=>'form-control',
