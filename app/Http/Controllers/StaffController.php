@@ -503,13 +503,13 @@ class StaffController extends Controller
 			$student = Student::with(['applicant','studentShipStatus'])->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 					   ->where('registration_number', $request->get('registration_number'))->first();
 		}
-return $request->get('keyword');
+
 		$data = [
 			'student'=>$request->get('registration_number')? $student : [],
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 			'fee_types'=>FeeType::all(),
 			'invoice'=>$request->get('registration_number')? Invoice::with('feeType')->where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[],
-            'registration_number'=> !empty($request->get('keyword'))? $request->get('keyword') : null
+            'registration_number'=> !empty($request->get('keyword'))? $request->get('keyword') : 'null'
 		];
 			
         return view('dashboard.finance.create-control-number',$data)->withTItle('Create Control Number');
