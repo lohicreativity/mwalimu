@@ -443,7 +443,7 @@ class StaffController extends Controller
 				// }
 			}
 return $fee_amount->fee_item->name;
-            if(str_contains(strtolower($fee_amount->fee_item->name), 'accommodation')){
+            if(str_contains(strtolower($fee_amount->feeItem->name), 'accommodation')){
                 $amount = $fee_type->amount;
             }
 			DB::beginTransaction();
