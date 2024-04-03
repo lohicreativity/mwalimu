@@ -178,7 +178,7 @@
 													{{ number_format($payments->amount,2) }} 
 												
 												@endif
-											   <td>
+											   <td title=@foreach($paid_receipts as $receipt) @if($receipt->) "TZS: {{ $payments->reference_no }}">
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														@foreach($total_paid_fee as $fee)
