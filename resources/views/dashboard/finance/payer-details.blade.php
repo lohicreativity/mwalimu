@@ -179,7 +179,7 @@
 												
 												@endif
 								
-											   <td @foreach($paid_receipts as $receipt) @if($receipt->bill_id == $payments->reference_no)  title="TZS {{ number_format($receipt->paid_amount,2) }} paid on {{ date('Y-m-d',strtotime($receipt->created_at)) }}"> @endif @endforeach
+											   <td @foreach($paid_receipts as $receipt) @if($receipt->bill_id == $payments->reference_no)  title="TZS {{ number_format($receipt->paid_amount,2) }} paid on {{ date('Y-m-d',strtotime($receipt->created_at)) }}" @endif @endforeach> 
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														@foreach($total_paid_fee as $fee)
