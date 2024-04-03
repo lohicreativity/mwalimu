@@ -331,7 +331,7 @@ class StaffController extends Controller
 
             }
 
-            $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
+            $paid_receipts = GatewayPayment::whereIn('bill_id',$reference_no)->get();
 return $paid_receipts;
             $data = [
 				'payer'=>$student_payer? $student_payer : $applicant_payer,
