@@ -178,7 +178,7 @@
 													{{ number_format($payments->amount,2) }} 
 												
 												@endif
-								fdf
+												{{ count($paid_receipts)}}
 											   <td title=@foreach($paid_receipts as $receipt) @if($receipt->bill_id == $payments->reference_no) "TZS {{ number_format($receipt->paid_amount,2) }} paid on {{ date('Y-m-d',strtotime($receipt->created_at)) }}" @endif @endforeach>
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
