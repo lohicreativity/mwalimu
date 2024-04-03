@@ -446,7 +446,7 @@ class StaffController extends Controller
             if(str_contains(strtolower($fee_amount->feeItem->name), 'accommodation') || str_contains(strtolower($fee_amount->feeItem->name), 'tuition')){
                 $amount = $fee_amount->amount_in_tzs - $fee_type->gatewayPayment->paid_amount;
             }else{
-                $amount = $request->amount;
+                $amount = $fee_amount->amount_in_tzs;
             }
 
 			DB::beginTransaction();

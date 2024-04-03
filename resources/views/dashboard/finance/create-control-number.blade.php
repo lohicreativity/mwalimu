@@ -62,11 +62,11 @@
                   ];
                 }
 
-                  $amount = [
-                     'placeholder'=>'Amount in TZS',
-                     'class'=>'form-control',
-                     'required'=>true
-                  ];
+                  // $amount = [
+                  //    'placeholder'=>'Amount in TZS',
+                  //    'class'=>'form-control',
+                  //    'required'=>true
+                  // ];
               @endphp
               {!! Form::open(['url'=>'finance/request-control-number','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
@@ -89,10 +89,10 @@
                         @endforeach
                       </select>
                     </div>
-                    <div class="form-group col-4">
+                    {{-- <div class="form-group col-4">
                       {!! Form::label('','Amount (TZS)') !!}
                       {!! Form::text('amount',null,$amount) !!}
-                    </div>
+                    </div> --}}
                     <div class="form-group col-4"> 
                       {!! Form::label('','Registration Number') !!}
                       {!! Form::text('registration_number',$request,$registration_number) !!} 
