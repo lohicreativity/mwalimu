@@ -286,9 +286,13 @@ class StaffController extends Controller
 			}
 			$applicant_payer? $paid_as_applicant = Invoice::where('payable_id',$applicant_id)->where('payable_type','applicant')->with('feeType','gatewayPayment')->latest()->get() : 
             $paid_as_applicant = null;
-			$student_payer? $paid_as_student = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
-            ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
-                ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->latest()->get() : $paid_as_student = null;
+			$paid_as_student = $student_payer? Invoice::where('payable_id', $student_payer->id)
+                                                      ->where('payable_type','student')
+                                                      ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)->where('payable_type','applicant');})
+                                                      ->with('feeType','gatewayPayment')
+                                                      ->whereNotNull('gateway_payment_id')
+                                                      ->latest()
+                                                      ->get() : null;
       
             $reference_no = [];
             $total_fee_paid_amount = [];
@@ -331,8 +335,8 @@ class StaffController extends Controller
 
             }
 
-            $paid_receipts = GatewayPayment::whereIn('bill_id',$reference_no)->get();
-return $paid_receipts;
+            $paid_receipts = GatewayPayment::select('bill_id','payment_channel','cell_number','psp_receipt_no','psp_name','created_at')->whereIn('bill_id',$reference_no)->get();
+return $paid_as_student;
             $data = [
 				'payer'=>$student_payer? $student_payer : $applicant_payer,
 				'category'=>$student_payer? 'student' : 'applicant',
