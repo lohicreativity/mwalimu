@@ -47,7 +47,7 @@
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/results/get-global-report','class'=>'ss-form-processing']) !!}
                    <div class='row'>
-                   <div class="form-group">
+                   <div class="form-group col-6">
                       <select name="study_academic_year_id" class="form-control" required>
                         <option value="">Select Study Academic Year</option>
                         @foreach($study_academic_years as $year)
@@ -69,7 +69,7 @@
                           @endif
                         @endforeach
                         @if($active_semester) 
-                          <option value="ANNUAL" selected="selected">Annual Results</option>
+                          <option value="ANNUAL">Annual Results</option>
                         @endif
                       </select>
                     </div>
