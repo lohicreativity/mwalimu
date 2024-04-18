@@ -3285,6 +3285,7 @@ class ExaminationResultController extends Controller
                   // $report[$level->name]['departments'][] = $department->name;
                   foreach($department->programs as $program){
                      if($program->nta_level_id == $result->moduleAssignment->programModuleAssignment->module->nta_level_id){
+                        return 1;
 
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
                      // if($result->final_exam_remark == 'PASS' || $result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
