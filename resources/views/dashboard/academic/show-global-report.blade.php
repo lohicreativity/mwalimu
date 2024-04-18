@@ -61,11 +61,7 @@
                         <option value="">Select Results Type</option>
                         @foreach($semesters as $semester)
                           @if($active_semester) 
-                            @if($active_semester->id == $semester->id) 
-                              <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
-                            @else
-                            <option value="{{ $semester->id }}">{{ $semester->name }}</option>
-                            @endif
+                            <option value="{{ $semester->id }}" @if($active_semester->id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
                           @endif
                         @endforeach
                         @if($active_semester) 
