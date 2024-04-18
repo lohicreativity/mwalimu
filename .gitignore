@@ -13,6 +13,12 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+public/assessment_results_uploads
+public/final_results_uploads
+public/loan_allocations
+public/signatures
+public/uploads
+
 public/final_results_uploads/loan_allocation_template.csv
 public/loan_allocations/20232024_2_20231025131001.csv
 public/loan_allocations/20232024_2_20231025131016.csv
@@ -23,3 +29,6 @@ public/loan_allocations/20232024_2_20231025141038.csv
 public/loan_allocations/20232024_2_20231025141036.csv
 app/Console/Commands/UpdateGatewayPayment.php
 app/Services/ACPACService.php
+
+
+
