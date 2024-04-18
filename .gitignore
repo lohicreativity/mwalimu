@@ -23,3 +23,10 @@ public/loan_allocations/20232024_2_20231025141038.csv
 public/loan_allocations/20232024_2_20231025141036.csv
 app/Console/Commands/UpdateGatewayPayment.php
 app/Services/ACPACService.php
+
+public_html/mwalimu/public/assessment_results_uploads
+public_html/mwalimu/public/final_results_uploads
+public_html/mwalimu/public/loan_allocations
+public_html/mwalimu/public/signatures
+public_html/mwalimu/public/uploads
+
