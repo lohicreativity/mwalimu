@@ -234,7 +234,7 @@
                 @foreach($report[$level->name]['departments'] as $department)
                 @foreach($report[$level->name][$department->name]['programs'] as $program)
                 <tr row="{{ count($report[$level->name][$department->name]['programs']) }}">
-                   <td>{{ $department->name }}</td>
+                  <td>{{ $department->name }}</td>
                 
                   <td>{{ $program->name }}</td>
                   <td>{{ $level->name }}</td>

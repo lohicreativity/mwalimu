@@ -972,628 +972,957 @@ class ModuleAssignmentController extends Controller
      */
     public function uploadResults(Request $request)
     {
-         $validation = Validator::make($request->all(),[
-            'assessment_plan_id'=>'required',
-            'results_file'=>'required|mimes:csv,txt'
-         ],
-         [
-            'assessment_plan_id'=>'Assessment is required'
-         ]);
+        $validation = Validator::make($request->all(),[
+        'assessment_plan_id'=>'required',
+        'results_file'=>'required|mimes:csv,txt'
+        ],
+        [
+        'assessment_plan_id'=>'Assessment is required'
+        ]);
 
-         if($validation->fails()){
-             if($request->ajax()){
-                return response()->json(array('error_messages'=>$validation->messages()));
-             }else{
-                return redirect()->back()->withInput()->withErrors($validation->messages());
-             }
-         }
+        if($validation->fails()){
+            if($request->ajax()){
+            return response()->json(array('error_messages'=>$validation->messages()));
+            }else{
+            return redirect()->back()->withInput()->withErrors($validation->messages());
+            }
+        }
          
-         if($request->hasFile('results_file')){
-          // DB::beginTransaction();
-              $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
-              if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    $all_students = Student::whereHas('studentshipStatus',function($query){
-                            $query->where('name','ACTIVE')->orWhere('name','POSTPONED');
-                      })->whereHas('academicStatus',function($query){
-                            $query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','RETAKE')->orWhere('name','POSTPONED')->orWhere('name','SUPP');
-                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->get();
-              }else{
-                    $all_students = Student::whereHas('studentshipStatus',function($query){
-                            $query->where('name','ACTIVE')->orWhere('name','POSTPONED');
-                      })->whereHas('academicStatus',function($query){
-                            $query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','RETAKE')->orWhere('name','POSTPONED');
-                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->get();
-              }
-              
+        if($request->hasFile('results_file')){
+        // DB::beginTransaction();
+            $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
 
-              foreach($all_students as $std){
-                  if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('student_id',$std->id)->first()){
-                        $registration = new Registration;
-                        $registration->student_id = $std->id;
-                        $registration->year_of_study = $module_assignment->programModuleAssignment->year_of_study;
-                        $registration->study_academic_year_id = $module_assignment->programModuleAssignment->study_academic_year_id;
-                        $registration->semester_id = $module_assignment->programModuleAssignment->semester_id;
-                        $registration->save();
-                  }
-              }
-
-              $academicYear = $module_assignment->studyAcademicYear->academicYear;
-
-              $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-
-			  DB::beginTransaction();
-              if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
-                  $plan = null;
-                  $assessment = 'FINAL';
-                  $destination = public_path('final_results_uploads/');
-                  ModuleAssignment::where('id',$module_assignment->id)->update(['final_upload_status'=>'UPLOADED']);
-              }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                  $plan = null;
-                  $assessment = 'SUPP';
-                  $destination = public_path('supplementary_results_uploads/');
-              }else{
-                  $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
-                  $assessment = $plan->name;
-                  $destination = public_path('assessment_results_uploads/');
-              }
-
-              $request->file('results_file')->move($destination, $request->file('results_file')->getClientOriginalName());
-
-              $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
-
-              $uploaded_students = [];
-              $csvFileName = $file_name;
-              $csvFile = $destination.$csvFileName;
-              $file_handle = fopen($csvFile, 'r');
-              while (!feof($file_handle)) {
-                  $line_of_text_1[] = fgetcsv($file_handle, 0, ',');
-              }
-              fclose($file_handle);
-              $invalid_students_entries = [];
-              $missing_students = [];
-              foreach($line_of_text_1 as $line){
-                 if(gettype($line) != 'boolean'){
-                    $stud = Student::where('registration_number',trim($line[0]))->first();
-                     if($stud && (!empty($line[1]) || $line[1] == 0)){
-                        $uploaded_students[] = $stud;
-                     }elseif($stud && empty($line[1])){
-                        $missing_students[] = $stud;
-                     }else{
-                        $invalid_students_entries[] = $line[0];
-                     }
-                 }
-                 
-              }
-
-              // Get students taking the module
-              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                $students = $module_assignment->programModuleAssignment->students()->get();
-                
-                $non_opted_students = [];
-                foreach($uploaded_students as $up_stud){
-                   if($module_assignment->programModuleAssignment->students()->where('id',$up_stud->id)->count() == 0){
-                      $non_opted_students[] = $up_stud;
-                   }
+            if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                $all_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
+                                       ->whereHas('academicStatus',function($query){$query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','CARRY')->orWhere('name','POSTPONED')->orWhere('name','SUPP');})
+                                       ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                       ->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                       ->get();
+            }else{
+                $all_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
+                                       ->whereHas('academicStatus',function($query){$query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','RETAKE')->orWhere('name','REPEAT')->orWhere('name','POSTPONED');})
+                                       ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                       ->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                       ->get();
+            }
+            
+            foreach($all_students as $std){
+                if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                       ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                       ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                                       ->where('student_id',$std->id)
+                                       ->first()){
+                    $registration = new Registration;
+                    $registration->student_id = $std->id;
+                    $registration->year_of_study = $module_assignment->programModuleAssignment->year_of_study;
+                    $registration->study_academic_year_id = $module_assignment->programModuleAssignment->study_academic_year_id;
+                    $registration->semester_id = $module_assignment->programModuleAssignment->semester_id;
+                    $registration->save();
                 }
+            }
+
+            $all_students = null;
+            $academicYear = $module_assignment->studyAcademicYear->academicYear;
+
+            $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+            $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)
+                                       ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                       ->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)
+                                       ->first();
+
+            DB::beginTransaction();
+            if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                $plan = null;
+                $assessment = 'FINAL';
+                $destination = public_path('final_results_uploads/');
+                ModuleAssignment::where('id',$module_assignment->id)->update(['final_upload_status'=>'UPLOADED']);
+            }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                $plan = null;
+                $assessment = 'SUPP';
+                $destination = public_path('supplementary_results_uploads/');
+            }else{
+                $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
+                $assessment = $plan->name;
+                $destination = public_path('assessment_results_uploads/');
+            }
+
+            $request->file('results_file')->move($destination, $request->file('results_file')->getClientOriginalName());
+
+            $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
+
+            $uploaded_students = [];
+            $csvFileName = $file_name;
+            $csvFile = $destination.$csvFileName;
+            $file_handle = fopen($csvFile, 'r');
+
+            while (!feof($file_handle)) {
+                $line_of_text_1[] = fgetcsv($file_handle, 0, ',');
+            }
+
+            fclose($file_handle);
+            $invalid_students_entries = [];
+            $missing_students = [];
+            foreach($line_of_text_1 as $line){
+                if(gettype($line) != 'boolean'){
+                    $stud = Student::where('registration_number',trim($line[0]))->first();
+                    if($stud && (!empty($line[1]) || $line[1] == 0)){
+                        $uploaded_students[] = $stud; // Clean students
+                    }elseif($stud && empty($line[1])){
+                        $missing_students[] = $stud; // Not having marks
+                    }else{
+                        $invalid_students_entries[] = $line[0]; // Invalid registration number
+                    }
+                } 
+            }
+ 
+            if(count($invalid_students_entries) != 0){
+                return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
+            }
+
+            $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+
+            // Get students taking the module
+            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                $non_opted_students = $invalid_retake_students = [];
+                foreach($uploaded_students as $up_stud){
+                    if($module_assignment->programModuleAssignment->students()->where('id',$up_stud->id)->count() == 0){
+                        $non_opted_students[] = $up_stud;
+                    }
+                    
+                    // Needs to crosscheck this -- RETAKING A MODULE, allowed only once
+                    if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){$query->where('name','RETAKE');})
+                                                                              ->where('id',$up_stud->id)->count() > 0 && $ac_year->id != $module_assignment->programModuleAssignment->study_academic_year_id + 1){
+                        $invalid_retake_students[] = $up_stud;
+                    }
+
+                    // Needs to crosscheck this -- REPEATING A SEMESTER
+                    if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){$query->where('name','REPEAT');})
+                                                                              ->where('id',$up_stud->id)->count() > 0){
+                        $semester_remark = SemesterRemark::where('student_id',$up_stud->id)
+                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                         ->latest();
+                        if($ac_year->id != $semester_remark->study_academic_year_id + 1){
+                            $invalid_retake_students[] = $up_stud;
+
+                        }
+                    }
+                }
+
                 if(count($non_opted_students) != 0){
                     session()->flash('non_opted_students',$non_opted_students);
                     return redirect()->back()->with('error','Uploaded students have not opted this module');
                 }
+
+                if(count($invalid_retake_students) != 0){
+                    session()->flash('invalid_retake_students',$invalid_retake_students);
+                    return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
+                }
+
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    $students = $module_assignment->programModuleAssignment->students()->get();
-                
-                    $non_opted_students = [];
+                    $non_opted_students = $invalid_carry_students = [];
                     foreach($uploaded_students as $up_stud){
-                       if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){
-                          $query->where('name','POSTPONED')->orWhere('name','SUPP');
-                       })->where('id',$up_stud->id)->count() == 0){
-                          $non_opted_students[] = $up_stud;
-                       }
+                        if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','SUPP');})
+                                                                                  ->where('id',$up_stud->id)->count() == 0){
+                            $non_opted_students[] = $up_stud;
+                        }
+                        if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){$query->where('name','CARRY');})
+                                                                                  ->where('year_of_study',1)
+                                                                                  ->where('id',$up_stud->id)->count() >= 0){
+                            $invalid_carry_students[] = $up_stud;
+                        }
                     }
+
                     if(count($non_opted_students) != 0){
                         session()->flash('non_opted_students',$non_opted_students);
                         return redirect()->back()->with('error','Uploaded students have not opted this module');
                     }
-                }
-              }else{
-                $students = Student::whereHas('registrations',function($query) use($module_assignment){
-                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->with('academicStatus')->get();
 
+                    if(count($invalid_carry_students) != 0){
+                        session()->flash('invalid_carry_students',$invalid_carry_students);
+                        return redirect()->back()->with('error','Uploaded students are not allowed to sit for carry exams in this academic year');
+                    }
+                }
+                $students = $module_assignment->programModuleAssignment->students()->get();
+            }else{
                 $invalid_students = [];
                 foreach($uploaded_students as $up_stud){
-                   if(Student::whereHas('registrations',function($query) use($module_assignment){
-                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud->registration_number)->count() == 0){
-                      $invalid_students[] = $up_stud;
-                   }
+                    if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                            ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                            ->where('registration_number',$up_stud->registration_number)
+                            ->count() == 0){
+                        $invalid_students[] = $up_stud;
+                    }
+
+                    // Needs to crosscheck this -- RETAKING A MODULE, allowed only once
+                    if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                              ->whereHas('academicStatus',function($query){$query->where('name','RETAKE');})
+                              ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                              ->where('registration_number',$up_stud->registration_number)
+                              ->count() > 0 && $ac_year->id != $module_assignment->programModuleAssignment->study_academic_year_id + 1){
+                        $invalid_retake_students[] = $up_stud;
+                    }
+
+                    // Needs to crosscheck this -- REPEATING A SEMESTER
+                    if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                              ->whereHas('academicStatus',function($query){$query->where('name','REPEAT');})
+                              ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                              ->where('registration_number',$up_stud->registration_number)
+                              ->count() > 0){
+                        $semester_remark = SemesterRemark::where('student_id',$up_stud->id)
+                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                         ->latest();
+                        if($ac_year->id != $semester_remark->study_academic_year_id + 1){
+                            $invalid_retake_students[] = $up_stud;
+
+                        }
+                    }
                 }
                 if(count($invalid_students) != 0){
-                     session()->flash('invalid_students',$invalid_students);
-                     return redirect()->back()->with('error','Uploaded students do not exists');
+                        session()->flash('invalid_students',$invalid_students);
+                        return redirect()->back()->with('error','Uploaded students do not exists');
+                }
+
+                if(count($invalid_retake_students) != 0){
+                    session()->flash('invalid_retake_students',$invalid_retake_students);
+                    return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
 
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
-                       if(Student::whereHas('academicStatus',function($query){
-                          $query->where('name','SUPP')->orWhere('name','POSTPONED');
-                       })->whereHas('registrations',function($query) use($module_assignment){
-                         $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                    })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud->registration_number)->count() == 0){
-                          $invalid_students[] = $up_stud;
-                       }
+                        if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
+                                  //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                  ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                  ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                  ->where('registration_number',$up_stud->registration_number)
+                                  ->count() == 0){
+                            $invalid_students[] = $up_stud;
+                        }elseif($module_assignment->module->ntaLevel->id == 4){
+                            if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
+                                      //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                      ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study + 1)
+                                                                                                                ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                      ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                      ->where('registration_number',$up_stud->registration_number)
+                                      ->count() == 0){
+                                $invalid_students[] = $up_stud;
+                            }
+                        }
                     }
                     if(count($invalid_students) != 0){
-                         session()->flash('invalid_students',$invalid_students);
-                         return redirect()->back()->with('error','Uploaded students do not exist');
+                            session()->flash('invalid_students',$invalid_students);
+                            return redirect()->back()->with('error','Uploaded students do not exist');
                     }
                 }
-              }
 
-              
-              foreach($students as $stud){
-                  $student_present = false;
-                  foreach($uploaded_students as $up_stud){
-                      if($up_stud->id == $stud->id){
-                          $student_present = true;
-                      }
-                  }
-                  if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
-                    if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
-                         $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
-                    })->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->count() != 0){
+                $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                             ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                   ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                   ->with('academicStatus:id,name')
+                                   ->get();
+            }
+            
+            foreach($students as $stud){
+                $student_present = false;
+                foreach($uploaded_students as $up_stud){
+                    if($up_stud->id == $stud->id){
                         $student_present = true;
                     }
-                  }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
-                         $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
-                    })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count() != 0){
-                        $student_present = true;
-                    }
-                  }else{
-                    if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
-                         $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
-                    })->where('module_assignment_id',$module_assignment->id)->whereNull('final_uploaded_at')->count() != 0){
-                        $student_present = true;
-                    }
-                  }
-                  if(!$student_present){
-                      $missing_students[] = $stud;
-                  }
-              }
+                }
 
-              foreach($missing_students as $student){
+                $previous_mod_assignment = null;
+                if($stud->academicStatus->name == 'RETAKE' || $stud->academicStatus->name == 'CARRY'){
+                    $previous_mod_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($module,$module_assignment){$query->where('module_id',$module->id)
+                                                                                                                                    ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                                                                                                                    ->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                                    ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id - 1);})
+                                                                // ->with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])
+                                                                ->first();
+
+                }
+
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
-                  if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
-                  $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-                  $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-                      
-                      if($student->academicStatus->status != 'RETAKE'){
-                      $result_log = new ExaminationResultLog;
-                      $result_log->module_assignment_id = $request->get('module_assignment_id');
-                      $result_log->student_id = $student->id;
-                      $result_log->final_score = null;
-                      
-                      $result_log->exam_type = 'FINAL';
-                      if($special_exam || $postponement){
-                         $result_log->final_remark = 'POSTPONED';
-                      }else{
-                         $result_log->final_remark = 'INCOMPLETE';
-                      }
-                      
-                      $result_log->final_uploaded_at = now();
-                      $result_log->uploaded_by_user_id = Auth::user()->id;
-                      $result_log->save();
-                      
-                      if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
-                          $result = $res;
-                      }else{
-                         $result = new ExaminationResult;
-                      }
-                      $result->module_assignment_id = $request->get('module_assignment_id');
-                      $result->student_id = $student->id;
-                      $result->final_score = null;
-                      $result->exam_type = 'FINAL';
-                      if($special_exam || $postponement){
-                         $result->final_remark = 'POSTPONED';
-                      }else{
-                         $result->final_remark = 'INCOMPLETE';
-                      }
-                      $result->final_uploaded_at = now();
-                      $result->uploaded_by_user_id = Auth::user()->id;
-                      $result->save();
-                      }
+                    if(ExaminationResult::where('student_id',$stud->id)
+                                        ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study',$stud->year_of_study)
+                                                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                        ->where('module_assignment_id',$module_assignment->id)
+                                        ->whereNotNull('final_uploaded_at')
+                                        ->count() != 0){
+                        $student_present = true;
                     }
-                  }
-              }
 
-              
-              // Validate clean results
-              $validationStatus = true;
-              $csvFileName = $file_name;
-              $csvFile = $destination.$csvFileName;
-              $file_handle = fopen($csvFile, 'r');
-              while (!feof($file_handle)) {
-                  $line_of_text_2[] = fgetcsv($file_handle, 0, ',');
-              }
-              fclose($file_handle);
-              $invalidEntries = [];
-              foreach($line_of_text_2 as $line){
-                   if(gettype($line) != 'boolean'){
-					    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-						  $final_special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-						  $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-							if($final_special_exam || $postponement){	
-							   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $module_assignment->programModuleAssignment->final_min_mark || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
-								 $validationStatus = false;
-								 $invalidEntries[] = trim($line[0]);
-								}
-							}else{
-							   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
-								 $validationStatus = false;
-								 $invalidEntries[] = trim($line[0]);
-								}								
-							}
-						}elseif($request->get('assessment_plan_id') == 'FINAL_EXAM'){
-						   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $module_assignment->programModuleAssignment->final_min_mark || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
-							 $validationStatus = false;
-							 $invalidEntries[] = trim($line[0]);
-							}								
-						}else{
-						   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $plan->weight || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
-							 $validationStatus = false;
-							 $invalidEntries[] = trim($line[0]);
-							}								
-						}
-                   }
-              }
+                    // Retake cases
+                    // Assumption is, previous results of a student REPEATING a semester will be discarded and therefore shall be treated as other fresh students
+                    if($previous_mod_assignment){
+                        if(ExaminationResult::where('student_id',$stud->id)
+                                            ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study', $stud->year_of_study)
+                                                                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                            ->where('module_assignment_id',$previous_mod_assignment->id)
+                                            ->whereNotNull('final_score')
+                                            ->where('exam_category','RETAKE')
+                                            ->count() != 0 && $stud->academicStatus->name == 'RETAKE'){
+                            $student_present = true;
+                        }
+                    }
 
-              if(!$validationStatus){
-                 return redirect()->back()->with('error','Invalid value. Please check marks for registration number '.implode(', ', $invalidEntries));
-              }
+                }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    if(ExaminationResult::where('student_id',$stud->id)
+                                        ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study',$stud->year_of_study)
+                                                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                        ->where('module_assignment_id',$module_assignment->id)
+                                        ->whereNotNull('supp_score')
+                                        ->count() != 0){
+                        $student_present = true;
+                    }
 
-              if(count($invalid_students_entries) != 0){
-                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
-              }
-              
-              //DB::beginTransaction();
-              $file = new ResultFile;
-              $file->file_name = $file_name;
-              $file->extension = $request->file('results_file')->guessClientExtension();
-              $file->mime_type = $request->file('results_file')->getClientMimeType();
-              //$file->size = $request->file('results_file')->getClientSize();
-              $file->module_assignment_id = $request->get('module_assignment_id');
-              $file->filable_id = $plan? $plan->id : 0;
-              $file->filable_type = $plan? 'assessment_plan' : null;
-              $file->uploaded_by_user_id = Auth::user()->id;
-              $file->save();
+                    // Special exam cases
+                    if(ExaminationResult::where('student_id',$stud->id)
+                                        ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study',$stud->year_of_study)
+                                                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                        ->where('module_assignment_id',$module_assignment->id)
+                                        ->whereNotNull('final_score')
+                                        ->count() != 0 && $stud->academicStatus->name == 'POSTPONED'){
+                        $student_present = true;
+                    }
+                    
+                    // Carry cases
+                    if($previous_mod_assignment){
+                        if(ExaminationResult::where('student_id',$stud->id)
+                                            ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study', 1)
+                                                                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                            ->where('module_assignment_id',$previous_mod_assignment->id)
+                                            ->whereNotNull('final_score')
+                                            ->where('exam_type','CARRY')
+                                            ->count() != 0 && $stud->academicStatus->name == 'CARRY'){
+                            $student_present = true;
+                        }
+                    }
+                }else{// Coursework components marks
+                    if(ExaminationResult::where('student_id',$stud->id)
+                                        ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study',$stud->year_of_study)
+                                                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                        ->where('module_assignment_id',$module_assignment->id)
+                                        ->whereNull('final_uploaded_at')
+                                        ->count() != 0){
+                        $student_present = true;
+                    }
 
-              $csvFileName = $file_name;
-              $csvFile = $destination.$csvFileName;
-              $file_handle = fopen($csvFile, 'r');
-              while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
-              }
-              fclose($file_handle);
+                    // Retake cases
+                    if($previous_mod_assignment){
+                        if(ExaminationResult::where('student_id',$stud->id)
+                                            ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study', $stud->year_of_study)
+                                                                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
+                                            ->where('module_assignment_id',$previous_mod_assignment->id)
+                                            ->whereNull('final_uploaded_at')
+                                            ->where('exam_type','RETAKE')
+                                            ->count() != 0 && $stud->academicStatus->name == 'RETAKE'){
+                            $student_present = true;
+                        }
+                    }
+                }
+                if(!$student_present){
+                    $missing_students[] = $stud;
+                }
+            }
 
-              foreach($line_of_text as $line){
-				  //whereHas('registrations',function($query) use($module_assignment){
-                   //  $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programMo//duleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                //})->whereHas('studentshipStatus',function($query){
-                     // $query->where('name','ACTIVE');
-               // })->
-                if(gettype($line) != 'boolean'){
-                $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
-                
-                if($student && (!empty($line[1]) || $line[1] == 0)){
+            foreach($missing_students as $student){
+                if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                    if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
+                                        ->where('student_id',$student->id)
+                                        ->whereNotNull('final_score')
+                                        ->count() == 0){
+                        $special_exam = SpecialExam::where('student_id',$student->id)
+                                                   ->where('module_assignment_id',$module_assignment->id)
+                                                   ->where('type','FINAL')
+                                                   ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                   ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                   ->where('status','APPROVED')
+                                                   ->first();
 
-                  if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
-                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                  ->where('status','POSTPONED')
-                                                  ->first();
-
-
-                      $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                        $postponement = Postponement::where('student_id',$student->id)
+                                                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                    ->where('status','POSTPONED')
+                                                    ->first();
+                        
+                        if($student->academicStatus->status != 'RETAKE'){ // Assumed a student cannot postpone a retake module
+                            $result_log = new ExaminationResultLog;
+                            $result_log->module_assignment_id = $request->get('module_assignment_id');
+                            $result_log->student_id = $student->id;
+                            $result_log->final_score = null;
+                            
+                            $result_log->exam_type = 'FINAL';
+                            if($special_exam || $postponement){
+                                $result_log->final_remark = 'POSTPONED';
+                            }else{
+                                $result_log->final_remark = 'INCOMPLETE';
+                            }
+                            
+                            $result_log->final_uploaded_at = now();
+                            $result_log->uploaded_by_user_id = Auth::user()->id;
+                            $result_log->save();
+                            
+                            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
+                                                       ->where('student_id',$student->id)
+                                                       ->where('exam_type','FINAL')
+                                                       ->first()){
+                                $result = $res;
+                            }else{
+                                $result = new ExaminationResult;
+                            }
+                            $result->module_assignment_id = $request->get('module_assignment_id');
+                            $result->student_id = $student->id;
+                            $result->final_score = null;
+                            $result->exam_type = 'FINAL';
+                            if($special_exam || $postponement){
+                                $result->final_remark = 'POSTPONED';
+                            }else{
+                                $result->final_remark = 'INCOMPLETE';
+                            }
+                            $result->final_uploaded_at = now();
+                            $result->uploaded_by_user_id = Auth::user()->id;
+                            $result->save();
+                        }// It does not say what should be done to a student who is supposed to retake an exam but misses a mark
+                    }
+                }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                      ->where('student_id',$student->id)
                                                      ->first();
-
-                      $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
-                                                   ->where('student_id',$student->id)
-                                                   ->first();
-                                                   
-                    //   $course_work_status = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))
-                    //                                         ->where('student_id',$student->id)
-                    //                                         ->where('assessment_plan_id',$plan->id)
-                    //                                         ->first();
-
-                      $res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first();
-                      $result_log = new ExaminationResultLog;
-                      $result_log->module_assignment_id = $request->get('module_assignment_id');
-                      $result_log->student_id = $student->id;
-                      if($special_exam || $postponement){
-                        $result_log->final_score = null;
-                      }else{
-                        $result_log->final_score = trim($line[1]);
-                      }
-                      if($carry_history){
-                         $result_log->exam_category = 'CARRY';
-                         $result_log->retakable_id = $carry_history->id;
-                         $result_log->retakable_type = 'carry_history';
-                      }
-                      if($retake_history){
-                         $result_log->exam_category = 'RETAKE';
-                         $result_log->retakable_id = $retake_history->id;
-                         $result_log->retakable_type = 'retake_history';
-                      }
-                      $result_log->exam_type = 'FINAL';
-                      if($special_exam || $postponement){
-                         $result_log->final_remark = 'POSTPONED';
-                      }else{
-                        if($res){
-                            if($res->course_work_remark == 'PASS' || $res->course_work_remark == 'FAIL'){
-                                $result_log->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
-
-                            }else{
-                                if($res->course_work_remark == null){
-                                    $result_log->final_remark = 'INCOMPLETE';
-                                }else{
-                                    $result_log->final_remark = $res->course_work_remark;
-                                }
-                            }
-                        }
-                      }
-                      
-                      $result_log->final_uploaded_at = now();
-                      $result_log->uploaded_by_user_id = Auth::user()->id;
-                      $result_log->save();
-                      
-                      if($res){
-                          $result = $res;
-                      }else{
-                         $result = new ExaminationResult;
-                      }
-                      $result->module_assignment_id = $request->get('module_assignment_id');
-                      $result->student_id = $student->id;
-                      if($special_exam || $postponement){
-                        $result->final_score = null;
-                      }else{
-                        $result->final_score = trim($line[1]);
-                      }
-                      $result->exam_type = 'FINAL';
-                      if($carry_history){
-                         $result->exam_category = 'CARRY';
-                         $result->retakable_id = $carry_history->id;
-                         $result->retakable_type = 'carry_history';
-                      }
-                      if($retake_history){
-                         $result->exam_category = 'RETAKE';
-                         $result->retakable_id = $retake_history->id;
-                         $result->retakable_type = 'retake_history';
-                      }
-                      if($special_exam || $postponement){
-                         $result->final_remark = 'POSTPONED';
-                      }else{
-                        if($result->course_work_remark == 'PASS' || $result->course_work_remark == 'FAIL'){
-                            $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-
+                    
+                    $supp_upload_allowed = false;
+                    if($semester_remark){
+                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
+                            $supp_upload_allowed = true;
                         }else{
-                            if($result->course_work_remark == null){
-                                $result->final_remark = 'INCOMPLETE';
-                            }else{
-                                $result->final_remark = $result->course_work_remark;
-                            }
+                            continue;
                         }
-                      }
-                      $result->final_uploaded_at = now();
-                      $result->uploaded_by_user_id = Auth::user()->id;
-                      $result->save();
-                  }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    }
 
-                      $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->first();
-                      
-                      $supp_upload_allowed = true;
-                      if($semester_remark){
-                          if($semester_remark->remark != 'FAIL&DISCO' || $semester_remark->remark != 'PASS'){
-                              $supp_upload_allowed = false;
-                          }
-                      }
+                    $sup_special_exam = SpecialExam::where('student_id',$student->id)
+                                                    ->where('module_assignment_id',$module_assignment->id)
+                                                    ->where('type','SUPP')
+                                                    ->where('status','APPROVED')
+                                                    ->first();
+                    $final_special_exam = SpecialExam::where('student_id',$student->id)
+                                                        ->where('module_assignment_id',$module_assignment->id)
+                                                        ->where('type','FINAL')
+                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                        ->where('status','APPROVED')
+                                                        ->first();
+                    $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)
+                                                    ->where('grade','C')
+                                                    ->where('study_academic_year_id', $request->get('study_academic_year_id'))
+                                                    ->first();
+                        
+                    $upload_allowed = true;
+                    if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                        $result = $res;
+                        if($res->final_exam_remark == 'PASS'){
+                            $upload_allowed = false; 
+                        }
+                    }else{
+                        $result = new ExaminationResult;
+                    }
+                    
+                    $result->module_assignment_id = $request->get('module_assignment_id');
+                    $result->student_id = $student->id;
+                    if($final_special_exam){
+                        $result->final_score = null;
+                        $result->final_remark = 'INCOMPLETE';
+                    }elseif($sup_special_exam){
+                        $result->supp_score = null;
+                        $result->supp_remark = 'POSTPONED';
+                    }else{
+                        $result->supp_score = null;
+                        $result->supp_remark = 'INCOMPLETE';
+                    }
 
-                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
-                      $final_special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-                      $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
-                          
-                          $upload_allowed = true;
-                          if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
-                              $result = $res;
-                              if($res->final_exam_remark == 'PASS'){
-                                  $upload_allowed = false; 
-                              }
-                          }else{
-                             $result = new ExaminationResult;
-                          }
-                          $result->module_assignment_id = $request->get('module_assignment_id');
-                          $result->student_id = $student->id;
-                          if($special_exam || $postponement){
-                             $result->final_score = !$special_exam || !$postponement? trim($line[1]) : null;
-                             $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-                             $result->supp_score = null;
-                          }else{
-                             $result->supp_score = trim($line[1]);
-                             // if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                             //   $result->grade = 'F';
-                             // }else{
-                             //    $result->grade = $grading_policy? $grading_policy->grade : 'C';
-                             // }
-                             // $result->point = $grading_policy? $grading_policy->point : 2;
-                             // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
-                          }
-                          if($final_special_exam){
-                                 $result->final_score = trim($line[1]);
-                                 $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-                                 $result->supp_score = null;
-                             }
-                          $result->final_uploaded_at = now();
-                          $result->uploaded_by_user_id = Auth::user()->id;
-                          if($supp_upload_allowed && $upload_allowed){
-                            $result->save();
-                          }
-
-                          $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->first();
-                      
-                          $supp_upload_allowed = true;
-                          if($semester_remark){
-                              if($semester_remark->remark != 'FAIL&DISCO' || $Semester_remark->remark != 'PASS'){
-                                  $supp_upload_allowed = false;
-                              }
-                          }
-
-                          $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
-                          $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
-                              
-                              $upload_allowed = true;
-                              if($res = ExaminationResultLog::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
-                                  $result = $res;
-                                  if($res->final_exam_remark == 'PASS'){
-                                      $upload_allowed = false; 
-                                  }
-                              }else{
-                                 $result = new ExaminationResultLog;
-                              }
-                              $result->module_assignment_id = $request->get('module_assignment_id');
-                              $result->student_id = $student->id;
-                              if($special_exam || $postponement){
-                                 $result->final_score = !$special_exam && !$postponement? trim($line[1]) : null;
-                                 $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-                                 $result->supp_score = null;
-                              }else{
-                                 $result->supp_score = trim($line[1]);
-                                 if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                                   $result->grade = 'F';
-                                 }else{
-                                    $result->grade = $grading_policy? $grading_policy->grade : 'C';
-                                 }
-                                 $result->point = $grading_policy? $grading_policy->point : 2;
-                                 $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
-                              }
-                              $result->final_uploaded_at = now();
-                              $result->uploaded_by_user_id = Auth::user()->id;
-                              if($supp_upload_allowed && $upload_allowed){
-                                $result->save();
-                              }
-                  }elseif($request->get('assessment_plan_id') == 'CARRY'){
-
-                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','CARRY')->where('status','APPROVED')->first();
-                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-                      $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
-                          
-                          $upload_allowed = true;
-                          if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
-                              $result = $res;
-                              if($res->final_exam_remark == 'PASS'){
-                                  $upload_allowed = false; 
-                              }
-                          }else{
-                             $result = new ExaminationResult;
-                          }
-                          $result->module_assignment_id = $request->get('module_assignment_id');
-                          $result->student_id = $student->id;
-                          if($special_exam || $postponement){
-                             $result->final_score = trim($line[1]);
-                             $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
-                             $result->final_score = null;
-                          }else{
-                             $result->final_score = trim($line[1]);
-                             if($result->final_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                               $result->grade = 'F';
-                             }else{
-                                $result->grade = $grading_policy? $grading_policy->grade : 'C';
-                             }
-                             $result->point = $grading_policy? $grading_policy->point : 2;
-                             $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->final_score? 'PASS' : 'FAIL';
-                          }
-                          $result->final_uploaded_at = now();
-                          $result->uploaded_by_user_id = Auth::user()->id;
-                          $result->save();
-                  }else{
-
-                      $result_log = new CourseWorkResultLog;
-                      $result_log->module_assignment_id = $request->get('module_assignment_id');
-                      $result_log->assessment_plan_id = $plan->id;
-                      $result_log->student_id = $student->id;
-
-                      $result_log->score = trim($line[1]);
-                      $result_log->uploaded_by_user_id = Auth::user()->id;
-                      $result_log->save();
-                      
-                      if($res = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('assessment_plan_id',$plan->id)->first()){
-                          $result = $res;
-                      }else{
-                          $result = new CourseWorkResult;
-                      }
-                      $result->module_assignment_id = $request->get('module_assignment_id');
-                      $result->assessment_plan_id = $plan->id;
-                      $result->student_id = $student->id;
-                      $result->score = trim($line[1]);
-                      $result->uploaded_by_user_id = Auth::user()->id;
-                      $result->save();
-                  }
-                }elseif($student && !empty($line[1]) && isset($line[2])){
-                    return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
-                }elseif($student && empty($line[1])){
-                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                        $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->first();
-                      
-                      $supp_upload_allowed = true;
-                      if($semester_remark){
-                          if($semester_remark->remark != 'FAIL&DISCO' || $semester_remark->remark != 'PASS'){
-                              $supp_upload_allowed = false;
-                          }
-                      }
-
-                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
-                      $final_special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-                      $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
-                          
-                          $upload_allowed = true;
-                          if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
-                              $result = $res;
-                              if($res->final_exam_remark == 'PASS'){
-                                  $upload_allowed = false; 
-                              }
-                          }else{
-                             $result = new ExaminationResult;
-                          }
-                          $result->module_assignment_id = $request->get('module_assignment_id');
-                          $result->student_id = $student->id;
-                          if($special_exam || $postponement){
-                             $result->final_score = null;
-                             $result->final_remark = 'INCOMPLETE';
-                             $result->supp_score = null;
-                             $result->supp_remark = 'INCOMPLETE';
-                          }else{
-                             $result->final_remark = 'INCOMPLETE';
-                             $result->supp_score = null;
-                             $result->supp_remark = 'INCOMPLETE';
-                          }
-                          $result->final_uploaded_at = now();
-                          $result->uploaded_by_user_id = Auth::user()->id;
-                          if($supp_upload_allowed && $upload_allowed){
-                            $result->save();
-                          }
-
+                    $result->final_uploaded_at = now();
+                    $result->uploaded_by_user_id = Auth::user()->id;
+                    if($supp_upload_allowed && $upload_allowed){
+                        $result->save();
                     }
                 }
+            }
+
+            // Validate clean results
+            $validationStatus = true;
+            $csvFileName = $file_name;
+            $csvFile = $destination.$csvFileName;
+            $file_handle = fopen($csvFile, 'r');
+            while (!feof($file_handle)) {
+                $line_of_text_2[] = fgetcsv($file_handle, 0, ',');
+            }
+
+            fclose($file_handle);
+            $invalidEntries = [];
+            foreach($line_of_text_2 as $line){
+                if(gettype($line) != 'boolean'){
+                    $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
+                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                        $final_special_exam = SpecialExam::where('student_id',$student->id)
+                                                         ->where('module_assignment_id',$module_assignment->id)
+                                                         ->where('type','FINAL') // WHAT ABOUT POSTPONED SUPPREMENTARIES
+                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                         ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                                                         ->where('status','APPROVED')
+                                                         ->first();
+                        // $postponement = Postponement::where('student_id',$student->id)
+                        //                             ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                        //                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                        //                             ->where('status','POSTPONED')
+                        //                             ->first();
+                        //|| $postponement -- removed this, cross check if needed
+                        if($final_special_exam){	
+                            if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $module_assignment->programModuleAssignment->final_min_mark || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+                                $validationStatus = false;
+                                $invalidEntries[] = trim($line[0]);
+                            }
+                        }else{
+                            if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+                                $validationStatus = false;
+                                $invalidEntries[] = trim($line[0]);
+                            }								
+                        }
+                    }elseif($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                        if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $module_assignment->programModuleAssignment->final_min_mark || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+                            $validationStatus = false;
+                            $invalidEntries[] = trim($line[0]);
+                        }								
+                    }else{
+                        if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $plan->weight || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+                            $validationStatus = false;
+                            $invalidEntries[] = trim($line[0]);
+                        }								
+                    }
                 }
-              }
-              DB::commit();
-          }
-          return redirect()->back()->with('message','Results uploaded successfully');
+            }
+
+            if(!$validationStatus){
+                return redirect()->back()->with('error','Invalid value. Please check marks for registration number '.implode(', ', $invalidEntries));
+            }
+
+            // if(count($invalid_students_entries) != 0){
+            //     return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
+            // }
+            
+            //DB::beginTransaction();
+            $file = new ResultFile;
+            $file->file_name = $file_name;
+            $file->extension = $request->file('results_file')->guessClientExtension();
+            $file->mime_type = $request->file('results_file')->getClientMimeType();
+            //$file->size = $request->file('results_file')->getClientSize();
+            $file->module_assignment_id = $request->get('module_assignment_id');
+            $file->filable_id = $plan? $plan->id : 0;
+            $file->filable_type = $plan? 'assessment_plan' : null;
+            $file->uploaded_by_user_id = Auth::user()->id;
+            $file->save();
+
+            $csvFileName = $file_name;
+            $csvFile = $destination.$csvFileName;
+            $file_handle = fopen($csvFile, 'r');
+            while (!feof($file_handle)) {
+                $line_of_text[] = fgetcsv($file_handle, 0, ',');
+            }
+            fclose($file_handle);
+
+            foreach($line_of_text as $line){
+                    //whereHas('registrations',function($query) use($module_assignment){
+                    //  $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programMo//duleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                //})->whereHas('studentshipStatus',function($query){
+                        // $query->where('name','ACTIVE');
+                // })->
+                if(gettype($line) != 'boolean'){
+                    $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
+                    
+                    if($student && (!empty($line[1]) || $line[1] == 0)){
+
+                        if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                            $special_exam = SpecialExam::where('student_id',$student->id)
+                                                       ->where('module_assignment_id',$module_assignment->id)
+                                                       ->where('type','FINAL')
+                                                       ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                       ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                       ->where('status','APPROVED')
+                                                       ->first();
+                            $postponement = Postponement::where('student_id',$student->id)
+                                                        ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                        ->where('status','POSTPONED')
+                                                        ->first();
+
+                            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                                                           ->where('student_id',$student->id)
+                                                           ->first();
+
+                            // $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){$query->where('module_id',$module->id);})
+                            //                             ->where('student_id',$student->id)
+                            //                             ->first();
+                                                        
+                            //   $course_work_status = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))
+                            //                                         ->where('student_id',$student->id)
+                            //                                         ->where('assessment_plan_id',$plan->id)
+                            //                                         ->first();
+
+                            $res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first();
+                            $result_log = new ExaminationResultLog;
+                            $result_log->module_assignment_id = $request->get('module_assignment_id');
+                            $result_log->student_id = $student->id;
+                            if($special_exam || $postponement){
+                                $result_log->final_score = null;
+                            }else{
+                                $result_log->final_score = trim($line[1]);
+                            }
+                            // if($carry_history){
+                            //     $result_log->exam_category = 'CARRY';
+                            //     $result_log->retakable_id = $carry_history->id;
+                            //     $result_log->retakable_type = 'carry_history';
+                            // }
+                            if($retake_history){
+                                $result_log->exam_category = 'RETAKE';
+                                $result_log->retakable_id = $retake_history->id;
+                                $result_log->retakable_type = 'retake_history';
+                            }
+
+                            $result_log->exam_type = 'FINAL';
+                            if($special_exam || $postponement){
+                                $result_log->final_remark = 'POSTPONED';
+                            }else{
+                                if($res){
+                                    if($res->course_work_remark == 'PASS' || $res->course_work_remark == 'FAIL'){
+                                        $result_log->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
+
+                                    }else{
+                                        if($res->course_work_remark == null){
+                                            $result_log->final_remark = 'INCOMPLETE';
+                                        }else{
+                                            $result_log->final_remark = $res->course_work_remark;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            $result_log->final_uploaded_at = now();
+                            $result_log->uploaded_by_user_id = Auth::user()->id;
+                            $result_log->save();
+                            
+                            if($res){
+                                $result = $res;
+                            }else{
+                                $result = new ExaminationResult;
+                            }
+                            $result->module_assignment_id = $request->get('module_assignment_id');
+                            $result->student_id = $student->id;
+                            if($special_exam || $postponement){
+                                $result->final_score = null;
+                            }else{
+                                $result->final_score = trim($line[1]);
+                            }
+                            $result->exam_type = 'FINAL';
+                            // if($carry_history){
+                            //     $result->exam_category = 'CARRY';
+                            //     $result->retakable_id = $carry_history->id;
+                            //     $result->retakable_type = 'carry_history';
+                            // }
+                            if($retake_history){
+                                $result->exam_category = 'RETAKE';
+                                $result->retakable_id = $retake_history->id;
+                                $result->retakable_type = 'retake_history';
+                            }
+                            if($special_exam || $postponement){
+                                $result->final_remark = 'POSTPONED';
+                            }else{
+                                if($result->course_work_remark == 'PASS' || $result->course_work_remark == 'FAIL'){
+                                    $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+
+                                }else{
+                                    if($result->course_work_remark == null){
+                                        $result->final_remark = 'INCOMPLETE';
+                                    }else{
+                                        $result->final_remark = $result->course_work_remark;
+                                    }
+                                }
+                            }
+                            $result->final_uploaded_at = now();
+                            $result->uploaded_by_user_id = Auth::user()->id;
+                            $result->save();
+                        }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+
+                            $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                            ->where('student_id',$student->id)
+                                                            ->first();
+                            
+                            $supp_upload_allowed = false;
+                            if($semester_remark){
+                                // if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONE EXAM'){
+                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
+                                    $supp_upload_allowed = true;
+                                }else{
+                                    continue;
+                                }
+                            }
+
+                            $sup_special_exam = SpecialExam::where('student_id',$student->id)
+                                                           ->where('module_assignment_id',$module_assignment->id)
+                                                           ->where('type','SUPP')
+                                                           ->where('status','APPROVED')
+                                                           ->first();
+                            $final_special_exam = SpecialExam::where('student_id',$student->id)
+                                                             ->where('module_assignment_id',$module_assignment->id)
+                                                             ->where('type','FINAL')
+                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                             ->where('status','APPROVED')
+                                                             ->first();
+                            // REMOVED because we do not deal with semester or annual postponement during supplementary exams
+                            // $postponement = Postponement::where('student_id',$student->id)
+                            //                             ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                            //                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                            //                             ->where('status','POSTPONED')
+                            //                             ->first();
+                            $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)
+                                                           ->where('grade','C')
+                                                           ->where('study_academic_year_id', $request->get('study_academic_year_id'))
+                                                           ->first();
+                                
+                            $upload_allowed = true;
+                            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                                $result = $res;
+                                if($res->final_exam_remark == 'PASS'){
+                                    $upload_allowed = false; 
+                                }
+                            }else{
+                                $result = new ExaminationResult;
+                            }
+
+                            $result->module_assignment_id = $request->get('module_assignment_id');
+                            $result->student_id = $student->id;
+                            if($final_special_exam){
+                            // if($sup_special_exam){
+                            // if($sup_special_exam || $postponement){ // SEE the previous comment
+                                // $result->final_score = !$sup_special_exam || !$postponement? trim($line[1]) : null;
+                                $result->final_score = trim($line[1]);
+                                $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                                $result->supp_score = null;
+
+                            }elseif($sup_special_exam){
+                                $result->supp_score = null;
+                                $result->supp_remark = 'POSTPONED';
+                            }
+                            else{ //If supplementary or CARRY
+                                $result->supp_score = trim($line[1]);
+                                if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                                    $result->grade = 'F';
+                                }else{
+                                    if($module_assignment->module->ntaLevel->id > 4){
+                                        $result->grade = 'B';
+                                        $result->point = 3;
+                                    }else{
+                                        $result->grade = 'C';
+                                        $result->point = $grading_policy? $grading_policy->point : 2;
+                                    }
+                                    //$result->grade = $grading_policy? $grading_policy->grade : 'C';
+                                }
+                                $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                            }
+
+                            // if($final_special_exam){
+                            //     $result->final_score = trim($line[1]);
+                            //     $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                            //     $result->supp_score = null;
+                            // }
+
+                            $result->final_uploaded_at = now();
+                            $result->uploaded_by_user_id = Auth::user()->id;
+                            
+                            if($supp_upload_allowed && $upload_allowed){
+                                $result->save();
+                            }
+
+                            // $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                            //                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                            //                                  ->where('student_id',$student->id)
+                            //                                  ->first();
+                        
+                            // $supp_upload_allowed = true;
+                            // if($semester_remark){
+                            //     if($semester_remark->remark != 'FAIL&DISCO' || $semester_remark->remark != 'PASS'){
+                            //         $supp_upload_allowed = false;
+                            //     }
+                            // }
+
+                            // $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
+                            // $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
+                                
+                            // $upload_allowed = true;
+                            // if($res = ExaminationResultLog::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                            //     $result = $res;
+                            //     if($res->final_exam_remark == 'PASS'){
+                            //         $upload_allowed = false; 
+                            //     }
+                            // }else{
+                            //     $result = new ExaminationResultLog;
+                            // }
+
+                            // $result->module_assignment_id = $request->get('module_assignment_id');
+                            // $result->student_id = $student->id;
+
+                            // if($special_exam || $postponement){
+                            //     $result->final_score = !$special_exam && !$postponement? trim($line[1]) : null;
+                            //     $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                            //     $result->supp_score = null;
+                            // }else{
+                            //     $result->supp_score = trim($line[1]);
+                            //     if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                            //     $result->grade = 'F';
+                            //     }else{
+                            //     $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                            //     }
+                            //     $result->point = $grading_policy? $grading_policy->point : 2;
+                            //     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                            // }
+
+                            // $result->final_uploaded_at = now();
+                            // $result->uploaded_by_user_id = Auth::user()->id;
+                            
+                            // if($supp_upload_allowed && $upload_allowed){
+                            //     $result->save();
+                            // }
+                        // }elseif($request->get('assessment_plan_id') == 'CARRY'){
+
+                        //     $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','CARRY')->where('status','APPROVED')->first();
+                        //     $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+                        //     $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
+                                
+                        //         $upload_allowed = true;
+                        //         if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                        //             $result = $res;
+                        //             if($res->final_exam_remark == 'PASS'){
+                        //                 $upload_allowed = false; 
+                        //             }
+                        //         }else{
+                        //             $result = new ExaminationResult;
+                        //         }
+                        //         $result->module_assignment_id = $request->get('module_assignment_id');
+                        //         $result->student_id = $student->id;
+                        //         if($special_exam || $postponement){
+                        //             $result->final_score = trim($line[1]);
+                        //             $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                        //             $result->final_score = null;
+                        //         }else{
+                        //             $result->final_score = trim($line[1]);
+                        //             if($result->final_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                        //             $result->grade = 'F';
+                        //             }else{
+                        //             $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                        //             }
+                        //             $result->point = $grading_policy? $grading_policy->point : 2;
+                        //             $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->final_score? 'PASS' : 'FAIL';
+                        //         }
+                        //         $result->final_uploaded_at = now();
+                        //         $result->uploaded_by_user_id = Auth::user()->id;
+                        //         $result->save();
+                        }else{
+
+                            $result_log = new CourseWorkResultLog;
+                            $result_log->module_assignment_id = $request->get('module_assignment_id');
+                            $result_log->assessment_plan_id = $plan->id;
+                            $result_log->student_id = $student->id;
+
+                            $result_log->score = trim($line[1]);
+                            $result_log->uploaded_by_user_id = Auth::user()->id;
+                            $result_log->save();
+                            
+                            if($res = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('assessment_plan_id',$plan->id)->first()){
+                                $result = $res;
+                            }else{
+                                $result = new CourseWorkResult;
+                            }
+                            $result->module_assignment_id = $request->get('module_assignment_id');
+                            $result->assessment_plan_id = $plan->id;
+                            $result->student_id = $student->id;
+                            $result->score = trim($line[1]);
+                            $result->uploaded_by_user_id = Auth::user()->id;
+                            $result->save();
+                        }
+                    }elseif($student && !empty($line[1]) && isset($line[2])){
+                        return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
+                    }
+                    // elseif($student && empty($line[1])){ 
+                    //     if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    //         $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                    //                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                    //                                          ->where('student_id',$student->id)
+                    //                                          ->first();
+                            
+                    //         $supp_upload_allowed = true;
+                    //         if($semester_remark){
+                    //             if($semester_remark->remark != 'FAIL&DISCO' || $semester_remark->remark != 'PASS'){
+                    //                 $supp_upload_allowed = false;
+                    //             }
+                    //         }
+                    //         // $supp_upload_allowed = false;
+                    //         // if($semester_remark){
+                    //         //     // if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONE EXAM'){
+                    //         //     if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONE EXAM'){
+                    //         //         $supp_upload_allowed = true;
+                    //         //     }else{
+                    //         //         continue;
+                    //         //     }
+                    //         // }
+                    //         $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
+                    //         $final_special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+                    //         $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+                    //         // $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
+                                
+                    //             $upload_allowed = true;
+                    //             if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                    //                 $result = $res;
+                    //                 if($res->final_exam_remark == 'PASS'){
+                    //                     $upload_allowed = false; 
+                    //                 }
+                    //             }else{
+                    //                 $result = new ExaminationResult;
+                    //             }
+                    //             $result->module_assignment_id = $request->get('module_assignment_id');
+                    //             $result->student_id = $student->id;
+                    //             if($special_exam || $postponement){
+                    //                 $result->final_score = null;
+                    //                 $result->final_remark = 'INCOMPLETE';
+                    //                 $result->supp_score = null;
+                    //                 $result->supp_remark = 'INCOMPLETE';
+                    //             }else{
+                    //                 $result->final_remark = 'INCOMPLETE';
+                    //                 $result->supp_score = null;
+                    //                 $result->supp_remark = 'INCOMPLETE';
+                    //             }
+                    //             $result->final_uploaded_at = now();
+                    //             $result->uploaded_by_user_id = Auth::user()->id;
+                    //             if($supp_upload_allowed && $upload_allowed){
+                    //             $result->save();
+                    //             }
+
+                    //     }
+                    // }
+                }
+            }
+            DB::commit();
+        }
+        return redirect()->back()->with('message','Results uploaded successfully');
     }
 
     /**

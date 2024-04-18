@@ -158,6 +158,14 @@
 										  </thead>
 										  <tbody>
 											@foreach($student_payments as $key=>$payments)
+												@php
+													$number_of_receipts = 0;
+													foreach($paid_receipts as $receipt){
+														if($receipt->bill_id == $payments->reference_no){
+															$number_of_receipts++;
+														}
+													}
+												@endphp
 											<tr>
 											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->created_at))}}</td>
@@ -179,7 +187,7 @@
 												
 												@endif
 								
-											   <td title="@foreach($paid_receipts as $receipt) @if($receipt->bill_id == $payments->reference_no)  TZS {{number_format($receipt->paid_amount,2) }} paid on {{ date('Y-m-d',strtotime($receipt->created_at))}}&#10; @endif @endforeach"> 
+											   <td @if($number_of_receipts > 1) title="@foreach($paid_receipts as $receipt) @if($receipt->bill_id == $payments->reference_no)TZS {{number_format($receipt->paid_amount,2) }} paid on {{ date('Y-m-d',strtotime($receipt->created_at))}}&#10; @endif @endforeach" @endif> 
 												@if ($payments->gatewayPayment)
 													@if (str_contains($payments->feeType->name,'Tuition'))
 														@foreach($total_paid_fee as $fee)

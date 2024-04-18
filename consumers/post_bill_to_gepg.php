@@ -71,8 +71,8 @@ Log::info("check if is called");
             ];
     	}
  	
-	$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);   	
-	echo "\n * Bill Request Response: ".json_encode($data), "\n";    
+		$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);   	
+		echo "\n * Bill Request Response: ".json_encode($data), "\n";    
     }
     # If not successfully posted, Retry
     else 

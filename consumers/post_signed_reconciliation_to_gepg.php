@@ -47,7 +47,7 @@ $channel->queue_bind('recon.to.gepg.retry', 'sp_exchange', 'gepg.recon.out.retry
 	echo "Reconciliation Req Length: ".strlen($recon_body)."\n\n";
 
     # Opening Certificate
-	if (!$cert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgclientprivatekey.pfx")) {
+	if (!$cert_store = file_get_contents("/home/mnmaadmin/public_html/mwalimu/consumers/gepgclientprivatekey.pfx")) {
 	    echo " ** Error: Unable to read the cert file", "\n";
 	    exit;
 	}
@@ -105,7 +105,7 @@ $channel->queue_bind('recon.to.gepg.retry', 'sp_exchange', 'gepg.recon.out.retry
 				echo "\n";
 
 				# Get Certificate contents
-				if (!$pcert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgpubliccertificate.pfx")) {
+				if (!$pcert_store = file_get_contents("/home/mnmaadmin/public_html/mwalimu/consumers/gepgpubliccertificate.pfx")) {
 	    			echo " ** Error: Unable to read the GePG Public Cert File\n";
 	    			//exit;
                 } 
