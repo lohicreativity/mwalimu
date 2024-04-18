@@ -227,7 +227,7 @@
                 @foreach($nta_levels as $level)
                   @foreach($report[$level->name]['departments'] as $department)
                     
-                    <tr row="{{ count($report[$level->name][$department->name]['programs']) }}">
+                    <tr>
                       @if(!Auth::user()->hasRole('hod')) <td>{{ $department->name }}</td> @endif
                     
                       <td>{{ $level->name }}</td>
