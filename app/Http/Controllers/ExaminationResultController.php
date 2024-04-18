@@ -3212,6 +3212,7 @@ class ExaminationResultController extends Controller
                $report[$level->name][$department->name]['FL']['fail_students'] = 0;
                $report[$level->name][$department->name]['fail_students_rate'] = 0;
                $report[$level->name][$department->name]['total_fail_students'] = 0;
+               $report[$level->name][$department->name]['total_students'] = 0;
 
                foreach($department->programs as $program){
                   if($program->nta_level_id == $level->id){
