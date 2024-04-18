@@ -3204,10 +3204,12 @@ class ExaminationResultController extends Controller
          foreach($departments as $department){
                $report[$level->name]['departments'][] = $department;
                $report[$level->name][$department->name]['programs'] = [];
-               $report[$level->name][$department->name]['pass_students'] = 0;
+               $report[$level->name][$department->name]['ML']['pass_students'] = 0;
+               $report[$level->name][$department->name]['FL']['pass_students'] = 0;
                $report[$level->name][$department->name]['pass_students_rate'] = 0;
                $report[$level->name][$department->name]['total_pass_students'] = 0;
-               $report[$level->name][$department->name]['fail_students'] = 0;
+               $report[$level->name][$department->name]['ML']['fail_students'] = 0;
+               $report[$level->name][$department->name]['FL']['fail_students'] = 0;
                $report[$level->name][$department->name]['fail_students_rate'] = 0;
                $report[$level->name][$department->name]['total_fail_students'] = 0;
 
