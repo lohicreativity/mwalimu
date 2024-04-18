@@ -58,19 +58,18 @@
 
                     <div class="form-group col-6">
                       <select name="semester_id" class="form-control" required>
-                        <option value="">Select Semester</option>
+                        <option value="">Select Results Type</option>
                         @foreach($semesters as $semester)
                           @if($active_semester) 
                             @if($active_semester->id == $semester->id) 
                               <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
+                            @else
+                            <option value="{{ $semester->id }}">{{ $semester->name }}</option>
                             @endif
                           @endif
                         @endforeach
                         @if($active_semester) 
-                          <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
-                        @endif
-                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
-                          <option value="ANNUAL" selected="selected">ANNUAL</option>
+                          <option value="ANNUAL" selected="selected">Annual Results</option>
                         @endif
                       </select>
                     </div>
