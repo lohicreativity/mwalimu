@@ -3250,7 +3250,7 @@ class ExaminationResultController extends Controller
 
       $module_assignments = ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
-
+return count($departments);
       foreach($results as $result){
          foreach($module_assignments as $assignment){
             if($result->module_assignment_id == $assignment->id){
