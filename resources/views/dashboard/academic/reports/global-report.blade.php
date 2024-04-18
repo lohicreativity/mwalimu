@@ -217,11 +217,11 @@
                 <tr class="ss-bold">
                   <td>M</td>
                   <td>F</td>
-                  <td>T</td>
+                  <td>Total</td>
                   <td>%</td>
                   <td>M</td>
                   <td>F</td>
-                  <td>T</td>
+                  <td>Total</td>
                   <td>%</td>
                 </tr>
                 @foreach($nta_levels as $level)
