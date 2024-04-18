@@ -3195,7 +3195,7 @@ class ExaminationResultController extends Controller
      * Display global report
      */
     public function getGlobalReport(Request $request)
-    {
+    {return $request;
       ini_set('memory_limit', '-1');
       set_time_limit(120);
       
