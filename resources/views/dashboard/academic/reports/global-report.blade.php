@@ -209,7 +209,7 @@
 
               <table class="table table-bordered">
                 <tr class="ss-bold">
-                  <td rowspan="2">Department</td>
+                  @if(!Auth::user()->hasRole('hod'))<td rowspan="2">Department</td> @endif
                   <td rowspan="2">NTA Level</td>
                   <td colspan="4">Passed </td>
                   <td colspan="4">Failed </td>
@@ -228,7 +228,7 @@
                   @foreach($report[$level->name]['departments'] as $department)
                     @foreach($report[$level->name][$department->name]['programs'] as $program)
                     <tr row="{{ count($report[$level->name][$department->name]['programs']) }}">
-                      <td>{{ $department->name }}</td>
+                      @if(!Auth::user()->hasRole('hod')) <td>{{ $department->name }}</td> @endif
                     
                       <td>{{ $level->name }}</td>
                       <td>{{ $report[$level->name][$department->name][$program->name]['ML']['pass_students'] }}</td>
