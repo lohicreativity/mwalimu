@@ -3180,11 +3180,12 @@ class ExaminationResultController extends Controller
             }
          }
       }
-      return $exam_status;
+
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'semesters'=> Semester::all(),
            'active_semester'=>Semester::where('status','ACTIVE')->first(),
+           'exam_status'=>$exam_status
         ];
         return view('dashboard.academic.show-global-report',$data)->withTitle('Global Report');
     }
