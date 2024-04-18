@@ -3215,8 +3215,8 @@ class ExaminationResultController extends Controller
                      // $report[$level->name][$department->name][$program->name]['inc_students'] = 0;
                      $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
                      $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
-                     // $report[$level->name][$department->name][$program->name]['pass_students_rate'] = 0;
-                     // $report[$level->name][$department->name][$program->name]['fail_students_rate'] = 0;
+                     $report[$level->name][$department->name][$program->name]['pass_students_rate'] = 0;
+                     $report[$level->name][$department->name][$program->name]['fail_students_rate'] = 0;
                      // $report[$level->name][$department->name][$program->name]['take_students_rate'] = 0;
                      // $report[$level->name][$department->name][$program->name]['miss_take_students_rate'] = 0;
                      // $report[$level->name][$department->name][$program->name]['ML']['take_students'] = 0;
@@ -3268,7 +3268,7 @@ class ExaminationResultController extends Controller
                         if($result->final_exam_remark == 'PASS'){
                               $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
 
-                             //$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
+                             $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
 
                               if($result->student->gender == 'M'){
                                  $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'] += 1;
@@ -3279,19 +3279,19 @@ class ExaminationResultController extends Controller
                               }
                         }
 
-                        // if($result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
-                        //       $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['fail_students'] += 1;
+                        if($result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
+                              $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['fail_students'] += 1;
 
-                        //       $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['fail_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['fail_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
+                              $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['fail_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['fail_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
 
-                        //       if($result->student->gender == 'M'){
-                        //          $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'] += 1;
-                        //       }
+                              if($result->student->gender == 'M'){
+                                 $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'] += 1;
+                              }
 
-                        //       if($result->student->gender == 'F'){
-                        //          $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'] += 1;
-                        //       }
-                        // }
+                              if($result->student->gender == 'F'){
+                                 $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'] += 1;
+                              }
+                        }
 
                         // if($result->final_exam_remark == 'POSTPONED'){
                         //       $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['post_students'] += 1;
@@ -3333,7 +3333,7 @@ class ExaminationResultController extends Controller
             }
          }
       }
-return $report;
+
       $data = [
          'report'=>$report,
          'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
