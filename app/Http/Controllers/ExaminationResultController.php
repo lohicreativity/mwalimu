@@ -3213,8 +3213,8 @@ class ExaminationResultController extends Controller
                      // $report[$level->name][$department->name][$program->name]['miss_take_students'] = 0;
                      // $report[$level->name][$department->name][$program->name]['post_students'] = 0;
                      // $report[$level->name][$department->name][$program->name]['inc_students'] = 0;
-                     // $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
-                     // $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
+                     $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
+                     $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
                      // $report[$level->name][$department->name][$program->name]['pass_students_rate'] = 0;
                      // $report[$level->name][$department->name][$program->name]['fail_students_rate'] = 0;
                      // $report[$level->name][$department->name][$program->name]['take_students_rate'] = 0;
