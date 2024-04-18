@@ -226,21 +226,21 @@
                 </tr>
                 @foreach($nta_levels as $level)
                   @foreach($report[$level->name]['departments'] as $department)
-                    
-                    <tr>
-                      @if(!Auth::user()->hasRole('hod')) <td>{{ $department->name }}</td> @endif
+                    @foreach($report[$level->name][$department->name]['programs'] as $program)
+                    <tr row="{{ count($report[$level->name][$department->name]['programs']) }}">
+                      <td>{{ $department->name }}</td>
                     
                       <td>{{ $level->name }}</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['ML']['pass_students']+= $report[$level->name][$department->name][$program->name]['ML']['pass_students']}} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['FL']['pass_students'] }} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['pass_students'] }} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['pass_students_rate'] }} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['ML']['fail_students'] }} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['FL']['fail_students'] }} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['fail_students'] }} @endforeach</td>
-                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['fail_students_rate'] }} @endforeach</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['ML']['pass_students'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['FL']['pass_students'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['pass_students'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['pass_students_rate'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['ML']['fail_students'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['FL']['fail_students'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['fail_students'] }}</td>
+                      <td>{{ $report[$level->name][$department->name][$program->name]['fail_students_rate'] }}</td>
                       </tr>
-
+                    @endforeach
                   @endforeach
                 @endforeach
               </table>
