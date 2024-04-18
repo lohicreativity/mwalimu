@@ -3169,7 +3169,13 @@ class ExaminationResultController extends Controller
      * Display global report form
      */
     public function showGlobalReport(Request $request)
-    {
+    { 
+      $ac_year = StudyAcademicYear::with('academicYear')->get();
+      $semester_remark = SemesterRemark::distict()->get(['academic_year_id']);
+      return $semester_remark;
+      foreach($ac_year as $yr){
+
+      }
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'semesters'=> Semester::all(),
