@@ -3264,11 +3264,16 @@ class ExaminationResultController extends Controller
                                   ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
                                   ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
-      $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+      $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                             ->whereHas('programModuleAssignment.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
-
+      $module_assignments = [];
+      foreach($module_assignment as $assignment){
+         if(ExaminationResult::where('module_assignment_id')->first()){
+            $module_assignments[] = $assignment;
+         }
+      }
 
 return count($module_assignments);
       foreach($results as $result){
