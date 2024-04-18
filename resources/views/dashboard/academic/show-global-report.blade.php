@@ -65,7 +65,7 @@
                           @endif
                         @endforeach
                         @if($active_semester) 
-                          <option value="ANNUAL">Annual Results</option>
+                          <option value="3">Annual Results</option>
                         @endif
                       </select>
                     </div>
