@@ -3172,10 +3172,15 @@ class ExaminationResultController extends Controller
     { 
       $ac_year = StudyAcademicYear::with('academicYear')->get();
       $semester_remark = SemesterRemark::distinct()->get(['study_academic_year_id']);
-      return $semester_remark;
+      $exam_status = [];
       foreach($ac_year as $yr){
-
+         foreach($semester_remark as $remark){
+            if($yr->id == $remark->study_academic_year_id){
+               $exam_status[] = $yr->id;
+            }
+         }
       }
+      return $exam_status;
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'semesters'=> Semester::all(),
