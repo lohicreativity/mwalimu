@@ -3280,11 +3280,12 @@ class ExaminationResultController extends Controller
                                        ->where('module_assignment_id',$assignment->id)
                                        ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
          foreach($results as $result){          
-            if($result->module_assignment_id == $assignment->id){
+            //if($result->module_assignment_id == $assignment->id){
                foreach($departments as $department){
                   // $report[$level->name]['departments'][] = $department->name;
                   foreach($department->programs as $program){
-                     return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id;
+                     if($program->nta_level_id == 1){
+                     return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id; }
                      if($program->nta_level_id == $result->moduleAssignment->programModuleAssignment->module->nta_level_id){
 
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
@@ -3379,7 +3380,7 @@ class ExaminationResultController extends Controller
                   $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
                   $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
                }
-            }
+            //}
          }
       }
 
