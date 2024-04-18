@@ -3270,7 +3270,7 @@ class ExaminationResultController extends Controller
 
       $module_assignments = [];
       foreach($module_assignment as $assignment){
-         if(ExaminationResult::where('module_assignment_id')->first()){
+         if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
             $module_assignments[] = $assignment;
          }
       }
