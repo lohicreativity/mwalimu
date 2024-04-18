@@ -231,14 +231,14 @@
                       @if(!Auth::user()->hasRole('hod')) <td>{{ $department->name }}</td> @endif
                     
                       <td>{{ $level->name }}</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['ML']['pass_students']+= $report[$level->name][$department->name][$program->name]['ML']['pass_students']}} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['FL']['pass_students'] }} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['pass_students'] }} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['pass_students_rate'] }} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['ML']['fail_students'] }} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['FL']['fail_students'] }} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['fail_students'] }} @endforeach</td>
-                      <td> @foreach($report[$level->name]['departments']['programs'] as $program) {{ $report[$level->name][$department->name][$program->name]['fail_students_rate'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['ML']['pass_students']+= $report[$level->name][$department->name][$program->name]['ML']['pass_students']}} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['FL']['pass_students'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['pass_students'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['pass_students_rate'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['ML']['fail_students'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['FL']['fail_students'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['fail_students'] }} @endforeach</td>
+                      <td> @foreach($department->programs as $program) {{ $report[$level->name][$department->name][$program->name]['fail_students_rate'] }} @endforeach</td>
                       </tr>
 
                   @endforeach
