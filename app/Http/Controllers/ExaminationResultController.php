@@ -3237,7 +3237,7 @@ class ExaminationResultController extends Controller
 
       $results = ExaminationResult::select('final_exam_remark','module_assignment_id')
                                   ->whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
-                                  ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:name','student:gender'])->get();
+                                  ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:name','student:gender'])->limit(100)->get();
 
       $module_assignments = ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
@@ -3254,15 +3254,15 @@ class ExaminationResultController extends Controller
                         if($result->final_exam_remark == 'PASS' || $result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
                               $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students'] += 1;
 
-                              $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
+                              // $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
 
-                              if($result->student->gender == 'M'){
-                                 $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['take_students'] += 1;
-                              }
+                              // if($result->student->gender == 'M'){
+                              //    $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['take_students'] += 1;
+                              // }
 
-                              if($result->student->gender == 'F'){
-                                 $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['FL']['take_students'] += 1;
-                              }
+                              // if($result->student->gender == 'F'){
+                              //    $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['FL']['take_students'] += 1;
+                              // }
                         }
 
                         if($result->final_exam_remark == 'PASS'){
