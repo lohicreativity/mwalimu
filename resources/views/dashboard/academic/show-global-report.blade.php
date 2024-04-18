@@ -73,8 +73,6 @@
                           <option value="ANNUAL" selected="selected">ANNUAL</option>
                         @endif
                       </select>
-                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                      {!! Form::input('hidden','campus_id',$campus->id) !!}
                     </div>
                   </div>
                   <div class="ss-form-actions">
