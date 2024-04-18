@@ -3237,7 +3237,7 @@ class ExaminationResultController extends Controller
 
       $results = ExaminationResult::whereHas('moduleAssignment',function($query) use($request){
          $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-      })->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','student'])->get();
+      })->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','student'])->limit(100)->get();
 
       $module_assignments = ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
