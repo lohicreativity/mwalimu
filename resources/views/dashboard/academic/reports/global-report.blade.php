@@ -224,7 +224,7 @@
                   <td>T</td>
                   <td>%</td>
                 </tr>
-                @foreach($departments as $level)
+                @foreach($nta_levels as $level)
                   @foreach($report[$level->name]['departments'] as $department)
                     @foreach($report[$level->name][$department->name]['programs'] as $program)
                     <tr row="{{ count($report[$level->name][$department->name]['programs']) }}">
