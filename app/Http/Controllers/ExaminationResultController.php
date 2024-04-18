@@ -3268,6 +3268,9 @@ class ExaminationResultController extends Controller
                                             ->whereHas('programModuleAssignment.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
+
+
+return count($module_assignments);
       foreach($results as $result){
          foreach($module_assignments as $assignment){
             if($result->module_assignment_id == $assignment->id){
