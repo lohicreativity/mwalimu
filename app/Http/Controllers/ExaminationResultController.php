@@ -3171,7 +3171,9 @@ class ExaminationResultController extends Controller
     public function showGlobalReport(Request $request)
     {
         $data = [
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get()
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'semesters'=> Semester::all(),
+           'active_semester'=>Semester::where('status','ACTIVE')->first(),
         ];
         return view('dashboard.academic.show-global-report',$data)->withTitle('Global Report');
     }
@@ -3187,6 +3189,7 @@ class ExaminationResultController extends Controller
       
       $report = [];
       $staff = User::find(Auth::user()->id)->staff;
+      
       if(Auth::user()->hasRole('hod')){
          $departments = Department::where('id',$staff->department_id)
                                   ->with(['programs.ntaLevel'])->get();    
@@ -3245,7 +3248,7 @@ class ExaminationResultController extends Controller
       }
 
       $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
-                                  ->whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+                                  ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                   ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
       $module_assignments = ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();

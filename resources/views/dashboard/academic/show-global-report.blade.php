@@ -46,14 +46,36 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/results/get-global-report','class'=>'ss-form-processing']) !!}
-                   
+                   <div class='row'>
                    <div class="form-group">
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Study Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
+                      <select name="study_academic_year_id" class="form-control" required>
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($study_academic_years as $year)
+                        <option value="{{ $year->id }}" @if($year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                      <select name="semester_id" class="form-control" required>
+                        <option value="">Select Semester</option>
+                        @foreach($semesters as $semester)
+                          @if($active_semester) 
+                            @if($active_semester->id == $semester->id) 
+                              <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
+                            @endif
+                          @endif
+                        @endforeach
+                        @if($active_semester) 
+                          <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
+                        @endif
+                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
+                          <option value="ANNUAL" selected="selected">ANNUAL</option>
+                        @endif
+                      </select>
+                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                      {!! Form::input('hidden','campus_id',$campus->id) !!}
+                    </div>
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
