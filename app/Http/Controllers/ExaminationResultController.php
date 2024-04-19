@@ -3259,7 +3259,7 @@ class ExaminationResultController extends Controller
                }
          }
       }
-return $report[$level->name][$department->name][$program->name];
+return 1;
       // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
       //                             ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
       //                             ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
