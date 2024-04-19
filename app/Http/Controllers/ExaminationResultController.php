@@ -3247,7 +3247,7 @@ class ExaminationResultController extends Controller
             }
          }
       }
-return $report;
+//return $report;
       foreach($departments as $department){
          foreach($department->programs as $program){
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
@@ -3268,7 +3268,7 @@ return $report;
                                              ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
                foreach($results as $result){
-                  return $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name]['Bachelor Degree Of Education In Kiswahili Language And History'];
+                  return $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name]; //[$department->name]['Bachelor Degree Of Education In Kiswahili Language And History'];
                   $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
                   if($result->final_exam_remark == 'PASS'){
