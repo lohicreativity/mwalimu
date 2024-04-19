@@ -3308,7 +3308,6 @@ class ExaminationResultController extends Controller
 
                       //return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id; 
                       foreach($results as $result){
-return $report['NTA Level 7'];
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
                      // if($result->final_exam_remark == 'PASS' || $result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
                               //$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students'] += 1;
