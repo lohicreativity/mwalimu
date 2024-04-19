@@ -3290,7 +3290,7 @@ class ExaminationResultController extends Controller
                      $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                             ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-
+return $module_assignment;
                      $module_assignments = [];
                      foreach($module_assignment as $assignment){
                         if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
