@@ -3246,6 +3246,7 @@ class ExaminationResultController extends Controller
                
             }
          }
+         return $report['NTA Level 7']['Department Of Languages And Literature'];
       }
 return $report['NTA Level 7']['Department Of Languages And Literature'];
       foreach($departments as $department){
