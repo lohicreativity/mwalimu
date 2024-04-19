@@ -3268,6 +3268,7 @@ class ExaminationResultController extends Controller
                                              ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
                foreach($results as $result){
+                  $report;
                   $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
                   if($result->final_exam_remark == 'PASS'){
