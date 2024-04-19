@@ -3233,8 +3233,8 @@ class ExaminationResultController extends Controller
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id){
                   $report[$level->name][$department->name]['programs'][] = $program;
-                  $report[$level->name][$department->name][$program->name]['total_students'] = 0;
-                  return $report['NTA Level 7']['Department Of Languages And Literature'];//['Bachelor Degree Of Education In Kiswahili And English Languages']['total_students'];
+                  $report[$level->name][$department->name]['Bachelor Degree Of Education In Kiswahili And English Languages']['total_students']['total_students'] = 0;
+                  return $report['NTA Level 7']['Department Of Languages And Literature']['Bachelor Degree Of Education In Kiswahili And English Languages']['total_students'];
                   $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['pass_students_rate'] = 0;
