@@ -3233,7 +3233,7 @@ class ExaminationResultController extends Controller
                foreach($department->programs as $program){
                   if($program->nta_level_id == $level->id){
                      $report[$level->name][$department->name]['programs'][] = $program;
-                     $report[$level->name][$department->name][$program->name]['total_students'] = 0;
+                     $report[$level->name][$department->name][$program->code]['total_students'] = 0;
                      // $report[$level->name][$department->name][$program->name]['take_students'] = 0;
                      // $report[$level->name][$department->name][$program->name]['miss_take_students'] = 0;
                      // $report[$level->name][$department->name][$program->name]['post_students'] = 0;
@@ -3259,7 +3259,7 @@ class ExaminationResultController extends Controller
                }
          }
       }
-return 1;
+return $report[$level->name][$department->name][$program->code];
       // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
       //                             ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
       //                             ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
