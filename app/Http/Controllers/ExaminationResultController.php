@@ -3233,8 +3233,8 @@ class ExaminationResultController extends Controller
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id){
                   $report[$level->name][$department->name]['programs'][] = $program;
-                  $report[$level->name][$department->name]['Bachelor Degree Of Education In Kiswahili And English Languages']['total_students']['total_students'] = 0;
-                  return $report['NTA Level 7']['Department Of Languages And Literature']['Bachelor Degree Of Education In Kiswahili And English Languages']['total_students'];
+                  return $report[$level->name][$department->name];
+                  $report[$level->name][$department->name][$program->name]['total_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['pass_students_rate'] = 0;
@@ -3248,7 +3248,7 @@ class ExaminationResultController extends Controller
             }
          }
       }
-return $report['NTA Level 7']['Department Of Languages And Literature']['Bachelor Degree Of Education In Kiswahili And English Languages'];
+return $report['NTA Level 7']['Department Of Languages And Literature'];
       foreach($departments as $department){
          foreach($department->programs as $program){
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
