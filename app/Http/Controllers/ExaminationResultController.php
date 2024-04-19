@@ -3265,27 +3265,39 @@ class ExaminationResultController extends Controller
       //                             ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
       //                             ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
-      $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
-                                            ->whereHas('programModuleAssignment.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+      // $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
+      //                                       ->whereHas('programModuleAssignment.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+      //                                       ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
-      $module_assignments = [];
-      foreach($module_assignment as $assignment){
-         if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
-            $module_assignments[] = $assignment;
-         }
-      }
+      // $module_assignments = [];
+      // foreach($module_assignment as $assignment){
+      //    if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
+      //       $module_assignments[] = $assignment;
+      //    }
+      // }
 
-      foreach($module_assignments as $assignment){
+
          // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
          //                               ->where('module_assignment_id',$assignment->id)
          //                               ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
          //foreach($results as $result){          
             //if($result->module_assignment_id == $assignment->id){
                foreach($departments as $department){
-                  return $department->programs;
+
                   // $report[$level->name]['departments'][] = $department->name;
                   foreach($department->programs as $program){
+
+                     $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
+                                            ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
+                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
+                     $module_assignments = [];
+                     foreach($module_assignment as $assignment){
+                        if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
+                           $module_assignments[] = $assignment;
+                        }
+                     }
+                     foreach($module_assignments as $assignment){
                      // if($program->nta_level_id == 1){
 
                      $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
