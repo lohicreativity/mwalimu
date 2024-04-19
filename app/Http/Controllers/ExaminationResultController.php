@@ -3282,11 +3282,11 @@ class ExaminationResultController extends Controller
          foreach($results as $result){          
             //if($result->module_assignment_id == $assignment->id){
                foreach($departments as $department){
-                  return $department->programs;
+                  //return $department->programs;
                   // $report[$level->name]['departments'][] = $department->name;
                   foreach($department->programs as $program){
                      // if($program->nta_level_id == 1){
-                     // return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id; }
+                      return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id; 
                      if($program->nta_level_id == $result->moduleAssignment->programModuleAssignment->module->nta_level_id){
 
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
