@@ -3282,6 +3282,7 @@ class ExaminationResultController extends Controller
          foreach($results as $result){          
             //if($result->module_assignment_id == $assignment->id){
                foreach($departments as $department){
+                  return $department->programs;
                   // $report[$level->name]['departments'][] = $department->name;
                   foreach($department->programs as $program){
                      if($program->nta_level_id == 1){
