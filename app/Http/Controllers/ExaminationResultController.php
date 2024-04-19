@@ -3258,10 +3258,8 @@ class ExaminationResultController extends Controller
                      $report[$level->name][$department->name][$program->name]['FL']['fail_students'] = 0;
                   }
                   
-               }
-         }
-      }
-return $report[$level->name][$department->name][$program->name];
+
+
       // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
       //                             ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
       //                             ->whereHas('student.applicant',function($query)use($staff){$query->where('campus_id',$staff->campus_id);})
@@ -3284,10 +3282,10 @@ return $report[$level->name][$department->name][$program->name];
          //                               ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
          //foreach($results as $result){          
             //if($result->module_assignment_id == $assignment->id){
-               foreach($departments as $department){
+               //foreach($departments as $department){
 
                   // $report[$level->name]['departments'][] = $department->name;
-                  foreach($department->programs as $program){
+                  //foreach($department->programs as $program){
 
                      $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                             ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
@@ -3402,7 +3400,7 @@ return $report[$level->name][$department->name][$program->name];
                   $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
                   $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
                }
-            //}
+            }
          //}
       }
 
