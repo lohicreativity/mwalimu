@@ -3276,18 +3276,23 @@ class ExaminationResultController extends Controller
       }
 
       foreach($module_assignments as $assignment){
-         $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
-                                       ->where('module_assignment_id',$assignment->id)
-                                       ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
-         foreach($results as $result){          
+         // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
+         //                               ->where('module_assignment_id',$assignment->id)
+         //                               ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
+         //foreach($results as $result){          
             //if($result->module_assignment_id == $assignment->id){
                foreach($departments as $department){
-                  //return $department->programs;
                   // $report[$level->name]['departments'][] = $department->name;
                   foreach($department->programs as $program){
                      // if($program->nta_level_id == 1){
-                      return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id; 
-                     if($program->nta_level_id == $result->moduleAssignment->programModuleAssignment->module->nta_level_id){
+
+                     $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
+                                                 ->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
+                                                 ->where('module_assignment_id',$assignment->id)
+                                                 ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
+
+                      //return $program->nta_level_id.' - '.$result->moduleAssignment->programModuleAssignment->module->nta_level_id; 
+                      foreach($results as $result){
 
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
                      // if($result->final_exam_remark == 'PASS' || $result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
@@ -3382,7 +3387,7 @@ class ExaminationResultController extends Controller
                   $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
                }
             //}
-         }
+         //}
       }
 
       $data = [
