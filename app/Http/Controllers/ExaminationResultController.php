@@ -3299,7 +3299,6 @@ class ExaminationResultController extends Controller
                      }
                      
                      foreach($module_assignments as $assignment){
-                        return $assignment;
                      // if($program->nta_level_id == 1){
 
                      $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
