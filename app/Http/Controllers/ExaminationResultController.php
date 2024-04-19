@@ -3204,6 +3204,7 @@ class ExaminationResultController extends Controller
       
       if(Auth::user()->hasRole('hod')){
          $departments = Department::where('id',$staff->department_id)
+                                  ->whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
                                   ->with(['programs.ntaLevel'])->get();    
       }elseif(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('arc')){
          $departments = Department::whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
@@ -3287,7 +3288,7 @@ class ExaminationResultController extends Controller
                      // if($program->nta_level_id == 1){
 
                      $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
-                                                 //->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
+                                                 ->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
                                                  ->where('module_assignment_id',$assignment->id)
                                                  ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 return $results;
