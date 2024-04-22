@@ -225,7 +225,7 @@
                   <td>%</td>
                 </tr>
                 @foreach($nta_levels as $level)
-                  @foreach($report[$level->name]['departments'] as $department)
+                  @foreach($departments as $department)
                     <tr>
                       @if(!Auth::user()->hasRole('hod'))<td>{{ $department->name }}</td> @endif
                     
