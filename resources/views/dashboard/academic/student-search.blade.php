@@ -235,7 +235,7 @@
                         </div>
                       </div>                                  
                     </div>
-                    @if(!Auth::user()->hasRole('finance-officer'))<a href="{{ url('student/deceased?student_id='.$student->id) }}" class="btn btn-primary">Deceased</a> 
+                    @if(Auth::user()->hasRole('admission-officer'))<a href="{{ url('student/deceased?student_id='.$student->id) }}" class="btn btn-primary">Deceased</a> 
                     <a href="{{ url('student/reset-password?student_id='.$student->id) }}" class="btn btn-primary">Reset Password</a> @endif
                     @if(Auth::user()->hasRole('administrator') && $id_print_status == 1)<a href="{{ url('student/reset-id-print-status?student_id='.$student->id) }}" class="btn btn-primary">Reset ID Status</a>@endif
                   </div>

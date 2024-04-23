@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Registration\Models\Student;
 use App\Models\Role;
 use Auth, Validator, Hash;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class SessionController extends Controller
 {
@@ -18,9 +19,13 @@ class SessionController extends Controller
 	{
 		$student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+		$loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+									 ->where('campus_id',$student->applicant->campus_id)
+									 ->count();
 		$data = [
            'student'=>$student,
-		   'study_academic_year'=>$ac_year
+		   'study_academic_year'=>$ac_year,
+		   'loan_status'=>$loan_status
 		];
 		return view('auth.change-password',$data)->withTitle('Change Password');
 	}
