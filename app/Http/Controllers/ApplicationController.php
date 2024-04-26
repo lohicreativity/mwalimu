@@ -9684,7 +9684,7 @@ class ApplicationController extends Controller
                 break;
             }
         }
-
+return 2;
         if(empty($reg_date)){
             return redirect()->back()->with('error','Something is wrong with registration date');
         }
@@ -10771,7 +10771,7 @@ class ApplicationController extends Controller
         //            }
         //         }
         //     }
-return 2;
+
         $admitted_program = null;
         foreach($applicant->selections as $selection){
             if($selection->status == 'SELECTED'){
