@@ -10974,7 +10974,7 @@ class ApplicationController extends Controller
 
             }
         }
-
+return $student;
         $password = User::find($applicant->user_id)->password;
 
         $transfer = new InternalTransfer;
