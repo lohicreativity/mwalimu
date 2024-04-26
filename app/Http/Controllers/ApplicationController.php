@@ -9661,7 +9661,7 @@ class ApplicationController extends Controller
 		if(InternalTransfer::where('student_id',$student->id)->count() != 0){
 			return redirect()->back()->with('error','Student already transfered');
 		}
-
+return 3;
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
 
