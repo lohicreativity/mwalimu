@@ -9654,7 +9654,7 @@ class ApplicationController extends Controller
      * Submit internal transfer
      */
     public function submitInternalTransfer(Request $request)
-    {
+    {return 1;
 		DB::beginTransaction();
         $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin','applicant.intake'])->find($request->get('student_id'));
 
