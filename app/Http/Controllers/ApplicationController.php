@@ -9664,17 +9664,20 @@ class ApplicationController extends Controller
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
+        $intake = $applicant->intake_id == 1? 'September' : 'March';
 
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
 		$semester = Semester::where('status','ACTIVE')->first();
 
-		$registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
-
+        if($intake == 'March'){
+            $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id+1)->where('semester_id',$semester->id)->first();
+        }else{
+            $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
+        }
+return $registration;
         if(!$registration){
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
-
-        $intake = $applicant->intake_id == 1? 'September' : 'March';
 
 		$dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)->where('intake',$intake)->get();
 
