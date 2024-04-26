@@ -9674,7 +9674,7 @@ class ApplicationController extends Controller
         }else{
             $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
         }
-return $registration;
+
         if(!$registration){
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
