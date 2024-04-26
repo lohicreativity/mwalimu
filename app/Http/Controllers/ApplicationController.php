@@ -9688,7 +9688,7 @@ class ApplicationController extends Controller
                 break;
             }
         }
-return 2;
+
         if(empty($reg_date)){
             return redirect()->back()->with('error','Something is wrong with registration date');
         }
