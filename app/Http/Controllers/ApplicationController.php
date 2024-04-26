@@ -9661,7 +9661,7 @@ class ApplicationController extends Controller
 		if(InternalTransfer::where('student_id',$student->id)->count() != 0){
 			return redirect()->back()->with('error','Student already transfered');
 		}
-return 3;
+
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
 
@@ -9669,6 +9669,8 @@ return 3;
 		$semester = Semester::where('status','ACTIVE')->first();
 
 		$registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
+
+        return $registration;
         if(!$registration){
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
