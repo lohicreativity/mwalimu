@@ -631,7 +631,7 @@ class ModuleAssignmentController extends Controller
                 foreach($carry_students as $student){
                     $students_supp_session[] = $student;
                 }
-                
+                return $students_supp_session;
                 $data = [
                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
