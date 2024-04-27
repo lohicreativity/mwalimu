@@ -1307,7 +1307,6 @@ class ModuleAssignmentController extends Controller
                 }
 
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    return 12;
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
                         if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
@@ -1337,7 +1336,7 @@ class ModuleAssignmentController extends Controller
                             return redirect()->back()->with('error','Uploaded students do not exist');
                     }
                 }
-
+return 'Under construction';
                 $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                              ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                              ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
