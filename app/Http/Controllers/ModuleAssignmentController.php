@@ -1256,7 +1256,6 @@ class ModuleAssignmentController extends Controller
                 }
                 $students = $module_assignment->programModuleAssignment->students()->get();
             }else{
-                return 5;
                 $invalid_students = [];
                 foreach($uploaded_students as $up_stud){
                     if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
@@ -1296,6 +1295,7 @@ class ModuleAssignmentController extends Controller
                         }
                     }
                 }
+                return $invalid_students;
                 if(count($invalid_students) != 0){
                         session()->flash('invalid_students',$invalid_students);
                         return redirect()->back()->with('error','Uploaded students do not exists');
