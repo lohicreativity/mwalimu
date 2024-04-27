@@ -153,7 +153,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <p>Total Number of Students: 
+                 <p>Total Students: 
                     @if($total_students_count == 0)
                       {{ $total_students_count }}
                     @else 
