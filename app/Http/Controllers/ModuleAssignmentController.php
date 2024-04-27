@@ -602,7 +602,7 @@ class ModuleAssignmentController extends Controller
                                                                                                                         ->where('final_exam_remark','FAIL');})
                                        ->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})
                                        ->get();
-
+return $supp_students;
                 $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                                 ->where('module_assignment_id',$module_assignment->id)
                                                 ->where('type','FINAL')
