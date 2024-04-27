@@ -163,16 +163,7 @@
                     @endif
                 </p>
                 @if($module->course_work_based == 1)
-                <p>Students with Coursework: 
-                    @if($students_with_coursework_count == 0)
-                      {{ $students_with_coursework_count }}
-                    @else 
-                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-course-work') }}" target="_blank">
-                      {{ $students_with_coursework_count }}
-                    </a>
-                    @endif
-                </p>
-                 <p>Students with no Coursework: 
+                 <p>Without Coursework: 
                     @if($students_with_no_coursework_count == 0)
                       {{ $students_with_no_coursework_count }}
                     @else 
@@ -183,17 +174,8 @@
                 </p>
                 @endif
                  
-                
-                 <p>Students with Final Marks: 
-                    @if($students_with_final_marks_count == 0)
-                      {{ $students_with_final_marks_count }}
-                    @else 
-                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-final-marks') }}" target="_blank">
-                      {{ $students_with_final_marks_count }}
-                    </a>
-                    @endif
-                </p>
-                 <p>Students with no Final Marks: 
+              
+                 <p>Without Final Marks: 
                     @if($students_with_no_final_marks_count == 0)
                       {{ $students_with_no_final_marks_count }}
                     @else 
@@ -202,28 +184,33 @@
                     </a>
                     @endif
                 </p>
-                 @if($first_semester_publish_status || $second_semester_publish_status)
-                 <p>Students with Supplementary Cases: 
-                    @if($supp_cases_count == 0)
-                      {{ $supp_cases_count }}
-                    @else 
-                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">
-                      {{ $supp_cases_count }}
-                    </a>
-                    @endif
-                </p>
+                  @if($first_semester_publish_status || $second_semester_publish_status)
+                    <p>Special Exam Cases: 
+                      @if($special_exam_cases_count > 0)
+                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">
+                        {{ $special_exam_cases_count }}
+                      </a>
+                      @endif
+                    </p>
+
+                    <p>Carry Cases: 
+                      @if($carry_cases_count > 0)
+                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">
+                        {{ $carry_cases_count }}
+                      </a>
+                      @endif
+                    </p>
+
+                    <p>Supplementary Cases: 
+                      @if($supp_cases_count > 0)
+                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">
+                        {{ $supp_cases_count }}
+                      </a>
+                      @endif
+                    </p>
                  @endif
                  @if($second_semester_publish_status)
-                 <p>Students with Supplementary Marks: 
-                    @if($students_with_supplemetary_count == 0)
-                    {{ $students_with_supplemetary_count }}
-                    @else 
-                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary-marks') }}" target="_blank">
-                      {{ $students_with_supplemetary_count }}
-                    </a>
-                    @endif
-                </p>
-                 <p>Students with no Supplementary Marks: 
+                 <p>Without Supplementary Marks: 
                   {{ $students_with_no_supplementary_count }}
                 </p>
                  @endif
