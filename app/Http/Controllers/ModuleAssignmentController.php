@@ -1299,7 +1299,7 @@ class ModuleAssignmentController extends Controller
                         session()->flash('invalid_students',$invalid_students);
                         return redirect()->back()->with('error','Uploaded students do not exists');
                 }
-
+return 'Under construction';
                 if(count($invalid_retake_students) != 0){
                     session()->flash('invalid_retake_students',$invalid_retake_students);
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
@@ -1538,7 +1538,7 @@ class ModuleAssignmentController extends Controller
                                                     ->where('grade','C')
                                                     ->where('study_academic_year_id', $request->get('study_academic_year_id'))
                                                     ->first();
-                        
+                        return 'Under construction';
                     $upload_allowed = true;
                     if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                         $result = $res;
