@@ -596,6 +596,7 @@ class ModuleAssignmentController extends Controller
                 
             }else{
                 $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+                return $ac_year;
                 $supp_students = Student::select('id','registration_number','student_ship_status_id')
                                        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                        ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
