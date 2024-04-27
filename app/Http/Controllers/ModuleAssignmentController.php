@@ -1300,13 +1300,14 @@ class ModuleAssignmentController extends Controller
                         session()->flash('invalid_students',$invalid_students);
                         return redirect()->back()->with('error','Uploaded students do not exists');
                 }
-return 'Under construction';
+
                 if(count($invalid_retake_students) != 0){
                     session()->flash('invalid_retake_students',$invalid_retake_students);
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
 
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    return 12;
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
                         if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
