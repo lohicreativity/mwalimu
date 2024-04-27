@@ -980,7 +980,7 @@ class ModuleAssignmentController extends Controller
                 'module'=>$module_assignment->module,
 				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year+1);})
+                'results'=>ExaminationResult::whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id +1);})
                                             ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                             ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})
                                             ->where('module_assignment_id',$module_assignment->id)
