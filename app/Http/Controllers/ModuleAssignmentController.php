@@ -556,7 +556,6 @@ class ModuleAssignmentController extends Controller
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
 
-            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
 /* 				return DB::table('module_assignments')
                     ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
                     ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
@@ -573,102 +572,86 @@ class ModuleAssignmentController extends Controller
                 })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 				 */
 
-                $data = [
-                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-                    'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
-                    'module'=>$module_assignment->module,
-                    'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'staff'=>$module_assignment->staff,
-                    'module'=>$module_assignment->module,
-                    'students' =>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
-                        $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                     })->get(),
-					'students_with_supp'=>Student::whereHas('studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->whereHas('registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-				->where('final_exam_remark','FAIL');})->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})->get()
-                ];
+            $students = $module_assignment->programModuleAssignment->category == 'OPTIONAL'? $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})->orderBy('registration_number')->get() : 
+                                                                                                Student::select('id','registration_number','studentship_status_id')
+                                                                                                    ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE');})
+                                                                                                    ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                                                                                                ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                                                                                ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                                                                                    ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                                                                                    ->orderBy('registration_number')
+                                                                                                    ->get();
 
-                
-            }else{
-                $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+            $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
-                $supp_students = Student::select('id','registration_number','studentship_status_id')
-                                       ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-                                       ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
+            $supp_students = Student::select('id','registration_number','studentship_status_id')
+                                    ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                    ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
+                                                                                                                    ->where('final_exam_remark','FAIL');})
+                                    ->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})
+                                    ->get();
+
+            $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                            ->where('module_assignment_id',$module_assignment->id)
+                                            ->where('type','FINAL')
+                                            ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                            ->where('status','APPROVED')
+                                            ->with('student:id,registration_number')
+                                            ->get();
+
+            $carry_students = Student::select('id','registration_number','studentship_status_id')
+                                    ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                    ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
                                                                                                                         ->where('final_exam_remark','FAIL');})
-                                       ->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})
-                                       ->get();
-
-                $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-                                                ->where('module_assignment_id',$module_assignment->id)
-                                                ->where('type','FINAL')
-                                                ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                                ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                ->where('status','APPROVED')
-                                                ->with('student:id,registration_number')
-                                                ->get();
-
-                $carry_students = Student::select('id','registration_number','studentship_status_id')
-                                        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-                                        ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-                                                                                                                            ->where('final_exam_remark','FAIL');})
-                                        ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
-                                        ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
-                                        ->get();
-                $students_supp_session = [];
-                foreach($supp_students as $student){
-                    $students_supp_session[] = $student;
-                }
-
-                foreach($special_cases as $student){
-                    $students_supp_session[] = $student->student;
-                }
-
-                foreach($carry_students as $student){
-                    $students_supp_session[] = $student;
-                }
-
-                $data = [
-                   'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-                    'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
-                    'module'=>$module_assignment->module,
-                    'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'students'=>Student::whereHas('studentshipStatus',function($query){
-                          $query->where('name','ACTIVE');
-                    })->whereHas('registrations',function($query) use($module_assignment){
-                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get(),
-					'students_with_supp'=>$students_supp_session
-                ];
+                                    ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
+                                    ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
+                                    ->get();
+            $students_supp_session = [];
+            foreach($supp_students as $student){
+                $students_supp_session[] = $student;
             }
-              $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
-                      'Content-type'        => 'application/csv',
-                      'Content-Disposition' => 'attachment; filename="'.$module_assignment->module->code.'_'.$module_assignment->studyAcademicYear->academicYear->year.'.csv";',
-                      'Expires'             => '0',
-                      'Pragma'              => 'public'
-              ];
-			  count($data['students_with_supp'])? $list = $data['students_with_supp'] : $list = $data['students'];;
+
+            foreach($special_cases as $student){
+                $students_supp_session[] = $student->student;
+            }
+
+            foreach($carry_students as $student){
+                $students_supp_session[] = $student;
+            }
+
+            $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                'module'=>$module_assignment->module,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'students'=>$students,
+                'students_with_supp'=>$students_supp_session
+            ];
+        
+            $headers = [
+                    'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                    'Content-type'        => 'application/csv',
+                    'Content-Disposition' => 'attachment; filename="'.$module_assignment->module->code.'_'.$module_assignment->studyAcademicYear->academicYear->year.'.csv";',
+                    'Expires'             => '0',
+                    'Pragma'              => 'public'
+            ];
+            count($data['students_with_supp'])? $list = $data['students_with_supp'] : $list = $data['students'];;
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
-             $callback = function() use ($list) 
-              {
-                  $file_handle = fopen('php://output', 'w');
-                  foreach ($list as $row) {
-					fputcsv($file_handle, [$row->registration_number]);
-                  }
-                  fclose($file_handle);
-              };
+            $callback = function() use ($list) 
+            {
+                $file_handle = fopen('php://output', 'w');
+                foreach ($list as $row) {
+                fputcsv($file_handle, [$row->registration_number]);
+                }
+                fclose($file_handle);
+            };
 
-              return response()->stream($callback, 200, $headers);
+            return response()->stream($callback, 200, $headers);
             
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
