@@ -595,7 +595,6 @@ class ModuleAssignmentController extends Controller
 
                 
             }else{
-                return 1;
                 $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
                 $supp_students = Student::select('id','registration_number','student_ship_status_id')
                                        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
@@ -624,7 +623,7 @@ class ModuleAssignmentController extends Controller
                 foreach($supp_students as $student){
                     $students_supp_session[] = $student;
                 }
-
+return 2;
                 foreach($special_cases as $student){
                     $students_supp_session[] = $student->student;
                 }
