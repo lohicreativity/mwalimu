@@ -555,7 +555,7 @@ class ModuleAssignmentController extends Controller
         ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
         ->whereHas('examinationResults', function($query) {$query->where('module_assignment_id',693)->whereNotNull('final_uploaded_at')
                                                                                             ->where('final_exam_remark','FAIL');})
-        ->whereHas('moduleAssignment.studyAcademicYear',function($query) {$query->where('id',0);})
+        ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) {$query->where('id',0);})
         ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
         ->get();
         try{
