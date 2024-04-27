@@ -163,7 +163,7 @@
                     @endif
                 </p>
                 @if($module->course_work_based == 1)
-                    @if($students_with_no_coursework_count == 0)
+                    @if($students_with_no_coursework_count > 0)
                       <p>Without Coursework: 
                       <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-course-work') }}" target="_blank">
                         {{ $students_with_no_coursework_count }}
@@ -172,7 +172,7 @@
                     @endif
                 @endif
 
-                @if($students_with_no_final_marks_count == 0)
+                @if($students_with_no_final_marks_count > 0)
                   <p>Without Final Marks: 
                     <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-final-marks') }}" target="_blank">
                       {{ $students_with_no_final_marks_count }}
@@ -205,7 +205,7 @@
                       </p>
                     @endif
                 @endif
-                
+
                  @if($second_semester_publish_status)
                  <p>Without Supplementary Marks: 
                   {{ $students_with_no_supplementary_count }}
