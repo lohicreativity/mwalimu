@@ -551,13 +551,7 @@ class ModuleAssignmentController extends Controller
      * Show total students CSV
      */
     public function totalStudentsFormattedCSV(Request $request, $id)
-    { return Student::select('id','registration_number','studentship_status_id')
-        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-        ->whereHas('examinationResults', function($query) {$query->where('module_assignment_id',693)->whereNotNull('final_uploaded_at')
-                                                                                            ->where('final_exam_remark','FAIL');})
-        ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) {$query->where('id',0);})
-        ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
-        ->get();
+    {
         try{
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
@@ -623,7 +617,7 @@ class ModuleAssignmentController extends Controller
                                         ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                         ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
                                                                                                                             ->where('final_exam_remark','FAIL');})
-                                        ->whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
+                                        ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
                                         ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
                                         ->get();
                 $students_supp_session = [];
