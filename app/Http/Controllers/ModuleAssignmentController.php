@@ -551,12 +551,7 @@ class ModuleAssignmentController extends Controller
      * Show total students CSV
      */
     public function totalStudentsFormattedCSV(Request $request, $id)
-    {return Student::select('id','registration_number','studentship_status_id')
-        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-        ->whereHas('examinationResults', function($query) {$query->where('module_assignment_id',693)->whereNotNull('final_uploaded_at')
-                                                                                         ->where('final_exam_remark','FAIL');})
-        ->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})
-        ->get();
+    {
         try{
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
@@ -601,14 +596,14 @@ class ModuleAssignmentController extends Controller
                 
             }else{
                 $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-                return $ac_year;
-                $supp_students = Student::select('id','registration_number','student_ship_status_id')
+
+                $supp_students = Student::select('id','registration_number','studentship_status_id')
                                        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                        ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
                                                                                                                         ->where('final_exam_remark','FAIL');})
                                        ->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})
                                        ->get();
-return $supp_students;
+
                 $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                                 ->where('module_assignment_id',$module_assignment->id)
                                                 ->where('type','FINAL')
@@ -618,7 +613,7 @@ return $supp_students;
                                                 ->with('student:id,registration_number')
                                                 ->get();
 
-                $carry_students = Student::select('id','registration_number','student_ship_status_id')
+                $carry_students = Student::select('id','registration_number','studentship_status_id')
                                         ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                         ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
                                                                                                                             ->where('final_exam_remark','FAIL');})
@@ -629,7 +624,7 @@ return $supp_students;
                 foreach($supp_students as $student){
                     $students_supp_session[] = $student;
                 }
-return 2;
+
                 foreach($special_cases as $student){
                     $students_supp_session[] = $student->student;
                 }
