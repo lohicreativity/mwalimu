@@ -1016,12 +1016,12 @@ class ModuleAssignmentController extends Controller
                 'module'=>$module_assignment->module,
 				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->whereHas('student.registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get(),
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                            ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                            ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                            ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
+                                            ->whereNull('retakable_type')
+                                            ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
             return view('dashboard.academic.reports.students-with-supplementary',$data);
