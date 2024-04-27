@@ -985,7 +985,7 @@ class ModuleAssignmentController extends Controller
                                             ->whereNotNull('final_uploaded_at')
                                             ->where('final_exam_remark','FAIL')
                                             ->where('retakable_type','carry_history')
-                                            ->count(),
+                                            ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
             return view('dashboard.academic.reports.students-with-carry',$data);
