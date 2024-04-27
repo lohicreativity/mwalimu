@@ -1149,7 +1149,6 @@ class ModuleAssignmentController extends Controller
                 $destination = public_path('final_results_uploads/');
                 ModuleAssignment::where('id',$module_assignment->id)->update(['final_upload_status'=>'UPLOADED']);
             }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                return 2;
                 $plan = null;
                 $assessment = 'SUPP';
                 $destination = public_path('supplementary_results_uploads/');
@@ -1187,7 +1186,7 @@ class ModuleAssignmentController extends Controller
                     }
                 } 
             }
- 
+ return $uploaded_students;
             if(count($invalid_students_entries) != 0){
                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             }
