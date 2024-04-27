@@ -595,7 +595,7 @@ class ModuleAssignmentController extends Controller
 
                 
             }else{
-                $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+                $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->get();
                 return $ac_year;
                 $supp_students = Student::select('id','registration_number','student_ship_status_id')
                                        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
