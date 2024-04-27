@@ -331,6 +331,7 @@ class ModuleAssignmentController extends Controller
     public function showResultsUpload(Request $request,$id)
     {
          try{
+            $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
              
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
@@ -377,7 +378,8 @@ class ModuleAssignmentController extends Controller
                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                    ->where('status','APPROVED')
                                                    ->count();
-            $carry_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+            $carry_cases_count = ExaminationResult::whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id +1);})
+                                                  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                                   ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})
                                                   ->where('module_assignment_id',$module_assignment->id)
                                                   ->whereNotNull('final_uploaded_at')

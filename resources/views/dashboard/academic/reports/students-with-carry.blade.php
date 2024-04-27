@@ -208,7 +208,7 @@
                       <td class="ss-bold">SN</td>
                       <td class="ss-bold">REG. NO.</td>
                       <td class="ss-bold">NAME</td>
-                      <td class="ss-bold">SUPP MARKS</td>
+                      <td class="ss-bold">MARKS</td>
                     </tr>
                     @foreach($results as $key=>$result)
                     <tr>
