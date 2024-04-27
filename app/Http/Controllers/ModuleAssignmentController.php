@@ -551,14 +551,13 @@ class ModuleAssignmentController extends Controller
      * Show total students CSV
      */
     public function totalStudentsFormattedCSV(Request $request, $id)
-    { return SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-    ->where('module_assignment_id',693)
-    ->where('type','FINAL')
-    ->where('study_academic_year_id',1)
-    ->where('semester_id',1)
-    ->where('status','APPROVED')
-    ->with('student:id,registration_number')
-    ->get();
+    { return Student::select('id','registration_number','studentship_status_id')
+        ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+        ->whereHas('examinationResults', function($query) {$query->where('module_assignment_id',693)->whereNotNull('final_uploaded_at')
+                                                                                            ->where('final_exam_remark','FAIL');})
+        ->whereHas('moduleAssignment.studyAcademicYear',function($query) {$query->where('id',0);})
+        ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
+        ->get();
         try{
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
