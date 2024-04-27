@@ -1190,7 +1190,7 @@ class ModuleAssignmentController extends Controller
             if(count($invalid_students_entries) != 0){
                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             }
-            return $uploaded_students;
+
             $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
 
             // Get students taking the module
@@ -1256,6 +1256,7 @@ class ModuleAssignmentController extends Controller
                 }
                 $students = $module_assignment->programModuleAssignment->students()->get();
             }else{
+                return $uploaded_students;
                 $invalid_students = [];
                 foreach($uploaded_students as $up_stud){
                     if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
