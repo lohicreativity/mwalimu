@@ -965,21 +965,23 @@ class ModuleAssignmentController extends Controller
     public function studentsWithCarryExam(Request $request,$id)
     {
         try{
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])
-                                                ->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
+            $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])
+                                                 ->findOrFail($id);
+            foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
-             }
-           $data = [
+            }
+            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
                 'department'=>$department,
                 'module'=>$module_assignment->module,
 				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                'results'=>ExaminationResult::whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year+1);})
+                                            ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                             ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})
                                             ->where('module_assignment_id',$module_assignment->id)
                                             ->whereNotNull('final_uploaded_at')
