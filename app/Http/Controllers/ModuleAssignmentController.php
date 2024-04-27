@@ -1117,7 +1117,7 @@ class ModuleAssignmentController extends Controller
                                        ->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                        ->get();
             }
-            return $all_students;
+
             foreach($all_students as $std){
                 if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
@@ -1149,6 +1149,7 @@ class ModuleAssignmentController extends Controller
                 $destination = public_path('final_results_uploads/');
                 ModuleAssignment::where('id',$module_assignment->id)->update(['final_upload_status'=>'UPLOADED']);
             }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                return 2;
                 $plan = null;
                 $assessment = 'SUPP';
                 $destination = public_path('supplementary_results_uploads/');
