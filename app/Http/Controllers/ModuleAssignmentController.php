@@ -1256,7 +1256,7 @@ class ModuleAssignmentController extends Controller
                 }
                 $students = $module_assignment->programModuleAssignment->students()->get();
             }else{
-                $invalid_students = [];
+                $invalid_students = $invalid_retake_students = [];
                 foreach($uploaded_students as $up_stud){
                     if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
