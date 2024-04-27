@@ -1309,14 +1309,6 @@ class ModuleAssignmentController extends Controller
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
-                        return Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
-                        //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                        ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
-                                                                                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                        ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                        ->where('registration_number',$up_stud->registration_number)
-                        ->count();
                         if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
                                   //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                   ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
@@ -1339,7 +1331,7 @@ class ModuleAssignmentController extends Controller
                             }
                         }
                     }
-                    return $invalid_students;
+
                     if(count($invalid_students) != 0){
                             session()->flash('invalid_students',$invalid_students);
                             return redirect()->back()->with('error','Uploaded students do not exist');
