@@ -1309,6 +1309,7 @@ class ModuleAssignmentController extends Controller
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
+                        return $up_stud;
                         if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
                                   //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                   ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
