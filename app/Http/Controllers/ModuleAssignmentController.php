@@ -920,14 +920,15 @@ class ModuleAssignmentController extends Controller
         }
     }
 
-    /**
-     * Show students with supplementary
+
+            /**
+     * Show students with special exams
      */
-    public function studentsWithSupplementary(Request $request,$id)
+    public function studentsWithSpecialExam(Request $request,$id)
     {
         try{
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           return $module_assignment->programModuleAssignment->campusProgram->program->departments;
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])
+                                                ->findOrFail($id);
            foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
@@ -940,15 +941,17 @@ class ModuleAssignmentController extends Controller
                 'module'=>$module_assignment->module,
 				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->whereHas('student.registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get(),
+                'results'=>SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                      ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                      ->where('module_assignment_id',$module_assignment->id)
+                                      ->where('type','FINAL')
+                                      ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                      ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                      ->where('status','APPROVED')
+                                      ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
-            return view('dashboard.academic.reports.students-with-supplementary',$data);
+            return view('dashboard.academic.reports.students-with-special',$data);
 
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
@@ -956,15 +959,51 @@ class ModuleAssignmentController extends Controller
     }
 
 
-        /**
-     * Show students with supplementary
+    /**
+     * Show students with carry exams
      */
-    public function studentsWithSpecialExam(Request $request,$id)
+    public function studentsWithCarryExam(Request $request,$id)
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])
                                                 ->findOrFail($id);
-                                                return $module_assignment->programModuleAssignment->campusProgram->program->departments;
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
+           $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$department,
+                'module'=>$module_assignment->module,
+				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                            ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})
+                                            ->where('module_assignment_id',$module_assignment->id)
+                                            ->whereNotNull('final_uploaded_at')
+                                            ->where('final_exam_remark','FAIL')
+                                            ->where('retakable_type','carry_history')
+                                            ->count(),
+				'semester'=>$module_assignment->programModuleAssignment->semester_id
+            ];
+            return view('dashboard.academic.reports.students-with-carry',$data);
+
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+
+    /**
+     * Show students with supplementary
+     */
+    public function studentsWithSupplementary(Request $request,$id)
+    {
+        try{
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])
+                                                ->findOrFail($id);
            foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;

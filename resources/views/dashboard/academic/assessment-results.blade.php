@@ -187,7 +187,7 @@
                   @if($first_semester_publish_status || $second_semester_publish_status)
                     <p>Special Exam Cases: 
                       @if($special_exam_cases_count > 0)
-                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">
+                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-special') }}" target="_blank">
                         {{ $special_exam_cases_count }}
                       </a>
                       @endif
@@ -195,7 +195,7 @@
 
                     <p>Carry Cases: 
                       @if($carry_cases_count > 0)
-                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">
+                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-carry') }}" target="_blank">
                         {{ $carry_cases_count }}
                       </a>
                       @endif
