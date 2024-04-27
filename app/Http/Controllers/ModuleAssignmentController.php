@@ -1083,7 +1083,7 @@ class ModuleAssignmentController extends Controller
      * Upload module assignment results
      */
     public function uploadResults(Request $request)
-    {return 1;
+    {
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
@@ -1117,7 +1117,7 @@ class ModuleAssignmentController extends Controller
                                        ->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                        ->get();
             }
-            
+            return $all_students;
             foreach($all_students as $std){
                 if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
