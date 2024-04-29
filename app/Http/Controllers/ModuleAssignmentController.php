@@ -1319,7 +1319,7 @@ class ModuleAssignmentController extends Controller
                                   ->count() == 0){
                             $invalid_students[] = $up_stud;
                         }else{
-                            if($module_assignment->module->ntaLevel->id == 4){
+                            if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
                            
                             if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
                                       //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
