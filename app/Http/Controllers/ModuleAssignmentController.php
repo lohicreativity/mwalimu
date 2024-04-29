@@ -1258,7 +1258,7 @@ class ModuleAssignmentController extends Controller
             }else{
                 $invalid_students = $invalid_retake_students = [];
                 foreach($uploaded_students as $up_stud){
-                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){ return 6;
+                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                         $invalid_students = [];
                         foreach($uploaded_students as $up_stud){
                             if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
@@ -1293,7 +1293,6 @@ class ModuleAssignmentController extends Controller
                                     $invalid_students[] = $up_stud;
                                 }    
                             }
-                            return $invalid_students;
                             // }else{
                             //     if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
                             //         if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
