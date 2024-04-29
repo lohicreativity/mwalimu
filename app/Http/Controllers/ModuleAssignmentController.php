@@ -1258,7 +1258,7 @@ class ModuleAssignmentController extends Controller
             }else{
                 $invalid_students = $invalid_retake_students = [];
                 foreach($uploaded_students as $up_stud){
-                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){ return 6;
                         $invalid_students = [];
                         foreach($uploaded_students as $up_stud){
                             if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
