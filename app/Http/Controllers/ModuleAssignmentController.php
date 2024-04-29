@@ -1305,7 +1305,7 @@ class ModuleAssignmentController extends Controller
                     session()->flash('invalid_retake_students',$invalid_retake_students);
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
-
+return $uploaded_students;
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
