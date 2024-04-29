@@ -1306,7 +1306,7 @@ class ModuleAssignmentController extends Controller
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
 
-                if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){ return 1;
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
                         if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
