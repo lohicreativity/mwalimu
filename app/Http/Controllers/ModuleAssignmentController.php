@@ -1186,7 +1186,7 @@ class ModuleAssignmentController extends Controller
                     }
                 } 
             }
-
+return $uploaded_students;
             if(count($invalid_students_entries) != 0){
                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             }
@@ -1328,6 +1328,17 @@ return $uploaded_students;
                                         ->count() == 0){
                                     $invalid_students[] = $up_stud;
                                 }
+
+                            //     elseif(SpecialExam::where('student_id',$up_stud->id)
+                            //                    ->where('module_assignment_id',$module_assignment->id)
+                            //                    ->where('type','FINAL')
+                            //                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                            //                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                            //                    ->where('status','APPROVED')
+                            //                    ->count() == 0){
+                            //                     $invalid_students[] = $up_stud;
+                                
+                            // }
                             }else{
                                 $invalid_students[] = $up_stud;
                             }    
