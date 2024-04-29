@@ -1293,6 +1293,7 @@ class ModuleAssignmentController extends Controller
                                     $invalid_students[] = $up_stud;
                                 }    
                             }
+                            return $invalid_students;
                             // }else{
                             //     if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
                             //         if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
