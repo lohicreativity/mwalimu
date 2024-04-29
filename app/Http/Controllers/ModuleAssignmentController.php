@@ -1288,10 +1288,11 @@ class ModuleAssignmentController extends Controller
                                                     ->where('status','APPROVED')
                                                     ->count() == 0){ return 2;
                                  $invalid_students[] = $up_stud;
-                 
-                                }else{ return 3;
-                                    $invalid_students[] = $up_stud;
-                                }    
+                                                    
+                                }
+                                // }else{ return 3;
+                                //     $invalid_students[] = $up_stud;
+                                // }    
                             }
                             // }else{
                             //     if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
