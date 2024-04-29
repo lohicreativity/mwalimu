@@ -1195,7 +1195,6 @@ class ModuleAssignmentController extends Controller
 
             // Get students taking the module
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                return 1;
                 $non_opted_students = $invalid_retake_students = [];
                 foreach($uploaded_students as $up_stud){
                     if($module_assignment->programModuleAssignment->students()->where('id',$up_stud->id)->count() == 0){
@@ -1256,7 +1255,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
                 $students = $module_assignment->programModuleAssignment->students()->get();
-            }else{
+            }else{ return 2;
                 $invalid_students = $invalid_retake_students = [];
                 foreach($uploaded_students as $up_stud){
                     if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
