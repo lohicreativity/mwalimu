@@ -1186,7 +1186,7 @@ class ModuleAssignmentController extends Controller
                     }
                 } 
             }
-return 10;
+return $invalid_students_entries;
             if(count($invalid_students_entries) != 0){
                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             }
