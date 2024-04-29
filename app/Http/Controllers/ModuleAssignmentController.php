@@ -1268,7 +1268,7 @@ class ModuleAssignmentController extends Controller
                                                                                                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
                                       ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                       ->where('registration_number',$up_stud->registration_number)
-                                      ->count() == 0){return 4;
+                                      ->count() == 0){
                                 if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){ return 1;
                                     if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
                                             //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
