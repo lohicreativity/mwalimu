@@ -1258,40 +1258,99 @@ class ModuleAssignmentController extends Controller
             }else{
                 $invalid_students = $invalid_retake_students = [];
                 foreach($uploaded_students as $up_stud){
-                    if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
-                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                            ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                            ->where('registration_number',$up_stud->registration_number)
-                            ->count() == 0){
-                        $invalid_students[] = $up_stud;
-                    }
+                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                        $invalid_students = [];
+                        foreach($uploaded_students as $up_stud){
+                            if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
+                                      //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                      ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                                ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                      ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                      ->where('registration_number',$up_stud->registration_number)
+                                      ->count() == 0){
+                                if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
+                                    if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
+                                            //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                            ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study + 1)
+                                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                            ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                            ->where('registration_number',$up_stud->registration_number)
+                                            ->count() == 0){
+                                        $invalid_students[] = $up_stud;
+                                    }
+    
+                                //     elseif(SpecialExam::where('student_id',$up_stud->id)
+                                //                    ->where('module_assignment_id',$module_assignment->id)
+                                //                    ->where('type','FINAL')
+                                //                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                //                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                //                    ->where('status','APPROVED')
+                                //                    ->count() == 0){
+                                //                     $invalid_students[] = $up_stud;
+                                    
+                                // }
+                                }else{
+                                    $invalid_students[] = $up_stud;
+                                }    
+                            }
+                            // }else{
+                            //     if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
+                            //         if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
+                            //                 //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                            //                 ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study + 1)
+                            //                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                            //                                                                                             ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                            //                 ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                            //                 ->where('registration_number',$up_stud->registration_number)
+                            //                 ->count() == 0){
+                            //             $invalid_students[] = $up_stud;
+                            //         }
+                            //     }
+                            // }
+                        }
+                        return $invalid_students;
+                        if(count($invalid_students) != 0){
+                                session()->flash('invalid_students',$invalid_students);
+                                return redirect()->back()->with('error','Uploaded students do not exist');
+                        }
+                    }else{
+                        if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                ->where('registration_number',$up_stud->registration_number)
+                                ->count() == 0){
+                            $invalid_students[] = $up_stud;
+                        }
 
-                    // Needs to crosscheck this -- RETAKING A MODULE, allowed only once
-                    if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
-                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                              ->whereHas('academicStatus',function($query){$query->where('name','RETAKE');})
-                              ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                              ->where('registration_number',$up_stud->registration_number)
-                              ->count() > 0 && $ac_year->id != $module_assignment->programModuleAssignment->study_academic_year_id + 1){
-                        $invalid_retake_students[] = $up_stud;
-                    }
-
-                    // Needs to crosscheck this -- REPEATING A SEMESTER
-                    if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
-                                                                                                        ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                        ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                              ->whereHas('academicStatus',function($query){$query->where('name','REPEAT');})
-                              ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                              ->where('registration_number',$up_stud->registration_number)
-                              ->count() > 0){
-                        $semester_remark = SemesterRemark::where('student_id',$up_stud->id)
-                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                         ->latest();
-                        if($ac_year->id != $semester_remark->study_academic_year_id + 1){
+                        // Needs to crosscheck this -- RETAKING A MODULE, allowed only once
+                        if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                ->whereHas('academicStatus',function($query){$query->where('name','RETAKE');})
+                                ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                ->where('registration_number',$up_stud->registration_number)
+                                ->count() > 0 && $ac_year->id != $module_assignment->programModuleAssignment->study_academic_year_id + 1){
                             $invalid_retake_students[] = $up_stud;
+                        }
 
+                        // Needs to crosscheck this -- REPEATING A SEMESTER
+                        if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                ->whereHas('academicStatus',function($query){$query->where('name','REPEAT');})
+                                ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                ->where('registration_number',$up_stud->registration_number)
+                                ->count() > 0){
+                            $semester_remark = SemesterRemark::where('student_id',$up_stud->id)
+                                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                            ->latest();
+                            if($ac_year->id != $semester_remark->study_academic_year_id + 1){
+                                $invalid_retake_students[] = $up_stud;
+
+                            }
                         }
                     }
                 }
@@ -1306,64 +1365,7 @@ class ModuleAssignmentController extends Controller
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
 
-                if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    $invalid_students = [];
-                    foreach($uploaded_students as $up_stud){
-                        if(Student::whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','POSTPONED');}) // Covers SUPP and SPECIAL EXAM cases
-                                  //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                  ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
-                                                                                                            ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                                  ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                                  ->where('registration_number',$up_stud->registration_number)
-                                  ->count() == 0){
-                            if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
-                                if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
-                                        //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                        ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study + 1)
-                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                                    ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                                        ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                                        ->where('registration_number',$up_stud->registration_number)
-                                        ->count() == 0){
-                                    $invalid_students[] = $up_stud;
-                                }
 
-                            //     elseif(SpecialExam::where('student_id',$up_stud->id)
-                            //                    ->where('module_assignment_id',$module_assignment->id)
-                            //                    ->where('type','FINAL')
-                            //                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                            //                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                            //                    ->where('status','APPROVED')
-                            //                    ->count() == 0){
-                            //                     $invalid_students[] = $up_stud;
-                                
-                            // }
-                            }else{
-                                $invalid_students[] = $up_stud;
-                            }    
-                        }
-                        // }else{
-                        //     if($module_assignment->module->ntaLevel->id == 4 && $up_stud->academic_status_id == 3){
-                        //         if(Student::whereHas('academicStatus',function($query){$query->where('name','CARRY');}) // Covers CARRY cases
-                        //                 //->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                        //                 ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study + 1)
-                        //                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                        //                                                                                             ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                        //                 ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                        //                 ->where('registration_number',$up_stud->registration_number)
-                        //                 ->count() == 0){
-                        //             $invalid_students[] = $up_stud;
-                        //         }
-                        //     }
-                        // }
-                    }
-return $invalid_students;
-                    if(count($invalid_students) != 0){
-                            session()->flash('invalid_students',$invalid_students);
-                            return redirect()->back()->with('error','Uploaded students do not exist');
-                    }
-                }
 return 'Under construction';
                 $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                              ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
