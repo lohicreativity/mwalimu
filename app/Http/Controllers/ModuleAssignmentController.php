@@ -370,7 +370,7 @@ class ModuleAssignmentController extends Controller
                                                   ->where('final_exam_remark','FAIL')
                                                   ->whereNull('retakable_type')
                                                   ->count();
-return $supp_cases_count;
+
             $special_exam_cases_count = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                                    ->where('module_assignment_id',$module_assignment->id)
                                                    ->where('type','FINAL')
