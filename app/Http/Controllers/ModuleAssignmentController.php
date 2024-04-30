@@ -1410,7 +1410,7 @@ class ModuleAssignmentController extends Controller
                                        ->get();
                 }
             }
-return $students;
+
             foreach($students as $stud){
                 $student_present = false;
                 foreach($uploaded_students as $up_stud){
