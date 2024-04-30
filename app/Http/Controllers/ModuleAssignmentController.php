@@ -1370,8 +1370,6 @@ class ModuleAssignmentController extends Controller
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
 
-
-return 'Under construction';
                 $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                              ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                              ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
