@@ -1354,6 +1354,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
                 if(count($invalid_students) != 0){
+                    return 1;
                     //session()->flash('invalid_students',$invalid_students);
                     return redirect()->back()->with('error','Uploaded students do not exist');
                 }
