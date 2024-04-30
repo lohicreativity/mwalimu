@@ -1695,7 +1695,7 @@ class ModuleAssignmentController extends Controller
                 DB::rollback();
                 return redirect()->back()->with('error','Invalid value. Please check marks for registration number '.implode(', ', $invalidEntries));
             }
-            return 'Under construction';
+
             // if(count($invalid_students_entries) != 0){
             //     return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             // }
@@ -1840,12 +1840,12 @@ class ModuleAssignmentController extends Controller
                             $result->final_uploaded_at = now();
                             $result->uploaded_by_user_id = Auth::user()->id;
                             $result->save();
-                        }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
 
+                        }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                             $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                            ->where('student_id',$student->id)
-                                                            ->first();
+                                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                             ->where('student_id',$student->id)
+                                                             ->first();
 
                             $supp_upload_allowed = false;
                             if($semester_remark){

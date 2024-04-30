@@ -126,7 +126,7 @@ class ExaminationResultController extends Controller
       DB::beginTransaction();
       $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
       $semester = Semester::find($request->get('semester_id'));
-      
+      $year_of_study = $assignment_id = null;
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
          $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                          ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
@@ -185,6 +185,7 @@ class ExaminationResultController extends Controller
             }
 
             if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1 && $module_assignment->category != 'OPTIONAL'){
+               DB::rollback();
                return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
             }
 
@@ -209,6 +210,7 @@ class ExaminationResultController extends Controller
                }
 
                if(count($postponed_students) != count($enrolled_students)){
+                  DB::rollback();
                   return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
                }
             }
@@ -262,6 +264,7 @@ class ExaminationResultController extends Controller
                         if($counter != $number_of_options){
                            if($result->module_assignment_id == $optional->id){
                               if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
+                                 DB::rollback();
                                  return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
                               
                               }
@@ -639,6 +642,7 @@ class ExaminationResultController extends Controller
       }elseif(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
       }elseif($request->get('semester_id') == 'SUPPLEMENTARY'){
+         return 'Under construction';
          $semester = Semester::where('status','ACTIVE')->first();
          $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                          ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
@@ -3218,8 +3222,8 @@ class ExaminationResultController extends Controller
       $nta_levels = NTALevel::all();
       foreach($nta_levels as $level){
          foreach($departments as $department){
-            $report[$level->name]['departments'][] = $department;
-            $report[$level->name][$department->name]['programs'] = [];
+            // $report[$level->name]['departments'][] = $department;
+            // $report[$level->name][$department->name]['programs'] = [];
             $report[$level->name][$department->name]['ML']['pass_students'] = 0;
             $report[$level->name][$department->name]['FL']['pass_students'] = 0;
             $report[$level->name][$department->name]['pass_students_rate'] = 0;
@@ -3232,7 +3236,7 @@ class ExaminationResultController extends Controller
 
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id){
-                  $report[$level->name][$department->name]['programs'][] = $program->name;
+                  //$report[$level->name][$department->name]['programs'][] = $program->name;
                   $report[$level->name][$department->name][$program->name]['total_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
@@ -3248,7 +3252,7 @@ class ExaminationResultController extends Controller
          }
 
       }
-return $report;
+
       foreach($departments as $department){
          foreach($department->programs as $program){
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
