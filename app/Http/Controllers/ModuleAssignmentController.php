@@ -1371,13 +1371,23 @@ class ModuleAssignmentController extends Controller
                 }
 
                 if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                    $students = [];
+                    $supp_cases = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                                 ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
                                                                                                                 ->whereHas('academicStatus',function($query){$query->where('name','SUPP')->orWhere('name','CARRY');})
                                     ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                     ->with('academicStatus:id,name')
                                     ->get();
+
+                    foreach($supp_cases as $sup){
+                        if(ExaminationResult::where('student_id',$sup->id)
+                        ->where('module_assignment_id',$module_assignment->id)
+                        ->final_exam_remark('FAIL')
+                        ->count() != 0){
+                            $students[] = $sup;
+                        }
+                    }
 
                     $special_cases = SpecialExam::where('module_assignment_id',$module_assignment->id)
                                                 ->where('type','FINAL')
