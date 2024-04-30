@@ -588,7 +588,7 @@ class ModuleAssignmentController extends Controller
                                     ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                     ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
                                                                                                                     ->where('final_exam_remark','FAIL');})
-                                    ->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})
+                                    ->whereHas('semesterRemarks', function($query){$query->where('remark','SUPP');})
                                     ->get();
 
             $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
@@ -605,7 +605,7 @@ class ModuleAssignmentController extends Controller
                                     ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
                                                                                                                         ->where('final_exam_remark','FAIL');})
                                     ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
-                                    ->whereHas('annualRemarks', function($query){$query->where('remark','CARRY');})
+                                    ->whereHas('semesterRemarks', function($query){$query->where('remark','CARRY');})
                                     ->get();
             $students_supp_session = [];
             foreach($supp_students as $student){
