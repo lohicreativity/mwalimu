@@ -364,7 +364,7 @@ class ModuleAssignmentController extends Controller
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
              $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                                  ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})
+                                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})
                                                   ->where('module_assignment_id',$module_assignment->id)
                                                   ->whereNotNull('final_uploaded_at')
                                                   ->where('final_exam_remark','FAIL')
@@ -380,7 +380,7 @@ return $supp_cases_count;
                                                    ->count();
             $carry_cases_count = ExaminationResult::whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
                                                   ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                                  ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})
+                                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})
                                                   ->where('module_assignment_id',$module_assignment->id)
                                                   ->whereNotNull('final_uploaded_at')
                                                   ->where('final_exam_remark','FAIL')
