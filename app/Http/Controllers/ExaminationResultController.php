@@ -898,7 +898,7 @@ class ExaminationResultController extends Controller
 
 
     public function updateStudentResults(Request $request, $module_id, $student_id, $ac_yr_id, $yr_of_study, $process_type = null)
-    {
+    {return 1;
       try{
          $student = Student::findOrFail($student_id);
          $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
@@ -1464,7 +1464,7 @@ class ExaminationResultController extends Controller
             }
 
             $status = AcademicStatus::where('name',$remark->remark)->first();
-return $status->id;
+
             $stud = Student::find($key);
             $stud->academic_status_id = $status->id;
             $stud->save();
