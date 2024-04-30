@@ -1083,7 +1083,7 @@ class ModuleAssignmentController extends Controller
      * Upload module assignment results
      */
     public function uploadResults(Request $request)
-    {   return redirect()->back()->with('error','Uploaded students do not exist');
+    {   
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
@@ -1103,7 +1103,7 @@ class ModuleAssignmentController extends Controller
         if($request->hasFile('results_file')){
         // DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
-
+            return redirect()->back()->with('error','Uploaded students do not exist');
             if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                 $all_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
                                        ->whereHas('academicStatus',function($query){$query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','CARRY')->orWhere('name','POSTPONED')->orWhere('name','SUPP');})
