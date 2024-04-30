@@ -1637,7 +1637,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
             }
-            return 'Under construction';
+
             // Validate clean results
             $validationStatus = true;
             $csvFileName = $file_name;
@@ -1695,7 +1695,7 @@ class ModuleAssignmentController extends Controller
                 DB::rollback();
                 return redirect()->back()->with('error','Invalid value. Please check marks for registration number '.implode(', ', $invalidEntries));
             }
-
+            return 'Under construction';
             // if(count($invalid_students_entries) != 0){
             //     return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             // }
