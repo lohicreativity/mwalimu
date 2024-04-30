@@ -1378,14 +1378,7 @@ class ModuleAssignmentController extends Controller
                                     ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                     ->with('academicStatus:id,name')
                                     ->get();
-                }else{
-                    $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
-                                                                                                                 ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                                                                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
-                                       ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
-                                       ->with('academicStatus:id,name')
-                                       ->get();
-                                       
+
                     $special_cases = SpecialExam::where('module_assignment_id',$module_assignment->id)
                                                 ->where('type','FINAL')
                                                 ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
@@ -1395,12 +1388,19 @@ class ModuleAssignmentController extends Controller
 
                     foreach($special_cases as $special){
                         $students[] = Student::where('id',$special->id)
-                                             ->with('academicStatus:id,name')
-                                             ->first();
+                                            ->with('academicStatus:id,name')
+                                            ->first();
                     }
+                }else{
+                    $students = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                                 ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                       ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                       ->with('academicStatus:id,name')
+                                       ->get();
                 }
             }
-return $students;
+
             foreach($students as $stud){
                 $student_present = false;
                 foreach($uploaded_students as $up_stud){
