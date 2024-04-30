@@ -1084,7 +1084,6 @@ class ModuleAssignmentController extends Controller
      */
     public function uploadResults(Request $request)
     {
-        dd(90);
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
