@@ -1188,6 +1188,7 @@ class ModuleAssignmentController extends Controller
             }
 
             if(count($invalid_students_entries) != 0){
+                DB::rollback();
                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
             }
 
@@ -1221,11 +1222,13 @@ class ModuleAssignmentController extends Controller
                 }
 
                 if(count($non_opted_students) != 0){
+                    DB::rollback();
                     session()->flash('non_opted_students',$non_opted_students);
                     return redirect()->back()->with('error','Uploaded students have not opted this module');
                 }
 
                 if(count($invalid_retake_students) != 0){
+                    DB::rollback();
                     session()->flash('invalid_retake_students',$invalid_retake_students);
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
@@ -1245,11 +1248,13 @@ class ModuleAssignmentController extends Controller
                     }
 
                     if(count($non_opted_students) != 0){
+                        DB::rollback();
                         session()->flash('non_opted_students',$non_opted_students);
                         return redirect()->back()->with('error','Uploaded students have not opted this module');
                     }
 
                     if(count($invalid_carry_students) != 0){
+                        DB::rollback();
                         session()->flash('invalid_carry_students',$invalid_carry_students);
                         return redirect()->back()->with('error','Uploaded students are not allowed to sit for carry exams in this academic year');
                     }
@@ -1358,13 +1363,9 @@ class ModuleAssignmentController extends Controller
                     session()->flash('invalid_students',$invalid_students);
                     return redirect()->back()->with('error','Uploaded students do not exist');
                 }
-                /*return $invalid_students;
-                if(count($invalid_students) != 0){
-                        session()->flash('invalid_students',$invalid_students);
-                        return redirect()->back()->with('error','Uploaded students do not exists');
-                }*/
 
                 if(count($invalid_retake_students) != 0){
+                    DB::rollback();
                     session()->flash('invalid_retake_students',$invalid_retake_students);
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
@@ -1434,12 +1435,13 @@ return 'Under construction';
                     }
 
                     // Special exam cases
-                    if(ExaminationResult::where('student_id',$stud->id)
-                                        ->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){$query->where('year_of_study',$stud->year_of_study)
-                                                                                                                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
-                                        ->where('module_assignment_id',$module_assignment->id)
-                                        ->whereNotNull('final_score')
-                                        ->count() != 0 && $stud->academicStatus->name == 'POSTPONED'){
+                    if(SpecialExam::where('student_id',$stud->id)
+                                    ->where('module_assignment_id',$module_assignment->id)
+                                    ->where('type','FINAL')
+                                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                    ->where('status','APPROVED')
+                                    ->count() != 0){
                         $student_present = true;
                     }
 
@@ -1482,7 +1484,7 @@ return 'Under construction';
                     $missing_students[] = $stud;
                 }
             }
-
+return $missing_students;
             foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                     if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
@@ -1659,6 +1661,7 @@ return 'Under construction';
             }
 
             if(!$validationStatus){
+                DB::rollback();
                 return redirect()->back()->with('error','Invalid value. Please check marks for registration number '.implode(', ', $invalidEntries));
             }
 
@@ -2007,6 +2010,7 @@ return 'Under construction';
                             $result->save();
                         }
                     }elseif($student && !empty($line[1]) && isset($line[2])){
+                        DB::rollback();
                         return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
                     }
                     // elseif($student && empty($line[1])){
