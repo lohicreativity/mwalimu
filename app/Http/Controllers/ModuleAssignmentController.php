@@ -1142,7 +1142,7 @@ class ModuleAssignmentController extends Controller
                                        ->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)
                                        ->first();
 
-            //DB::beginTransaction();
+            DB::beginTransaction();
             if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                 $plan = null;
                 $assessment = 'FINAL';
@@ -1354,6 +1354,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
                 if(count($invalid_students) != 0){
+                    DB::rollback();
                     session()->flash('invalid_students',$invalid_students);
                     return redirect()->back()->with('error','Uploaded students do not exist');
                 }
@@ -2066,7 +2067,7 @@ return 'Under construction';
                     // }
                 }
             }
-            //DB::commit();
+            DB::commit();
         }
         return redirect()->back()->with('message','Results uploaded successfully');
     }
