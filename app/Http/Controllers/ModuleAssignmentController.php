@@ -1141,8 +1141,8 @@ class ModuleAssignmentController extends Controller
                                        ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
                                        ->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)
                                        ->first();
-                                       return redirect()->back()->with('error','Uploaded students do not exist');
-            DB::beginTransaction();
+
+            //DB::beginTransaction();
             if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                 $plan = null;
                 $assessment = 'FINAL';
@@ -2066,7 +2066,7 @@ return 'Under construction';
                     // }
                 }
             }
-            DB::commit();
+            //DB::commit();
         }
         return redirect()->back()->with('message','Results uploaded successfully');
     }
