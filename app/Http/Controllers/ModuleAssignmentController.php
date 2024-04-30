@@ -1515,7 +1515,7 @@ class ModuleAssignmentController extends Controller
                     $missing_students[] = $stud;
                 }
             }
-return $missing_students;
+
             foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                     if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
@@ -1606,7 +1606,7 @@ return $missing_students;
                                                     ->where('grade','C')
                                                     ->where('study_academic_year_id', $request->get('study_academic_year_id'))
                                                     ->first();
-                        return 'Under construction';
+
                     $upload_allowed = true;
                     if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                         $result = $res;
@@ -1637,7 +1637,7 @@ return $missing_students;
                     }
                 }
             }
-
+            return 'Under construction';
             // Validate clean results
             $validationStatus = true;
             $csvFileName = $file_name;
