@@ -1083,7 +1083,7 @@ class ModuleAssignmentController extends Controller
      * Upload module assignment results
      */
     public function uploadResults(Request $request)
-    {
+    {   return redirect()->back()->with('error','Uploaded students do not exist');
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
@@ -1354,9 +1354,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
                 if(count($invalid_students) != 0){
-
-                    //session()->flash('invalid_students',$invalid_students);
-                    return 1;
+                    session()->flash('invalid_students',$invalid_students);
                     return redirect()->back()->with('error','Uploaded students do not exist');
                 }
                 /*return $invalid_students;
