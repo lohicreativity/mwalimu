@@ -2488,6 +2488,9 @@ class ExaminationResultController extends Controller
             $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
             $remark->save();
       
+            $status = AcademicStatus::where('name',$remark->remark)->first();
+            $student->academic_status_id = $status->id;
+            $student->save();
             if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('semester_id',$semester->id)
                   ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->first()){
                $publication = $pub;
