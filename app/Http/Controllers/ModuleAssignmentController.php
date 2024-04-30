@@ -1383,7 +1383,7 @@ class ModuleAssignmentController extends Controller
                     foreach($supp_cases as $sup){
                         if(ExaminationResult::where('student_id',$sup->id)
                         ->where('module_assignment_id',$module_assignment->id)
-                        ->final_exam_remark('FAIL')
+                        ->where('final_exam_remark','FAIL')
                         ->count() != 0){
                             $students[] = $sup;
                         }
