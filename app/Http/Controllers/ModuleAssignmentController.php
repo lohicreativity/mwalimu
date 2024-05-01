@@ -1762,6 +1762,7 @@ class ModuleAssignmentController extends Controller
                             $result_log = new ExaminationResultLog;
                             $result_log->module_assignment_id = $request->get('module_assignment_id');
                             $result_log->student_id = $student->id;
+
                             if($special_exam || $postponement){
                                 $result_log->final_score = null;
                             }else{
@@ -1853,6 +1854,7 @@ class ModuleAssignmentController extends Controller
                                 if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
                                     $supp_upload_allowed = true;
                                 }else{
+                                    DB::rollback();
                                     continue;
                                 }
                             }
@@ -1860,6 +1862,8 @@ class ModuleAssignmentController extends Controller
                             $sup_special_exam = SpecialExam::where('student_id',$student->id)
                                                            ->where('module_assignment_id',$module_assignment->id)
                                                            ->where('type','SUPP')
+                                                           ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                            ->where('status','APPROVED')
                                                            ->first();
                             $final_special_exam = SpecialExam::where('student_id',$student->id)
@@ -1885,6 +1889,8 @@ class ModuleAssignmentController extends Controller
                                 $result = $res;
                                 if($res->final_exam_remark == 'PASS'){
                                     $upload_allowed = false;
+                                    DB::rollback();
+                                    continue;
                                 }
                             }else{
                                 $result = new ExaminationResult;
@@ -1892,7 +1898,7 @@ class ModuleAssignmentController extends Controller
 
                             $result->module_assignment_id = $request->get('module_assignment_id');
                             $result->student_id = $student->id;
-                            if($final_special_exam){
+                            if($final_special_exam || $sup_special_exam){
                             // if($sup_special_exam){
                             // if($sup_special_exam || $postponement){ // SEE the previous comment
                                 // $result->final_score = !$sup_special_exam || !$postponement? trim($line[1]) : null;
@@ -1900,11 +1906,10 @@ class ModuleAssignmentController extends Controller
                                 $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                                 $result->supp_score = null;
 
-                            }elseif($sup_special_exam){
-                                $result->supp_score = null;
-                                $result->supp_remark = 'POSTPONED';
-                            }
-                            else{ //If supplementary or CARRY
+                            // }elseif($sup_special_exam){
+                            //     $result->supp_score = null;
+                            //     $result->supp_remark = 'POSTPONED';
+                            }else{ //If supplementary or CARRY
                                 $result->supp_score = trim($line[1]);
                                 if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                                     $result->grade = 'F';

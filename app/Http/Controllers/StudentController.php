@@ -46,6 +46,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Utils\Util;
 use Auth, Hash, Validator, DB;
+use App\Domain\Academic\Models\SpecialExam;
 
 class StudentController extends Controller
 {
@@ -504,17 +505,23 @@ class StudentController extends Controller
          $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                       ->where('campus_id',$student->applicant->campus_id)
                                       ->count();
+        $special_exams = SpecialExam::where('student_id',$student->id)
+                                    ->where('type','FINAL')
+                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                    ->where('status','APPROVED')
+                                    ->first();
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
          	'results'=>$results,
-            'retake_sem_remarks'=>$retake_sem_remarks,
+          'retake_sem_remarks'=>$retake_sem_remarks,
          	'study_academic_year'=>$study_academic_year,
          	'core_programs'=>$core_programs,
          	'publications'=>$publications,
          	'optional_programs'=>$optional_programs,
-            'student'=>$student,
-            'loan_status'=>$loan_status
+          'student'=>$student,
+          'loan_status'=>$loan_status,
+          'special_exams'=>$special_exams
          ];
          return view('dashboard.student.examination-results-report',$data)->withTitle('Examination Results');
     }
