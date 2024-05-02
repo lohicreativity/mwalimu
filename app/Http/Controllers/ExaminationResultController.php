@@ -3279,8 +3279,9 @@ class ExaminationResultController extends Controller
                                                    //->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
                                                    ->where('module_assignment_id',$assignment->id)
                                                    ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
-return $program;
+
                      foreach($results as $result){
+                        return $result->moduleAssignment->programModuleAssignment->module->ntaLevel->name.' - '.$department->name.' - '.$program->name;
                         //return $result->moduleAssignment->programModuleAssignment->module->ntaLevel->name; //.' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name].' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name];
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
