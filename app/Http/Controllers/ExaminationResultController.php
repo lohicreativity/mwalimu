@@ -3274,7 +3274,7 @@ class ExaminationResultController extends Controller
 
                   if($result->final_exam_remark == 'PASS'){
                      $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
-                     $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
+                     $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
 
                      if($result->student->gender == 'M'){
                         $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'] += 1;
