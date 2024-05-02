@@ -3328,6 +3328,7 @@ class ExaminationResultController extends Controller
 
          }
       }
+      return $report['NTA Level 8']['Department Of Geography And History']['total_fail_students'];
       $data = [
          'report'=>$report,
          'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
