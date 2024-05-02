@@ -3270,11 +3270,11 @@ class ExaminationResultController extends Controller
                                              ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
                foreach($results as $result){
-                  $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
+                  $report[$program->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
                   if($result->final_exam_remark == 'PASS'){
-                     $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
-                     $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
+                     $report[$program->ntaLevel->name->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
+                     $report[$program->ntaLevel->name->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel->name->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name->ntaLevel->name][$department->name][$program->name]['total_students'];
 
                      if($result->student->gender == 'M'){
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'] += 1;
