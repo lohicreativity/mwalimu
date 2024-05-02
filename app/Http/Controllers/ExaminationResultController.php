@@ -3256,7 +3256,7 @@ class ExaminationResultController extends Controller
          }
 
       }
-return $report['NTA Level 8']['Department Of Human Resource Management'];
+return $report['NTA Level 8']; //['Department Of Human Resource Management'];
          foreach($department->programs as $program){
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                     ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
