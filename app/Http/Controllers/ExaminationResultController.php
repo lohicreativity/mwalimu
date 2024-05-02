@@ -3215,7 +3215,6 @@ class ExaminationResultController extends Controller
       }elseif(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('arc')){
          $departments = Department::whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
                                   ->with(['programs.ntaLevel'])->get();
-                                  return $departments[0]->programs;
       }elseif(Auth::user()->hasRole('administrator')){
          $departments = Department::with(['programs.ntaLevel'])->get();
       }else{
@@ -3238,6 +3237,7 @@ class ExaminationResultController extends Controller
             $report[$level->name][$department->name]['total_students'] = 0;
 
             foreach($department->programs as $program){
+               return $program->pivot->campus_id;
                if($program->nta_level_id == $level->id){
                   //$report[$level->name][$department->name]['programs'][] = $program->name;
                   $report[$level->name][$department->name][$program->name]['total_students'] = 0;
@@ -3254,10 +3254,6 @@ class ExaminationResultController extends Controller
             }
          }
 
-      }
-
-      foreach($departments as $department){
-         foreach($department->programs as $program){
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                     ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
@@ -3318,7 +3314,7 @@ class ExaminationResultController extends Controller
          }
 
       }
-
+      }
       $data = [
          'report'=>$report,
          'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
