@@ -3258,8 +3258,13 @@ class ExaminationResultController extends Controller
                                     ->with('programModuleAssignment.campusProgram:id')
                                     ->first();
             
-            $students = Student::select('id')->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->get();
-return $students;
+            $students = Student::select('id')
+                               ->whereHas('semesterRemarks',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
+                               ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
+                               ->with('semesterRemarks:remark')
+                               ->get();
+            //$students_semester_remarks = SemesterRemark::select('remark')->whereIn('student_id',$students->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));
+            return $students;
             $module_assignments = [];
             foreach($module_assignment as $assignment){
                if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
