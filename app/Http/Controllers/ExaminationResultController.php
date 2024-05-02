@@ -3258,6 +3258,7 @@ class ExaminationResultController extends Controller
 //return $report['NTA Level 8']['Department Of Geography And History']['Bachelor Degree Of Education In Geography And English Language'];
       foreach($nta_levels as $level){
          foreach($departments as $department){
+            return $department;
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id){
                   if($program->pivot->campus_id == $staff->campus_id){
