@@ -3259,6 +3259,7 @@ class ExaminationResultController extends Controller
       foreach($nta_levels as $level){
          foreach($departments as $department){
             foreach($department->programs as $program){
+               return $program;
                if($program->nta_level_id == $level->id){
                   if($program->pivot->campus_id == $staff->campus_id){
                      return $program;
