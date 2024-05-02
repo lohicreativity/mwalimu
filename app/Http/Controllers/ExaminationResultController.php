@@ -3281,7 +3281,7 @@ class ExaminationResultController extends Controller
                foreach($students as $student){
                   $report[$program->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
-                  if($student->semesterRemarks->remark == 'PASS'){
+                  if($student->semesterRemarks[0]->remark == 'PASS'){
                      $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
                      $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
 
@@ -3294,7 +3294,7 @@ class ExaminationResultController extends Controller
                      }
                   }
 
-                  if($student->semesterRemarks->remark == 'FAIL' || $student->semesterRemarks->remark == 'RETAKE' || $student->semesterRemarks->remark == 'CARRY'){
+                  if($student->semesterRemarks[0]->remark == 'FAIL' || $student->semesterRemarks[0]->remark == 'RETAKE' || $student->semesterRemarks[0]->remark == 'CARRY'){
                      $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students'] += 1;
                      $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
 
