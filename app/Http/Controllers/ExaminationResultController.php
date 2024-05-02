@@ -3249,10 +3249,9 @@ class ExaminationResultController extends Controller
                   $report[$level->name][$department->name][$program->name]['FL']['pass_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['ML']['fail_students'] = 0;
                   $report[$level->name][$department->name][$program->name]['FL']['fail_students'] = 0;
-               }
                
-            }
-         }
+               
+      
 
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                     ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
@@ -3312,6 +3311,7 @@ class ExaminationResultController extends Controller
             $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
             $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
          }
+      }
 
       }
       }
