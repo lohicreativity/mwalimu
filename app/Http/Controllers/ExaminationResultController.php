@@ -3280,9 +3280,9 @@ class ExaminationResultController extends Controller
                foreach($results as $result){
                   //return $result->moduleAssignment->programModuleAssignment->module->ntaLevel->name; //.' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name].' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name];
                   if($result->moduleAssignment->programModuleAssignment->module->ntaLevel->id == $program->nta_level_id){
-                     return $result->moduleAssignment->programModuleAssignment->module->ntaLevel->name;
+
                      $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
-                  }
+                  
                   if($result->final_exam_remark == 'PASS'){
                      $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
                      $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
@@ -3314,6 +3314,7 @@ class ExaminationResultController extends Controller
                   $report[$level->name][$department->name]['ML']['fail_students'] += $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'];
                   $report[$level->name][$department->name]['FL']['fail_students'] += $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'];
                   $report[$level->name][$department->name]['total_students'] +=$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
+               }
                }  
             }
             $report[$level->name][$department->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
