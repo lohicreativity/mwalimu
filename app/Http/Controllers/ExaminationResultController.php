@@ -3259,10 +3259,10 @@ class ExaminationResultController extends Controller
       foreach($nta_levels as $level){
          foreach($departments as $department){
             foreach($department->programs as $program){
-               return $program;
+
                //if($program->nta_level_id == $level->id){
                   if($program->pivot->campus_id == $staff->campus_id){
-                     
+                     return $program;
                                  $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                           ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
                                           ->whereHas('programModuleAssignment.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
