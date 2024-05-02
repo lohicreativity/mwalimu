@@ -3256,7 +3256,7 @@ class ExaminationResultController extends Controller
          }
 
       }
-return $report['NTA Level 8']['Department Of Geography And History']['Bachelor Degree Of Education In Geography And English Language'];
+//return $report['NTA Level 8']['Department Of Geography And History']['Bachelor Degree Of Education In Geography And English Language'];
       foreach($departments as $department){
          foreach($department->programs as $program){
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
