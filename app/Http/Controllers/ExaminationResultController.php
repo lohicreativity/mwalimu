@@ -3266,7 +3266,7 @@ class ExaminationResultController extends Controller
                                           ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
                                           ->whereHas('programModuleAssignment.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-return $module_assignment;
+
                   $module_assignments = [];
                   foreach($module_assignment as $assignment){
                      if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
@@ -3279,7 +3279,7 @@ return $module_assignment;
                                                    //->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
                                                    ->where('module_assignment_id',$assignment->id)
                                                    ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
-
+return $program;
                      foreach($results as $result){
                         //return $result->moduleAssignment->programModuleAssignment->module->ntaLevel->name; //.' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name].' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name];
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
