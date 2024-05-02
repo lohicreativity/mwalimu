@@ -3278,7 +3278,7 @@ class ExaminationResultController extends Controller
                      $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
                                                    //->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
                                                    ->where('module_assignment_id',$assignment->id)
-                                                   ->with(['moduleAssignment.programModuleAssignment.program.ntaLevel:id,name','student:id,gender'])->get();
+                                                   ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
                      foreach($results as $result){
                         return $program->ntaLevel->name.' - '.$department->name.' - '.$program->name;
