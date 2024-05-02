@@ -3238,7 +3238,6 @@ class ExaminationResultController extends Controller
 //return count($department->programs);
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id){
-                  return $program->pivot->campus_id;
                   if($program->pivot->campus_id == 1){
                      $report[$level->name][$department->name]['programs'][] = $program->name;
                      $report[$level->name][$department->name][$program->name]['total_students'] = 0;
@@ -3278,7 +3277,7 @@ class ExaminationResultController extends Controller
                                              ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 
                foreach($results as $result){
-                  return $report['NTA Level 8']; //.' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name].' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name];
+                  //return $report['NTA Level 8']; //.' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name].' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name];
                   $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
                   if($result->final_exam_remark == 'PASS'){
