@@ -3261,7 +3261,7 @@ class ExaminationResultController extends Controller
             $students = Student::select('id')
                                ->whereHas('semesterRemarks',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
-                               ->with('semesterRemarks:remark')
+                               ->with('semesterRemarks:id,remark')
                                ->get();
             //$students_semester_remarks = SemesterRemark::select('remark')->whereIn('student_id',$students->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));
             return $students;
