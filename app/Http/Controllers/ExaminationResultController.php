@@ -3281,7 +3281,7 @@ class ExaminationResultController extends Controller
                                                    ->with(['moduleAssignment.programModuleAssignment.program.ntaLevel:id,name','student:id,gender'])->get();
 
                      foreach($results as $result){
-                        return $result->moduleAssignment->programModuleAssignment->program->ntaLevel->name.' - '.$department->name.' - '.$program->name;
+                        return $program->ntaLevel->name.' - '.$department->name.' - '.$program->name;
                         //return $result->moduleAssignment->programModuleAssignment->module->ntaLevel->name; //.' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name].' - '.$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name];
                         $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
