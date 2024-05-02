@@ -3238,6 +3238,7 @@ class ExaminationResultController extends Controller
 //return count($department->programs);
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id){
+                  return $program->pivot->campus_id;
                   if($program->pivot->campus_id == 1){
                      $report[$level->name][$department->name]['programs'][] = $program->name;
                      $report[$level->name][$department->name][$program->name]['total_students'] = 0;
