@@ -3279,6 +3279,7 @@ class ExaminationResultController extends Controller
                   //                               ->where('module_assignment_id',$assignment->id)
                   //                               ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
 //return $program->name.' - '.count($students);
+$x = 0;
                   foreach($students as $student){
                      $report[$program->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
 
@@ -3287,6 +3288,7 @@ class ExaminationResultController extends Controller
                         $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
 
                         if($student->gender == 'M'){
+                           $x+=1;
                            $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'] += 1;
                         }
 
@@ -3314,8 +3316,8 @@ class ExaminationResultController extends Controller
                      $report[$level->name][$department->name]['FL']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'];
                      $report[$level->name][$department->name]['total_students'] +=$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
                   }  
-               //}
-               return $report[$level->name][$department->name]['ML']['pass_students'].' + '.$report[$level->name][$department->name]['FL']['pass_students'];
+               //} 
+               return $x; // $report[$level->name][$department->name]['ML']['pass_students'].' + '.$report[$level->name][$department->name]['FL']['pass_students'];
                $report[$level->name][$department->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
                $report[$level->name][$department->name]['total_fail_students'] = $report[$level->name][$department->name]['ML']['fail_students'] + $report[$level->name][$department->name]['FL']['fail_students'];
                $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
