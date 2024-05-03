@@ -4549,7 +4549,7 @@ class ApplicationController extends Controller
         if(!$ac_year){
             return redirect()->back()->with('error','No academic year');
         }
-        return 10;
+
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
         $reg_dates = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->get();
         
@@ -4565,6 +4565,7 @@ class ApplicationController extends Controller
         if($reg_date ==  null){
             return redirect()->back()->with('error','Registration period has not been set');
         }
+        return 10;
         $now = strtotime(date('Y-m-d'));
         $reg_date_time = strtotime($reg_date);
         $datediff = $reg_date_time - $now;
