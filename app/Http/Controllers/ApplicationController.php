@@ -4567,7 +4567,7 @@ class ApplicationController extends Controller
             DB::rollback();
             return redirect()->back()->with('error','Registration period has not been set');
         }
-return $reg_date;
+
         $now = strtotime(date('Y-m-d'));
         $reg_date_time = strtotime($reg_date);
         $datediff = $reg_date_time - $now;
