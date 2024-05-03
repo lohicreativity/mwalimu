@@ -1891,7 +1891,7 @@ class ExaminationResultController extends Controller
                              ->where('study_academic_year_id',$module->programModuleAssignment->study_academic_year_id)
                              ->where('semester_id',$module->programModuleAssignment->semester_id)
                              ->where('type',$request->get('exam_type'))
-                             ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod_examination')){
+                             ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod-examination')){
             return redirect()->back()->with('error','Cannot edit published results. Please contact Examination Office');                 
          }
 
