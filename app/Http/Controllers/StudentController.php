@@ -509,7 +509,7 @@ class StudentController extends Controller
                                     ->where('type','FINAL')
                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                     ->where('status','APPROVED')
-                                    ->first();
+                                    ->get();
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
