@@ -865,17 +865,40 @@ class ExaminationResultController extends Controller
               }
             }
 
-            if(Auth::user()->hasRole('hod')){
-              
-              if(ResultPublication::where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                 ->where('nta_level_id',$module_assignment->module->nta_level_id)
-                                 ->where('campus_id', $staff->campus_id)
-                                 ->where('status','PUBLISHED')
-                                 ->count() != 0){
-                  return redirect()->back()->with('error','Unable to edit results because results already published');
-              }
+            $staff = User::find(Auth::user()->id)->staff;
+            $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
+            $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+   
+            if(ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
+                                ->where('campus_id',$staff->campus_id)
+                                ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                                ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                ->where('type',$request->get('exam_type'))
+                                ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod-examination')){
+               return redirect()->back()->with('error','Cannot edit published results. Please contact the Head of Examination Office');                 
             }
+   
+            if(ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
+                                 ->where('campus_id',$staff->campus_id)
+                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                                 ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                 ->where('type',$request->get('exam_type'))
+                                 ->where('status','UNPUBLISHED') && !Auth::user()->hasRole('hod')){
+               return redirect()->back()->with('error','Cannot edit unpublished results. Please contact Head of a respective department');                 
+            }
+
+
+            // if(Auth::user()->hasRole('hod')){
+              
+            //   if(ResultPublication::where('study_academic_year_id',$module_assignment->study_academic_year_id)
+            //                       ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+            //                      ->where('nta_level_id',$module_assignment->module->nta_level_id)
+            //                      ->where('campus_id', $staff->campus_id)
+            //                      ->where('status','PUBLISHED')
+            //                      ->count() != 0){
+            //       return redirect()->back()->with('error','Unable to edit results because results already published');
+            //   }
+            // }
             $student = Student::findOrFail($student_id);
             $result = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){
                     $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);
