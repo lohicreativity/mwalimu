@@ -1882,10 +1882,30 @@ class ExaminationResultController extends Controller
             }
          }
 
-         DB::beginTransaction();
-         $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
-         $final_process_status = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->first();
+         $staff = User::find(Auth::user()->id)->staff;
+         $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
          $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+
+         if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
+                             ->where('campus_id',$staff->campus_id)
+                             ->where('study_academic_year_id',$module->programModuleAssignment->study_academic_year_id)
+                             ->where('semester_id',$module->programModuleAssignment->semester_id)
+                             ->where('type',$request->get('exam_type'))
+                             ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod_examination')){
+            return redirect()->back()->with('error','Cannot edit published results. Please contact Examination Office');                 
+         }
+
+         if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
+                              ->where('campus_id',$staff->campus_id)
+                              ->where('study_academic_year_id',$module->programModuleAssignment->study_academic_year_id)
+                              ->where('semester_id',$module->programModuleAssignment->semester_id)
+                              ->where('type',$request->get('exam_type'))
+                              ->where('status','UNPUBLISHED') && !Auth::user()->hasRole('hod')){
+            return redirect()->back()->with('error','Cannot edit unpublished results. Please contact Head of a respective department');                 
+         }
+         $final_process_status = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->first();
+
+         DB::beginTransaction();
 
          $student = Student::find($request->get('student_id'));
          $studentship_status = DB::table('studentship_statuses')
