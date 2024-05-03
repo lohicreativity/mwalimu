@@ -853,13 +853,18 @@ class RegistrationController extends Controller
         if(!$student->signature){
                 return redirect()->back()->with('error','Student signature is missing');
         }
-        $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-        ->where('semester_id',$semester->id)->first();
+        if($student->applicant->intake->name == 'March'){
+            $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id + 1)
+            ->where('semester_id',$semester->id)->first();
+        }else{
+            $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
+            ->where('semester_id',$semester->id)->first();
+        }
 
         if(!$registration){
              return redirect()->back()->with('error','Student has not been registered for this semester');
         }
-
+return 1;
         $id_requests = IdCardRequest::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('is_printed',0)->get();
 
         if(count($id_requests) == 0 && $registration->id_print_status != 0){
