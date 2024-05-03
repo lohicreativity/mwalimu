@@ -295,7 +295,7 @@ class AppealController extends Controller
                                 }
                   
                                 if(!$grading_policy){
-                                   // DB::rollback();
+                                   DB::rollback();
                                    return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
                                 }
                                 
