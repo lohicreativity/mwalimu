@@ -4547,6 +4547,7 @@ class ApplicationController extends Controller
         $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
 
         if(!$ac_year){
+            DB::rollback();
             return redirect()->back()->with('error','No academic year');
         }
 
@@ -4563,6 +4564,7 @@ class ApplicationController extends Controller
         }
 
         if($reg_date ==  null){
+            DB::rollback();
             return redirect()->back()->with('error','Registration period has not been set');
         }
 
@@ -4572,15 +4574,17 @@ class ApplicationController extends Controller
 //return round($datediff / (60 * 60 * 24));
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
-            return 13;
+            DB::rollback();
             return redirect()->back()->with('error','Applicant cannot be registered. Registration period is over');
         }
-        return 12;
+        
         if(empty($applicant->gender|| empty($applicant->disability_status_id))){
+            DB::rollback();
             return redirect()->back()->with('error','Sex of the applicant is required');
         }
 
         if(empty($applicant->disability_status_id)){
+            DB::rollback();
             return redirect()->back()->with('error','Disiability status of the applicant is required');
         }
 
@@ -4595,6 +4599,7 @@ class ApplicationController extends Controller
         $academic_status = AcademicStatus::where('name','FRESHER')->first();
         $semester = Semester::where('status','ACTIVE')->first();
         if(str_contains($semester->name,'2')){
+            DB::rollback();
             return redirect()->back()->with('error','Active semester must be set to first semester');
         }
         // $last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),1,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
