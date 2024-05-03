@@ -857,15 +857,15 @@ class ExaminationResultController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
         try{
-            $module_assignment = ModuleAssignment::with(['module','programModuleAssignment'])->where('program_module_assignment_id',$prog_id)->first();
+            $module_assignment = ModuleAssignment::with(['module','programModuleAssignment','programModuleAssignment.campusProgram.program'])->where('program_module_assignment_id',$prog_id)->first();
             if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
               
               if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
                   return redirect()->back()->with('error','Unable to edit results because final results already inserted');
               }
             }
-   return $module_assignment->module->nta_level_id;
-            if(ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
+
+            if(ResultPublication::where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
                                 ->where('campus_id',$staff->campus_id)
                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                 ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
@@ -874,7 +874,7 @@ class ExaminationResultController extends Controller
                return redirect()->back()->with('error','Cannot edit published results. Please contact the Head of Examination Office');                 
             }
    
-            if(ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
+            if(ResultPublication::where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
                                  ->where('campus_id',$staff->campus_id)
                                  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
