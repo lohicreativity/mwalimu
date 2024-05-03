@@ -3257,67 +3257,69 @@ class ExaminationResultController extends Controller
                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                     ->with('programModuleAssignment.campusProgram:id')
                                     ->first();
+            if($module_assignment){
+
+               $students = Student::select('id','gender')
+                                 ->whereHas('semesterRemarks',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
+                                 ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
+                                 ->with('semesterRemarks')
+                                 ->get();
+               //$students_semester_remarks = SemesterRemark::select('remark')->whereIn('student_id',$students->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));
+
+               // $module_assignments = [];
+               // foreach($module_assignment as $assignment){
+               //    if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
+               //       $module_assignments[] = $assignment;
+               //    }
+               // }
+               
+               //foreach($module_assignments as $assignment){
+                  // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
+                  //                               //->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
+                  //                               ->where('module_assignment_id',$assignment->id)
+                  //                               ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
+
+                  foreach($students as $student){
+                     $report[$program->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
+
+                     if($student->semesterRemarks[0]->remark == 'PASS'){
+                        $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
+                        $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
+
+                        if($student->gender == 'M'){
+                           $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'] += 1;
+                        }
+
+                        if($student->gender == 'F'){
+                           $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['pass_students'] += 1;
+                        }
+                     }
+
+                     if($student->semesterRemarks[0]->remark == 'FAIL' || $student->semesterRemarks[0]->remark == 'RETAKE' || $student->semesterRemarks[0]->remark == 'CARRY'){
+                        $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students'] += 1;
+                        $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
+
+                        if($student->gender == 'M'){
+                           $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'] += 1;
+                        }
+
+                        if($student->gender == 'F'){
+                           $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'] += 1;
+                        }
+                     }
             
-            $students = Student::select('id','gender')
-                               ->whereHas('semesterRemarks',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
-                               ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
-                               ->with('semesterRemarks')
-                               ->get();
-            //$students_semester_remarks = SemesterRemark::select('remark')->whereIn('student_id',$students->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));
-
-            // $module_assignments = [];
-            // foreach($module_assignment as $assignment){
-            //    if(ExaminationResult::where('module_assignment_id',$assignment->id)->first()){
-            //       $module_assignments[] = $assignment;
-            //    }
-            // }
-            
-            //foreach($module_assignments as $assignment){
-               // $results = ExaminationResult::select('final_exam_remark','module_assignment_id','student_id')
-               //                               //->whereHas('moduleAssignment.programModuleAssignment.module',function($query)use($program){$query->where('nta_level_id',$program->nta_level_id);})
-               //                               ->where('module_assignment_id',$assignment->id)
-               //                               ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel:id,name','student:id,gender'])->get();
-
-               foreach($students as $student){
-                  $report[$program->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
-
-                  if($student->semesterRemarks[0]->remark == 'PASS'){
-                     $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students'] += 1;
-                     $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['pass_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
-
-                     if($student->gender == 'M'){
-                        $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'] += 1;
-                     }
-
-                     if($student->gender == 'F'){
-                        $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['pass_students'] += 1;
-                     }
-                  }
-
-                  if($student->semesterRemarks[0]->remark == 'FAIL' || $student->semesterRemarks[0]->remark == 'RETAKE' || $student->semesterRemarks[0]->remark == 'CARRY'){
-                     $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students'] += 1;
-                     $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students_rate'] = $report[$program->ntaLevel->name][$department->name][$program->name]['fail_students']*100/$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
-
-                     if($student->gender == 'M'){
-                        $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'] += 1;
-                     }
-
-                     if($student->gender == 'F'){
-                        $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'] += 1;
-                     }
-                  }
-         
-                  $report[$level->name][$department->name]['ML']['pass_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'];
-                  $report[$level->name][$department->name]['FL']['pass_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['pass_students'];
-                  $report[$level->name][$department->name]['ML']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'];
-                  $report[$level->name][$department->name]['FL']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'];
-                  $report[$level->name][$department->name]['total_students'] +=$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
-               }  
-            //}
-            $report[$level->name][$department->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
-            $report[$level->name][$department->name]['total_fail_students'] = $report[$level->name][$department->name]['ML']['fail_students'] + $report[$level->name][$department->name]['FL']['fail_students'];
-            $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
-            $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
+                     $report[$level->name][$department->name]['ML']['pass_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'];
+                     $report[$level->name][$department->name]['FL']['pass_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['pass_students'];
+                     $report[$level->name][$department->name]['ML']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'];
+                     $report[$level->name][$department->name]['FL']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'];
+                     $report[$level->name][$department->name]['total_students'] +=$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
+                  }  
+               //}
+               $report[$level->name][$department->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
+               $report[$level->name][$department->name]['total_fail_students'] = $report[$level->name][$department->name]['ML']['fail_students'] + $report[$level->name][$department->name]['FL']['fail_students'];
+               $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
+               $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
+            }
          }
       }
 
