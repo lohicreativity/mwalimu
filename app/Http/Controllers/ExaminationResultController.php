@@ -866,9 +866,9 @@ class ExaminationResultController extends Controller
             }
    return ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
    ->where('campus_id',$staff->campus_id)
-   ->where('study_academic_year_id',1)
-   ->where('semester_id',1)
-   ->where('type',$request->get('exam_type'))
+   ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+   ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+   ->where('type','FINAL')
    ->where('status','PUBLISHED')->count();
             if(ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
                                 ->where('campus_id',$staff->campus_id)
