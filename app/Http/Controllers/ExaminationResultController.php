@@ -1888,8 +1888,8 @@ class ExaminationResultController extends Controller
 
          if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
                              ->where('campus_id',$staff->campus_id)
-                             ->where('study_academic_year_id',$module->programModuleAssignment->study_academic_year_id)
-                             ->where('semester_id',$module->programModuleAssignment->semester_id)
+                             ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                              ->where('type',$request->get('exam_type'))
                              ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod-examination')){
             return redirect()->back()->with('error','Cannot edit published results. Please contact Examination Office');                 
@@ -1897,8 +1897,8 @@ class ExaminationResultController extends Controller
 
          if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
                               ->where('campus_id',$staff->campus_id)
-                              ->where('study_academic_year_id',$module->programModuleAssignment->study_academic_year_id)
-                              ->where('semester_id',$module->programModuleAssignment->semester_id)
+                              ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                              ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                               ->where('type',$request->get('exam_type'))
                               ->where('status','UNPUBLISHED') && !Auth::user()->hasRole('hod')){
             return redirect()->back()->with('error','Cannot edit unpublished results. Please contact Head of a respective department');                 
