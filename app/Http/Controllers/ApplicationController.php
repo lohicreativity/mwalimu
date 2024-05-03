@@ -4572,6 +4572,7 @@ class ApplicationController extends Controller
 //return round($datediff / (60 * 60 * 24));
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
+            return 13;
             return redirect()->back()->with('error','Applicant cannot be registered. Registration period is over');
         }
         return 12;
