@@ -864,10 +864,6 @@ class ExaminationResultController extends Controller
                   return redirect()->back()->with('error','Unable to edit results because final results already inserted');
               }
             }
-
-            $staff = User::find(Auth::user()->id)->staff;
-            $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
-            $module = Module::with('ntaLevel')->find($module_assignment->module_id);
    
             if(ResultPublication::where('nta_level_id',$module_assignment->module->nta_level_id)
                                 ->where('campus_id',$staff->campus_id)
