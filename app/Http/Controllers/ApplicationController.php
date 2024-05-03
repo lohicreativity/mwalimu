@@ -4549,7 +4549,7 @@ class ApplicationController extends Controller
         if(!$ac_year){
             return redirect()->back()->with('error','No academic year');
         }
-
+        return 10;
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
         $reg_dates = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->get();
         
@@ -4614,7 +4614,7 @@ class ApplicationController extends Controller
         $program_code = $prog_code[0].'.'.$prog_code[1];
 
         $stud_group = explode('.', $selection->campusProgram->code);
-return 3;
+
         if(str_contains($applicant->intake->name,'March')){
 return 1;
             if(str_contains($applicant->campus->name,'Kivukoni')){
