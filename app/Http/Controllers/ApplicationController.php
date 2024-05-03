@@ -4543,7 +4543,7 @@ class ApplicationController extends Controller
 
         DB::beginTransaction();
         $staff = User::find(Auth::user()->id)->staff;
-return 2;
+
         $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
 
         if(!$ac_year){
@@ -4614,7 +4614,7 @@ return 2;
         $program_code = $prog_code[0].'.'.$prog_code[1];
 
         $stud_group = explode('.', $selection->campusProgram->code);
-
+return 3;
         if(str_contains($applicant->intake->name,'March')){
 return 1;
             if(str_contains($applicant->campus->name,'Kivukoni')){
