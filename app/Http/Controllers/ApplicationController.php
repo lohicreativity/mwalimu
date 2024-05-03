@@ -4928,7 +4928,8 @@ class ApplicationController extends Controller
             $student = Student::with(['applicant.country'])->find($student->id);
 
             if(!$fee_amount){
-            return redirect()->back()->with('error','No fee amount set for late registration');
+                DB::rollback();
+                return redirect()->back()->with('error','No fee amount set for late registration');
             }
 
             if(str_contains($student->applicant->nationality,'Tanzania')){
@@ -9665,6 +9666,7 @@ class ApplicationController extends Controller
         $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin','applicant.intake'])->find($request->get('student_id'));
 
 		if(InternalTransfer::where('student_id',$student->id)->count() != 0){
+            DB::rollback();
 			return redirect()->back()->with('error','Student already transfered');
 		}
 
@@ -9682,6 +9684,7 @@ class ApplicationController extends Controller
         }
 
         if(!$registration){
+            DB::rollback();
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
 
@@ -9696,9 +9699,11 @@ class ApplicationController extends Controller
         }
 
         if(empty($reg_date)){
+            DB::rollback();
             return redirect()->back()->with('error','Something is wrong with registration date');
         }
 		if(Carbon::parse($reg_date)->addDays(7)->format('Y-m-d') < date('Y-m-d')){
+            DB::rollback();
 			return redirect()->back()->with('error','Registration period has already passed');
 		}
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
@@ -9755,6 +9760,7 @@ class ApplicationController extends Controller
         $subject_count = 0;
 
         if(count($transfer_program->entryRequirements) == 0){
+            DB::rollback();
            return redirect()->back()->with('error',$transfer_program->program->name.' does not have entry requirements, please check with the Admission Office');
         }
 
@@ -10984,7 +10990,7 @@ class ApplicationController extends Controller
 
             }
         }
-return $student;
+
         $password = User::find($applicant->user_id)->password;
 
         $transfer = new InternalTransfer;
@@ -11017,10 +11023,12 @@ return $student;
 
         $old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
         if(!$old_program_fee){
+            DB::rollback();
             return redirect()->back()->with('error','Tution fee for previous programme not defined.');
         }
         $new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$transfer_program->id)->first();
         if(!$new_program_fee){
+            DB::rollback();
             return redirect()->back()->with('error','Tuition fee for new programme not defined.');
         }
         
@@ -12040,6 +12048,7 @@ return $student;
                                 ]);
 
                                 if(!isset(json_decode($response)->results)){
+                                    DB::rollback();
                                     return redirect()->back()->with('error','Invalid Index number or year');
                                 }
 
@@ -12102,6 +12111,7 @@ return $student;
 
 
                         if(count($campus_program->entryRequirements) == 0){
+                            DB::rollback();
                             return redirect()->back()->with('error',$campus_program->program->name.' does not have entry requirements');
                         }
 
@@ -12279,10 +12289,12 @@ return $student;
             DB::beginTransaction();
 
             if(count($program->entryRequirements) === 0){
+                DB::rollback();
                 return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
             }
 
             if($program->entryRequirements[0]->max_capacity == null){
+                DB::rollback();
                 return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
             }
 
@@ -12341,10 +12353,12 @@ return $student;
 
 
                  if(!$returnedObject){
+                    DB::rollback();
                     return redirect()->back()->with('error','Something is wrong, Please try again.');
                  }
 
                  if($returnedObject->code == 404){
+                    DB::rollback();
                     return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
                  }
 
@@ -12646,6 +12660,7 @@ return $student;
 		DB::beginTransaction();
 		if($request->type == "applicant"){
 			if(str_contains($semester->name,'2')){
+                DB::rollback();
 				return redirect()->back()->with('error','Active semester must be set to first semester');
 			}
 

@@ -944,6 +944,7 @@ class ExaminationResultController extends Controller
          DB::beginTransaction();
          if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
             if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1){
+               DB::rollback();
                return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
             }
 
@@ -993,6 +994,7 @@ class ExaminationResultController extends Controller
                }
                                                                                         
                if(count($postponed_students) != $active_students){
+                  DB::rollback();
                   return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
                }
             }
@@ -1129,7 +1131,7 @@ class ExaminationResultController extends Controller
          }
 
          if(!$grading_policy){
-            // DB::rollback();
+            DB::rollback();
             return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
          }
 
@@ -1766,7 +1768,8 @@ class ExaminationResultController extends Controller
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                $elective_policy = ElectivePolicy::where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->first();
                if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->count() >= $elective_policy->number_of_options && $module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                   return redirect()->back()->with('error','Number of options in elective policy has reached maximum limit');
+                  DB::rollback(); 
+                  return redirect()->back()->with('error','Number of options in elective policy has reached maximum limit');
                }
 
                if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->where('program_module_assignment_id',$module_assignment->program_module_assignment_id)->count() == 0){
@@ -1919,6 +1922,7 @@ class ExaminationResultController extends Controller
             $score_before = $result->final_score;
          
             if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
+               DB::rollback();
                return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
             } else {
                $result->final_score = $request->get('final_score');
@@ -1983,6 +1987,7 @@ class ExaminationResultController extends Controller
                $result->course_work_score = $request->get('course_work_score');
 
                if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
+                  DB::rollback();
                   return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
                } else {
                   $result->final_score = $request->get('final_score');
@@ -2218,6 +2223,7 @@ class ExaminationResultController extends Controller
                }
    
                if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1 && $module_assignment->category != 'OPTIONAL'){
+                  DB::rollback();
                   return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' coursework not processed');
                }
    
@@ -2230,6 +2236,7 @@ class ExaminationResultController extends Controller
                                                    ->where('status','APPROVED')->first();
    
                   if(empty($postpone_status->id)){
+                     DB::rollback();
                      return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
                   }
                }
@@ -2267,6 +2274,7 @@ class ExaminationResultController extends Controller
                      if($counter != $number_of_options){
                         if($result->module_assignment_id == $optional->id){
                            if($optional->course_work_process_status != 'PROCESSED' && $optional->module->course_work_based == 1){
+                              DB::rollback();
                               return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' coursework not processed');
                            
                            }

@@ -927,20 +927,24 @@ class StudentController extends Controller
         foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
               if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
-                      return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
+                DB::rollback();
+                return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
               }
           }
         }
 
         if($student->studentshipStatus->name == 'POSTPONED'){
+          DB::rollback();
              return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
         }
 
         if($student->studentshipStatus->name == 'GRADUANT'){
+          DB::rollback();
             return redirect()->back()->with('error','You cannot continue with registration because you have already graduated');
         }
 
         if($student->academicStatus->name == 'FAIL&DISCO'){
+          DB::rollback();
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
         }
 
@@ -949,6 +953,7 @@ class StudentController extends Controller
         }
 
         if($student->academicStatus->name == 'INCOMPLETE'){
+          DB::rollback();
           return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
         }
         $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
@@ -969,9 +974,11 @@ class StudentController extends Controller
                 }
             }elseif($last_annual_remark->remark == 'FAIL&DISCO'){
             $can_register = false;
+            DB::rollback();
             return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
           }elseif($last_annual_remark->remark == 'INCOMPLETE'){
             $can_register = false;
+            DB::rollback();
             return redirect()->back()->with('error','You cannot continue with registration because you have incomplete results');
           }
         }
@@ -987,6 +994,7 @@ class StudentController extends Controller
                                               ->first();
 
           if($existing_tuition_invoice){
+            DB::rollback();
               return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
           }
 
@@ -997,6 +1005,7 @@ class StudentController extends Controller
                                    ->first();
 
           if(!$program_fee){
+            DB::rollback();
               return redirect()->back()->with('error','Programme fee has not been set');
           }
 
@@ -1251,6 +1260,7 @@ class StudentController extends Controller
               $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
   
               if(!$feeType){
+                DB::rollback();
                   return redirect()->back()->with('error','Miscellaneous fee type has not been set');
               }
               $first_name = str_contains($student->first_name,"'")? str_replace("'","",$student->first_name) : $student->first_name;
@@ -1298,6 +1308,7 @@ class StudentController extends Controller
           $feeType = FeeType::where('name','LIKE','%Identity Card%')->first();
 
           if(!$feeType){
+            DB::rollback();
             return redirect()->back()->with('error','Identity card fee type has not been set');
           }
 
@@ -1310,6 +1321,7 @@ class StudentController extends Controller
                                              ->first();
 
           if($unpaid_id_card){
+            DB::rollback();
             return redirect()->back()->with('error','You have already requested for ID card control number in this academic year');
           }
 
@@ -1327,6 +1339,7 @@ class StudentController extends Controller
           }
 
           if(!$identity_card_fee){
+            DB::rollback();
             return redirect()->back()->with('error','ID card fee amount has not been set');
           }
 
@@ -2073,9 +2086,11 @@ class StudentController extends Controller
 		  DB::beginTransaction();
 		  $student = Student::has('overallRemark')->with(['applicant.programLevel','campusProgram.program','overallRemark'])->find($request->get('student_id'));
 		  if($student->continue_status == 1){
+        DB::rollback();
 			  return redirect()->back()->with('error','You have already indicated your continuation status');
 		  }
 		  if(!$student){
+        DB::rollback();
 			  return redirect()->back()->with('error','You cannot indicate to continue with upper level');
 		  }
 /* 		  $application_window = ApplicationWindow::where('campus_id',$student->applicant->campus_id)->where('status','ACTIVE')->latest()->first();
@@ -2087,6 +2102,7 @@ class StudentController extends Controller
 
 		  $past_level = $student->applicant->programLevel;
 		  if(str_contains($past_level->code,'HD')){
+        DB::rollback();
 			  return redirect()->back()->with('error','You do not have to indicate, proceed with registration.');
 		  }elseif(str_contains($past_level->code,'BTC')){
 			  $level = Award::where('code','OD')->first();
