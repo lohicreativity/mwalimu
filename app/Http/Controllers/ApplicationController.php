@@ -4543,7 +4543,7 @@ class ApplicationController extends Controller
 
         DB::beginTransaction();
         $staff = User::find(Auth::user()->id)->staff;
-
+return 2;
         $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
 
         if(!$ac_year){
