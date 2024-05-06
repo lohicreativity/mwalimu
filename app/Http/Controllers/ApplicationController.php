@@ -9714,10 +9714,6 @@ class ApplicationController extends Controller
              $query->where('application_window_id',$applicant->application_window_id);
         },'program'])->find($request->get('campus_program_id'));
 
-
-
-return 1;
-
         $qualifies = false;
 
         $programs = [];
