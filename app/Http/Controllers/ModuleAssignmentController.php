@@ -1849,6 +1849,7 @@ class ModuleAssignmentController extends Controller
                                                              ->first();
 
                             $supp_upload_allowed = false;
+                            return $semester_remark->remark;
                             if($semester_remark){
                                 // if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONE EXAM'){
                                 if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
@@ -1935,7 +1936,7 @@ class ModuleAssignmentController extends Controller
                             $result->final_uploaded_at = now();
                             $result->uploaded_by_user_id = Auth::user()->id;
 
-                            if($upload_allowed){
+                            if($supp_upload_allowed && $upload_allowed){
                                 return 2;
                                 $result->save();
                             }
