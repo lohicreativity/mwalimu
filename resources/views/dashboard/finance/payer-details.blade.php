@@ -344,15 +344,7 @@
 											   </td>
 											   <td>
 												@if ($payments->gatewayPayment)
-													@if (str_contains($payments->feeType->name,'Tuition'))
-														@foreach ($total_paid_fee as $tuition_fee)
-															@if ($tuition_fee['reference_no'] == $payments->reference_no)
-																{{ number_format($tuition_fee['amount']+=$tuition_fee['amount'],2) }}	
-															@endif
-														@endforeach
-													@else
-														{{ number_format($payments->gatewayPayment->paid_amount,2) }}
-													@endif
+56
 												@else
 													0.00	
 												@endif
