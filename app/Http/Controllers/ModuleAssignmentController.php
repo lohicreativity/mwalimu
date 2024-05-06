@@ -959,6 +959,13 @@ class ModuleAssignmentController extends Controller
                                          ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                          ->where('status','APPROVED')
                                          ->get();
+                                         return ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                         ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                         ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                         ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
+                                         ->whereNull('retakable_type')
+                                         ->whereIn('student_id',$special_cases->student_id)
+                                         ->get();
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -976,7 +983,7 @@ class ModuleAssignmentController extends Controller
                                             ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
-            return 1;
+
             return view('dashboard.academic.reports.students-with-special',$data);
 
         }catch(\Exception $e){
