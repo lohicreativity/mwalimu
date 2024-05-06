@@ -188,19 +188,7 @@
 												@endif
 								
 											   <td @if($number_of_receipts > 1) title="@foreach($paid_receipts as $receipt) @if($receipt->bill_id == $payments->reference_no)TZS {{number_format($receipt->paid_amount,2) }} paid on {{ date('Y-m-d',strtotime($receipt->created_at))}}&#10; @endif @endforeach" @endif> 
-												@if ($payments->gatewayPayment)
-													@if (str_contains($payments->feeType->name,'Tuition'))
-														@foreach($total_paid_fee as $fee)
-															@if($payments->reference_no == $fee['reference_no'])
-																{{ number_format($fee['amount'],2) }}
-															@endif
-														@endforeach
-													@else
-														{{ number_format($payments->gatewayPayment->paid_amount,2) }} 
-													@endif
-												@else
-													0.00 													
-												@endif
+
 		
 											   </td>
 											   <td>
@@ -343,7 +331,20 @@
 												@endif
 											   </td>
 											   <td>
-
+												@if ($payments->gatewayPayment)
+													@if (str_contains($payments->feeType->name,'Tuition'))
+														@foreach ($total_paid_fee as $tuition_fee)
+															@if ($tuition_fee['reference_no'] == $payments->reference_no)
+																{{ number_format($tuition_fee['amount'],2) }}
+																@break	
+															@endif
+														@endforeach
+													@else
+														{{ number_format($payments->gatewayPayment->paid_amount,2) }}
+													@endif
+												@else
+													0.00	
+												@endif
 											   </td>
 											   <td>
 												@if($payments->gatewayPayment)
