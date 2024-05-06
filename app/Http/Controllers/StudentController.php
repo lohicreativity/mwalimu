@@ -507,7 +507,7 @@ class StudentController extends Controller
                                       ->count();
         $special_exams = SpecialExam::where('student_id',$student->id)
                                     ->where('type','FINAL')
-                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                    ->where('study_academic_year_id',$$ac_yr_id)
                                     ->where('status','APPROVED')
                                     ->get();
          $data = [

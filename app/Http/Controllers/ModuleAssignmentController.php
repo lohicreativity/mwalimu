@@ -1911,16 +1911,6 @@ class ModuleAssignmentController extends Controller
                                 $result = new ExaminationResult;
                             }
 
-                            // if($result->student_id == 4843){
-                            //     return $module_assignment->id.'-'.$request->get('study_academic_year_id').'-'.$module_assignment->programModuleAssignment->semester_id;
-                            //     return SpecialExam::where('student_id',$student->id)
-                            //     ->where('module_assignment_id',$module_assignment->id)
-                            //     ->where('type','FINAL')
-                            //     ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                            //     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                            //     ->where('status','APPROVED')
-                            //     ->first();
-                            // }
                             $result->module_assignment_id = $request->get('module_assignment_id');
                             $result->student_id = $student->id;
                             if($final_special_exam || $sup_special_exam){
