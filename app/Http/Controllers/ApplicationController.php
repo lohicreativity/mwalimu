@@ -9688,7 +9688,12 @@ class ApplicationController extends Controller
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
 
-		$dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)->where('intake',$intake)->get();
+        if($intake == 'March'){
+		    $dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id + 1)->where('campus_id',$applicant->campus_id)->where('intake',$intake)->get();
+        }else{
+            $dates = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->where('campus_id',$applicant->campus_id)->where('intake',$intake)->get();
+        }
+
 return $dates;
         $reg_date = null;
         foreach($dates as $date){
