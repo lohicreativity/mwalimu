@@ -1936,10 +1936,8 @@ class ModuleAssignmentController extends Controller
                             $result->uploaded_by_user_id = Auth::user()->id;
 
                             if($supp_upload_allowed && $upload_allowed){
-                                return 2;
                                 $result->save();
                             }
-return 3;
                             // $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                             //                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                             //                                  ->where('student_id',$student->id)
