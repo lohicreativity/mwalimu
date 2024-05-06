@@ -313,11 +313,9 @@ class StaffController extends Controller
                 }
 
                 foreach($paid_as_student as $payment){
-                    if(count($payment) > 1){
+
                         $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
-                    }else{
-                        $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->get('paid_amount'));
-                    }
+
                 }
             }
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
