@@ -1935,7 +1935,7 @@ class ModuleAssignmentController extends Controller
                             $result->final_uploaded_at = now();
                             $result->uploaded_by_user_id = Auth::user()->id;
 
-                            if($supp_upload_allowed){
+                            if($upload_allowed){
                                 return 2;
                                 $result->save();
                             }
