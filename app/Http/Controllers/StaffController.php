@@ -311,10 +311,11 @@ class StaffController extends Controller
                 foreach($paid_as_student as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
-                return $reference_no;
+
                 foreach($paid_as_student as $payment){
                     if(str_contains($payment->feeType->name, 'Tuition')){
                         $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
+                        break;
                     }
                 }
             }
