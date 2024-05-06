@@ -950,14 +950,7 @@ class ModuleAssignmentController extends Controller
                     $department = $dpt;
                 }
             }
-return SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-->where('module_assignment_id',$module_assignment->id)
-->where('type','FINAL')
-->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-->where('status','APPROVED')
-->get();
+
             $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                          ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
                                          ->where('module_assignment_id',$module_assignment->id)
@@ -971,7 +964,7 @@ return SpecialExam::whereHas('student.studentshipStatus',function($query){$query
                                          ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)
                                          ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
                                          ->whereNull('retakable_type')
-                                         ->whereIn('student_id',$special_cases->student_id)
+                                         ->whereIn('student_id',[$special_cases->student_id])
                                          ->get();
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
