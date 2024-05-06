@@ -297,6 +297,7 @@ class StaffController extends Controller
             $reference_no = [];
             $total_fee_paid_amount = [];
             if(!empty($applicant_payer) && count($paid_as_applicant) > 0){
+                return 1;
                 foreach($paid_as_applicant as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
@@ -308,6 +309,7 @@ class StaffController extends Controller
                 }
 
             }elseif(!empty($student_payer) && count($paid_as_student) > 0){
+                return 2;
                 foreach($paid_as_student as $invoice){
                     $reference_no[] = $invoice->reference_no;
                 }
