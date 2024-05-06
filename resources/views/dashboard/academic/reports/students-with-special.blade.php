@@ -219,7 +219,7 @@
                           <td>{{ $result->student->surname }}, {{ $result->student->first_name }} {{ $result->student->middle_name}}</td>
                           <td>{{ $result->final_score }}</td>
                         @endif
-                      @endif
+                      @endforeach
                     </tr>
                     @endforeach
                   </table>
