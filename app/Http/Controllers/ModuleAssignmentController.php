@@ -950,7 +950,14 @@ class ModuleAssignmentController extends Controller
                     $department = $dpt;
                 }
             }
-return 1;
+return SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+->where('module_assignment_id',$module_assignment->id)
+->where('type','FINAL')
+->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+->where('status','APPROVED')
+->get();
             $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                          ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
                                          ->where('module_assignment_id',$module_assignment->id)
