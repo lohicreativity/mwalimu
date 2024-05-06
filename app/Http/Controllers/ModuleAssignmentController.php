@@ -1036,7 +1036,7 @@ class ModuleAssignmentController extends Controller
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                             ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-                                            ->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                            ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)
                                             ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
                                             ->whereNull('retakable_type')
                                             ->get(),
