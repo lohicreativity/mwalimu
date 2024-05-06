@@ -1843,6 +1843,10 @@ class ModuleAssignmentController extends Controller
                             $result->save();
 
                         }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                            return SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                            ->where('student_id',$student->id)
+                            ->first();
                             $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                              ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                              ->where('student_id',$student->id)
