@@ -1912,6 +1912,7 @@ class ModuleAssignmentController extends Controller
                             }
 
                             if($result->student_id == 4843){
+                                return $module_assignment->id.'-'.$request->get('study_academic_year_id').'-'.$module_assignment->programModuleAssignment->semester_id;
                                 return SpecialExam::where('student_id',$student->id)
                                 ->where('module_assignment_id',$module_assignment->id)
                                 ->where('type','FINAL')
