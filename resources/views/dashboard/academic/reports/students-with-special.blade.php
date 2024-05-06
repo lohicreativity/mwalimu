@@ -215,7 +215,7 @@
                       <td>{{ $key+1 }}</td>
                       <td>{{ $result->student->registration_number }}</td>
                       <td>{{ $result->student->surname }}, {{ $result->student->first_name }} {{ $result->student->middle_name}}</td>
-                      <td>{{ $result->supp_score }}</td>
+                      <td>{{ $result->final_score }}</td>
                     </tr>
                     @endforeach
                   </table>
