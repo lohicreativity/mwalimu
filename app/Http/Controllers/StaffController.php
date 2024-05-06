@@ -301,10 +301,8 @@ class StaffController extends Controller
                     $reference_no[] = $invoice->reference_no;
                 }
                 foreach($paid_as_applicant as $payment){
+                    $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
 
-                    if(str_contains($payment->feeType->name, 'Tuition')){
-                        $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
-                    }
                 }
 
             }elseif(!empty($student_payer) && count($paid_as_student) > 0){
@@ -313,8 +311,7 @@ class StaffController extends Controller
                 }
 
                 foreach($paid_as_student as $payment){
-
-                        $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
+                    $total_fee_paid_amount[] = array('reference_no'=>$payment->reference_no, 'amount'=>GatewayPayment::where('bill_id', $payment->reference_no)->sum('paid_amount'));
 
                 }
             }
