@@ -1849,7 +1849,6 @@ class ModuleAssignmentController extends Controller
                                                              ->first();
 
                             $supp_upload_allowed = false;
-                            return $semester_remark->remark;
                             if($semester_remark){
                                 // if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONE EXAM'){
                                 if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
