@@ -210,12 +210,16 @@
                       <td class="ss-bold">NAME</td>
                       <td class="ss-bold">MARKS</td>
                     </tr>
-                    @foreach($results as $key=>$result)
+                    @foreach($special_cases as $key=>$case)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $result->student->registration_number }}</td>
-                      <td>{{ $result->student->surname }}, {{ $result->student->first_name }} {{ $result->student->middle_name}}</td>
-                      <td>{{ $result->final_score }}</td>
+                      @foreach($results as $result)
+                        @if($case->student_id == $result->student_id && $case->module_assignment_id == $result->module_assignment_id)
+                          <td>{{ $result->student->registration_number }}</td>
+                          <td>{{ $result->student->surname }}, {{ $result->student->first_name }} {{ $result->student->middle_name}}</td>
+                          <td>{{ $result->final_score }}</td>
+                        @endif
+                      @endif
                     </tr>
                     @endforeach
                   </table>
