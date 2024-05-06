@@ -211,7 +211,7 @@
 														@else
 															@foreach($total_paid_fee as $fee)
 																@if($payments->reference_no == $fee['reference_no'])
-																	{{ number_format($payments->gatewayPayment->bill_amount-$fee['amount']+=$payments->gatewayPayment->bill_amount-$fee['amount'],2) }} 
+																	{{ number_format($payments->gatewayPayment->bill_amount-$fee['amount'],2) }} 
 																@endif
 															@endforeach
 														@endif
@@ -343,11 +343,7 @@
 												@endif
 											   </td>
 											   <td>
-												@if ($payments->gatewayPayment)
-56
-												@else
-													0.00	
-												@endif
+
 											   </td>
 											   <td>
 												@if($payments->gatewayPayment)
