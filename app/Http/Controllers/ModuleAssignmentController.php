@@ -976,6 +976,7 @@ class ModuleAssignmentController extends Controller
                                             ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
+            return 1;
             return view('dashboard.academic.reports.students-with-special',$data);
 
         }catch(\Exception $e){
