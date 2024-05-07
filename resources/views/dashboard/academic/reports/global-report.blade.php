@@ -227,8 +227,8 @@
                 @foreach($nta_levels as $level)
                   @foreach($departments as $department)
                     <tr>
-                      @if(!Auth::user()->hasRole('hod')) @if($report[$level->name][$department->name]['total_students'] != 0) <td> {{ $department->name }} </td> @endif @endif
-                        @if($report[$level->name][$department->name]['total_students'] != 0)
+                      @if(!Auth::user()->hasRole('hod')) <td> {{ $department->name }} </td> @endif
+                        
                       <td>{{ $level->name }}</td>
                       <td>{{ $report[$level->name][$department->name]['ML']['pass_students'] }}</td>
                       <td>{{ $report[$level->name][$department->name]['FL']['pass_students'] }}</td>
@@ -239,7 +239,7 @@
                       <td>{{ $report[$level->name][$department->name]['total_fail_students'] }}</td>
                       <td>{{ $report[$level->name][$department->name]['fail_students_rate'] }}</td>
                       </tr>
-                      @endif
+
                   @endforeach
                 @endforeach
               </table>
