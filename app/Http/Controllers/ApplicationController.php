@@ -11164,7 +11164,7 @@ class ApplicationController extends Controller
         $student_invoices = Invoice::with(['feeType'])->where('payable_type','student')->where('payable_id',$student->id)->get();
 
         $usd_currency = Currency::where('code','USD')->first();
-return 100;
+
         $acpac = new ACPACService;
         $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
 
