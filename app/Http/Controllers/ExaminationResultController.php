@@ -3270,7 +3270,7 @@ class ExaminationResultController extends Controller
                               
       $nta_levels = NTALevel::all();
       foreach($nta_levels as $level){
-         return Department::pivot('campus_id',$staff->campus_id)
+         return Department::whereHas('programs.pivot',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                           ->whereHas('programs.ntaLevel',function($query) use($level){$query->where('id',$level->id);})
                           ->with(['programs.ntaLevel'])->get();
          foreach($departments as $department){
