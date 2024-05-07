@@ -3375,7 +3375,7 @@ class ExaminationResultController extends Controller
             $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
          }
       }
-      return $report[$level->name][$department->name]['fail_students_rate'];
+      return $report;
       $data = [
          'report'=>$report,
          'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
