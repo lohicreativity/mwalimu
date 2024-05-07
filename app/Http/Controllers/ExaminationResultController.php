@@ -3271,7 +3271,6 @@ class ExaminationResultController extends Controller
       $nta_levels = NTALevel::all();
       foreach($nta_levels as $level){
          foreach($departments as $department){
-            return $level;
             // $report[$level->name]['departments'][] = $department;
             // $report[$level->name][$department->name]['programs'] = [];
             $report[$level->name][$department->name]['ML']['pass_students'] = 0;
