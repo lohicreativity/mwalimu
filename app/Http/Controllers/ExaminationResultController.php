@@ -3259,7 +3259,7 @@ class ExaminationResultController extends Controller
          $departments = Department::where('id',$staff->department_id)
                                   ->whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
                                   ->with(['programs.ntaLevel'])->get();    
-      }elseif(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('hod-examination-officer') || Auth::user()->hasRole('arc')){
+      }elseif(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('hod-examination') || Auth::user()->hasRole('arc')){
          $departments = Department::whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
                                   ->with(['programs.ntaLevel'])->get();
       }elseif(Auth::user()->hasRole('administrator')){
