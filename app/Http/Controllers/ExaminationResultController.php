@@ -3306,7 +3306,7 @@ class ExaminationResultController extends Controller
                                     ->first();
             if($module_assignment){
 
-               $students = Student::select('id','gender')
+               $students = Student::select('id','gender','campus_program_id')
                                  ->whereHas('semesterRemarks',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                  ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
                                  ->with('semesterRemarks')
