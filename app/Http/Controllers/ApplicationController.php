@@ -11134,8 +11134,14 @@ class ApplicationController extends Controller
         
         }
 
-        $reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->first();
-        $stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id)->first();
+        if($intake == 'March'){
+            $reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id + 1)->where('semester_id',$semester->id)->where('year_of_study',1)->first();
+            $stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id + 1)->first();
+        }else{
+            $reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->first();
+            $stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id)->first();
+        }
+
         if($stream){
             $reg->stream_id = $stream->id;
             $group = Group::where('stream_id',$stream->id)->first();
@@ -11158,7 +11164,7 @@ class ApplicationController extends Controller
         $student_invoices = Invoice::with(['feeType'])->where('payable_type','student')->where('payable_id',$student->id)->get();
 
         $usd_currency = Currency::where('code','USD')->first();
-
+return 100;
         $acpac = new ACPACService;
         $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
 
