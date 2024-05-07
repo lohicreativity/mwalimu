@@ -3298,17 +3298,17 @@ class ExaminationResultController extends Controller
                
                
       
-
+            $campus_program = CampusProgram::where('program_id',$program->id)->where('campus_id',$staff->campus_id)->first();
             $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
                                     ->whereHas('programModuleAssignment.campusProgram.program',function($query) use($program){$query->where('id',$program->id);})
                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                     ->with('programModuleAssignment.campusProgram:id')
                                     ->first();
-            if($module_assignment){
+            if(!empty($campus_program)){
 
                $students = Student::select('id','gender','campus_program_id')
                                  ->whereHas('semesterRemarks',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));})
-                                 ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
+                                 ->where('campus_program_id',$campus_program->id)
                                  ->with('semesterRemarks')
                                  ->get();
 
