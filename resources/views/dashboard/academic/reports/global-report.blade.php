@@ -239,6 +239,7 @@
                       <td>{{ $report[$level->name][$department->name]['total_fail_students'] }}</td>
                       <td>{{ $report[$level->name][$department->name]['fail_students_rate'] }}</td>
                       </tr>
+                      @endif
                   @endforeach
                 @endforeach
               </table>
