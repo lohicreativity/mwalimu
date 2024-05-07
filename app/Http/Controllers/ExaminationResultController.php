@@ -3272,6 +3272,8 @@ class ExaminationResultController extends Controller
       foreach($nta_levels as $level){
          $departmentss = Department::whereHas('programs.ntaLevel',function($query) use($level){$query->where('id',$level->id);})
                           ->with(['programs.ntaLevel'])->get();
+
+                          $report[$level->name]['total_students'] = 0;
          foreach($departmentss as $department){
             // $report[$level->name]['departments'][] = $department;
             // $report[$level->name][$department->name]['programs'] = [];
