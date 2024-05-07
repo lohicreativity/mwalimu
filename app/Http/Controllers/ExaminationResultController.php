@@ -3255,19 +3255,19 @@ class ExaminationResultController extends Controller
       $report = [];
       $staff = User::find(Auth::user()->id)->staff;
       
-      if(Auth::user()->hasRole('hod')){
-         $departments = Department::where('id',$staff->department_id)
-                                  ->whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
-                                  ->with(['programs.ntaLevel'])->get();    
-      }elseif(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('hod-examination') || Auth::user()->hasRole('arc')){
-         $departments = Department::whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
-                                  ->with(['programs.ntaLevel'])->get();
-      }elseif(Auth::user()->hasRole('administrator')){
-         $departments = Department::with(['programs.ntaLevel'])->get();
-      }else{
-         return redirect()->back()->with('error','You do not enough privileges to perform the task.');
-      }
-                              
+      // if(Auth::user()->hasRole('hod')){
+      //    $departments = Department::where('id',$staff->department_id)
+      //                             ->whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
+      //                             ->with(['programs.ntaLevel'])->get();    
+      // }elseif(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('hod-examination') || Auth::user()->hasRole('arc')){
+      //    $departments = Department::whereHas('campuses',function($query) use($staff){$query->where('id',$staff->campus_id);})
+      //                             ->with(['programs.ntaLevel'])->get();
+      // }elseif(Auth::user()->hasRole('administrator')){
+      //    $departments = Department::with(['programs.ntaLevel'])->get();
+      // }else{
+      //    return redirect()->back()->with('error','You do not enough privileges to perform the task.');
+      // }
+         $departments = null;                    
       $nta_levels = NTALevel::all();
       foreach($nta_levels as $level){
          $departments = Department::whereHas('programs.ntaLevel',function($query) use($level){$query->where('id',$level->id);})
@@ -3314,7 +3314,7 @@ class ExaminationResultController extends Controller
                                        ->where('campus_program_id',$campus_program->id)
                                        ->with('semesterRemarks')
                                        ->get();
-return count($students);
+
                      //$students_semester_remarks = SemesterRemark::select('remark')->whereIn('student_id',$students->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'));
 
                      // $module_assignments = [];
