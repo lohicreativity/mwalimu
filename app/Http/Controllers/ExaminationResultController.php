@@ -3284,7 +3284,7 @@ class ExaminationResultController extends Controller
             $report[$level->name][$department->name]['fail_students_rate'] = 0;
             $report[$level->name][$department->name]['total_fail_students'] = 0;
             $report[$level->name][$department->name]['total_students'] = 0;
-return $department->programs;
+
             foreach($department->programs as $program){
                if($program->nta_level_id == $level->id && $program->pivot->campus_id == $staff->campus_id){
                   //$report[$level->name][$department->name]['programs'][] = $program->name;
@@ -3366,6 +3366,8 @@ return $department->programs;
                      $report[$level->name][$department->name]['FL']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'];
                      $report[$level->name][$department->name]['total_students'] +=$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
                   }                
+               }else{
+                  continue;
                }
             }
             $report[$level->name][$department->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
