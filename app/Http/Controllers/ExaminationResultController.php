@@ -3270,9 +3270,9 @@ class ExaminationResultController extends Controller
                               
       $nta_levels = NTALevel::all();
       foreach($nta_levels as $level){
-         $departments = Department::whereHas('programs.ntaLevel',function($query) use($level){$query->where('id',$level->id);})
+         $departmentss = Department::whereHas('programs.ntaLevel',function($query) use($level){$query->where('id',$level->id);})
                           ->with(['programs.ntaLevel'])->get();
-         foreach($departments as $department){
+         foreach($departmentss as $department){
             // $report[$level->name]['departments'][] = $department;
             // $report[$level->name][$department->name]['programs'] = [];
             $report[$level->name][$department->name]['ML']['pass_students'] = 0;
@@ -3375,6 +3375,7 @@ class ExaminationResultController extends Controller
             $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
          }
       }
+      return $report[$level->name][$department->name]['fail_students_rate'];
       $data = [
          'report'=>$report,
          'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
