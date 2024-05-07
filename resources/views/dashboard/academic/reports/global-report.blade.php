@@ -228,7 +228,7 @@
                   @foreach($departments as $department)
                     <tr>
                       @if(!Auth::user()->hasRole('hod'))<td>{{ $department->name }}</td> @endif
-                    
+                        @if($report[$level->name][$department->name]['total_pass_students'] != 0 && $report[$level->name][$department->name]['total_fail_students'] != 0)
                       <td>{{ $level->name }}</td>
                       <td>{{ $report[$level->name][$department->name]['ML']['pass_students'] }}</td>
                       <td>{{ $report[$level->name][$department->name]['FL']['pass_students'] }}</td>
