@@ -3365,11 +3365,6 @@ class ExaminationResultController extends Controller
                      //} 
                   }                
                }
-               $report[$level->name][$department->name]['ML']['pass_students'] += $report[$level->name][$department->name][$program->name]['ML']['pass_students'];
-               $report[$level->name][$department->name]['FL']['pass_students'] += $report[$level->name][$department->name][$program->name]['FL']['pass_students'];
-               $report[$level->name][$department->name]['ML']['fail_students'] += $report[$level->name][$department->name][$program->name]['ML']['fail_students'];
-               $report[$level->name][$department->name]['FL']['fail_students'] += $report[$level->name][$department->name][$program->name]['FL']['fail_students'];
-               $report[$level->name][$department->name]['total_students'] +=$report[$level->name][$department->name][$program->name]['total_students'];
             }
             // $report[$level->name]['ML']['pass_students'] += $report[$level->name][$department->name]['ML']['pass_students'];
             // $report[$level->name]['FL']['pass_students'] += $report[$level->name][$department->name]['FL']['pass_students'];
