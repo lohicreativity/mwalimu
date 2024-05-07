@@ -3361,21 +3361,26 @@ class ExaminationResultController extends Controller
                         }
                      }  
                      //} 
-                     $report[$level->name][$department->name]['ML']['pass_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['pass_students'];
-                     $report[$level->name][$department->name]['FL']['pass_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['pass_students'];
-                     $report[$level->name][$department->name]['ML']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['ML']['fail_students'];
-                     $report[$level->name][$department->name]['FL']['fail_students'] += $report[$program->ntaLevel->name][$department->name][$program->name]['FL']['fail_students'];
-                     $report[$level->name][$department->name]['total_students'] +=$report[$program->ntaLevel->name][$department->name][$program->name]['total_students'];
+                     $report[$level->name][$department->name]['ML']['pass_students'] += $report[$level->name][$department->name][$program->name]['ML']['pass_students'];
+                     $report[$level->name][$department->name]['FL']['pass_students'] += $report[$level->name][$department->name][$program->name]['FL']['pass_students'];
+                     $report[$level->name][$department->name]['ML']['fail_students'] += $report[$level->name][$department->name][$program->name]['ML']['fail_students'];
+                     $report[$level->name][$department->name]['FL']['fail_students'] += $report[$level->name][$department->name][$program->name]['FL']['fail_students'];
+                     $report[$level->name][$department->name]['total_students'] +=$report[$level->name][$department->name][$program->name]['total_students'];
                   }                
                }
             }
-            $report[$level->name][$department->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
-            $report[$level->name][$department->name]['total_fail_students'] = $report[$level->name][$department->name]['ML']['fail_students'] + $report[$level->name][$department->name]['FL']['fail_students'];
-            $report[$level->name][$department->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
-            $report[$level->name][$department->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
+            $report[$level->name]['ML']['pass_students'] += $report[$level->name][$department->name]['ML']['pass_students'];
+            $report[$level->name]['FL']['pass_students'] += $report[$level->name][$department->name]['FL']['pass_students'];
+            $report[$level->name]['ML']['fail_students'] += $report[$level->name][$department->name]['ML']['fail_students'];
+            $report[$level->name]['FL']['fail_students'] += $report[$level->name][$department->name]['FL']['fail_students'];
+            $report[$level->name]['total_students'] += $report[$level->name][$department->name]['total_students'];
+            $report[$level->name]['total_pass_students'] = $report[$level->name][$department->name]['ML']['pass_students'] + $report[$level->name][$department->name]['FL']['pass_students'];
+            $report[$level->name]['total_fail_students'] = $report[$level->name][$department->name]['ML']['fail_students'] + $report[$level->name][$department->name]['FL']['fail_students'];
+            $report[$level->name]['pass_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_pass_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
+            $report[$level->name]['fail_students_rate'] =  $report[$level->name][$department->name]['total_students']>0? round($report[$level->name][$department->name]['total_fail_students']*100/$report[$level->name][$department->name]['total_students'],2) : 0;
          }
       }
-      return $report['NTA Level 4'];
+      // return $report['NTA Level 4'];
       $data = [
          'report'=>$report,
          'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
