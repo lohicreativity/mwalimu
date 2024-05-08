@@ -870,7 +870,7 @@ class ExaminationResultController extends Controller
                                 ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                 ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                 ->where('type',$request->get('exam_type'))
-                                ->where('status','PUBLISHED')->count() != 0 && !Auth::user()->hasRole('hod-examination')){
+                                ->where('status','PUBLISHED')->count() != 0 && !Auth::user()->hasRole('hod-examination') && !Auth::user()->hasRole('hod')){
                return redirect()->back()->with('error','Cannot edit published results. Please contact the Head of Examination Office');                 
             }
    
