@@ -1905,14 +1905,14 @@ class ExaminationResultController extends Controller
          $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
          $module = Module::with('ntaLevel')->find($module_assignment->module_id);
 
-         if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
-                             ->where('campus_id',$staff->campus_id)
-                             ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
-                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                             ->where('type',$request->get('exam_type'))
-                             ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod-examination')){
-            return redirect()->back()->with('error','Cannot edit published results. Please contact Examination Office');                 
-         }
+         // if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
+         //                     ->where('campus_id',$staff->campus_id)
+         //                     ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+         //                     ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+         //                     ->where('type',$request->get('exam_type'))
+         //                     ->where('status','PUBLISHED') && !Auth::user()->hasRole('hod-examination')){
+         //    return redirect()->back()->with('error','Cannot edit published results. Please contact Examination Office');                 
+         // }
 
          if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
                               ->where('campus_id',$staff->campus_id)
