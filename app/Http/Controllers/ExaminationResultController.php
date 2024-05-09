@@ -430,7 +430,7 @@ class ExaminationResultController extends Controller
                      $student_results_for_gpa_computation[] =  $processed_result;
                   }
                }
-   return 17;
+   
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = [];
                foreach($student_results as $result){
@@ -476,7 +476,7 @@ class ExaminationResultController extends Controller
                         $supp_exams[] = $result->moduleAssignment->module->code;
                   }   
                }
-   
+   return 18;
                $remark->study_academic_year_id = $request->get('study_academic_year_id');
                $remark->student_id = $student->id;
                $remark->semester_id = $request->get('semester_id');
