@@ -626,6 +626,12 @@ class StudentController extends Controller
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();
 
+        $special_exams = SpecialExam::where('student_id',$student->id)
+                                    ->where('type','FINAL')
+                                    ->where('study_academic_year_id',$ac_yr_id)
+                                    ->where('status','APPROVED')
+                                    ->get();
+
          $data = [
           'semesters'=>$semesters,
           'annual_remark'=>$annual_remark,
@@ -638,6 +644,7 @@ class StudentController extends Controller
           'student'=>$student,
           'publications'=>$publications,
           'loan_status'=>$loan_status,
+          'special_exams'=>$special_exams
           
          ];
          return view('dashboard.student.examination-results-overall-report',$data)->withTitle('Student Overall Results');
