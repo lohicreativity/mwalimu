@@ -47,7 +47,7 @@
               <div class="card-body">
 
                 <div class="row">
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','Select Academic Year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                       <option value="">Select Academic Year</option>
@@ -57,7 +57,7 @@
                     </select>
                   </div>
 
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','Semester') !!}
                     <select name="semester_id" class="form-control" required>
                       <option value="">Select Semester</option>
@@ -76,7 +76,7 @@
                     </select>
                   </div>
 
-                  <div class="form-group col-6">
+                  <div class="form-group col-3">
                     {!! Form::label('','Intake') !!}
                     <select name="intake_id" class="form-control" required>
                       <option value="">Select Intake</option>
@@ -86,7 +86,7 @@
                     </select>
                   </div>
 
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}
                     <select name="program_level_id" class="form-control" required>
                     <option value="">Select Program Level</option>
