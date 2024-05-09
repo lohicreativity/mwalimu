@@ -882,7 +882,7 @@
               @endcan
               @can('view-global-report')
               <li class="nav-item">
-                <a href="{{ url('academic/results/show-submit-examination-results') }}" class="nav-link">
+                <a href="{{ url('academic/results/submit-examination-results') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Submit Results') }}</p>
                 </a>
