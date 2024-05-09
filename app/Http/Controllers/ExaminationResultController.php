@@ -126,7 +126,6 @@ class ExaminationResultController extends Controller
       // }
       DB::beginTransaction();
       $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
-      $optional_modules = [];
       $semester = Semester::find($request->get('semester_id'));
       $year_of_study = $assignment_id = null;
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
@@ -217,7 +216,7 @@ class ExaminationResultController extends Controller
                }
             }
          }
-
+return count($optional_modules);
          if($no_of_optional_modules > 0){
             $elective_policy = ElectivePolicy::select('number_of_options')
                                              ->where('campus_program_id',$campus_program->id)
