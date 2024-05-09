@@ -373,7 +373,7 @@ class ExaminationResultController extends Controller
                         }
    
                         if($processed_result->final_exam_remark == 'RETAKE'){
-                           if($retake = RetakeHistory::where('id',$processed_result->retakable_id)->where('retakable_type','retake_history')->first()){
+                           if($retake = RetakeHistory::where('id',$processed_result->retakable_id)->first()){
                               $history = $retake;
                            }else{
                               $history = new RetakeHistory;
@@ -391,7 +391,7 @@ class ExaminationResultController extends Controller
                         }
    
                         if($processed_result->final_exam_remark == 'CARRY'){
-                           if($carry = CarryHistory::where('id',$processed_result->retakable_id)->where('retakable_type','carry_history')->first()){
+                           if($carry = CarryHistory::where('id',$processed_result->retakable_id)->first()){
                               $history = $carry;
                            }else{
                               $history = new CarryHistory;
