@@ -428,9 +428,9 @@ class ExaminationResultController extends Controller
                   
                   if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
                      $student_results_for_gpa_computation[] =  $processed_result;
-                  } return 14;
+                  }
                }
-   
+   return 15;
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = [];
                foreach($student_results as $result){
