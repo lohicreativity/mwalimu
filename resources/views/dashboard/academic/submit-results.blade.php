@@ -69,7 +69,7 @@
                         @endif
                       @endforeach
 
-                          <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
+                          <option value="SUPPLEMENTARY">Supplementary</option>
                     </select>
                   </div>
 
