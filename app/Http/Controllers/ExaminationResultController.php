@@ -37,6 +37,7 @@ use App\Models\User;
 use App\Utils\Util;
 use Auth, DB, Validator, PDF;
 use App\Domain\Academic\Models\CourseWorkResult;
+use App\Domain\Academic\Models\Award;
 
 class ExaminationResultController extends Controller
 {
