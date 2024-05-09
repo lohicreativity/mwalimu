@@ -282,7 +282,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('results/examination-irregularities',[ExaminationIrregularityController::class,'showProgramModuleIrregularities']);
 	Route::get('results/program-module-assignment/{ac_yr_id}/{prog_id}/examination-irregularities',[ExaminationIrregularityController::class,'assignIrregularities']);
 	Route::post('results/submit-examination-results',[ExaminationResultController::class, 'submitResults']);
-	Route::get('results/submit-examination-results',[ExaminationResultController::class, 'submitResults']);
+	Route::get('results/show-submit-examination-results',[ExaminationResultController::class, 'showSubmitResults']);
 
 
 
