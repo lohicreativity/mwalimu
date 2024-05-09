@@ -114,10 +114,10 @@ class ExaminationResultController extends Controller
                                                 ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
-      if($special_exam || $postponement) {
-         $special_exam = $postponement = null;
-         return redirect()->back()->with('error','There is a pending request for special exam or postponement');
-      }
+      // if($special_exam || $postponement) {
+      //    $special_exam = $postponement = null;
+      //    return redirect()->back()->with('error','There is a pending request for special exam or postponement');
+      // }
 
       // if(ResultPublication::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
 		//   ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->where('status','PUBLISHED')->count() != 0){
