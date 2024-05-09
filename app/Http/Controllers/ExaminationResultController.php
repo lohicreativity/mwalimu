@@ -251,6 +251,7 @@ class ExaminationResultController extends Controller
                                                    ->first();
 
                if($postponement_status && $postponement_status->semester_id == 1){
+                  return 100;
                   ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                     ->where('student_id',$student->id)
                                     ->update(['retakable_id'=>null,'retable_type'=>null,'course_work_remark'=>'POSTPONED','final_remark'=>'POSTPONED','final_exam_remark'=>'POSTPONED','grade'=>null]);
@@ -265,7 +266,7 @@ class ExaminationResultController extends Controller
 
                   continue;
                }
-               
+
                $no_of_failed_modules = 0;
                $missing_cases = [];
                $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
