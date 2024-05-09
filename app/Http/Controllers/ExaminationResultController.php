@@ -247,6 +247,7 @@ class ExaminationResultController extends Controller
             }else{
                $no_of_failed_modules = 0;
                $missing_cases = [];
+               return $module_assignmentIDs;
                $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                            ->where('student_id',$student->id)
                                            ->with(['retakeHistory.retakableResults'=>function($query) use($request){$query->where('study_academic_year',$request->get('study_academic_year_id') - 1);}])
