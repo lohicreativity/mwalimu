@@ -38,194 +38,68 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
             <div class="card">
               <div class="card-header">
-                <ul class="nav nav-tabs">
-                  @can('process-examination-results')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
-                  @endcan
-                  @can('view-programme-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Programme Results') }}</a></li>
-                  @endcan
-                  @can('view-module-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Module Results') }}</a></li>
-                  @endcan
-                  @can('view-student-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('Student Results') }}</a></li>
-                  @endcan
-                  @can('view-publish-examination-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
-                  @endcan
-                  @can('view-uploaded-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules?campus_id='.session('staff_campus_id')) }}">{{ __('Uploaded Modules') }}</a></li>
-                  @endcan
-                  @can('upload-module-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
-                  @endcan
-
-                </ul>
-              </div>
-              <!-- /.card-header -->
-              @if(!session('active_academic_year_id'))
-              <div class="card-body">
-                 {!! Form::open(['url'=>'academic/results','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                   <div class="row">
-                   <div class="form-group col-6">
-                    {!! Form::label('','Select study academic year') !!}
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Study Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($year->status == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Select campus') !!}
-                    <select name="campus_id" class="form-control" required>
-                       <option value="">Select Campus</option>
-                       @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  </div>
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
-                  </div>
-
-                 {!! Form::close() !!}
-              </div>
-              @endif
-            </div>
-            <!-- /.card -->
-             
-            @if($study_academic_year && $campus)
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Process Results for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Process Results for </h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/results/process','class'=>'ss-form-processing']) !!}
               <div class="card-body">
 
                 <div class="row">
-                  <!-- <div class="form-group col-6">
-                    {!! Form::label('','Programme Level') !!}
-                    <select name="programme_level" class="form-control" required>
-                       <option value="">Select Programme Level</option>
-                       <option value="Certificate">Basic Technician Certificate</option>
-                       <option value="Diploma">Ordinary Diploma</option>
-                       <option value="Bachelor">Bachelor Degree</option>
-                       <option value="Masters">Masters Degree</option>
-                    </select>
-                  </div> -->
-
-                  <div class="form-group col-6">
-                    {!! Form::label('','Programme') !!}
-                    <select name="campus_program_id" class="form-control" required>
-                       <option value="">Select Programme</option>
-                       @foreach($campus_programs as $program)
-                        @if(Auth::user()->hasRole('hod-examination'))
-                          @for($i = 1; $i <= $program->program->min_duration; $i++)
-                            <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
-                          @endfor
-                        @else
-                          @if(App\Utils\Util::collectionContainsKey($program->program->departments,$staff->department_id))
-                          @for($i = 1; $i <= $program->program->min_duration; $i++)
-                          <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
-                          @endfor
-                          @endif
-                        @endif
-                       @endforeach
+                  <div class="form-group col-4">
+                    {!! Form::label('','Select Academic Year') !!}
+                    <select name="study_academic_year_id" class="form-control" required>
+                      <option value="">Select Academic Year</option>
+                      @foreach($study_academic_years as $year)
+                        <option value="{{ $year->id }}" @if($year->status == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                      @endforeach
                     </select>
                   </div>
-                </div>
 
-                <!-- <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('','Year Of Study') !!}
-                    <select name="semester_id" class="form-control" required>
-                      <option value="">Select Semester</option>
-                  </div>
-                </div> -->
-                   
-                 
-                <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','Semester') !!}
                     <select name="semester_id" class="form-control" required>
-                       <option value="">Select Semester</option>
-                       @foreach($semesters as $semester)
-                       @if($active_semester) 
-                        @if($active_semester->id == $semester->id) 
-                       <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
-                       @endif
-                       @endif
-                       @endforeach
-                       @if($active_semester) 
+                      <option value="">Select Semester</option>
+                      @foreach($semesters as $semester)
+                        @if($active_semester) 
+                          @if($active_semester->id == $semester->id) 
+                            <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
+                          @endif
+                        @endif
+                      @endforeach
+                      @if($active_semester) 
                         @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2') && $second_semester_publish_status)
-                       <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
-                       @endif
-                       @endif
+                          <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
+                        @endif
+                      @endif
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                   </div>
-                  </div>
-                <div class="row">
+
                   <div class="form-group col-6">
-                     {!! Form::label('','Intake') !!}
-                     <select name="intake_id" class="form-control" required>
-                       <option value="">Select Intake</option>
-                       @foreach($intakes as $intake)
-                       <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
-                       @endforeach
-                     </select>
+                    {!! Form::label('','Intake') !!}
+                    <select name="intake_id" class="form-control" required>
+                      <option value="">Select Intake</option>
+                      @foreach($intakes as $intake)
+                      <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-4">
+                    {!! Form::label('','Programme') !!}
+                    <select name="program_level_id" class="form-control" required>
+                    <option value="">Select Program Level</option>
+                      @foreach($awards as $award)
+                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                          <option value="{{ $award->id }}">{{ $award->name }}</option>
+                        @endif
+                      @endforeach
+                    </select>
                   </div>
                 </div>
-              </div>
-               <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Process Results') }}</button>
-                </div>
-              {!! Form::close() !!}
-             </div>
-            @endif
-
-             @if(count($process_records) != 0)
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Results Process Records') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
-                  <thead>
-                  <tr>
-                    <th>SN</th>
-                    <th>Programme</th>
-                    <th>Semester</th>
-                    <th>Year</th>
-                    <th>Date</th>
-                 </tr>
-               </thead>
-               <tbody>
-                  @foreach($process_records as $key=>$record)
-                  <tr>
-                     <td>{{ ($key+1) }}</td>
-                     <td>{{ $record->campusProgram->program->name }}</td>
-                     <td>@if($record->semester) {{ $record->semester->name }} @else Supplementary @endif</td>
-                     <td>{{ $record->year_of_study }}</td>
-                     <td>{{ $record->created_at }}</td>
-                  </tr>
-                  @endforeach
-               </tbody>
-              </table>
-
-            </div>
-          </div>
-          @endif
           </div>
           <!-- /.col -->
         </div>

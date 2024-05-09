@@ -4123,104 +4123,143 @@ class ExaminationResultController extends Controller
 
     public function submitResults(Request $request)
     {
-      $intake = Intake::findOrFail($request->get('intake_id'));
-      $ac_year = AcademicYear::findOrFail($request->get('study_academic_year_id'));
-      $semester = Semester::findOrFail($request->get('semester_id'));
+      $first_semester_publish_status = $second_semester_publish_status = false;
+      if(!empty($request->get('study_academic_year_id'))){
+         if(!Auth::user()->hasRole('hod-examination')){
+            return redirect()->back()->with('error','Results can only be submitted by Head of Examination.');      
+         }
 
-      if(ResultPublication::where('nta_level_id',$request->get('program_level_id'))
-                          ->where('study_academic_year_id',$ac_year->id)
-                          ->where('semester_id',$semester->id)
-                          ->where('status','PUBLISHED')
-                          ->count() == 0){
-         return redirect()->back()->with('message','You cannot submit unpublished results.');
-      }
+         if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%1%');})
+                             ->where('status','PUBLISHED')
+                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                             ->count() != 0){
+            $first_semester_publish_status = true;
+         }
+         $second_semester_publish_status = false;
+         if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%2%');})
+                              ->where('status','PUBLISHED')
+                              ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                              ->count() != 0){
+               $second_semester_publish_status = true;
+         }
 
-      $staff = User::find(Auth::user()->id)->staff;
-
-      if($staff->campus_id == 1){
-         $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
-         $nactvet_token = config('constants.NACTE_API_SECRET_KIVUKONI');
-
-      }elseif($staff->campus_id == 2){
-         $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
-         $nactvet_token = config('constants.NACTE_API_SECRET_KARUME');
-
-      }elseif($staff->campus_id == 3){
-         $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
-         $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
-      }
-
-      $students = Student::select('id','campus_program_id','year_of_study','registration_number')
-                         ->whereHas('applicant',function($query) use($staff,$intake,$request){$query->where('campus_id',$staff->campus_id)->where('intake_id',$intake->id)->where('program_level_id',$request->get('program_level_id'));})
-                         ->whereHas('semesterRemarks',function($query) use($ac_year,$semester){$query->where('remark','PASS')->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id);})
-                         ->get();
-      
-      if(count($students) == 0){
-         return redirect()->back()->with('message','No pass results in semester '.$semester->name.' of '.$ac_year->year.' academic year.');
-      }
-
-      $campus_program = CampusProgram::findOrFail($students[0]->campus_program_id);
-      $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($students,$ac_year,$semester){$query->where('campus_program_id',$students[0]->campus_program_id)
-                                                                                                                                          ->where('year_of_study',$students[0]->year_of_study)
-                                                                                                                                          ->where('study_academic_year_id',$ac_year->id)
-                                                                                                                                          ->where('semester_id',$semester->id);})
-                                            ->get('id');
-      $module_assignmentIDs = [];
-      foreach($module_assignments as $assignment){
-         $module_assignmentIDs = $assignment->id;
-      }
-
-      //API URL
-      $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/examsnta';
-
-      $ch = curl_init($url);
-
-      $year = explode('/',$ac_year->year);
-      foreach($students as $student){
-         $results = ExaminationResult::where('student_id',$student->id)->whereIn('module_assignment_id',$module_assignmentIDs)->get();
-
-         $data = array(
-             'heading' => array(
-                 'authorization' => $nactvet_authorization_key,   
-                 'programme_id' => $campus_program->regulator_code,
-                 'level' => strval($request->get('program_level_id')),
-                 'academic_year' => explode('/',$ac_year->year)[1],
-                 'intake' => strtoupper($intake->name),
-                 'attendance' => '0.7',
-                 'upload_user' => strtoupper($staff->first_name.' '.$staff->surname)
+         $intake = Intake::findOrFail($request->get('intake_id'));
+         $ac_year = AcademicYear::findOrFail($request->get('study_academic_year_id'));
+         $semester = Semester::findOrFail($request->get('semester_id'));
+   
+         if(ResultPublication::where('nta_level_id',$request->get('program_level_id'))
+                             ->where('study_academic_year_id',$ac_year->id)
+                             ->where('semester_id',$semester->id)
+                             ->where('status','PUBLISHED')
+                             ->count() == 0){
+            return redirect()->back()->with('message','You cannot submit unpublished results.');
+         }
+   
+         $staff = User::find(Auth::user()->id)->staff;
+   
+         if($staff->campus_id == 1){
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
+            $nactvet_token = config('constants.NACTE_API_SECRET_KIVUKONI');
+   
+         }elseif($staff->campus_id == 2){
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
+            $nactvet_token = config('constants.NACTE_API_SECRET_KARUME');
+   
+         }elseif($staff->campus_id == 3){
+            $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
+            $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
+         }
+   
+         $students = Student::select('id','campus_program_id','year_of_study','registration_number')
+                            ->whereHas('applicant',function($query) use($staff,$intake,$request){$query->where('campus_id',$staff->campus_id)->where('intake_id',$intake->id)->where('program_level_id',$request->get('program_level_id'));})
+                            ->whereHas('semesterRemarks',function($query) use($ac_year,$semester){$query->where('remark','PASS')->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id);})
+                            ->get();
+         
+         if(count($students) == 0){
+            return redirect()->back()->with('message','No pass results in semester '.$semester->name.' of '.$ac_year->year.' academic year.');
+         }
+   
+         $campus_program = CampusProgram::findOrFail($students[0]->campus_program_id);
+         $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($students,$ac_year,$semester){$query->where('campus_program_id',$students[0]->campus_program_id)
+                                                                                                                                             ->where('year_of_study',$students[0]->year_of_study)
+                                                                                                                                             ->where('study_academic_year_id',$ac_year->id)
+                                                                                                                                             ->where('semester_id',$semester->id);})
+                                               ->get('id');
+         $module_assignmentIDs = [];
+         foreach($module_assignments as $assignment){
+            $module_assignmentIDs = $assignment->id;
+         }
+   
+         //API URL
+         $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/examsnta';
+   
+         $ch = curl_init($url);
+   
+         $year = explode('/',$ac_year->year);
+         foreach($students as $student){
+            $results = ExaminationResult::where('student_id',$student->id)->whereIn('module_assignment_id',$module_assignmentIDs)->get();
+   
+            $data = array(
+                'heading' => array(
+                    'authorization' => $nactvet_authorization_key,   
+                    'programme_id' => $campus_program->regulator_code,
+                    'level' => strval($request->get('program_level_id')),
+                    'academic_year' => explode('/',$ac_year->year)[1],
+                    'intake' => strtoupper($intake->name),
+                    'attendance' => '0.7',
+                    'upload_user' => strtoupper($staff->first_name.' '.$staff->surname)
+                ),
+                'students' => array(
+                    ['particulars' => array(
+                            'reg_number' => $student->registration_number
+                    ),
+                    'results' => array([
+                     'reg_number' => $student->registration_number
+                    ]
+                     
              ),
-             'students' => array(
-                 ['particulars' => array(
-                         'reg_number' => $student->registration_number
-                 ),
-                 'results' => array([
-                  'reg_number' => $student->registration_number
-                 ]
-                  
-          ),
-                 ],
-
-             )
-         );
-
-         $payload = json_encode(array($data));
-
-         //attach encoded JSON string to the POST fields
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-         //set the content type to application/json
-         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-
-         //return response instead of outputting
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-         //execute the POST request
-         $result = curl_exec($ch);
-
-         //close cURL resource
-         curl_close($ch);
-
+                    ],
+   
+                )
+            );
+   
+            $payload = json_encode(array($data));
+   
+            //attach encoded JSON string to the POST fields
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+   
+            //set the content type to application/json
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+   
+            //return response instead of outputting
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+   
+            //execute the POST request
+            $result = curl_exec($ch);
+   
+            //close cURL resource
+            curl_close($ch);
+   
+         }
+         return redirect()->back()->with('message','Results have been successfully submitted.');
       }
-      return redirect()->back()->with('message','Results have been successfully submitted.');
-    }
+
+     $data = [
+         'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+          'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
+          'campus_programs'=>$request->has('campus_id') ? CampusProgram::with(['program.departments'])->where('campus_id',$request->get('campus_id'))->get() : [],
+          'campus'=>Campus::find($request->get('campus_id')),
+          'semesters'=>Semester::all(),
+          'campuses'=>Campus::all(),
+          'intakes'=>Intake::all(),
+          'active_semester'=>Semester::where('status','ACTIVE')->first(),
+          'first_semester_publish_status'=>$first_semester_publish_status,
+          'second_semester_publish_status'=>$second_semester_publish_status,
+          'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester','ntaLevel'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : [],
+          'request'=>$request,
+          'awards'=>Award::all(),
+     ];
+
+     return view('dashboard.academic.submit-results',$data)->withTitle('Sumit Results');
+   }
 }
