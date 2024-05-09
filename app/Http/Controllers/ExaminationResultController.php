@@ -476,7 +476,7 @@ class ExaminationResultController extends Controller
                         $supp_exams[] = $result->moduleAssignment->module->code;
                   }   
                }
-   return 18;
+
                $remark->study_academic_year_id = $request->get('study_academic_year_id');
                $remark->student_id = $student->id;
                $remark->semester_id = $request->get('semester_id');
@@ -661,7 +661,7 @@ class ExaminationResultController extends Controller
 
             $known_missing_cases = null;
          }
-
+return 20;
          $process = new ExaminationProcessRecord;
          $process->study_academic_year_id = $request->get('study_academic_year_id');
          $process->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
