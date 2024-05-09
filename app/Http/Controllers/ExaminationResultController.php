@@ -286,7 +286,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }
-   return 1;
+
                $student_results = $student_results_for_gpa_computation = [];
                foreach($results as $result){
                   $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
