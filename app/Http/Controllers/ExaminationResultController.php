@@ -257,7 +257,7 @@ class ExaminationResultController extends Controller
                }
 
                $total_optional_credits = 0;
-               return count($optional_modules);
+               //return count($optional_modules);
                if(count($optional_modules) > 0){ 
                   $break = false;
                   foreach($optional_modules as $optional){
