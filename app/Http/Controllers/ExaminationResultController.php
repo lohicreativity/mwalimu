@@ -247,7 +247,6 @@ class ExaminationResultController extends Controller
             }else{
                $no_of_failed_modules = 0;
                $missing_cases = [];
-               return $module_assignmentIDs;
                $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                            ->where('student_id',$student->id)
                                            ->with(['retakeHistory.retakableResults'=>function($query) use($request){$query->where('study_academic_year',$request->get('study_academic_year_id') - 1);}])
@@ -291,7 +290,7 @@ class ExaminationResultController extends Controller
                $student_results = $student_results_for_gpa_computation = [];
                foreach($results as $result){
                   $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
-   return $result->module_assignment_id;
+   return $module_assignment_buffer[456];
                   if($module_assignment_buffer[$result->module_assignment_id]){
                      $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                      $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
