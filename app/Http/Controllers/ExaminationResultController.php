@@ -257,7 +257,7 @@ class ExaminationResultController extends Controller
                }
 
                $total_optional_credits = 0;
-               if($optional_modules){ 
+               if(count($optional_modules) > 0){ 
                   $break = false;
                   foreach($optional_modules as $optional){
                      foreach($results as $result){
@@ -286,25 +286,25 @@ class ExaminationResultController extends Controller
                      }
                   }
                }
-
+   return 16;
                $student_results = $student_results_for_gpa_computation = [];
                foreach($results as $result){
                   $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
-
+   
                   if($module_assignment_buffer[$result->module_assignment_id]){
                      $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                      $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
                      $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
                      $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
                   }
-
+   
                   if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
                      $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
       
                   }else{
                      $processed_result = $result;
                   }
-
+   
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                      if($result->course_work_remark == 'INCOMPLETE'){
                         $processed_result->grade = 'IC';
@@ -430,7 +430,7 @@ class ExaminationResultController extends Controller
                      $student_results_for_gpa_computation[] =  $processed_result;
                   }
                }
-   return 15;
+   
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = [];
                foreach($student_results as $result){
