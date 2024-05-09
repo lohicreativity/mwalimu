@@ -297,9 +297,8 @@ class ExaminationResultController extends Controller
                      $course_work_pass_score = $module_assignment_buffer[$result->module_assignment_id]['course_work_pass_score'];
                      $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
                   }
-
+return $result->retakeHistory;
                   if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
-                     return 12;
                      $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
       
                   }else{
