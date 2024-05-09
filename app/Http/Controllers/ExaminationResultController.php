@@ -245,28 +245,6 @@ class ExaminationResultController extends Controller
             if(str_contains($remark->remark,'IRREGULARITY')){
                continue;
             }else{
-               $postponement_status = Postponement::where('student_id',$student->id)
-                                                   ->where('status','POSTPONED')
-                                                   ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                   ->first();
-return $postponement_status;
-               if($postponement_status && $postponement_status->semester_id == 1){
-                  return 100;
-                  ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
-                                    ->where('student_id',$student->id)
-                                    ->update(['retakable_id'=>null,'retable_type'=>null,'course_work_remark'=>'POSTPONED','final_remark'=>'POSTPONED','final_exam_remark'=>'POSTPONED','grade'=>null]);
-
-                  $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                  $remark->student_id = $student->id;
-                  $remark->semester_id = 1;
-                  $remark->remark = $postponement_status->category == 'SEMESTER'? 'POSTPONED SEMESTER' : 'POSTPONED YEAR';
-                  $remark->gpa = null;
-                  $remark->class = null;
-                  $remark->save();
-
-                  continue;
-               }
-
                $no_of_failed_modules = 0;
                $missing_cases = [];
                $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
@@ -623,7 +601,6 @@ return $postponement_status;
             }
 
             $postponements = Postponement::whereIn('student_id',$casesIDs)
-                                         ->where('category','!=','EXAM')
                                          ->where('status','POSTPONED')
                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                          ->where('semester_id',1)
@@ -646,10 +623,12 @@ return $postponement_status;
                $exam_result->student_id = $student->id;
                $exam_result->exam_type = 'FINAL';
                $exam_result->exam_category = 'FIRST';
+               $postponement_type = null;
                if($studentship_status == 'POSTPONED'){
                   foreach($postponements as $post){
                      if($post->student_id == $student->id){
                         $exam_result->final_exam_remark = 'POSTPONED';
+                        $postponement_type = $post->category;
                         break;
                      }
                   }
@@ -676,7 +655,7 @@ return $postponement_status;
                $remark->student_id = $student->id;
                $remark->semester_id = $request->get('semester_id');
                $remark->year_of_study = $year_of_study;
-               $remark->remark = $exam_result->final_exam_remark;
+               $remark->remark = $postponement_type == 'SEMESTER'? 'POSTPONED SEMESTER' : 'POSTPONED YEAR';
                $remark->gpa = null;
                $remark->class = null;
                $remark->save();
