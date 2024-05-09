@@ -40,7 +40,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Process Results for </h3>
+                <h3 class="card-title">Submit Results to Regulators - @foreach($campuses as $campus) @if($campus->id == $campus_id) {{ $campus->name}} @endif @endforeach </h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/results/process','class'=>'ss-form-processing']) !!}
@@ -48,7 +48,7 @@
 
                 <div class="row">
                   <div class="form-group col-3">
-                    {!! Form::label('','Select Academic Year') !!}
+                    {!! Form::label('','Academic Year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                       <option value="">Select Academic Year</option>
                       @foreach($study_academic_years as $year)
