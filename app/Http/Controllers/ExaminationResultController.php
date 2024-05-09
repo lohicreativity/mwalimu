@@ -255,8 +255,9 @@ class ExaminationResultController extends Controller
                if(count($results) != $no_of_expected_modules){
                   $missing_cases[] = $student->id;
                }
-return count($optional_modules);
+
                $total_optional_credits = 0;
+               return count($optional_modules);
                if(count($optional_modules) > 0){ 
                   $break = false;
                   foreach($optional_modules as $optional){
