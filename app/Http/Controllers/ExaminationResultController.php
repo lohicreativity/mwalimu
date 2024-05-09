@@ -299,11 +299,9 @@ class ExaminationResultController extends Controller
                   }
 
                   if($result->retakeHistory){
-return 11;
-                  }
-                  if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
-                     $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
-      
+                     if(isset($result->retakeHistory->retakableResults[0])){
+                        $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
+                     }
                   }else{
                      $processed_result = $result;
                   }
