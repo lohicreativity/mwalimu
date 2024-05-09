@@ -68,11 +68,8 @@
 
                         @endif
                       @endforeach
-                      @if($active_semester) 
-                        @if($second_semester_publish_status || $second_semester_publish_status)
+
                           <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
-                        @endif
-                      @endif
                     </select>
                   </div>
 
