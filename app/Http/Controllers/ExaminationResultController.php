@@ -4155,7 +4155,7 @@ class ExaminationResultController extends Controller
                              ->where('semester_id',$semester->id)
                              ->where('status','PUBLISHED')
                              ->count() == 0){
-            return redirect()->back()->with('message','You cannot submit unpublished results.');
+            return redirect()->back()->with('error','Results do not exist or have not been published.');
          }
    
          if($staff->campus_id == 1){
@@ -4177,7 +4177,7 @@ class ExaminationResultController extends Controller
                             ->get();
          
          if(count($students) == 0){
-            return redirect()->back()->with('message','No pass results in semester '.$semester->name.' of '.$ac_year->year.' academic year.');
+            return redirect()->back()->with('error','No pass results in semester '.$semester->name.' of '.$ac_year->year.' academic year.');
          }
    
          $campus_program = CampusProgram::findOrFail($students[0]->campus_program_id);
