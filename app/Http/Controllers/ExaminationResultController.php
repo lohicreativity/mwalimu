@@ -4124,6 +4124,7 @@ class ExaminationResultController extends Controller
 
     public function submitResults(Request $request)
     {
+      $staff = User::find(Auth::user()->id)->staff;
       $first_semester_publish_status = $second_semester_publish_status = false;
       if(!empty($request->get('study_academic_year_id'))){
          if(!Auth::user()->hasRole('hod-examination')){
@@ -4155,8 +4156,6 @@ class ExaminationResultController extends Controller
                              ->count() == 0){
             return redirect()->back()->with('message','You cannot submit unpublished results.');
          }
-   
-         $staff = User::find(Auth::user()->id)->staff;
    
          if($staff->campus_id == 1){
             $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
@@ -4249,9 +4248,8 @@ class ExaminationResultController extends Controller
          'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
           'campus_programs'=>$request->has('campus_id') ? CampusProgram::with(['program.departments'])->where('campus_id',$request->get('campus_id'))->get() : [],
-          'campus'=>Campus::find($request->get('campus_id')),
+          'campus'=>$staff->campus_id,
           'semesters'=>Semester::all(),
-          'campuses'=>Campus::all(),
           'intakes'=>Intake::all(),
           'active_semester'=>Semester::where('status','ACTIVE')->first(),
           'first_semester_publish_status'=>$first_semester_publish_status,
