@@ -74,8 +74,6 @@
                         @endif
                       @endif
                     </select>
-                    {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                    {!! Form::input('hidden','campus_id',$campus_id) !!}
                   </div>
 
                   <div class="form-group col-6">
