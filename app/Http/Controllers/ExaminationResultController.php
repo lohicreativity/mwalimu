@@ -298,10 +298,9 @@ class ExaminationResultController extends Controller
                      $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
                   }
 
-                  if(count($result->retakeHistory) > 0){
                      if(isset($result->retakeHistory->retakableResults[0])){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
-                     }
+                     
                   }else{
                      $processed_result = $result;
                   }
