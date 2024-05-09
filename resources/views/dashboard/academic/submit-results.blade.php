@@ -62,11 +62,10 @@
                     <select name="semester_id" class="form-control" required>
                       <option value="">Select Semester</option>
                       @foreach($semesters as $semester)
-                        @if($active_semester) 
 
-                            <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
 
-                        @endif
+                            <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+
                       @endforeach
 
                           <option value="SUPPLEMENTARY">Supplementary</option>
