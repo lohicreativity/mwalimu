@@ -69,7 +69,7 @@
                         @endif
                       @endforeach
                       @if($active_semester) 
-                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2') && $second_semester_publish_status)
+                        @if($second_semester_publish_status || $second_semester_publish_status)
                           <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
                         @endif
                       @endif
@@ -81,7 +81,7 @@
                     <select name="intake_id" class="form-control" required>
                       <option value="">Select Intake</option>
                       @foreach($intakes as $intake)
-                      <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
+                        <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -91,7 +91,7 @@
                     <select name="program_level_id" class="form-control" required>
                     <option value="">Select Program Level</option>
                       @foreach($awards as $award)
-                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor'))
                           <option value="{{ $award->id }}">{{ $award->name }}</option>
                         @endif
                       @endforeach
