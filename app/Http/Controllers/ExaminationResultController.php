@@ -4145,7 +4145,7 @@ class ExaminationResultController extends Controller
          if(!Auth::user()->hasRole('hod-examination')){
             return redirect()->back()->with('error','Results can only be submitted by Head of Examination.');      
          }
-return $request;
+
          $intake = Intake::findOrFail($request->get('intake_id'));
          $ac_year = AcademicYear::findOrFail($request->get('study_academic_year_id'));
          $semester = Semester::findOrFail($request->get('semester_id'));
