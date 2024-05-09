@@ -583,7 +583,7 @@ class ExaminationResultController extends Controller
                $remark->save();
             }
          }
-
+return 20;
          $known_missing_cases = Student::select('id','studentship_status_id')->whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','DECEASED');})
                                        ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                        ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
@@ -661,7 +661,7 @@ class ExaminationResultController extends Controller
 
             $known_missing_cases = null;
          }
-return 20;
+
          $process = new ExaminationProcessRecord;
          $process->study_academic_year_id = $request->get('study_academic_year_id');
          $process->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
