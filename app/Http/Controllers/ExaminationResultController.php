@@ -298,13 +298,9 @@ class ExaminationResultController extends Controller
                      $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
                   }
 
-                  if(!empty($result->retakeHistory)){
-                     if(isset($result->retakeHistory->retakableResults[0])){
-                        $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
-                     }
-                  }else{
+
                      $processed_result = $result;
-                  }
+                  
    
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                      if($result->course_work_remark == 'INCOMPLETE'){
