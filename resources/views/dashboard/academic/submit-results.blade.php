@@ -63,9 +63,9 @@
                       <option value="">Select Semester</option>
                       @foreach($semesters as $semester)
                         @if($active_semester) 
-                          @if($active_semester->id == $semester->id) 
+
                             <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
-                          @endif
+
                         @endif
                       @endforeach
                       @if($active_semester) 
