@@ -216,7 +216,7 @@ class ExaminationResultController extends Controller
                }
             }
          }
-return count($optional_modules);
+
          if($no_of_optional_modules > 0){
             $elective_policy = ElectivePolicy::select('number_of_options')
                                              ->where('campus_program_id',$campus_program->id)
@@ -255,7 +255,7 @@ return count($optional_modules);
                if(count($results) != $no_of_expected_modules){
                   $missing_cases[] = $student->id;
                }
-
+return count($optional_modules);
                $total_optional_credits = 0;
                if(count($optional_modules) > 0){ 
                   $break = false;
