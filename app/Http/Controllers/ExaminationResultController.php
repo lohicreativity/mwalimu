@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\AcademicStatus;
+use App\Domain\Academic\Models\AcademicYear;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\ExaminationResult;
@@ -104,33 +105,33 @@ class ExaminationResultController extends Controller
       // if($staff->id != 2){
       //    return redirect()->back()->with('error','You are not allowed to process examination results at the moment'); 
       // }
-      $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
+      $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program:id,nta_level_id')->find(explode('_',$request->get('campus_program_id'))[0]);
       $special_exam = SpecialExam::select('id')->whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
-      $special_exam = Postponement::select('id')->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+      $postponement = Postponement::select('id')->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
-      if ($special_exam) {
-         $special_exam = null;
+      if($special_exam || $postponement) {
+         $special_exam = $postponement = null;
          return redirect()->back()->with('error','There is a pending request for special exam or postponement');
       }
 
-      if(ResultPublication::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
-		  ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->where('status','PUBLISHED')->count() != 0){
-         return redirect()->back()->with('error','Unable to process because results already published');
+      // if(ResultPublication::select('id')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
+		//   ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->where('status','PUBLISHED')->count() != 0){
+      //    return redirect()->back()->with('error','Unable to process because results already published');
 
-      }
+      // }
       DB::beginTransaction();
       $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
       $semester = Semester::find($request->get('semester_id'));
       $year_of_study = $assignment_id = null;
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
          $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
-                                                                                                                                         ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
-                                                                                                                                         ->where('semester_id',$semester->id);})
+                                                                                                                                                   ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
+                                                                                                                                                   ->where('semester_id',$semester->id);})
                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                ->with('module.ntaLevel:id,name','studyAcademicYear:id')
                                                ->get();
@@ -254,7 +255,7 @@ class ExaminationResultController extends Controller
                if(count($results) != $no_of_expected_modules){
                   $missing_cases[] = $student->id;
                }
-   
+
                $total_optional_credits = 0;
                if(count($optional_modules) > 0){ 
                   $break = false;
@@ -372,7 +373,12 @@ class ExaminationResultController extends Controller
                         }
    
                         if($processed_result->final_exam_remark == 'RETAKE'){
-                           $history = new RetakeHistory;
+                           if($retake = RetakeHistory::where('id',$processed_result->retakable_id)->where('retakable_type','retake_history')->first()){
+                              $history = $retake;
+                           }else{
+                              $history = new RetakeHistory;
+                           }
+
                            $history->student_id = $student->id;
                            $history->study_academic_year_id = $request->get('study_academic_year_id');
                            $history->module_assignment_id = $processed_result->module_assignment_id;
@@ -385,7 +391,12 @@ class ExaminationResultController extends Controller
                         }
    
                         if($processed_result->final_exam_remark == 'CARRY'){
-                           $history = new CarryHistory;
+                           if($carry = CarryHistory::where('id',$processed_result->retakable_id)->where('retakable_type','carry_history')->first()){
+                              $history = $carry;
+                           }else{
+                              $history = new CarryHistory;
+                           }
+    
                            $history->student_id = $student->id;
                            $history->study_academic_year_id = $request->get('study_academic_year_id');
                            $history->module_assignment_id = $processed_result->module_assignment_id;
@@ -396,10 +407,16 @@ class ExaminationResultController extends Controller
                            $processed_result->retakable_type = 'carry_history';
                         }
                      }else{
-                        if($processed_result->final_remark == 'PASS'){
+                        if(($processed_result->course_work_remark == 'PASS' || $processed_result->course_work_remark == 'N/A') && $processed_result->final_remark == 'PASS'){
                            $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                         }else{
-                           $processed_result->final_exam_remark = 'FAIL';
+                           if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE'){
+                              $processed_result->final_exam_remark = 'INCOMPLETE';
+                           }elseif($processed_result->course_work_remark == 'POSTPONED' || $processed_result->final_remark == 'POSTPONED'){
+                              $processed_result->final_exam_remark = 'POSTPONED';
+                           }else{
+                              $processed_result->final_exam_remark = 'FAIL';
+                           }
                         }
                      }
                   }
@@ -423,8 +440,23 @@ class ExaminationResultController extends Controller
                   }
    
                   if($result->final_exam_remark == 'POSTPONED'){
+                     if(in_array($student->id,$postponed_students)){
                         $pass_status = 'POSTPONED EXAM';
                         break;
+                     }else{
+                        if(Postponement::where('student_id',$student->id)
+                                       ->where('category','YEAR')
+                                       ->where('status','POSTPONED')
+                                       ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                       ->where('semester_id',1)
+                                       ->count() > 0){
+                           $pass_status = 'POSTPONED YEAR';
+                           break;
+                        }else{
+                           $pass_status = 'POSTPONED SEMESTER';
+                           break;
+                        }
+                     }
                   }
    
                   if($result->final_exam_remark == 'RETAKE'){
@@ -458,7 +490,7 @@ class ExaminationResultController extends Controller
                      Student::where('id',$student->id)->update(['academic_status_id'=>2]);
                   }elseif($remark->remark == 'CARRY'){
                      Student::where('id',$student->id)->update(['academic_status_id'=>3]);
-                  }elseif($remark->remark == 'POSTPONED'){
+                  }elseif(str_contains($remark->remark, 'POSTPONED')){
                      Student::where('id',$student->id)->update(['academic_status_id'=>9]);
                   }elseif($remark->remark == 'INCOMPLETE'){
                      Student::where('id',$student->id)->update(['academic_status_id'=>7]);
@@ -485,14 +517,18 @@ class ExaminationResultController extends Controller
    
                if($no_of_failed_modules > ($no_of_expected_modules/2)){
                   $remark->remark = 'REPEAT';
+                  $remark->gpa = null;
+                  $remark->class = null;
                   Student::where('id',$student->id)->update(['academic_status_id'=>10]);
 
                }elseif($remark->gpa != null && $remark->gpa < 2){
-                  $remark->remark = 'DISCO';
+                  $remark->remark = 'FAIL&DISCO';
+                  $remark->gpa = null;
+                  $remark->class = null;
                   Student::where('id',$student->id)->update(['academic_status_id'=>5]);
                }
 
-               if($remark->remark != 'DISCO'){
+               if($remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
                   if(count($carry_exams) > 0){
                      $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
                   }elseif(count($retake_exams) > 0){
@@ -566,8 +602,8 @@ class ExaminationResultController extends Controller
             $postponements = Postponement::whereIn('student_id',$casesIDs)
                                          ->where('category','!=','EXAM')
                                          ->where('status','POSTPONED')
-                                       //   ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                       //   ->where('semester_id',1)
+                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                         ->where('semester_id',1)
                                          ->get();
             
             foreach($known_missing_cases as $student){
@@ -589,15 +625,12 @@ class ExaminationResultController extends Controller
                $exam_result->exam_category = 'FIRST';
                if($studentship_status == 'POSTPONED'){
                   foreach($postponements as $post){
-                     if($post->student_id == $student->id && $post->category == 'SEMESTER'){
-                        $exam_result->final_exam_remark = 'POSTPONED SEMESTER';
-                        break;
-                     }elseif($post->student_id == $student->id && $post->category == 'YEAR'){
-                        $exam_result->final_exam_remark = 'POSTPONED YEAR';
+                     if($post->student_id == $student->id){
+                        $exam_result->final_exam_remark = 'POSTPONED';
                         break;
                      }
                   }
-               }else{
+               }elseif($studentship_status == 'DECEASED'){
                   $exam_result->final_exam_remark = 'DECEASED';
                }
 
@@ -768,15 +801,15 @@ class ExaminationResultController extends Controller
             $exam_result->exam_type = 'FINAL';
             $exam_result->exam_category = 'FIRST';
             if($studentship_status == 'POSTPONED'){
-               foreach($postponements as $post){
-                  if($post->student_id == $student->id && $post->category == 'SEMESTER'){
-                     $exam_result->final_exam_remark = 'POSTPONED SEMESTER';
-                     break;
-                  }elseif($post->student_id == $student->id && $post->category == 'YEAR'){
-                     $exam_result->final_exam_remark = 'POSTPONED YEAR';
-                     break;
-                  }
-               }
+               // foreach($postponements as $post){
+               //    if($post->student_id == $student->id && $post->category == 'SEMESTER'){
+               //       $exam_result->final_exam_remark = 'POSTPONED SEMESTER';
+               //       break;
+               //    }elseif($post->student_id == $student->id && $post->category == 'YEAR'){
+                     $exam_result->final_exam_remark = 'POSTPONED';
+               //       break;
+               //    }
+               // }
             }else{
                $exam_result->final_exam_remark = 'DECEASED';
             }
@@ -4084,5 +4117,108 @@ class ExaminationResultController extends Controller
            'request'=>$request
         ];
         return view('dashboard.academic.upload-module-results',$data)->withTitle('Upload Module Results');
+    }
+
+    public function submitResults(Request $request)
+    {
+      $intake = Intake::findOrFail($request->get('intake_id'));
+      $ac_year = AcademicYear::findOrFail($request->get('study_academic_year_id'));
+      $semester = Semester::findOrFail($request->get('semester_id'));
+
+      if(ResultPublication::where('nta_level_id',$request->get('program_level_id'))
+                          ->where('study_academic_year_id',$ac_year->id)
+                          ->where('semester_id',$semester->id)
+                          ->where('status','PUBLISHED')
+                          ->count() == 0){
+         return redirect()->back()->with('message','You cannot submit unpublished results.');
+      }
+
+      $staff = User::find(Auth::user()->id)->staff;
+
+      if($staff->campus_id == 1){
+         $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KIVUKONI');
+         $nactvet_token = config('constants.NACTE_API_SECRET_KIVUKONI');
+
+      }elseif($staff->campus_id == 2){
+         $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_KARUME');
+         $nactvet_token = config('constants.NACTE_API_SECRET_KARUME');
+
+      }elseif($staff->campus_id == 3){
+         $nactvet_authorization_key = config('constants.NACTVET_AUTHORIZATION_KEY_PEMBA');
+         $nactvet_token = config('constants.NACTE_API_SECRET_PEMBA');
+      }
+
+      $students = Student::select('id','campus_program_id','year_of_study','registration_number')
+                         ->whereHas('applicant',function($query) use($staff,$intake,$request){$query->where('campus_id',$staff->campus_id)->where('intake_id',$intake->id)->where('program_level_id',$request->get('program_level_id'));})
+                         ->whereHas('semesterRemarks',function($query) use($ac_year,$semester){$query->where('remark','PASS')->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id);})
+                         ->get();
+      
+      if(count($students) == 0){
+         return redirect()->back()->with('message','No pass results in semester '.$semester->name.' of '.$ac_year->year.' academic year.');
+      }
+
+      $campus_program = CampusProgram::findOrFail($students[0]->campus_program_id);
+      $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($students,$ac_year,$semester){$query->where('campus_program_id',$students[0]->campus_program_id)
+                                                                                                                                          ->where('year_of_study',$students[0]->year_of_study)
+                                                                                                                                          ->where('study_academic_year_id',$ac_year->id)
+                                                                                                                                          ->where('semester_id',$semester->id);})
+                                            ->get('id');
+      $module_assignmentIDs = [];
+      foreach($module_assignments as $assignment){
+         $module_assignmentIDs = $assignment->id;
+      }
+
+      //API URL
+      $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/examsnta';
+
+      $ch = curl_init($url);
+
+      $year = explode('/',$ac_year->year);
+      foreach($students as $student){
+         $results = ExaminationResult::where('student_id',$student->id)->whereIn('module_assignment_id',$module_assignmentIDs)->get();
+
+         $data = array(
+             'heading' => array(
+                 'authorization' => $nactvet_authorization_key,   
+                 'programme_id' => $campus_program->regulator_code,
+                 'level' => strval($request->get('program_level_id')),
+                 'academic_year' => explode('/',$ac_year->year)[1],
+                 'intake' => strtoupper($intake->name),
+                 'attendance' => '0.7',
+                 'upload_user' => strtoupper($staff->first_name.' '.$staff->surname)
+             ),
+             'students' => array(
+                 ['particulars' => array(
+                         'reg_number' => $student->registration_number
+                 ),
+                 'results' => array([
+                  'reg_number' => $student->registration_number
+                 ]
+                  
+          ),
+                 ],
+
+             )
+         );
+
+         $payload = json_encode(array($data));
+
+         //attach encoded JSON string to the POST fields
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+         //set the content type to application/json
+         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+
+         //return response instead of outputting
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+         //execute the POST request
+         $result = curl_exec($ch);
+
+         //close cURL resource
+         curl_close($ch);
+
+      }
+      return redirect()->back()->with('message','Results have been successfully submitted.');
     }
 }

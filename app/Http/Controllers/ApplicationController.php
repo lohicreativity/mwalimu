@@ -11839,8 +11839,7 @@ class ApplicationController extends Controller
                     }
                 }
                 $selected_programs = array();
-                $approving_selection = [];
-                $regulator_programme_id = null;
+                $regulator_programme_id = $approving_selection = null;
                 foreach($applicant->selections as $selection){
                     $selected_programs[] = $selection->campusProgram->regulator_code;
                     if($selection->status == 'APPROVING'){
