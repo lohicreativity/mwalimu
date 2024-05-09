@@ -304,7 +304,7 @@ class ExaminationResultController extends Controller
                   }else{
                      $processed_result = $result;
                   }
-   return 13;
+
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                      if($result->course_work_remark == 'INCOMPLETE'){
                         $processed_result->grade = 'IC';
@@ -428,7 +428,7 @@ class ExaminationResultController extends Controller
                   
                   if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
                      $student_results_for_gpa_computation[] =  $processed_result;
-                  }
+                  } return 14;
                }
    
                $pass_status = 'PASS'; 
