@@ -4149,7 +4149,7 @@ class ExaminationResultController extends Controller
          $intake = Intake::findOrFail($request->get('intake_id'));
          $ac_year = AcademicYear::findOrFail($request->get('study_academic_year_id'));
          $semester = Semester::findOrFail($request->get('semester_id'));
-   
+   return $request->get('program_level_id');
          if(ResultPublication::where('nta_level_id',$request->get('program_level_id'))
                              ->where('study_academic_year_id',$ac_year->id)
                              ->where('semester_id',$semester->id)
