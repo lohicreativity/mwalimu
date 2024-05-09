@@ -301,7 +301,7 @@ class ExaminationResultController extends Controller
 
                      $processed_result = $result;
                   
-   
+   return 11;
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                      if($result->course_work_remark == 'INCOMPLETE'){
                         $processed_result->grade = 'IC';
