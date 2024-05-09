@@ -43,7 +43,7 @@
                 <h3 class="card-title">Submit Results to Regulators - @foreach($campuses as $campus) @if($campus->id == $campus_id) {{ $campus->name}} @endif @endforeach </h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'results/submit-examination-results','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/results/submit-examination-results','class'=>'ss-form-processing']) !!}
               <div class="card-body">
 
                 <div class="row">
