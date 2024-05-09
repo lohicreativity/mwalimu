@@ -257,8 +257,7 @@ class ExaminationResultController extends Controller
                }
 
                $total_optional_credits = 0;
-               $x = count($optional_modules);
-               if($x > 0){ 
+               if($optional_modules){ 
                   $break = false;
                   foreach($optional_modules as $optional){
                      foreach($results as $result){
@@ -287,7 +286,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }
-   
+   return 1;
                $student_results = $student_results_for_gpa_computation = [];
                foreach($results as $result){
                   $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
