@@ -4126,23 +4126,24 @@ class ExaminationResultController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
       $first_semester_publish_status = $second_semester_publish_status = false;
+
+      if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%1%');})
+                           ->where('status','PUBLISHED')
+                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                           ->count() != 0){
+         $first_semester_publish_status = true;
+      }
+      $second_semester_publish_status = false;
+      if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%2%');})
+                           ->where('status','PUBLISHED')
+                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                           ->count() != 0){
+         $second_semester_publish_status = true;
+      }
+      
       if(!empty($request->get('study_academic_year_id'))){
          if(!Auth::user()->hasRole('hod-examination')){
             return redirect()->back()->with('error','Results can only be submitted by Head of Examination.');      
-         }
-
-         if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%1%');})
-                             ->where('status','PUBLISHED')
-                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                             ->count() != 0){
-            $first_semester_publish_status = true;
-         }
-         $second_semester_publish_status = false;
-         if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%2%');})
-                              ->where('status','PUBLISHED')
-                              ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                              ->count() != 0){
-               $second_semester_publish_status = true;
          }
 
          $intake = Intake::findOrFail($request->get('intake_id'));
