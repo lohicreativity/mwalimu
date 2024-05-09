@@ -249,7 +249,7 @@ class ExaminationResultController extends Controller
                                                    ->where('status','POSTPONED')
                                                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                    ->first();
-
+return $postponement_status;
                if($postponement_status && $postponement_status->semester_id == 1){
                   return 100;
                   ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
