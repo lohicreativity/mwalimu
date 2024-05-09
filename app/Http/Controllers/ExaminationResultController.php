@@ -4188,7 +4188,7 @@ class ExaminationResultController extends Controller
                                                ->get('id');
          $module_assignmentIDs = [];
          foreach($module_assignments as $assignment){
-            $module_assignmentIDs = $assignment->id;
+            $module_assignmentIDs [] = $assignment->id;
          }
    
          //API URL
@@ -4198,7 +4198,7 @@ class ExaminationResultController extends Controller
    
          $year = explode('/',$ac_year->year);
          foreach($students as $student){
-            $results = ExaminationResult::where('student_id',$student->id)->whereIn('module_assignment_id',$module_assignmentIDs)->get();
+            $results = ExaminationResult::where('student_id',$student->id)->whereIn('module_assignment_id',$module_assignmentIDs)->with('moduleAssignment.module:id,code')->get();
    
             $data = array(
                 'heading' => array(
@@ -4214,16 +4214,19 @@ class ExaminationResultController extends Controller
                     ['particulars' => array(
                             'reg_number' => $student->registration_number
                     ),
-                    'results' => array([
-                     'reg_number' => $student->registration_number
-                    ]
+                     'results' => array([
+                        'module_code' => $results[0]->moduleAssignment->module->code,
+                        'CA' => strval($results[0]->course_work_score),
+                        'SE' => strval($results[0]->final_score)
+                     ]
                      
-             ),
-                    ],
+                     ),
+                   ],
    
                 )
             );
    
+            dd($data);
             $payload = json_encode(array($data));
    
             //attach encoded JSON string to the POST fields
@@ -4261,6 +4264,6 @@ class ExaminationResultController extends Controller
           'awards'=>Award::all(),
      ];
 
-     return view('dashboard.academic.submit-results',$data)->withTitle('Sumit Results');
+     return view('dashboard.academic.submit-results',$data)->withTitle('Submit Results');
    }
 }
