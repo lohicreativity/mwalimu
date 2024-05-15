@@ -673,7 +673,7 @@ class ModuleAssignmentController extends Controller
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
-             }
+            }
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
@@ -979,7 +979,7 @@ class ModuleAssignmentController extends Controller
                                             ->with('student')->where('module_assignment_id',$module_assignment->id)
                                             ->whereNotNull('final_uploaded_at')->where('final_exam_remark','POSTPONED')
                                             ->whereNull('retakable_type')
-                                            ->whereIn('student_id',[$special_cases_ids])
+                                            ->whereIn('student_id',$special_cases_ids)
                                             ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
