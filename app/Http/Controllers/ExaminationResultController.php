@@ -127,7 +127,7 @@ class ExaminationResultController extends Controller
       // }
 
       DB::beginTransaction();
-      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = [];
+      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $postponed_students = [];
       $semester = Semester::find($request->get('semester_id'));
       $year_of_study = $assignment_id = null;
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
