@@ -581,7 +581,7 @@ class ModuleAssignmentController extends Controller
                                                                                                     ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                                                                                     ->orderBy('registration_number')
                                                                                                     ->get();
-
+return $students;
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
             $supp_students = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
