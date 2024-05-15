@@ -1053,7 +1053,7 @@ class ModuleAssignmentController extends Controller
                                             ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
                                             ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})->with('student')->where('module_assignment_id',$module_assignment->id)
                                             ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
-                                            //->where('course_work_remark','!=','FAIL')
+                                            ->where('course_work_remark','!=','FAIL')
                                             ->whereNull('retakable_type')
                                             ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
