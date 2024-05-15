@@ -613,7 +613,7 @@ class ModuleAssignmentController extends Controller
             foreach($supp_students as $student){
                 $students_supp_session[] = $student->student;
             }
-return count($students_supp_session);
+
             foreach($special_cases as $student){
                 $students_supp_session[] = $student->student;
             }
