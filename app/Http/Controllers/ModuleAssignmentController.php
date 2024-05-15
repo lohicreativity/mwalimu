@@ -584,12 +584,14 @@ class ModuleAssignmentController extends Controller
 
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
-            $supp_students = Student::select('id','registration_number','studentship_status_id')
-                                    ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-                                    ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-                                                                                                                    ->where('final_exam_remark','FAIL');})
-                                    ->whereHas('semesterRemarks', function($query){$query->where('remark','SUPP');})
-                                    ->get();
+            $supp_students = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                            ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                            ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                            ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
+                                            ->where('course_work_remark','!=','FAIL')
+                                            ->whereNull('retakable_type')
+                                            ->with('student:id,registration_number,studentship_status_id')
+                                            ->get();
 
             $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                             ->where('module_assignment_id',$module_assignment->id)
@@ -609,7 +611,7 @@ class ModuleAssignmentController extends Controller
                                     ->get();
             $students_supp_session = [];
             foreach($supp_students as $student){
-                $students_supp_session[] = $student;
+                $students_supp_session[] = $student->student;
             }
 
             foreach($special_cases as $student){
