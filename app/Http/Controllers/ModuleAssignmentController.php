@@ -963,7 +963,7 @@ class ModuleAssignmentController extends Controller
                                          ->get();
             $special_cases_ids = [];
             foreach($special_cases as $cases){
-                $special_cases_ids = $cases->student_id;
+                $special_cases_ids[] = $cases->student_id;
             }
 
            $data = [
