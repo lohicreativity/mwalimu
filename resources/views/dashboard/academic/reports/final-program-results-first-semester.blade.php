@@ -320,11 +320,9 @@
                               N/A
                               @else 
                                 @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
-                                  @if($result->course_work_remark == 'FAIL')
-                                    -
-                                  @else 
+ 
                                   {{ round($result->final_score) }} 
-                                  @endif
+                           
                                 @else - @endif
                               @endif
                               
