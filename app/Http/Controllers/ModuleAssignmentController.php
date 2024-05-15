@@ -581,7 +581,7 @@ class ModuleAssignmentController extends Controller
                                                                                                     ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                                                                                     ->orderBy('registration_number')
                                                                                                     ->get();
-return $students;
+
             $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
             $supp_students = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
@@ -592,7 +592,7 @@ return $students;
                                             ->whereNull('retakable_type')
                                             ->with('student:id,registration_number,studentship_status_id')
                                             ->get();
-
+return $supp_students;
             $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                             ->where('module_assignment_id',$module_assignment->id)
                                             ->where('type','FINAL')
