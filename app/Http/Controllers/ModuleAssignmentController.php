@@ -363,13 +363,13 @@ class ModuleAssignmentController extends Controller
              $students_passed_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
-             $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})
-                                                  ->where('module_assignment_id',$module_assignment->id)
-                                                  ->whereNotNull('final_uploaded_at')
-                                                  ->where('final_exam_remark','FAIL')
-                                                  ->whereNull('retakable_type')
-                                                  ->count();
+             $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                            ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                            ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                            ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
+                                            ->where('course_work_remark','!=','FAIL')
+                                            ->whereNull('retakable_type')
+                                            ->count();
 
             $special_exam_cases_count = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                                    ->where('module_assignment_id',$module_assignment->id)
