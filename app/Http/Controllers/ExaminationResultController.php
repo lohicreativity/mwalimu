@@ -339,7 +339,7 @@ class ExaminationResultController extends Controller
                            $processed_result->course_work_remark = $course_work_pass_score <= round($processed_result->course_work_score) ? 'PASS' : 'FAIL';
                         }
    
-                        if($processed_result->course_work_remark == 'PASS' && $processed_result->final_remark == 'PASS'){
+                        if($processed_result->course_work_remark == 'PASS' && ($processed_result->final_remark != 'POSTPONED' || $processed_result->final_remark != 'INCOMPLETE')){
                            $processed_result->total_score = round($result->course_work_score + $result->final_score);
                         }else{
                            $processed_result->total_score = null;
