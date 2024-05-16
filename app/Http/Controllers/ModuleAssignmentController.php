@@ -1795,7 +1795,9 @@ class ModuleAssignmentController extends Controller
                     $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
 
                     if($student && (!empty($line[1]) || $line[1] == 0)){
-
+if($student->id == 1626){
+return 'huyu';
+}
                         if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                             $special_exam = SpecialExam::where('student_id',$student->id)
                                                        ->where('module_assignment_id',$module_assignment->id)
