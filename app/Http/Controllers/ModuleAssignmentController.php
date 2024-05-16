@@ -2012,7 +2012,7 @@ class ModuleAssignmentController extends Controller
 
                             if($supp_upload_allowed && $upload_allowed){
                                 if($student->id == 1626){
-                                    return 2;
+                                    $result;
                                     }
                                 $result->save();
                             }
