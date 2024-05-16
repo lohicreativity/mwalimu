@@ -192,18 +192,19 @@ class ExaminationResultController extends Controller
                return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
             }
 
-            if($module_assignment->final_upload_status == null){
-               $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                ->where('semester_id',$semester->id)
-                                                ->where('module_assignment_id',$module_assignment->id)
-                                                ->where('type','FINAL')
-                                                ->where('status','APPROVED')->get();
-                                       
-               if(count($postponed_students) == count($enrolled_students)){
-                  foreach($postponed_students as $student){
-                     $student_ids[] = $student->student_id;
-                  }
+            $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                             ->where('semester_id',$semester->id)
+                                             ->where('module_assignment_id',$module_assignment->id)
+                                             ->where('type','FINAL')
+                                             ->where('status','APPROVED')->get();
 
+            if(count($postponed_students) > 0){
+               foreach($postponed_students as $student){
+                  $student_ids[] = $student->student_id;
+               }
+            }
+            if($module_assignment->final_upload_status == null){
+               if(count($postponed_students) == count($enrolled_students)){
                   ExaminationResult::where('module_assignment_id',$module_assignment->id)
                                     ->whereIn('student_id',$student_ids)
                                     ->where('exam_type','FINAL')
