@@ -1915,11 +1915,16 @@ class ModuleAssignmentController extends Controller
 
                             $supp_upload_allowed = false;
                             if($semester_remark){
-                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
+                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM'){
                                     $supp_upload_allowed = true;
                                 }else{
-                                    DB::rollback();
-                                    continue;
+                                    if(($semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'INCOMPLETE') &&
+                                        ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','FAIL')->count() == 0){
+                                        $supp_upload_allowed = true;
+                                    }else{
+                                        DB::rollback();
+                                        continue;
+                                    }
                                 }
                             }
 
