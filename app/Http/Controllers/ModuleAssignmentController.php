@@ -1211,7 +1211,7 @@ class ModuleAssignmentController extends Controller
             }
 
             $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
-
+return $ac_year;
             // Get students taking the module
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 if($request->get('assessment_plan_id') != 'SUPPLEMENTARY'){
@@ -1290,7 +1290,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
                 $students = $module_assignment->programModuleAssignment->students()->get();
-            }else{return 1000;
+            }else{
                 $invalid_students = $invalid_retake_students = $students = [];
                 foreach($uploaded_students as $up_stud){
                     if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
