@@ -1109,7 +1109,7 @@ class ModuleAssignmentController extends Controller
         [
         'assessment_plan_id'=>'Assessment is required'
         ]);
-        return 2;
+
         if($validation->fails()){
             if($request->ajax()){
             return response()->json(array('error_messages'=>$validation->messages()));
@@ -1117,7 +1117,7 @@ class ModuleAssignmentController extends Controller
             return redirect()->back()->withInput()->withErrors($validation->messages());
             }
         }
-
+        return 3;
         if($request->hasFile('results_file')){
         // DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
