@@ -1920,14 +1920,8 @@ class ModuleAssignmentController extends Controller
                                 }else{
                                     if(($semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'INCOMPLETE') &&
                                         ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','FAIL')->count() == 0){
-                                            if($student->id == 1626){
-                                                return 1;
-                                                }
                                         $supp_upload_allowed = true;
                                     }else{
-                                        if($student->id == 1626){
-                                            return 2;
-                                            }
                                         DB::rollback();
                                         continue;
                                     }
@@ -1963,6 +1957,9 @@ class ModuleAssignmentController extends Controller
                             if($res = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                                 $result = $res;
                                 if($res->final_exam_remark == 'PASS'){
+                                    if($student->id == 1626){
+                                        return 1;
+                                        }
                                     $upload_allowed = false;
                                     DB::rollback();
                                     continue;
@@ -2014,6 +2011,9 @@ class ModuleAssignmentController extends Controller
                             $result->uploaded_by_user_id = Auth::user()->id;
 
                             if($supp_upload_allowed && $upload_allowed){
+                                if($student->id == 1626){
+                                    return 2;
+                                    }
                                 $result->save();
                             }
                             // $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
