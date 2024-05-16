@@ -1295,6 +1295,16 @@ class ModuleAssignmentController extends Controller
                 foreach($uploaded_students as $up_stud){
                     if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                         $invalid_students = [];
+
+                        // return Student::whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS']);}) // Covers SUPP and SPECIAL EXAM cases
+                        // ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                        // ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                        //                                                                           ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                        //                                                                           ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                        // ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                        // ->whereIn('id',[950,1626,3061,1626,3061,4908,4843,2465,2796,2863,3049])
+                        // ->with('academicStatus')
+                        // ->first();
                         foreach($uploaded_students as $up_stud){
                             $student = Student::whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS']);}) // Covers SUPP and SPECIAL EXAM cases
                                               ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
@@ -1333,6 +1343,8 @@ class ModuleAssignmentController extends Controller
                                     }else{
                                         $students[] = $student;
                                     }
+                                }elseif($student->academicStatus->name == 'SUPP'){
+                                    $students[] = $student;
                                 }
                             }else{
                                 $invalid_students[] = $up_stud; 
