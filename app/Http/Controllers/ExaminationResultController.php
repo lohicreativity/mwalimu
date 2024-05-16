@@ -443,6 +443,7 @@ class ExaminationResultController extends Controller
                   }
    
                   if($result->final_exam_remark == 'POSTPONED'){
+                     return 1;
                      if(in_array($student->id,$student_ids)){
                         $pass_status = 'POSTPONED EXAM';
                         break;
