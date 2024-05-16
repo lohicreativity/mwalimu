@@ -444,13 +444,10 @@ class ExaminationResultController extends Controller
                   }
    
                   if($result->final_exam_remark == 'POSTPONED'){
-                     return $student_ids;
                      if(in_array($student->id,$student_ids)){
-                        return 2;
                         $pass_status = 'POSTPONED EXAM';
                         break;
                      }else{
-                        return 3;
                         if(Postponement::where('student_id',$student->id)
                                        ->where('category','YEAR')
                                        ->where('status','POSTPONED')
