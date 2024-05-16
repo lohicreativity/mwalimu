@@ -1101,7 +1101,7 @@ class ModuleAssignmentController extends Controller
      * Upload module assignment results
      */
     public function uploadResults(Request $request)
-    {   
+    {   return 1;
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
@@ -1211,7 +1211,7 @@ class ModuleAssignmentController extends Controller
             }
 
             $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
-return $ac_year;
+
             // Get students taking the module
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 if($request->get('assessment_plan_id') != 'SUPPLEMENTARY'){
