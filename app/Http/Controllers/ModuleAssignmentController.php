@@ -1380,7 +1380,7 @@ class ModuleAssignmentController extends Controller
 
                             //     }
                             // }
-                        } return $students;
+                        } 
                     }else{
                         if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
@@ -1471,7 +1471,7 @@ class ModuleAssignmentController extends Controller
                                        ->get();
                 }
             }
-
+            return $students;
             foreach($students as $stud){
                 $student_present = false;
                 foreach($uploaded_students as $up_stud){
