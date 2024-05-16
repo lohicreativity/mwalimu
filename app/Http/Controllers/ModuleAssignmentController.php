@@ -1112,12 +1112,14 @@ class ModuleAssignmentController extends Controller
 
         if($validation->fails()){
             if($request->ajax()){
+                return 4;
             return response()->json(array('error_messages'=>$validation->messages()));
             }else{
+                return 5;   
             return redirect()->back()->withInput()->withErrors($validation->messages());
             }
         }
-        return 3;
+
         if($request->hasFile('results_file')){
         // DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
