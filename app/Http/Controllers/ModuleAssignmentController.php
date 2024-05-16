@@ -1167,7 +1167,7 @@ class ModuleAssignmentController extends Controller
                                        ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                        ->whereIn('id',[950,1626,3061,1626,3061,4908,4843,2465,2796,2863,3049])
                                        ->with('academicStatus')
-                                       ->first();
+                                       ->get();
             DB::beginTransaction();
             if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                 $plan = null;
