@@ -1290,7 +1290,7 @@ class ModuleAssignmentController extends Controller
                     }
                 }
                 $students = $module_assignment->programModuleAssignment->students()->get();
-            }else{
+            }else{return 1000;
                 $invalid_students = $invalid_retake_students = $students = [];
                 foreach($uploaded_students as $up_stud){
                     if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
@@ -1459,7 +1459,7 @@ class ModuleAssignmentController extends Controller
                                        ->get();
                 }
             }
-return 1000;
+
             foreach($students as $stud){
                 $student_present = false;
                 foreach($uploaded_students as $up_stud){
