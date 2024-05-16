@@ -127,7 +127,7 @@ class ExaminationResultController extends Controller
       // }
 
       DB::beginTransaction();
-      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $postponed_students = [];
+      $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $postponed_students = $student_ids = [];
       $semester = Semester::find($request->get('semester_id'));
       $year_of_study = $assignment_id = null;
       if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
@@ -200,7 +200,6 @@ class ExaminationResultController extends Controller
                                                 ->where('status','APPROVED')->get();
                                        
                if(count($postponed_students) == count($enrolled_students)){
-                  $student_ids = [];
                   foreach($postponed_students as $student){
                      $student_ids[] = $student->student_id;
                   }
@@ -444,7 +443,7 @@ class ExaminationResultController extends Controller
                   }
    
                   if($result->final_exam_remark == 'POSTPONED'){
-                     if(in_array($student->id,$postponed_students)){
+                     if(in_array($student->id,$student_ids)){
                         $pass_status = 'POSTPONED EXAM';
                         break;
                      }else{

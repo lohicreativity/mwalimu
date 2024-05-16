@@ -1954,7 +1954,7 @@ class ModuleAssignmentController extends Controller
                                                            ->first();
 
                             $upload_allowed = true;
-                            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                            if($res = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                                 $result = $res;
                                 if($res->final_exam_remark == 'PASS'){
                                     $upload_allowed = false;
@@ -1965,7 +1965,7 @@ class ModuleAssignmentController extends Controller
                                 $result = new ExaminationResult;
                             }
 
-                            $result->module_assignment_id = $request->get('module_assignment_id');
+                            $result->module_assignment_id = $module_assignment->id;
                             $result->student_id = $student->id;
                             if($final_special_exam){
                             // if($sup_special_exam){
@@ -1995,7 +1995,7 @@ class ModuleAssignmentController extends Controller
                                     }
                                     //$result->grade = $grading_policy? $grading_policy->grade : 'C';
                                 }
-                                $result->final_exam_remark = $result->supp_score;
+                                //$result->final_exam_remark = $result->supp_score;
                             }
 
                             // if($final_special_exam){
