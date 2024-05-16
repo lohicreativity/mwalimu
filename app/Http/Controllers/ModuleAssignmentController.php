@@ -1101,7 +1101,7 @@ class ModuleAssignmentController extends Controller
      * Upload module assignment results
      */
     public function uploadResults(Request $request)
-    {   
+    {   return $request;
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
@@ -1112,10 +1112,8 @@ class ModuleAssignmentController extends Controller
 
         if($validation->fails()){
             if($request->ajax()){
-                return 4;
             return response()->json(array('error_messages'=>$validation->messages()));
             }else{
-                return 5;   
             return redirect()->back()->withInput()->withErrors($validation->messages());
             }
         }
