@@ -1380,7 +1380,7 @@ class ModuleAssignmentController extends Controller
 
                             //     }
                             // }
-                        } return $students;
+                        } 
                     }else{
                         if(Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
@@ -1431,7 +1431,7 @@ class ModuleAssignmentController extends Controller
                     session()->flash('invalid_retake_students',$invalid_retake_students);
                     return redirect()->back()->with('error','Uploaded students are not allowed to retake the module in this academic year');
                 }
-
+                return $students;
                 if($request->get('assessment_plan_id') != 'SUPPLEMENTARY'){
                     // $supp_cases = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                     //                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
