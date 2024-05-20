@@ -705,16 +705,16 @@ class ExaminationResultController extends Controller
                                ->where('campus_program_id',$campus_program->id)
                                ->get('id');
 
-         $sup_cases = [];
-         $students = Student::select('id','studentship_status_id')
-                           ->whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS','POSTPONED SEMESTER','POSTPONED YEAR']);}) // Covers SUPP and SPECIAL EXAM cases
-                           ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                           ->whereHas('registrations',function($query) use($request,$year_of_study,$semester){$query->where('year_of_study',$year_of_study)
-                                                                                                   ->where('semester_id',$semester->id)
-                                                                                                   ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
-                           ->where('campus_program_id',$campus_program->id)
-                           ->with('studentshipStatus:id,name')
-                           ->get();
+         $students = [];
+         // $students = Student::select('id','studentship_status_id')
+         //                   ->whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS','POSTPONED SEMESTER','POSTPONED YEAR']);}) // Covers SUPP and SPECIAL EXAM cases
+         //                   ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+         //                   ->whereHas('registrations',function($query) use($request,$year_of_study,$semester){$query->where('year_of_study',$year_of_study)
+         //                                                                                           ->where('semester_id',$semester->id)
+         //                                                                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+         //                   ->where('campus_program_id',$campus_program->id)
+         //                   ->with('studentshipStatus:id,name')
+         //                   ->get();
 
          $supp_cases = ExaminationResult::whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                           //   ->whereHas('student.academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS','POSTPONED SEMESTER','POSTPONED YEAR']);})
@@ -726,7 +726,10 @@ class ExaminationResultController extends Controller
                                             ->where('course_work_remark','!=','FAIL')
                                             ->distinct()
                                             ->get('student_id');
-         return count($supp_cases);
+         foreach($supp_cases as $case){
+            $students[] = $case->student_id;
+         }
+
          $special_cases = ExaminationResult::whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                            ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                            ->whereHas('student.registrations',function($query) use($request,$year_of_study,$semester){$query->where('year_of_study',$year_of_study)
@@ -734,9 +737,9 @@ class ExaminationResultController extends Controller
                                                                                                                   ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                            ->where('final_exam_remark','POSTPONED')
                                            ->where('course_work_remark','!=','FAIL')
-                                           ->with(['student:id,studentship_status_id','student.studentshipStatus:id,name'])
-                                           ->get();
-
+                                           ->distinct()
+                                           ->get('student_id');
+return count($special_cases);
          $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')
                                         ->where('nta_level_id',$nta_level_id)
                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
