@@ -724,9 +724,8 @@ class ExaminationResultController extends Controller
                                                                                                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                             ->where('final_exam_remark','FAIL')
                                             ->where('course_work_remark','!=','FAIL')
-                                            ->with(['student:id,studentship_status_id','student.studentshipStatus:id,name'])
-                                            ->distinct('student_id')
-                                            ->get();
+                                            ->distinct()
+                                            ->get('student_id');
          return count($supp_cases);
          $special_cases = ExaminationResult::whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                            ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
