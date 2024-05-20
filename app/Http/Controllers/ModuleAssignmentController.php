@@ -1305,14 +1305,14 @@ class ModuleAssignmentController extends Controller
                     if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                         $invalid_students = [];
 
-                        $student = Student::whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS']);}) // Covers SUPP and SPECIAL EXAM cases
+                        $student = Student::whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS','POSTPONED SEMESTER','POSTPONED YEAR']);}) // Covers SUPP and SPECIAL EXAM cases
                                             ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                             ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                                     ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                                     ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
                                             ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
                                             ->where('registration_number',$up_stud->registration_number)
-                                            ->with('academicStatus')
+                                            ->with('academicStatus:id,name')
                                             ->first();
 
                         if($student){
@@ -1643,7 +1643,7 @@ class ModuleAssignmentController extends Controller
 
                     $supp_upload_allowed = false;
                     if($semester_remark){
-                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM'){
+                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM' || $semester_remark->remark == 'INCOMPLETE'){
                             $supp_upload_allowed = true;
                         }else{
                             DB::rollback();
@@ -1695,7 +1695,11 @@ class ModuleAssignmentController extends Controller
                         $result->supp_remark = 'INCOMPLETE';
                     }
 
-                    $result->final_uploaded_at = now();
+                    if($student->studentship_status_id == 6){
+                        $result->supp_remark = 'DECEASED';
+                    }
+
+                    $result->supp_uploaded_at = now();
                     $result->uploaded_by_user_id = Auth::user()->id;
                     if($supp_upload_allowed && $upload_allowed){
                         $result->save();
@@ -1982,7 +1986,11 @@ class ModuleAssignmentController extends Controller
                                 if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                                     $result->grade = 'F';
                                     $result->point = 0;
-                                    $result->supp_remark = 'FAIL';
+                                    if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
+                                        $result->supp_remark = 'CARRY';
+                                    }else{
+                                        $result->supp_remark = 'RETAKE';
+                                    }
                                 }else{
                                     if($module_assignment->module->ntaLevel->id > 4){
                                         $result->grade = 'B';
