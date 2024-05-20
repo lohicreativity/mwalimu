@@ -727,7 +727,7 @@ class ExaminationResultController extends Controller
                                             ->with(['student:id,studentship_status_id','student.studentshipStatus:id,name'])
                                             ->distinct('student_id')
                                             ->get();
-         return $supp_cases;
+         return count($supp_cases);
          $special_cases = ExaminationResult::whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                            ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                            ->whereHas('student.registrations',function($query) use($request,$year_of_study,$semester){$query->where('year_of_study',$year_of_study)
