@@ -739,12 +739,12 @@ class ExaminationResultController extends Controller
                                            ->where('course_work_remark','!=','FAIL')
                                            ->distinct()
                                            ->get('student_id');
-return count($special_cases);
+
 
          foreach($special_cases as $case){
             $students[] = $case->student_id;
          }
-         
+         return count($students);
          $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')
                                         ->where('nta_level_id',$nta_level_id)
                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
