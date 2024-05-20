@@ -724,8 +724,9 @@ class ExaminationResultController extends Controller
                                                                                                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                             ->where('final_exam_remark','FAIL')
                                             ->where('course_work_remark','!=','FAIL')
+                                            ->whereNotNull('supp_remark')
                                             ->distinct()
-                                            ->get('student_id');
+                                            ->get('student_id'); return count($students);
          foreach($supp_cases as $case){
             $students[] = $case->student_id;
          }
@@ -744,7 +745,7 @@ class ExaminationResultController extends Controller
          foreach($special_cases as $case){
             $students[] = $case->student_id;
          }
-         return count($students);
+
          $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')
                                         ->where('nta_level_id',$nta_level_id)
                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
@@ -754,49 +755,49 @@ class ExaminationResultController extends Controller
                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                          ->get();
 
-         foreach($module_assignments as $module_assignment){
-            $module_assignmentIDs[] = $module_assignment->id;
-            foreach($students as $student){
-               if(!in_array($student->id,$sup_cases)){
-                  if($student->studentshipStatus->name == 'SUPP'){
-                     $sup_cases[] = $student->id;
-                  }elseif(ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','FAIL')->count() == 0){
-                     $sup_cases[] = $student->id;
-                  }
-               }
-            }
-         }
+         // foreach($module_assignments as $module_assignment){
+         //    $module_assignmentIDs[] = $module_assignment->id;
+         //    foreach($students as $student){
+         //       if(!in_array($student->id,$sup_cases)){
+         //          if($student->studentshipStatus->name == 'SUPP'){
+         //             $sup_cases[] = $student->id;
+         //          }elseif(ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','FAIL')->count() == 0){
+         //             $sup_cases[] = $student->id;
+         //          }
+         //       }
+         //    }
+         // }
 
-         $assignment_id = 0;
-         foreach($module_assignments as $module_assignment){
-            $assignment_id = $module_assignment->id;
-            $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
-            $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
-            $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
+         // $assignment_id = 0;
+         // foreach($module_assignments as $module_assignment){
+         //    $assignment_id = $module_assignment->id;
+         //    $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
+         //    $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
+         //    $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
 
 
-            $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                             ->where('semester_id',$semester->id)
-                                             ->where('module_assignment_id',$module_assignment->id)
-                                             ->where('type','SUPP')
-                                             ->where('status','APPROVED')->get();
+         //    $postponed_students = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))
+         //                                     ->where('semester_id',$semester->id)
+         //                                     ->where('module_assignment_id',$module_assignment->id)
+         //                                     ->where('type','SUPP')
+         //                                     ->where('status','APPROVED')->get();
                                     
-            if(count($postponed_students) == count($sup_cases)){
-               $student_ids = [];
-               foreach($postponed_students as $student){
-                  $student_ids[] = $student->student_id;
-               }
+         //    if(count($postponed_students) == count($sup_cases)){
+         //       $student_ids = [];
+         //       foreach($postponed_students as $student){
+         //          $student_ids[] = $student->student_id;
+         //       }
 
-               ExaminationResult::where('module_assignment_id',$module_assignment->id)
-                                 ->whereIn('student_id',$student_ids)
-                                 ->where('exam_type','SUPP')
-                                 ->where('exam_category','FIRST')
-                                 ->update(['final_uploaded_at'=>now(),'supp_remark'=>'POSTPONED']);
-            }
-         }
+         //       ExaminationResult::where('module_assignment_id',$module_assignment->id)
+         //                         ->whereIn('student_id',$student_ids)
+         //                         ->where('exam_type','SUPP')
+         //                         ->where('exam_category','FIRST')
+         //                         ->update(['final_uploaded_at'=>now(),'supp_remark'=>'POSTPONED']);
+         //    }
+         // }
 
          $module_assignments = null;
-         foreach($sup_cases as $case){
+         foreach($students as $case){
             $remark = SemesterRemark::where('student_id',$case->id)
                                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                     ->where('semester_id',$semester->id)
@@ -888,7 +889,7 @@ class ExaminationResultController extends Controller
                                        $history = new RetakeHistory;
                                     }
          
-                                    $history->student_id = $student->id;
+                                    $history->student_id = $case->id;
                                     $history->study_academic_year_id = $request->get('study_academic_year_id');
                                     $history->module_assignment_id = $result->module_assignment_id;
                                     $history->examination_result_id = $result->id;
@@ -906,7 +907,7 @@ class ExaminationResultController extends Controller
                                        $history = new CarryHistory;
                                     }
              
-                                    $history->student_id = $student->id;
+                                    $history->student_id = $case->id;
                                     $history->study_academic_year_id = $request->get('study_academic_year_id');
                                     $history->module_assignment_id = $result->module_assignment_id;
                                     $history->examination_result_id = $result->id;
@@ -939,7 +940,7 @@ class ExaminationResultController extends Controller
                            $history = new RetakeHistory;
                         }
 
-                        $history->student_id = $student->id;
+                        $history->student_id = $case->id;
                         $history->study_academic_year_id = $request->get('study_academic_year_id');
                         $history->module_assignment_id = $result->module_assignment_id;
                         $history->examination_result_id = $result->id;
@@ -957,7 +958,7 @@ class ExaminationResultController extends Controller
                            $history = new CarryHistory;
                         }
  
-                        $history->student_id = $student->id;
+                        $history->student_id = $case->id;
                         $history->study_academic_year_id = $request->get('study_academic_year_id');
                         $history->module_assignment_id = $result->module_assignment_id;
                         $history->examination_result_id = $result->id;
@@ -1012,26 +1013,26 @@ class ExaminationResultController extends Controller
             } 
             
             $remark->study_academic_year_id = $request->get('study_academic_year_id');
-            $remark->student_id = $student->id;
+            $remark->student_id = $case->id;
             $remark->semester_id = $request->get('semester_id');
             $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
             if($remark->remark != 'PASS'){
                $remark->gpa = null;
                if($remark->remark == 'SUPP'){
-                  Student::where('id',$student->id)->update(['academic_status_id'=>4]);
+                  Student::where('id',$case->id)->update(['academic_status_id'=>4]);
                }elseif($remark->remark == 'RETAKE'){
-                  Student::where('id',$student->id)->update(['academic_status_id'=>2]);
+                  Student::where('id',$case->id)->update(['academic_status_id'=>2]);
                }elseif($remark->remark == 'CARRY'){
-                  Student::where('id',$student->id)->update(['academic_status_id'=>3]);
+                  Student::where('id',$case->id)->update(['academic_status_id'=>3]);
                }elseif(str_contains($remark->remark, 'POSTPONED')){
-                  Student::where('id',$student->id)->update(['academic_status_id'=>9]);
+                  Student::where('id',$case->id)->update(['academic_status_id'=>9]);
                }elseif($remark->remark == 'INCOMPLETE'){
-                  Student::where('id',$student->id)->update(['academic_status_id'=>7]);
+                  Student::where('id',$case->id)->update(['academic_status_id'=>7]);
                }
             }else{
                $remark->gpa = Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
-               Student::where('id',$student->id)->update(['academic_status_id'=>1]);
+               Student::where('id',$case->id)->update(['academic_status_id'=>1]);
             }
 
             $remark->point = Util::computeGPAPoints($remark->credits, $student_results_for_gpa_computation);
@@ -1051,7 +1052,7 @@ class ExaminationResultController extends Controller
                $remark->remark = 'REPEAT';
                $remark->gpa = null;
                $remark->class = null;
-               Student::where('id',$student->id)->update(['academic_status_id'=>10]);
+               Student::where('id',$case->id)->update(['academic_status_id'=>10]);
 
             }
             
@@ -1059,10 +1060,10 @@ class ExaminationResultController extends Controller
                $remark->remark = 'FAIL&DISCO';
                $remark->gpa = null;
                $remark->class = null;
-               Student::where('id',$student->id)->update(['academic_status_id'=>5]);
+               Student::where('id',$case->id)->update(['academic_status_id'=>5]);
             }
 
-            if($student->studentship_status_id == 6){
+            if(Student::where('id',$case->id)->where('studentship_status_id', 6)->count() > 0){
                $remark->remark = 'DECEASED';
                $remark->gpa = null;
                $remark->class = null;
