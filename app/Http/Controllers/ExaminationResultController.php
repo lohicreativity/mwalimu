@@ -128,20 +128,22 @@ class ExaminationResultController extends Controller
 
       DB::beginTransaction();
       $module_assignmentIDs = $optional_modules = $module_assignment_buffer = $postponed_students = $student_ids = [];
+      
       $semester = Semester::find($request->get('semester_id'));
+      
       $year_of_study = $assignment_id = null;
       if($semester){
+         $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
+                                                                                                                                                   ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
+                                                                                                                                                   ->where('semester_id',$semester->id);})
+                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                ->with('module.ntaLevel:id,name','studyAcademicYear:id')
+                                                ->get();
+
+         $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
+         $ntaLevel = $module_assignments[0]->module->ntaLevel->name;
+
          if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
-            $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
-                                                                                                                                                      ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
-                                                                                                                                                      ->where('semester_id',$semester->id);})
-                                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                  ->with('module.ntaLevel:id,name','studyAcademicYear:id')
-                                                  ->get();
-                                                  
-            $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
-            $ntaLevel = $module_assignments[0]->module->ntaLevel->name;
-            
             $enrolled_students = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                         ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                         ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
@@ -697,6 +699,26 @@ class ExaminationResultController extends Controller
          $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
          $nta_level_id = $module_assignments[0]->programModuleAssignment->campusProgram->program->nta_level_id; // need to change it to fina level name
 
+         $modules = [];
+         foreach($module_assignmentIDs as $assignment_id){
+            if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
+                                ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
+                                ->where('course_work_remark','!=','FAIL')
+                                ->whereNull('retakable_type')
+                                ->whereNotNull('supp_remark')
+                                ->where('module_assignment_id',$assignment_id)
+                                ->count() == 0 ){
+               $module_assignment = ModuleAssignment::where('id',$assignment_id)->with('module:id,code')->first();
+               $modules[] = $module_assignment->module->code;
+            }
+         }
+
+         if(count($modules) > 0){
+            DB::rollback();
+            return redirect()->back()->with('error','Supplementary results for module '.implode(',',$modules).' have not been uploaded'); 
+         }
+return 1000;
          $carry_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                 ->whereHas('academicStatus',function($query) use($request){$query->where('name','CARRY');})
                                 ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
@@ -725,8 +747,9 @@ class ExaminationResultController extends Controller
                                             ->where('final_exam_remark','FAIL')
                                             ->where('course_work_remark','!=','FAIL')
                                             ->whereNotNull('supp_remark')
+                                            ->whereNull('retakable_type')
                                             ->distinct()
-                                            ->get('student_id'); return count($students);
+                                            ->get('student_id');
          foreach($supp_cases as $case){
             $students[] = $case->student_id;
          }
@@ -746,6 +769,11 @@ class ExaminationResultController extends Controller
             $students[] = $case->student_id;
          }
 
+         if(count($students) == 0){
+            DB::rollback();
+            return redirect()->back()->with('error','No supplementary results to process'); 
+         }
+
          $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')
                                         ->where('nta_level_id',$nta_level_id)
                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
@@ -755,18 +783,18 @@ class ExaminationResultController extends Controller
                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                          ->get();
 
-         // foreach($module_assignments as $module_assignment){
-         //    $module_assignmentIDs[] = $module_assignment->id;
-         //    foreach($students as $student){
-         //       if(!in_array($student->id,$sup_cases)){
-         //          if($student->studentshipStatus->name == 'SUPP'){
-         //             $sup_cases[] = $student->id;
-         //          }elseif(ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','FAIL')->count() == 0){
-         //             $sup_cases[] = $student->id;
-         //          }
-         //       }
-         //    }
-         // }
+         foreach($module_assignments as $module_assignment){
+            $module_assignmentIDs[] = $module_assignment->id;
+            // foreach($students as $student){
+            //    if(!in_array($student->id,$sup_cases)){
+            //       if($student->studentshipStatus->name == 'SUPP'){
+            //          $sup_cases[] = $student->id;
+            //       }elseif(ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','FAIL')->count() == 0){
+            //          $sup_cases[] = $student->id;
+            //       }
+            //    }
+            // }
+         }
 
          // $assignment_id = 0;
          // foreach($module_assignments as $module_assignment){
