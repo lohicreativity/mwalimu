@@ -701,6 +701,7 @@ class ExaminationResultController extends Controller
 
          $modules = [];
          foreach($module_assignmentIDs as $assignment_id){
+            return $assignment_id;
             if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                 ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
                                 ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
