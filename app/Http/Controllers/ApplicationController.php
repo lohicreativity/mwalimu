@@ -4571,7 +4571,7 @@ class ApplicationController extends Controller
         $now = strtotime(date('Y-m-d'));
         $reg_date_time = strtotime($reg_date);
         $datediff = $reg_date_time - $now;
-//return round($datediff / (60 * 60 * 24));
+
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
             DB::rollback();
@@ -12651,10 +12651,11 @@ class ApplicationController extends Controller
 /**
      * Manual registration
      */
-    public function registerManual(Request $request)
+    public function registerManual(Request $request) // SHOULD BE REVISITED TO ACCOMMODATE REGISTRATION OF CONTINUING STUDENTS
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        //$ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        $ac_year = StudyAcademicYear::with('academicYear')->latest()->first();
 		$semester = Semester::where('status','ACTIVE')->first();
 	    $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
 
@@ -12686,6 +12687,7 @@ class ApplicationController extends Controller
 			   $code = sprintf('%04d',1);
 			}
 			//$year = substr(date('Y'), 2);
+
             $year = substr($ac_year->begin_date,2,2);
 			
             $prog_code = explode('.', $selection->campusProgram->code);

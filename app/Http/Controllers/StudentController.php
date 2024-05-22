@@ -664,7 +664,13 @@ class StudentController extends Controller
         if($student->applicant->intake->name == 'September'){
           $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first();
         }else{
-          $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id')+1)->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first();
+          $semester = Semester::where('status','ACTIVE')->first();
+          $semester_id = session('active_semester_id');
+          if($semester->id == 2){
+            $semester_id = 1;
+          }
+
+          $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id')+1)->where('semester_id',$semester_id)->where('status','REGISTERED')->first();
         }
         $data = [
 			    'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
