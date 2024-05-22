@@ -656,7 +656,6 @@ class StudentController extends Controller
     public function showRegistration(Request $request)
     {
         $student = User::find(Auth::user()->id)->student()->with('applicant.intake:id,name')->first();
-return $student;
         $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();
@@ -672,7 +671,7 @@ return $student;
 
           $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id')+1)->where('semester_id',$semester_id)->where('status','REGISTERED')->first();
         }
-        return $student;
+
         $data = [
 			    'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
           'student'=>$student,
