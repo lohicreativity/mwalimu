@@ -197,7 +197,7 @@ class LoanAllocationController extends Controller
 			$loan_beneficiaries = LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$staff->campus_id)
 											  ->where('year_of_study',$request->get('year_of_study'))->get();
 		}
-
+return $loan_beneficiaries;
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : $loan_beneficiaries,
