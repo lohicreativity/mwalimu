@@ -147,7 +147,7 @@ class LoanAllocationController extends Controller
      * Show loan beneficiaries
      */
     public function showLoanBeneficiaries(Request $request)
-    {
+    {	return $request;
 		$staff = User::find(Auth::user()->id)->staff;
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
