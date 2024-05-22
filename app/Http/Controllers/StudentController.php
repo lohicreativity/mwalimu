@@ -661,7 +661,7 @@ class StudentController extends Controller
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();
 
-        if($student->intake->name == 'September'){
+        if($student->applicant->intake->name == 'September'){
           $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first();
         }else{
           $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id')+1)->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first();
