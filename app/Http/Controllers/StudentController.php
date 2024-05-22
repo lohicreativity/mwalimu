@@ -655,7 +655,7 @@ class StudentController extends Controller
      */
     public function showRegistration(Request $request)
     {
-        $student = User::find(Auth::user()->id)->student->with('applicant.intake:id,name');
+        $student = User::find(Auth::user()->id)->student->with('applicant.intake:id,name')->first();
 
         $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                     ->where('campus_id',$student->applicant->campus_id)
