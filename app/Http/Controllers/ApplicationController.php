@@ -4984,157 +4984,157 @@ class ApplicationController extends Controller
                                     $invoice->currency);
         }
 
-            $check_insurance = false;
-            if(count($applicant->insurances) != 0){
-                if($applicant->insurances[0]->verification_status != 'VERIFIED'){
-                    $check_insurance = true;
-                }
+        $check_insurance = false;
+        if(count($applicant->insurances) != 0){
+            if($applicant->insurances[0]->verification_status != 'VERIFIED'){
+                $check_insurance = true;
             }
+        }
 
-            if($ac_year->nhif_enabled == 1){
-                if($applicant->insurance_status == 0 || $check_insurance){
-                    try{
-                        $path = public_path().'/avatars/'.$student->image;
-                        $type = pathinfo($path, PATHINFO_EXTENSION);
-                        $data = file_get_contents($path);
-                        $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
-                        $data = [
-                            'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
-                            'FirstName'=> $applicant->first_name,
-                            'MiddleName'=> $applicant->middle_name,
-                            'Surname'=> $applicant->surname,
-                            'AdmissionNo'=> $student->registration_number,
-                            'CollageFaculty'=> $applicant->campus->name,
-                            'MobileNo'=> '0'.substr($applicant->phone,3),
-                            'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
-                            'CourseDuration'=> $selection->campusProgram->program->min_duration,
-                            'MaritalStatus'=> "Single",
-                            'DateJoiningEmployer'=> date('Y-m-d'),
-                            'DateOfBirth'=> $applicant->birth_date,
-                            'NationalID'=> $applicant->nin? $applicant->nin : '',
-                            'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
-                            'PhotoImage'=>$base64
-                        ];
+        if($ac_year->nhif_enabled == 1){
+            if($applicant->insurance_status == 0 || $check_insurance){
+                try{
+                    $path = public_path().'/avatars/'.$student->image;
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+                    $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
+                    $data = [
+                        'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
+                        'FirstName'=> $applicant->first_name,
+                        'MiddleName'=> $applicant->middle_name,
+                        'Surname'=> $applicant->surname,
+                        'AdmissionNo'=> $student->registration_number,
+                        'CollageFaculty'=> $applicant->campus->name,
+                        'MobileNo'=> '0'.substr($applicant->phone,3),
+                        'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
+                        'CourseDuration'=> $selection->campusProgram->program->min_duration,
+                        'MaritalStatus'=> "Single",
+                        'DateJoiningEmployer'=> date('Y-m-d'),
+                        'DateOfBirth'=> $applicant->birth_date,
+                        'NationalID'=> $applicant->nin? $applicant->nin : '',
+                        'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
+                        'PhotoImage'=>$base64
+                    ];
 
-                        $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
-                        $token = NHIFService::requestToken();
-
-                            //return $token;
-                        $curl_handle = curl_init();
-
-                            // return json_encode($data);
-
-
-                        curl_setopt_array($curl_handle, array(
-                        CURLOPT_URL => $url,
-                        CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
-                        CURLOPT_RETURNTRANSFER => true,
-                        CURLOPT_ENCODING => "",
-                        CURLOPT_MAXREDIRS => 10,
-                        CURLOPT_TIMEOUT => 4200,
-                        CURLOPT_FOLLOWLOCATION => false,
-                        CURLOPT_SSL_VERIFYPEER => false,
-                        CURLOPT_CUSTOMREQUEST => "POST",
-                        CURLOPT_POSTFIELDS => json_encode([$data])
-                        ));
-
-                        $response = curl_exec($curl_handle);
-                        $response = json_decode($response);
-                        $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
-                        $err = curl_error($curl_handle);
-
-                        curl_close($curl_handle);
-
-                        $data = [
-                        'BatchNo'=>'8002217/'.$ac_year->academicYear->year.'/001',
-                        'Description'=>'Batch submitted on '.date('m d, Y'),
-                        'CardApplications'=>[
-                            array(
-                            'CorrelationID'=>$applicant->index_number,
-                                'MobileNo'=>'0'.substr($applicant->phone, 3),
-                                'AcademicYear'=>$ac_year->academicYear->year,
-                                'YearOfStudy'=>1,
-                                'CardNo'=>null,
-                                'Category'=>1//$response->statusCode == 200? 1 : 2
-                            )
-                        ]
-                        ];
-
-                        $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
-                        // $token = NHIFService::requestToken();
+                    $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/StudentRegistration';
+                    $token = NHIFService::requestToken();
 
                         //return $token;
-                        $curl_handle = curl_init();
+                    $curl_handle = curl_init();
 
-                                //  return json_encode($data);
+                        // return json_encode($data);
 
 
-                        curl_setopt_array($curl_handle, array(
-                        CURLOPT_URL => $url,
-                        CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
-                        CURLOPT_RETURNTRANSFER => true,
-                        CURLOPT_ENCODING => "",
-                        CURLOPT_MAXREDIRS => 10,
-                        CURLOPT_TIMEOUT => 4200,
-                        CURLOPT_FOLLOWLOCATION => false,
-                        CURLOPT_SSL_VERIFYPEER => false,
-                        CURLOPT_CUSTOMREQUEST => "POST",
-                        CURLOPT_POSTFIELDS => json_encode($data)
-                        ));
+                    curl_setopt_array($curl_handle, array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 4200,
+                    CURLOPT_FOLLOWLOCATION => false,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => json_encode([$data])
+                    ));
 
-                        $response = curl_exec($curl_handle);
-                        $response = json_decode($response);
-                        $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
-                        $err = curl_error($curl_handle);
+                    $response = curl_exec($curl_handle);
+                    $response = json_decode($response);
+                    $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+                    $err = curl_error($curl_handle);
 
-                        curl_close($curl_handle);
-                        }catch(\Exception $e){
-                            $record = new InsuranceRegistration;
-                            $record->applicant_id = $applicant->id;
-                            $record->student_id = $student->id;
-                            $record->study_academic_year_id = $ac_year->id;
-                            $record->is_success = 0;
-                            $record->save();
-                        }
+                    curl_close($curl_handle);
+
+                    $data = [
+                    'BatchNo'=>'8002217/'.$ac_year->academicYear->year.'/001',
+                    'Description'=>'Batch submitted on '.date('m d, Y'),
+                    'CardApplications'=>[
+                        array(
+                        'CorrelationID'=>$applicant->index_number,
+                            'MobileNo'=>'0'.substr($applicant->phone, 3),
+                            'AcademicYear'=>$ac_year->academicYear->year,
+                            'YearOfStudy'=>1,
+                            'CardNo'=>null,
+                            'Category'=>1//$response->statusCode == 200? 1 : 2
+                        )
+                    ]
+                    ];
+
+                    $url = 'https://verification.nhif.or.tz/omrs/api/v1/Verification/SubmitCardApplications';
+                    // $token = NHIFService::requestToken();
+
+                    //return $token;
+                    $curl_handle = curl_init();
+
+                            //  return json_encode($data);
+
+
+                    curl_setopt_array($curl_handle, array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 4200,
+                    CURLOPT_FOLLOWLOCATION => false,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => json_encode($data)
+                    ));
+
+                    $response = curl_exec($curl_handle);
+                    $response = json_decode($response);
+                    $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+                    $err = curl_error($curl_handle);
+
+                    curl_close($curl_handle);
+                    }catch(\Exception $e){
+                        $record = new InsuranceRegistration;
+                        $record->applicant_id = $applicant->id;
+                        $record->student_id = $student->id;
+                        $record->study_academic_year_id = $ac_year->id;
+                        $record->is_success = 0;
+                        $record->save();
                     }
-            }
+                }
+        }
 
-            // Angalia namna ya kutumia taarifa zilizokwisha chukuliwa mwanzo
-            $tuition_invoice = Invoice::whereHas('feeType',function($query){
-                $query->where('name','LIKE','%Tuition%');
-            })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+        // Angalia namna ya kutumia taarifa zilizokwisha chukuliwa mwanzo
+        $tuition_invoice = Invoice::whereHas('feeType',function($query){
+            $query->where('name','LIKE','%Tuition%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
 
-            $misc_invoice = Invoice::whereHas('feeType',function($query){
-                $query->where('name','LIKE','%Miscellaneous%');
-            })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+        $misc_invoice = Invoice::whereHas('feeType',function($query){
+            $query->where('name','LIKE','%Miscellaneous%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
 
-            $usd_currency = Currency::where('code','USD')->first();
+        $usd_currency = Currency::where('code','USD')->first();
 
-            $acpac = new ACPACService;
-            $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
-            $stud_reg = substr($student->registration_number, 5);
-            $stud_reg = str_replace('/', '', $stud_reg);
+        $acpac = new ACPACService;
+        $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
+        $stud_reg = substr($student->registration_number, 5);
+        $stud_reg = str_replace('/', '', $stud_reg);
 
-            $parts = explode('.', $stud_reg);
-            if(str_contains($parts[0], 'BTC')){
-                $stud_reg = 'C'.$parts[1];
-            }else{
-                $stud_reg = $parts[0].$parts[1];
-            }
-            $next_of_kin = $applicant->nextOfKin->surname.', '.$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->middle_name;
-            $gparts = explode('.', $program_code);
+        $parts = explode('.', $stud_reg);
+        if(str_contains($parts[0], 'BTC')){
+            $stud_reg = 'C'.$parts[1];
+        }else{
+            $stud_reg = $parts[0].$parts[1];
+        }
+        $next_of_kin = $applicant->nextOfKin->surname.', '.$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->middle_name;
+        $gparts = explode('.', $program_code);
 
-            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
-            $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
+        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
+        $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
 
-            if ($tuition_invoice) {
+        if ($tuition_invoice) {
 
-                $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,
-                                        TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."',
-                                        '".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."',
-                                        '".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','','STD','TSH',
-                                        '".$applicant->email."','".$next_of_kin_email."')");
-            }
+            $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,
+                                    TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."',
+                                    '".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."',
+                                    '".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','','STD','TSH',
+                                    '".$applicant->email."','".$next_of_kin_email."')");
+        }
 
         if ($tuition_invoice) {
             $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->control_no."',
@@ -5180,8 +5180,6 @@ class ApplicationController extends Controller
             }
         }
 
-
-
         if ($tuition_invoice) {
             $tuition_receipts = GatewayPayment::where('control_no',$tuition_invoice->control_no)->get();
 
@@ -5199,8 +5197,6 @@ class ApplicationController extends Controller
                 '".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."','1','')");
             }
         }
-
-
 
         $misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
 

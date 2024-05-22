@@ -693,11 +693,11 @@ class ExaminationResultController extends Controller
                                                                                                                                          ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                          ->where('semester_id',$semester->id);})
                                                ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                               ->with('programModuleAssignment.campusProgram.program:id,nta_level_id','studyAcademicYear:id','specialExams')
+                                               ->with('programModuleAssignment.campusProgram.program.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                                ->get();
                                                
          $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
-         $nta_level_id = $module_assignments[0]->programModuleAssignment->campusProgram->program->nta_level_id; // need to change it to fina level name
+         $ntaLevel = $module_assignments[0]->programModuleAssignment->campusProgram->program->ntaLevel; // need to change it to fina level name
 
          foreach($module_assignments as $module_assignment){
             $module_assignmentIDs[] = $module_assignment->id;
@@ -710,19 +710,24 @@ class ExaminationResultController extends Controller
             //       }
             //    }
             // }
+            
+            //$assignment_id = $module_assignment->id;
+            $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
+            $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
+            $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
          }
 
          $modules = [];
-         foreach($module_assignmentIDs as $assignment_id){
+         foreach($module_assignmentIDs as $assign_id){
             if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                 ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
                                 ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
                                 ->where('course_work_remark','!=','FAIL')
                                 ->whereNull('retakable_type')
                                 ->whereNotNull('supp_remark')
-                                ->where('module_assignment_id',$assignment_id)
+                                ->where('module_assignment_id',$assign_id)
                                 ->count() == 0 ){
-               $module_assignment = ModuleAssignment::where('id',$assignment_id)->with('module:id,code')->first();
+               $module_assignment = ModuleAssignment::where('id',$assign_id)->with('module:id,code')->first();
                $modules[] = $module_assignment->module->code;
             }
          }
@@ -731,7 +736,7 @@ class ExaminationResultController extends Controller
             DB::rollback();
             return redirect()->back()->with('error','Supplementary results for module '.implode(',',$modules).' have not been uploaded'); 
          }
-return 2000;
+
          $carry_cases = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                 ->whereHas('academicStatus',function($query) use($request){$query->where('name','CARRY');})
                                 ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
@@ -788,11 +793,11 @@ return 2000;
          }
 
          $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')
-                                        ->where('nta_level_id',$nta_level_id)
+                                        ->where('nta_level_id',$ntaLevel->id)
                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                         ->get();
 
-         $gpa_classes = GPAClassification::where('nta_level_id',$nta_level_id)
+         $gpa_classes = GPAClassification::where('nta_level_id',$ntaLevel->id)
                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                          ->get();
 
@@ -902,7 +907,7 @@ return 2000;
                               }
             
                               if($result->course_work_remark == 'FAIL'){
-                                 if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7')){
+                                 if(Util::stripSpacesUpper($ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                     if($year_of_study == 1){
                                        $result->final_exam_remark = 'CARRY';
                                     }
@@ -958,10 +963,12 @@ return 2000;
                                  }
                               }
                            }
+                           break;
                         }
                      }
                   }else{
                      if($result->supp_remark == 'RETAKE'){
+                        $no_of_failed_modules++;
                         if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
                            $history = $retake;
                         }else{
@@ -980,6 +987,7 @@ return 2000;
                      }
 
                      if($result->supp_remark == 'CARRY'){
+                        $no_of_failed_modules++;
                         if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
                            $history = $carry;
                         }else{
