@@ -672,6 +672,7 @@ class StudentController extends Controller
 
           $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id')+1)->where('semester_id',$semester_id)->where('status','REGISTERED')->first();
         }
+        return $student;
         $data = [
 			    'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
           'student'=>$student,
