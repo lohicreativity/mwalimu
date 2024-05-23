@@ -961,6 +961,8 @@ class ModuleAssignmentController extends Controller
                                          ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                          ->where('status','APPROVED')
                                          ->get();
+
+                                         return $special_cases;
             $special_cases_ids = [];
             foreach($special_cases as $cases){
                 $special_cases_ids[] = $cases->student_id;
