@@ -733,7 +733,7 @@ class ExaminationResultController extends Controller
                                           ->distinct()
                                           ->get();
 
-                                          return $carry_cases;
+                                          return count($carry_cases);
 
          $carry_module_assignmentIDs = $carry_modules = [];                                 
          if(count($carry_cases) > 0){
