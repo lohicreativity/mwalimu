@@ -722,28 +722,29 @@ class ExaminationResultController extends Controller
          $carry_cases = ExaminationResult::select('student_id','module_assignment_id')->whereHas('moduleAssignment.programModuleAssignment',function($query) use($semester,$campus_program,$request){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                                             ->where('year_of_study',1)
                                                                                                                                                             ->where('semester_id',$semester->id)
-                                                                                                                                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+                                                                                                                                                            ->where('study_academic_year_id',$request->get('study_academic_year_id')-1);})
                                           ->whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                           ->whereHas('student.applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                           ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                          ->whereHas('student.registrations',function($query) use($request,$semester){$query->where('year_of_study',1)
+                                          ->whereHas('student.registrations',function($query) use($request,$semester){$query->where('year_of_study',2)
                                                                                                                             ->where('semester_id',$semester->id)
                                                                                                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                           ->whereNotNull('retakable_type')
-                                          ->with('moduleAssignment.programModuleAssignment:id')
                                           ->distinct()
                                           ->get();
-return $carry_cases;
+
          $carry_module_assignmentIDs = $carry_modules = $modules = [];                                 
-         if(count($carry_cases) > 0){
-            $carry_module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
-                                                        ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
-                                                        ->where('semester_id',$semester->id);})
-                                                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                        ->with('programModuleAssignment.campusProgram.program.ntaLevel:id,name','studyAcademicYear:id','specialExams')
-                                                        ->get();
+        // if(count($carry_cases) > 0){
+            $previous_module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($campus_program,$semester,$request){$query->where('campus_program_id',$campus_program->id)
+                                                                                                                                           ->where('year_of_study',1)
+                                                                                                                                           ->where('semester_id',$semester->id)
+                                                                                                                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+                                                          ->get('id');
+
+            $carry_module_assignmentIDs[] = $previous_module_assignment->toArray();
+
+            return $carry_module_assignmentIDs;
             foreach($carry_cases as $case){
-               $carry_module_assignmentIDs[] = $case->moodule_assignment_id;
                $module_assignment = ModuleAssignment::where('id',$case->moodule_assignment_id)->with('module:id,code')->first();
 
                if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
@@ -757,7 +758,7 @@ return $carry_cases;
                   $carry_modules[] = $module_assignment->module->code; 
                }
             }
-         }
+         //}
 
          foreach($module_assignmentIDs as $assign_id){
             if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
