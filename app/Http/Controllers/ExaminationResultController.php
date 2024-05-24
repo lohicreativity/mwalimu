@@ -722,16 +722,18 @@ class ExaminationResultController extends Controller
          $carry_cases = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($semester,$campus_program,$request){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                                             ->where('year_of_study',1)
                                                                                                                                                             ->where('semester_id',$semester->id)
-                                                                                                                                                            ->where('study_academic_year_id',$request->get('study_academic_year_id')-1);})
+                                                                                                                                                            ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                           ->whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                           ->whereHas('student.applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                           ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                          ->whereHas('student.registrations',function($query) use($request,$semester){$query->where('year_of_study',2)
+                                          ->whereHas('student.registrations',function($query) use($request,$semester){$query->where('year_of_study',1)
                                           ->where('semester_id',$semester->id)
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                           ->whereNotNull('retakable_type')
                                           ->distinct()
-                                          ->get('student_id');
+                                          ->get('student_id','module_assignment_id');
+
+                                          return $carry_cases;
 
          $carry_module_assignmentIDs = $carry_modules = [];                                 
          if(count($carry_cases) > 0){
