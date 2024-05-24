@@ -2013,6 +2013,11 @@ class ModuleAssignmentController extends Controller
                             //     $result->supp_score = null;
                             // }
 
+                            if(!$final_special_exam){
+                                $result->type = 'SUPP';
+                                $result->category = 'FIRST';
+                            }
+                            
                             $result->supp_uploaded_at = now();
                             $result->uploaded_by_user_id = Auth::user()->id;
 
