@@ -719,7 +719,7 @@ class ExaminationResultController extends Controller
             $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
          }
 
-         $carry_cases = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($semester,$campus_program,$request){$query->where('campus_program_id',$campus_program->id)
+         $carry_cases = ExaminationResult::select('student_id','module_assignment_id')->whereHas('moduleAssignment.programModuleAssignment',function($query) use($semester,$campus_program,$request){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                                             ->where('year_of_study',1)
                                                                                                                                                             ->where('semester_id',$semester->id)
                                                                                                                                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
@@ -730,7 +730,7 @@ class ExaminationResultController extends Controller
                                           ->where('semester_id',$semester->id)
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                           ->whereNotNull('retakable_type')
-                                          ->distinct('student_id','module_assignment_id')
+                                          ->distinct()
                                           ->get();
 
                                           return $carry_cases;
