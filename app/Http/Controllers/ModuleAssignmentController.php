@@ -1697,7 +1697,7 @@ class ModuleAssignmentController extends Controller
                         $result->supp_score = null;
                         $result->supp_remark = 'POSTPONED';
                     }else{
-                        $result->grade = 'IS';
+                        $result->grade = 'I';
                         $result->point = null;
                         $result->supp_score = null;
                         $result->supp_remark = 'INCOMPLETE';
