@@ -2013,7 +2013,7 @@ class ModuleAssignmentController extends Controller
                             //     $result->supp_score = null;
                             // }
 
-                            $result->final_uploaded_at = now();
+                            $result->supp_uploaded_at = now();
                             $result->uploaded_by_user_id = Auth::user()->id;
 
                             if($supp_upload_allowed && $upload_allowed){
