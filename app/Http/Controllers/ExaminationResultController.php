@@ -730,8 +730,8 @@ class ExaminationResultController extends Controller
                                           ->where('semester_id',$semester->id)
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                           ->whereNotNull('retakable_type')
-                                          ->distinct()
-                                          ->get('student_id','module_assignment_id');
+                                          ->distinct('student_id','module_assignment_id')
+                                          ->get();
 
                                           return $carry_cases;
 
