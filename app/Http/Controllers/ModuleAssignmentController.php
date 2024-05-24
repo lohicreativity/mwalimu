@@ -1544,7 +1544,8 @@ class ModuleAssignmentController extends Controller
                                                                                                                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id);})
                                             ->where('module_assignment_id',$previous_mod_assignment->id)
                                             ->whereNotNull('final_score')
-                                            ->whereIn('exam_type',['FINAL','SUPP'])
+                                            ->where('exam_type','SUPP')
+                                            ->where('exam_category','FIRST')
                                             ->count() != 0 && $stud->academicStatus->name == 'CARRY'){
                             $student_present = true;
                         }
@@ -1686,17 +1687,25 @@ class ModuleAssignmentController extends Controller
                     $result->module_assignment_id = $request->get('module_assignment_id');
                     $result->student_id = $student->id;
                     if($final_special_exam){
+                        $result->grade = 'IF';
+                        $result->point = null;
                         $result->final_score = null;
                         $result->final_remark = 'INCOMPLETE';
                     }elseif($sup_special_exam){
+                        $result->grade = null;
+                        $result->point = null;
                         $result->supp_score = null;
                         $result->supp_remark = 'POSTPONED';
                     }else{
+                        $result->grade = 'IS';
+                        $result->point = null;
                         $result->supp_score = null;
                         $result->supp_remark = 'INCOMPLETE';
                     }
 
                     if($student->studentship_status_id == 6){
+                        $result->grade = null;
+                        $result->point = null;
                         $result->supp_remark = 'DECEASED';
                     }
 
@@ -2017,7 +2026,7 @@ class ModuleAssignmentController extends Controller
                                 $result->type = 'SUPP';
                                 $result->category = 'FIRST';
                             }
-                            
+
                             $result->supp_uploaded_at = now();
                             $result->uploaded_by_user_id = Auth::user()->id;
 

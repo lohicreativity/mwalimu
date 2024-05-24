@@ -734,16 +734,17 @@ class ExaminationResultController extends Controller
                                           ->get();
 
          $carry_module_assignmentIDs = $carry_modules = $modules = [];                                 
-        // if(count($carry_cases) > 0){
+         if(count($carry_cases) > 0){
             $previous_module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($campus_program,$semester,$request){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                            ->where('year_of_study',1)
                                                                                                                                            ->where('semester_id',$semester->id)
-                                                                                                                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+                                                                                                                                           ->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
                                                           ->get('id');
 
-            $carry_module_assignmentIDs[] = $previous_module_assignment->toArray();
+            foreach($previous_module_assignment as $module_assignment){
+               $carry_module_assignmentIDs[] = $module_assignment->id;
+            }
 
-            return $carry_module_assignmentIDs;
             foreach($carry_cases as $case){
                $module_assignment = ModuleAssignment::where('id',$case->moodule_assignment_id)->with('module:id,code')->first();
 
@@ -758,7 +759,7 @@ class ExaminationResultController extends Controller
                   $carry_modules[] = $module_assignment->module->code; 
                }
             }
-         //}
+         }
 
          foreach($module_assignmentIDs as $assign_id){
             if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
@@ -843,6 +844,10 @@ class ExaminationResultController extends Controller
             $students[] = $case->student_id;
          }
 
+         foreach($carry_cases as $case){
+            $students[] = $case->student_id;
+         }
+
          if(count($students) == 0){
             DB::rollback();
             return redirect()->back()->with('error','No supplementary results to process'); 
@@ -905,9 +910,16 @@ class ExaminationResultController extends Controller
                continue;
             }else{
                $no_of_failed_modules = 0;
-               $results = ExaminationResult::where('student_id',$case->id)
-                                           ->whereIn('module_assignment_id',$module_assignmentIDs)
-                                           ->get();
+
+               if(in_array($carry_cases,$case->id)){
+                  $results = ExaminationResult::where('student_id',$case->id)
+                                              ->whereIn('module_assignment_id',$carry_module_assignmentIDs)
+                                              ->get();
+               }else{
+                  $results = ExaminationResult::where('student_id',$case->id)
+                                              ->whereIn('module_assignment_id',$module_assignmentIDs)
+                                              ->get();
+               }
 
                foreach($results as $result){
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
