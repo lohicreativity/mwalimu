@@ -2390,7 +2390,6 @@ class StudentController extends Controller
     { 
         $student = Student::where('id',$request->get('student_id'))->with('applicant.intake:id,name')->first();
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-return $student;
         if($student->applicant->intake->name == 'March'){
           $academic_year_id = $ac_year->id + 1;
         }else{
