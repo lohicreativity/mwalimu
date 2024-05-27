@@ -1530,7 +1530,6 @@ class ModuleAssignmentController extends Controller
             }
 
             foreach($missing_students as $student){
-                return 1;
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                     if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
                                         ->where('student_id',$student->id)
@@ -1917,7 +1916,6 @@ class ModuleAssignmentController extends Controller
                                     continue;
                                 }
                             }else{
-                                return 2;
                                 $result = new ExaminationResult;
                             }
 
