@@ -2323,7 +2323,7 @@ class StudentController extends Controller
       }
       $id_print_status = 0;
       if($student){
-        if($student->intake->name == 'March'){
+        if($student->applicant->intake->name == 'March'){
           $id_print_status = Registration::where('student_id',$student->id + 1)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
         }else{
           $id_print_status = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
