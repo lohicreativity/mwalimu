@@ -2294,7 +2294,7 @@ class StudentController extends Controller
       $applicant = Applicant::select('id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
       $applicant_id = $applicant? $applicant->id : 0;
       $student = Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus','applicant','campusProgram.program','studentShipStatus','applicant.nextOfKin',
-                                'applicant.nextOfKin.country','applicant.nextOfKin.district','applicant.nextOfKin.ward'])
+                                'applicant.nextOfKin.country','applicant.nextOfKin.district','applicant.nextOfKin.ward','applicant.intake:id,name'])
                         ->where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})->first();
 
@@ -2323,8 +2323,11 @@ class StudentController extends Controller
       }
       $id_print_status = 0;
       if($student){
-        $id_print_status = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
-
+        if($student->intake->name == 'March'){
+          $id_print_status = Registration::where('student_id',$student->id + 1)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
+        }else{
+          $id_print_status = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
+        }
       }
       $data = [
           'student'=>$student,
