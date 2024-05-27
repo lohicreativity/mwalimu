@@ -1102,7 +1102,7 @@ class ModuleAssignmentController extends Controller
      * Upload module assignment results
      */
     public function uploadResults(Request $request)
-    {   return 10;
+    {  
         $validation = Validator::make($request->all(),[
         'assessment_plan_id'=>'required',
         'results_file'=>'required|mimes:csv,txt'
@@ -1528,7 +1528,7 @@ class ModuleAssignmentController extends Controller
                     $missing_students[] = $stud;
                 }
             }
-
+return $missing_students;
             foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                     if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
@@ -1908,7 +1908,7 @@ class ModuleAssignmentController extends Controller
                                                            ->first();
 
                             $upload_allowed = true;
-                            if($res = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                            if($res = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->whereIn('exam_type',['FINAL','SUPP'])->first()){
                                 $result = $res;
                                 if($res->final_exam_remark == 'PASS'){
                                     $upload_allowed = false;
