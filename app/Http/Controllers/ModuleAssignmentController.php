@@ -1420,6 +1420,7 @@ class ModuleAssignmentController extends Controller
                                                                                                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                                  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
                                        ->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                       ->where('registration_year',explode('/',$module_assignment->studyAcademicYear->academicYear->year)[0])
                                        ->with('academicStatus:id,name')
                                        ->get();
                 }
