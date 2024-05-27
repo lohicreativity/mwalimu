@@ -2329,6 +2329,7 @@ class StudentController extends Controller
           $id_print_status = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))->where('id_print_status',1)->count();
         }
       }
+      return $id_print_status;
       $data = [
           'student'=>$student,
           'student_payments'=> $student? $student_payments : null,
