@@ -2388,11 +2388,16 @@ class StudentController extends Controller
      */
     public function resetIDPrintStatus(Request $request)
     { 
-        $student = Student::find($request->get('student_id'))->with('applicant.intake:id,name')->first();
+        $student = Student::where('id',$request->get('student_id'))->with('applicant.intake:id,name')->first();
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 return $student;
-        $academic_year = null;
-        Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',session('active_semester_id'))
+        if($student->applicant->intake->name == 'March'){
+          $academic_year_id = $ac_year->id + 1;
+        }else{
+          $academic_year_id = $ac_year->id;
+        }
+
+        Registration::where('student_id',$student->id)->where('study_academic_year_id',$academic_year_id)->where('semester_id',session('active_semester_id'))
                     ->update(['id_sn_no'=>null,'id_print_date'=>null,'id_print_status'=>0]);
 
         return redirect()->back()->with('message','ID card print status reset successfully');
