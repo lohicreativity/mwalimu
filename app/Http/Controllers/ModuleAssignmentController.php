@@ -1963,11 +1963,11 @@ class ModuleAssignmentController extends Controller
                             // }
 
                             if(!$final_special_exam && $student->year_of_study == 1){
-                                $result->type = 'SUPP';
-                                $result->category = 'FIRST';
+                                $result->exam_type = 'SUPP';
+                                $result->exam_category = 'FIRST';
                             }else{
-                                $result->type = 'CARRY';
-                                $result->category = 'FIRST';
+                                $result->exam_type = 'CARRY';
+                                $result->exam_category = 'FIRST';
                             }
 
                             $result->supp_uploaded_at = now();
