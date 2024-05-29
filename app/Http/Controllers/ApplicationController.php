@@ -73,9 +73,9 @@ class ApplicationController extends Controller
     	$data = [
            'awards'=>Award::all(),
            'intakes'=>Intake::all(),
-           'certificate_window'=> ApplicationWindow::where('status','ACTIVE')->whereColumn('begin_date','!=','end_date')->first()? true : false,
-           'bsc_window'=> ApplicationWindow::where('status','ACTIVE')->whereColumn('begin_date','!=','bsc_end_date')->first()? true : false,
-           'msc_window'=> ApplicationWindow::where('status','ACTIVE')->whereColumn('begin_date','!=','msc_end_date')->first()? true : false
+           'certificate_window'=> ApplicationBatch::whereIn('program_level_id',[1,2])->whereColumn('begin_date','end_date')->orWhereNull('begin_date')->first()? false : true,
+           'bsc_window'=> ApplicationBatch::where('program_level_id',4)->whereColumn('begin_date','end_date')->orWhereNull('begin_date')->first()? false : true,
+           'msc_window'=> ApplicationBatch::where('program_level_id',5)->whereColumn('begin_date','end_date')->orWhereNull('begin_date')->first()? false : true,
     	];
     	return view('dashboard.application.register',$data)->withTitle('Applicant Registration');
     }

@@ -22,13 +22,9 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
                 if(!empty($request->get('bsc_end_date'))){
                         $window->bsc_end_date =  DateMaker::toDBDate($request->get('bsc_end_date'));
-                }else{
-                        $window->bsc_end_date =  DateMaker::toDBDate($request->get('end_date'));
                 }
                 if(!empty($request->get('msc_end_date'))){
                         $window->msc_end_date =  DateMaker::toDBDate($request->get('msc_end_date'));
-                }else{
-                        $window->msc_end_date =  DateMaker::toDBDate($request->get('end_date'));
                 }
                 $window->status = $request->get('status');
                 $window->campus_id = $request->get('campus_id');
@@ -69,16 +65,16 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $batch_bsc->application_window_id = $window->id;
                 $batch_bsc->program_level_id = 4;
                 $batch_bsc->batch_no = 1;
-                $batch_bsc->begin_date = $window->begin_date;
-                $batch_bsc->end_date = $window->bsc_end_date;
+                $batch_bsc->begin_date = is_null($window->bsc_end_date)? null : $window->begin_date;
+                $batch_bsc->end_date = is_null($window->bsc_end_date)? null : $window->bsc_end_date;
                 $batch_bsc->save();
 
                 $batch_msc = new ApplicationBatch;
                 $batch_msc->application_window_id = $window->id;
                 $batch_msc->program_level_id = 5;
                 $batch_msc->batch_no = 1;
-                $batch_msc->begin_date = $window->begin_date;
-                $batch_msc->end_date = $window->msc_end_date;
+                $batch_bsc->begin_date = is_null($window->msc_end_date)? null : $window->begin_date;
+                $batch_bsc->end_date = is_null($window->msc_end_date)? null : $window->msc_end_date;
                 $batch_msc->save();
 
                 DB::commit();
