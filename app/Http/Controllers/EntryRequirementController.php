@@ -144,13 +144,13 @@ class EntryRequirementController extends Controller
     public function storeAsPrevious(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $prev_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->offset(1)->first();
+        $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->first();
+        $prev_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('intake_id',$application_window->intake_id)->latest()->offset(1)->first();
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
         return $prev_window;
         $reqs = EntryRequirement::where('application_window_id',$prev_window->id)->where('level',$request->get('level'))->get();
-        $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->first();
         $group_id = Util::randString(100);
         foreach($reqs as $req){
             $requirement = new EntryRequirement;
