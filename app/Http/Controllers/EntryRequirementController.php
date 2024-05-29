@@ -148,11 +148,11 @@ class EntryRequirementController extends Controller
         $prev_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('intake_id',$application_window->intake_id)->latest()->offset(1)->first();
 
         $campusProgramIds = [];
-        foreach($application_window->campus_programs as $program){
-         return $program;
-        }
+      //   foreach($application_window->campus_programs as $program){
+      //    return $program;
+      //   }
         
-
+return $application_window;
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
