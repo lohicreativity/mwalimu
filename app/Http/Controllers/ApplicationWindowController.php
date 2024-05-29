@@ -142,8 +142,10 @@ class ApplicationWindowController extends Controller
            $window = ApplicationWindow::with(['intake','campusPrograms.program'=>function($query) use($request){
                   $query->where('name','LIKE','%'.$request->get('query').'%');
            }])->find($request->get('application_window_id'));
-        }else{
+        }elseif($request->get('application_window_id')){
            $window = ApplicationWindow::with(['intake','campusPrograms'])->find($request->get('application_window_id'));
+        }else{
+            $window = ApplicationWindow::with(['intake','campusPrograms'])->where('campus_id',$request->get('campus_id'))->latest()->first();
         }
         if(!$window){
             return redirect()->back()->with('error','No application window specified');
