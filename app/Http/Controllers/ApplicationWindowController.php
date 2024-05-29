@@ -74,7 +74,7 @@ class ApplicationWindowController extends Controller
         if(ApplicationWindow::where('intake_id',$request->get('intake_id'))->where('campus_id',$request->get('campus_id'))->where('begin_date','<=',DateMaker::toDBDate($request->get('begin_date')))->whereYear('end_date','>=',DateMaker::toDBDate($request->get('begin_date')))->count() != 0){
             return redirect()->back()->with('error','You cannot create more than one application window in the same campus and intake');
         }
-
+return $request;
         if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('end_date')))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
         }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime(now()->format('Y-m-d')))){
@@ -82,11 +82,11 @@ class ApplicationWindowController extends Controller
         }
 
         if(!empty($request->get('bcs_end_date')) || !empty($request->get('msc_end_date'))){
-            if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('msc_end_date')))){
+            if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('msc_end_date')))){
                 return 1;
                return redirect()->back()->with('error','End date cannot be less than begin date');
             }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('msc_end_date')))){
-               return 2; return redirect()->back()->with('error',"Begin date cannot be less than today's date");
+               return redirect()->back()->with('error',"Begin date cannot be less than today's date");
             }
         }
 return 10;
