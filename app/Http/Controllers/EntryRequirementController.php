@@ -152,44 +152,46 @@ class EntryRequirementController extends Controller
          $campusProgramIds[] = $program->id;
         }
         
-return $campusProgramIds;
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
         $reqs = EntryRequirement::where('application_window_id',$prev_window->id)->where('level',$request->get('level'))->get();
         $group_id = Util::randString(100);
         foreach($reqs as $req){
-            $requirement = new EntryRequirement;
-            $requirement->campus_program_id = $req->campus_program_id;
-            $requirement->application_window_id = $application_window->id;
-            $requirement->equivalent_gpa = $req->equivalent_gpa;
-            $requirement->equivalent_must_subjects = $req->equivalent_must_subjects;
-            $requirement->equivalent_average_grade = $req->equivalent_average_grade;
-            $requirement->open_equivalent_gpa = $req->open_equivalent_gpa;
-            $requirement->min_equivalent_gpa = $req->min_equivalent_gpa;
-            $requirement->open_equivalent_pass_subjects = $req->open_equivalent_pass_subjects;
-            $requirement->open_equivalent_average_grade = $req->open_equivalent_average_grade;
-            $requirement->principle_pass_points = $req->principle_pass_points;
-            $requirement->min_principle_pass_points = $req->min_principle_pass_points;
-            $requirement->principle_pass_subjects = $req->principle_pass_subjects;
-            $requirement->subsidiary_pass_subjects = $req->subsidiary_pass_subjects;
-            $requirement->pass_subjects = $req->pass_subjects;
-            $requirement->pass_grade = $req->pass_grade;
-            $requirement->award_level = $req->award_level;
-            $requirement->nta_level = $req->nta_level;
-            $requirement->exclude_subjects = $req->exclude_subjects;
-            $requirement->must_subjects = $req->must_subjects;
-            $requirement->other_must_subjects = $req->other_must_subjects;
-            $requirement->other_advance_must_subjects = $req->other_advance_must_subjects;
-            $requirement->advance_exclude_subjects = $req->advance_exclude_subjects;
-            $requirement->advance_must_subjects = $req->advance_must_subjects;
-            $requirement->subsidiary_subjects = $req->subsidiary_subjects;
-            $requirement->principle_subjects = $req->principle_subjects;
-            $requirement->max_capacity = null;
-            $requirement->level = $requirement->level;
-            $requirement->group_id = $group_id;
-            $requirement->level = $req->level;
-            $requirement->save();
+            if(in_array($req->campus_program_id,$campusProgramIds)){
+               return $req->campus_program_id;
+               $requirement = new EntryRequirement;
+               $requirement->campus_program_id = $req->campus_program_id;
+               $requirement->application_window_id = $application_window->id;
+               $requirement->equivalent_gpa = $req->equivalent_gpa;
+               $requirement->equivalent_must_subjects = $req->equivalent_must_subjects;
+               $requirement->equivalent_average_grade = $req->equivalent_average_grade;
+               $requirement->open_equivalent_gpa = $req->open_equivalent_gpa;
+               $requirement->min_equivalent_gpa = $req->min_equivalent_gpa;
+               $requirement->open_equivalent_pass_subjects = $req->open_equivalent_pass_subjects;
+               $requirement->open_equivalent_average_grade = $req->open_equivalent_average_grade;
+               $requirement->principle_pass_points = $req->principle_pass_points;
+               $requirement->min_principle_pass_points = $req->min_principle_pass_points;
+               $requirement->principle_pass_subjects = $req->principle_pass_subjects;
+               $requirement->subsidiary_pass_subjects = $req->subsidiary_pass_subjects;
+               $requirement->pass_subjects = $req->pass_subjects;
+               $requirement->pass_grade = $req->pass_grade;
+               $requirement->award_level = $req->award_level;
+               $requirement->nta_level = $req->nta_level;
+               $requirement->exclude_subjects = $req->exclude_subjects;
+               $requirement->must_subjects = $req->must_subjects;
+               $requirement->other_must_subjects = $req->other_must_subjects;
+               $requirement->other_advance_must_subjects = $req->other_advance_must_subjects;
+               $requirement->advance_exclude_subjects = $req->advance_exclude_subjects;
+               $requirement->advance_must_subjects = $req->advance_must_subjects;
+               $requirement->subsidiary_subjects = $req->subsidiary_subjects;
+               $requirement->principle_subjects = $req->principle_subjects;
+               $requirement->max_capacity = null;
+               $requirement->level = $requirement->level;
+               $requirement->group_id = $group_id;
+               $requirement->level = $req->level;
+               $requirement->save();
+            }
         }
 
         return redirect()->back()->with('message','Entry requirements created successfully');
