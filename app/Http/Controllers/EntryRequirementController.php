@@ -148,7 +148,7 @@ class EntryRequirementController extends Controller
         $prev_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('intake_id',$application_window->intake_id)->latest()->offset(1)->first();
 
         $campusProgramIds = [];
-        foreach($application_window->campus_program as $program){
+        foreach($application_window->campus_programs as $program){
          $campusProgramIds[] = $program->pivot->campus_program_id;
         }
         
