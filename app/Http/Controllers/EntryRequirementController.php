@@ -77,7 +77,7 @@ class EntryRequirementController extends Controller
     {   
         $staff = User::find(Auth::user()->id)->staff;
         $data = [
-           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->with(['intake','campus'])->latest()->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get(),
            'request'=>$request

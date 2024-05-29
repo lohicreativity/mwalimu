@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Entry Requirements</h1>
+            <h1 class="m-0">Programme Capacity</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active"><a href="#">Entry Requirements</a></li>
+              <li class="breadcrumb-item active"><a href="#">Programme Capacity</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -51,8 +51,8 @@
                     <div class="form-group col-12">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
-                        @foreach($application_windows as $window)
-                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
+                        @foreach($application_windows as $key=>$window)
+                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @elseif($request->get('application_window_id') != $window->id && $key == 0) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
                         @endforeach
                      </select>
                    </div>
@@ -69,7 +69,7 @@
             @if(count($entry_requirements) != 0 && $application_window)
             <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Entry Requirements') }}</h3>
+                 <h3 class="card-title">{{ __('Programme Capacity') }}</h3>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
