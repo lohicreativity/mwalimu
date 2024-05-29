@@ -168,7 +168,7 @@
                                   @endphp
 
                                     @foreach($campusPrograms as $program)
-                                      @if(in_array($program->award_id,$nta_level_ids)) 
+                                      @if(in_array(1,$nta_level_ids)) 
                                         <tr>
                                           <td>{{ $program->program->name }} </td>
                                           <td>
