@@ -186,8 +186,8 @@
                     <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
-                    <td>{{ @if(is_null($window->bsc_end_date)) N/A @else $window->bsc_end_date @endif}}</td>
-                    <td>{{ @if(is_null($window->msc_end_date)) N/A @else $window->msc_end_date @endif}}</td>
+                    <td> @if(is_null($window->bsc_end_date)) N/A @else {{ $window->bsc_end_date }} @endif </td>
+                    <td> @if(is_null($window->msc_end_date)) N/A @else {{ $window->msc_end_date }} @endif </td>
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <td>
                       @can('edit-application-window')
