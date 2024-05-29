@@ -70,9 +70,9 @@ class ApplicationController extends Controller
      */
     public function index(Request $request)
     { 
-        $certificate_batch = ApplicationBatch::whereIn('program_level_id',[1,2])->latest()->first();
-        $bsc_batch = ApplicationBatch::where('program_level_id',4)->latest()->first();
-        $msc_batch = ApplicationBatch::where('program_level_id',5)->latest()->first();
+        $certificate_batch = ApplicationBatch::whereIn('program_level_id',[1,2])->where('batch_no',1)->latest()->first();
+        $bsc_batch = ApplicationBatch::where('program_level_id',4)->where('batch_no',1)->latest()->first();
+        $msc_batch = ApplicationBatch::where('program_level_id',5)->where('batch_no',1)->latest()->first();
     	$data = [
            'awards'=>Award::all(),
            'intakes'=>Intake::all(),
