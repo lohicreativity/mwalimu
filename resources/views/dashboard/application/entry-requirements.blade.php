@@ -51,8 +51,8 @@
                     <div class="form-group col-12">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
-                        @foreach($application_windows as $window)
-                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
+                        @foreach($application_windows as $key=>$window)
+                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @elseif($request->get('application_window_id') != $window->id && $key == 0) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
                         @endforeach
                      </select>
                    </div>
