@@ -60,7 +60,7 @@
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $k=>$win)
                           @if($staff->campus_id == $win->campus_id)
-                        <option value="{{ $win->id }}" @if($request->get('application_window_id') == $win->id) selected="selected" @elseif($request->get('application_window_id') != $win->id && $k == 0) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} - {{ $win->campus->name }} - {{ $win->intake->name }}</option>
+                        <option value="{{ $win->id }}" @if($request->get('application_window_id') == $win->id) selected="selected" @elseif($request->get('application_window_id') != $win->id && $k == 0) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} - {{ $win->intake->name }}</option>
                           @endif
                         @endforeach
                      </select>
