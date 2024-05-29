@@ -25,10 +25,12 @@ class EntryRequirementController extends Controller
       $staff = User::find(Auth::user()->id)->staff;
       //$approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
       $requirements = EntryRequirement::where('application_window_id',$request->get('application_window_id'))->get();
+      
       $campusProgramIds = [];
       foreach ($requirements as $req) {
         $campusProgramIds[] = $req->campus_program_id;
       }
+
     	$data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->with(['intake','campus'])->latest()->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
@@ -64,7 +66,8 @@ class EntryRequirementController extends Controller
                 $query->where('campus_id',$staff->campus_id);
               })->where('name','LIKE','%Diploma%')->get(),
            'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->count() == 0? false : true,
-           'request'=>$request
+           'request'=>$request,
+           'certificate_has_requirements'=>EntryRequirement::where('application_window_id',$request->get('application_window_id'))->where('level','certificate')->count()
     	];
 
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');

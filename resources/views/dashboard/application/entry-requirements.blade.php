@@ -295,7 +295,7 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
-                   @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
+                   @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window) && $certificate_has_requirements == 0)
                  <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id.'&level=certificate') }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>
