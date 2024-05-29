@@ -69,7 +69,7 @@ class ApplicationController extends Controller
      * Disaplay form for application
      */
     public function index(Request $request)
-    {
+    { return ApplicationBatch::whereIn('program_level_id',[1,2])->whereColumn('begin_date','end_date')->orWhereNull('begin_date')->first();
     	$data = [
            'awards'=>Award::all(),
            'intakes'=>Intake::all(),
