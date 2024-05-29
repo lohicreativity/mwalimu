@@ -148,6 +148,7 @@ class EntryRequirementController extends Controller
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
+        return $prev_window;
         $reqs = EntryRequirement::where('application_window_id',$prev_window->id)->where('level',$request->get('level'))->get();
         $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->first();
         $group_id = Util::randString(100);
