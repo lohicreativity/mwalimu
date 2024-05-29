@@ -152,7 +152,7 @@ class EntryRequirementController extends Controller
       //    $campusProgramIds[] = $program->pivot->campus_program_id;
       //   }
         
-        return $application_window->campus_programs;
+        return $application_window;
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
