@@ -146,7 +146,12 @@ class EntryRequirementController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->with('campusPrograms:id')->latest()->first();
         $prev_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('intake_id',$application_window->intake_id)->latest()->offset(1)->first();
-        return $application_window;
+
+        $campusProgramIds = [];
+        foreach($application_window->pivot as $campus_program){
+         $campusProgramIds[] = $campus_program->campus_program_id;
+        }
+        return $campusProgramIds;
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
