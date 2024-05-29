@@ -117,7 +117,7 @@ class ProgramFeeController extends Controller
     {
          $previous_ac_yr = StudyAcademicYear::latest()->offset(1)->first();
          if(!$previous_ac_yr){
-             return redirect()->back()->with('error','No previous academic year');
+            return redirect()->back()->with('error','No previous academic year');
          }
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $prog_fees = ProgramFee::where('study_academic_year_id',$previous_ac_yr->id)->get();
