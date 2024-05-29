@@ -168,7 +168,7 @@
                                   @endphp
 
                                     @foreach($campusPrograms as $program)
-                                      @if($nta_level_ids[0] == 1 && $program->award_id == 1)) 
+                                      @if($nta_level_ids[0] == 1 && $program->program->award_id == 1)) 
                                         <tr>
                                           <td>{{ $program->program->name }} </td>
                                           <td>
