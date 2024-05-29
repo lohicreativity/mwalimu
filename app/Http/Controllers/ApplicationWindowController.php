@@ -57,7 +57,7 @@ class ApplicationWindowController extends Controller
      * Store award into database
      */
     public function store(Request $request)
-    {
+    {return 1;
     	$validation = Validator::make($request->all(),[
             'begin_date'=>'required',
             'end_date'=>'required'
