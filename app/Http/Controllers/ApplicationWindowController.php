@@ -212,7 +212,7 @@ class ApplicationWindowController extends Controller
                     $campusPrograms+=1;
                 }
             }
-return $campusPrograms;
+
             if($campus_programs_count < $campusPrograms){
                 return redirect()->back()->with('error','You cannot activate the window because some offered programmes are missing entry requirements');
             }
