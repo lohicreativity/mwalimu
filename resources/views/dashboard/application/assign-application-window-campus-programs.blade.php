@@ -152,19 +152,34 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  @php
+                                      $nta_level_ids = [1,2];
+                                      foreach($application_windows as $k=>$win){
+                                        if($win->id == $window->id){
+                                          if($staff->campus_id == $win->campus_id && !is_null($win->bsc_end_date)){
+                                            $nta_level_ids[] = 4;
+                                          }
+                                          if($staff->campus_id == $win->campus_id && !is_null($win->msc_end_date)){
+                                            $nta_level_ids[] = 5;
+                                          }
+                                          break;
+                                        }
+                                      }
+                                  @endphp
+
                                     @foreach($campusPrograms as $program)
                                     <tr>
-                                      <td>{{ $program->program->name }}</td>
+                                      <td>@if(in_array($nta_level_ids,$program->nta_level_id)) {{ $program->program->name }} @endif</td>
                                       <td>
                                         @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
                                          
-                                         {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, true, ['class' => 'assign-checkbox']) !!} 
+                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, true, ['class' => 'assign-checkbox']) !!} 
 
-                                         @else
+                                        @else
                                           
                                           {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, false, ['class' => 'assign-checkbox']) !!}
 
-                                         @endif
+                                        @endif
                                       </td>
                                     </tr>
                                     @endforeach
