@@ -72,14 +72,13 @@ class ApplicationController extends Controller
     { 
         $certificate_batch = ApplicationBatch::whereIn('program_level_id',[1,2])->latest()->first();
         $bsc_batch = ApplicationBatch::where('program_level_id',4)->latest()->first();
-        return $bsc_batch;
         $msc_batch = ApplicationBatch::where('program_level_id',5)->latest()->first();
     	$data = [
            'awards'=>Award::all(),
            'intakes'=>Intake::all(),
-           'certificate_window'=> $certificate_batch->begin_date == $certificate_batch->end_date || $certificate_batch->begin_date = null? false : true,
-           'bsc_window'=> $bsc_batch->begin_date == $bsc_batch->end_date || $bsc_batch->begin_date = null? false : true,
-           'msc_window'=> $msc_batch->begin_date == $msc_batch->end_date || $msc_batch->begin_date = null? false : true,
+           'certificate_window'=> $certificate_batch->begin_date == $certificate_batch->end_date || $certificate_batch->begin_date == null? false : true,
+           'bsc_window'=> $bsc_batch->begin_date == $bsc_batch->end_date || $bsc_batch->begin_date == null? false : true,
+           'msc_window'=> $msc_batch->begin_date == $msc_batch->end_date || $msc_batch->begin_date == null? false : true,
     	];
     	return view('dashboard.application.register',$data)->withTitle('Applicant Registration');
     }
