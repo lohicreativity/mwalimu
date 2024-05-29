@@ -144,7 +144,7 @@ class EntryRequirementController extends Controller
     public function storeAsPrevious(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->with('campusPrograms:id')->latest()->first();
+        $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->with('campusPrograms')->latest()->first();
         $prev_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('intake_id',$application_window->intake_id)->latest()->offset(1)->first();
 
         $campusProgramIds = [];
