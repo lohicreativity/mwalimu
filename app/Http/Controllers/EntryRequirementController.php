@@ -67,7 +67,9 @@ class EntryRequirementController extends Controller
               })->where('name','LIKE','%Diploma%')->get(),
            'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->count() == 0? false : true,
            'request'=>$request,
-           'certificate_has_requirements'=>EntryRequirement::where('application_window_id',$request->get('application_window_id'))->where('level','certificate')->count()
+           'certificate_requirements'=>EntryRequirement::where('application_window_id',$request->get('application_window_id'))->where('level','certificate')->count(),
+           'diploma_requirements'=>EntryRequirement::where('application_window_id',$request->get('application_window_id'))->where('level','diploma')->count(),
+           'bachelor_requirements'=>EntryRequirement::where('application_window_id',$request->get('application_window_id'))->where('level','certificate')->count()
     	];
 
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
