@@ -149,7 +149,7 @@ class EntryRequirementController extends Controller
 
         $campusProgramIds = [];
         foreach($application_window->campusPrograms as $program){
-         $campusProgramIds = $program->id;
+         $campusProgramIds[] = $program->id;
         }
         
 return $campusProgramIds;
