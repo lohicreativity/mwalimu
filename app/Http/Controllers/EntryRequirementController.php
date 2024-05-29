@@ -152,7 +152,7 @@ class EntryRequirementController extends Controller
       //    return $program;
       //   }
         
-return $application_window->campusProgram;
+return $application_window->intake_id;
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
