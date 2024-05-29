@@ -1721,8 +1721,8 @@ class ApplicationController extends Controller
     
                     $f6indexno = null;
                     foreach ($applicant->nectaResultDetails as $detail) {
-                        if($detail->exam_id == 2 && $detail->verified == 1){
-                        $f6indexno = $detail->index_number;
+                        if($detail->exam_id == 2){
+                            $f6indexno = $detail->index_number;
                         }
                     }
     

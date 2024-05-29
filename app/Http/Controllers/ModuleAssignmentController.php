@@ -1493,12 +1493,14 @@ class ModuleAssignmentController extends Controller
 
                     // Carry cases
                     if($stud->academicStatus->name == 'CARRY'){
-                        if(ExaminationResult::where('student_id',$stud->id)
-                                            ->where('module_assignment_id',$previous_mod_assignment->id)
-                                            ->whereNotNull('retakable_id')
-                                            ->where('retakable_type','CARRY')
-                                            ->count() != 0){
-                            $student_present = true;
+                        if($previous_mod_assignment){
+                            if(ExaminationResult::where('student_id',$stud->id)
+                            ->where('module_assignment_id',$previous_mod_assignment->id)
+                            ->whereNotNull('retakable_id')
+                            ->where('retakable_type','CARRY')
+                            ->count() != 0){
+                                $student_present = true;
+                            }
                         }
                     }
                 }else{// Coursework components marks
