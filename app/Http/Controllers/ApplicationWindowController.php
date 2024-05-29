@@ -76,16 +76,18 @@ class ApplicationWindowController extends Controller
         }
 
         if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('end_date')))){
+            return 1;
             return redirect()->back()->with('error','End date cannot be less than begin date');
         }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime(now()->format('Y-m-d')))){
+            return 2;
             return redirect()->back()->with('error',"Begin date cannot be less than today's date");
         }
 
         if(!empty($request->get('bcs_end_date')) || !empty($request->get('msc_end_date'))){
             if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('msc_end_date')))){
-                return redirect()->back()->with('error','End date cannot be less than begin date');
+                return 3; return redirect()->back()->with('error','End date cannot be less than begin date');
             }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('msc_end_date')))){
-                return redirect()->back()->with('error',"Begin date cannot be less than today's date");
+               return 4; return redirect()->back()->with('error',"Begin date cannot be less than today's date");
             }
         }
 
