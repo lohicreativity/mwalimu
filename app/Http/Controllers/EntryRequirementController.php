@@ -150,6 +150,7 @@ class EntryRequirementController extends Controller
         }
         $reqs = EntryRequirement::where('application_window_id',$prev_window->id)->where('level',$request->get('level'))->get();
         $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->first();
+        $group_id = Util::randString(100);
         foreach($reqs as $req){
             $requirement = new EntryRequirement;
             $requirement->campus_program_id = $req->campus_program_id;
@@ -177,9 +178,9 @@ class EntryRequirementController extends Controller
             $requirement->advance_must_subjects = $req->advance_must_subjects;
             $requirement->subsidiary_subjects = $req->subsidiary_subjects;
             $requirement->principle_subjects = $req->principle_subjects;
-            $requirement->max_capacity = $req->max_capacity;
+            $requirement->max_capacity = null;
             $requirement->level = $requirement->level;
-            $requirement->group_id = $req->group_id;
+            $requirement->group_id = $group_id;
             $requirement->level = $req->level;
             $requirement->save();
         }
