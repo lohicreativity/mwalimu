@@ -137,7 +137,7 @@ class ApplicationWindowController extends Controller
      * Display asssigned programs
      */
     public function showPrograms(Request $request)
-    {return $request;
+    {
         if($request->get('query')){
            $window = ApplicationWindow::with(['intake','campusPrograms.program'=>function($query) use($request){
                   $query->where('name','LIKE','%'.$request->get('query').'%');
