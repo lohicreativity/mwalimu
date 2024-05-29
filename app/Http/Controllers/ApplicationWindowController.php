@@ -175,7 +175,7 @@ class ApplicationWindowController extends Controller
      * Update asssigned programs
      */
     public function updatePrograms(Request $request)
-    {
+    {   return $request;
         $programs = CampusProgram::all();
         $window = ApplicationWindow::find($request->get('application_window_id'));
         $programIds = [];
