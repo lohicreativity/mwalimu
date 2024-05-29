@@ -86,7 +86,7 @@ class ApplicationWindowController extends Controller
                 return 1;
                return redirect()->back()->with('error','End date cannot be less than begin date');
             }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('msc_end_date')))){
-               return redirect()->back()->with('error',"Begin date cannot be less than today's date");
+               return 2; return redirect()->back()->with('error',"Begin date cannot be less than today's date");
             }
         }
 return 10;
