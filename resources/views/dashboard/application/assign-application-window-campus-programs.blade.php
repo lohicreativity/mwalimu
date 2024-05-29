@@ -168,20 +168,22 @@
                                   @endphp
 
                                     @foreach($campusPrograms as $program)
-                                    <tr>
-                                      <td>@if(in_array($program->pronta_level_id,$nta_level_ids,)) {{ $program->program->name }} @endif</td>
-                                      <td>
-                                        @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
-                                         
-                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, true, ['class' => 'assign-checkbox']) !!} 
+                                      @if(in_array($program->award_id,$nta_level_ids)) 
+                                        <tr>
+                                          <td>{{ $program->program->name }} </td>
+                                          <td>
+                                            @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
+                                            
+                                              {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, true, ['class' => 'assign-checkbox']) !!} 
 
-                                        @else
-                                          
-                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, false, ['class' => 'assign-checkbox']) !!}
+                                            @else
+                                              
+                                              {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, false, ['class' => 'assign-checkbox']) !!}
 
-                                        @endif
-                                      </td>
-                                    </tr>
+                                            @endif
+                                          </td>
+                                        </tr>
+                                      @endif
                                     @endforeach
                                 </tbody>
                                 </table>
