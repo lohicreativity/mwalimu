@@ -57,7 +57,7 @@ class ApplicationWindowController extends Controller
      * Store award into database
      */
     public function store(Request $request)
-    {return 1;
+    {
     	$validation = Validator::make($request->all(),[
             'begin_date'=>'required',
             'end_date'=>'required'
@@ -88,7 +88,7 @@ class ApplicationWindowController extends Controller
                 return redirect()->back()->with('error',"Begin date cannot be less than today's date");
             }
         }
-
+return 2;
         (new ApplicationWindowAction)->store($request);
 
         return Util::requestResponse($request,'Application window created successfully');
