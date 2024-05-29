@@ -169,7 +169,7 @@
 
                                     @foreach($campusPrograms as $program)
                                     <tr>
-                                      <td> {{ $program->program->name }} {{ $nta_level_ids[2] }}</td>
+                                      <td> {{ $program->program->name }} {{ $nta_level_ids[1] }}</td>
                                       <td>
                                         @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
                                          
