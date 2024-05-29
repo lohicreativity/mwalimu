@@ -98,8 +98,8 @@
                         @endforeach
                     </td>
                     <td> {{ $ba->batch_no }} </td>
-                    <td> {{ $ba->begin_date }} </td>
-                    <td> {{ $ba->end_date }} </td>
+                    <td> @if(is_null($ba->begin_date)) N/A @else {{ $ba->begin_date }} @endif</td>
+                    <td> @if(is_null($ba->end_date)) N/A @else{{ $ba->end_date }} @endif</td>
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <td>
                       @php
