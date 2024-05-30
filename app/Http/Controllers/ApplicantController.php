@@ -1230,7 +1230,7 @@ class ApplicantController extends Controller
                                                 ->where(function($query) {
                                                    $query->where('applicant_program_selections.status', 'SELECTED')
                                                          ->orWhere('applicant_program_selections.status', 'APPROVING');
-                                                })
+                                                })->where('application_window_id',$window->id)
                                                 ->count();
 
                                                 //return $count_applicants_per_program.'-'.$prog->entryRequirements[0]->max_capacity;

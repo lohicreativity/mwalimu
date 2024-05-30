@@ -103,9 +103,7 @@ class ExaminationResultController extends Controller
       set_time_limit(120);
 
       $staff = User::find(Auth::user()->id)->staff;
-      // if($staff->id != 2){
-      //    return redirect()->back()->with('error','You are not allowed to process examination results at the moment'); 
-      // }
+
       $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program:id,nta_level_id')->find(explode('_',$request->get('campus_program_id'))[0]);
       $special_exam = SpecialExam::select('id')->whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
@@ -736,7 +734,7 @@ class ExaminationResultController extends Controller
                }
 
                foreach($carry_cases as $case){
-                  $module_assignment = ModuleAssignment::where('id',$case->moodule_assignment_id)->with('module:id,code')->first();
+                  $mod_assignment = ModuleAssignment::where('id',$case->moodule_assignment_id)->with('module:id,code')->first();
 
                   if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                     ->whereHas('student.semesterRemarks', function($query){$query->where('remark','CARRY');})
@@ -744,9 +742,9 @@ class ExaminationResultController extends Controller
                                     ->where('exam_type','SUPP')
                                     ->where('exam_category','SECOND')
                                     ->where('supp_remark','!=','CARRY')
-                                    ->where('module_assignment_id',$module_assignment->id)
+                                    ->where('module_assignment_id',$mod_assignment->id)
                                     ->count() == 0 ){
-                     $carry_modules[] = $module_assignment->module->code; 
+                     $carry_modules[] = $mod_assignment->module->code; 
                   }
                }
             }
@@ -822,11 +820,19 @@ class ExaminationResultController extends Controller
 
             $module_assignments = null;
             foreach($students as $case){
-               $remark = SemesterRemark::where('student_id',$case->id)
-                                       ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                       ->where('semester_id',$semester->id)
-                                       ->where('year_of_study',$year_of_study)
-                                       ->first();
+               if(in_array($case->id,$carry_cases)){
+                  $remark = SemesterRemark::where('student_id',$case->id)
+                                          ->where('study_academic_year_id',$request->get('study_academic_year_id')-1)
+                                          ->where('semester_id',$semester->id)
+                                          ->where('year_of_study',$year_of_study)
+                                          ->first();
+               }else{
+                  $remark = SemesterRemark::where('student_id',$case->id)
+                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                          ->where('semester_id',$semester->id)
+                                          ->where('year_of_study',$year_of_study)
+                                          ->first();
+               }
 
                $special_exam_status = SpecialExam::where('student_id',$case->id)
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))
@@ -841,7 +847,7 @@ class ExaminationResultController extends Controller
                }else{
                   $no_of_failed_modules = 0;
 
-                  if(in_array($carry_cases,$case->id)){
+                  if(in_array($case->id,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case->id)
                                                 ->whereIn('module_assignment_id',$carry_module_assignmentIDs)
                                                 ->get();
