@@ -215,7 +215,7 @@
                       @foreach($assessment_plans as $plan)
                       <td class="ss-bold">{{ $plan->name }}</td>
                       @endforeach
-                      <td class="ss-bold"> FINAL SCORE </td>
+                      <td class="ss-bold"> Final Score </td>
                     </tr>
                     @foreach($results as $key=>$result)
                     <tr>
