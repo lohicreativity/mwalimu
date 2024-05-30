@@ -226,32 +226,15 @@
                             $empty_columns = count($assessment_plans) - count($result->student->courseWorkResults);
                             $cw_total = 0;
                         @endphp
-                      @foreach($assessment_plans as $plan)
-                        
+                      @foreach($assessment_plans as $plan) 
                         @foreach($result->student->courseWorkResults as $res)
                           @if($res->assessment_plan_id == $plan->id)
-                          <td>{{ $res->score }}</td>
-                            @php 
-                               $cw_available = true; 
-                               $cw_total += $res->score;
-                            @endphp
-                          @else
-                            @php 
-                                $cw_available = false; 
-                            @endphp
+                            <td> @if(is_null($res->score)) - @else {{ $res->score }} @endif</td>
                           @endif
                         @endforeach
-                        
-
-                        
-                      @endforeach
-                                               @if(!$cw_available)
-                            <td>-</td>
-                         @endif
-                      <td>@if(count($result->student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @else - @endif</td>
-                      <td></td>
+                      @endif
+                      <td>@if(is_null($result->final_score)) - @else {{ $result->final_score }} @endif</td>
                     </tr>
-                    @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
                 
