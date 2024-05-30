@@ -1250,7 +1250,7 @@ class ModuleAssignmentController extends Controller
                 }else{
                     $non_opted_students = $invalid_carry_students = [];
                     foreach($uploaded_students as $up_stud){
-                        if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
+                        if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','SUPP')->orWhere('name','INCOMPLETE')->orWhere('name','CARRY')->orWhere('name','RETAKE');})
                                                                                   ->where('id',$up_stud->id)
                                                                                   ->count() == 0){
                             $non_opted_students[] = $up_stud;
