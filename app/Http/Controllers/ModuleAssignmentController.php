@@ -339,11 +339,12 @@ class ModuleAssignmentController extends Controller
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->count();
              }else{
-                $total_students_count = Student::whereHas('studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->whereHas('registrations',function($query) use($module_assignment){
-                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->count();
+                $total_students_count = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                               ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                                         ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                         ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                               ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
+                                               ->count();
              }
 
              $students_with_coursework_count = CourseWorkResult::whereHas('student.studentshipStatus',function($query){
@@ -1140,7 +1141,7 @@ class ModuleAssignmentController extends Controller
             }
 
             foreach($all_students as $std){
-                if(Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                if(!Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                ->where('student_id',$std->id)
@@ -1156,12 +1157,7 @@ class ModuleAssignmentController extends Controller
 
             $all_students = null;
             $academicYear = $module_assignment->studyAcademicYear->academicYear;
-
             $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-            $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)
-                                       ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                       ->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)
-                                       ->first();
 
             DB::beginTransaction();
             if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
