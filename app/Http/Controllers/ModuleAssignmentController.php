@@ -391,8 +391,9 @@ class ModuleAssignmentController extends Controller
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','PASS')->where('exam_type','PASS')->count();
              $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->count();
+                $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count();
+            
              $final_upload_status = false;
              if($module_assignment->final_upload_status == 'UPLOADED'){
                 $final_upload_status = true;
@@ -768,10 +769,6 @@ class ModuleAssignmentController extends Controller
                 }
             }
 
-            return ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count();
-
             $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -783,7 +780,7 @@ class ModuleAssignmentController extends Controller
                 'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->get(),
+            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count(),
             'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
 
