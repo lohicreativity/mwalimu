@@ -390,7 +390,7 @@ class ModuleAssignmentController extends Controller
 
             $postponed_students_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
                                                           ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-                                                          ->with('student')
+                                                          ->where('module_assignment_id',$module_assignment->id)
                                                           ->where('final_remark','POSTPONED')
                                                           ->whereNotNull('final_uploaded_at')
                                                           ->count();
@@ -818,7 +818,7 @@ class ModuleAssignmentController extends Controller
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');
-                })->whereHas('student.registrations',
+                })->where('module_assignment_id',$module_assignment->id)->whereHas('student.registrations',
                         function($query){
                     $query->where('status','REGISTERED');
                 })->with('student')->where('final_remark','POSTPONED')->whereNotNull('final_uploaded_at')->get(),
