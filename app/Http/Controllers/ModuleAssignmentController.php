@@ -421,11 +421,8 @@ class ModuleAssignmentController extends Controller
                 'final_upload_status'=>$final_upload_status,
                 'program_results_process_status'=>$program_results_process_status,
                 'total_students_count'=>$total_students_count,
-                'students_with_no_coursework_count'=>$students_with_no_coursework_count,
-                'students_with_no_final_marks_count'=>$students_with_no_final_marks_count,
                 'students_with_no_supplementary_count'=>$students_with_no_supplementary_count,
-                'students_passed_count'=>$students_passed_count,
-                'students_with_abscond_count'=>$students_with_abscond_count,
+                'students_with_incomplete_'=>$students_with_abscond_count,
                 'supp_cases_count'=>$supp_cases_count,
                 'special_exam_cases_count'=>$special_exam_cases_count,
                 'carry_cases_count'=>$carry_cases_count,
@@ -777,7 +774,7 @@ class ModuleAssignmentController extends Controller
      /**
      * Show students with no course work
      */
-    public function studentsWithNoCourseWork(Request $request,$id)
+    public function studentsWithIncompleteResults(Request $request,$id)
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
@@ -797,7 +794,7 @@ class ModuleAssignmentController extends Controller
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                     'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->get(),
+                })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
                 ];
 
