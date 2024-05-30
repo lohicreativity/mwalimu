@@ -427,6 +427,7 @@ class ModuleAssignmentController extends Controller
                 'final_upload_status'=>$final_upload_status,
                 'program_results_process_status'=>$program_results_process_status,
                 'total_students_count'=>$total_students_count,
+                'students_with_final_count'=>$students_with_final_marks_count,
                 'postponed_students_count'=>$postponed_students_count,
                 'students_with_incomplete_count'=>$students_with_abscond_count,
                 'supp_cases_count'=>$supp_cases_count,
@@ -834,33 +835,33 @@ class ModuleAssignmentController extends Controller
     /**
      * Show students with final marks
      */
-    // public function studentsWithNoFinalMarks(Request $request,$id)
-    // {
-    //     try{
-    //        $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-    //        foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
-    //             if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
-    //                 $department = $dpt;
-    //             }
-    //          }
-    //        $data = [
-    //             'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-    //             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-    //             'department'=>$department,
-    //             'module'=>$module_assignment->module,
-	// 			'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
-    //             'study_academic_year'=>$module_assignment->studyAcademicYear,
-    //             'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-    //                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-    //             })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNull('final_uploaded_at')->get(),
-	// 			'semester'=>$module_assignment->programModuleAssignment->semester_id
-    //         ];
-    //         return view('dashboard.academic.reports.students-with-final',$data);
+    public function studentsWithFinalMarks(Request $request,$id)
+    {
+        try{
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
+           $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$department,
+                'module'=>$module_assignment->module,
+				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_uploaded_at')->get(),
+				'semester'=>$module_assignment->programModuleAssignment->semester_id
+            ];
+            return view('dashboard.academic.reports.students-with-final',$data);
 
-    //     }catch(\Exception $e){
-    //         return redirect()->back()->with('error','Unable to get the resource specified in this request');
-    //     }
-    // }
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
 
     /**
      * Show students with supp marks

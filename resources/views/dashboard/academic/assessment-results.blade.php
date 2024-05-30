@@ -163,6 +163,14 @@
                     @endif
                 </p>
 
+                @if($students_with_final_count > 0)
+                  <p>Students with Final Marks: 
+                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-final-marks') }}" target="_blank">
+                      {{ $students_with_final_count }}
+                    </a>
+                  </p>
+                @endif
+
                 @if($postponed_students_count > 0)
                   <p>Postponed Students: 
                     <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/postponed-students') }}" target="_blank">
