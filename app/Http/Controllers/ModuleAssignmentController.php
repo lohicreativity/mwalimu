@@ -354,7 +354,7 @@ class ModuleAssignmentController extends Controller
              $students_with_no_coursework_count = $total_students_count - count($students_with_coursework_count);
              $students_with_final_marks_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_uploaded_at')->count();
+                })->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_score')->whereNotNull('final_uploaded_at')->count();
              $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
 
              $students_with_supplemetary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
@@ -853,7 +853,7 @@ class ModuleAssignmentController extends Controller
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_uploaded_at')->get(),
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_score')->whereNotNull('final_uploaded_at')->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
             return view('dashboard.academic.reports.students-with-final',$data);
