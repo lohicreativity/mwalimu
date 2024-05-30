@@ -422,7 +422,7 @@ class ModuleAssignmentController extends Controller
                 'program_results_process_status'=>$program_results_process_status,
                 'total_students_count'=>$total_students_count,
                 'students_with_no_supplementary_count'=>$students_with_no_supplementary_count,
-                'students_with_incomplete_'=>$students_with_abscond_count,
+                'students_with_incomplete_count'=>$students_with_abscond_count,
                 'supp_cases_count'=>$supp_cases_count,
                 'special_exam_cases_count'=>$special_exam_cases_count,
                 'carry_cases_count'=>$carry_cases_count,
@@ -553,22 +553,6 @@ class ModuleAssignmentController extends Controller
         try{
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
-/* 				return DB::table('module_assignments')
-                    ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
-                    ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
-                    ->join('students', 'student_program_module_assignment.student_id', '=', 'students.id')
-                    ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
-                    ->where('studentship_statuses.name', 'ACTIVE')
-                    ->select('students.registration_number')
-                    ->orderBy('students.registration_number')
-                    ->get();
-					 */
-
-/* 					$students_with_supplemetary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
-				 */
 
             $students = $module_assignment->programModuleAssignment->category == 'OPTIONAL'? $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})->orderBy('registration_number')->get() :
                                                                                                 Student::select('id','registration_number','studentship_status_id')
@@ -782,23 +766,28 @@ class ModuleAssignmentController extends Controller
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
-             }
-                $data = [
-                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-                    'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$department,
-                    'module'=>$module_assignment->module,
-					'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
-                    'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
-                    'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
-                    'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->get(),
-				'semester'=>$module_assignment->programModuleAssignment->semester_id
-                ];
+            }
 
-                return view('dashboard.academic.reports.students-with-no-course-work',$data);
+            return ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->get();
+
+            $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$department,
+                'module'=>$module_assignment->module,
+                'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
+                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->get(),
+            'semester'=>$module_assignment->programModuleAssignment->semester_id
+            ];
+
+            return view('dashboard.academic.reports.students-with-no-course-work',$data);
         }catch(\Exception $e){
             return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
@@ -843,33 +832,33 @@ class ModuleAssignmentController extends Controller
     /**
      * Show students with final marks
      */
-    public function studentsWithNoFinalMarks(Request $request,$id)
-    {
-        try{
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
-                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
-                    $department = $dpt;
-                }
-             }
-           $data = [
-                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                'department'=>$department,
-                'module'=>$module_assignment->module,
-				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
-                'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNull('final_uploaded_at')->get(),
-				'semester'=>$module_assignment->programModuleAssignment->semester_id
-            ];
-            return view('dashboard.academic.reports.students-with-final',$data);
+    // public function studentsWithNoFinalMarks(Request $request,$id)
+    // {
+    //     try{
+    //        $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+    //        foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
+    //             if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
+    //                 $department = $dpt;
+    //             }
+    //          }
+    //        $data = [
+    //             'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+    //             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+    //             'department'=>$department,
+    //             'module'=>$module_assignment->module,
+	// 			'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
+    //             'study_academic_year'=>$module_assignment->studyAcademicYear,
+    //             'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
+    //                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+    //             })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNull('final_uploaded_at')->get(),
+	// 			'semester'=>$module_assignment->programModuleAssignment->semester_id
+    //         ];
+    //         return view('dashboard.academic.reports.students-with-final',$data);
 
-        }catch(\Exception $e){
-            return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        }
-    }
+    //     }catch(\Exception $e){
+    //         return redirect()->back()->with('error','Unable to get the resource specified in this request');
+    //     }
+    // }
 
     /**
      * Show students with supp marks

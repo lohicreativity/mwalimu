@@ -163,10 +163,10 @@
                     @endif
                 </p>
                 @if($module->course_work_based == 1)
-                    @if($students_with_abscond_count > 0)
+                    @if($students_with_incomplete_count > 0)
                       <p>Incomplete Cases: 
                       <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-incomplete-results') }}" target="_blank">
-                        {{ $students_with_abscond_count }}
+                        {{ $students_with_incomplete_count }}
                       </a>
                     </p>
                     @endif
