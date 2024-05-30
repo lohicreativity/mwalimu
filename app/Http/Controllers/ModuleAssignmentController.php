@@ -784,7 +784,7 @@ class ModuleAssignmentController extends Controller
             'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
 
-            return view('dashboard.academic.reports.students-with-no-course-work',$data);
+            return view('dashboard.academic.reports.students-with-incomplete-results',$data);
         }catch(\Exception $e){
             return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
