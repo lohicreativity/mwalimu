@@ -393,7 +393,7 @@ class ModuleAssignmentController extends Controller
              $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
             })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count();
-            
+
              $final_upload_status = false;
              if($module_assignment->final_upload_status == 'UPLOADED'){
                 $final_upload_status = true;
@@ -780,7 +780,7 @@ class ModuleAssignmentController extends Controller
                 'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count(),
+            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->get(),
             'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
 
