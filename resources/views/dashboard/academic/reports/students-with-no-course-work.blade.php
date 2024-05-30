@@ -232,9 +232,10 @@
                             <td> @if(is_null($res->score)) - @else {{ $res->score }} @endif</td>
                           @endif
                         @endforeach
-                      @endif
+                      @endforeach
                       <td>@if(is_null($result->final_score)) - @else {{ $result->final_score }} @endif</td>
                     </tr>
+                    @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
                 
