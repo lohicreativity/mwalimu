@@ -767,7 +767,7 @@ class ModuleAssignmentController extends Controller
                     $department = $dpt;
                 }
             }
-
+return $module_assignment;
             return ExaminationResult::whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
             })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->count();
