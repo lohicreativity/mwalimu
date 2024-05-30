@@ -387,10 +387,15 @@ class ModuleAssignmentController extends Controller
                                                   ->where('final_exam_remark','FAIL')
                                                   ->where('retakable_type','carry_history')
                                                   ->count();
-             $students_with_no_supplementary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','PASS')->where('exam_type','PASS')->count();
-             $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
+
+            $postponed_students_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
+                                                          ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                                          ->with('student')
+                                                          ->where('final_remark','POSTPONED')
+                                                          ->whereNotNull('final_uploaded_at')
+                                                          ->count();
+
+            $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
             })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count();
 
@@ -422,7 +427,7 @@ class ModuleAssignmentController extends Controller
                 'final_upload_status'=>$final_upload_status,
                 'program_results_process_status'=>$program_results_process_status,
                 'total_students_count'=>$total_students_count,
-                'students_with_no_supplementary_count'=>$students_with_no_supplementary_count,
+                'postponed_students_count'=>$postponed_students_count,
                 'students_with_incomplete_count'=>$students_with_abscond_count,
                 'supp_cases_count'=>$supp_cases_count,
                 'special_exam_cases_count'=>$special_exam_cases_count,
@@ -757,7 +762,7 @@ class ModuleAssignmentController extends Controller
     // }
 
      /**
-     * Show students with no course work
+     * Show students with no course work or final marks
      */
     public function studentsWithIncompleteResults(Request $request,$id)
     {
@@ -795,36 +800,36 @@ class ModuleAssignmentController extends Controller
     /**
      * Show students with final marks
      */
-    // public function studentsWithFinalMarks(Request $request,$id)
-    // {
-    //     try{
-    //        $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-    //        foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
-    //             if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
-    //                 $department = $dpt;
-    //             }
-    //          }
-    //        $data = [
-    //             'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-    //             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-    //             'department'=>$department,
-    //             'module'=>$module_assignment->module,
-	// 			'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
-    //             'study_academic_year'=>$module_assignment->studyAcademicYear,
-    //             'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-    //                 $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-    //             })->whereHas('student.registrations',
-    //                     function($query){
-    //                 $query->where('status','REGISTERED');
-    //             })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->get(),
-	// 			'semester'=>$module_assignment->programModuleAssignment->semester_id
-    //         ];
-    //         return view('dashboard.academic.reports.students-with-final',$data);
+    public function postponedStudents(Request $request,$id)
+    {
+        try{
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
+           $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$department,
+                'module'=>$module_assignment->module,
+				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                    $query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');
+                })->whereHas('student.registrations',
+                        function($query){
+                    $query->where('status','REGISTERED');
+                })->with('student')->where('final_remark','POSTPONED')->whereNotNull('final_uploaded_at')->get(),
+				'semester'=>$module_assignment->programModuleAssignment->semester_id
+            ];
+            return view('dashboard.academic.reports.students-with-final',$data);
 
-    //     }catch(\Exception $e){
-    //         return redirect()->back()->with('error','Unable to get the resource specified in this request');
-    //     }
-    // }
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
 
     /**
      * Show students with final marks

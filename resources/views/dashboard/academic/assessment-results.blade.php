@@ -162,14 +162,21 @@
                     </a>
                     @endif
                 </p>
-                @if($module->course_work_based == 1)
-                    @if($students_with_incomplete_count > 0)
-                      <p>Incomplete Cases: 
-                      <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-incomplete-results') }}" target="_blank">
-                        {{ $students_with_incomplete_count }}
-                      </a>
-                    </p>
-                    @endif
+
+                @if($postponed_students_count > 0)
+                  <p>Postponed Students: 
+                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/postponed-students') }}" target="_blank">
+                      {{ $postponed_students_count }}
+                    </a>
+                  </p>
+                @endif
+
+                @if($students_with_incomplete_count > 0)
+                  <p>Incomplete Cases: 
+                  <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-incomplete-results') }}" target="_blank">
+                    {{ $students_with_incomplete_count }}
+                  </a>
+                </p>
                 @endif
 
                 @if($first_semester_publish_status || $second_semester_publish_status)
