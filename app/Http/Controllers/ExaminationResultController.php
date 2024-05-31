@@ -766,6 +766,7 @@ class ExaminationResultController extends Controller
                                  ->whereNotNull('supp_remark')
                                  ->where('module_assignment_id',$assign_id)
                                  ->count() == 0){
+                                    return 1;
                   $module_assignment = ModuleAssignment::where('id',$assign_id)->with('module:id,code')->first();
                   $modules[] = $module_assignment->module->code;
                }
