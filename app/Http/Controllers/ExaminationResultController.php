@@ -2881,9 +2881,9 @@ class ExaminationResultController extends Controller
                   }   
                }
 
-               $remark->study_academic_year_id = $request->get('study_academic_year_id');
+               $remark->study_academic_year_id = $ac_yr_id;
                $remark->student_id = $student->id;
-               $remark->semester_id = $request->get('semester_id');
+               $remark->semester_id = $semester->id;
 
                if(empty($pass_status) || $missing_case){
                   $remark->remark = 'INCOMPLETE';
