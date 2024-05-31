@@ -760,7 +760,7 @@ class ExaminationResultController extends Controller
             foreach($module_assignmentIDs as $assign_id){
                if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
-                                 ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
+                                 // ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
                                  ->where('course_work_remark','!=','FAIL')
                                  ->whereNull('retakable_type')
                                  ->whereNotNull('supp_remark')
@@ -771,7 +771,7 @@ class ExaminationResultController extends Controller
                   $modules[] = $module_assignment->module->code;
                }
             }
-
+return 2;
             if(count($modules) > 0){
                DB::rollback();
                return redirect()->back()->with('error','Supplementary results for module '.implode(',',$modules).' have not been uploaded'); 
