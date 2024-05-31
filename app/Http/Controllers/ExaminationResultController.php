@@ -2407,6 +2407,7 @@ class ExaminationResultController extends Controller
             if($special_exam && is_null($request->get('final_score'))){
                $result->final_remark = 'POSTPONED';
             }else{
+               return $request->get('final_score');
                if(is_null($request->get('final_score'))){
                   $result->final_remark = 'INCOMPLETE';
                }else{
