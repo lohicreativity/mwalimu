@@ -2404,10 +2404,14 @@ class ExaminationResultController extends Controller
             // if($retake_history){
             //    $result->exam_category = 'RETAKE';
             // }
-            if($special_exam && !$request->get('final_score')){
+            if($special_exam && is_null($request->get('final_score'))){
                $result->final_remark = 'POSTPONED';
             }else{
-               $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+               if($result->final_score == null){
+                  $result->final_remark = 'INCOMPLETE';
+               }else{
+                  $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+               }
             }
             if($result->supp_score != null){
                $result->supp_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
