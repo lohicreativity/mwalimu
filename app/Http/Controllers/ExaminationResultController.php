@@ -2281,18 +2281,18 @@ class ExaminationResultController extends Controller
             return redirect()->back()->with('error','Cannot edit results for a deceased or graduated student'); 
          }
 
-         if(!is_null($request->get('final_score')) && $request->get('final_score') > $module_assignment->programModuleAssignment->final_pass_mark){
+         if(!is_null($request->get('final_score')) && $request->get('final_score') > $module_assignment->programModuleAssignment->final_min_mark){
             DB::rollback();
             return redirect()->back()->with('error','Invalid final marks entered');
          }
 
-         if((!is_null($request->get('appeal_supp_score')) && $request->get('appeal_supp_score') > $module_assignment->programModuleAssignment->module_pass_mark) ||
-            (!is_null($request->get('supp_score')) && $request->get('supp_score') > $module_assignment->programModuleAssignment->module_pass_mark)){
+         if((!is_null($request->get('appeal_supp_score')) && $request->get('appeal_supp_score') > 100) ||
+            (!is_null($request->get('supp_score')) && $request->get('supp_score') > 100)){
             DB::rollback();
             return redirect()->back()->with('error','Invalid supplementary marks entered');
          }
 
-         if(!is_null($request->get('course_work_score')) && $request->get('course_work_score') > $module_assignment->programModuleAssignment->course_work_pass_score){
+         if(!is_null($request->get('course_work_score')) && $request->get('course_work_score') > $module_assignment->programModuleAssignment->course_work_min_mark){
             DB::rollback();
             return redirect()->back()->with('error','Invalid coursework marks entered');
          }
