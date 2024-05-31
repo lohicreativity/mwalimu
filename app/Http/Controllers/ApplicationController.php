@@ -235,7 +235,6 @@ class ApplicationController extends Controller
             }
         }
 
-
         // $a_level = NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first();
 
         // $avn = $request->get('index_number') ? NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
