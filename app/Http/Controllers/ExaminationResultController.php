@@ -757,9 +757,9 @@ class ExaminationResultController extends Controller
                $module_assignment_buffer[$assignment->id]['course_work_based'] = $assignment->module->course_work_based;
             }
 return ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
-->whereHas('retakeHistory.retakableResults',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
-->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
+// ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
+// ->whereHas('retakeHistory.retakableResults',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
+// ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
 ->where('course_work_remark','!=','FAIL')
 ->whereNotNull('supp_remark')
 ->where('module_assignment_id',111)
