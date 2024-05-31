@@ -253,7 +253,7 @@ class ExaminationResultController extends Controller
                   $no_of_failed_modules = 0;
                   $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                               ->where('student_id',$student->id)
-                                              ->with(['retakeHistory.retakableResults'=>function($query) use($request){$query->where('study_academic_year',$request->get('study_academic_year_id') - 1);}])
+                                              ->with(['retakeHistory.retakableResults'=>function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);}])
                                               ->get();
       
                   if(count($results) != $no_of_expected_modules){
@@ -760,7 +760,7 @@ class ExaminationResultController extends Controller
             foreach($module_assignmentIDs as $assign_id){
                if(ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
-                                 ->whereHas('retakeHistory.retakableResults',function($query) use($request){$query->where('study_academic_year',$request->get('study_academic_year_id') - 1);})
+                                 ->whereHas('retakeHistory.retakableResults',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
                                  ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
                                  ->where('course_work_remark','!=','FAIL')
                                  ->whereNull('retakable_type')
