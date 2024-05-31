@@ -1282,8 +1282,6 @@ class ModuleAssignmentController extends Controller
                 $invalid_students = $invalid_retake_students = $students = [];
                 foreach($uploaded_students as $up_stud){
                     if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                        $invalid_students = [];
-
                         $student = Student::select('id','academic_status_id','year_of_study')
                                           ->whereHas('academicStatus',function($query){$query->whereNotIn('name',['REPEAT','FAIL&DISCO','PASS','POSTPONED SEMESTER','POSTPONED YEAR']);}) // Covers SUPP and SPECIAL EXAM cases
                                           ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')
