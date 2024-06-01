@@ -856,7 +856,7 @@ class ExaminationResultController extends Controller
 
             $module_assignments = $remark = null;
             foreach($students as $case){
-               if($carry_cases){
+               if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
                      $remark = SemesterRemark::where('student_id',$case->id)
                                              ->where('study_academic_year_id',$request->get('study_academic_year_id')-1)
