@@ -1118,12 +1118,11 @@ class ExaminationResultController extends Controller
                      Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
                }else{
-                  return $remark;
-                  $remark->gpa = Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
+                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
 
-               $remark->point = Util::computeGPAPoints($remark->credits, $student_results_for_gpa_computation);
+               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation);
 
                // foreach($gpa_classes as $gpa_class){
                //    if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
