@@ -1102,9 +1102,9 @@ class ExaminationResultController extends Controller
                $remark->study_academic_year_id = $ac_year_id > 0? $ac_year_id : $request->get('study_academic_year_id');
                $remark->student_id = $case;
                $remark->semester_id = $active_semester->id;
-               $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+               $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
-               if($remark->remark != 'PASS'){
+               if($remark->supp_remark != 'PASS'){
                   $remark->gpa = null;
                   if($remark->remark == 'SUPP'){
                      Student::where('id',$case)->update(['academic_status_id'=>4]);
