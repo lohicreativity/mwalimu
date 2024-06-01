@@ -70,7 +70,7 @@
                      <td></td>
                      @if(count($years_of_studies) == 3)
                      <td>
-                       <a class="btn btn-primary" href="{{ url('student/request-performance-report?type=overall') }}">Request Overall Statement of Results</a>
+                       <a class="btn btn-primary" href="{{ url('student/request-performance-report?type=overall') }}">Request Overall Statement of Results</a> <span style="color:red"> Payment is Required </span>
                      </td>
                      @endif
                    </tr>
