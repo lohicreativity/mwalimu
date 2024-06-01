@@ -775,9 +775,10 @@ class ExaminationResultController extends Controller
                                  ->get()){
 
                   $count = 0;
+                  $continue = null;
                   foreach($cases as $case){
                      if($case->supp_remark != null){
-                        return 10;
+                        $continue = true;
                         break;
                      }else{
                         if($case->final_exam_remark == 'INCOMPLETE'){
@@ -786,10 +787,14 @@ class ExaminationResultController extends Controller
                      }
                   }
 
-                  if(count($cases) != $count){
-                     return 1;
-                     $module_assignment = ModuleAssignment::where('id',$assign_id)->with('module:id,code')->first();
-                     $modules[] = $module_assignment->module->code;
+                  if($continue){
+                     continue;
+                  }else{
+                     if(count($cases) != $count){
+                        return 1;
+                        $module_assignment = ModuleAssignment::where('id',$assign_id)->with('module:id,code')->first();
+                        $modules[] = $module_assignment->module->code;
+                     }
                   }
                }
             }
