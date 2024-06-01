@@ -1104,7 +1104,7 @@ class ExaminationResultController extends Controller
                $remark->semester_id = $active_semester->id;
                $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
-               if($remark->supp_remark != 'PASS'){ return 1;
+               if($remark->supp_remark != 'PASS'){
                   $remark->gpa = null;
                   if($remark->remark == 'SUPP'){
                      Student::where('id',$case)->update(['academic_status_id'=>4]);
@@ -1117,23 +1117,24 @@ class ExaminationResultController extends Controller
                   }elseif($remark->remark == 'INCOMPLETE'){
                      Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
-               }else{ return 2;
+               }else{
+                  return Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
                   $remark->gpa = Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
 
                $remark->point = Util::computeGPAPoints($remark->credits, $student_results_for_gpa_computation);
 
-               foreach($gpa_classes as $gpa_class){
-                  if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
-                     if($remark->gpa && $gpa_class){
-                        $remark->class = $gpa_class->name;
-                     }else{
-                        $remark->class = null;
-                     }
-                     break;
-                  }
-               }
+               // foreach($gpa_classes as $gpa_class){
+               //    if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
+               //       if($remark->gpa && $gpa_class){
+               //          $remark->class = $gpa_class->name;
+               //       }else{
+               //          $remark->class = null;
+               //       }
+               //       break;
+               //    }
+               // }
 
                if($no_of_failed_modules > (count($student_results)/2) && $remark->remark != 'INCOMPLETE'){
                   $remark->remark = 'REPEAT';
