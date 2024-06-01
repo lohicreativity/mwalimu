@@ -808,7 +808,7 @@ class ExaminationResultController extends Controller
                DB::rollback();
                return redirect()->back()->with('error','Carry results for module '.implode(',',$modules).' have not been uploaded'); 
             }
-return 'Mhm';
+
             $supp_cases = ExaminationResult::whereHas('student',function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
                                           ->whereHas('student.applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                           ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
