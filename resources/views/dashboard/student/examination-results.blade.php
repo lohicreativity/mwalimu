@@ -61,7 +61,7 @@
                         @endforeach
                       </td>
                       @if($results_present_status)
-                      <td><a class="btn btn-primary" href="{{ url('student/request-performance-report?year_of_study='.$key.'&study_academic_year_id='.$years[0]->id) }}">Request Annual Statement of Results</a></td>
+                      <td><a class="btn btn-primary" href="{{ url('student/request-performance-report?year_of_study='.$key.'&study_academic_year_id='.$years[0]->id) }}">Request Annual Statement of Results</a> <span style="color:red"> Payment is Required </span></td>
                       @endif
                    </tr>
                    @endforeach
