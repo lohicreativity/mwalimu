@@ -3103,7 +3103,7 @@ class ExaminationResultController extends Controller
                                   ->whereHas('programModuleAssignment',function($query) use($request){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
                                                                                                             ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
                                   ->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
-                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
+                                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() == 0){
                    return redirect()->back()->with('error','Results not processed');
                }
 
@@ -3176,7 +3176,7 @@ class ExaminationResultController extends Controller
                }
 
         }
-return $students;
+
         $classifications = GPAClassification::where('nta_level_id',$students[0]->applicant->program_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
         if(count($students) != 0){
