@@ -1091,6 +1091,7 @@ class ExaminationResultController extends Controller
                   }   
                } 
                
+               $ac_year_id = 0;
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
                      $ac_year_id = $request->get('study_academic_year_id') -1;
