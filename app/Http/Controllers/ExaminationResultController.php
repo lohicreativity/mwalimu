@@ -858,21 +858,21 @@ class ExaminationResultController extends Controller
             foreach($students as $case){
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
-                     $remark = SemesterRemark::where('student_id',$case->id)
+                     $remark = SemesterRemark::where('student_id',$case)
                                              ->where('study_academic_year_id',$request->get('study_academic_year_id')-1)
                                              ->where('semester_id',$semester->id)
                                              ->where('year_of_study',$year_of_study)
                                              ->first();
                   }
                }else{
-                  $remark = SemesterRemark::where('student_id',$case->id)
+                  $remark = SemesterRemark::where('student_id',$case)
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                           ->where('semester_id',$semester->id)
                                           ->where('year_of_study',$year_of_study)
                                           ->first();
                }
 
-               $special_exam_status = SpecialExam::where('student_id',$case->id)
+               $special_exam_status = SpecialExam::where('student_id',$case)
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                 ->where('semester_id',$semester->id)
                                                 ->where('type','FINAL')
@@ -884,13 +884,14 @@ class ExaminationResultController extends Controller
                if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                   continue;
                }else{
-                  
-                  if(in_array($case,$carry_cases)){
-                     $results = ExaminationResult::where('student_id',$case->id)
-                                                ->whereIn('module_assignment_id',$carry_module_assignmentIDs)
-                                                ->get();
+                  if(count($carry_cases) > 0){
+                     if(in_array($case,$carry_cases)){
+                        $results = ExaminationResult::where('student_id',$case)
+                                                   ->whereIn('module_assignment_id',$carry_module_assignmentIDs)
+                                                   ->get();
+                     }
                   }else{
-                     $results = ExaminationResult::where('student_id',$case->id)
+                     $results = ExaminationResult::where('student_id',$case)
                                                 ->whereIn('module_assignment_id',$module_assignmentIDs)
                                                 ->get();
                   }
@@ -964,7 +965,7 @@ class ExaminationResultController extends Controller
                                           $history = new RetakeHistory;
                                        }
             
-                                       $history->student_id = $case->id;
+                                       $history->student_id = $case;
                                        $history->study_academic_year_id = $request->get('study_academic_year_id');
                                        $history->module_assignment_id = $result->module_assignment_id;
                                        $history->examination_result_id = $result->id;
@@ -982,7 +983,7 @@ class ExaminationResultController extends Controller
                                           $history = new CarryHistory;
                                        }
                
-                                       $history->student_id = $case->id;
+                                       $history->student_id = $case;
                                        $history->study_academic_year_id = $request->get('study_academic_year_id');
                                        $history->module_assignment_id = $result->module_assignment_id;
                                        $history->examination_result_id = $result->id;
@@ -1017,7 +1018,7 @@ class ExaminationResultController extends Controller
                               $history = new RetakeHistory;
                            }
 
-                           $history->student_id = $case->id;
+                           $history->student_id = $case;
                            $history->study_academic_year_id = $request->get('study_academic_year_id');
                            $history->module_assignment_id = $result->module_assignment_id;
                            $history->examination_result_id = $result->id;
@@ -1036,7 +1037,7 @@ class ExaminationResultController extends Controller
                               $history = new CarryHistory;
                            }
    
-                           $history->student_id = $case->id;
+                           $history->student_id = $case;
                            $history->study_academic_year_id = $request->get('study_academic_year_id');
                            $history->module_assignment_id = $result->module_assignment_id;
                            $history->examination_result_id = $result->id;
@@ -1090,27 +1091,32 @@ class ExaminationResultController extends Controller
                   }   
                } 
                
-               $remark->study_academic_year_id = in_array($case,$carry_cases)? $request->get('study_academic_year_id') -1 : $request->get('study_academic_year_id');
-               $remark->student_id = $case->id;
+               if(count($carry_cases) > 0){
+                  if(in_array($case,$carry_cases)){
+                     $ac_year_id = $request->get('study_academic_year_id') -1;
+                  }
+               }
+               $remark->study_academic_year_id = $ac_year_id > 0? $ac_year_id : $request->get('study_academic_year_id');
+               $remark->student_id = $case;
                $remark->semester_id = $request->get('semester_id');
                $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
                if($remark->remark != 'PASS'){
                   $remark->gpa = null;
                   if($remark->remark == 'SUPP'){
-                     Student::where('id',$case->id)->update(['academic_status_id'=>4]);
+                     Student::where('id',$case)->update(['academic_status_id'=>4]);
                   }elseif($remark->remark == 'RETAKE'){
-                     Student::where('id',$case->id)->update(['academic_status_id'=>2]);
+                     Student::where('id',$case)->update(['academic_status_id'=>2]);
                   }elseif($remark->remark == 'CARRY'){
-                     Student::where('id',$case->id)->update(['academic_status_id'=>3]);
+                     Student::where('id',$case)->update(['academic_status_id'=>3]);
                   }elseif(str_contains($remark->remark, 'POSTPONED')){
-                     Student::where('id',$case->id)->update(['academic_status_id'=>9]);
+                     Student::where('id',$case)->update(['academic_status_id'=>9]);
                   }elseif($remark->remark == 'INCOMPLETE'){
-                     Student::where('id',$case->id)->update(['academic_status_id'=>7]);
+                     Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
                }else{
                   $remark->gpa = Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
-                  Student::where('id',$case->id)->update(['academic_status_id'=>1]);
+                  Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
 
                $remark->point = Util::computeGPAPoints($remark->credits, $student_results_for_gpa_computation);
@@ -1130,7 +1136,7 @@ class ExaminationResultController extends Controller
                   $remark->remark = 'REPEAT';
                   $remark->gpa = null;
                   $remark->class = null;
-                  Student::where('id',$case->id)->update(['academic_status_id'=>10]);
+                  Student::where('id',$case)->update(['academic_status_id'=>10]);
 
                }
                
@@ -1138,10 +1144,10 @@ class ExaminationResultController extends Controller
                   $remark->remark = 'FAIL&DISCO';
                   $remark->gpa = null;
                   $remark->class = null;
-                  Student::where('id',$case->id)->update(['academic_status_id'=>5]);
+                  Student::where('id',$case)->update(['academic_status_id'=>5]);
                }
 
-               if(Student::where('id',$case->id)->where('studentship_status_id', 6)->count() > 0){
+               if(Student::where('id',$case)->where('studentship_status_id', 6)->count() > 0){
                   $remark->remark = 'DECEASED';
                   $remark->gpa = null;
                   $remark->class = null;
