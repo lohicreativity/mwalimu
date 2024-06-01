@@ -878,7 +878,12 @@ class ExaminationResultController extends Controller
                                                 ->where('type','FINAL')
                                                 ->where('status','APPROVED')
                                                 ->get();
-
+return SpecialExam::where('student_id',$case)
+->where('study_academic_year_id',$request->get('study_academic_year_id'))
+->where('semester_id',$semester->id)
+->where('type','FINAL')
+->where('status','APPROVED')
+->get();
                $student_results = $student_results_for_gpa_computation = [];
                $no_of_failed_modules = 0;
                if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
