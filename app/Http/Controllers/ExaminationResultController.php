@@ -878,12 +878,7 @@ class ExaminationResultController extends Controller
                                                 ->where('type','FINAL')
                                                 ->where('status','APPROVED')
                                                 ->get();
-return SpecialExam::where('student_id',$case)
-->where('study_academic_year_id',$request->get('study_academic_year_id'))
-->where('semester_id',$semester->id)
-->where('type','FINAL')
-->where('status','APPROVED')
-->get();
+
                $student_results = $student_results_for_gpa_computation = [];
                $no_of_failed_modules = 0;
                if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
@@ -905,7 +900,7 @@ return SpecialExam::where('student_id',$case)
                      $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                      $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
 
-                     if($special_exam_status){
+                     if(count($special_exam_status) > 0){
                         foreach($special_exam_status as $special){
                            if($result->module_assignment_id == $special->module_assignment_id){
                               if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
@@ -1064,9 +1059,7 @@ return SpecialExam::where('student_id',$case)
                      }
                   }
                }
-if($case == 4448 && $special_exam_status){
-   return 10;
-}
+
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = [];
                foreach($student_results as $result){
@@ -1092,7 +1085,7 @@ if($case == 4448 && $special_exam_status){
                      break;
                   }
 
-                  if($result->final_exam_remark == 'FAIL' && $special_exam_status){
+                  if($result->final_exam_remark == 'FAIL' && count($special_exam_status) > 0){
                      $pass_status = 'SUPP'; 
                      $supp_exams[] = $result->moduleAssignment->module->code;
                   }   
