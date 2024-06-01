@@ -773,6 +773,7 @@ class ExaminationResultController extends Controller
                                  ->whereNull('retakable_type')
                                  ->where('module_assignment_id',$assign_id)
                                  ->get()){
+                                    return $cases;
                   $count = 0;
                   foreach($cases as $case){
                      if($case->supp_remark != null){
