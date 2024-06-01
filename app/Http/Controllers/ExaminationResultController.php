@@ -1124,16 +1124,16 @@ class ExaminationResultController extends Controller
 
                $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation);
 
-               // foreach($gpa_classes as $gpa_class){
-               //    if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
-               //       if($remark->gpa && $gpa_class){
-               //          $remark->class = $gpa_class->name;
-               //       }else{
-               //          $remark->class = null;
-               //       }
-               //       break;
-               //    }
-               // }
+               foreach($gpa_classes as $gpa_class){
+                  if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
+                     if($remark->gpa && $gpa_class){
+                        $remark->class = $gpa_class->name;
+                     }else{
+                        $remark->class = null;
+                     }
+                     break;
+                  }
+               }
 
                if($no_of_failed_modules > (count($student_results)/2) && $remark->remark != 'INCOMPLETE'){
                   $remark->remark = 'REPEAT';
