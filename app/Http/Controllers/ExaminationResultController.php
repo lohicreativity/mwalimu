@@ -854,14 +854,16 @@ class ExaminationResultController extends Controller
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                           ->get();
 
-            $module_assignments = null;
+            $module_assignments = $remark = null;
             foreach($students as $case){
-               if(in_array($case,$carry_cases)){
-                  $remark = SemesterRemark::where('student_id',$case->id)
-                                          ->where('study_academic_year_id',$request->get('study_academic_year_id')-1)
-                                          ->where('semester_id',$semester->id)
-                                          ->where('year_of_study',$year_of_study)
-                                          ->first();
+               if($carry_cases){
+                  if(in_array($case,$carry_cases)){
+                     $remark = SemesterRemark::where('student_id',$case->id)
+                                             ->where('study_academic_year_id',$request->get('study_academic_year_id')-1)
+                                             ->where('semester_id',$semester->id)
+                                             ->where('year_of_study',$year_of_study)
+                                             ->first();
+                  }
                }else{
                   $remark = SemesterRemark::where('student_id',$case->id)
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))
@@ -882,6 +884,7 @@ class ExaminationResultController extends Controller
                if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                   continue;
                }else{
+                  
                   if(in_array($case,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case->id)
                                                 ->whereIn('module_assignment_id',$carry_module_assignmentIDs)
