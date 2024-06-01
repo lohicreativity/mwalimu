@@ -1200,10 +1200,10 @@ class ExaminationResultController extends Controller
       $process->campus_program_id = $campus_program->id;
       $process->save();
 
-            if($staff->id == 2){
-               DB::rollback();
-         return redirect()->back()->with('error','You are not allowed to process examination results at the moment'); 
-      }
+      //       if($staff->id == 2){
+      //          DB::rollback();
+      //    return redirect()->back()->with('error','You are not allowed to process examination results at the moment'); 
+      // }
       DB::commit();
 
       return redirect()->back()->with('message','Results processed successfully');
