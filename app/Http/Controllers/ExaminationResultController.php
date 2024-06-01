@@ -771,13 +771,16 @@ class ExaminationResultController extends Controller
                                  ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
                                  ->where('course_work_remark','!=','FAIL')
                                  ->whereNull('retakable_type')
-                                 ->whereNotNull('supp_remark')
                                  ->where('module_assignment_id',$assign_id)
                                  ->get()){
                   $count = 0;
                   foreach($cases as $case){
-                     if($case->final_exam_remark == 'INCOMPLETE'){
-                        $count++;
+                     if($case->supp_remark != null){
+                        break;
+                     }else{
+                        if($case->final_exam_remark == 'INCOMPLETE'){
+                           $count++;
+                        }
                      }
                   }
 
