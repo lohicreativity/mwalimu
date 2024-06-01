@@ -1090,7 +1090,9 @@ class ExaminationResultController extends Controller
                      $supp_exams[] = $result->moduleAssignment->module->code;
                   }   
                } 
-               
+               if($case = 4448){
+                  return $pass_status;
+               }
                $ac_year_id = 0;
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
