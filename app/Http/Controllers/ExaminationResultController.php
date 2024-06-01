@@ -1097,6 +1097,9 @@ class ExaminationResultController extends Controller
                      $ac_year_id = $request->get('study_academic_year_id') -1;
                   }
                }
+
+               $active_semester = Semester::where('status','ACTIVE')->get('id');
+               return $active_semester->id.=0;
                $remark->study_academic_year_id = $ac_year_id > 0? $ac_year_id : $request->get('study_academic_year_id');
                $remark->student_id = $case;
                $remark->semester_id = $request->get('semester_id');
