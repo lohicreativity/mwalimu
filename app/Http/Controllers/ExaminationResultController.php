@@ -1104,7 +1104,7 @@ class ExaminationResultController extends Controller
                $remark->semester_id = $active_semester->id;
                $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
-               if($remark->supp_remark != 'PASS'){
+               if($remark->supp_remark != 'PASS'){ return 1;
                   $remark->gpa = null;
                   if($remark->remark == 'SUPP'){
                      Student::where('id',$case)->update(['academic_status_id'=>4]);
@@ -1117,7 +1117,7 @@ class ExaminationResultController extends Controller
                   }elseif($remark->remark == 'INCOMPLETE'){
                      Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
-               }else{
+               }else{ return 2;
                   $remark->gpa = Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
