@@ -1059,7 +1059,9 @@ class ExaminationResultController extends Controller
                      }
                   }
                }
-
+if($case == 4448 && $special_exam_status){
+   return 10;
+}
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = [];
                foreach($student_results as $result){
