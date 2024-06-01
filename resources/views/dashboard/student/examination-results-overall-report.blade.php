@@ -324,12 +324,12 @@
                    <tbody>
                       @foreach($semester->remarks as $remark)
                        <tr>
-                         <td><strong>{{ $remark->remark }}</strong>
+                         <td>@if($remark->remark != 'PASS' && $supp_publish_status) <strong>{{ $remark->supp_remark }}</strong> @else <strong>{{ $remark->remark }}</strong> @endif
                              @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif @endif
                              @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif @endif
                              @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif @endif
                          </td>
-                         <td>@if($remark->gpa) {{ bcdiv($remark->gpa,1,1) }} @else N/A @endif</td>
+                         <td>@if($remark->gpa) @if($remark->remark != 'PASS' && !$supp_publish_status) N/A @else {{ bcdiv($remark->gpa,1,1) }} @endif @else N/A @endif</td>
                       </tr>
                       @endforeach
                    </tbody>
