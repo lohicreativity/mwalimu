@@ -856,8 +856,7 @@ class ExaminationResultController extends Controller
 
             $module_assignments = null;
             foreach($students as $case){
-               return $case;
-               if(in_array($case->id,$carry_cases)){
+               if(in_array($case,$carry_cases)){
                   $remark = SemesterRemark::where('student_id',$case->id)
                                           ->where('study_academic_year_id',$request->get('study_academic_year_id')-1)
                                           ->where('semester_id',$semester->id)
@@ -883,7 +882,7 @@ class ExaminationResultController extends Controller
                if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                   continue;
                }else{
-                  if(in_array($case->id,$carry_cases)){
+                  if(in_array($case,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case->id)
                                                 ->whereIn('module_assignment_id',$carry_module_assignmentIDs)
                                                 ->get();
@@ -1088,7 +1087,7 @@ class ExaminationResultController extends Controller
                   }   
                } 
                
-               $remark->study_academic_year_id = in_array($case->id,$carry_cases)? $request->get('study_academic_year_id') -1 : $request->get('study_academic_year_id');
+               $remark->study_academic_year_id = in_array($case,$carry_cases)? $request->get('study_academic_year_id') -1 : $request->get('study_academic_year_id');
                $remark->student_id = $case->id;
                $remark->semester_id = $request->get('semester_id');
                $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
