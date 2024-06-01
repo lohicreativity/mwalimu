@@ -1118,7 +1118,7 @@ class ExaminationResultController extends Controller
                      Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
                }else{
-                  return $remark->credits;
+                  return $remark;
                   $remark->gpa = Util::computeGPA($remark->credits,$student_results_for_gpa_computation);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
