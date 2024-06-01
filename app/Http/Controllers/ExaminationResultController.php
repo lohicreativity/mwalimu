@@ -1099,11 +1099,9 @@ class ExaminationResultController extends Controller
                }
 
                $active_semester = Semester::where('status','ACTIVE')->first('id');
-               $remark_semester_id = $active_semester->id;
-               return $active_semester->id.=0;
                $remark->study_academic_year_id = $ac_year_id > 0? $ac_year_id : $request->get('study_academic_year_id');
                $remark->student_id = $case;
-               $remark->semester_id = $request->get('semester_id');
+               $remark->semester_id = $active_semester->id.=0;
                $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
                if($remark->remark != 'PASS'){
