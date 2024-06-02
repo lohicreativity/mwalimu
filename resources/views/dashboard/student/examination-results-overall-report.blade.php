@@ -167,15 +167,22 @@
                                   <td>{{ $result->moduleAssignment->module->code }}</td>
                                   <td>{{ $result->moduleAssignment->module->name }}</td>
                                   <td>
-                                    @if(!$supp_publish_status || $special_exam_status)
+                                    @if(!$supp_publish_status)
+                                    @if(empty($result->course_work_score))
+                                    -
+                                    @else
+                                      {{ $result->course_work_score }} 
+                                    @endif
+                                  @else
+                                    @if($result->supp_remark != null) N/A 
+                                    @else
                                       @if(empty($result->course_work_score))
                                       -
                                       @else
                                         {{ $result->course_work_score }} 
                                       @endif
-                                    @else
-                                      N/A
                                     @endif
+                                  @endif
                                   </td>
                                   <td>
                                     @if(!$supp_publish_status)
