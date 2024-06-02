@@ -209,18 +209,18 @@
                                   </td>
                                   <td>
                                     @if(!$supp_publish_status) 
-                                      @if((empty($result->course_work_score) && empty($result->final_score)) || $special_exam_status)
-                                        -
-                                      @else
-                                        {{ round($result->total_score) }}
-                                      @endif 
-                                    @else
-                                      @if($special_exam_status)
-                                        {{ round($result->total_score) }}
-                                      @else
-                                        {{ round($result->supp_score) }}
-                                      @endif
-                                    @endif
+                                    @if((empty($result->course_work_score) && empty($result->final_score)) || $special_exam_status)
+                                    -
+                                  @else
+                                    {{ round($result->total_score) }}
+                                  @endif 
+                              @else
+                                @if($special_exam_status)
+                                  {{ round($result->total_score) }}
+                                @else
+                                  {{ round($result->supp_score) }}
+                                @endif
+                              @endif</td>
                                   </td>
                                   <td>
                                     @if(!empty($result->supp_remark) && !$supp_publish_status)
