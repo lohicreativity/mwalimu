@@ -791,7 +791,6 @@ class ExaminationResultController extends Controller
                      continue;
                   }else{
                      if(count($cases) != $count){
-                        return 1;
                         $module_assignment = ModuleAssignment::where('id',$assign_id)->with('module:id,code')->first();
                         $modules[] = $module_assignment->module->code;
                      }
