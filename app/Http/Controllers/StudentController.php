@@ -533,11 +533,9 @@ class StudentController extends Controller
     public function showStudentOverallResults(Request $request, $student_id, $ac_yr_id, $yr_of_study)
     {
       if($student_id > 0 && !User::find(Auth::user()->id)->staff){
-        return 10;
-        $student = Student::with(['campusProgram.program'])->find($student_id);
+        return redirect()->back()->with('error','You cannot perform this action');
       }
-        if($student_id > 0 && User::find(Auth::user()->id)->staff){
-          return 1;
+        if($student_id > 0){
           $student = Student::with(['campusProgram.program'])->find($student_id);
         }else{
           $student = User::find(Auth::user()->id)->student()->with(['campusProgram.program'])->first();
