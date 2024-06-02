@@ -375,8 +375,30 @@
      
                                   @endif
                                 @endif</td>
-                                  <td>{{ $result->grade }}</td>
-                                  <td>{{ $result->final_exam_remark }}</td>
+                                <td>
+                                  @if(!empty($result->supp_remark) && !$supp_publish_status)
+                                    F
+                                  @else
+                                      @if(!empty($result->remark) && $supp_publish_status)
+                                        @if($result->grade) 
+                                          {{ $result->grade }}*
+                                        @else - @endif
+                                      @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status)
+                                        -
+                                      @else
+                                        @if($result->grade) 
+                                        {{ $result->grade }} 
+                                        @else - @endif
+                                      @endif
+                                  @endif
+                                  
+                                </td>
+                                <td>
+                                  @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
+                                  @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED
+                                  @elseif(!empty($result->supp_remark) && $supp_publish_status) {{ $result->supp_remark }} 
+                                  @else {{ $result->final_exam_remark }} 
+                                  @endif</td>
                                 </tr>
                                 @php
                                   $count += 1;
