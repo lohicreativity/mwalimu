@@ -186,22 +186,26 @@
                                   </td>
                                   <td>
                                     @if(!$supp_publish_status)
-                                      @if(empty($result->final_score) || $special_exam_status)
+                                    @if(empty($result->final_score) || $special_exam_status)
+                                    -
+                                    @else
+                                    {{ $result->final_score }} 
+                                    @endif
+                                  @else
+                                    @if($result->supp_remark != null)
+                                      @if(empty($result->supp_score))
+                                      -
+                                      @else
+                                      {{ $result->supp_score }} 
+                                      @endif
+                                    @else
+                                      @if(empty($result->final_score))
                                       -
                                       @else
                                       {{ $result->final_score }} 
                                       @endif
-                                    @else
-                                      @if($special_exam_status)
-                                        @if(empty($result->final_score))
-                                        -
-                                        @else
-                                        {{ $result->final_score }} 
-                                        @endif
-                                      @else
-                                        N/A
-                                      @endif 
-                                    @endif
+                                    @endif 
+                                  @endif
                                   </td>
                                   <td>
                                     @if(!$supp_publish_status) 
