@@ -532,7 +532,12 @@ class StudentController extends Controller
      */
     public function showStudentOverallResults(Request $request, $student_id, $ac_yr_id, $yr_of_study)
     {
-         $student = Student::with(['campusProgram.program'])->find($student_id);
+        if(!empty($student_id) && User::find(Auth::user()->id)->staff()){
+          $student = Student::with(['campusProgram.program'])->find($student_id);
+        }else{
+          $student = User::find(Auth::user()->id)->student()->with(['campusProgram.program'])->first();
+          $student_id = $student->id;
+        }
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study, $request){
            $query->where('student_id',$student->id)->where('year_of_study',$yr_of_study)->where(function($query) use($ac_yr_id, $request){
