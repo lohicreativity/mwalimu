@@ -144,7 +144,14 @@
                                 {{ $result->course_work_score }} 
                               @endif
                             @else
-                              N/A
+                              @if($result->supp_remark != null) N/A 
+                              @else
+                                @if(empty($result->course_work_score))
+                                -
+                                @else
+                                  {{ $result->course_work_score }} 
+                                @endif
+                              @endif
                             @endif
                           </td>
                           <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
