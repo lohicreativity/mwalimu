@@ -220,7 +220,7 @@
                           <td>
                             @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
                             @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED
-                            @else {{ $result->final_exam_remark }} 
+                            @elseif($result->supp_remark != null && $supp_publish_status) {{ $result->supp_remark }} 
                             @endif</td>
                         </tr>
                           @php
