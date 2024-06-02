@@ -51,9 +51,9 @@
                    @foreach($years_of_studies as $key=>$years)
                    <tr>
                       @if(count($years) > 1)
-                      <td><a href="{{ url('student/results/'.$years[0]->id.'/'.$key.'/show-student-overall-results?next_ac_yr_id='.$years[1]->id) }}">Overall Results for Year {{ $key }}</a></td>
+                      <td><a href="{{ url('student/results/'.null.'/'.$years[0]->id.'/'.$key.'/show-student-overall-results?next_ac_yr_id='.$years[1]->id) }}">Overall Results for Year {{ $key }}</a></td>
                       @else
-                      <td><a href="{{ url('student/results/'.$years[0]->id.'/'.$key.'/show-student-overall-results?next_ac_yr_id=') }}">Overall Results for Year {{ $key }}</a></td>
+                      <td><a href="{{ url('student/results/'.null.'/'.$years[0]->id.'/'.$key.'/show-student-overall-results?next_ac_yr_id=') }}">Overall Results for Year {{ $key }}</a></td>
                       @endif
                       <td>
                         @foreach($years as $yr)
