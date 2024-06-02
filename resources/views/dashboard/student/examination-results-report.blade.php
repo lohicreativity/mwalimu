@@ -162,14 +162,18 @@
                               {{ $result->final_score }} 
                               @endif
                             @else
-                              @if($special_exam_status)
+                              @if($result->supp_remark != null)
+                                @if(empty($result->supp_score))
+                                -
+                                @else
+                                {{ $result->supp_score }} 
+                                @endif
+                              @else
                                 @if(empty($result->final_score))
                                 -
                                 @else
                                 {{ $result->final_score }} 
                                 @endif
-                              @else
-                                N/A
                               @endif 
                             @endif
                           </td>
@@ -180,10 +184,10 @@
                                   {{ round($result->total_score) }}
                                 @endif 
                             @else
-                              @if($special_exam_status)
-                                {{ round($result->total_score) }}
+                              @if($result->supp_remark != null)
+                              {{ round($result->supp_score) }}
                               @else
-                                {{ round($result->supp_score) }}
+                              {{ round($result->total_score) }}
                               @endif
                             @endif</td>
                           <td>
