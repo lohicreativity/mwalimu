@@ -248,7 +248,7 @@
                                   </td>
                                   <td>@if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
                                     @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED
-                                    @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') F @else {{ $result->supp_remark }} @endif
+                                    @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') FAIL @else {{ $result->supp_remark }} @endif
                                     @else {{ $result->final_exam_remark }} 
                                     @endif</td>
                                 </tr>
@@ -397,7 +397,7 @@
                                 <td>
                                   @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
                                   @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED
-                                  @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') F @else {{ $result->supp_remark }} @endif
+                                  @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') FAIL @else {{ $result->supp_remark }} @endif
                                   @else {{ $result->final_exam_remark }} 
                                   @endif</td>
                                 </tr>
