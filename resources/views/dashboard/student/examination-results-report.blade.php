@@ -185,9 +185,18 @@
                                 @endif 
                             @else
                               @if($result->supp_remark != null)
-                              {{ round($result->supp_score) }}
+                                @if(empty($result->supp_score))
+                                -
+                                @else
+                                {{ $result->supp_score }} 
+                                @endif
                               @else
-                              {{ round($result->total_score) }}
+                                @if(empty($result->total_score))
+                                -
+                                @else
+                                {{ $result->total_score }} 
+                                @endif
+ 
                               @endif
                             @endif</td>
                           <td>
