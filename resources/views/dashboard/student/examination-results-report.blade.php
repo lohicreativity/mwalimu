@@ -335,10 +335,7 @@
                             @if(!$supp_publish_status) 
                               @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif 
                             @else
-                                @if(!empty(unserialize($remark->supp_serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['supp_exams']) }}] 
-                              @else 
-                                @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif 
-                              @endif 
+                              @if(!empty(unserialize($remark->supp_serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['supp_exams']) }}] @endif 
                             @endif
                           @endif
 
@@ -346,10 +343,7 @@
                             @if(!$supp_publish_status) 
                               @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif 
                             @else
-                                @if(!empty(unserialize($remark->supp_serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['retake_exams']) }}] 
-                              @else 
-                                @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif 
-                              @endif 
+                                @if(!empty(unserialize($remark->supp_serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['retake_exams']) }}] @endif 
                             @endif
                           @endif
 
