@@ -312,9 +312,69 @@
                                   <td>{{ $count }}</td>
                                   <td>{{ $result->moduleAssignment->module->code }}</td>
                                   <td>{{ $result->moduleAssignment->module->name }}</td>
-                                  <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                                  <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                                  <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
+                                  <td>
+                                    @if(!$supp_publish_status)
+                                    @if(empty($result->course_work_score))
+                                    -
+                                    @else
+                                      {{ $result->course_work_score }} 
+                                    @endif
+                                  @else
+                                    @if($result->supp_remark != null) N/A 
+                                    @else
+                                      @if(empty($result->course_work_score))
+                                      -
+                                      @else
+                                        {{ $result->course_work_score }} 
+                                      @endif
+                                    @endif
+                                  @endif
+                                  </td>
+                                  <td>
+                                    @if(!$supp_publish_status)
+                                    @if(empty($result->final_score) || $special_exam_status)
+                                    -
+                                    @else
+                                    {{ $result->final_score }} 
+                                    @endif
+                                  @else
+                                    @if($result->supp_remark != null)
+                                      @if(empty($result->supp_score))
+                                      -
+                                      @else
+                                      {{ $result->supp_score }} 
+                                      @endif
+                                    @else
+                                      @if(empty($result->final_score))
+                                      -
+                                      @else
+                                      {{ $result->final_score }} 
+                                      @endif
+                                    @endif 
+                                  @endif
+                                  </td>
+                                  <td>@if(!$supp_publish_status) 
+                                    @if((empty($result->course_work_score) && empty($result->final_score)) || $special_exam_status)
+                                      -
+                                    @else
+                                      {{ round($result->total_score) }}
+                                    @endif 
+                                @else
+                                  @if($result->supp_remark != null)
+                                    @if(empty($result->supp_score))
+                                    -
+                                    @else
+                                    {{ $result->supp_score }} 
+                                    @endif
+                                  @else
+                                    @if(empty($result->total_score))
+                                    -
+                                    @else
+                                    {{ $result->total_score }} 
+                                    @endif
+     
+                                  @endif
+                                @endif</td>
                                   <td>{{ $result->grade }}</td>
                                   <td>{{ $result->final_exam_remark }}</td>
                                 </tr>
