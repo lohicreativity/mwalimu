@@ -557,7 +557,7 @@ class StudentController extends Controller
          },'moduleAssignment','moduleAssignment.module','carryHistory'=>function($query) use($study_academic_year){$query->where('study_academic_year_id',$study_academic_year->id - 1);
          },'carryHistory.carrableResults'=>function($query){
             $query->latest();
-         },'retakeHistory'=>function($query) use($study_academic_year){$query->where('study_academic_year_id',$study_academic_year - 1);},'retakeHistory.retakableResults'=>function($query){
+         },'retakeHistory'=>function($query) use($study_academic_year){$query->where('study_academic_year_id',$study_academic_year->id - 1);},'retakeHistory.retakableResults'=>function($query){
           $query->latest();}])->where('student_id',$student->id)->get();
 
         // ->where('study_academic_year_id',$ac_yr_id)
