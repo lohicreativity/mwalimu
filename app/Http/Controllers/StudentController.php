@@ -532,7 +532,7 @@ class StudentController extends Controller
      */
     public function showStudentOverallResults(Request $request, $student_id, $ac_yr_id, $yr_of_study)
     {
-        if(!empty($student_id) && User::find(Auth::user()->id)->staff()){
+        if($student_id > 0 && User::find(Auth::user()->id)->staff()){
           $student = Student::with(['campusProgram.program'])->find($student_id);
         }else{
           $student = User::find(Auth::user()->id)->student()->with(['campusProgram.program'])->first();
