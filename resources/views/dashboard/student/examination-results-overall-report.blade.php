@@ -167,24 +167,17 @@
                                   <td>{{ $result->moduleAssignment->module->code }}</td>
                                   <td>{{ $result->moduleAssignment->module->name }}</td>
                                   <td>
-                                    @if(!$supp_publish_status)
+                                    @if(!$supp_publish_status || $special_exam_status)
                                       @if(empty($result->course_work_score))
                                       -
                                       @else
                                         {{ $result->course_work_score }} 
                                       @endif
                                     @else
-                                      @if($result->supp_remark != null) N/A 
-                                      @else
-                                        @if(empty($result->course_work_score))
-                                        -
-                                        @else
-                                          {{ $result->course_work_score }} 
-                                        @endif
-                                      @endif
+                                      N/A
                                     @endif
                                   </td>
-                                  <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                                  <td>
                                     @if(!$supp_publish_status)
                                       @if(empty($result->final_score) || $special_exam_status)
                                       -
@@ -192,22 +185,17 @@
                                       {{ $result->final_score }} 
                                       @endif
                                     @else
-                                      @if($result->supp_remark != null)
-                                        @if(empty($result->supp_score))
-                                        -
-                                        @else
-                                        {{ $result->supp_score }} 
-                                        @endif
-                                      @else
+                                      @if($special_exam_status)
                                         @if(empty($result->final_score))
                                         -
                                         @else
                                         {{ $result->final_score }} 
                                         @endif
+                                      @else
+                                        N/A
                                       @endif 
                                     @endif
                                   </td>
-                                  <td>@if(!$supp_publish_status) 
                                   <td>
                                     @if(!$supp_publish_status) 
                                       @if((empty($result->course_work_score) && empty($result->final_score)) || $special_exam_status)
