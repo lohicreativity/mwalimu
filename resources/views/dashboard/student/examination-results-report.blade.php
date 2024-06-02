@@ -358,7 +358,6 @@
                               @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif 
                             @else
                                 @if(!empty(unserialize($remark->supp_serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['carry_exams']) }}] @endif 
-                              @endif 
                             @endif
                           @endif
                          </td>
