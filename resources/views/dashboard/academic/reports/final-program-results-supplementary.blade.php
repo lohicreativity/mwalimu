@@ -241,17 +241,13 @@
                         <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
                       </tr>
                     </thead>
+                    <tbody>
                     
-                    <tr>
-                      
-                      @foreach($module_assignments as $assignment)
-                      <td class="ss-bold">TT</td>
-                      <td class="ss-bold">GD</td>
-                      @endforeach
-                      
-                    </tr>
-                    
-                    @php $count = 0; @endphp
+                    @php
+                        $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
+                        $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
+                        $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases =  $count = 0;
+                    @endphp
 
                     @foreach($students as $key=>$student)
                       @php $display_student = false; @endphp
@@ -278,18 +274,17 @@
                     
                     @if($display_student)
                     <tr>
-                      <td>{{ $count }}</td>
+                      <td class="ss-font-xs">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td>{{ $student->registration_number }}</td>
+                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
+                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td>{{ $student->gender }}</td>
+                      <td class="ss-font-xs">{{ $student->gender }}</td>
                       @endif
                          
-
                       @foreach($sem_modules as $mdKey=>$mods)
                           @foreach($mods as $assignment)
                             <td>
