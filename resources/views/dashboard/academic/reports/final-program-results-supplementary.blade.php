@@ -288,6 +288,51 @@
                          
                       @foreach($sem_modules as $mdKey=>$mods)
                           @foreach($mods as $assignment)
+                              <td 
+                              @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
+                              class="ss-custom-grey ss-center ss-font-xs" 
+                              @else 
+                              class="ss-center ss-font-xs" 
+                              @endif>
+
+                              @if($result->supp_processed_at)
+                              N/A
+                              @else 
+                                @if($assignment->module->course_work_based == 1)
+                                  @if($result->course_work_score) 
+                                  {{ round($result->course_work_score) }} 
+                                  @else - @endif
+                                @else
+                                N/A
+                                @endif  
+                              @endif          
+                            </td>
+
+                            <td 
+                            @if($result->final_remark == 'FAIL' && !$result->supp_processed_at)
+                              @if($result->course_work_remark == 'FAIL')
+                                class="ss-center ss-font-xs" 
+                              @else
+                                class="ss-custom-grey ss-center ss-font-xs" 
+                              @endif
+                            @elseif(count($result->changes) != 0) 
+                              class="ss-center ss-custom-lightblue ss-font-xs" 
+                            @else 
+                              class="ss-center ss-font-xs" 
+                            @endif>
+
+                            @if($result->supp_processed_at)
+                            N/A
+                            @else 
+                              @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
+
+                                {{ round($result->final_score) }} 
+                         
+                              @else - @endif
+                            @endif
+                            
+                          </td>
+                          
                             <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
