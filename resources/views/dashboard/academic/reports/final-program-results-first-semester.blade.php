@@ -250,27 +250,7 @@
                       @endphp
 
                     @foreach($students as $key=>$student)
-                    @php $display_student = false; @endphp
 
-                    @foreach($sem_modules as $mdKey=>$mods)
-                        @foreach($mods as $assignment)
-                          @foreach($student->examinationResults as $result)
-                               @if($result->module_assignment_id == $assignment->id)
-                                  @if(!is_null($result->supp_score))
-                                   
-                                      @php $display_student = true; @endphp
-                                  @else
-                                    @foreach($result->moduleAssignment->specialExams as $ex)
-                                    @if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id) 
-                                      @php $display_student = true; @endphp
-                                
-                                    @endif
-                                    @endforeach
-                                  @endif
-                               @endif
-                             @endforeach
-                          @endforeach
-                      @endforeach
                     <tr>
                       <td class="ss-font-xs">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
@@ -286,42 +266,40 @@
                       @foreach($module_assignments as $asKey=>$assignment)
 
                           @if($asKey == count($module_assignments))
-                          @php
-                            $results_present = true;
-                          @endphp
-                          @else
-                          @php
-                            $results_present = false;
-                          @endphp
-                          @endif
-
-                      
-                          @foreach($student->examinationResults as $result)
-                            @if($result->module_assignment_id == $assignment->id)
-
                             @php
                               $results_present = true;
                             @endphp
+                          @else
+                            @php
+                              $results_present = false;
+                            @endphp
+                          @endif
 
-                            <td 
-                              @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-xs" 
-                              @else 
-                              class="ss-center ss-font-xs" 
-                              @endif>
+                          @foreach($student->examinationResults as $result)
+                            @if($result->module_assignment_id == $assignment->id)
+                              @php
+                                $results_present = true;
+                              @endphp
 
-                              @if($result->supp_processed_at)
-                              N/A
-                              @else 
-                                @if($assignment->module->course_work_based == 1)
-                                  @if($result->course_work_score) 
-                                  {{ round($result->course_work_score) }} 
-                                  @else - @endif
-                                @else
+                              <td 
+                                @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
+                                class="ss-custom-grey ss-center ss-font-xs" 
+                                @else 
+                                class="ss-center ss-font-xs" 
+                                @endif>
+
+                                @if($result->supp_processed_at)
                                 N/A
-                                @endif  
-                              @endif          
-                            </td>
+                                @else 
+                                  @if($assignment->module->course_work_based == 1)
+                                    @if($result->course_work_score) 
+                                    {{ round($result->course_work_score) }} 
+                                    @else - @endif
+                                  @else
+                                  N/A
+                                  @endif  
+                                @endif          
+                              </td>
 
                             <td 
                               @if($result->final_remark == 'FAIL' && !$result->supp_processed_at)
