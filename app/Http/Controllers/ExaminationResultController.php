@@ -3690,6 +3690,7 @@ class ExaminationResultController extends Controller
                return view('dashboard.academic.reports.final-program-results-first-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);             
             }
         }else{
+         return 1;
             return view('dashboard.academic.reports.final-program-results-supplementary',$data)->withTitle('Supplementary Program Results - '.$campus_program->program->name);
         }
     }
