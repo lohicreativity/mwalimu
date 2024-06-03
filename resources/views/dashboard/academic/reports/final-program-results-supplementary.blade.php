@@ -205,13 +205,14 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-              <div class="ss-letter-head  ss-center">
-               <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
-               <h3>{{ $campus->name }}</h3>
-               <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
-               <h3>@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
-              </div>
+            <div class="ss-letter-head  ss-center">
+              <span class="ss-bold" style="font-size:8pt">THE MWALIMU NYERERE MEMORIAL ACADEMY</span> <br>
+              <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="5%">				<br>   
+              <span class="ss-bold" style="font-size:7pt">{{ $campus->name }}</span> <br>
+              <span class="ss-bold" style="font-size:7pt">{{ $department->name }}</span> <br>
+              <span class="ss-bold" style="font-size:7pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
+              <p style="font-size:7pt">@if($semester) {{ strtoupper($semester->name) }} @endif SUPPLEMENTARY EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+            </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
