@@ -136,6 +136,7 @@
                                   }
                                 }
 
+                                $supp_publish_status = false;
                                 foreach($publications as $publication){
                                   if($publication->semester_id == $semester->id){
                                     $supp_publish_status = true;
