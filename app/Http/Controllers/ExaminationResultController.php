@@ -4234,8 +4234,6 @@ class ExaminationResultController extends Controller
                })->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
                 })->get();
 
-            $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->get();
-
               $moduleIds = [];
               foreach ($core_program_modules as $module) {
                 foreach($results as $result){
@@ -4265,6 +4263,13 @@ class ExaminationResultController extends Controller
                  }
               }
               
+            $publications = ResultPublication::where('study_academic_year_id', $ac_yr_id)
+                                             ->where('nta_level_id', $student->campusProgram->program->nta_level_id)
+                                             ->where('campus_id', $student->campusProgram->campus_id)
+                                             ->where('status', 'PUBLISHED')
+                                             ->where('type', 'SUPP')
+                                             ->get();
+
             $special_exams = SpecialExam::where('student_id',$student->id)
                                        ->where('type','FINAL')
                                        ->where('study_academic_year_id',$ac_yr_id)
@@ -4282,7 +4287,8 @@ class ExaminationResultController extends Controller
           'missing_modules' => $missing_modules,
           'student'=>$student,
           'staff'=>User::find(Auth::user()->id)->staff,
-          'special_exams'=>$special_exams
+          'special_exams'=>$special_exams,
+          'publications'=>$publications
          ];
          return view('dashboard.academic.reports.final-student-overall-results',$data)->withTitle('Student Overall Results');
     }
