@@ -4264,6 +4264,12 @@ class ExaminationResultController extends Controller
                     $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
                  }
               }
+              
+            $special_exams = SpecialExam::where('student_id',$student->id)
+                                       ->where('type','FINAL')
+                                       ->where('study_academic_year_id',$ac_yr_id)
+                                       ->where('status','APPROVED')
+                                       ->get();
 
          $data = [
           'semesters'=>$semesters,
@@ -4275,7 +4281,8 @@ class ExaminationResultController extends Controller
           'optional_programs'=>$optional_programs,
           'missing_modules' => $missing_modules,
           'student'=>$student,
-          'staff'=>User::find(Auth::user()->id)->staff
+          'staff'=>User::find(Auth::user()->id)->staff,
+          'special_exams'=>$special_exams
          ];
          return view('dashboard.academic.reports.final-student-overall-results',$data)->withTitle('Student Overall Results');
     }
