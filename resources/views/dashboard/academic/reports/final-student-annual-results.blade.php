@@ -221,7 +221,7 @@
                                   @if(!empty($result->supp_remark) && !$supp_publish_status)
                                     F
                                   @else
-                                      @if(!empty($result->remark) && $supp_publish_status)
+                                      @if(!empty($result->supp_remark) && $supp_publish_status)
                                         @if($result->grade) 
                                           {{ $result->grade }}*
                                         @else - @endif
