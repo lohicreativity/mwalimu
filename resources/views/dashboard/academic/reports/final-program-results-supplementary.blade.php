@@ -275,7 +275,7 @@
                     
                     @if($display_student)
                     <tr>
-                      <td class="ss-font-xs">{{ $$count }}</td>
+                      <td class="ss-font-xs">{{ $count }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
                       <td class="ss-font-xs">{{ $student->registration_number }}</td>
                       @endif
