@@ -156,50 +156,69 @@
                                       @endif
                                     @endif
                                   </td>
-                                  <td 
-                                      @if($result->exam_type == 'APPEAL') 
-                                        class="ss-grey" 
-                                      @endif>
-
-                                      @if(!$result->supp_processed_at)
-
-                                        @if($result->final_score && ($result->final_remark == 'PASS' || $result->final_remark == 'FAIL')) 
-                                        {{ $result->final_score }} 
-                                        @else - @endif
-
-                                      @else 
-                                      N/A 
-                                      @endif
-                                  </td>
-                                  <td>
-                                      @if(!$result->supp_processed_at) 
-                                        @if($result->total_score) 
-                                          {{ round($result->total_score) }} 
-                                        @else - @endif 
-                                      @else 
-                                        {{ round($result->supp_score) }}
-                                      @endif
-                                  </td>
-                                  <td>
-                                      @if($result->supp_score && !$supp_publish_status)
-                                        F
+                                  <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                                    @if(!$supp_publish_status)
+                                      @if(empty($result->final_score) || $special_exam_status)
+                                      -
                                       @else
-
-                                        @if($result->supp_processed_at)
-
-                                          @if($result->grade) 
-                                            {{ $result->grade }}*
-                                          @else - @endif
-
-
-                                        @else
-                                          @if($result->grade && $result->final_exam_remark != 'INCOMPLETE') 
-                                          {{ $result->grade }} 
-                                          @else - @endif
-                                        @endif
+                                      {{ $result->final_score }} 
                                       @endif
-                                    
+                                    @else
+                                      @if($result->supp_remark != null)
+                                        @if(empty($result->supp_score))
+                                        -
+                                        @else
+                                        {{ $result->supp_score }} 
+                                        @endif
+                                      @else
+                                        @if(empty($result->final_score))
+                                        -
+                                        @else
+                                        {{ $result->final_score }} 
+                                        @endif
+                                      @endif 
+                                    @endif
                                   </td>
+                                  <td>@if(!$supp_publish_status) 
+                                    @if((empty($result->course_work_score) && empty($result->final_score)) || $special_exam_status)
+                                      -
+                                    @else
+                                      {{ round($result->total_score) }}
+                                    @endif 
+                                @else
+                                  @if($result->supp_remark != null)
+                                    @if(empty($result->supp_score))
+                                    -
+                                    @else
+                                    {{ $result->supp_score }} 
+                                    @endif
+                                  @else
+                                    @if(empty($result->total_score))
+                                    -
+                                    @else
+                                    {{ $result->total_score }} 
+                                    @endif
+        
+                                  @endif
+                                @endif</td>
+                                <td>
+                                  @if(!empty($result->supp_remark) && !$supp_publish_status)
+                                    F
+                                  @else
+                                      @if(!empty($result->remark) && $supp_publish_status)
+                                        @if($result->grade) 
+                                          {{ $result->grade }}*
+                                        @else - @endif
+                                      @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status)
+                                        -
+                                      @else
+                                        @if($result->grade) 
+                                        {{ $result->grade }} 
+                                        @else - @endif
+                                      @endif
+                                  @endif
+                                  
+                                </td>
                                   <td>{{ $result->final_exam_remark }}</td>
                                 </tr>
                                 @php
