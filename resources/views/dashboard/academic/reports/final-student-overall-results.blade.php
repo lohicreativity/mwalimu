@@ -368,7 +368,7 @@
                             {{ $result->course_work_score }} 
                           @endif
                         @else
-                          @if($result->supp_remark != null) N/A 
+                          @if($result->supp_remark != null)MM 
                           @else
                             @if(empty($result->course_work_score))
                             -
