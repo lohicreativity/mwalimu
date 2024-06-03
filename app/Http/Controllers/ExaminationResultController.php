@@ -3072,7 +3072,7 @@ class ExaminationResultController extends Controller
       $campus_program = CampusProgram::with(['program.departments','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
       $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
       if($request->get('semester_id') == 'SUPPLEMENTARY' || $request->get('semester_id') == 'ANNUAL'){
-         $semester = Semester::where('status','ACTIVE')->first('id');
+         $semester = Semester::where('status','ACTIVE')->first();
       }else{
          $semester = Semester::find($request->get('semester_id'));
       }
