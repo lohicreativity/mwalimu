@@ -288,25 +288,25 @@
                          
                       @foreach($sem_modules as $mdKey=>$mods)
                           @foreach($mods as $assignment)
-                              <td 
-                              @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-xs" 
-                              @else 
-                              class="ss-center ss-font-xs" 
-                              @endif>
+                                                        <td 
+                                @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
+                                class="ss-custom-grey ss-center ss-font-xs" 
+                                @else 
+                                class="ss-center ss-font-xs" 
+                                @endif>
 
-                              @if($result->supp_processed_at)
-                              N/A
-                              @else 
-                                @if($assignment->module->course_work_based == 1)
-                                  @if($result->course_work_score) 
-                                  {{ round($result->course_work_score) }} 
-                                  @else - @endif
-                                @else
+                                @if($result->supp_processed_at)
                                 N/A
-                                @endif  
-                              @endif          
-                            </td>
+                                @else 
+                                  @if($assignment->module->course_work_based == 1)
+                                    @if($result->course_work_score) 
+                                    {{ round($result->course_work_score) }} 
+                                    @else - @endif
+                                  @else
+                                  N/A
+                                  @endif  
+                                @endif          
+                              </td>
                             <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
