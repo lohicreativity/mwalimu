@@ -4138,8 +4138,7 @@ class ExaminationResultController extends Controller
               $var_options = $num_options->pluck('number_of_options')->all();
              
 
-              $supp_publish_status = DB::table('results_publications')
-              ->where('study_academic_year_id', $ac_yr_id)
+              $publications = ResultPublication::where('study_academic_year_id', $ac_yr_id)
               ->where('nta_level_id', $student->campusProgram->program->nta_level_id)
               ->where('campus_id', $student->campusProgram->campus_id)
               ->where('status', 'PUBLISHED')
@@ -4165,7 +4164,7 @@ class ExaminationResultController extends Controller
             'staff'=>User::find(Auth::user()->id)->staff,
             'num_options' => (sizeof($var_options) == 0) ? null: $var_options[0],
             'opt'     => $opt,
-            'supp_publish_status' => $supp_publish_status,
+            'publications' => $publications,
             'special_exams'=>$special_exams
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');

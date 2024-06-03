@@ -135,6 +135,12 @@
                                     break;
                                   }
                                 }
+
+                                foreach($publications as $publication){
+                                  if($publication->semester_id == $semester->id){
+                                    $supp_publish_status = true;
+                                  }
+                                }
                               @endphp
                                 <tr>
                                   <td>{{ $count }}</td>
