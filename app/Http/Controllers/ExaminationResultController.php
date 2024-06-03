@@ -4146,6 +4146,12 @@ class ExaminationResultController extends Controller
               ->where('type', 'SUPP')
               ->get();
 
+              $special_exams = SpecialExam::where('student_id',$student->id)
+              ->where('type','FINAL')
+              ->where('study_academic_year_id',$ac_yr_id)
+              ->where('status','APPROVED')
+              ->get();
+
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
@@ -4159,7 +4165,8 @@ class ExaminationResultController extends Controller
             'staff'=>User::find(Auth::user()->id)->staff,
             'num_options' => (sizeof($var_options) == 0) ? null: $var_options[0],
             'opt'     => $opt,
-            'supp_publish_status' => $supp_publish_status
+            'supp_publish_status' => $supp_publish_status,
+            'special_exams'=>$special_exams
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');
     }

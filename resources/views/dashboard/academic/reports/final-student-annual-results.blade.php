@@ -127,6 +127,15 @@
                           @endif
                           @foreach($results as $result)
                             @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                              @php
+                                $special_exam_status = false;
+                                foreach($special_exams as $exam){
+                                  if($exam->module_assignment_id == $result->module_assignment_id){
+                                    $special_exam_status = true;
+                                    break;
+                                  }
+                                }
+                              @endphp
                                 <tr>
                                   <td>{{ $count }}</td>
                                   <td>@if($result->final_exam_remark != 'POSTPONED')
