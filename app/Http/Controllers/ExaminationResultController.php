@@ -4197,11 +4197,8 @@ class ExaminationResultController extends Controller
            });//->where('study_academic_year_id',$ac_yr_id);
          },'moduleAssignment.specialExams'=>function($query) use($student){
             $query->where('student_id',$student->id);
-         },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
-            $query->latest();
-         },'retakeHistory.retakableResults'=>function($query){
-            $query->latest();
-         }])->where('student_id',$student->id)->get();
+         },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query)use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);
+         },'retakeHistory.retakableResults'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);}])->where('student_id',$student->id)->get();
          
         // ->where('study_academic_year_id',$ac_yr_id)
        //  where('study_academic_year_id',$ac_yr_id)->

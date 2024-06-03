@@ -200,7 +200,7 @@
                                 {{ $result->course_work_score }} 
                               @endif
                             @else
-                              @if($result->supp_remark != null) MM 
+                              @if($result->supp_remark != null) N/A 
                               @else
                                 @if(empty($result->course_work_score))
                                 -
