@@ -233,7 +233,7 @@
                                         @else - @endif
                                       @endif
                                   @endif
-                                  
+                                </td>
                                   <td>
                                     @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
                                     @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED 

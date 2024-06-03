@@ -127,7 +127,22 @@
 
                         @else
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                         @php
+                         $special_exam_status = false;
+                            foreach($special_exams as $exam){
+                              if($exam->module_assignment_id == $result->module_assignment_id){
+                                $special_exam_status = true;
+                                break;
+                              }
+                            }
 
+                            $supp_publish_status = false;
+                            foreach($publications as $publication){
+                              if($publication->semester_id == $semester->id){
+                                $supp_publish_status = true;
+                              }
+                            }
+                        @endphp
                          @if($result->retakeHistory)
                            @if(count($result->retakeHistory->retakableResults) != 0)
 
@@ -177,11 +192,92 @@
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
-                          <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
+                          <td>
+                            @if(!$supp_publish_status)
+                              @if(empty($result->course_work_score))
+                              -
+                              @else
+                                {{ $result->course_work_score }} 
+                              @endif
+                            @else
+                              @if($result->supp_remark != null) N/A 
+                              @else
+                                @if(empty($result->course_work_score))
+                                -
+                                @else
+                                  {{ $result->course_work_score }} 
+                                @endif
+                              @endif
+                            @endif
+                          </td>
+                          <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                            @if(!$supp_publish_status)
+                              @if(empty($result->final_score) || $special_exam_status)
+                              -
+                              @else
+                              {{ $result->final_score }} 
+                              @endif
+                            @else
+                              @if($result->supp_remark != null)
+                                @if(empty($result->supp_score))
+                                -
+                                @else
+                                {{ $result->supp_score }} 
+                                @endif
+                              @else
+                                @if(empty($result->final_score))
+                                -
+                                @else
+                                {{ $result->final_score }} 
+                                @endif
+                              @endif 
+                            @endif
+                          </td>
+                          <td>@if(!$supp_publish_status) 
+                            @if((empty($result->course_work_score) && empty($result->final_score)) || $special_exam_status)
+                              -
+                            @else
+                              {{ round($result->total_score) }}
+                            @endif 
+                        @else
+                          @if($result->supp_remark != null)
+                            @if(empty($result->supp_score))
+                            -
+                            @else
+                            {{ $result->supp_score }} 
+                            @endif
+                          @else
+                            @if(empty($result->total_score))
+                            -
+                            @else
+                            {{ $result->total_score }} 
+                            @endif
+
+                          @endif
+                        @endif</td>
+                        <td>
+                          @if(!empty($result->supp_remark) && !$supp_publish_status)
+                            F
+                          @else
+                              @if(!empty($result->supp_remark) && $supp_publish_status)
+                                @if($result->grade) 
+                                  {{ $result->grade }}*
+                                @else - @endif
+                              @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status)
+                                -
+                              @else
+                                @if($result->grade) 
+                                {{ $result->grade }} 
+                                @else - @endif
+                              @endif
+                          @endif
+                        </td>
+                          <td>
+                            @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
+                            @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED 
+                            @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') FAIL @else {{ $result->supp_remark }} @endif
+                            @else {{ $result->final_exam_remark }} 
+                            @endif</td>
                         </tr>
                           @php
                             $count += 1;
