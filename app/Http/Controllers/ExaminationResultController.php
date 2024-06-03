@@ -3071,11 +3071,7 @@ class ExaminationResultController extends Controller
     {
       $campus_program = CampusProgram::with(['program.departments','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
       $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
-      if($request->get('semester_id') == 'SUPPLEMENTARY' || $request->get('semester_id') == 'ANNUAL'){
-         $semester = Semester::where('status','ACTIVE')->first();
-      }else{
-         $semester = Semester::find($request->get('semester_id'));
-      }
+      $semester = Semester::find($request->get('semester_id'));
       foreach($campus_program->program->departments as $dpt){
          if($dpt->pivot->campus_id == $campus_program->campus_id){
             $department = $dpt;
@@ -3152,6 +3148,7 @@ class ExaminationResultController extends Controller
 /* 			whereHas('studentshipStatus',function($query){
                   $query->where('name','ACTIVE')->orWhere('name','RESUMED')->orWhere('name','GRADUATING');
               })-> */
+               $semester = Semester::where('status','ACTIVE')->first();
                if($semester->id == 1){
                   $students = Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                     ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
