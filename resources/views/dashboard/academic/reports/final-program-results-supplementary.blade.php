@@ -215,39 +215,32 @@
             </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
-                    <tr>
-                      <td class="ss-bold" rowspan="4">SN</td>
-                      @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="4">REG. NO.</td>
-                      @endif
-                      @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="4">NAME</td>
-                      @endif
-                      @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="4">SEX</td>
-                      @endif
-                      <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
-                      
-                      @foreach($sem_modules as $mdKey=>$mod)
-                      <td class="ss-bold" colspan="{{ 2*count($mod)+1 }}">{{ $mdKey }}</td>
-                      @endforeach
-                      <td class="ss-bold">ANNUAL</td>
-                    </tr>
-                    <tr>
-                      <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
-                      @foreach($sem_modules as $mdKey=>$mod)
-                      <td class="ss-bold" colspan="{{ 2*count($mod) }}">SUBJECTS</td>
-                      <td class="ss-bold" rowspan="3">STATUS</td>
-                      @endforeach
-                      <td class="ss-bold" rowspan="3">STATUS</td>
-                    </tr>
-                    <tr>
-                      <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
-                      @foreach($module_assignments as $assignment)
-                      <td class="ss-bold" colspan="2">{{ $assignment->module->code }}</td>
-                      @endforeach
-                      
-                    </tr>
+                    <thead>
+                      <tr>
+                        <th class="ss-bold ss-font-xs" rowspan="3">SN</th>
+                        @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">REGISTRATION NUMBER</th>@endif
+                        @if($request->get('name_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">NAME</th>@endif
+                        @if($request->get('gender_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">SEX</th>@endif
+                        @foreach($module_assignments as $assignment)
+                        <th class="ss-bold ss-font-xs" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
+                        @endforeach
+                        <th colspan="5"></th>
+                      <tr>
+                      <tr>
+                        @foreach($module_assignments as $assignment)
+                        <th class="ss-bold ss-font-xs">CA</th>
+                        <th class="ss-bold ss-font-xs">FE</th>
+                        <th class="ss-bold ss-font-xs">TT</th>
+                        <th class="ss-bold ss-font-xs">GD</th>
+                        @endforeach
+                        
+                        <th class="ss-center ss-bold ss-font-xs">GPA</th>
+                        <th class="ss-center ss-bold ss-font-xs"> PTS</th>
+                        <th class="ss-center ss-bold ss-font-xs">CRD</th>
+                        <th class="ss-bold ss-font-xs">REMARK</th>
+                        <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
+                      </tr>
+                    </thead>
                     
                     <tr>
                       
