@@ -332,18 +332,27 @@
                             @endif
                             
                           </td>
-                          
-                            <td>
-                               @foreach($student->examinationResults as $result)
-                                 @if($result->module_assignment_id == $assignment->id)
-                                    @if($result->supp_score)
-                                      @if($result->supp_score) {{ round($result->supp_score) }} @else {{ $result->supp_score }} @endif
-                                    @else
-                                      @if($result->total_score) {{ round($result->total_score) }} @else {{ $result->total_score }} @endif
-                                    @endif
-                                 @endif
-                               @endforeach
-                            </td>
+
+                            <td 
+                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
+                                class="ss-custom-grey-- ss-center ss-font-xs" 
+                              @elseif($result->supp_processed_at)
+                                class="ss-center ss-font-xs" 
+                              @else 
+                                class="ss-center ss-font-xs" 
+                              @endif>
+
+                              @if($result->supp_processed_at)
+                                @if($result->supp_score) 
+                                {{ round($result->supp_score) }} 
+                                @else - @endif
+                              @else 
+                                @if($result->total_score) 
+                                {{ round($result->total_score) }} 
+                                @else - @endif
+                              @endif
+                              
+                          </td>
                             <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
