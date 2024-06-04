@@ -3686,7 +3686,17 @@ class ExaminationResultController extends Controller
                                              'examinationResults',
                                              'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
                                     ->where('campus_program_id',$campus_program->id)
-                                    ->get()
+                                    ->get(),
+            'special_exam_students'=>Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                             ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                             ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds)->whereNotNull('supp_remark');})
+                                             ->whereHas('specialExams',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED');})
+                                             ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
+                                                      'semesterRemarks.semester',
+                                                      'examinationResults','specialExams',
+                                                      'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
+                                             ->where('campus_program_id',$campus_program->id)
+                                             ->get()
         ];
 
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
