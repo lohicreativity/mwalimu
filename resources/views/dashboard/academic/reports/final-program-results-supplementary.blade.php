@@ -379,6 +379,7 @@
                        $count++;
                      @endphp
                     @endforeach
+                    </tbody>
                   </table>
 
                   @php
@@ -411,7 +412,8 @@
                           <th class="ss-bold ss-font-xs">REMARK</th>
                           <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
                         </tr>
-                      </head>
+                      </thead>
+                      <tbody>
                       @foreach($special_exam_students as $key=>$student)
                       <tr>
                         <td class="ss-font-xs">{{ $count }}</td>
@@ -541,6 +543,7 @@
                         $count++;
                       @endphp
                       @endforeach
+                      </tbody>
                     </table>
                   @endif  
                 </div><!-- end of table-responsive -->
