@@ -401,7 +401,7 @@
                  <table class="table table-bordered">
                    <thead>
                       <tr>
-                        <th>Remark</th>
+                        <th>Remarks</th>
                         <th>GPA</th>
                       </tr>
                    </thead>
