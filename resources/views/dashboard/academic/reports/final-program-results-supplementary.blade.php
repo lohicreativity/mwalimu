@@ -273,7 +273,7 @@
                           }
                         }
                       @endphp
-                      
+
                     @if($display_student)
                     <tr>
                       <td class="ss-font-xs">{{ $count }}</td>
@@ -289,6 +289,18 @@
                          
                       @foreach($sem_modules as $mdKey=>$mods)
                           @foreach($mods as $assignment)
+                          
+                            <td>
+                                @foreach($student->examinationResults as $result)
+                                  @if($result->module_assignment_id == $assignment->id)
+                                    @if($assignment->module->course_work_based == 1)
+                                      @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
+                                    @else
+                                      N/A
+                                    @endif
+                                  @endif
+                                @endforeach
+                            </td>
                             <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
