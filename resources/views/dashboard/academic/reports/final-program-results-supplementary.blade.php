@@ -302,6 +302,20 @@
                                 @endforeach
                             </td>
                             <td>
+                              @foreach($student->examinationResults as $result)
+                                @if($result->module_assignment_id == $assignment->id)
+                                   @if(!is_null($result->supp_remark))
+                                    N/A
+                                   @else
+                                    @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
+                                      {{ round($result->final_score) }} 
+                         
+                                    @else - @endif
+                                   @endif
+                                @endif
+                              @endforeach
+                           </td>
+                            <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
