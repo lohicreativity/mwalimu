@@ -1105,20 +1105,22 @@ class ExaminationResultController extends Controller
 
                if($remark->supp_remark != 'PASS'){
                   $remark->gpa = null;
-                  if($remark->remark == 'SUPP'){
+                  if($remark->resupp_remarkmark == 'SUPP'){
                      Student::where('id',$case)->update(['academic_status_id'=>4]);
-                  }elseif($remark->remark == 'RETAKE'){
+                  }elseif($remark->supp_remark == 'RETAKE'){
                      Student::where('id',$case)->update(['academic_status_id'=>2]);
-                  }elseif($remark->remark == 'CARRY'){
+                  }elseif($remark->supp_remark == 'CARRY'){
                      Student::where('id',$case)->update(['academic_status_id'=>3]);
-                  }elseif(str_contains($remark->remark, 'POSTPONED')){
+                  }elseif(str_contains($remark->supp_remark, 'POSTPONED')){
                      Student::where('id',$case)->update(['academic_status_id'=>9]);
-                  }elseif($remark->remark == 'INCOMPLETE'){
+                  }elseif($remark->supp_remark == 'INCOMPLETE'){
                      Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
                }else{
-                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation);
-                  Student::where('id',$case)->update(['academic_status_id'=>1]);
+                  if($remark->remark == 'SUPP'){
+                     $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation);
+                     Student::where('id',$case)->update(['academic_status_id'=>1]);
+                  }
                }
 
                $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation);
