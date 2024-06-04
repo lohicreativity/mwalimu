@@ -251,30 +251,6 @@
                     @endphp
 
                     @foreach($supp_students as $key=>$student)
-                      @php 
-                        $display_student = false;
-                        foreach($sem_modules as $mdKey=>$mods){
-                          foreach($mods as $assignment){
-                            foreach($student->examinationResults as $result){
-                              if($result->module_assignment_id == $assignment->id){
-                                if(!is_null($result->supp_score)){
-                                  
-                                    $display_student = true;
-                                }else{
-                                  foreach($result->moduleAssignment->specialExams as $ex){
-                                    if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id){ 
-                                      $display_student = true; 
-                                
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      @endphp
-
-                    @if($display_student)
                     <tr>
                       <td class="ss-font-xs">{{ $count }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
@@ -402,7 +378,6 @@
                      @php
                        $count++;
                      @endphp
-                     @endif
                     @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
