@@ -290,7 +290,7 @@
                       @foreach($sem_modules as $mdKey=>$mods)
                           @foreach($mods as $assignment)
                           
-                            <td>
+                            <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
                                     @if(!is_null($result->supp_remark))
@@ -305,7 +305,7 @@
                                   @endif
                                 @endforeach
                             </td>
-                            <td>
+                            <td class="ss-center ss-font-xs">
                               @foreach($student->examinationResults as $result)
                                 @if($result->module_assignment_id == $assignment->id)
                                    @if(!is_null($result->supp_remark))
@@ -319,7 +319,7 @@
                                 @endif
                               @endforeach
                            </td>
-                            <td>
+                            <td class="ss-center ss-font-xs">
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
@@ -330,7 +330,7 @@
                                  @endif
                                @endforeach
                             </td>
-                            <td>
+                            <td class="ss-center ss-font-xs">
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
