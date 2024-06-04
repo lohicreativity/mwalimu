@@ -257,7 +257,7 @@
                               if($result->module_assignment_id == $assignment->id){
                                 if(!is_null($result->supp_remark)){
                                   $display_student = true;
-                                }else{
+                                else
                                   foreach($result->moduleAssignment->specialExams as $ex){
                                     if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id){ 
                                       $display_student = true;
@@ -292,15 +292,18 @@
                               @else 
                               class="ss-center ss-font-xs" 
                               @endif>
-                              @foreach($student->examinationResults as $result)
-                                @if($result->module_assignment_id == $assignment->id)
-                                  @if($assignment->module->course_work_based == 1)
-                                    @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
-                                  @else
-                                    N/A
-                                  @endif
-                                @endif
-                              @endforeach         
+
+                              @if($result->supp_processed_at)
+                              N/A
+                              @else 
+                                @if($assignment->module->course_work_based == 1)
+                                  @if($result->course_work_score) 
+                                  {{ round($result->course_work_score) }} 
+                                  @else - @endif
+                                @else
+                                N/A
+                                @endif  
+                              @endif          
                             </td>
                             <td>
                                @foreach($student->examinationResults as $result)
@@ -336,7 +339,7 @@
                         @if(count($student->semesterRemarks) == 0)
                          <td></td>
                         @endif
-
+                      @endforeach
 
                       @if($student->annualRemarks)
                       @if(count($student->annualRemarks) != 0)
