@@ -244,35 +244,33 @@
                     <tbody>
                     
                     @php
-                         $count = 1;
-                        $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
-                        $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
-                        $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
-                    @endphp
-
-                    @foreach($students as $key=>$student)
-                      @php $display_student = false; @endphp
-
-                      @foreach($sem_modules as $mdKey=>$mods)
-                          @foreach($mods as $assignment)
-                            @foreach($student->examinationResults as $result)
-                                 @if($result->module_assignment_id == $assignment->id)
-                                    @if(!is_null($result->supp_score))
-                                     
-                                        @php $display_student = true; @endphp
-                                    @else
-                                      @foreach($result->moduleAssignment->specialExams as $ex)
-                                      @if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id) 
-                                        @php $display_student = true; @endphp
-                                  
-                                      @endif
-                                      @endforeach
-                                    @endif
-                                 @endif
-                               @endforeach
-                            @endforeach
-                        @endforeach
-                    
+                      $count = 1;
+                      $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
+                      $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
+                      $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
+                  
+                      foreach($students as $key=>$student){
+                        $display_student = false; 
+                        foreach($sem_modules as $mdKey=>$mods){
+                          foreach($mods as $assignment){
+                            foreach($student->examinationResults as $result){
+                              if($result->module_assignment_id == $assignment->id){
+                                if(!is_null($result->supp_remark)){
+                                  $display_student = true;
+                                else
+                                  foreach($result->moduleAssignment->specialExams as $ex){
+                                    if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id){ 
+                                      $display_student = true;
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                      @endphp
+                      
                     @if($display_student)
                     <tr>
                       <td class="ss-font-xs">{{ $count }}</td>
@@ -294,18 +292,15 @@
                               @else 
                               class="ss-center ss-font-xs" 
                               @endif>
-
-                              @if($result->supp_processed_at)
-                              N/A
-                              @else 
-                                @if($assignment->module->course_work_based == 1)
-                                  @if($result->course_work_score) 
-                                  {{ round($result->course_work_score) }} 
-                                  @else - @endif
-                                @else
-                                N/A
-                                @endif  
-                              @endif          
+                              @foreach($student->examinationResults as $result)
+                                @if($result->module_assignment_id == $assignment->id)
+                                  @if($assignment->module->course_work_based == 1)
+                                    @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
+                                  @else
+                                    N/A
+                                  @endif
+                                @endif
+                              @endforeach         
                             </td>
                             <td>
                                @foreach($student->examinationResults as $result)
