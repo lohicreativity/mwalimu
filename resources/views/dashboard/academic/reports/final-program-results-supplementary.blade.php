@@ -381,6 +381,9 @@
                     @endforeach
                   </table>
 
+                  @php
+                     $count = 1;
+                  @endphp
                   @if(count($special_exam_students) > 0)
                     <table class="table table-condensed table-bordered">
                       <thead>
@@ -393,6 +396,20 @@
                           <th class="ss-bold ss-font-xs" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</th>
                           @endforeach
                           <th colspan="5"></th>
+                        </tr>
+                        <tr>
+                          @foreach($module_assignments as $assignment)
+                          <th class="ss-bold ss-font-xs">CA</th>
+                          <th class="ss-bold ss-font-xs">FE</th>
+                          <th class="ss-bold ss-font-xs">TT</th>
+                          <th class="ss-bold ss-font-xs">GD</th>
+                          @endforeach
+                          
+                          <th class="ss-center ss-bold ss-font-xs">GPA</th>
+                          <th class="ss-center ss-bold ss-font-xs"> PTS</th>
+                          <th class="ss-center ss-bold ss-font-xs">CRD</th>
+                          <th class="ss-bold ss-font-xs">REMARK</th>
+                          <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
                         </tr>
                       </head>
                       @foreach($special_exam_students as $key=>$student)
