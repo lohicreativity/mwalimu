@@ -360,7 +360,7 @@
                           </td>
                           @foreach($student->semesterRemarks as $rem)
                             @if($rem->semester->name == $mdKey)
-                            <td>
+                            <td class="ss-center ss-font-xs">
                               {{ $rem->supp_remark }}
                             </td>
                             @endif
