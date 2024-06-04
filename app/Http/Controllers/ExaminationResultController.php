@@ -2705,7 +2705,7 @@ class ExaminationResultController extends Controller
             if(!str_contains($remark->remark,'IRREGULARITY')){
                $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                           ->where('student_id',$student->id)
-                                          ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
+                                          ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
                                           ->get();
 
                if(count($results) != $no_of_expected_modules){
