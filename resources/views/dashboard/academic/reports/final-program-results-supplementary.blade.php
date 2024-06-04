@@ -250,7 +250,7 @@
                         $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
                     @endphp
 
-                    @foreach($students as $key=>$student)
+                    @foreach($supp_students as $key=>$student)
                       @php 
                         $display_student = false;
                         foreach($sem_modules as $mdKey=>$mods){
