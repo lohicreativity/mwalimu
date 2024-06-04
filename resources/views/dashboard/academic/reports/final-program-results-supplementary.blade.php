@@ -324,7 +324,7 @@
                                  @endif
                                @endforeach
                             </td>
-                            @endforeach
+@endforeach
                          @endforeach
                         @foreach($student->semesterRemarks as $rem)
                         @if($rem->semester->name == $mdKey)
@@ -336,7 +336,7 @@
                         @if(count($student->semesterRemarks) == 0)
                          <td></td>
                         @endif
-                      @endforeach
+
 
                       @if($student->annualRemarks)
                       @if(count($student->annualRemarks) != 0)
