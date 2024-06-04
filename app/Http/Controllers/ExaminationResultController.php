@@ -2618,7 +2618,7 @@ class ExaminationResultController extends Controller
      * Process student results
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
-    { return 1;
+    { 
       try{
          DB::beginTransaction();
          $student = Student::findOrFail($student_id);
@@ -2705,7 +2705,7 @@ class ExaminationResultController extends Controller
             if(!str_contains($remark->remark,'IRREGULARITY')){
                $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                           ->where('student_id',$student->id)
-                                          ->with(['retakeHistory.retakableResults'=>function($query) use($ac_yr_id){$query->where('study_academic_year',$ac_yr_id - 1);}])
+                                          ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
                                           ->get();
 
                if(count($results) != $no_of_expected_modules){
