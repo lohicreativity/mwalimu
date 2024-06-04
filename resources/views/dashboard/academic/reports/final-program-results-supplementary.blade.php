@@ -257,7 +257,7 @@
                               if($result->module_assignment_id == $assignment->id){
                                 if(!is_null($result->supp_remark)){
                                   $display_student = true;
-                                else
+                                }else{
                                   foreach($result->moduleAssignment->specialExams as $ex){
                                     if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id){ 
                                       $display_student = true;
