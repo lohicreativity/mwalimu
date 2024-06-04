@@ -365,9 +365,6 @@
                             </td>
                             @endif
                           @endforeach
-                          @if(count($student->semesterRemarks) == 0)
-                          <td></td>
-                          @endif
                           <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                             @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
                               @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
@@ -383,18 +380,6 @@
                             @endif 
                           @endif</td>
                         @endforeach
-
-                      @if($student->annualRemarks)
-                      @if(count($student->annualRemarks) != 0)
-                      <td>
-                        @if($student->annualRemarks[0]->gpa) [GPA:{{ bcdiv($student->annualRemarks[0]->gpa,1,1) }}] @else [GPA:N/A] @endif
-
-                        @if($student->annualRemarks[0]->remark) {{ $student->annualRemarks[0]->remark }} @else N/A @endif
-                      </td>
-                      @else
-                      <td></td>
-                      @endif
-                      @endif
                     </tr>
                      @php
                        $count++;
