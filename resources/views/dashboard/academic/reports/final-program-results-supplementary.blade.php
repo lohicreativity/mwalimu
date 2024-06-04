@@ -367,15 +367,11 @@
                           @endforeach
                           <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                             @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
-                              @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
-                                {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
-                              @elseif($student->semesterRemarks[0]->remark == 'POSTPONED EXAM')
+                              @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
+                                {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
                                 POSE
-                              @elseif($student->semesterRemarks[0]->remark == 'POSTPONED SEMESTER')
-                                POSS
-                              @elseif($student->semesterRemarks[0]->remark == 'POSTPONED YEAR')
-                                POSY
-                              @else {{ $student->semesterRemarks[0]->remark }} 
+                              @else {{ $student->semesterRemarks[0]->supp_remark }} 
                               @endif
                             @endif 
                           @endif</td>
