@@ -251,28 +251,29 @@
                     @endphp
 
                     @foreach($students as $key=>$student)
-                      @php $display_student = false; @endphp
-
-                      @foreach($sem_modules as $mdKey=>$mods)
-                          @foreach($mods as $assignment)
-                            @foreach($student->examinationResults as $result)
-                                 @if($result->module_assignment_id == $assignment->id)
-                                    @if(!is_null($result->supp_score))
-                                     
-                                        @php $display_student = true; @endphp
-                                    @else
-                                      @foreach($result->moduleAssignment->specialExams as $ex)
-                                      @if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id) 
-                                        @php $display_student = true; @endphp
+                      @php 
+                        $display_student = false;
+                        foreach($sem_modules as $mdKey=>$mods){
+                          foreach($mods as $assignment){
+                            foreach($student->examinationResults as $result){
+                              if($result->module_assignment_id == $assignment->id){
+                                if(!is_null($result->supp_score)){
                                   
-                                      @endif
-                                      @endforeach
-                                    @endif
-                                 @endif
-                               @endforeach
-                            @endforeach
-                        @endforeach
-                    
+                                    $display_student = true;
+                                }else{
+                                  foreach($result->moduleAssignment->specialExams as $ex){
+                                    if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id){ 
+                                      $display_student = true; 
+                                
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      @endphp
+                      
                     @if($display_student)
                     <tr>
                       <td class="ss-font-xs">{{ $count }}</td>
