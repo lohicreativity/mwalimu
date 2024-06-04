@@ -323,7 +323,7 @@
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if(!is_null($result->supp_remark))
-                                      @if($result->supp_score) {{ round($result->supp_score) }} @else {{ $result->supp_score }} @endif
+                                      @if($result->supp_score) {{ round($result->supp_score) }} @else - @endif
                                     @else
                                       @if($result->total_score) {{ round($result->total_score) }} @else {{ $result->total_score }} @endif
                                     @endif
