@@ -333,8 +333,8 @@
                             <td class="ss-center ss-font-xs">
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
-                                    @if($result->supp_score)
-                                      {{ $result->grade }} @if($result->grade == 'C')*@endif
+                                    @if(!is_null($result->supp_remark))
+                                      {{ $result->grade }} @if($result->grade == 'C' || $result->grade == 'F' || $result->grade == 'I')*@endif
                                     @else
                                       {{ $result->grade }}
                                     @endif
