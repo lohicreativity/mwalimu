@@ -324,7 +324,7 @@
                                  @endif
                                @endforeach
                             </td>
-
+                            @endforeach
                          @endforeach
                         @foreach($student->semesterRemarks as $rem)
                         @if($rem->semester->name == $mdKey)
