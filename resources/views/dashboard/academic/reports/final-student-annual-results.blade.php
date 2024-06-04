@@ -401,7 +401,7 @@
                  <table class="table table-bordered">
                    <thead>
                       <tr>
-                        <th>Remarks</th>
+                        <th>Remark</th>
                         <th>GPA</th>
                       </tr>
                    </thead>
@@ -410,7 +410,7 @@
 
                       <tr>
                         <td>@if($remark->remark != 'PASS' && $supp_publish_status) <strong>{{ $remark->supp_remark }}</strong> @else <strong>{{ $remark->remark }}</strong> @endif
-                          @if($remark->remark != 'REPEAT' || $remark->remark != 'FAIL&DISCO' || $remark->remark != 'DECEASED' || str_contains($remark->remark, 'POSTPONE'))
+                          @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && str_contains($remark->remark, 'POSTPONE'))
                           @if($remark->serialized) 
                             @if(!$supp_publish_status) 
                               @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif 
