@@ -372,8 +372,6 @@
                               @else
                                 @if($rem->remark == 'INCOMPLETE') 
                                   {{ substr($rem->remark,0,4) }} 
-                                @elseif($rem->remark == 'POSTPONED EXAM')
-                                  POSE
                                 @else 
                                   {{ $rem->remark }} 
                                 @endif
@@ -383,11 +381,19 @@
                           @endforeach
                           <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                             @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
-                              @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
-                                {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
-                              @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
-                                POSE
-                              @else {{ $student->semesterRemarks[0]->supp_remark }} 
+                              @if($student->semesterRemarks[0]->remark != 'INCOMPLETE' && $student->semesterRemarks[0]->remark != 'RETAKE' && $student->semesterRemarks[0]->remark != 'CARRY')
+                                @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
+                                  {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
+                                @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
+                                  POSE
+                                @else {{ $student->semesterRemarks[0]->supp_remark }} 
+                                @endif
+                              @else
+                                @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
+                                  {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
+                                @else
+                                  {{ $student->semesterRemarks[0]->remark }}
+                                @endif
                               @endif
                             @endif 
                           @endif</td>
