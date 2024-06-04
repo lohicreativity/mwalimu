@@ -365,6 +365,9 @@
                             </td>
                             @endif
                           @endforeach
+                          @if(count($student->semesterRemarks) == 0)
+                          <td></td>
+                          @endif
                           <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                             @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
                               @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
