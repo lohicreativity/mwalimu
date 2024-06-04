@@ -211,7 +211,7 @@
               <span class="ss-bold" style="font-size:7pt">{{ $campus->name }}</span> <br>
               <span class="ss-bold" style="font-size:7pt">{{ $department->name }}</span> <br>
               <span class="ss-bold" style="font-size:7pt">{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</span>
-              <p style="font-size:7pt">@if($semester) {{ strtoupper($semester->name) }} @endif SUPPLEMENTARY/CARRY/SPECIAL EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+              <p style="font-size:7pt">@if($semester) {{ strtoupper($semester->name) }} @endif SUPPLEMENTARYL EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
             </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
@@ -386,6 +386,11 @@
                      $count = 1;
                   @endphp
                   @if(count($special_exam_students) > 0)
+
+                  <div class="ss-letter-head  ss-center">
+                    <p style="font-size:7pt">@if($semester) {{ strtoupper($semester->name) }} @endif SPECIAL EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+                  </div>
+
                     <table class="table table-condensed table-bordered">
                       <thead>
                         <tr>
