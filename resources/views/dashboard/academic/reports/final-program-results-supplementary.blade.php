@@ -343,6 +343,15 @@
                             </td>
 
                          @endforeach
+                         <td class="ss-center ss-font-xs">@if(count($student->semesterRemarks) != 0)   
+                          @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else - @endif 
+                        @endif</td>
+                        <td class="ss-center ss-font-xs">@if(count($student->semesterRemarks) != 0)   
+                          @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else - @endif 
+                        @endif</td>
+                        <td class="ss-center ss-font-xs">@if(count($student->semesterRemarks) != 0)   
+                          @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else - @endif 
+                        @endif</td>
                         @foreach($student->semesterRemarks as $rem)
                         @if($rem->semester->name == $mdKey)
                         <td>
