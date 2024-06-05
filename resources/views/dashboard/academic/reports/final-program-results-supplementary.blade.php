@@ -820,7 +820,7 @@
                       <td class="ss-center ss-font-sm">{{ $male_failed_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_failed_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_failed_cases + $female_failed_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_failed_cases + $female_failed_cases)/$total_students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_failed_cases + $female_failed_cases)/$total_students)*100,1) }}</td>
                     </tr>
                     <tr>
                       <td class="ss-font-sm">Retake</td>
