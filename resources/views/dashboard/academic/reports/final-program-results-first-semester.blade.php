@@ -310,7 +310,7 @@
                                 class="ss-center ss-font-xs" 
                               @endif>
 
-                              @if($result->supp_processed_at)
+                              @if($result->supp_processed_at && $result->final_remark == 'FAIL')
                               N/A
                               @else 
                                 @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
