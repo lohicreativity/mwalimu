@@ -252,15 +252,15 @@
 
                     @foreach($supp_students as $key=>$student)
                       @php
-                        $display_student = false;
+                        $special_student = true;
                         foreach($special_exam_students as $case){
                           if($case->id != $student->id){
-                            $display_student = true;
-                            break;
+                            $special_student = false;
+
                           }
                         }
                       @endphp
-                      @if($display_student)
+                      @if(!$special_student)
                         <tr>
                           <td class="ss-font-xs">{{ $count }}</td>
                           @if($request->get('reg_display_type') == 'SHOW')
