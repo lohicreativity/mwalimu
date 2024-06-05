@@ -397,7 +397,6 @@
                                 @endif
                               @endif
                                 @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else - @endif 
-                                @endif 
                               @endif</td>
                               @foreach($student->semesterRemarks as $rem)
                               @if($rem->semester->name == $mdKey)
