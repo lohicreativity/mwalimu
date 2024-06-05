@@ -53,11 +53,16 @@ class Util {
    /**
     * Compute GPA
     */
-   public static function computeGPA($total_credits, $results)
+   public static function computeGPA($total_credits, $results,$exam_type)
    {
        $total_weights = 0;
        foreach($results as $res){
-          $total_weights += ($res->point*$res->moduleAssignment->module->credit);
+          if($exam_type == 0 && $res->supp_remark != null){
+            $point = $res->supp_point;
+          }else{
+            $point = $res->point;
+          }
+          $total_weights += ($point*$res->moduleAssignment->module->credit);
        }
        if($total_credits != 0){
           return bcdiv($total_weights/$total_credits,1,4);
@@ -69,11 +74,16 @@ class Util {
    /**
     * Compute GPA
     */
-   public static function computeGPAPoints($total_credits, $results)
+   public static function computeGPAPoints($total_credits, $results,$exam_type)
    {
        $total_weights = 0;
        foreach($results as $res){
-          $total_weights += ($res->point*$res->moduleAssignment->module->credit);
+        if($exam_type == 0 && $res->supp_remark != null){
+            $point = $res->supp_point;
+        }else{
+            $point = $res->point;
+        }
+          $total_weights += ($point*$res->moduleAssignment->module->credit);
        }
        return $total_weights;
    }

@@ -502,11 +502,11 @@ class ExaminationResultController extends Controller
                         Student::where('id',$student->id)->update(['academic_status_id'=>7]);
                      }
                   }else{
-                     $remark->gpa = Util::computeGPA($total_credits + $total_optional_credits,$student_results_for_gpa_computation);
+                     $remark->gpa = Util::computeGPA($total_credits + $total_optional_credits,$student_results_for_gpa_computation,1);
                      Student::where('id',$student->id)->update(['academic_status_id'=>1]);
                   }
       
-                  $remark->point = Util::computeGPAPoints($total_credits + $total_optional_credits, $student_results_for_gpa_computation);
+                  $remark->point = Util::computeGPAPoints($total_credits + $total_optional_credits, $student_results_for_gpa_computation,1);
                   $remark->credit = $total_credits + $total_optional_credits;
                   $remark->year_of_study = $year_of_study;
       
@@ -1117,13 +1117,21 @@ class ExaminationResultController extends Controller
                      Student::where('id',$case)->update(['academic_status_id'=>7]);
                   }
                }else{
-                  if($remark->remark == 'SUPP'){
-                     $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation);
+                  if($remark->remark == 'SUPP' || count($special_exam_status) > 0){
+                     if(count($special_exam_status) > 0){
+                        $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester->id);
+                     }else{
+                        $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
+                     }
                      Student::where('id',$case)->update(['academic_status_id'=>1]);
                   }
                }
 
-               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation);
+               if(count($special_exam_status) > 0){
+                  $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester->id);
+               }else{
+                  $remark->supp_point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
+               }
 
                foreach($gpa_classes as $gpa_class){
                   if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
