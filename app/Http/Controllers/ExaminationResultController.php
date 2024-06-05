@@ -1130,7 +1130,7 @@ class ExaminationResultController extends Controller
                if(count($special_exam_status) > 0){
                   $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester->id);
                }else{
-                  $remark->supp_point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
+                  $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
                }
 
                foreach($gpa_classes as $gpa_class){
