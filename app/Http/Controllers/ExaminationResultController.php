@@ -253,7 +253,7 @@ class ExaminationResultController extends Controller
                   $no_of_failed_modules = 0;
                   $results = ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
                                               ->where('student_id',$student->id)
-                                              ->with(['retakeHistory.retakableResults'=>function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);}])
+                                              ->with(['retakeHistory'=>function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);},'retakeHistory.retakableResults'=>function($query) use($request){$query->latest();}])
                                               ->get();
       
                   if(count($results) != $no_of_expected_modules){
