@@ -282,7 +282,7 @@
                               @endphp
 
                               <td 
-                                @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
+                                @if($result->course_work_remark == 'FAIL') 
                                 class="ss-custom-grey ss-center ss-font-xs" 
                                 @else 
                                 class="ss-center ss-font-xs" 
@@ -298,7 +298,7 @@
                               </td>
 
                             <td 
-                              @if($result->final_remark == 'FAIL' && !$result->supp_processed_at)
+                              @if($result->final_remark == 'FAIL')
                                 @if($result->course_work_remark == 'FAIL')
                                   class="ss-center ss-font-xs" 
                                 @else
@@ -310,35 +310,23 @@
                                 class="ss-center ss-font-xs" 
                               @endif>
 
-                              @if($result->supp_processed_at && $result->final_remark != null)
-                              N/A
-                              @else 
-                                @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
- 
-                                  {{ round($result->final_score) }} 
-                           
-                                @else - @endif
-                              @endif
-                              
+                              @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
+
+                                {{ round($result->final_score) }} 
+                          
+                              @else - @endif
                             </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
                                 class="ss-custom-grey-- ss-center ss-font-xs" 
-                              @elseif($result->supp_processed_at)
-                                class="ss-center ss-font-xs" 
                               @else 
                                 class="ss-center ss-font-xs" 
                               @endif>
 
-                              @if($result->supp_processed_at && $result->final_remark != null)
-                                @if($result->supp_score) 
-                                {{ round($result->supp_score) }} 
-                                @else - @endif
-                              @else 
-                                @if($result->total_score) 
-                                {{ round($result->total_score) }} 
-                                @else - @endif
-                              @endif
+                              @if($result->total_score) 
+                              {{ round($result->total_score) }} 
+                              @else - @endif
+
                               
                           </td>
                             <td 
@@ -349,19 +337,12 @@
                               @if($student->semesterRemarks[0]->remark == 'DECEASED' || $student->semesterRemarks[0]->remark == 'POSTPONED SEMESTER' || $student->semesterRemarks[0]->remark == 'POSTPONED YEAR')
                               -
                               @else
-                                @if($result->supp_processed_at)
-                                  
-                                  @if($result->grade) 
-                                    {{ $result->grade }}* 
-                                  @else - @endif
 
-
-                                @else 
                                   
                                   @if($result->grade) 
                                     {{ $result->grade }} 
                                   @else - @endif
-                                @endif
+
                               @endif
                               
                           </td>
