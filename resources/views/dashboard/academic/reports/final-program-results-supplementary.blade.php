@@ -356,11 +356,7 @@
                             @endif
                           @endforeach
                           <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)
-                            @if($student->semesterRemarks[0]->remark == 'SUPP')
-                            @if($student->gender == 'F') @php $female_failed_cases++; @endphp
-                            @elseif($student->gender == 'M') @php $male_failed_cases++; @endphp
-                            @endif
-                          @elseif($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
+                          @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
                             @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
                             @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
                             @endif
@@ -372,7 +368,7 @@
                             @if($student->gender == 'F') @php $female_retake_cases++; @endphp
                             @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
                             @endif
-                          @elseif($student->semesterRemarks[0]->supp_remark == 'DISCO')
+                          @elseif($student->semesterRemarks[0]->supp_remark == 'FAIL&DISCO')
                             @if($student->gender == 'F') @php $female_disco_cases++; @endphp
                             @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
                             @endif
@@ -441,7 +437,7 @@
                     <table class="table table-condensed table-bordered">
                       <thead>
                         <tr>
-                          <th class="ss-bold ss-font-xs" rowspan="3">SN</th>
+                          <th class="ss-bold ss-font-xs" rowspan="3">{{ $female_lwsecond_class_cases + $male_lwsecond_class_cases}}</th>
                           @if($request->get('reg_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">REGISTRATION NUMBER</th>@endif
                           @if($request->get('name_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">NAME</th>@endif
                           @if($request->get('gender_display_type') == 'SHOW')<th  class="ss-bold ss-font-xs" rowspan="3">SEX</th>@endif
