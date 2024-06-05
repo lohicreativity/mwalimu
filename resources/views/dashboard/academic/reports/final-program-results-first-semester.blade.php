@@ -288,17 +288,13 @@
                                 class="ss-center ss-font-xs" 
                                 @endif>
 
-                                @if($result->supp_processed_at)
+                                @if($assignment->module->course_work_based == 1)
+                                  @if($result->course_work_score) 
+                                  {{ round($result->course_work_score) }} 
+                                  @else - @endif
+                                @else
                                 N/A
-                                @else 
-                                  @if($assignment->module->course_work_based == 1)
-                                    @if($result->course_work_score) 
-                                    {{ round($result->course_work_score) }} 
-                                    @else - @endif
-                                  @else
-                                  N/A
-                                  @endif  
-                                @endif          
+                                @endif           
                               </td>
 
                             <td 
