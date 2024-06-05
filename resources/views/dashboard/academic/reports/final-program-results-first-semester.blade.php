@@ -428,7 +428,7 @@
                           @else {{ $student->semesterRemarks[0]->remark }} @endif @else N/A @endif 
                       @endif</td>
                       <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
+                        @if($student->semesterRemarks[0]->class && $student->semesterRemarks[0]->remark == 'PASS') {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
                           @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
                             {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
                           @elseif($student->semesterRemarks[0]->remark == 'POSTPONED EXAM')
