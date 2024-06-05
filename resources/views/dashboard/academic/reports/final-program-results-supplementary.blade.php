@@ -251,176 +251,187 @@
                     @endphp
 
                     @foreach($supp_students as $key=>$student)
-                    <tr>
-                      <td class="ss-font-xs">{{ $count }}</td>
-                      @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
-                      @endif
-                      @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
-                      @endif
-                      @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->gender }}</td>
-                      @endif
-                         
-                      @foreach($sem_modules as $mdKey=>$mods)
-                          @foreach($mods as $assignment)
-                          
-                            <td class="ss-center ss-font-xs">
-                                @foreach($student->examinationResults as $result)
-                                  @if($result->module_assignment_id == $assignment->id)
-                                    @if(!is_null($result->supp_remark))
-                                      N/A
-                                    @else
-                                      @if($assignment->module->course_work_based == 1)
-                                        @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
-                                      @else
+                      @php
+                        $display_student = false;
+                        foreach($special_exam_students as $case){
+                          if($case->id != $student->id){
+                            $display_student = true;
+                            break;
+                          }
+                        }
+                      @endphp
+                      @if($display_student)
+                        <tr>
+                          <td class="ss-font-xs">{{ $count }}</td>
+                          @if($request->get('reg_display_type') == 'SHOW')
+                          <td class="ss-font-xs">{{ $student->registration_number }}</td>
+                          @endif
+                          @if($request->get('name_display_type') == 'SHOW')
+                          <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
+                          @endif
+                          @if($request->get('gender_display_type') == 'SHOW')
+                          <td class="ss-font-xs">{{ $student->gender }}</td>
+                          @endif
+                            
+                          @foreach($sem_modules as $mdKey=>$mods)
+                              @foreach($mods as $assignment)
+                              
+                                <td class="ss-center ss-font-xs">
+                                    @foreach($student->examinationResults as $result)
+                                      @if($result->module_assignment_id == $assignment->id)
+                                        @if(!is_null($result->supp_remark))
+                                          N/A
+                                        @else
+                                          @if($assignment->module->course_work_based == 1)
+                                            @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
+                                          @else
+                                            N/A
+                                          @endif
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                </td>
+                                <td class="ss-center ss-font-xs">
+                                  @foreach($student->examinationResults as $result)
+                                    @if($result->module_assignment_id == $assignment->id)
+                                      @if(!is_null($result->supp_remark))
                                         N/A
+                                      @else
+                                        @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
+                                          {{ round($result->final_score) }} 
+                            
+                                        @else - @endif
                                       @endif
                                     @endif
-                                  @endif
-                                @endforeach
-                            </td>
+                                  @endforeach
+                              </td>
+                                <td class="ss-center ss-font-xs">
+                                  @foreach($student->examinationResults as $result)
+                                    @if($result->module_assignment_id == $assignment->id)
+                                        @if(!is_null($result->supp_remark))
+                                          @if($result->supp_score) {{ round($result->supp_score) }} @else - @endif
+                                        @else
+                                          @if($result->total_score) {{ round($result->total_score) }} @else - @endif
+                                        @endif
+                                    @endif
+                                  @endforeach
+                                </td>
+                                <td class="ss-center ss-font-xs">
+                                  @foreach($student->examinationResults as $result)
+                                    @if($result->module_assignment_id == $assignment->id)
+                                        @if(!is_null($result->supp_remark))
+                                          {{ $result->grade }} @if($result->grade == 'C' || $result->grade == 'F' || $result->grade == 'I')*@endif
+                                        @else
+                                          {{ $result->grade }}
+                                        @endif
+                                    @endif
+                                  @endforeach
+                                </td>
+
+                            @endforeach
                             <td class="ss-center ss-font-xs">
-                              @foreach($student->examinationResults as $result)
-                                @if($result->module_assignment_id == $assignment->id)
-                                   @if(!is_null($result->supp_remark))
-                                    N/A
-                                   @else
-                                    @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
-                                      {{ round($result->final_score) }} 
-                         
-                                    @else - @endif
-                                   @endif
+                                @if(count($student->semesterRemarks) != 0)   
+                                  @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else - @endif 
+                                @endif
+                              </td>
+                              <td class="ss-center ss-font-xs">
+                                @if(count($student->semesterRemarks) != 0)   
+                                  @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else - @endif 
+                                @endif
+                              </td>
+                              <td class="ss-center ss-font-xs">
+                                @if(count($student->semesterRemarks) != 0)   
+                                  @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else - @endif 
+                                @endif
+                              </td>
+                              @foreach($student->semesterRemarks as $rem)
+                                @if($rem->semester->name == $mdKey)
+                                <td class="ss-font-xs">
+                                  @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
+                                    @if($rem->supp_remark == 'INCOMPLETE') 
+                                      {{ substr($rem->supp_remark,0,4) }} 
+                                    @elseif($rem->supp_remark == 'POSTPONED EXAM')
+                                      POSE
+                                    @else 
+                                      {{ $rem->supp_remark }} 
+                                    @endif
+                                  @else
+                                    @if($rem->remark == 'INCOMPLETE') 
+                                      {{ substr($rem->remark,0,4) }} 
+                                    @else 
+                                      {{ $rem->remark }} 
+                                    @endif
+                                  @endif
+                                </td>
                                 @endif
                               @endforeach
-                           </td>
-                            <td class="ss-center ss-font-xs">
-                               @foreach($student->examinationResults as $result)
-                                 @if($result->module_assignment_id == $assignment->id)
-                                    @if(!is_null($result->supp_remark))
-                                      @if($result->supp_score) {{ round($result->supp_score) }} @else - @endif
-                                    @else
-                                      @if($result->total_score) {{ round($result->total_score) }} @else - @endif
+                              <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)
+                              @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
+                                @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
+                                @endif
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'CARRY')
+                                @if($student->gender == 'F') @php $female_carry_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_carry_cases++; @endphp
+                                @endif
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'RETAKE')
+                                @if($student->gender == 'F') @php $female_retake_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
+                                @endif
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'FAIL&DISCO')
+                                @if($student->gender == 'F') @php $female_disco_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
+                                @endif
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'PASS')
+                                @if(str_contains(strtolower($student->semesterRemarks[0]->class),'first'))
+                                  @if($student->gender == 'F') @php $female_first_class_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_first_class_cases++; @endphp
+                                  @endif
+                                @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'upper second'))
+                                  @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
+                                  @endif
+                                @elseif(strtolower($student->semesterRemarks[0]->class) == 'second class'))
+                                  @if($student->gender == 'F') @php $female_second_class_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_second_class_cases++; @endphp
+                                  @endif
+                                @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'lower second'))
+                                  @if($student->gender == 'F') @php $female_lwsecond_class_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_lwsecond_class_cases++; @endphp
+                                  @endif
+                                @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'pass'))
+                                  @if($student->gender == 'F') @php $female_pass_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
+                                  @endif
+                                @endif
+                              @elseif(str_contains($student->semesterRemarks[0]->supp_remark, 'POSTPONE'))
+                                @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_postponement_cases++; @endphp
+                                @endif
+                              @endif   
+                                @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
+                                  @if($student->semesterRemarks[0]->remark != 'INCOMPLETE' && $student->semesterRemarks[0]->remark != 'RETAKE' && $student->semesterRemarks[0]->remark != 'CARRY')
+                                    @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
+                                      {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
+                                    @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
+                                      POSE
+                                    @else {{ $student->semesterRemarks[0]->supp_remark }} 
                                     @endif
-                                 @endif
-                               @endforeach
-                            </td>
-                            <td class="ss-center ss-font-xs">
-                               @foreach($student->examinationResults as $result)
-                                 @if($result->module_assignment_id == $assignment->id)
-                                    @if(!is_null($result->supp_remark))
-                                      {{ $result->grade }} @if($result->grade == 'C' || $result->grade == 'F' || $result->grade == 'I')*@endif
+                                  @else
+                                    @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
+                                      {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
                                     @else
-                                      {{ $result->grade }}
+                                      {{ $student->semesterRemarks[0]->remark }}
                                     @endif
-                                 @endif
-                               @endforeach
-                            </td>
-
-                         @endforeach
-                         <td class="ss-center ss-font-xs">
-                            @if(count($student->semesterRemarks) != 0)   
-                              @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else - @endif 
-                            @endif
-                          </td>
-                          <td class="ss-center ss-font-xs">
-                            @if(count($student->semesterRemarks) != 0)   
-                              @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else - @endif 
-                            @endif
-                          </td>
-                          <td class="ss-center ss-font-xs">
-                            @if(count($student->semesterRemarks) != 0)   
-                              @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else - @endif 
-                            @endif
-                          </td>
-                          @foreach($student->semesterRemarks as $rem)
-                            @if($rem->semester->name == $mdKey)
-                            <td class="ss-font-xs">
-                              @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
-                                @if($rem->supp_remark == 'INCOMPLETE') 
-                                  {{ substr($rem->supp_remark,0,4) }} 
-                                @elseif($rem->supp_remark == 'POSTPONED EXAM')
-                                  POSE
-                                @else 
-                                  {{ $rem->supp_remark }} 
-                                @endif
-                              @else
-                                @if($rem->remark == 'INCOMPLETE') 
-                                  {{ substr($rem->remark,0,4) }} 
-                                @else 
-                                  {{ $rem->remark }} 
-                                @endif
-                              @endif
-                            </td>
-                            @endif
-                          @endforeach
-                          <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)
-                          @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
-                            @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
-                            @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
-                            @endif
-                          @elseif($student->semesterRemarks[0]->supp_remark == 'CARRY')
-                            @if($student->gender == 'F') @php $female_carry_cases++; @endphp
-                            @elseif($student->gender == 'M') @php $male_carry_cases++; @endphp
-                            @endif
-                          @elseif($student->semesterRemarks[0]->supp_remark == 'RETAKE')
-                            @if($student->gender == 'F') @php $female_retake_cases++; @endphp
-                            @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
-                            @endif
-                          @elseif($student->semesterRemarks[0]->supp_remark == 'FAIL&DISCO')
-                            @if($student->gender == 'F') @php $female_disco_cases++; @endphp
-                            @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
-                            @endif
-                          @elseif($student->semesterRemarks[0]->supp_remark == 'PASS')
-                            @if(str_contains(strtolower($student->semesterRemarks[0]->class),'first'))
-                              @if($student->gender == 'F') @php $female_first_class_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_first_class_cases++; @endphp
-                              @endif
-                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'upper second'))
-                              @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
-                              @endif
-                            @elseif(strtolower($student->semesterRemarks[0]->class) == 'second class'))
-                              @if($student->gender == 'F') @php $female_second_class_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_second_class_cases++; @endphp
-                              @endif
-                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'lower second'))
-                              @if($student->gender == 'F') @php $female_lwsecond_class_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_lwsecond_class_cases++; @endphp
-                              @endif
-                            @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'pass'))
-                              @if($student->gender == 'F') @php $female_pass_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
-                              @endif
-                            @endif
-                          @elseif(str_contains($student->semesterRemarks[0]->supp_remark, 'POSTPONE'))
-                            @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
-                            @elseif($student->gender == 'M') @php $male_postponement_cases++; @endphp
-                            @endif
-                          @endif   
-                            @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
-                              @if($student->semesterRemarks[0]->remark != 'INCOMPLETE' && $student->semesterRemarks[0]->remark != 'RETAKE' && $student->semesterRemarks[0]->remark != 'CARRY')
-                                @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
-                                  {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
-                                @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
-                                  POSE
-                                @else {{ $student->semesterRemarks[0]->supp_remark }} 
-                                @endif
-                              @else
-                                @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
-                                  {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
-                                @else
-                                  {{ $student->semesterRemarks[0]->remark }}
-                                @endif
-                              @endif
-                            @endif 
-                          @endif</td>
-                        @endforeach
-                    </tr>
-                     @php
-                       $count++;
-                     @endphp
+                                  @endif
+                                @endif 
+                              @endif</td>
+                            @endforeach
+                        </tr>
+                      @php
+                        $count++;
+                      @endphp
+                      @endif
                     @endforeach
                     </tbody>
                   </table>
@@ -584,7 +595,7 @@
                               @if($student->gender == 'F') @php $female_retake_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
                               @endif
-                            @elseif($student->semesterRemarks[0]->remark == 'DISCO')
+                            @elseif($student->semesterRemarks[0]->remark == 'FAIL&DISCO')
                               @if($student->gender == 'F') @php $female_disco_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
                               @endif
