@@ -320,7 +320,7 @@
                                   @foreach($student->examinationResults as $result)
                                     @if($result->module_assignment_id == $assignment->id)
                                         @if(!is_null($result->supp_remark))
-                                          {{ $result->grade }} @if($result->grade == 'C' || $result->grade == 'F' || $result->grade == 'I')*@endif
+                                          {{ $result->supp_grade }} @if($result->supp_grade == 'C' || $result->supp_grade == 'F' || $result->supp_grade == 'I')*@endif
                                         @else
                                           {{ $result->grade }}
                                         @endif
