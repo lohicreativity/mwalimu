@@ -386,6 +386,10 @@
                                 @if($student->gender == 'F') @php $female_retake_cases++; @endphp
                                 @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
                                 @endif
+                              @elseif($student->semesterRemarks[0]->remark == 'INCOMPLETE')
+                                @if($student->gender == 'F') @php $female_retake_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
+                                @endif
                               @elseif($student->semesterRemarks[0]->supp_remark == 'FAIL&DISCO')
                                 @if($student->gender == 'F') @php $female_disco_cases++; @endphp
                                 @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
