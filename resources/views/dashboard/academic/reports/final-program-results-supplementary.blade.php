@@ -247,7 +247,7 @@
                          $count = 1;
                         $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
                         $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
-                        $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = 0;
+                        $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = $total_students = 0;
                     @endphp
 
                     @foreach($supp_students as $key=>$student)
@@ -261,6 +261,7 @@
                         }
                       @endphp
                       @if(!$display_student)
+                        @php $total_students++; @endphp
                         <tr>
                           <td class="ss-font-xs">{{ $count }}</td>
                           @if($request->get('reg_display_type') == 'SHOW')
@@ -486,6 +487,7 @@
                       </thead>
                       <tbody>
                       @foreach($special_exam_students as $key=>$student)
+                        @php $total_students++; @endphp
                       <tr>
                         <td class="ss-font-xs">{{ $count }}</td>
                         @if($request->get('reg_display_type') == 'SHOW')
@@ -785,31 +787,31 @@
                         <td class="ss-center ss-font-sm"> {{ $male_first_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $female_first_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $male_first_class_cases + $female_first_class_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ round((($male_first_class_cases + $female_first_class_cases)/count($students))*100,1) }}</td>
+                        <td class="ss-center ss-font-sm">{{ round((($male_first_class_cases + $female_first_class_cases)/$total_students)*100,1) }}</td>
                       @elseif(str_contains(strtolower($class), 'upper second'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
                         <td class="ss-center ss-font-sm"> {{ $male_upsecond_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $female_upsecond_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $male_upsecond_class_cases + $female_upsecond_class_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/count($students))*100,1) }}</td>
+                        <td class="ss-center ss-font-sm">{{ round((($male_upsecond_class_cases + $female_upsecond_class_cases)/$total_students)*100,1) }}</td>
                       @elseif(strtolower($class) == 'second class'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
                         <td class="ss-center ss-font-sm"> {{ $male_second_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $female_second_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $male_second_class_cases + $female_second_class_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ round((($male_second_class_cases + $female_second_class_cases)/count($students))*100,1) }}</td>
+                        <td class="ss-center ss-font-sm">{{ round((($male_second_class_cases + $female_second_class_cases)/$total_students)*100,1) }}</td>
                       @elseif(str_contains(strtolower($class), 'lower'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
                         <td class="ss-center ss-font-sm"> {{ $male_lwsecond_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $female_lwsecond_class_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $male_lwsecond_class_cases + $female_lwsecond_class_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ round((($male_lwsecond_class_cases + $female_lwsecond_class_cases)/count($students))*100,1) }}</td>
+                        <td class="ss-center ss-font-sm">{{ round((($male_lwsecond_class_cases + $female_lwsecond_class_cases)/$total_students)*100,1) }}</td>
                       @elseif(str_contains(strtolower($class), 'pass'))
                         <td class="ss-font-sm">{{ $class->name }}</td>
                         <td class="ss-center ss-font-sm"> {{ $male_pass_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $female_pass_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $male_pass_cases + $female_pass_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ round((($male_pass_cases + $female_pass_cases)/count($students))*100,1) }}</td>
+                        <td class="ss-center ss-font-sm">{{ round((($male_pass_cases + $female_pass_cases)/$total_students))*100,1) }}</td>
                       @endif
                     </tr>
                   @endforeach
@@ -818,14 +820,14 @@
                       <td class="ss-center ss-font-sm">{{ $male_failed_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_failed_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_failed_cases + $female_failed_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_failed_cases + $female_failed_cases)/count($students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_failed_cases + $female_failed_cases)/$total_students))*100,1) }}</td>
                     </tr>
                     <tr>
                       <td class="ss-font-sm">Retake</td>
                       <td class="ss-center ss-font-sm">{{ $male_retake_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_retake_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_retake_cases + $female_retake_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_retake_cases + $female_retake_cases)/count($students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_retake_cases + $female_retake_cases)/$total_students)*100,1) }}</td>
                     </tr>
                     @if($student->applicant->program_level_id == 4)
                     <tr>
@@ -833,7 +835,7 @@
                       <td class="ss-center ss-font-sm">{{ $male_carry_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_carry_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_carry_cases + $female_carry_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_carry_cases + $female_carry_cases)/count($students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_carry_cases + $female_carry_cases)/$total_students)*100,1) }}</td>
                     </tr>
                     @endif
                     <tr>
@@ -841,21 +843,21 @@
                       <td class="ss-center ss-font-sm">{{ $male_incomplete_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_incomplete_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_incomplete_cases + $female_incomplete_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_incomplete_cases + $female_incomplete_cases)/count($students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_incomplete_cases + $female_incomplete_cases)/$total_students)*100,1) }}</td>
                     </tr>
                     <tr>
                       <td class="ss-font-sm">Postponement</td>
                       <td class="ss-center ss-font-sm">{{ $male_postponement_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_postponement_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_postponement_cases + $female_postponement_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_postponement_cases + $female_postponement_cases)/count($students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_postponement_cases + $female_postponement_cases)/$total_students)*100,1) }}</td>
                     </tr>
                     <tr>
                       <td class="ss-font-sm">Discoqualification</td>
                       <td class="ss-center ss-font-sm">{{ $male_disco_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $female_disco_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $male_disco_cases + $female_disco_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ round((($male_disco_cases + $female_disco_cases)/count($students))*100,1) }}</td>
+                      <td class="ss-center ss-font-sm">{{ round((($male_disco_cases + $female_disco_cases)/$total_students)*100,1) }}</td>
                     </tr>
                     <tr>
                       <td class="ss-bold ss ss-font-sm">Total</td>
