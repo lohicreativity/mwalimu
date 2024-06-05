@@ -310,7 +310,7 @@
                                 class="ss-center ss-font-xs" 
                               @endif>
 
-                              @if($result->supp_processed_at && $result->final_remark == 'FAIL')
+                              @if($result->supp_processed_at && $result->final_remark != null)
                               N/A
                               @else 
                                 @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
@@ -330,7 +330,7 @@
                                 class="ss-center ss-font-xs" 
                               @endif>
 
-                              @if($result->supp_processed_at)
+                              @if($result->supp_processed_at && $result->final_remark != null)
                                 @if($result->supp_score) 
                                 {{ round($result->supp_score) }} 
                                 @else - @endif
