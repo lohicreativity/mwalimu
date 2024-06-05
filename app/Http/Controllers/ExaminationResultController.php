@@ -1145,7 +1145,7 @@ class ExaminationResultController extends Controller
 
                }
                
-               if($remark->gpa != null && $remark->gpa < 2){
+               if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
                   $remark->remark = 'FAIL&DISCO';
                   $remark->gpa = null;
                   $remark->class = null;
