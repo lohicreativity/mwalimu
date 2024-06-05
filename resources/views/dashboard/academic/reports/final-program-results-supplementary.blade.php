@@ -237,8 +237,8 @@
                         <th class="ss-center ss-bold ss-font-xs">GPA</th>
                         <th class="ss-center ss-bold ss-font-xs"> PTS</th>
                         <th class="ss-center ss-bold ss-font-xs">CRD</th>
-                        <th class="ss-bold ss-font-xs">REMARK</th>
                         <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
+                        <th class="ss-bold ss-font-xs">REMARK</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -281,13 +281,9 @@
                                     @foreach($student->examinationResults as $result)
                                       @if($result->module_assignment_id == $assignment->id)
                                         @if(!is_null($result->supp_remark))
-                                          N/A
+                                          @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
                                         @else
-                                          @if($assignment->module->course_work_based == 1)
-                                            @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
-                                          @else
-                                            N/A
-                                          @endif
+                                          -
                                         @endif
                                       @endif
                                     @endforeach
@@ -296,12 +292,11 @@
                                   @foreach($student->examinationResults as $result)
                                     @if($result->module_assignment_id == $assignment->id)
                                       @if(!is_null($result->supp_remark))
-                                        N/A
-                                      @else
                                         @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
-                                          {{ round($result->final_score) }} 
-                            
+                                          {{ round($result->final_score) }}
                                         @else - @endif
+                                      @else
+                                        -
                                       @endif
                                     @endif
                                   @endforeach
@@ -345,27 +340,6 @@
                                   @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else - @endif 
                                 @endif
                               </td>
-                              @foreach($student->semesterRemarks as $rem)
-                                @if($rem->semester->name == $mdKey)
-                                <td class="ss-font-xs">
-                                  @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
-                                    @if($rem->supp_remark == 'INCOMPLETE') 
-                                      {{ substr($rem->supp_remark,0,4) }} 
-                                    @elseif($rem->supp_remark == 'POSTPONED EXAM')
-                                      POSE
-                                    @else 
-                                      {{ $rem->supp_remark }} 
-                                    @endif
-                                  @else
-                                    @if($rem->remark == 'INCOMPLETE') 
-                                      {{ substr($rem->remark,0,4) }} 
-                                    @else 
-                                      {{ $rem->remark }} 
-                                    @endif
-                                  @endif
-                                </td>
-                                @endif
-                              @endforeach
                               <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)
                               @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
                                 @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
@@ -421,24 +395,31 @@
                                 @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
                                 @elseif($student->gender == 'M') @php $male_postponement_cases++; @endphp
                                 @endif
-                              @endif   
-                                @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
-                                  @if($student->semesterRemarks[0]->remark != 'INCOMPLETE' && $student->semesterRemarks[0]->remark != 'RETAKE' && $student->semesterRemarks[0]->remark != 'CARRY')
-                                    @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
-                                      {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
-                                    @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
-                                      POSE
-                                    @else {{ $student->semesterRemarks[0]->supp_remark }} 
-                                    @endif
-                                  @else
-                                    @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
-                                      {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
-                                    @else
-                                      {{ $student->semesterRemarks[0]->remark }}
-                                    @endif
-                                  @endif
+                              @endif
+                                @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else - @endif 
                                 @endif 
                               @endif</td>
+                              @foreach($student->semesterRemarks as $rem)
+                              @if($rem->semester->name == $mdKey)
+                              <td class="ss-font-xs">
+                                @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
+                                  @if($rem->supp_remark == 'INCOMPLETE') 
+                                    {{ substr($rem->supp_remark,0,4) }} 
+                                  @elseif($rem->supp_remark == 'POSTPONED EXAM')
+                                    POSE
+                                  @else 
+                                    {{ $rem->supp_remark }} 
+                                  @endif
+                                @else
+                                  @if($rem->remark == 'INCOMPLETE') 
+                                    {{ substr($rem->remark,0,4) }} 
+                                  @else 
+                                    {{ $rem->remark }} 
+                                  @endif
+                                @endif
+                              </td>
+                              @endif
+                            @endforeach
                             @endforeach
                         </tr>
                       @php
@@ -481,8 +462,8 @@
                           <th class="ss-center ss-bold ss-font-xs">GPA</th>
                           <th class="ss-center ss-bold ss-font-xs"> PTS</th>
                           <th class="ss-center ss-bold ss-font-xs">CRD</th>
-                          <th class="ss-bold ss-font-xs">REMARK</th>
                           <th class="ss-bold ss-font-xs">CLASSIFICATION</th>
+                          <th class="ss-bold ss-font-xs">REMARK</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -571,32 +552,11 @@
                                 @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else - @endif 
                               @endif
                             </td>
-                            @foreach($student->semesterRemarks as $rem)
-                              @if($rem->semester->name == $mdKey)
-                              <td class="ss-font-xs">
-                                @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
-                                  @if($rem->supp_remark == 'INCOMPLETE') 
-                                    {{ substr($rem->supp_remark,0,4) }} 
-                                  @elseif($rem->supp_remark == 'POSTPONED EXAM')
-                                    POSE
-                                  @else 
-                                    {{ $rem->supp_remark }} 
-                                  @endif
-                                @else
-                                  @if($rem->remark == 'INCOMPLETE') 
-                                    {{ substr($rem->remark,0,4) }} 
-                                  @else 
-                                    {{ $rem->remark }} 
-                                  @endif
-                                @endif
-                              </td>
-                              @endif
-                            @endforeach
                             <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)
                               @if($student->semesterRemarks[0]->remark == 'SUPP')
-                              @if($student->gender == 'F') @php $female_failed_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_failed_cases++; @endphp
-                              @endif
+                                @if($student->gender == 'F') @php $female_failed_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $male_failed_cases++; @endphp
+                                @endif
                             @elseif($student->semesterRemarks[0]->remark == 'INCOMPLETE')
                               @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
                               @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
@@ -640,23 +600,29 @@
                               @elseif($student->gender == 'M') @php $male_postponement_cases++; @endphp
                               @endif
                             @endif   
-                              @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else 
-                                @if($student->semesterRemarks[0]->remark != 'INCOMPLETE' && $student->semesterRemarks[0]->remark != 'RETAKE' && $student->semesterRemarks[0]->remark != 'CARRY')
-                                  @if($student->semesterRemarks[0]->supp_remark == 'INCOMPLETE')
-                                    {{ substr($student->semesterRemarks[0]->supp_remark,0,4) }} 
-                                  @elseif($student->semesterRemarks[0]->supp_remark == 'POSTPONED EXAM')
-                                    POSE
-                                  @else {{ $student->semesterRemarks[0]->supp_remark }} 
-                                  @endif
-                                @else
-                                  @if($student->semesterRemarks[0]->remark == 'INCOMPLETE')
-                                    {{ substr($student->semesterRemarks[0]->remark,0,4) }} 
-                                  @else
-                                    {{ $student->semesterRemarks[0]->remark }}
-                                  @endif
-                                @endif
-                              @endif 
+                              @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else - @endif 
                             @endif</td>
+                            @foreach($student->semesterRemarks as $rem)
+                            @if($rem->semester->name == $mdKey)
+                            <td class="ss-font-xs">
+                              @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
+                                @if($rem->supp_remark == 'INCOMPLETE') 
+                                  {{ substr($rem->supp_remark,0,4) }} 
+                                @elseif($rem->supp_remark == 'POSTPONED EXAM')
+                                  POSE
+                                @else 
+                                  {{ $rem->supp_remark }} 
+                                @endif
+                              @else
+                                @if($rem->remark == 'INCOMPLETE') 
+                                  {{ substr($rem->remark,0,4) }} 
+                                @else 
+                                  {{ $rem->remark }} 
+                                @endif
+                              @endif
+                            </td>
+                            @endif
+                          @endforeach
                           @endforeach
                       </tr>
                       @php
