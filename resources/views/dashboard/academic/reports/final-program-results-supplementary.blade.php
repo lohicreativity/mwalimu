@@ -811,7 +811,7 @@
                         <td class="ss-center ss-font-sm"> {{ $male_pass_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $female_pass_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $male_pass_cases + $female_pass_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ round((($male_pass_cases + $female_pass_cases)/$total_students))*100,1) }}</td>
+                        <td class="ss-center ss-font-sm">{{ round((($male_pass_cases + $female_pass_cases)/$total_students)*100,1) }}</td>
                       @endif
                     </tr>
                   @endforeach
