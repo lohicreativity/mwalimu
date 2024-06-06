@@ -110,11 +110,11 @@ class StudentController extends Controller
           $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
           $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
-          $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id','nationality')
+          $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id','nationality','registration_number')
                             ->where('registration_number',$request->get('registration_number'))
-                            ->with(['applicant:id,campus_id','academicStatus:id,name'])
+                            ->with(['applicant:id,campus_id','applicant.intake:id,name','academicStatus:id,name'])
                             ->first();
-
+return explode('/',$student->registration_number)[3];
           $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
                                             ->where('study_academic_year_id',$ac_year->id)
                                             ->where('campus_id',$student->applicant->campus_id)
