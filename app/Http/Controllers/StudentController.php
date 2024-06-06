@@ -115,7 +115,7 @@ class StudentController extends Controller
                             ->with(['applicant:id,campus_id,intake_id','applicant.intake','academicStatus:id,name'])
                             ->first();
 
-          if($student->applicant->intake->name == 'MARCH' && explode('/',$student->registration_number)[3] == explode('/',$ac_year->academicYear->year)[1]){
+          if($student->applicant->intake->name == 'MARCH' && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
             if($activeSemester->id == 2){
               $semester_id = 1;
             }else{
@@ -128,7 +128,7 @@ class StudentController extends Controller
             $semester_id = $activeSemester->id;
             $ac_yr_id = $ac_year->id;
           }
-return explode('/',$student->registration_number)[3].'-'.substr(explode('/',$ac_year->academicYear->year)[1],2);
+//return explode('/',$student->registration_number)[3].'-'.substr(explode('/',$ac_year->academicYear->year)[1],2);
           $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
                                             ->where('study_academic_year_id',$ac_year->id)
                                             ->where('campus_id',$student->applicant->campus_id)
