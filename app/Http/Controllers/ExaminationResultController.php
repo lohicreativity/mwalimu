@@ -692,15 +692,15 @@ class ExaminationResultController extends Controller
             }
 
             $semester = Semester::where('status','ACTIVE')->first();
-            // return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
-            // return 10000;
+            return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
+            return 10000;
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                           ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                           ->where('semester_id',$semester->id);})
                                                 ->where('study_academic_year_id',$request->get('study_academic_year_id'))
                                                 ->with('programModuleAssignment.campusProgram.program.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                                 ->get();
-              return $module_assignments;                                  
+                                                
             $year_of_study = $module_assignments[0]->programModuleAssignment->year_of_study;
             $ntaLevel = $module_assignments[0]->programModuleAssignment->campusProgram->program->ntaLevel; // need to change it to fina level name
 
