@@ -116,15 +116,15 @@ class StudentController extends Controller
                             ->first();
 
           if($student->applicant->intake->name == 'MARCH' && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+            return 1;
             if($activeSemester->id == 2){
               $semester_id = 1;
             }else{
               $semester_id = $activeSemester->id;
             }
             $ac_yr_id = $ac_year->id + 1;
-          }elseif($student->applicant->intake->name == 'MARCH' && explode('/',$student->registration_number)[3] == explode('/',$ac_year->academicYear->year)[0]){
-
           }else{
+            return 2;
             $semester_id = $activeSemester->id;
             $ac_yr_id = $ac_year->id;
           }
