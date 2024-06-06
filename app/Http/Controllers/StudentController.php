@@ -112,7 +112,7 @@ class StudentController extends Controller
 
           $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id','nationality','registration_number')
                             ->where('registration_number',$request->get('registration_number'))
-                            ->with(['applicant:id,campus_id','applicant.intake:id,name','academicStatus:id,name'])
+                            ->with(['applicant:id,campus_id','applicant.intake','academicStatus:id,name'])
                             ->first();
           if($student->applicant->intake->name == 'MARCH' && explode('/',$student->registration_number)[3] == explode('/',$ac_year->academicYear->year)[1]){
             if($activeSemester->id == 2){
