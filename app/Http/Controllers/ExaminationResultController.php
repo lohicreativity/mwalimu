@@ -694,6 +694,8 @@ class ExaminationResultController extends Controller
             $semester = Semester::where('status','ACTIVE')->first();
             return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
             return 10000;
+           
+            return $campus_program.' - '.explode('_',$request->get('campus_program_id'))[2].' - '.$semester->id;
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                           ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                           ->where('semester_id',$semester->id);})
