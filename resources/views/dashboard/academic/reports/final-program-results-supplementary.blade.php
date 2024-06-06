@@ -836,7 +836,7 @@
                 </div><!-- end of table-responsive -->
             </div>
 
-          <div class="col-md-3">
+          <div class="col-md-2">
             <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
