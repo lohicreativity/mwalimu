@@ -961,7 +961,7 @@
         <div class="row" style="clear:left">
           <div class="col-md-8">
               <div class="ss-left">
-                  <p>Head of Department: <span class="font-weight-normal"> {{ strtoupper($staff->surname) }}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->middle_name,0,1)}} </span></p>
+                  <p>Head of Department:</p>
                   <p >Signature: ......................................................</p>
                   <p >Date: .............................................................</p>
               </div>
