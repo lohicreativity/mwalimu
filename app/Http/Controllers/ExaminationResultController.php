@@ -1700,7 +1700,7 @@ class ExaminationResultController extends Controller
 
          $remark->save();
       }
-
+return 10;
       if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)
                                  ->where('semester_id',$semester_id)
                                  ->where('nta_level_id',$ntaLevel->id)
