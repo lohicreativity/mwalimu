@@ -694,7 +694,7 @@ class ExaminationResultController extends Controller
             $semester = Semester::where('status','ACTIVE')->first();
             $this->processSuppResults($semester->id,$campus_program->id,$year_of_study,$request->get('study_academic_year_id'),$request->get('intake_id'),$staff->campus_id);
             return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
-
+            return 10000;
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                           ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                           ->where('semester_id',$semester->id);})
@@ -1217,7 +1217,7 @@ class ExaminationResultController extends Controller
 
 
    public function processSuppResults($semester_id,$campus_program_id,$year_of_study,$ac_yr_id,$intake_id,$campus_id){
-
+return 1;
       DB::beginTransaction();
       $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($campus_program_id,$year_of_study,$semester_id){$query->where('campus_program_id',$campus_program_id)
                                                                                                                                     ->where('year_of_study',$year_of_study)
