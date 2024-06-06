@@ -260,7 +260,7 @@
                           }
                         }
                       @endphp
-                      @if(!$display_student)
+     
                         @php $total_students++; @endphp
                         <tr>
                           <td class="ss-font-xs">{{ $count }}</td>
@@ -424,7 +424,7 @@
                       @php
                         $count++;
                       @endphp
-                      @endif
+
                     @endforeach
                     </tbody>
                   </table>
