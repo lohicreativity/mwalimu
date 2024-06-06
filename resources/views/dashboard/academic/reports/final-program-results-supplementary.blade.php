@@ -452,10 +452,10 @@
                         </tr>
                         <tr>
                           @foreach($module_assignments as $assignment)
-                          <th class="ss-bold ss-font-xs">CA</th>
-                          <th class="ss-bold ss-font-xs">FE</th>
-                          <th class="ss-bold ss-font-xs">TT</th>
-                          <th class="ss-bold ss-font-xs">GD</th>
+                          <th class="ss-center ss-bold ss-font-xs">CA</th>
+                          <th class="ss-center ss-bold ss-font-xs">FE</th>
+                          <th class="ss-center ss-bold ss-font-xs">TT</th>
+                          <th class="ss-center ss-bold ss-font-xs">GD</th>
                           @endforeach
                           
                           <th class="ss-center ss-bold ss-font-xs">GPA</th>
@@ -486,14 +486,10 @@
                               <td class="ss-center ss-font-xs">
                                   @foreach($student->examinationResults as $result)
                                     @if($result->module_assignment_id == $assignment->id)
-                                      @if(!is_null($result->supp_remark))
-                                        N/A
+                                      @if($result->final_exam_remark == 'POSPONED')
+                                        @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
                                       @else
-                                        @if($assignment->module->course_work_based == 1)
-                                          @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
-                                        @else
-                                          N/A
-                                        @endif
+                                        -
                                       @endif
                                     @endif
                                   @endforeach
@@ -501,13 +497,10 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                    @if(!is_null($result->supp_remark))
-                                      N/A
+                                    @if($result->final_exam_remark == 'POSPONED')
+                                      @if($result->final_score) {{ round($result->final_score) }} @else - @endif
                                     @else
-                                      @if($result->final_score && ($result->final_remark == 'FAIL' || $result->final_remark == 'PASS'))
-                                        {{ round($result->final_score) }} 
-                          
-                                      @else - @endif
+                                      -
                                     @endif
                                   @endif
                                 @endforeach
@@ -515,10 +508,10 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                      @if(!is_null($result->supp_remark))
-                                        @if($result->supp_score) {{ round($result->supp_score) }} @else - @endif
-                                      @else
+                                      @if($result->final_exam_remark == 'POSPONED')
                                         @if($result->total_score) {{ round($result->total_score) }} @else - @endif
+                                      @else
+                                        -
                                       @endif
                                   @endif
                                 @endforeach
@@ -526,10 +519,10 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                      @if(!is_null($result->supp_remark))
-                                        {{ $result->grade }} @if($result->grade == 'C' || $result->grade == 'F' || $result->grade == 'I')*@endif
+                                      @if($result->final_exam_remark == 'POSPONED')
+                                        @if($result->grade) {{ round($result->grade) }} @else - @endif
                                       @else
-                                        {{ $result->grade }}
+                                        -
                                       @endif
                                   @endif
                                 @endforeach
