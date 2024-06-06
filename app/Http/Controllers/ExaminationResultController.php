@@ -1397,6 +1397,11 @@ class ExaminationResultController extends Controller
                                     ->where('year_of_study',$year_of_study)
                                     ->first();
          }
+         $remark = SemesterRemark::where('student_id',$case)
+         ->where('study_academic_year_id',$ac_yr_id)
+         ->where('semester_id',$semester_id)
+         ->where('year_of_study',$year_of_study)
+         ->first();
          
          if($remark->remark == 'IRREGULARITY'){
            return 1;
