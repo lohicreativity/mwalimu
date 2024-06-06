@@ -851,12 +851,15 @@
             <span class="ss-bold" style="font-size:7pt"> SPECIAL EXAM </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
+                  <thead>
                   <tr>
                     <td class="ss-center ss-bold ss-font-sm">Male</td>
                     <td class="ss-center ss-bold ss-font-sm">Female</td>
                     <td class="ss-center ss-bold ss-font-sm">Total</td>
                     <td class="ss-center ss-bold ss-font-sm">Percentage</td>
                   </tr>
+                  </thead>
+                  <tbody>
                   @foreach($classifications as $class)
                     <tr>
                       @if(str_contains(strtolower($class), 'first'))
@@ -949,6 +952,7 @@
                         $s_male_second_class_cases+$s_male_upsecond_class_cases+$s_male_first_class_cases+$s_female_disco_cases+$s_female_postponement_cases+$s_female_incomplete_cases+$s_female_carry_cases+$s_female_retake_cases+$s_female_failed_cases+$s_female_pass_cases+$s_female_lwsecond_class_cases+
                         $s_female_second_class_cases+$s_female_upsecond_class_cases+$s_female_first_class_cases)/$s_total_students)*100,1) }}</td>
                     </tr>
+                    <tbody>
                 </table>
               </div><!-- end of table-responsive -->
           </div>
