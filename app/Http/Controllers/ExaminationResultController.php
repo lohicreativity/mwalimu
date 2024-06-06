@@ -693,7 +693,8 @@ class ExaminationResultController extends Controller
 
             $semester = Semester::where('status','ACTIVE')->first();
             $this->processSuppResults($semester->id,$campus_program->id,$year_of_study,$request->get('study_academic_year_id'),$request->get('intake_id'),$staff->campus_id);
-            return 1000;
+            return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
+
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                           ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
                                                                                                                                           ->where('semester_id',$semester->id);})
@@ -1376,7 +1377,6 @@ class ExaminationResultController extends Controller
       foreach($students as $case){
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
-               return 1;
                $remark = SemesterRemark::where('student_id',$case)
                                        ->where('study_academic_year_id',$ac_yr_id-1)
                                        ->where('semester_id',$semester_id)
@@ -1384,7 +1384,6 @@ class ExaminationResultController extends Controller
                                        ->first();
             }
          }else{
-            return 2;
             $remark = SemesterRemark::where('student_id',$case)
                                     ->where('study_academic_year_id',$ac_yr_id)
                                     ->where('semester_id',$semester_id)
@@ -1700,7 +1699,7 @@ class ExaminationResultController extends Controller
 
          $remark->save();
       }
-return 10;
+
       if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)
                                  ->where('semester_id',$semester_id)
                                  ->where('nta_level_id',$ntaLevel->id)
