@@ -107,7 +107,7 @@ class StudentController extends Controller
 			      'status'=>'ACTIVE'
         ];
         if(Auth::attempt($credentials)){
-          $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+          $ac_year = StudyAcademicYear::where('status','ACTIVE')->with('academicYear')->first();
           $activeSemester = Semester::where('status', 'ACTIVE')->first();
 
           $student = Student::select('id','applicant_id','campus_program_id','year_of_study','academic_status_id','nationality','registration_number')
