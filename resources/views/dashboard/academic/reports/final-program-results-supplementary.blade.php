@@ -386,6 +386,18 @@
                                   @if($student->gender == 'F') @php $female_pass_cases++; @endphp
                                   @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
                                   @endif
+                                @elseif($student->semesterRemarks[0]->remark == 'RETAKE')
+                                  @if($student->gender == 'F') @php $female_retake_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
+                                  @endif
+                                @elseif($student->semesterRemarks[0]->remark == 'CARRY')
+                                  @if($student->gender == 'F') @php $female_carry_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $female_carry_cases++; @endphp
+                                  @endif
+                                @elseif($student->semesterRemarks[0]->remark == 'INCOMPLETE')
+                                  @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
+                                  @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
+                                  @endif
                                 @endif
                               @elseif(str_contains($student->semesterRemarks[0]->supp_remark, 'POSTPONE'))
                                 @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
