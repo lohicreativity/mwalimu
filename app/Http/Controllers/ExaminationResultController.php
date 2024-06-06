@@ -1382,6 +1382,7 @@ class ExaminationResultController extends Controller
 
       $module_assignments = $remark = null;
       foreach($students as $case){
+         $remark = null;
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
                $remark = SemesterRemark::where('student_id',$case)
