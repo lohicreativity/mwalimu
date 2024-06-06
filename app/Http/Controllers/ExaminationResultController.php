@@ -1384,7 +1384,6 @@ class ExaminationResultController extends Controller
       foreach($students as $case){
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
-               return 1;
                $remark = SemesterRemark::where('student_id',$case)
                                        ->where('study_academic_year_id',$ac_yr_id-1)
                                        ->where('semester_id',$semester_id)
@@ -1392,7 +1391,7 @@ class ExaminationResultController extends Controller
                                        ->first();
             }
          }else{
-
+            return 2;
             $remark = SemesterRemark::where('student_id',$case)
                                     ->where('study_academic_year_id',$ac_yr_id)
                                     ->where('semester_id',$semester_id)
