@@ -637,6 +637,7 @@
             <span class="ss-bold" style="font-size:7pt"> KEYS </span> <br>
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
+                    <thead>
                     <tr>
                       <td class="ss-bold ss-font-sm">Name</td>
                       <td class="ss-bold ss-font-sm">Description</td>
@@ -709,6 +710,7 @@
                       <td>TT</td>
                       <td>Total</td>
                     </tr>
+                    </thead>
                     </table>
            </div><!-- end of table-responsive -->
           </div>
