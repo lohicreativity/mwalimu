@@ -1230,7 +1230,7 @@ class ExaminationResultController extends Controller
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->with('programModuleAssignment.campusProgram.program.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                           ->get();
-                 return $request;                         
+                 return $module_assignments;                         
       $ntaLevel = $module_assignments[0]->programModuleAssignment->campusProgram->program->ntaLevel; // need to change it to fina level name
 
       foreach($module_assignments as $module_assignment){
