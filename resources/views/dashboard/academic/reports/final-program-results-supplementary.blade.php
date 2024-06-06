@@ -632,7 +632,7 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
-          <div class="col-md-4" style='padding-right:10px'>
+          <div class="col-md-3" style='padding-right:10px'>
             <span class="ss-bold" style="font-size:7pt"> KEYS </span> <br>
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
