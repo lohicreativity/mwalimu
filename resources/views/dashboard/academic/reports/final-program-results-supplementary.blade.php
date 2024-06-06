@@ -712,7 +712,7 @@
                     </table>
            </div><!-- end of table-responsive -->
           </div>
-          <div class="col-md-3" style='padding-right:10px;  float:left'>
+          <div class="col-md-2" style='padding-right:10px;  float:left'>
             <span class="ss-bold" style="font-size:7pt"> MODULE CODE/NAME </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
@@ -730,7 +730,7 @@
                 </div><!-- end of table-responsive -->
           </div>
 
-          <div class="col-md-3">
+          <div class="col-md-3" style='padding-right:10px'>
             <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
