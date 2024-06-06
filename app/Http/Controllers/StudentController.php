@@ -128,21 +128,20 @@ class StudentController extends Controller
             $semester_id = $activeSemester->id;
             $ac_yr_id = $ac_year->id;
           }
-//return explode('/',$student->registration_number)[3].'-'.substr(explode('/',$ac_year->academicYear->year)[1],2);
+
           $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
-                                            ->where('study_academic_year_id',$ac_year->id)
+                                            ->where('study_academic_year_id',$ac_yr_id)
                                             ->where('campus_id',$student->applicant->campus_id)
                                             ->sum('tuition_fee');
 
           $invoices = null;
-return $semester_id.'-'.$ac_yr_id;
           if(Registration::where('student_id', $student->id)
-                         ->where('study_academic_year_id', $ac_year->id)
-                         ->where('semester_id', $activeSemester->id)
+                         ->where('study_academic_year_id', $ac_yr_id)
+                         ->where('semester_id', $semester_id)
                          ->where('status','UNREGISTERED')
                          ->first()){
 
-            $program_fee = ProgramFee::where('study_academic_year_id',$ac_year->id)
+            $program_fee = ProgramFee::where('study_academic_year_id',$ac_yr_id)
                                      ->where('campus_program_id',$student->campus_program_id)
                                      ->first();
             if(!$program_fee){
@@ -158,7 +157,7 @@ return $semester_id.'-'.$ac_yr_id;
             }
 
             $loan_signed_status = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
-                                                ->where('study_academic_year_id',$ac_year->id)
+                                                ->where('study_academic_year_id',$ac_yr_id)
                                                 ->where('campus_id',$student->applicant->campus_id)
                                                 ->where('has_signed',1)
                                                 ->count();
@@ -172,15 +171,15 @@ return $semester_id.'-'.$ac_yr_id;
                                                
             if($tuition_fee_loan >= $program_fee_amount && $loan_signed_status >= 1){
               Registration::where('student_id',$student->id)
-                          ->where('study_academic_year_id',$ac_year->id)
-                          ->where('semester_id', $activeSemester->id)
+                          ->where('study_academic_year_id',$ac_yr_id)
+                          ->where('semester_id', $semester_id)
                           ->update(['status'=>'REGISTERED']);
 
             }else{
               $invoices = Invoice::where('payable_type','student')
                                  ->where('payable_id',$student->id)
                                  ->whereNotNull('gateway_payment_id')
-                                 ->where('applicable_id',$ac_year->id)
+                                 ->where('applicable_id',$ac_yr_id)
                                  ->with('feeType')
                                  ->get();
 
@@ -207,38 +206,38 @@ return $semester_id.'-'.$ac_yr_id;
                     }
                   }
 
-                  if($activeSemester->id == 1){
+                  if($semester_id == 1){
                     if($fee_payment_percent >= 0.6 && $other_fee_payment_status){
                       if($tuition_fee_loan > 0){
                         if($loan_signed_status >= 1){
-                          Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                          ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                          Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)
+                          ->where('semester_id', $semester_id)->update(['status'=>'REGISTERED']);
                         }
                       }else{
-                        Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                        ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                        Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)
+                        ->where('semester_id', $semester_id)->update(['status'=>'REGISTERED']);
                       }
       
                     }
 
-                  }elseif($activeSemester->id == 2){
+                  }elseif($semester_id == 2){
                     if($fee_payment_percent == 1 && $other_fee_payment_status){
-                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)
+                      ->where('semester_id', $semester_id)->update(['status'=>'REGISTERED']);
       
                     }
                   }
                 }else{
-                  if($activeSemester->id == 1){
+                  if($semester_id == 1){
                     if($fee_payment_percent >= 0.6){
-                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)
+                      ->where('semester_id', $semester_id)->update(['status'=>'REGISTERED']);
       
                     }
-                  }elseif($activeSemester->id == 2){
+                  }elseif($semester_id == 2){
                     if($fee_payment_percent == 1){
-                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)
-                      ->where('semester_id', $activeSemester->id)->update(['status'=>'REGISTERED']);
+                      Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)
+                      ->where('semester_id', $semester_id)->update(['status'=>'REGISTERED']);
       
                     }
                   }
