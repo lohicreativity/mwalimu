@@ -1396,8 +1396,6 @@ class ExaminationResultController extends Controller
                                     ->where('semester_id',$semester_id)
                                     ->where('year_of_study',$year_of_study)
                                     ->first();
-
-                                    return $remark;
          }
 
          $special_exam_status = SpecialExam::where('student_id',$case)
@@ -1409,6 +1407,7 @@ class ExaminationResultController extends Controller
 
          $student_results = $student_results_for_gpa_computation = [];
          $no_of_failed_modules = 0;
+         return $remark;
          if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
             continue;
          }else{
