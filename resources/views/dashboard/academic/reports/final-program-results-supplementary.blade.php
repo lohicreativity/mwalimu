@@ -544,50 +544,50 @@
                             </td>
                             <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)
                               @if($student->semesterRemarks[0]->remark == 'SUPP')
-                                @if($student->gender == 'F') @php $female_failed_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_failed_cases++; @endphp
+                                @if($student->gender == 'F') @php $s_female_failed_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $s_male_failed_cases++; @endphp
                                 @endif
                             @elseif($student->semesterRemarks[0]->remark == 'INCOMPLETE')
-                              @if($student->gender == 'F') @php $female_incomplete_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_incomplete_cases++; @endphp
+                              @if($student->gender == 'F') @php $s_female_incomplete_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $s_male_incomplete_cases++; @endphp
                               @endif
                             @elseif($student->semesterRemarks[0]->remark == 'CARRY')
-                              @if($student->gender == 'F') @php $female_carry_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_carry_cases++; @endphp
+                              @if($student->gender == 'F') @php $s_female_carry_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $s_male_carry_cases++; @endphp
                               @endif
                             @elseif($student->semesterRemarks[0]->remark == 'RETAKE')
-                              @if($student->gender == 'F') @php $female_retake_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
+                              @if($student->gender == 'F') @php $s_female_retake_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $s_male_retake_cases++; @endphp
                               @endif
                             @elseif($student->semesterRemarks[0]->remark == 'FAIL&DISCO')
-                              @if($student->gender == 'F') @php $female_disco_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_disco_cases++; @endphp
+                              @if($student->gender == 'F') @php $s_female_disco_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $s_male_disco_cases++; @endphp
                               @endif
                             @elseif($student->semesterRemarks[0]->remark == 'PASS')
                               @if(str_contains(strtolower($student->semesterRemarks[0]->class),'first'))
-                                @if($student->gender == 'F') @php $female_first_class_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_first_class_cases++; @endphp
+                                @if($student->gender == 'F') @php $s_female_first_class_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $s_male_first_class_cases++; @endphp
                                 @endif
                               @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'upper second'))
-                                @if($student->gender == 'F') @php $female_upsecond_class_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_upsecond_class_cases++; @endphp
+                                @if($student->gender == 'F') @php $s_female_upsecond_class_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $s_male_upsecond_class_cases++; @endphp
                                 @endif
                               @elseif(strtolower($student->semesterRemarks[0]->class) == 'second class'))
-                                @if($student->gender == 'F') @php $female_second_class_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_second_class_cases++; @endphp
+                                @if($student->gender == 'F') @php $s_female_second_class_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $s_male_second_class_cases++; @endphp
                                 @endif
                               @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'lower second'))
-                                @if($student->gender == 'F') @php $female_lwsecond_class_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_lwsecond_class_cases++; @endphp
+                                @if($student->gender == 'F') @php $s_female_lwsecond_class_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $s_male_lwsecond_class_cases++; @endphp
                                 @endif
                               @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'pass'))
-                                @if($student->gender == 'F') @php $female_pass_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
+                                @if($student->gender == 'F') @php $s_female_pass_cases++; @endphp
+                                @elseif($student->gender == 'M') @php $s_male_pass_cases++; @endphp
                                 @endif
                               @endif
                             @elseif(str_contains($student->semesterRemarks[0]->remark, 'POSTPONE'))
-                              @if($student->gender == 'F') @php $female_postponement_cases++; @endphp
-                              @elseif($student->gender == 'M') @php $male_postponement_cases++; @endphp
+                              @if($student->gender == 'F') @php $s_female_postponement_cases++; @endphp
+                              @elseif($student->gender == 'M') @php $s_male_postponement_cases++; @endphp
                               @endif
                             @endif   
                               @if($student->semesterRemarks[0]->class) {{ strtoupper($student->semesterRemarks[0]->class) }} @else - @endif 
