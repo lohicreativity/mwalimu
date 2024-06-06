@@ -730,7 +730,7 @@
           </div>
 
             <div class="col-md-3" style='padding-right:5px;  float:left'>
-              <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
+              <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX - SUPP </span> <br>
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
                     <tr>
@@ -837,7 +837,7 @@
             </div>
 
           <div class="col-md-2">
-            <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX </span> <br>
+            <span class="ss-bold" style="font-size:7pt"> SPECIAL EXAM </span> <br>
               <div class="table-responsive">
                 <table class="table table-condensed table-bordered">
                   <tr>
@@ -943,7 +943,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="clear:left">
           <div class="col-md-8">
               <div class="ss-left">
                   <p>Head of Department: <span class="font-weight-normal"> {{ strtoupper($staff->surname) }}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->middle_name,0,1)}} </span></p>
