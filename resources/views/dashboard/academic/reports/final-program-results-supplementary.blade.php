@@ -642,6 +642,8 @@
                       <td class="ss-bold ss-font-sm">Name</td>
                       <td class="ss-bold ss-font-sm">Description</td>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr class="ss-font-sm">
                       <td>CA</td>
                       <td>Continous Assessment</td>
@@ -710,7 +712,7 @@
                       <td>TT</td>
                       <td>Total</td>
                     </tr>
-                    </thead>
+                    </tbody>
                     </table>
            </div><!-- end of table-responsive -->
           </div>
@@ -718,16 +720,20 @@
             <span class="ss-bold" style="font-size:7pt"> MODULE CODE/NAME </span> <br>
                 <div>
                    <table class="table table-condensed table-bordered">
+                    <thead>
                       <tr>
                         <td class="ss-bold ss-font-sm">Code</td>
                         <td class="ss-bold ss-font-sm">Name</td>
                       </tr>
+                    </thead>
+                    <tbody>
                       @foreach($modules as $modKey=>$mod)
                       <tr>
                         <td class="ss-font-sm">{{ $modKey }}</td>
                         <td class="ss-font-sm">{{ $mod['name'] }}</td>
                       </tr>
                       @endforeach
+                    </tbody>
                    </table>
                 </div><!-- end of table-responsive -->
           </div>
@@ -736,6 +742,7 @@
               <span class="ss-bold" style="font-size:7pt"> DISTRIBUTION OF RESULTS BY SEX - SUPP </span> <br>
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
+                    <thead>
                     <tr>
                       <td class="ss-bold ss-font-sm">Class/Remark</td>
                       <td class="ss-center ss-bold ss-font-sm">Male</td>
@@ -743,6 +750,8 @@
                       <td class="ss-center ss-bold ss-font-sm">Total</td>
                       <td class="ss-center ss-bold ss-font-sm">Percentage</td>
                     </tr>
+                    </thead>
+                    <tbody>
                     @foreach($classifications as $class)
                       <tr>
                         @if(str_contains(strtolower($class), 'first'))
@@ -833,6 +842,7 @@
                           $male_second_class_cases+$male_upsecond_class_cases+$male_first_class_cases+$female_disco_cases+$female_postponement_cases+$female_incomplete_cases+$female_carry_cases+$female_retake_cases+$female_failed_cases+$female_pass_cases+$female_lwsecond_class_cases+
                           $female_second_class_cases+$female_upsecond_class_cases+$female_first_class_cases)/$total_students)*100,1) }}</td>
                       </tr>
+                    </tbody>
                   </table>
                 </div><!-- end of table-responsive -->
             </div>
