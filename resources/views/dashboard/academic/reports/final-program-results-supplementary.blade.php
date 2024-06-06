@@ -428,15 +428,6 @@
                     @endforeach
                     </tbody>
                   </table>
-
-                  @php
-                    $count = 1;
-                    $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
-                    $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
-                    $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = $total_students = 0;
-                  @endphp
-                  @if(count($special_exam_students) > 0)
-
                   <div class='row'>
                     <div class="col-md-4"> </di>
                     <div class="col-md-4"> </di>  
@@ -547,6 +538,13 @@
                         </div><!-- end of table-responsive -->
                     </div>
                   </div>
+                  @php
+                    $count = 1;
+                    $male_postponement_cases = $female_postponement_cases = $male_upsecond_class_cases = $female_upsecond_class_cases = $male_first_class_cases = $female_first_class_cases =
+                    $male_disco_cases = $female_disco_cases = $male_retake_cases = $female_retake_cases = $male_carry_cases = $female_carry_cases = $male_incomplete_cases = $female_incomplete_cases =
+                    $male_failed_cases = $female_failed_cases = $female_pass_cases = $male_pass_cases = $female_lwsecond_class_cases = $male_lwsecond_class_cases = $female_second_class_cases = $male_second_class_cases = $total_students = 0;
+                  @endphp
+                  @if(count($special_exam_students) > 0)
                   <div class="ss-letter-head  ss-center">
                     <p style="font-size:7pt">@if($semester) {{ strtoupper($semester->name) }} @endif SPECIAL EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
                   </div>
