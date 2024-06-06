@@ -114,8 +114,8 @@ class StudentController extends Controller
                             ->where('registration_number',$request->get('registration_number'))
                             ->with(['applicant:id,campus_id,intake_id','applicant.intake','academicStatus:id,name'])
                             ->first();
-
-          if($student->applicant->intake->name == 'MARCH' ){
+return $student;
+          if($student->applicant->intake->name == 'MARCH' && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
 return 1;
             if($activeSemester->id == 2){
               $semester_id = 1;
