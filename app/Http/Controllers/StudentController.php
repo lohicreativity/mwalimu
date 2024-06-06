@@ -114,7 +114,8 @@ class StudentController extends Controller
                             ->where('registration_number',$request->get('registration_number'))
                             ->with(['applicant:id,campus_id','applicant.intake:id,name','academicStatus:id,name'])
                             ->first();
-return explode('/',$student->registration_number)[3];
+                            return $ac_year;
+//return explode('/',$student->registration_number)[3].'-'.explode('/');
           $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id)->orWhere('student_id',$student->id);})
                                             ->where('study_academic_year_id',$ac_year->id)
                                             ->where('campus_id',$student->applicant->campus_id)
