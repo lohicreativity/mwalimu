@@ -1397,12 +1397,8 @@ class ExaminationResultController extends Controller
                                     ->where('year_of_study',$year_of_study)
                                     ->first();
          }
-         return SemesterRemark::where('student_id',$case)
-                                    ->where('study_academic_year_id',$ac_yr_id)
-                                    ->where('semester_id',$semester_id)
-                                    ->where('year_of_study',$year_of_study)
-                                    ->first();
-         if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
+         
+         if($remark->remark == 'IRREGULARITY'){
            return 1;
          }
          $special_exam_status = SpecialExam::where('student_id',$case)
