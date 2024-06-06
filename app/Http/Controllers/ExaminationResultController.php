@@ -693,7 +693,6 @@ class ExaminationResultController extends Controller
 
             $semester = Semester::where('status','ACTIVE')->first();
 
-            return $campus_program->id.' - '.explode('_',$request->get('campus_program_id'))[2].' - '.$semester->id;
             return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
             return 10000;
 
@@ -1220,7 +1219,7 @@ class ExaminationResultController extends Controller
 
    public function processSuppResults(Request $request){
       $campus_program_id = $request->get('campus_program_id');
-      $semester_id = $request->get('campus_program_id');
+      $semester_id = $request->get('semester_id');
       $year_of_study = $request->get('year_of_study');
       $ac_yr_id = $request->get('ac_yr_id');
       $campus_id = $request->get('campus_id');
