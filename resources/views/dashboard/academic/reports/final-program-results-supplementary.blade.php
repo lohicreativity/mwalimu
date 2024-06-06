@@ -876,7 +876,7 @@
 
                         <td class="ss-center ss-font-sm"> {{ $s_male_pass_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ $s_female_pass_cases }}</td>
-                        <td class="ss-center ss-font-sm">{{ $s_male_pass_cases + $female_pass_cases }}</td>
+                        <td class="ss-center ss-font-sm">{{ $s_male_pass_cases + $s_female_pass_cases }}</td>
                         <td class="ss-center ss-font-sm">{{ round((($s_male_pass_cases + $s_female_pass_cases)/$s_total_students)*100,1) }}</td>
                       @endif
                     </tr>
@@ -922,7 +922,7 @@
    
                       <td class="ss-center ss-font-sm">{{ $s_male_disco_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ $s_female_disco_cases }}</td>
-                      <td class="ss-center ss-font-sm">{{ $s_male_disco_cases + $female_disco_cases }}</td>
+                      <td class="ss-center ss-font-sm">{{ $s_male_disco_cases + $s_female_disco_cases }}</td>
                       <td class="ss-center ss-font-sm">{{ round((($s_male_disco_cases + $s_female_disco_cases)/$s_total_students)*100,1) }}</td>
                     </tr>
                     <tr>
@@ -931,10 +931,10 @@
                                                             $s_male_second_class_cases+$s_male_upsecond_class_cases+$s_male_first_class_cases) }}</td>
                       <td class="ss-center ss-bold ss ss-font-sm">{{ ($s_female_disco_cases+$s_female_postponement_cases+$s_female_incomplete_cases+$s_female_carry_cases+$s_female_retake_cases+$s_female_failed_cases+$s_female_pass_cases+$s_female_lwsecond_class_cases+
                                                             $s_female_second_class_cases+$s_female_upsecond_class_cases+$s_female_first_class_cases) }}</td>
-                      <td class="ss-center ss-bold ss ss-font-sm">{{ ($s_male_disco_cases+$male_postponement_cases+$s_male_incomplete_cases+$s_male_carry_cases+$s_male_retake_cases+$s_male_failed_cases+$s_male_pass_cases+$s_male_lwsecond_class_cases+
+                      <td class="ss-center ss-bold ss ss-font-sm">{{ ($s_male_disco_cases+$s_male_postponement_cases+$s_male_incomplete_cases+$s_male_carry_cases+$s_male_retake_cases+$s_male_failed_cases+$s_male_pass_cases+$s_male_lwsecond_class_cases+
                                                             $s_male_second_class_cases+$s_male_upsecond_class_cases+$s_male_first_class_cases+$s_female_disco_cases+$s_female_postponement_cases+$s_female_incomplete_cases+$s_female_carry_cases+$s_female_retake_cases+$s_female_failed_cases+$s_female_pass_cases+$s_female_lwsecond_class_cases+
                                                             $s_female_second_class_cases+$s_female_upsecond_class_cases+$s_female_first_class_cases) }}</td>
-                      <td class="ss-center ss-bold ss ss-font-sm">{{ round((($s_male_disco_cases+$male_postponement_cases+$s_male_incomplete_cases+$s_male_carry_cases+$s_male_retake_cases+$s_male_failed_cases+$s_male_pass_cases+$s_male_lwsecond_class_cases+
+                      <td class="ss-center ss-bold ss ss-font-sm">{{ round((($s_male_disco_cases+$s_male_postponement_cases+$s_male_incomplete_cases+$s_male_carry_cases+$s_male_retake_cases+$s_male_failed_cases+$s_male_pass_cases+$s_male_lwsecond_class_cases+
                         $s_male_second_class_cases+$s_male_upsecond_class_cases+$s_male_first_class_cases+$s_female_disco_cases+$s_female_postponement_cases+$s_female_incomplete_cases+$s_female_carry_cases+$s_female_retake_cases+$s_female_failed_cases+$s_female_pass_cases+$s_female_lwsecond_class_cases+
                         $s_female_second_class_cases+$s_female_upsecond_class_cases+$s_female_first_class_cases)/$s_total_students)*100,1) }}</td>
                     </tr>
