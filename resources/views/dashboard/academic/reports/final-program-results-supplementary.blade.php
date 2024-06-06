@@ -632,7 +632,7 @@
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
         <div class="row">
-          <div class="col-md-3" style='padding-right:10px float:left'>
+          <div class="col-md-3" style='padding-right:10px'>
             <span class="ss-bold" style="font-size:7pt"> KEYS </span> <br>
                 <div class="table-responsive">
                   <table class="table table-condensed table-bordered">
@@ -713,7 +713,7 @@
           </div>
           <div class="col-md-4" style='padding-right:10px; '>
             <span class="ss-bold" style="font-size:7pt"> MODULE CODE/NAME </span> <br>
-                <div class="table-responsive">
+                <div>
                    <table class="table table-condensed table-bordered">
                       <tr>
                         <td class="ss-bold ss-font-sm">Code</td>
