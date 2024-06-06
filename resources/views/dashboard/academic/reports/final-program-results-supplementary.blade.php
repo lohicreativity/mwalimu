@@ -353,15 +353,11 @@
                                 @if($student->gender == 'F') @php $female_retake_cases++; @endphp
                                 @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
                                 @endif
-                              @elseif($student->semesterRemarks[0]->remark == 'CARRY')
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'CARRY')
                                 @if($student->gender == 'F') @php $female_carry_cases++; @endphp
                                 @elseif($student->gender == 'M') @php $male_carry_cases++; @endphp
                                 @endif
-                              @elseif($student->semesterRemarks[0]->remark == 'RETAKE')
-                                @if($student->gender == 'F') @php $female_retake_cases++; @endphp
-                                @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
-                                @endif
-                              @elseif($student->semesterRemarks[0]->remark == 'INCOMPLETE')
+                              @elseif($student->semesterRemarks[0]->supp_remark == 'RETAKE')
                                 @if($student->gender == 'F') @php $female_retake_cases++; @endphp
                                 @elseif($student->gender == 'M') @php $male_retake_cases++; @endphp
                                 @endif
