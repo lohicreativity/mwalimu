@@ -1627,39 +1627,37 @@ class ExaminationResultController extends Controller
             }
          }
 
-         $active_semester = Semester::where('status','ACTIVE')->first('id');
          $remark->study_academic_year_id = $ac_year_id;
          $remark->student_id = $case;
          $remark->semester_id = $semester_id;
          $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
 
-         if($remark->supp_remark != 'PASS'){
+         if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
             $remark->gpa = null;
-            if($remark->resupp_remarkmark == 'SUPP'){
+            if($remark->resupp_remark == 'SUPP' || $remark->remark == 'SUPP'){
                Student::where('id',$case)->update(['academic_status_id'=>4]);
-            }elseif($remark->supp_remark == 'RETAKE'){
+            }elseif($remark->supp_remark == 'RETAKE' || $remark->remark == 'RETAKE'){
                Student::where('id',$case)->update(['academic_status_id'=>2]);
-            }elseif($remark->supp_remark == 'CARRY'){
+            }elseif($remark->supp_remark == 'CARRY' || $remark->remark == 'CARRY'){
                Student::where('id',$case)->update(['academic_status_id'=>3]);
-            }elseif(str_contains($remark->supp_remark, 'POSTPONED')){
+            }elseif(str_contains($remark->supp_remark, 'POSTPONED' || str_contains($remark->remark,'POSTPONED'))){
                Student::where('id',$case)->update(['academic_status_id'=>9]);
-            }elseif($remark->supp_remark == 'INCOMPLETE'){
+            }elseif($remark->supp_remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE'){
                Student::where('id',$case)->update(['academic_status_id'=>7]);
             }
          }else{
-            if($remark->remark == 'SUPP' || count($special_exam_status) > 0){
-               if(count($special_exam_status) > 0){
-                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
-               }else{
-                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
-               }
+            if($remark->remark == 'SUPP' && $remark->supp_remark != null){
+               $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
+               Student::where('id',$case)->update(['academic_status_id'=>1]);
+            }elseif($remark->remark == 'PASS' && $remark->supp_remark == null){
+               $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
                Student::where('id',$case)->update(['academic_status_id'=>1]);
             }
          }
 
-         if(count($special_exam_status) > 0){
+         if($remark->remark == 'PASS' && $remark->supp_remark == null){
             $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester_id);
-         }else{
+         }elseif($remark->remark == 'SUPP' && $remark->supp_remark == 'PASS'){
             $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
          }
 
