@@ -307,7 +307,7 @@
                                         @if(!is_null($result->supp_remark))
                                           @if($result->supp_score) {{ round($result->supp_score) }} @else - @endif
                                         @else
-                                          @if($result->total_score) {{ round($result->total_score) }} @else - @endif
+                                          -
                                         @endif
                                     @endif
                                   @endforeach
@@ -316,9 +316,9 @@
                                   @foreach($student->examinationResults as $result)
                                     @if($result->module_assignment_id == $assignment->id)
                                         @if(!is_null($result->supp_remark))
-                                          {{ $result->supp_grade }} @if($result->supp_grade == 'C' || $result->supp_grade == 'F' || $result->supp_grade == 'I')*@endif
+                                          {{ $result->supp_grade }} 
                                         @else
-                                          {{ $result->grade }}
+                                          -
                                         @endif
                                     @endif
                                   @endforeach
