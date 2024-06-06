@@ -711,7 +711,7 @@
                     </table>
            </div><!-- end of table-responsive -->
           </div>
-          <div class="col-md-3" style='padding-right:10px;  float:left'>
+          <div class="col-md-4" style='padding-right:10px;  float:left'>
             <span class="ss-bold" style="font-size:7pt"> MODULE CODE/NAME </span> <br>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
