@@ -382,7 +382,7 @@
                                   @if($student->gender == 'F') @php $female_lwsecond_class_cases++; @endphp
                                   @elseif($student->gender == 'M') @php $male_lwsecond_class_cases++; @endphp
                                   @endif
-                                @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'pass'))
+                                @elseif(str_contains(strtolower($student->semesterRemarks[0]->class),'pass') && $student->semesterRemarks[0]->remark == 'SUPP')
                                   @if($student->gender == 'F') @php $female_pass_cases++; @endphp
                                   @elseif($student->gender == 'M') @php $male_pass_cases++; @endphp
                                   @endif
