@@ -1381,6 +1381,7 @@ class ExaminationResultController extends Controller
                                     ->get();
 
       $module_assignments = $remark = null;
+      return $students;
       foreach($students as $case){
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
