@@ -825,9 +825,7 @@
                                                               $male_second_class_cases+$male_upsecond_class_cases+$male_first_class_cases) }}</td>
                         <td class="ss-center ss-bold ss ss-font-sm">{{ ($female_disco_cases+$female_postponement_cases+$female_incomplete_cases+$female_carry_cases+$female_retake_cases+$female_failed_cases+$female_pass_cases+$female_lwsecond_class_cases+
                                                               $female_second_class_cases+$female_upsecond_class_cases+$female_first_class_cases) }}</td>
-                        <td class="ss-center ss-bold ss ss-font-sm">{{ ($male_disco_cases+$male_postponement_cases+$male_incomplete_cases+$male_carry_cases+$male_retake_cases+$male_failed_cases+$male_pass_cases+$male_lwsecond_class_cases+
-                                                              $male_second_class_cases+$male_upsecond_class_cases+$male_first_class_cases+$female_disco_cases+$female_postponement_cases+$female_incomplete_cases+$female_carry_cases+$female_retake_cases+$female_failed_cases+$female_pass_cases+$female_lwsecond_class_cases+
-                                                              $female_second_class_cases+$female_upsecond_class_cases+$female_first_class_cases) }}</td>
+                        <td class="ss-center ss-bold ss ss-font-sm">{{ $total_students }}</td>
                         <td class="ss-center ss-bold ss ss-font-sm">{{ round((($male_disco_cases+$male_postponement_cases+$male_incomplete_cases+$male_carry_cases+$male_retake_cases+$male_failed_cases+$male_pass_cases+$male_lwsecond_class_cases+
                           $male_second_class_cases+$male_upsecond_class_cases+$male_first_class_cases+$female_disco_cases+$female_postponement_cases+$female_incomplete_cases+$female_carry_cases+$female_retake_cases+$female_failed_cases+$female_pass_cases+$female_lwsecond_class_cases+
                           $female_second_class_cases+$female_upsecond_class_cases+$female_first_class_cases)/$total_students)*100,1) }}</td>
