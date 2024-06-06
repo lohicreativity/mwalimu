@@ -1391,12 +1391,13 @@ class ExaminationResultController extends Controller
                                        ->first();
             }
          }else{
-            return 2;
             $remark = SemesterRemark::where('student_id',$case)
                                     ->where('study_academic_year_id',$ac_yr_id)
                                     ->where('semester_id',$semester_id)
                                     ->where('year_of_study',$year_of_study)
                                     ->first();
+
+                                    return $remark;
          }
 
          $special_exam_status = SpecialExam::where('student_id',$case)
