@@ -1399,7 +1399,7 @@ class ExaminationResultController extends Controller
          }
          //return $remark->remark.' - '.$case;
 
-         if($remark->remark == 'IRREGULARITY'){
+         if(str_contains($remark->remark,'IRREGULARITY')){
            return 1;
          }else{
             return 2;
