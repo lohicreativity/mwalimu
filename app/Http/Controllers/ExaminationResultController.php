@@ -2948,14 +2948,12 @@ class ExaminationResultController extends Controller
                $result->supp_uploaded_at = now();
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
-               $result->supp_uploaded_by_user_id = Auth::user()->id;
             }else{
                $result->final_uploaded_at = now();
                $result->final_processed_by_user_id = Auth::user()->id;
                $result->final_processed_at = now();
-               $result->uploaded_by_user_id = Auth::user()->id;
             }
-
+            $result->uploaded_by_user_id = Auth::user()->id;
             $result->save();
 
             if(!Auth::user()->hasRole('hod')){
@@ -2994,14 +2992,12 @@ class ExaminationResultController extends Controller
                $result->supp_uploaded_at = now();
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
-               $result->supp_uploaded_by_user_id = Auth::user()->id;
             }else{
                $result->final_uploaded_at = now();
                $result->final_processed_by_user_id = Auth::user()->id;
                $result->final_processed_at = now();
-               $result->uploaded_by_user_id = Auth::user()->id;
             }
-
+            $result->uploaded_by_user_id = Auth::user()->id;
             // if($carry_history){
             //    $result->exam_category = 'CARRY';
             // }
