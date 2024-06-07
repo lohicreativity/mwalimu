@@ -398,6 +398,7 @@
                               @if(empty($remark->supp_remark)) 
                                 @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif 
                               @else
+                              HH
                                   @if(!empty(unserialize($remark->supp_serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['carry_exams']) }}] @endif 
                               @endif
                             @endif
