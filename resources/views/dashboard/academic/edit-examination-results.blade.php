@@ -54,25 +54,26 @@
                      'required'=>true
                   ];
 
-                  $final_score = [
+
+
+                  if($result->supp_processed_at != null){
+                    $final_score = [
+                     'placeholder'=>'Final score',
+                     'class'=>'form-control',
+                     'readonly'=>true
+                  ];
+                  }else{
+                    $final_score = [
                      'placeholder'=>'Final score',
                      'class'=>'form-control',
                      'steps'=>'any',
                      'min'=>0
                   ];
-
-                  if($result->supp_processed_at != null){
-                    $supp_score = [
-                     'placeholder'=>'Supp score',
-                     'class'=>'form-control',
-                     'readonly'=>true
-                  ];
-                  }else{
-                    $supp_score = [
-                     'placeholder'=>'Supp score',
-                     'class'=>'form-control',
-                  ];
                   }
+                  $supp_score = [
+                     'placeholder'=>'Supp score',
+                     'class'=>'form-control',
+                  ];
               @endphp
               {{--
               @if($result->supp_score == null)
