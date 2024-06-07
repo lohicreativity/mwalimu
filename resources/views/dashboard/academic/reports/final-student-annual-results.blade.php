@@ -376,7 +376,7 @@
                       @foreach($semester->remarks as $remark)
 
                       <tr>
-                        <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }} </strong> @else <strong>{{ $remark->remark }}</strong> @endif
+                        <td>@if($remark->remark == 'SUPP') <strong>{{ $remark->supp_remark }} </strong> @else <strong>{{ $remark->remark }}</strong> @endif
                           @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && !str_contains($remark->remark, 'POSTPONE E'))
                             @if($remark->serialized) 
                               @if(empty($remark->supp_remark)) 
