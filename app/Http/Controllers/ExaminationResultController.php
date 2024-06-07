@@ -1231,7 +1231,7 @@ class ExaminationResultController extends Controller
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->with('programModuleAssignment.campusProgram.program.ntaLevel:id,name','studyAcademicYear:id','specialExams')
                                           ->get();
-       return  $module_assignments;                
+
       $ntaLevel = $module_assignments[0]->programModuleAssignment->campusProgram->program->ntaLevel; // need to change it to fina level name
 
       foreach($module_assignments as $module_assignment){
@@ -1241,7 +1241,7 @@ class ExaminationResultController extends Controller
          $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
          $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
       }
-
+return $module_assignmentIDs;
       $carry_cases = ExaminationResult::select('student_id','module_assignment_id')->whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program_id,$semester_id,$ac_yr_id){$query->where('campus_program_id',$campus_program_id)
                                                                                                                                                          ->where('year_of_study',1)
                                                                                                                                                          ->where('semester_id',$semester_id)
