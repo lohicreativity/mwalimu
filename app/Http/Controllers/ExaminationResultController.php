@@ -1593,7 +1593,7 @@ class ExaminationResultController extends Controller
                }
             }
          }
-return 1;
+
          $pass_status = 'PASS'; 
          $supp_exams = $retake_exams = $carry_exams = [];
          foreach($student_results as $result){
@@ -1631,7 +1631,7 @@ return 1;
                $ac_year_id = $ac_yr_id -1;
             }
          }
-
+         return 1;
          $remark->study_academic_year_id = $ac_year_id;
          $remark->student_id = $case;
          $remark->semester_id = $semester_id;
