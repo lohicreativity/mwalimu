@@ -61,6 +61,18 @@
                      'min'=>0
                   ];
 
+                  if($result->supp_processed_at != null){
+                    $supp_score = [
+                     'placeholder'=>'Supp score',
+                     'class'=>'form-control',
+                     'readonly'=>true
+                  ];
+                  }else{
+                    $supp_score = [
+                     'placeholder'=>'Supp score',
+                     'class'=>'form-control',
+                  ];
+                  }
               @endphp
               {{--
               @if($result->supp_score == null)
@@ -80,12 +92,6 @@
               @endphp
               @endif
               --}}
-              @php
-                  $supp_score = [
-                     'placeholder'=>'Supp score',
-                     'class'=>'form-control',
-                  ];
-              @endphp
               {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
@@ -102,13 +108,10 @@
                       </div>
                     @endif
                     <div class="form-group col-4">
-
                       @if($result->supp_processed_at && $result->final_exam_remark == 'FAIL')
                       {!! Form::label('','Supp score') !!}
                       {!! Form::text('supp_score',$result->supp_score,$supp_score) !!}
                       @endif
-
-                      
 
                       {!! Form::input('hidden','student_id',$student->id) !!}
                       {!! Form::input('hidden','exam_type',$result->exam_type) !!}
