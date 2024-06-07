@@ -211,8 +211,6 @@
                                 </td>
                                   <td>
                                     @if(!empty($result->supp_processed_at)) {{ $result->supp_remark }} 
-                                    @elseif($special_exam_status && !empty($result->final_score) && empty($result->supp_processed_at)) POSTPONED 
-                                    @elseif($result->supp_remark != null && !empty($result->supp_processed_at)) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') FAIL @else {{ $result->supp_remark }} @endif
                                     @else {{ $result->final_exam_remark }} 
                                     @endif</td>
                                 </tr>
