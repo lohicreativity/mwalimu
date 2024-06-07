@@ -2887,6 +2887,11 @@ class ExaminationResultController extends Controller
                                       ->where('student_id',$student->id)
                                       ->first();
 
+         $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->ntaLevel->id)
+                                       ->where('grade','C')
+                                       ->where('study_academic_year_id', $module_assignment->programModuleAssignment->study_academic_year_id)
+                                       ->first();
+
          if($res = ExaminationResult::where('module_assignment_id',$module_assignment->id)
                                     ->where('student_id',$student->id)
                                     ->where('exam_type',$request->get('exam_type'))
@@ -3016,7 +3021,23 @@ class ExaminationResultController extends Controller
                $result->supp_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
 
                if($result->supp_remark == 'PASS'){
-                  $result->supp_grade = ''
+                  if($module_assignment->programModuleAssignment->campusProgram->program->ntaLevel->id > 4){
+                     $result->supp_grade = 'B';
+                     $result->supp_point = 3;
+                     $result->supp_remark = 'PASS';
+                 }else{
+                     $result->supp_grade = 'C';
+                     $result->supp_point = $grading_policy? $grading_policy->point : 2;
+                     $result->supp_remark = 'PASS';
+                 }
+               }else{
+                  $result->supp_grade = 'F';
+                  $result->supp_point = 0;
+                  if($module_assignment->programModuleAssignment->campusProgram->program->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
+                      $result->supp_remark = 'CARRY';
+                  }else{
+                      $result->supp_remark = 'RETAKE';
+                  }                 
                }
             }elseif($result->supp_processed_at != null && $result->supp_score == null && $result->final_exam_remark == 'FAIL'){
                $result->supp_remark = 'INCOMPLETE';
@@ -3038,6 +3059,7 @@ class ExaminationResultController extends Controller
          // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
       //  $request->get('module_assignment_id').'/'.
          if($request->get('supp_score')){
+            return 'Under construction';
             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id.'&process_type=SUPP');
          }else{
             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
