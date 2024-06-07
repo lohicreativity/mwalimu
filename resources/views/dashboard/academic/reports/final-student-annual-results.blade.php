@@ -379,7 +379,7 @@
                         <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }}</strong> @else <strong>{{ $remark->remark }}</strong> @endif
                           @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && str_contains($remark->remark, 'POSTPONE'))
                             @if($remark->serialized) 
-                              @if(!$supp_publish_status) 
+                              @if(empty($remark->supp_remark)) 
                                 @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif 
                               @else
                                 @if(!empty(unserialize($remark->supp_serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['supp_exams']) }}] @endif 
@@ -387,7 +387,7 @@
                             @endif
 
                             @if($remark->serialized) 
-                              @if(!$supp_publish_status) 
+                              @if($remark->supp_remark) 
                                 @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif 
                               @else
                                   @if(!empty(unserialize($remark->supp_serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['retake_exams']) }}] @endif 
@@ -395,7 +395,7 @@
                             @endif
 
                             @if($remark->serialized) 
-                              @if(!$supp_publish_status) 
+                              @if($remark->supp_remark) 
                                 @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif 
                               @else
                                   @if(!empty(unserialize($remark->supp_serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['carry_exams']) }}] @endif 
@@ -403,7 +403,7 @@
                             @endif
                           @endif
                          </td>
-                         <td>@if($remark->gpa) @if($remark->remark != 'PASS' && !$supp_publish_status) N/A @else {{ bcdiv($remark->gpa,1,1) }} @endif @else N/A @endif</td>
+                         <td>@if($remark->gpa) @if($remark->remark != 'PASS') N/A @else {{ bcdiv($remark->gpa,1,1) }} @endif @else N/A @endif</td>
                       </tr>
                       @endforeach
                    </tbody>
