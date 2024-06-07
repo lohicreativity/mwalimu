@@ -1417,7 +1417,7 @@ class ExaminationResultController extends Controller
          if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
             continue;
          }else{
-            return 10000000;
+
             if(count($carry_cases) > 0){
                if(in_array($case,$carry_cases)){
                   $results = ExaminationResult::where('student_id',$case)
@@ -1592,6 +1592,7 @@ class ExaminationResultController extends Controller
                   $student_results_for_gpa_computation[] =  $result;
                }
             }
+            return 10;
          }
 
          $pass_status = 'PASS'; 
