@@ -403,7 +403,7 @@
                             @endif
                           @endif
                          </td>
-                         <td>@if($remark->gpa) @if($remark->remark != 'PASS') N/A @else {{ bcdiv($remark->gpa,1,1) }} @endif @else N/A @endif</td>
+                         <td>@if($remark->gpa) {{ bcdiv($remark->gpa,1,1) }} @else N/A @endif</td>
                       </tr>
                       @endforeach
                    </tbody>
