@@ -1711,6 +1711,7 @@ class ExaminationResultController extends Controller
          }
 
          $remark->save();
+         return $remark; 
       }
 
       if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)
@@ -1739,7 +1740,7 @@ class ExaminationResultController extends Controller
       $process->year_of_study = $year_of_study;
       $process->campus_program_id = $campus_program_id;
       $process->save();
-      return $remark;
+  
       DB::commit();
 
       return redirect()->back()->with('message','Results processed successfully');
