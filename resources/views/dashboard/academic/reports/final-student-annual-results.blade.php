@@ -376,7 +376,7 @@
                       @foreach($semester->remarks as $remark)
 
                       <tr>
-                        <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }}</strong> @else <strong>{{ $remark->remark }}</strong> @endif
+                        <td>@if($remark->remark != 'PASS') @if($remark->supp_remark != 'PASS') <strong> FAIL </strong> @else <strong>{{ $remark->supp_remark }} </strong> @endif  @else <strong>{{ $remark->remark }}</strong> @endif
                           @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && str_contains($remark->remark, 'POSTPONE'))
                             @if($remark->serialized) 
                               @if(empty($remark->supp_remark)) 
@@ -387,7 +387,7 @@
                             @endif
 
                             @if($remark->serialized) 
-                              @if($remark->supp_remark) 
+                              @if(empty($remark->supp_remark)) 
                                 @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif 
                               @else
                                   @if(!empty(unserialize($remark->supp_serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['retake_exams']) }}] @endif 
@@ -395,7 +395,7 @@
                             @endif
 
                             @if($remark->serialized) 
-                              @if($remark->supp_remark) 
+                              @if(empty($remark->supp_remark)) 
                                 @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif 
                               @else
                                   @if(!empty(unserialize($remark->supp_serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['carry_exams']) }}] @endif 
