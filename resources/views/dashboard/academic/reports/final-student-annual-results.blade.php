@@ -378,6 +378,7 @@
                       <tr>
                         <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }} </strong> @else <strong>{{ $remark->remark }}</strong> @endif
                           @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && str_contains($remark->remark, 'POSTPONE'))
+                          bb
                             @if($remark->serialized) 
                               @if(empty($remark->supp_remark)) 
                                 @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif 
@@ -394,13 +395,10 @@
                               @endif
                             @endif
 
-                            @if(!empty($remark->serialized)) 
-                            KK
+                            @if($remark->serialized) 
                               @if(empty($remark->supp_remark)) 
-                              BB
                                 @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif 
                               @else
-                              HH
                                   @if(!empty(unserialize($remark->supp_serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->supp_serialized)['carry_exams']) }}] @endif 
                               @endif
                             @endif
