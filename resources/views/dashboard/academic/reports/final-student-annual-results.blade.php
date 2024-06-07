@@ -377,7 +377,7 @@
 
                       <tr>
                         <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }} </strong> @else <strong>{{ $remark->remark }}</strong> @endif
-                          @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && str_contains($remark->remark, 'POSTPONE'))
+                          @if($remark->remark == 'SUPP'))
                           fddfdfs
                             @if($remark->serialized) 
                               @if(empty($remark->supp_remark)) 
