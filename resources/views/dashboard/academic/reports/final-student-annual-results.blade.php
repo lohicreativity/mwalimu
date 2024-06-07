@@ -210,9 +210,21 @@
                                 @endif
                                 </td>
                                   <td>
-                                    @if(!empty($result->supp_processed_at)) {{ $result->supp_remark }} 
-                                    @else {{ $result->final_exam_remark }} 
-                                    @endif</td>
+                                    @if(!empty($result->supp_processed_at))
+                                      @if($result->supp_remark) 
+                                        {{ $result->supp_remark }}
+                                      @else 
+                                        @if($result->final_exam_remark && !$result->supp_remark) 
+                                        {{ $result->final_exam_remark }} 
+                                        @else - @endif
+                                      @endif
+                                    @else
+                                      @if($result->total_score) 
+                                      {{ $result->total_score }} 
+                                      @else - @endif
+                                    @endif 
+
+                                </td>
                                 </tr>
                                 @php
                                   $count += 1;
