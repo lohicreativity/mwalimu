@@ -1649,13 +1649,13 @@ class ExaminationResultController extends Controller
                   $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }elseif($remark->remark == 'PASS' && $remark->supp_remark == null){
-                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
+                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester->id);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
             }
    
             if($remark->remark == 'PASS' && $remark->supp_remark == null){
-               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester_id);
+               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester->id);
             }elseif($remark->remark == 'SUPP' && $remark->supp_remark == 'PASS'){
                $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
             }
@@ -1734,7 +1734,7 @@ class ExaminationResultController extends Controller
       $process->year_of_study = $year_of_study;
       $process->campus_program_id = $campus_program_id;
       $process->save();
-  return 1;
+
       DB::commit();
 
       return redirect()->back()->with('message','Results processed successfully');
