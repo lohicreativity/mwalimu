@@ -1404,12 +1404,12 @@ class ExaminationResultController extends Controller
                                           ->get();
 
          $student_results = $student_results_for_gpa_computation = [];
-         $no_of_failed_modules = 0;
+         $no_of_failed_modules = 0; return $module_assignmentIDs;
          if(!empty($$remark)){
             if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                continue;
             }else{
-   return $module_assignmentIDs;
+
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case)
