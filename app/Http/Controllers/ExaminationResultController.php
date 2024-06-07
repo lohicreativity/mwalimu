@@ -1625,85 +1625,87 @@ class ExaminationResultController extends Controller
             }
          }
 
-         $remark->study_academic_year_id = $ac_year_id;
-         $remark->student_id = $case;
-         $remark->semester_id = $semester_id;
-         $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-
-         if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
-            $remark->gpa = null;
-            if($remark->resupp_remark == 'SUPP' || $remark->remark == 'SUPP'){
-               Student::where('id',$case)->update(['academic_status_id'=>4]);
-            }elseif($remark->supp_remark == 'RETAKE' || $remark->remark == 'RETAKE'){
-               Student::where('id',$case)->update(['academic_status_id'=>2]);
-            }elseif($remark->supp_remark == 'CARRY' || $remark->remark == 'CARRY'){
-               Student::where('id',$case)->update(['academic_status_id'=>3]);
-            }elseif(str_contains($remark->supp_remark, 'POSTPONED' || str_contains($remark->remark,'POSTPONED'))){
-               Student::where('id',$case)->update(['academic_status_id'=>9]);
-            }elseif($remark->supp_remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE'){
-               Student::where('id',$case)->update(['academic_status_id'=>7]);
-            }
-         }else{
-            if($remark->remark == 'SUPP' && $remark->supp_remark != null){
-               $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
-               Student::where('id',$case)->update(['academic_status_id'=>1]);
-            }elseif($remark->remark == 'PASS' && $remark->supp_remark == null){
-               $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
-               Student::where('id',$case)->update(['academic_status_id'=>1]);
-            }
-         }
-
-         if($remark->remark == 'PASS' && $remark->supp_remark == null){
-            $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester_id);
-         }elseif($remark->remark == 'SUPP' && $remark->supp_remark == 'PASS'){
-            $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
-         }
-
-         foreach($gpa_classes as $gpa_class){
-            if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
-               if($remark->gpa && $gpa_class){
-                  $remark->class = $gpa_class->name;
-               }else{
-                  $remark->class = null;
+         if(!empty($remark)){
+            $remark->study_academic_year_id = $ac_year_id;
+            $remark->student_id = $case;
+            $remark->semester_id = $semester_id;
+            $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+   
+            if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
+               $remark->gpa = null;
+               if($remark->resupp_remark == 'SUPP' || $remark->remark == 'SUPP'){
+                  Student::where('id',$case)->update(['academic_status_id'=>4]);
+               }elseif($remark->supp_remark == 'RETAKE' || $remark->remark == 'RETAKE'){
+                  Student::where('id',$case)->update(['academic_status_id'=>2]);
+               }elseif($remark->supp_remark == 'CARRY' || $remark->remark == 'CARRY'){
+                  Student::where('id',$case)->update(['academic_status_id'=>3]);
+               }elseif(str_contains($remark->supp_remark, 'POSTPONED' || str_contains($remark->remark,'POSTPONED'))){
+                  Student::where('id',$case)->update(['academic_status_id'=>9]);
+               }elseif($remark->supp_remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE'){
+                  Student::where('id',$case)->update(['academic_status_id'=>7]);
                }
-               break;
+            }else{
+               if($remark->remark == 'SUPP' && $remark->supp_remark != null){
+                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
+                  Student::where('id',$case)->update(['academic_status_id'=>1]);
+               }elseif($remark->remark == 'PASS' && $remark->supp_remark == null){
+                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
+                  Student::where('id',$case)->update(['academic_status_id'=>1]);
+               }
             }
-         }
-
-         if($no_of_failed_modules > (count($student_results)/2) && $remark->remark != 'INCOMPLETE'){
-            $remark->remark = 'REPEAT';
-            $remark->gpa = null;
-            $remark->class = null;
-            Student::where('id',$case)->update(['academic_status_id'=>10]);
-
-         }
-         
-         if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
-            $remark->remark = 'FAIL&DISCO';
-            $remark->gpa = null;
-            $remark->class = null;
-            Student::where('id',$case)->update(['academic_status_id'=>5]);
-         }
-
-         if(Student::where('id',$case)->where('studentship_status_id', 6)->count() > 0){
-            $remark->remark = 'DECEASED';
-            $remark->gpa = null;
-            $remark->class = null;
-         }
-
-         if($remark->remark != 'PASS' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
-            if(count($carry_exams) > 0){
-               $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
-            }elseif(count($retake_exams) > 0){
-               $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'retake_exams'=>$retake_exams]) : serialize(['retake_exams'=>$retake_exams]);
-            }elseif(count($supp_exams) > 0){
-               $remark->serialized = serialize(['supp_exams'=>$supp_exams]);
+   
+            if($remark->remark == 'PASS' && $remark->supp_remark == null){
+               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester_id);
+            }elseif($remark->remark == 'SUPP' && $remark->supp_remark == 'PASS'){
+               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
             }
-         }else{
-            $remark->serialized = null;
+   
+            foreach($gpa_classes as $gpa_class){
+               if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
+                  if($remark->gpa && $gpa_class){
+                     $remark->class = $gpa_class->name;
+                  }else{
+                     $remark->class = null;
+                  }
+                  break;
+               }
+            }
+   
+            if($no_of_failed_modules > (count($student_results)/2) && $remark->remark != 'INCOMPLETE'){
+               $remark->remark = 'REPEAT';
+               $remark->gpa = null;
+               $remark->class = null;
+               Student::where('id',$case)->update(['academic_status_id'=>10]);
+   
+            }
+            
+            if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
+               $remark->remark = 'FAIL&DISCO';
+               $remark->gpa = null;
+               $remark->class = null;
+               Student::where('id',$case)->update(['academic_status_id'=>5]);
+            }
+   
+            if(Student::where('id',$case)->where('studentship_status_id', 6)->count() > 0){
+               $remark->remark = 'DECEASED';
+               $remark->gpa = null;
+               $remark->class = null;
+            }
+   
+            if($remark->remark != 'PASS' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
+               if(count($carry_exams) > 0){
+                  $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
+               }elseif(count($retake_exams) > 0){
+                  $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'retake_exams'=>$retake_exams]) : serialize(['retake_exams'=>$retake_exams]);
+               }elseif(count($supp_exams) > 0){
+                  $remark->serialized = serialize(['supp_exams'=>$supp_exams]);
+               }
+            }else{
+               $remark->serialized = null;
+            }
+   
+            $remark->save();
          }
-
-         $remark->save();
       }
 
       if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)
