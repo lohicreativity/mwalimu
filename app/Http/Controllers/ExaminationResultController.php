@@ -1381,7 +1381,6 @@ class ExaminationResultController extends Controller
 
       $module_assignments = $remark = null;
       foreach($students as $case){
-
          $remark = SemesterRemark::where('student_id',$case)
                                  ->where('study_academic_year_id',$ac_yr_id)
                                  ->where('semester_id',$semester_id)
@@ -1407,7 +1406,7 @@ class ExaminationResultController extends Controller
          $student_results = $student_results_for_gpa_computation = [];
          $no_of_failed_modules = 0;
          if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
-            continue;
+            return 1;
          }else{
 
             if(count($carry_cases) > 0){
