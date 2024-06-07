@@ -1819,9 +1819,17 @@ class ExaminationResultController extends Controller
             //   }
             // }
             $student = Student::findOrFail($student_id);
-            $result = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){
-                    $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);
-                 })->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','moduleAssignment.programModuleAssignment.campusProgram.program'])->where('student_id',$student->id)->firstOrFail();
+            $result = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){$query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);})
+                                       ->whereHas('carryHistory',function($query)use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);})
+                                       ->whereHas('retakeHistory',function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);})
+                                       ->where('student_id',$student->id)
+                                       ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','moduleAssignment.programModuleAssignment.campusProgram.program',
+                                               'carryHistory.carrableResults'=>function($query){$query->latest();},
+                                               'retakeHistory.retakableResults'=>function($query){$query->latest();}
+                                             ])
+                                       ->firstOrFail();
+
+                                       return $result;
             $policy = ExaminationPolicy::where('nta_level_id',$result->moduleAssignment->programModuleAssignment->module->ntaLevel->id)->where('study_academic_year_id',$result->moduleAssignment->study_academic_year_id)->where('type',$result->moduleAssignment->programModuleAssignment->campusProgram->program->category)->first();
 
             $data = [
@@ -2809,7 +2817,7 @@ class ExaminationResultController extends Controller
      * Update examination results
      */
     public function update(Request $request)
-    { return 'Under construction';
+    { 
       try{
          $validation = Validator::make($request->all(),[
                'final_score'=>'numeric|nullable|min:0|max:100',
@@ -2897,7 +2905,7 @@ class ExaminationResultController extends Controller
             }
          
             $result->course_work_score = $request->get('course_work_score');
-            $score_before = $result->final_score;
+            $score_before = $result->supp_processed_at != null && $result->final_exam_remark == 'FAIL'? $result->supp_score : $result->final_score;
             $result->final_score = $request->get('final_score');
 
             if($request->get('appeal_score')){
@@ -2953,7 +2961,7 @@ class ExaminationResultController extends Controller
                $change = new ExaminationResultChange;
                $change->resultable_id = $result->id;
                $change->from_score = $score_before;
-               $change->to_score = $result->final_score;
+               $change->to_score = $result->supp_processed_at != null && $result->final_exam_remark == 'FAIL'? $result->supp_score : $result->final_score;
                $change->resultable_type = $request->get('supp_score') || $request->get('appeal_supp_score')? 'supplementary_result' : 'examination_result';
                $change->user_id = Auth::user()->id;
                $change->save();
