@@ -218,21 +218,17 @@
                                   @endif
                                 @endif</td>
                                 <td>
-                                  @if(!empty($result->supp_remark) && !$supp_publish_status)
-                                    F
-                                  @else
-                                      @if(!empty($result->supp_remark) && $supp_publish_status)
-                                        @if($result->grade) 
-                                          {{ $result->grade }}*
-                                        @else - @endif
-                                      @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status)
-                                        -
-                                      @else
-                                        @if($result->grade) 
-                                        {{ $result->grade }} 
-                                        @else - @endif
-                                      @endif
-                                  @endif
+                                    @if(!empty($result->supp_remark))
+                                      @if($result->supp_grade) 
+                                        {{ $result->supp_grade }}*
+                                      @else - @endif
+                                    @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status)
+                                      -
+                                    @else
+                                      @if($result->grade) 
+                                      {{ $result->grade }} 
+                                      @else - @endif
+                                    @endif
                                 </td>
                                   <td>
                                     @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
@@ -394,7 +390,7 @@
                  <table class="table table-bordered">
                    <thead>
                       <tr>
-                        <th>Remarks</th>
+                        <th>Remark</th>
                         <th>GPA</th>
                       </tr>
                    </thead>
