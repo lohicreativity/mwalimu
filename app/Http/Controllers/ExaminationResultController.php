@@ -1697,7 +1697,7 @@ class ExaminationResultController extends Controller
             $remark->gpa = null;
             $remark->class = null;
          }
-         return $remark;
+
          if($remark->remark != 'PASS' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
             if(count($carry_exams) > 0){
                $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
@@ -1739,7 +1739,7 @@ class ExaminationResultController extends Controller
       $process->year_of_study = $year_of_study;
       $process->campus_program_id = $campus_program_id;
       $process->save();
-
+      return $remark;
       DB::commit();
 
       return redirect()->back()->with('message','Results processed successfully');
