@@ -1920,8 +1920,8 @@ class ModuleAssignmentController extends Controller
                             }else{ //If supplementary or CARRY
                                 $result->supp_score = trim($line[1]);
                                 if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                                    $result->grade = 'F';
-                                    $result->point = 0;
+                                    $result->supp_grade = 'F';
+                                    $result->supp_point = 0;
                                     if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
                                         $result->supp_remark = 'CARRY';
                                     }else{
@@ -1930,12 +1930,12 @@ class ModuleAssignmentController extends Controller
 
                                 }else{
                                     if($module_assignment->module->ntaLevel->id > 4){
-                                        $result->grade = 'B';
-                                        $result->point = 3;
+                                        $result->supp_grade = 'B';
+                                        $result->supp_point = 3;
                                         $result->supp_remark = 'PASS';
                                     }else{
-                                        $result->grade = 'C';
-                                        $result->point = $grading_policy? $grading_policy->point : 2;
+                                        $result->supp_grade = 'C';
+                                        $result->supp_point = $grading_policy? $grading_policy->point : 2;
                                         $result->supp_remark = 'PASS';
                                     }
                                     //$result->grade = $grading_policy? $grading_policy->grade : 'C';
