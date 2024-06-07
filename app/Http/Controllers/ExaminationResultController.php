@@ -1380,6 +1380,7 @@ class ExaminationResultController extends Controller
                                     ->get();
 
       $module_assignments = $remark = null;
+      return $carry_cases;
       foreach($students as $case){
 
             $remark = SemesterRemark::where('student_id',$case)
