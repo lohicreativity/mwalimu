@@ -109,7 +109,7 @@
                       </div>
                     @endif
                     <div class="form-group col-4">
-                      @if(($result->supp_processed_at && $result->final_exam_remark == 'FAIL') || ($result->retakable_id != null && $result->carryHistory)))
+                      @if(($result->supp_processed_at && $result->final_exam_remark == 'FAIL') || ($result->retakable_id != null && $result->carryHistory))
                       {!! Form::label('','Supp score') !!}
                       {!! Form::text('supp_score',$result->supp_score,$supp_score) !!}
                       @endif
