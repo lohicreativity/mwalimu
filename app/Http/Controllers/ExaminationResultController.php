@@ -1620,12 +1620,12 @@ class ExaminationResultController extends Controller
 
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
-               $ac_year_id = $ac_yr_id -1;
+               $ac_yr_id = $ac_yr_id -1;
             }
          }
 
          if(!empty($remark)){
-            $remark->study_academic_year_id = $ac_year_id;
+            $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $case;
             $remark->semester_id = $semester_id;
             $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
