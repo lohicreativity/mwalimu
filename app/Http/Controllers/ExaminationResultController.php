@@ -1819,17 +1819,14 @@ class ExaminationResultController extends Controller
             //   }
             // }
             $student = Student::findOrFail($student_id);
-            $result = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){$query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);})
-                                       ->whereHas('carryHistory',function($query)use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);})
-                                       ->whereHas('retakeHistory',function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);})
-                                       ->where('student_id',$student->id)
-                                       ->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','moduleAssignment.programModuleAssignment.campusProgram.program',
-                                               'carryHistory.carrableResults'=>function($query){$query->latest();},
-                                               'retakeHistory.retakableResults'=>function($query){$query->latest();}
-                                             ])
-                                       ->firstOrFail();
-
-                                       return $result;
+            $result = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){
+                    $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);
+                 })->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','moduleAssignment.programModuleAssignment.campusProgram.program',
+                           'carryHistory'=>function($query)use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},
+                           'carryHistory.carrableResults'=>function($query){$query->latest();},
+                           'retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},
+                           'retakeHistory.retakableResults'=>function($query){$query->latest();}
+                         ])->where('student_id',$student->id)->firstOrFail();
             $policy = ExaminationPolicy::where('nta_level_id',$result->moduleAssignment->programModuleAssignment->module->ntaLevel->id)->where('study_academic_year_id',$result->moduleAssignment->study_academic_year_id)->where('type',$result->moduleAssignment->programModuleAssignment->campusProgram->program->category)->first();
 
             $data = [
