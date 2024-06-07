@@ -1397,10 +1397,12 @@ class ExaminationResultController extends Controller
                                     ->first();
 
          }
-         return $remark->remark.' - '.$case;
+         //return $remark->remark.' - '.$case;
 
          if($remark->remark == 'IRREGULARITY'){
            return 1;
+         }else{
+            return 2;
          }
          $special_exam_status = SpecialExam::where('student_id',$case)
                                           ->where('study_academic_year_id',$ac_yr_id)
