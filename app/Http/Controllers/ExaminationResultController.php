@@ -1592,7 +1592,6 @@ class ExaminationResultController extends Controller
                   $student_results_for_gpa_computation[] =  $result;
                }
             }
-            return 10;
          }
 
          $pass_status = 'PASS'; 
