@@ -89,19 +89,17 @@
               {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                    @if(!$result->supp_processed_at)
-                      <div class="form-group col-4">
-                        {!! Form::label('','Coursework score') !!}
-                        {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
+                    <div class="form-group col-4">
+                      {!! Form::label('','Coursework score') !!}
+                      {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
 
-                        <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
+                      <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
+                    </div>
+                    @if($result->final_remark == 'FAIL' || $result->final_remark == 'PASS' || $result->final_remark == 'INCOMPLETE')
+                      <div class="form-group col-4">
+                        {!! Form::label('','Final Score') !!}
+                        {!! Form::text('final_score',$result->final_score,$final_score) !!}
                       </div>
-                      @if($result->final_remark == 'FAIL' || $result->final_remark == 'PASS' || $result->final_remark == 'INCOMPLETE')
-                        <div class="form-group col-4">
-                          {!! Form::label('','Final Score') !!}
-                          {!! Form::text('final_score',$result->final_score,$final_score) !!}
-                        </div>
-                      @endif
                     @endif
                     <div class="form-group col-4">
 
