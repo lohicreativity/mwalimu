@@ -1631,12 +1631,12 @@ class ExaminationResultController extends Controller
                $ac_year_id = $ac_yr_id -1;
             }
          }
-         return 1;
+
          $remark->study_academic_year_id = $ac_year_id;
          $remark->student_id = $case;
          $remark->semester_id = $semester_id;
          $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-
+         return 1;
          if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
             $remark->gpa = null;
             if($remark->resupp_remark == 'SUPP' || $remark->remark == 'SUPP'){
