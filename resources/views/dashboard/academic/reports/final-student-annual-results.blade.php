@@ -377,7 +377,7 @@
 
                       <tr>
                         <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }} </strong> @else <strong>{{ $remark->remark }}</strong> @endif
-                          @if($remark->remark == 'SUPP'))
+                          @if($remark->remark != 'REPEAT' )
                           fddfdfs
                             @if($remark->serialized) 
                               @if(empty($remark->supp_remark)) 
