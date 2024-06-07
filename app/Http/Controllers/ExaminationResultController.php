@@ -38,6 +38,7 @@ use App\Utils\Util;
 use Auth, DB, Validator, PDF;
 use App\Domain\Academic\Models\CourseWorkResult;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Academic\Models\Examination;
 
 class ExaminationResultController extends Controller
 {
@@ -680,6 +681,9 @@ class ExaminationResultController extends Controller
 
             DB::commit();
    
+            if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
+               return redirect()->to('academic/results/process-supp-results?semester_id=1&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id); 
+            }
             return redirect()->back()->with('message','Results processed successfully');
    
          }elseif(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
@@ -694,7 +698,7 @@ class ExaminationResultController extends Controller
             $semester = Semester::where('status','ACTIVE')->first();
 
             return redirect()->to('academic/results/process-supp-results?semester_id='.$semester->id.'&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id);
-            return 10000;
+
 
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$campus_program,$semester){$query->where('campus_program_id',$campus_program->id)
                                                                                                                                           ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])
