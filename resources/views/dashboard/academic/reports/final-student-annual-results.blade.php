@@ -432,7 +432,11 @@
                    @endif
                    
                  </div>
-
+                 @php
+                   if(count($semesters) -1 == $key){
+                    break;
+                   }
+                 @endphp
                  @endforeach
               </div>
             </div>
