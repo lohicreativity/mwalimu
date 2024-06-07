@@ -1593,7 +1593,7 @@ class ExaminationResultController extends Controller
                }
             }
          }
-
+return 1;
          $pass_status = 'PASS'; 
          $supp_exams = $retake_exams = $carry_exams = [];
          foreach($student_results as $result){
