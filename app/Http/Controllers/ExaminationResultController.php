@@ -1399,11 +1399,7 @@ class ExaminationResultController extends Controller
          }
          //return $remark->remark.' - '.$case;
 
-         if(str_contains($remark->remark,'IRREGULARITY')){
-           return 1;
-         }else{
-            return 2;
-         }
+
          $special_exam_status = SpecialExam::where('student_id',$case)
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->where('semester_id',$semester_id)
@@ -1413,7 +1409,11 @@ class ExaminationResultController extends Controller
 
          $student_results = $student_results_for_gpa_computation = [];
          $no_of_failed_modules = 0;
-         
+         if(str_contains($remark->remark,'IRREGULARITY')){
+            return 1;
+          }else{
+             return 2;
+          }
          if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
             continue;
          }else{
