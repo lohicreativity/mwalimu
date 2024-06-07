@@ -1381,8 +1381,8 @@ class ExaminationResultController extends Controller
 
       $module_assignments = $remark = null;
       foreach($students as $case){
-return $students;
-            $remark = SemesterRemark::where('student_id',$case)
+//return $students;
+            $remark = SemesterRemark::where('student_id',972)
                                     ->where('study_academic_year_id',$ac_yr_id)
                                     ->where('semester_id',$semester_id)
                                     ->where('year_of_study',$year_of_study)
@@ -1399,7 +1399,7 @@ return $students;
                                     // }
          //return $remark->remark.' - '.$case;
 
-
+                                       return $remark;
          $special_exam_status = SpecialExam::where('student_id',$case)
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->where('semester_id',$semester_id)
