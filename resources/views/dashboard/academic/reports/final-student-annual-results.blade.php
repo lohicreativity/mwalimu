@@ -335,24 +335,17 @@
                                   @endif
                                 @endif</td>
                                 <td>
-                                  @if(!empty($result->supp_remark) && !$supp_publish_status)
-                                    F
+                                  @if(!empty($result->supp_remark))
+                                    {{ $result->supp_grade }}*
                                   @else
-                                      @if(!empty($result->remark) && $supp_publish_status)
-                                        @if($result->grade) 
-                                          {{ $result->grade }}*
-                                        @else - @endif
-                                      @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status)
-                                        -
-                                      @else
                                         @if($result->grade) 
                                         {{ $result->grade }} 
                                         @else - @endif
-                                      @endif
+                                      
                                   @endif
                                   
                                   <td>
-                                    @if(!empty($result->supp_remark) && !$supp_publish_status) FAIL 
+                                    @if(!empty($result->supp_remark)) {{ $result->supp_remark }} 
                                     @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED 
                                     @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') FAIL @else {{ $result->supp_remark }} @endif
                                     @else {{ $result->final_exam_remark }} 
