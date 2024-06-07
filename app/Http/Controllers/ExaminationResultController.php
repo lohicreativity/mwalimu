@@ -2809,7 +2809,7 @@ class ExaminationResultController extends Controller
      * Update examination results
      */
     public function update(Request $request)
-    {
+    { return 'Under construction';
       try{
          $validation = Validator::make($request->all(),[
                'final_score'=>'numeric|nullable|min:0|max:100',
