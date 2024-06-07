@@ -219,9 +219,7 @@
                                 @endif</td>
                                 <td>
                                     @if(!empty($result->supp_processed_at))
-                                      @if($result->supp_grade) 
                                         {{ $result->supp_grade }}*
-                                      @else - @endif
                                     @else
                                       @if($result->grade) 
                                       {{ $result->grade }} 
