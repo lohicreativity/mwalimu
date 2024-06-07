@@ -1780,7 +1780,7 @@ class ExaminationResultController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
         try{
-            $module_assignment = ModuleAssignment::with(['module','programModuleAssignment','programModuleAssignment.campusProgram.program'])->where('program_module_assignment_id',$prog_id)->first();
+            $module_assignment = ModuleAssignment::with(['module','programModuleAssignment','programModuleAssignment.campusProgram.program'])->where('program_module_assignment_id',$prog_id)->latest()->first();
             if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
               
               if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
