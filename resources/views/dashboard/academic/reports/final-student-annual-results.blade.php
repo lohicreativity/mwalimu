@@ -433,7 +433,7 @@
                    
                  </div>
 
-                   @if(count($semesters) -1 == $key)
+                   @if(count($semesters) == $key)
                     @break
                    @endif
                  @endforeach
