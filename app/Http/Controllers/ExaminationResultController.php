@@ -1828,7 +1828,7 @@ class ExaminationResultController extends Controller
                            'retakeHistory.retakableResults'=>function($query){$query->latest();}
                          ])->where('student_id',$student->id)->firstOrFail();
             $policy = ExaminationPolicy::where('nta_level_id',$result->moduleAssignment->programModuleAssignment->module->ntaLevel->id)->where('study_academic_year_id',$result->moduleAssignment->study_academic_year_id)->where('type',$result->moduleAssignment->programModuleAssignment->campusProgram->program->category)->first();
-
+return $result;
             $data = [
                'result'=>$result,
                'policy'=>$policy,
