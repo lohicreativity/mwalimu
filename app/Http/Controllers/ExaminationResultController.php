@@ -1381,25 +1381,22 @@ class ExaminationResultController extends Controller
 
       $module_assignments = $remark = null;
       foreach($students as $case){
-//return $students;
-            $remark = SemesterRemark::where('student_id',972)
-                                    ->where('study_academic_year_id',$ac_yr_id)
+
+         $remark = SemesterRemark::where('student_id',$case)
+                                 ->where('study_academic_year_id',$ac_yr_id)
+                                 ->where('semester_id',$semester_id)
+                                 ->where('year_of_study',$year_of_study)
+                                 ->first();
+
+         if(count($carry_cases) > 0 && in_array($case,$carry_cases)){
+            $remark = SemesterRemark::where('student_id',$case)
+                                    ->where('study_academic_year_id',$ac_yr_id-1)
                                     ->where('semester_id',$semester_id)
                                     ->where('year_of_study',$year_of_study)
                                     ->first();
-
-                                    // if(count($carry_cases) > 0){
-                                    //    if(in_array($case,$carry_cases)){
-                                    //       $remark = SemesterRemark::where('student_id',$case)
-                                    //                               ->where('study_academic_year_id',$ac_yr_id-1)
-                                    //                               ->where('semester_id',$semester_id)
-                                    //                               ->where('year_of_study',$year_of_study)
-                                    //                               ->first();
-                                    //    }
-                                    // }
+         }
          //return $remark->remark.' - '.$case;
 
-                                       return $remark;
          $special_exam_status = SpecialExam::where('student_id',$case)
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->where('semester_id',$semester_id)
@@ -1409,11 +1406,6 @@ class ExaminationResultController extends Controller
 
          $student_results = $student_results_for_gpa_computation = [];
          $no_of_failed_modules = 0;
-         // if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
-         //    continue;
-         //  }else{
-         //     return 2;
-         //  }
          if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
             continue;
          }else{
