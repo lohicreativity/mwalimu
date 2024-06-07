@@ -209,21 +209,20 @@
                                   @else - @endif
                                 @endif
                                 </td>
-                                  <td>
-                                    @if(!empty($result->supp_processed_at))
-                                      @if($result->supp_remark) 
-                                        {{ $result->supp_remark }}
-                                      @else 
-                                        @if($result->final_exam_remark && !$result->supp_remark) 
-                                        {{ $result->final_exam_remark }} 
-                                        @else - @endif
-                                      @endif
-                                    @else
-                                      @if($result->total_score) 
-                                      {{ $result->total_score }} 
+                                <td>
+                                  @if(!empty($result->supp_processed_at))
+                                    @if($result->supp_remark) 
+                                      {{ $result->supp_remark }}
+                                    @else 
+                                      @if($result->final_exam_remark && !$result->supp_remark) 
+                                      {{ $result->final_exam_remark }} 
                                       @else - @endif
-                                    @endif 
-
+                                    @endif
+                                  @else
+                                    @if($result->total_score) 
+                                    {{ $result->total_score }} 
+                                    @else - @endif
+                                  @endif 
                                 </td>
                                 </tr>
                                 @php
@@ -311,11 +310,20 @@
                                     @else - @endif
                                   @endif
                                   <td>
-                                    @if(!empty($result->supp_remark)) {{ $result->supp_remark }} 
-                                    @elseif($special_exam_status && !empty($result->final_score) && !$supp_publish_status) POSTPONED 
-                                    @elseif($result->supp_remark != null && $supp_publish_status) @if($result->supp_remark == 'RETAKE' || $result->supp_remark == 'CARRY') FAIL @else {{ $result->supp_remark }} @endif
-                                    @else {{ $result->final_exam_remark }} 
-                                    @endif</td>
+                                    @if(!empty($result->supp_processed_at))
+                                      @if($result->supp_remark) 
+                                        {{ $result->supp_remark }}
+                                      @else 
+                                        @if($result->final_exam_remark && !$result->supp_remark) 
+                                          {{ $result->final_exam_remark }} 
+                                        @else - @endif
+                                      @endif
+                                    @else
+                                      @if($result->total_score) 
+                                        {{ $result->total_score }} 
+                                      @else - @endif
+                                    @endif 
+                                  </td>
                                 </tr>
                                 @php
                                   $count += 1;
@@ -368,7 +376,7 @@
                       @foreach($semester->remarks as $remark)
 
                       <tr>
-                        <td>@if($remark->remark != 'PASS' && $supp_publish_status) <strong>{{ $remark->supp_remark }}</strong> @else <strong>{{ $remark->remark }}</strong> @endif
+                        <td>@if($remark->remark != 'PASS') <strong>{{ $remark->supp_remark }}</strong> @else <strong>{{ $remark->remark }}</strong> @endif
                           @if($remark->remark != 'REPEAT' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'DECEASED' && str_contains($remark->remark, 'POSTPONE'))
                             @if($remark->serialized) 
                               @if(!$supp_publish_status) 
