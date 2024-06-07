@@ -222,8 +222,6 @@
                                       @if($result->supp_grade) 
                                         {{ $result->supp_grade }}*
                                       @else - @endif
-                                    @elseif($special_exam_status && !empty($result->final_score) && empty($result->supp_processed_at))
-                                      -
                                     @else
                                       @if($result->grade) 
                                       {{ $result->grade }} 
@@ -331,13 +329,12 @@
                                   @endif
                                 @endif</td>
                                 <td>
-                                  @if(!empty($result->supp_remark))
+                                  @if(!empty($result->supp_processed_at))
                                     {{ $result->supp_grade }}*
                                   @else
                                         @if($result->grade) 
                                         {{ $result->grade }} 
                                         @else - @endif
-                                      
                                   @endif
                                   
                                   <td>
