@@ -394,7 +394,7 @@
                               @endif
                             @endif
 
-                            @if($remark->serialized) 
+                            @if(!empty($remark->serialized)) 
                             KK
                               @if(empty($remark->supp_remark)) 
                               BB
