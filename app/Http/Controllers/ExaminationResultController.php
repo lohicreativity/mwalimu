@@ -1289,7 +1289,7 @@ class ExaminationResultController extends Controller
          $module_assignment_buffer[$assignment->id]['module_pass_mark'] = $assignment->programModuleAssignment->module_pass_mark;
          $module_assignment_buffer[$assignment->id]['course_work_based'] = $assignment->module->course_work_based;
       }
-return $module_assignmentIDs;
+
       foreach($module_assignmentIDs as $assign_id){
          if($cases = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                            ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
@@ -1409,7 +1409,7 @@ return $module_assignmentIDs;
             if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                continue;
             }else{
-   
+   return $module_assignmentIDs;
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case)
