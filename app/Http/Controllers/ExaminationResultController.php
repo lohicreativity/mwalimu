@@ -1536,6 +1536,8 @@ class ExaminationResultController extends Controller
                                  }
                               }
                            }
+                           $result->supp_processed_by_user_id = Auth::user()->id;
+                           $result->supp_processed_at = now();
                            break;
                         }
                      }
@@ -1576,10 +1578,11 @@ class ExaminationResultController extends Controller
                         $result->retakable_id = $history->id;
                         $result->retakable_type = 'carry_history';
                      }
+                     if($result->supp_remark != null){
+                        $result->supp_processed_by_user_id = Auth::user()->id;
+                        $result->supp_processed_at = now();
+                     }
                   }
-   
-                  $result->supp_processed_by_user_id = Auth::user()->id;
-                  $result->supp_processed_at = now();
                   $result->save();
    
                   $student_results[] =  $result;
