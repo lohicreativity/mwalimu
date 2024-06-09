@@ -489,7 +489,7 @@
                               <td class="ss-center ss-font-xs">
                                   @foreach($student->examinationResults as $result)
                                     @if($result->module_assignment_id == $assignment->id)
-                                      @if($result->final_exam_remark == 'POSPONED')
+                                      @if($result->supp_processed_at != null)
                                         @if($result->course_work_score) {{ round($result->course_work_score) }} @else - @endif
                                       @else
                                         -
@@ -500,7 +500,7 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                    @if($result->final_exam_remark == 'POSPONED')
+                                    @if($result->supp_processed_at != null)
                                       @if($result->final_score) {{ round($result->final_score) }} @else - @endif
                                     @else
                                       -
@@ -511,7 +511,7 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                      @if($result->final_exam_remark == 'POSPONED')
+                                      @if($result->supp_processed_at != null)
                                         @if($result->total_score) {{ round($result->total_score) }} @else - @endif
                                       @else
                                         -
@@ -522,7 +522,7 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                      @if($result->final_exam_remark == 'POSPONED')
+                                      @if($result->supp_processed_at != null)
                                         @if($result->grade) {{ round($result->grade) }} @else - @endif
                                       @else
                                         -
