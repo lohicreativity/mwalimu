@@ -1431,6 +1431,7 @@ class ExaminationResultController extends Controller
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
    
                   if(count($special_exam_status) > 0){
+                     return 1;
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
                            if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
