@@ -523,7 +523,7 @@
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
                                       @if($result->supp_processed_at != null)
-                                        @if($result->grade) {{ round($result->grade) }} @else - @endif
+                                        @if($result->grade) {{ $result->grade }} @else - @endif
                                       @else
                                         -
                                       @endif
