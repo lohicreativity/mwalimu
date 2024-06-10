@@ -771,7 +771,7 @@ class ExaminationResultController extends Controller
                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
                                  //->whereHas('retakeHistory.retakableResults',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
                                  ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
-                                 ->where('course_work_remark','!=','FAIL')
+                                 ->where('course_work_remark','PASS')
                                  ->whereNull('retakable_type')
                                  ->where('module_assignment_id',$assign_id)
                                  ->get()){
