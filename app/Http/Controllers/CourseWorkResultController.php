@@ -115,7 +115,7 @@ class CourseWorkResultController extends Controller
             $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
          }
          if($request->get('plan_'.$plan->id.'_score') == null){
-            return $request->get('plan_'.$plan->id.'_score');
+            return $request;
             $no_of_components_without_course_work++;
          }
          $no_of_components++;
