@@ -1319,7 +1319,7 @@ class ExaminationResultController extends Controller
             if($continue){
                continue;
             }else{
-               if(count($cases) != $count){
+               if($count > 0 && count($cases) != $count){
                   $module_assignment = ModuleAssignment::where('id',$assign_id)->with('module:id,code')->first();
                   $modules[] = $module_assignment->module->code;
                }
