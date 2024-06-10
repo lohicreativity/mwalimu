@@ -817,12 +817,15 @@ class ModuleAssignmentController extends Controller
                 'module'=>$module_assignment->module,
 				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->whereHas('student.registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->with('student')->where('final_remark','POSTPONED')->whereNotNull('final_uploaded_at')->get(),
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
+                                            ->where('module_assignment_id',$module_assignment->id)
+                                            ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                            ->whereHas('student.semesterRemark',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
+                                                                                                                               ->where('study_academic_year',$module_assignment->study_academic_year)
+                                                                                                                               ->where('semester_id',$module_assignment->semester_id);})
+                                            ->with('student')
+                                            ->where('final_remark','POSTPONED')
+                                            ->whereNotNull('final_uploaded_at')->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
             return view('dashboard.academic.reports.students-with-final',$data);
