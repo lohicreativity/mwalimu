@@ -802,17 +802,7 @@ class ModuleAssignmentController extends Controller
      * Show students with final marks
      */
     public function postponedStudents(Request $request,$id)
-    {$module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-         
-        return ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
-        ->where('module_assignment_id',$module_assignment->id)
-        ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-        ->whereHas('student.semesterRemarks',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
-                                                                                           ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                                                                           ->where('semester_id',$module_assignment->semester_id);})
-        ->with('student')
-        ->where('final_remark','POSTPONED')
-        ->whereNotNull('final_uploaded_at')->get();
+    {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
            foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
@@ -831,8 +821,8 @@ class ModuleAssignmentController extends Controller
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
                                             ->where('module_assignment_id',$module_assignment->id)
                                             ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-                                            ->whereHas('student.semesterRemark',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
-                                                                                                                               ->where('study_academic_year',$module_assignment->study_academic_year)
+                                            ->whereHas('student.semesterRemarks',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
+                                                                                                                               ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
                                                                                                                                ->where('semester_id',$module_assignment->semester_id);})
                                             ->with('student')
                                             ->where('final_remark','POSTPONED')
