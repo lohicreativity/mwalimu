@@ -956,7 +956,7 @@ class ModuleAssignmentController extends Controller
             foreach($special_cases as $cases){
                 $special_cases_ids[] = $cases->student_id;
             }
-
+return $special_cases_ids;
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
