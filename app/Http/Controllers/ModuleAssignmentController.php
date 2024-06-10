@@ -390,6 +390,9 @@ class ModuleAssignmentController extends Controller
 
             $postponed_students_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
                                                           ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                                          ->whereHas('student.semesterRemarks',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
+                                                                                                                                              ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                                                                                                              ->where('semester_id',$module_assignment->semester_id);})
                                                           ->where('module_assignment_id',$module_assignment->id)
                                                           ->where('final_remark','POSTPONED')
                                                           ->whereNotNull('final_uploaded_at')
