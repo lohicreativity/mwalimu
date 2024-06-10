@@ -219,8 +219,8 @@
                                       @else - @endif
                                     @endif
                                   @else
-                                    @if($result->total_score) 
-                                    {{ $result->total_score }} 
+                                    @if($result->final_exam_remark) 
+                                    {{ $result->final_exam_remark }} 
                                     @else - @endif
                                   @endif 
                                 </td>
@@ -319,8 +319,8 @@
                                         @else - @endif
                                       @endif
                                     @else
-                                      @if($result->total_score) 
-                                        {{ $result->total_score }} 
+                                      @if($result->final_exam_remark) 
+                                        {{ $result->final_exam_remark }} 
                                       @else - @endif
                                     @endif 
                                   </td>
