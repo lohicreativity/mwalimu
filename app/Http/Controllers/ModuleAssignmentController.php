@@ -787,9 +787,10 @@ class ModuleAssignmentController extends Controller
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
                 'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
-                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->get(),
+                'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                            ->with('student.courseWorkResults')
+                                            ->where('module_assignment_id',$module_assignment->id)
+                                            ->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->get(),
             'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
 
