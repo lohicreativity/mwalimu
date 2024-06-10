@@ -115,6 +115,7 @@ class CourseWorkResultController extends Controller
             $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
          }
          if($request->get('plan_'.$plan->id.'_score') == null){
+            return $request->get('plan_'.$plan->id.'_score');
             $no_of_components_without_course_work++;
          }
          $no_of_components++;
@@ -131,7 +132,7 @@ class CourseWorkResultController extends Controller
       }
       try{
         	$module_assignment = ModuleAssignment::with('module:id')->findOrFail($request->get('module_assignment_id'));
-         $missing_ca_component = false;
+
         	foreach($assessment_plans as $plan){
         		if($request->has('plan_'.$plan->id.'_score')){
                if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > $plan->weight){
@@ -143,7 +144,6 @@ class CourseWorkResultController extends Controller
                   $score_before = $result->score;
 
                   if($request->get('plan_'.$plan->id.'_score') == null){
-                     $missing_ca_component = true;
                      $result->delete();
 
                   }else{
@@ -174,7 +174,7 @@ class CourseWorkResultController extends Controller
         	   }
         	}
 
-        	$course_work = $missing_ca_component? null : CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->sum('score');
+        	$course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$request->get('student_id'))->sum('score');
 
          $no_of_compulsory_tests = CourseWorkResult::whereHas('assessmentPlan',function($query){$query->where('name','LIKE','%Test%');})
                                                    ->where('module_assignment_id',$module_assignment->id)
@@ -199,7 +199,7 @@ class CourseWorkResultController extends Controller
             $exam_result = new ExaminationResult;
 
          }
-return $no_of_components.' == '.$no_of_components_without_course_work;
+
          if(!empty($exam_result->id)){
             if($no_of_components == $no_of_components_without_course_work){    
                $exam_result->course_work_score = null;
