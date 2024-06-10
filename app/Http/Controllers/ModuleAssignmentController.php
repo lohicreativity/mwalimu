@@ -956,7 +956,7 @@ class ModuleAssignmentController extends Controller
             foreach($special_cases as $cases){
                 $special_cases_ids[] = $cases->student_id;
             }
-return $ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+return ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
 ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
 ->with('student')->where('module_assignment_id',$module_assignment->id)
 ->whereNotNull('final_uploaded_at')->where('final_exam_remark','POSTPONED')
