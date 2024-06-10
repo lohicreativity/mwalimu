@@ -200,7 +200,7 @@ class CourseWorkResultController extends Controller
          }
 
          if(!empty($exam_result->id)){
-            if($$no_of_components_without_course_work > 0){    
+            if($no_of_components_without_course_work > 0){    
                $exam_result->course_work_score = null;
                $exam_result->course_work_remark = 'INCOMPLETE';
                $exam_result->final_remark = is_null($exam_result->final_score)? 'INCOMPLETE' : $exam_result->final_remark;             
