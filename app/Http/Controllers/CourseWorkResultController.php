@@ -114,8 +114,7 @@ class CourseWorkResultController extends Controller
             $validations['plan_'.$plan->id.'_score'] = 'numeric|nullable|min:0|max:100'; //nullable
             $messages['plan_'.$plan->id.'_score.numeric'] = $plan->name.' must be numeric';
          }
-         if($request->get('plan_'.$plan->id.'_score') == null){
-            return $request;
+         if($request->get('plan_'.$plan->id.'_score') == null && str_contains($plan->name,'Test')){
             $no_of_components_without_course_work++;
          }
          $no_of_components++;
@@ -201,7 +200,7 @@ class CourseWorkResultController extends Controller
          }
 
          if(!empty($exam_result->id)){
-            if($no_of_components == $no_of_components_without_course_work){    
+            if($$no_of_components_without_course_work > 0){    
                $exam_result->course_work_score = null;
                $exam_result->course_work_remark = 'INCOMPLETE';
                $exam_result->final_remark = is_null($exam_result->final_score)? 'INCOMPLETE' : $exam_result->final_remark;             
@@ -218,7 +217,7 @@ class CourseWorkResultController extends Controller
                }
             }
          }else{
-            if($no_of_components == $no_of_components_without_course_work){
+            if($no_of_components_without_course_work > 0){
                $exam_result->course_work_score = null;                 
                $exam_result->course_work_remark = 'INCOMPLETE';
                $exam_result->final_remark = is_null($exam_result->final_score)? 'INCOMPLETE' : $exam_result->final_remark;
