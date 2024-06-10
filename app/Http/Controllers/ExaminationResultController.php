@@ -765,7 +765,7 @@ class ExaminationResultController extends Controller
                $module_assignment_buffer[$assignment->id]['module_pass_mark'] = $assignment->programModuleAssignment->module_pass_mark;
                $module_assignment_buffer[$assignment->id]['course_work_based'] = $assignment->module->course_work_based;
             }
-return $module_assignmentIDs;
+
             foreach($module_assignmentIDs as $assign_id){
                if($cases = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                  ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
@@ -775,9 +775,7 @@ return $module_assignmentIDs;
                                  ->whereNull('retakable_type')
                                  ->where('module_assignment_id',$assign_id)
                                  ->get()){
-if($assign_id == 712){
-   return $cases;
-}
+
                   $count = 0;
                   $continue = null;
                   foreach($cases as $case){
@@ -1301,7 +1299,7 @@ if($assign_id == 712){
                            ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})
                            //->whereHas('retakeHistory.retakableResults',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
                            ->whereNotNull('final_uploaded_at')->whereIn('final_exam_remark',['FAIL','POSTPONED','INCOMPLETE'])
-                           ->where('course_work_remark','!=','FAIL')
+                           ->where('course_work_remark','PASS')
                            ->whereNull('retakable_type')
                            ->where('module_assignment_id',$assign_id)
                            ->get()){
