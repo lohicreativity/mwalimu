@@ -2357,8 +2357,8 @@ class ExaminationResultController extends Controller
             if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                $remark->gpa = null;
             }else{
-               $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
-               $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+               $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results'],$semester->id);
+               $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results'],$semester->id);
                $remark->credit = $buffer['total_credit'];
             }
 
@@ -2391,11 +2391,11 @@ class ExaminationResultController extends Controller
                if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED' || $rem->remark == 'SUPP'){
                   $rem->gpa = null;
                }else{
-                  $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                  $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'],$semester->id);
                   if($rem->gpa < 2.0){
                      $rem->remark = 'FAIL&DISCO';
                   }
-                  $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
+                  $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'],$semester->id);
                   $rem->credit = $buffer['annual_credit'];
                }
    
@@ -2531,9 +2531,9 @@ class ExaminationResultController extends Controller
                   if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                         $remark->gpa = null;
                   }else{
-                     $remark->gpa = Util::computeGPA($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results']);
+                     $remark->gpa = Util::computeGPA($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results'],$semester->id);
                   }
-                  $remark->point = Util::computeGPAPoints($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results']);
+                  $remark->point = Util::computeGPAPoints($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results'],$semester->id);
                   $remark->credit = $stud_buffer[$key]['total_credit'];
                   $remark->year_of_study = $buffer['year_of_study'];
                   $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
@@ -2551,11 +2551,11 @@ class ExaminationResultController extends Controller
                   if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                      $remark->gpa = null;
                   }else{
-                     $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                     $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'],$semester->id);
                      if($remark->gpa < 2.0){
                         $remark->remark = 'FAIL&DISCO';
                      }
-                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
+                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'],$semester->id);
                      $remark->credit = $buffer['annual_credit'];
                   }
 
@@ -3532,11 +3532,11 @@ class ExaminationResultController extends Controller
                      Student::where('id',$student->id)->update(['academic_status_id'=>7]);
                   }
                }else{
-                  $remark->gpa = Util::computeGPA($total_credits + $total_optional_credits,$student_results_for_gpa_computation);
+                  $remark->gpa = Util::computeGPA($total_credits + $total_optional_credits,$student_results_for_gpa_computation,$semester->id);
                   Student::where('id',$student->id)->update(['academic_status_id'=>1]);
                }
    
-               $remark->point = Util::computeGPAPoints($total_credits + $total_optional_credits, $student_results_for_gpa_computation);
+               $remark->point = Util::computeGPAPoints($total_credits + $total_optional_credits, $student_results_for_gpa_computation,$semester->id);
                $remark->credit = $total_credits + $total_optional_credits;
                $remark->year_of_study = $year_of_study;
    
