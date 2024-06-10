@@ -807,7 +807,7 @@ class ModuleAssignmentController extends Controller
         return ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
         ->where('module_assignment_id',$module_assignment->id)
         ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-        ->whereHas('student.semesterRemark',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
+        ->whereHas('student.semesterRemarks',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
                                                                                            ->where('study_academic_year',$module_assignment->study_academic_year)
                                                                                            ->where('semester_id',$module_assignment->semester_id);})
         ->with('student')
