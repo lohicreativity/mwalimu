@@ -1429,13 +1429,14 @@ class ExaminationResultController extends Controller
                foreach($results as $result){
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
-   if($result->final_remark == 'POSTPONED'){
-      return $result;
-   }
+
                   if(count($special_exam_status) > 0){
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
                            if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                             if($result->final_exam_remark == 'POSTPONED'){
+                              return 1;
+                             }
                               if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                                  $result->grade = 'IC';
                               }elseif($result->course_work_remark != 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
@@ -1455,6 +1456,9 @@ class ExaminationResultController extends Controller
                               //    $result->supp_remark = $result->course_work_remark;
                               // }
                            }else{
+                              if($result->final_exam_remark == 'POSTPONED'){
+                                 return 2;
+                                }
                               $result->grade = $result->point = null;
                               if($course_work_based == 1){
                                  if($result->final_remark != 'POSTPONED' || $result->final_remark != 'INCOMPLETE'){
