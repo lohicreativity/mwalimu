@@ -176,7 +176,7 @@
                                       @if(empty($result->final_score))
                                       -
                                       @else
-                                        {{ $result->final_score }} 
+                                        @if($result->final_exam_remark == 'POSTPONED' && !empty($result->supp_remark))*@endif{{ $result->final_score }} 
                                       @endif
                                   </td>
                                   <td>
@@ -277,7 +277,7 @@
                                     @if(empty($result->final_score))
                                     -
                                     @else
-                                      {{ $result->final_score }} 
+                                    @if($result->final_exam_remark == 'POSTPONED' && !empty($result->supp_remark))*@endif{{ $result->final_score }} 
                                     @endif
                                   </td>
                                   <td>                                  
