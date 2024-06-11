@@ -1667,7 +1667,7 @@ class ModuleAssignmentController extends Controller
                         $result->grade = 'IF';
                         $result->point = null;
                         $result->final_score = null;
-                        $result->final_remark = 'INCOMPLETE';
+                        $result->supp_remark = 'INCOMPLETE';
                     }elseif($sup_special_exam){
                         $result->grade = null;
                         $result->point = null;
@@ -1765,7 +1765,7 @@ class ModuleAssignmentController extends Controller
                 $line_of_text[] = fgetcsv($file_handle, 0, ',');
             }
             fclose($file_handle);
-$studen[] = null;
+
             foreach($line_of_text as $line){
                 if(gettype($line) != 'boolean'){
                     $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
