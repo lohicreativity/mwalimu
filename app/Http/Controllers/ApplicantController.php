@@ -3064,7 +3064,7 @@ class ApplicantController extends Controller
                 $from_previous_window = Applicant::doesntHave('student')
                                                  ->where('id',$applicant->id)
                                                  ->whereNotNull('status')
-                                                 ->where('application_window_id',$application_windows[0]->id)
+                                                 ->where('application_window_id','!=',$application_windows[0]->id)
                                                  ->first();
    
             }
