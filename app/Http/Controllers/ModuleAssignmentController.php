@@ -1331,7 +1331,7 @@ class ModuleAssignmentController extends Controller
                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                             ->where('status','APPROVED')
                                             ->count() == 0){
-                                    $invalid_students[] = $student;
+                                    $invalid_students[] = $student->id;
 
                                 }else{
                                     $students[] = $student;
@@ -1402,6 +1402,7 @@ class ModuleAssignmentController extends Controller
 
                 if(count($invalid_students) != 0){
                     DB::rollback();
+                    return $invalid_students;
                     session()->flash('invalid_students',$invalid_students);
                     return redirect()->back()->with('error','Uploaded students do not exist');
                 }
