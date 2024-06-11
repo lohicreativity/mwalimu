@@ -1307,7 +1307,7 @@ class ExaminationResultController extends Controller
             $count = 0;
             $continue = null;
             foreach($cases as $case){
-               if($case->supp_remark != null){
+               if($case->supp_uploaded_atThe following students do not study this module != null){
                   $continue = true;
                   break;
                }else{
