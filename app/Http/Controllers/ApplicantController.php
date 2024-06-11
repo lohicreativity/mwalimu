@@ -3069,7 +3069,7 @@ class ApplicantController extends Controller
    
             }
          }
-return $from_previous_window;
+
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
