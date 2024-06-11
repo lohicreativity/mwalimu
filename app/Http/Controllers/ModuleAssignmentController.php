@@ -1965,8 +1965,11 @@ class ModuleAssignmentController extends Controller
                             if(!$final_special_exam && $student->year_of_study == 1){
                                 $result->exam_type = 'SUPP';
                                 $result->exam_category = 'FIRST';
-                            }else{
+                            }elseif(!$final_special_exam && $student->year_of_study > 1){
                                 $result->exam_type = 'CARRY';
+                                $result->exam_category = 'FIRST';
+                            }elseif($final_special_exam){
+                                $result->exam_type = 'FINAL';
                                 $result->exam_category = 'FIRST';
                             }
 
