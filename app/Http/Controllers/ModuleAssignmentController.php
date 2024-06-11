@@ -1331,7 +1331,7 @@ class ModuleAssignmentController extends Controller
                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                             ->where('status','APPROVED')
                                             ->count() == 0){
-                                    $invalid_students[] = $student->id;
+                                    $invalid_students[] = $student;
 
                                 }else{
                                     $students[] = $student;
@@ -1345,7 +1345,7 @@ class ModuleAssignmentController extends Controller
                                 }
                             }elseif($student->academicStatus->name == 'INCOMPLETE'){
                                 if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','PASS')->where('final_exam_remark','FAIL')->count() == 0){
-                                    $invalid_students[] = $student;
+                                    $invalid_students[] = $student->id;
                                 }else{
                                     $students[] = $student;
                                 }
