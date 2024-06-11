@@ -1655,13 +1655,13 @@ class ExaminationResultController extends Controller
                   $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }elseif($remark->remark == 'PASS' && $remark->supp_remark == null){
-                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester->id);
+                  $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
             }
    
             if($remark->remark == 'PASS' && $remark->supp_remark == null){
-               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester->id);
+               $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester_id);
             }elseif($remark->remark == 'SUPP' && $remark->supp_remark == 'PASS'){
                $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
             }
@@ -4253,7 +4253,7 @@ class ExaminationResultController extends Controller
             'special_exam_students'=>Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                              ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
                                              ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds);})
-                                             ->whereHas('specialExams',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED');})
+                                             ->whereHas('specialExams',function($query)use($request,$assignmentIds){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED')->whereIn('module_assignment_id',$assignmentIds);})
                                              ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
                                                       'semesterRemarks.semester',
                                                       'examinationResults','specialExams',
