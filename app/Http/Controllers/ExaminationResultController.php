@@ -1434,9 +1434,6 @@ class ExaminationResultController extends Controller
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
                            if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                           //   if($result->final_exam_remark == 'POSTPONED'){
-                           //    return $result;
-                           //   }
                               if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                                  $result->grade = 'IC';
                               }elseif($result->course_work_remark != 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
@@ -1449,12 +1446,12 @@ class ExaminationResultController extends Controller
                               $result->point = null;
                               $result->total_score = null;
                
-                              // if($result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                              //    $result->supp_remark = $result->final_remark;
-                              // }
-                              // if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == 'POSTPONED'){
-                              //    $result->supp_remark = $result->course_work_remark;
-                              // }
+                              if($result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                                 $result->supp_remark = $result->final_remark;
+                              }
+                              if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == 'POSTPONED'){
+                                 $result->supp_remark = $result->course_work_remark;
+                              }
                            }else{
                               if($result->final_exam_remark == 'POSTPONED'){
                                  return 2;
