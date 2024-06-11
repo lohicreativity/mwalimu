@@ -1892,23 +1892,6 @@ $studen[] = null;
                                                                  ->where('student_id',$student->id)
                                                                  ->first();
                             }
-                            $studen[] = $student->id;
-                            $supp_upload_allowed = false;
-                            if($semester_remark){
-                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM'){
-                                    $supp_upload_allowed = true;
-                                }else{
-                                    if(($semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'INCOMPLETE') &&
-                                        ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','FAIL')->count() == 0){
-                                        $supp_upload_allowed = true;
-                                    }elseif($semester_remark->remark == 'CARRY' && $student->year_of_study == 2){
-                                        $supp_upload_allowed = true;
-                                    }else{
-                                        DB::rollback();
-                                        continue;
-                                    }
-                                }
-                            }
 
                             $sup_special_exam = SpecialExam::where('student_id',$student->id)
                                                            ->where('module_assignment_id',$module_assignment->id)
@@ -1925,7 +1908,24 @@ $studen[] = null;
                                                              ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                                              ->where('status','APPROVED')
                                                              ->first();
-                                                             //$studen[] = $final_special_exam->student_id;
+
+                            $supp_upload_allowed = false;
+                            if($semester_remark){
+                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM' || $sup_special_exam || $final_special_exam){
+                                    $supp_upload_allowed = true;
+                                }else{
+                                    if(($semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'INCOMPLETE') &&
+                                        ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','FAIL')->count() == 0){
+                                        $supp_upload_allowed = true;
+                                    }elseif($semester_remark->remark == 'CARRY' && $student->year_of_study == 2){
+                                        $supp_upload_allowed = true;
+                                    }else{
+                                        DB::rollback();
+                                        continue;
+                                    }
+                                }
+                            }
+                                                             $studen[] = $final_special_exam->student_id;
                             $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)
                                                            ->where('grade','C')
                                                            ->where('study_academic_year_id', $module_assignment->programModuleAssignment->study_academic_year_id)
