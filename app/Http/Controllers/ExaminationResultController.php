@@ -1529,6 +1529,7 @@ class ExaminationResultController extends Controller
                                     if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE'){
                                        $result->supp_remark = 'INCOMPLETE';
                                     }elseif($result->course_work_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED'){
+                                       return $result;
                                        $result->supp_remark = 'POSTPONED';
                                     }else{
                                        $result->supp_remark = 'FAIL';
