@@ -1767,7 +1767,6 @@ $studen[] = null;
             foreach($line_of_text as $line){
                 if(gettype($line) != 'boolean'){
                     $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
-                    $studen[] = $student->id;
                     if($student && (!empty($line[1]) || $line[1] == 0)){
 
                         if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
@@ -1925,7 +1924,7 @@ $studen[] = null;
                                                              ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                                              ->where('status','APPROVED')
                                                              ->first();
-
+                                                             $studen[] = $final_special_exam->student_id;
                             $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)
                                                            ->where('grade','C')
                                                            ->where('study_academic_year_id', $module_assignment->programModuleAssignment->study_academic_year_id)
