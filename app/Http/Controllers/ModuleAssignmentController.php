@@ -1917,6 +1917,7 @@ $studen[] = null;
                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                                            ->where('status','APPROVED')
                                                            ->first();
+                                                           $studen[] = $student->id;
                             $final_special_exam = SpecialExam::where('student_id',$student->id)
                                                              ->where('module_assignment_id',$module_assignment->id)
                                                              ->where('type','FINAL')
@@ -1924,7 +1925,7 @@ $studen[] = null;
                                                              ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                                              ->where('status','APPROVED')
                                                              ->first();
-                                                             $studen[] = $final_special_exam->student_id;
+                                                             //$studen[] = $final_special_exam->student_id;
                             $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)
                                                            ->where('grade','C')
                                                            ->where('study_academic_year_id', $module_assignment->programModuleAssignment->study_academic_year_id)
