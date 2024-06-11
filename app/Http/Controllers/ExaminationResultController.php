@@ -4244,6 +4244,7 @@ class ExaminationResultController extends Controller
            'supp_students'=> Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                     ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
                                     ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds)->whereNotNull('supp_remark');})
+                                    ->whereDoesntHave('specialExams',function($query)use($request,$assignmentIds){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED')->whereIn('module_assignment_id',$assignmentIds);})
                                     ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
                                              'semesterRemarks.semester',
                                              'examinationResults',
