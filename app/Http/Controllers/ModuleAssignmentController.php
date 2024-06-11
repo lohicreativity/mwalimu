@@ -979,9 +979,11 @@ class ModuleAssignmentController extends Controller
                                             ->whereHas('student.registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                                               ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                                               ->where('study_academic_year_id',$module_assignment->study_academic_year_id);})
+                                            ->whereDoesntHave('retakeHistory',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
+                                            ->whereDoesntHave('carryHistory',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id') - 1);})
                                             ->with('student')->where('module_assignment_id',$module_assignment->id)
-                                            ->whereNotNull('final_uploaded_at')->where('final_exam_remark','POSTPONED')
-                                            ->whereNull('retakable_type')
+                                            ->whereNotNull('final_uploaded_at')
+                                            ->where('final_exam_remark','POSTPONED')
                                             ->whereIn('student_id',$special_cases_ids)
                                             ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
