@@ -1622,7 +1622,7 @@ class ModuleAssignmentController extends Controller
 
                     $supp_upload_allowed = false;
                     if($semester_remark){
-                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'POSTPONED EXAM' || $semester_remark->remark == 'INCOMPLETE'){
+                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'POSTPONED EXAM' || $semester_remark->remark == 'INCOMPLETE'){
                             $supp_upload_allowed = true;
                         }else{
                             DB::rollback();
@@ -1952,7 +1952,7 @@ class ModuleAssignmentController extends Controller
                             // if($sup_special_exam || $postponement){ // SEE the previous comment
                                 // $result->final_score = !$sup_special_exam || !$postponement? trim($line[1]) : null;
                                 $result->final_score = trim($line[1]);
-                                $result->supp_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                                $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
 
                             // }elseif($sup_special_exam){
                             //     $result->supp_score = null;

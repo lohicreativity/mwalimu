@@ -1446,12 +1446,12 @@ class ExaminationResultController extends Controller
                               $result->point = null;
                               $result->total_score = null;
                
-                              if($result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                                 $result->supp_remark = $result->final_remark;
-                              }
-                              if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == 'POSTPONED'){
-                                 $result->supp_remark = $result->course_work_remark;
-                              }
+                              // if($result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                              //    $result->supp_remark = $result->final_remark;
+                              // }
+                              // if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == 'POSTPONED'){
+                              //    $result->supp_remark = $result->course_work_remark;
+                              // }
                            }else{
                               $result->grade = $result->point = null;
                               if($course_work_based == 1){
