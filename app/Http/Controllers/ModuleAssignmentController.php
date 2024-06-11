@@ -1881,7 +1881,6 @@ $studen[] = null;
                             $result->save();
 
                         }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                            $studen[] = $student->id;
                             if($student->year_of_study == 2){
                                 $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id - 1)
@@ -1893,7 +1892,7 @@ $studen[] = null;
                                                                  ->where('student_id',$student->id)
                                                                  ->first();
                             }
-
+                            $studen[] = $student->id;
                             $supp_upload_allowed = false;
                             if($semester_remark){
                                 if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM'){
