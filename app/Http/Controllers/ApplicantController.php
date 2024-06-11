@@ -3064,12 +3064,12 @@ class ApplicantController extends Controller
                 $from_previous_window = Applicant::doesntHave('student')
                                                  ->where('id',$applicant->id)
                                                  ->whereNotNull('status')
-                                                 ->where('application_window_id',$application_windows[1]->id)
+                                                 ->where('application_window_id',$application_windows[0]->id)
                                                  ->first();
    
             }
          }
-
+return $from_previous_window;
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
@@ -3326,6 +3326,42 @@ class ApplicantController extends Controller
         }
     }
 
+    function resetApplicantWindow(Request $request){
+      $applicant = Applicant::findOrFail($request->get('applicant_id'));
+
+      ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+
+      $applicant->campus_id = 0;
+      $applicant->intake_id = null;
+      $applicant->is_tamisemi = null;
+      $applicant->application_window_id = null;
+      $applicant->batch_id = null;
+      $applicant->is_tcu_verified = null;
+      $applicant->is_tcu_added = null;
+      $applicant->is_tcu_reason = null;
+      $applicant->payment_complete_status = 0;
+      $applicant->results_complete_status = 0;
+      $applicant->programs_complete_status = 0;
+      $applicant->documents_complete_status = 0;
+      $applicant->veta_status = null;
+      $applicant->submission_complete_status = 0;
+      $applicant->rank_points = null;
+      $applicant->nacte_reg_no = null;
+      $applicant->avn_no_results = null;
+      $applicant->teacher_certificate_status = null;
+      $applicant->submitted_at = null;
+
+      $applicant->save();
+
+      Invoice::whereHas('feeType',function($query){$query->where('name','Application Fee');})
+             ->where('payable_id',$applicant->id)
+             ->where('payable_type','applicant')
+             ->update(['payable_id'=>0]);
+
+      NectaResultDetail::where('applicant_id', $applicant->id)->where('verified',1)->update(['verified'=>0]);
+      NacteResultDetail::where('applicant_id', $applicant->id)->where('verified',1)->update(['verified'=>0]);
+      OutResultDetail::where('applicant_id', $applicant->id)->where('verified',1)->update(['verified'=>0]);
+   }
     /**
      * Update NACTE registration number
      */
