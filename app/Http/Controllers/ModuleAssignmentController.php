@@ -1344,8 +1344,33 @@ class ModuleAssignmentController extends Controller
                                     $students[] = $student;
                                 }
                             }elseif($student->academicStatus->name == 'INCOMPLETE'){
+                                if(SpecialExam::where('student_id',$student->id)
+                                              ->where('module_assignment_id',$module_assignment->id)
+                                              ->where('type','FINAL')
+                                              ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                              ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                              ->where('status','APPROVED')
+                                              ->count() == 0){
+                                    $invalid_students[] = $student;
+
+                                }else{
+                                    $students[] = $student;
+                                }
+
                                 if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','PASS')->where('final_exam_remark','FAIL')->count() == 0){
-                                    $invalid_students[] = $student->id;
+                                    if(SpecialExam::where('student_id',$student->id)
+                                                  ->where('module_assignment_id',$module_assignment->id)
+                                                  ->where('type','FINAL')
+                                                  ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                  ->where('status','APPROVED')
+                                                  ->count() > 0){
+                                        $students[] = $student;
+
+                                    }else{
+                                        $invalid_students[] = $student;
+                                    }
+                                   
                                 }else{
                                     $students[] = $student;
                                 }
@@ -1402,7 +1427,6 @@ class ModuleAssignmentController extends Controller
 
                 if(count($invalid_students) != 0){
                     DB::rollback();
-                    return $invalid_students;
                     session()->flash('invalid_students',$invalid_students);
                     return redirect()->back()->with('error','Uploaded students do not exist');
                 }
@@ -1423,7 +1447,7 @@ class ModuleAssignmentController extends Controller
                                        ->get();
                 }
             }
-
+return 1;
             foreach($students as $stud){
                 $student_present = false;
                 foreach($uploaded_students as $up_stud){
