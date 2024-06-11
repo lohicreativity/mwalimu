@@ -1881,6 +1881,7 @@ $studen[] = null;
                             $result->save();
 
                         }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                            $studen[] = $student->id;
                             if($student->year_of_study == 2){
                                 $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id - 1)
@@ -1917,7 +1918,7 @@ $studen[] = null;
                                                            ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
                                                            ->where('status','APPROVED')
                                                            ->first();
-                                                           $studen[] = $student->id;
+
                             $final_special_exam = SpecialExam::where('student_id',$student->id)
                                                              ->where('module_assignment_id',$module_assignment->id)
                                                              ->where('type','FINAL')
