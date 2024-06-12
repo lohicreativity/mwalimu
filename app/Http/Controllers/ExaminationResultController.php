@@ -1327,7 +1327,7 @@ class ExaminationResultController extends Controller
             }
          }
       }
-return $carry_cases;
+
       if(count($modules) > 0){
          DB::rollback();
          return redirect()->back()->with('error','Supplementary results for module '.implode(',',$modules).' have not been uploaded'); 
@@ -1413,7 +1413,9 @@ return $carry_cases;
             if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                continue;
             }else{
-
+               if($case == 3061){
+                  return 3;
+               }
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case)
