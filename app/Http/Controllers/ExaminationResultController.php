@@ -1327,7 +1327,7 @@ class ExaminationResultController extends Controller
             }
          }
       }
-
+return $carry_cases;
       if(count($modules) > 0){
          DB::rollback();
          return redirect()->back()->with('error','Supplementary results for module '.implode(',',$modules).' have not been uploaded'); 
