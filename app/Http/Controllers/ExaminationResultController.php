@@ -1431,7 +1431,7 @@ class ExaminationResultController extends Controller
                                                 return $results;
                                              }
                }
-return 2;
+
                foreach($results as $result){
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
