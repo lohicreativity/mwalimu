@@ -316,7 +316,7 @@
                                   @foreach($student->examinationResults as $result)
                                     @if($result->module_assignment_id == $assignment->id)
                                         @if(!is_null($result->supp_remark))
-                                          {{ $result->supp_grade }} 
+                                          *{{ $result->supp_grade }} 
                                         @else
                                           -
                                         @endif
