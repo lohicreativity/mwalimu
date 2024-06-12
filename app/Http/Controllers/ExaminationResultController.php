@@ -1302,7 +1302,7 @@ $x = $cases = [];
                            ->whereIn('final_remark',['FAIL','POSTPONED','INCOMPLETE'])
                            ->where('course_work_remark','!=','INCOMPLETE')
                            ->whereDoesntHave('carryHistory',function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);})
-                           ->where('module_assignment_id',$assign_id)
+                           ->where('module_assignment_id',680)
                            ->get()){
             $count = 0;
             $continue = null;
@@ -1312,7 +1312,7 @@ $x = $cases = [];
                   break;
                }else{
                   if($case->final_exam_remark == 'INCOMPLETE'){
-                     $x[] = $case->student_id;
+                    if($case->module_assignment_id == 680) {$x[] = $case->student_id; }
                      $count++;
                   }
                }
