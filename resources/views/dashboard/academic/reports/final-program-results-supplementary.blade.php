@@ -602,19 +602,21 @@
                             @foreach($student->semesterRemarks as $rem)
                             @if($rem->semester->name == $mdKey)
                             <td class="ss-font-xs">
-                              @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
-                                @if($rem->supp_remark == 'INCOMPLETE') 
-                                  {{ substr($rem->supp_remark,0,4) }} 
-                                @elseif($rem->supp_remark == 'POSTPONED EXAM')
-                                  POSE
-                                @else 
-                                  {{ $rem->supp_remark }} 
-                                @endif
-                              @else
-                                @if($rem->remark == 'INCOMPLETE') 
-                                  {{ substr($rem->remark,0,4) }} 
-                                @else 
-                                  {{ $rem->remark }} 
+                              @if($rem->supp_remark == 'INCOMPLETE')
+                                {{ substr($rem->supp_remark,0,4) }}
+                              @else 
+                                @if($rem->remark != 'RETAKE' && $rem->remark != 'CARRY' && $rem->remark != 'INCOMPLETE')
+                                  @if($rem->supp_remark == 'POSTPONED EXAM')
+                                    POSE
+                                  @else 
+                                    {{ $rem->supp_remark }} 
+                                  @endif
+                                @else
+                                  @if($rem->remark == 'INCOMPLETE') 
+                                    {{ substr($rem->remark,0,4) }} 
+                                  @else 
+                                    {{ $rem->remark }} 
+                                  @endif
                                 @endif
                               @endif
                             </td>
