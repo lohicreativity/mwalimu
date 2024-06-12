@@ -3317,6 +3317,7 @@ class ExaminationResultController extends Controller
                }
 
                $student_results = $student_results_for_gpa_computation = [];
+               return $results;
                foreach($results as $result){
                   $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
 
@@ -3336,7 +3337,7 @@ class ExaminationResultController extends Controller
                   }else{
                      $processed_result = $result;
                   }
-return 1;
+
                   $postponed_status = SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
                   ->where('semester_id',$semester->id)
                   ->where('module_assignment_id',$result->module_assignment_id)
