@@ -1607,24 +1607,20 @@ class ExaminationResultController extends Controller
          foreach($student_results as $result){
             if($result->supp_remark == 'INCOMPLETE'){
                $pass_status = 'INCOMPLETE';
-               break;
             }
 
             if($result->supp_remark == 'POSTPONED'){
                $pass_status = 'POSTPONED EXAM';
-               break;
             }
 
             if($result->supp_remark == 'RETAKE'){
                $pass_status = 'RETAKE'; 
                $retake_exams[] = $result->moduleAssignment->module->code;
-               break;
             }  
 
             if($result->supp_remark == 'CARRY'){
                $pass_status = 'CARRY'; 
                $carry_exams[] = $result->moduleAssignment->module->code;
-               break;
             }
 
             if($result->supp_remark == 'FAIL'){
