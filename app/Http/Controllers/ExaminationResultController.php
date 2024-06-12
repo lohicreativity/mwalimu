@@ -1384,7 +1384,6 @@ class ExaminationResultController extends Controller
                                     ->get();
 
       $module_assignments = $remark = null;
-      return $students;
       foreach($students as $case){
          $remark = SemesterRemark::where('student_id',$case)
                                  ->where('study_academic_year_id',$ac_yr_id)
@@ -1414,7 +1413,9 @@ class ExaminationResultController extends Controller
             if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
                continue;
             }else{
-
+               if($case == 3061){
+                  return 1;
+               }
                if(count($carry_cases) > 0){
                   if(in_array($case,$carry_cases)){
                      $results = ExaminationResult::where('student_id',$case)
