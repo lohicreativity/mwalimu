@@ -1647,16 +1647,18 @@ class ExaminationResultController extends Controller
    
             if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
                $remark->gpa = null;
-               if($remark->supp_remark == 'SUPP' || $remark->remark == 'SUPP'){
-                  Student::where('id',$case)->update(['academic_status_id'=>4]);
-               }elseif($remark->supp_remark == 'RETAKE' || $remark->remark == 'RETAKE'){
-                  Student::where('id',$case)->update(['academic_status_id'=>2]);
-               }elseif($remark->supp_remark == 'CARRY' || $remark->remark == 'CARRY'){
-                  Student::where('id',$case)->update(['academic_status_id'=>3]);
-               }elseif(str_contains($remark->supp_remark, 'POSTPONED' || str_contains($remark->remark,'POSTPONED'))){
-                  Student::where('id',$case)->update(['academic_status_id'=>9]);
-               }elseif($remark->supp_remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE'){
+               if($remark->supp_remark == 'INCOMPLETE'){
                   Student::where('id',$case)->update(['academic_status_id'=>7]);
+               }else{
+                  if($remark->supp_remark == 'SUPP' || $remark->remark == 'SUPP'){
+                     Student::where('id',$case)->update(['academic_status_id'=>4]);
+                  }elseif($remark->supp_remark == 'RETAKE' || $remark->remark == 'RETAKE'){
+                     Student::where('id',$case)->update(['academic_status_id'=>2]);
+                  }elseif($remark->supp_remark == 'CARRY' || $remark->remark == 'CARRY'){
+                     Student::where('id',$case)->update(['academic_status_id'=>3]);
+                  }elseif(str_contains($remark->supp_remark, 'POSTPONED' || str_contains($remark->remark,'POSTPONED'))){
+                     Student::where('id',$case)->update(['academic_status_id'=>9]);
+                  }
                }
             }else{
                if($remark->supp_remark == 'PASS'){
