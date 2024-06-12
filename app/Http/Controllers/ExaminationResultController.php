@@ -1301,7 +1301,7 @@ class ExaminationResultController extends Controller
                            ->whereNotNull('final_uploaded_at')
                            ->whereIn('final_remark',['FAIL','POSTPONED','INCOMPLETE'])
                            ->where('course_work_remark','!=','INCOMPLETE')
-                           ->whereDoesntHave('carryHistory',function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id);})
+                           ->whereDoesntHave('carryHistory',function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id) -1;})
                            ->where('module_assignment_id',$assign_id)
                            ->get()){
             $count = 0;
