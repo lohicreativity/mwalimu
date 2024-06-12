@@ -1384,6 +1384,7 @@ class ExaminationResultController extends Controller
                                     ->get();
 
       $module_assignments = $remark = null;
+      return $students;
       foreach($students as $case){
          $remark = SemesterRemark::where('student_id',$case)
                                  ->where('study_academic_year_id',$ac_yr_id)
