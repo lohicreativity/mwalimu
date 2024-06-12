@@ -700,9 +700,6 @@ class ExaminationResultController extends Controller
          }
       }else{
          if($request->get('semester_id') == 'SUPPLEMENTARY'){
-            if($staff->id != 2){
-               return redirect()->back()->with('error','Supplementary processing is under construction'); 
-            }
 
             $semester = Semester::where('status','ACTIVE')->first();
 
