@@ -1328,7 +1328,7 @@ $x = $cases = [];
             }
          }
       }
-return $cases;
+return $x;
       if(count($modules) > 0){
          DB::rollback();
          return redirect()->back()->with('error','Supplementary results for module '.implode(',',$modules).' have not been uploaded'); 
