@@ -2084,91 +2084,99 @@ class ExaminationResultController extends Controller
             return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
          }
 
-         if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
-            if($processed_result->course_work_remark == 'INCOMPLETE'){
-               $processed_result->grade = 'IC';
-            }elseif($processed_result->final_remark == 'INCOMPLETE'){
-               $processed_result->grade = 'IF';
-            }elseif($processed_result->course_work_remark == 'INCOMPLETE' && $processed_result->final_remark == 'INCOMPLETE'){
-               $processed_result->grade = 'I';
-            }
-            $processed_result->point = null;
-            if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
-                  $processed_result->final_exam_remark = $processed_result->final_remark;
-            }
-            if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
-                  $processed_result->final_exam_remark = $processed_result->course_work_remark;
-            }
-         }else {
-            $processed_result->grade = $grading_policy? $grading_policy->grade : null;
-            $processed_result->point = $grading_policy? $grading_policy->point : null;
-            if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
+         $postponed_status = SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
+                                        ->where('semester_id',$semester->id)
+                                        ->where('module_assignment_id',$result->module_assignment_id)
+                                        ->where('student_id',$result->student_id)
+                                        ->where('type','FINAL')
+                                        ->where('status','APPROVED')->first();
 
-               if ($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'CARRY') {
-                  $processed_result->final_exam_remark = 'CARRY';
-                  $processed_result->grade = 'F';
-                  $processed_result->point = 0;
-               }elseif($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'RETAKE'){
-                  $processed_result->final_exam_remark = 'RETAKE';
-                  $processed_result->grade = 'F';
-                  $processed_result->point = 0;
-               } elseif ($processed_result->supp_processed_at) { 
-
-                  $processed_result->final_exam_remark = 'PASS';
-                  $processed_result->grade = 'C';
-                  $processed_result->point = 1;
-
-               } else  {
-
-                  $processed_result->final_exam_remark = 'FAIL';
-                  $processed_result->grade = 'F';
-                  $processed_result->point = 0;
-
+         if($postponed_status == null && $result->supp_remark != null){
+            if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+               if($processed_result->course_work_remark == 'INCOMPLETE'){
+                  $processed_result->grade = 'IC';
+               }elseif($processed_result->final_remark == 'INCOMPLETE'){
+                  $processed_result->grade = 'IF';
+               }elseif($processed_result->course_work_remark == 'INCOMPLETE' && $processed_result->final_remark == 'INCOMPLETE'){
+                  $processed_result->grade = 'I';
                }
+               $processed_result->point = null;
+               if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                     $processed_result->final_exam_remark = $processed_result->final_remark;
+               }
+               if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                     $processed_result->final_exam_remark = $processed_result->course_work_remark;
+               }
+            }else {
+               $processed_result->grade = $grading_policy? $grading_policy->grade : null;
+               $processed_result->point = $grading_policy? $grading_policy->point : null;
+               if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
 
-               // $processed_result->final_exam_remark = 'FAIL';
-               // $processed_result->grade = 'F';
-               // $processed_result->point = 0;
+                  if ($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'CARRY') {
+                     $processed_result->final_exam_remark = 'CARRY';
+                     $processed_result->grade = 'F';
+                     $processed_result->point = 0;
+                  }elseif($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'RETAKE'){
+                     $processed_result->final_exam_remark = 'RETAKE';
+                     $processed_result->grade = 'F';
+                     $processed_result->point = 0;
+                  } elseif ($processed_result->supp_processed_at) { 
 
-            }else{
-               $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-            }
+                     $processed_result->final_exam_remark = 'PASS';
+                     $processed_result->grade = 'C';
+                     $processed_result->point = 1;
 
-            if($processed_result->supp_score){
-               if(Util::stripSpacesUpper($module_assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                        if($module_assignment->programModuleAssignment->year_of_study == 1){
-                              if($processed_result->retakable_id != null){
-                                    $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                 // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
-                                 //    $processed_result->final_exam_remark = 'CARRY';
-                                 //    # code...
-                                 // } else {
-                                 //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                 // }
-                              }else{
-                                 $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
-                              }
-                        }else{
-                              if($processed_result->retakable_id != null){
-                                 $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                              }else{
-                                 $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                              }
-                        }
-                        
-                  }else{
-                        if($processed_result->retakable_id != null){
-                           $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                        }else{
-                           $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                        }
+                  } else  {
+
+                     $processed_result->final_exam_remark = 'FAIL';
+                     $processed_result->grade = 'F';
+                     $processed_result->point = 0;
+
                   }
 
-               $processed_result->supp_processed_at = now();
-               $processed_result->supp_processed_by_user_id = Auth::user()->id;
+                  // $processed_result->final_exam_remark = 'FAIL';
+                  // $processed_result->grade = 'F';
+                  // $processed_result->point = 0;
+
+               }else{
+                  $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+               }
+
+               if($processed_result->supp_score){
+                  if(Util::stripSpacesUpper($module_assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
+                           if($module_assignment->programModuleAssignment->year_of_study == 1){
+                                 if($processed_result->retakable_id != null){
+                                       $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                    // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
+                                    //    $processed_result->final_exam_remark = 'CARRY';
+                                    //    # code...
+                                    // } else {
+                                    //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                    // }
+                                 }else{
+                                    $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                                 }
+                           }else{
+                                 if($processed_result->retakable_id != null){
+                                    $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                 }else{
+                                    $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                 }
+                           }
+                           
+                     }else{
+                           if($processed_result->retakable_id != null){
+                              $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                           }else{
+                              $processed_result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                           }
+                     }
+
+                  $processed_result->supp_processed_at = now();
+                  $processed_result->supp_processed_by_user_id = Auth::user()->id;
+               }
             }
          }
-
          if($result->exam_type == 'SUPP'){
             $processed_result->total_score = $result->final_score;
             $processed_result->grade = 'C';
