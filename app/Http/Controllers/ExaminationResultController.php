@@ -1452,9 +1452,6 @@ class ExaminationResultController extends Controller
                                  $result->supp_remark = $result->course_work_remark;
                               }
                            }else{
-                              if($result->final_exam_remark == 'POSTPONED'){
-                                 return 2;
-                                }
                               $result->grade = $result->point = null;
                               if($course_work_based == 1){
                                  if($result->final_remark != 'POSTPONED' || $result->final_remark != 'INCOMPLETE'){
