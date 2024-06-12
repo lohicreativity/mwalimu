@@ -3317,7 +3317,7 @@ class ExaminationResultController extends Controller
                }
 
                $student_results = $student_results_for_gpa_computation = [];
-               return $results;
+
                foreach($results as $result){
                   $course_work_based = $final_pass_score = $course_work_pass_score = $module_pass_mark = null;
 
@@ -3344,7 +3344,7 @@ class ExaminationResultController extends Controller
                   ->where('student_id',$result->student_id)
                   ->where('type','FINAL')
                   ->where('status','APPROVED')->first();
-if($module_assignment->id == 130){
+if($result->module_assignment_id == 130){
 return $postponed_status;
 }
                   if($postponed_status == null && $result->supp_remark != null){
