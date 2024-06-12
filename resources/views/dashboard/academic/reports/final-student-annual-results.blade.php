@@ -180,7 +180,7 @@
                                       @endif
                                   </td>
                                   <td>
-                                    @if(!empty($result->supp_processed_at))
+                                    @if(!empty($result->supp_uploaded_at))
                                     @if($result->supp_score) 
                                       {{ $result->supp_score }}
                                     @else 
@@ -195,7 +195,7 @@
                                   @endif   
                                 </td>
                                 <td>
-                                  @if(!empty($result->supp_processed_at))
+                                  @if(!empty($result->supp_uploaded_at))
                                   @if($result->supp_grade) 
                                     {{ $result->supp_grade }}*
                                   @else 
@@ -210,7 +210,7 @@
                                 @endif
                                 </td>
                                 <td>
-                                  @if(!empty($result->supp_processed_at))
+                                  @if(!empty($result->supp_uploaded_at))
                                     @if($result->supp_remark) 
                                     @if($result->supp_remark != 'PASS') FAIL @else {{ $result->supp_remark }} @endif
                                     @else 
@@ -281,7 +281,7 @@
                                     @endif
                                   </td>
                                   <td>                                  
-                                    @if(!empty($result->supp_processed_at))
+                                    @if(!empty($result->supp_uploaded_at))
                                       @if($result->supp_score) 
                                         {{ $result->supp_score }}
                                       @else 
@@ -296,7 +296,7 @@
                                     @endif 
                                 </td>
                                 <td>
-                                  @if(!empty($result->supp_processed_at))
+                                  @if(!empty($result->supp_uploaded_at))
                                     @if($result->supp_grade) 
                                       {{ $result->supp_grade }}*
                                     @else 
@@ -310,7 +310,7 @@
                                     @else - @endif
                                   @endif
                                   <td>
-                                    @if(!empty($result->supp_processed_at))
+                                    @if(!empty($result->supp_uploaded_at))
                                       @if($result->supp_remark)
                                         @if($result->supp_remark != 'PASS') FAIL @else {{ $result->supp_remark }} @endif
                                       @else 
