@@ -3071,7 +3071,6 @@ if($module_assignment->id == 130){
             return 'Under construction';
             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id.'&process_type=SUPP');
          }else{
-            return 1;
             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
          }
             
@@ -3194,7 +3193,7 @@ if($module_assignment->id == 130){
      * Process student results
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
-    { 
+    { return 2;
       try{
          DB::beginTransaction();
          $student = Student::findOrFail($student_id);
