@@ -3782,8 +3782,6 @@ class ExaminationResultController extends Controller
 
         }else{
 
-        	
-
                if(ModuleAssignment::whereHas('examinationResults',function($query){$query->whereNotNull('supp_processed_at');})
                                   ->whereHas('programModuleAssignment',function($query) use($request){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
                                                                                                             ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
@@ -3792,12 +3790,24 @@ class ExaminationResultController extends Controller
                    return redirect()->back()->with('error','Results not processed');
                }
 
-               $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
-                  ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                  ->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
-                  ->with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear','programModuleAssignment'])
-                  ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                  ->get();
+               if($request->get('semester_id') == 'SUPPLEMENTARY'){
+                  $sem = Semester::where('status','ACTIVE')->first();
+                  $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$sem){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
+                     ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$sem->id);})
+                     ->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
+                     ->with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear','programModuleAssignment'])
+                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                     ->get();
+               }else{
+                  $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
+                     ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                     ->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){$query->where('program_id',$campus_program->program->id);})
+                     ->with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear','programModuleAssignment'])
+                     ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                     ->get();
+               }
+
+
         }
         
         // Extract module assignments IDs
