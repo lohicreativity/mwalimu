@@ -1602,12 +1602,9 @@ class ExaminationResultController extends Controller
          $pass_status = 'PASS'; 
          $supp_exams = $retake_exams = $carry_exams = [];
          foreach($student_results as $result){
-            if($result->supp_remark == 'INCOMPLETE'){
-               $pass_status = 'INCOMPLETE';
-            }
-
-            if($result->supp_remark == 'POSTPONED'){
-               $pass_status = 'POSTPONED EXAM';
+            if($result->supp_remark == 'FAIL'){
+               $pass_status = 'SUPP'; 
+               $supp_exams[] = $result->moduleAssignment->module->code;
             }
 
             if($result->supp_remark == 'RETAKE'){
@@ -1619,11 +1616,14 @@ class ExaminationResultController extends Controller
                $pass_status = 'CARRY'; 
                $carry_exams[] = $result->moduleAssignment->module->code;
             }
+            
+            if($result->supp_remark == 'POSTPONED'){
+               $pass_status = 'POSTPONED EXAM';
+            }
 
-            if($result->supp_remark == 'FAIL'){
-               $pass_status = 'SUPP'; 
-               $supp_exams[] = $result->moduleAssignment->module->code;
-            }   
+            if($result->supp_remark == 'INCOMPLETE'){
+               $pass_status = 'INCOMPLETE';
+            }
          } 
 
          if(count($carry_cases) > 0){
