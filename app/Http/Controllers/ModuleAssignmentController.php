@@ -1615,19 +1615,16 @@ class ModuleAssignmentController extends Controller
                         }// It does not say what should be done to a student who is supposed to retake an exam but misses a mark
                     }
                 }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
-                    $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                     ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
-                                                     ->where('student_id',$student->id)
-                                                     ->first();
-
-                    $supp_upload_allowed = false;
-                    if($semester_remark){
-                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'POSTPONED EXAM' || $semester_remark->remark == 'INCOMPLETE'){
-                            $supp_upload_allowed = true;
-                        }else{
-                            DB::rollback();
-                            continue;
-                        }
+                    if($student->year_of_study == 2){
+                        $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                         ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id - 1)
+                                                         ->where('student_id',$student->id)
+                                                         ->first();
+                    }else{
+                        $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                         ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+                                                         ->where('student_id',$student->id)
+                                                         ->first();
                     }
 
                     $sup_special_exam = SpecialExam::where('student_id',$student->id)
@@ -1648,6 +1645,23 @@ class ModuleAssignmentController extends Controller
                                                     ->where('grade','C')
                                                     ->where('study_academic_year_id', $module_assignment->programModuleAssignment->study_academic_year_id)
                                                     ->first();
+                                                    
+                    $supp_upload_allowed = false;                                              
+                    if($semester_remark){
+                        if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM' || $sup_special_exam || $final_special_exam){
+                            $supp_upload_allowed = true;
+                        }else{
+                            if(($semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'INCOMPLETE') &&
+                                ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('course_work_remark','FAIL')->count() == 0){
+                                $supp_upload_allowed = true;
+                            }elseif($semester_remark->remark == 'CARRY' && $student->year_of_study == 2){
+                                $supp_upload_allowed = true;
+                            }else{
+                                DB::rollback();
+                                continue;
+                            }
+                        }
+                    }
 
                     $upload_allowed = true;
                     if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereIn('exam_type',['FINAL','SUPP'])->first()){
@@ -1947,7 +1961,7 @@ class ModuleAssignmentController extends Controller
 
                             $result->module_assignment_id = $student->year_of_study == 2? $previous_mod_assignment->id : $module_assignment->id;
                             $result->student_id = $student->id;
-                            if($final_special_exam){
+                            if($final_special_exam || $sup_special_exam){
                             // if($sup_special_exam){
                             // if($sup_special_exam || $postponement){ // SEE the previous comment
                                 // $result->final_score = !$sup_special_exam || !$postponement? trim($line[1]) : null;
@@ -1989,14 +2003,14 @@ class ModuleAssignmentController extends Controller
                             //     $result->supp_score = null;
                             // }
 
-                            if(!$final_special_exam && $student->year_of_study == 1){
-                                $result->exam_type = 'SUPP';
-                                $result->exam_category = 'FIRST';
-                            }elseif(!$final_special_exam && $student->year_of_study > 1){
+                            if($result->exam_type == 'SUPP' && $student->year_of_study == 2 && $module_assignment->module->ntaLevel->id == 4){
                                 $result->exam_type = 'CARRY';
                                 $result->exam_category = 'FIRST';
-                            }elseif($final_special_exam){
+                            }elseif($final_special_exam || $sup_special_exam){
                                 $result->exam_type = 'FINAL';
+                                $result->exam_category = 'FIRST';
+                            }else{
+                                $result->exam_type = 'SUPP';
                                 $result->exam_category = 'FIRST';
                             }
 
