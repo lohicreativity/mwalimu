@@ -1966,7 +1966,7 @@ class ModuleAssignmentController extends Controller
                             // if($sup_special_exam || $postponement){ // SEE the previous comment
                                 // $result->final_score = !$sup_special_exam || !$postponement? trim($line[1]) : null;
                                 $result->final_score = trim($line[1]);
-                                $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                                $result->supp_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
 
                             // }elseif($sup_special_exam){
                             //     $result->supp_score = null;
@@ -1976,22 +1976,24 @@ class ModuleAssignmentController extends Controller
                                 if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                                     $result->supp_grade = 'F';
                                     $result->supp_point = 0;
+                                    $result->supp_remark = 'FAIL';
                                     if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
-                                        $result->supp_remark = 'CARRY';
+                                        $result->final_exam_remark = 'CARRY';
                                     }else{
-                                        $result->supp_remark = 'RETAKE';
+                                        $result->final_exam_remark = 'RETAKE';
                                     }
 
                                 }else{
                                     if($module_assignment->module->ntaLevel->id > 4){
                                         $result->supp_grade = 'B';
                                         $result->supp_point = 3;
-                                        $result->supp_remark = 'PASS';
+
                                     }else{
                                         $result->supp_grade = 'C';
                                         $result->supp_point = $grading_policy? $grading_policy->point : 2;
-                                        $result->supp_remark = 'PASS';
                                     }
+                                    $result->supp_remark = 'PASS';
+                                    $result->final_exam_remark = 'PASS';
                                     //$result->grade = $grading_policy? $grading_policy->grade : 'C';
                                 }
                                 //$result->final_exam_remark = $result->supp_score;
