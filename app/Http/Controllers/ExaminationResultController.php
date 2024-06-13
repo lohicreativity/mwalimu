@@ -1623,6 +1623,7 @@ class ExaminationResultController extends Controller
 
             if($result->supp_remark == 'INCOMPLETE'){
                $pass_status = 'INCOMPLETE';
+               break;
             }
          } 
 
