@@ -1547,38 +1547,27 @@ class ExaminationResultController extends Controller
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
 
-                  if(count($special_exam_status) > 0 && $result->final_exam_remark == 'POSTPONED'){
+                  if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
-                           if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                              if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
-                                 $result->grade = 'IC';
-                              }elseif($result->course_work_remark != 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
+                           if($result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
+                              if($result->supp_remark == 'INCOMPLETE'){
                                  $result->grade = 'IF';
-                              }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
-                                 $result->grade = 'I';
-                              }elseif($result->course_work_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED'){
+                              }elseif($result->supp_remark == 'POSTPONED'){
                                  $result->grade = null;
                               }
                               $result->point = null;
                               $result->total_score = null;
-               
-                              if($result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                                 $result->supp_remark = $result->final_remark;
-                              }
-                              if($result->course_work_remark == 'INCOMPLETE' || $result->course_work_remark == 'POSTPONED'){
-                                 $result->supp_remark = $result->course_work_remark;
-                              }
+
                            }else{
                               $result->grade = $result->point = null;
                               if($course_work_based == 1){
-                                 if($result->final_remark != 'POSTPONED' || $result->final_remark != 'INCOMPLETE'){
+                                 if($result->supp_remark != 'POSTPONED' || $result->supp_remark != 'INCOMPLETE'){
                                     $result->total_score = round($result->course_work_score + $result->final_score);
                                  }else{
                                     $result->total_score = null;
                                  }
                               }else{
-                                 $result->course_work_remark = 'N/A';
                                  $result->total_score = $result->final_score;
                               }
                            
@@ -1590,7 +1579,7 @@ class ExaminationResultController extends Controller
                                  }
                               }
             
-                              if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL'){
+                              if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
                                  $result->grade = 'F';
                                  $result->point = 0;
                                  $no_of_failed_modules++;
@@ -1599,13 +1588,13 @@ class ExaminationResultController extends Controller
                               if($result->course_work_remark == 'FAIL'){
                                  if(Util::stripSpacesUpper($ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                     if($year_of_study == 1){
-                                       $result->supp_remark = 'CARRY';
+                                       $result->final_exam_remark = 'CARRY';
                                     }
                                  }else{
-                                    $result->supp_remark = 'RETAKE';
+                                    $result->final_exam_remark = 'RETAKE';
                                  }
             
-                                 if($result->supp_remark == 'RETAKE'){
+                                 if($result->final_exam_remark == 'RETAKE'){
                                     if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
                                        $history = $retake;
                                     }else{
@@ -1623,7 +1612,7 @@ class ExaminationResultController extends Controller
             
                                  }
             
-                                 if($result->supp_remark == 'CARRY'){
+                                 if($result->final_exam_remark == 'CARRY'){
                                     if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
                                        $history = $carry;
                                     }else{
@@ -1640,15 +1629,15 @@ class ExaminationResultController extends Controller
                                     $result->retakable_type = 'carry_history';
                                  }
                               }else{
-                                 if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $result->final_remark == 'PASS'){
-                                    $result->supp_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
+                                 if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $result->supp_remark == 'PASS'){
+                                    $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
                                  }else{
-                                    if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE'){
-                                       $result->supp_remark = 'INCOMPLETE';
-                                    }elseif($result->course_work_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED'){
-                                       $result->supp_remark = 'POSTPONED';
+                                    if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE'){
+                                       $result->final_exam_remark = 'INCOMPLETE';
+                                    }elseif($result->course_work_remark == 'POSTPONED' || $result->supp_remark == 'POSTPONED'){
+                                       $result->final_exam_remark = 'POSTPONED';
                                     }else{
-                                       $result->supp_remark = 'FAIL';
+                                       $result->final_exam_remark = 'FAIL';
                                     }
                                  }
                               }
@@ -1659,7 +1648,7 @@ class ExaminationResultController extends Controller
                         }
                      }
                   }else{
-                     if($result->supp_remark == 'RETAKE'){
+                     if($result->final_exam_remark == 'RETAKE'){
                         $no_of_failed_modules++;
                         if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
                            $history = $retake;
@@ -1678,7 +1667,7 @@ class ExaminationResultController extends Controller
    
                      }
    
-                     if($result->supp_remark == 'CARRY'){
+                     if($result->final_exam_remark == 'CARRY'){
                         $no_of_failed_modules++;
                         if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
                            $history = $carry;
@@ -1696,7 +1685,7 @@ class ExaminationResultController extends Controller
                         $result->retakable_type = 'carry_history';
                      }
 
-                     if($result->supp_remark != null){
+                     if($result->fina_exam_remark != null){
                         $result->supp_processed_by_user_id = Auth::user()->id;
                         $result->supp_processed_at = now();
                      }
