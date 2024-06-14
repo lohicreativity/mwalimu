@@ -1699,26 +1699,26 @@ class ExaminationResultController extends Controller
          $pass_status = 'PASS'; 
          $supp_exams = $retake_exams = $carry_exams = [];
          foreach($student_results as $result){
-            if($result->supp_remark == 'FAIL' || ($result->final_exam_remark == 'FAIL' && $result->supp_uploaded_at != null)){
+            if($result->supp_remark == 'FAIL' || ($result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'FAIL' && $result->supp_uploaded_at != null)){
                $pass_status = 'SUPP'; 
                $supp_exams[] = $result->moduleAssignment->module->code;
             }
 
-            if($result->supp_remark == 'RETAKE' || $result->final_exam_remark == 'RETAKE' && $result->supp_uploaded_at != null){
+            if($result->supp_remark == 'RETAKE' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'RETAKE' && $result->supp_uploaded_at != null){
                $pass_status = 'RETAKE'; 
                $retake_exams[] = $result->moduleAssignment->module->code;
             }  
 
-            if($result->supp_remark == 'CARRY' || $result->final_exam_remark == 'CARRY' && $result->supp_uploaded_at != null){
+            if($result->supp_remark == 'CARRY' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'CARRY' && $result->supp_uploaded_at != null){
                $pass_status = 'CARRY'; 
                $carry_exams[] = $result->moduleAssignment->module->code;
             }
             
-            if($result->supp_remark == 'POSTPONED' || $result->final_exam_remark == 'POSTPONED' && $result->supp_uploaded_at != null){
+            if($result->supp_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'POSTPONED' && $result->supp_uploaded_at != null){
                $pass_status = 'POSTPONED EXAM';
             }
 
-            if($result->supp_remark == 'INCOMPLETE' || $result->final_exam_remark == 'INCOMPLETE' && $result->supp_uploaded_at != null){
+            if($result->supp_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'INCOMPLETE' && $result->supp_uploaded_at != null){
                $pass_status = 'INCOMPLETE';
                break;
             }
