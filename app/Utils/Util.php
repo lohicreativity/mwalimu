@@ -55,12 +55,16 @@ class Util {
     */
    public static function computeGPA($total_credits, $results,$exam_type)
    {
-       $total_weights = $point = 0;
+       $total_weights = 0;
        foreach($results as $res){
-          if($exam_type == 0 && $res->final_remark != 'POSTPONED'){
-            $point += $res->supp_point;
+          if($exam_type == 0){
+            if($res->final_remark != 'POSTPONED'){
+                $point = $res->supp_point;
+            }else{
+                $point = $res->point;    
+            }
           }else{
-            $point += $res->point;
+            $point = $res->point;
           }
           $total_weights += ($point*$res->moduleAssignment->module->credit);
        }
@@ -76,12 +80,16 @@ class Util {
     */
    public static function computeGPAPoints($total_credits, $results,$exam_type)
    {
-        $total_weights = $point = 0;
+       $total_weights = 0;
        foreach($results as $res){
-        if($exam_type == 0 && $res->final_remark != 'POSTPONED'){
-            $point += $res->supp_point;
+        if($exam_type == 0){
+            if($res->final_remark != 'POSTPONED'){
+                $point = $res->supp_point;
+            }else{
+                $point = $res->point;    
+            }
         }else{
-            $point += $res->point;
+            $point = $res->point;
         }
           $total_weights += ($point*$res->moduleAssignment->module->credit);
        }
