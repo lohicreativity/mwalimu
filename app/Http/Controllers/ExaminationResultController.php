@@ -1843,9 +1843,9 @@ class ExaminationResultController extends Controller
  
       DB::commit();
 
-      if($resu = ExaminationResult::where('student_id',3619)->where('module_assignment_id',572)->first()){
-         return $resu;
-         }
+      // if($resu = ExaminationResult::where('student_id',3619)->where('module_assignment_id',572)->first()){
+      //    return $resu;
+      //    }
       return redirect()->back()->with('message','Results processed successfully');
    }
     /**
