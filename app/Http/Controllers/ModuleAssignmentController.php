@@ -1686,7 +1686,6 @@ class ModuleAssignmentController extends Controller
                     }elseif($sup_special_exam){
                         $result->grade = null;
                         $result->point = null;
-                        $result->supp_score = null;
                         $result->final_exam_remark = 'POSTPONED';
                         $result->supp_remark = 'POSTPONED';
                     }else{
