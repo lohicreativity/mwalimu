@@ -1682,13 +1682,13 @@ class ExaminationResultController extends Controller
                      }
 
                      if($result->supp_remark != null){
-                        if($result->student_id == 3619 && $result->module_assignment_id == 572){
-                           return $result;
-                           }
                         $result->supp_processed_by_user_id = Auth::user()->id;
                         $result->supp_processed_at = now();
                      }
                   }
+                  if($result->student_id == 3619 && $result->module_assignment_id == 572){
+                     return $result;
+                     }
                   $result->save();
                   $student_results[] =  $result;
                   
