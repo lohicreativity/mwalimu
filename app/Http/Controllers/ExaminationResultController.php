@@ -1725,9 +1725,6 @@ class ExaminationResultController extends Controller
             }
          } 
 
-         if($remark->student_id == 5103){
-return $pass_status;
-         }
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
                $ac_yr_id = $ac_yr_id -1;
