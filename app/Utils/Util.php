@@ -57,7 +57,7 @@ class Util {
    {
        $total_weights = 0;
        foreach($results as $res){
-          if($exam_type == 0 && $res->supp_remark != null){
+          if($exam_type == 0 && $res->final_remark != 'POSTPONED'){
             $point = $res->supp_point;
           }else{
             $point = $res->point;
@@ -78,7 +78,7 @@ class Util {
    {
        $total_weights = 0;
        foreach($results as $res){
-        if($exam_type == 0 && $res->supp_remark != null){
+        if($exam_type == 0 && $res->final_remark != 'POSTPONED'){
             $point = $res->supp_point;
         }else{
             $point = $res->point;
