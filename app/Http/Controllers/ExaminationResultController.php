@@ -1557,6 +1557,9 @@ class ExaminationResultController extends Controller
                               }elseif($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
                                  $result->final_exam_remark = 'INCOMPLETE';
                                  $result->grade = 'I';
+                              }elseif($result->course_work_remark != 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
+                                 $result->final_exam_remark = 'INCOMPLETE';
+                                 $result->grade = 'IF';
                               }
                               $result->point = null;
                               $result->total_score = null;
