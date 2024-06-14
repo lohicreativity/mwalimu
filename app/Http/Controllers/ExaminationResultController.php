@@ -1816,11 +1816,10 @@ class ExaminationResultController extends Controller
    
             $remark->save();
          }
-         if($rem = SemesterRemark::where('student_id',5102)->first()){
-            return $rem;
-         }
       }
-
+      if($rem = SemesterRemark::where('student_id',5102)->first()){
+         return $rem;
+      }
       if($pub = ResultPublication::where('study_academic_year_id',$ac_yr_id)
                                  ->where('semester_id',$semester_id)
                                  ->where('nta_level_id',$ntaLevel->id)
