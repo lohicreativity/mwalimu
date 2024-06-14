@@ -1550,10 +1550,12 @@ class ExaminationResultController extends Controller
                   if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
-                           if($result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
-                              if($result->supp_remark == 'INCOMPLETE'){
+                           if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
+                              if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE'){
+                                 $result->final_exam_remark = 'INCOMPLETE';
                                  $result->supp_grade = 'IF';
                               }elseif($result->supp_remark == 'POSTPONED'){
+                                 $result->final_exam_remark = 'POSTPONED';
                                  $result->supp_grade = null;
                               }
                               $result->supp_point = null;
@@ -1562,7 +1564,7 @@ class ExaminationResultController extends Controller
                            }else{
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
-                                 if($result->supp_remark != 'POSTPONED' || $result->supp_remark != 'INCOMPLETE'){
+                                 if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
                                     $result->total_score = round($result->course_work_score + $result->final_score);
                                  }else{
                                     $result->total_score = null;
@@ -1570,21 +1572,21 @@ class ExaminationResultController extends Controller
                               }else{
                                  $result->total_score = $result->final_score;
                               }
-                           
-                              foreach($grading_policy as $policy){
-                                 if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
-                                    $result->grade = $policy->grade;
-                                    $result->point = $policy->point;
-                                    break;
-                                 }
-                              }
             
                               if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
-                                 $result->grade = 'F';
-                                 $result->point = 0;
+                                 $result->supp_grade = 'F';
+                                 $result->supp_point = 0;
                                  $no_of_failed_modules++;
+                              }elseif($result->course_work_remark == 'PASS' && $result->supp_remark == 'PASS'){
+                                 foreach($grading_policy as $policy){
+                                    if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
+                                       $result->supp_grade = $policy->grade;
+                                       $result->supp_point = $policy->point;
+                                       break;
+                                    }
+                                 }
                               }
-            
+
                               if($result->course_work_remark == 'FAIL'){
                                  if(Util::stripSpacesUpper($ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                     if($year_of_study == 1){
@@ -1631,13 +1633,17 @@ class ExaminationResultController extends Controller
                               }else{
                                  if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $result->supp_remark == 'PASS'){
                                     $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
-                                 }else{
-                                    if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE'){
-                                       $result->final_exam_remark = 'INCOMPLETE';
-                                    }elseif($result->course_work_remark == 'POSTPONED' || $result->supp_remark == 'POSTPONED'){
-                                       $result->final_exam_remark = 'POSTPONED';
-                                    }else{
-                                       $result->final_exam_remark = 'FAIL';
+                                 }
+                              }
+                              if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
+                                 $result->supp_grade = 'F';
+                                 $result->supp_point = 0;
+                              }else{
+                                 foreach($grading_policy as $policy){
+                                    if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
+                                       $result->supp_grade = $policy->grade;
+                                       $result->supp_point = $policy->point;
+                                       break;
                                     }
                                  }
                               }
