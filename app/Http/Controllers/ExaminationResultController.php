@@ -678,20 +678,21 @@ class ExaminationResultController extends Controller
                                           ->where('semester_id',1)
                                           ->where('year_of_study',$year_of_study)
                                           ->first()){
-                     $rema = $rem;  
+                     $remark = $rem;  
                   }else{
                      $remark = new SemesterRemark;
                   }
    
-                  $rema->study_academic_year_id = $request->get('study_academic_year_id');
-                  $rema->student_id = $student_id;
-                  $rema->semester_id = 1;
-                  $rema->remark = 'INCOMPLETE';
-                  $rema->gpa = null;
-                  $rema->class = null;
-                  $rema->save();
+                  $remark->study_academic_year_id = $request->get('study_academic_year_id');
+                  $remark->student_id = $student_id;
+                  $remark->semester_id = 1;
+                  $remark->remark = 'INCOMPLETE';
+                  $remark->gpa = null;
+                  $remark->class = null;
+                  $remark->save();
                }
             }
+            return $remark;
             if($remark->student_id == 5102){
                return $remark;
             }
