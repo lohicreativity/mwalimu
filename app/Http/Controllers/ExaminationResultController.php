@@ -1735,9 +1735,6 @@ class ExaminationResultController extends Controller
             }
          }
 
-         // if($remark->student_id == 5102){
-         //    return $remark;
-         // }
          if(!empty($remark)){
             $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $case;
@@ -1818,6 +1815,9 @@ class ExaminationResultController extends Controller
             }
    
             $remark->save();
+         }
+         if($rem = SemesterRemark::where('student_id',5102)->first()){
+            return $rem;
          }
       }
 
