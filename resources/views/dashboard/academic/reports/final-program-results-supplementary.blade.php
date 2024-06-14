@@ -522,9 +522,9 @@
                               <td class="ss-center ss-font-xs">
                                 @foreach($student->examinationResults as $result)
                                   @if($result->module_assignment_id == $assignment->id)
-                                      @if($result->supp_processed_at != null && $result->final_exam_remark == 'POSTPONED')
+                                      @if($result->supp_processed_at != null && $result->final_remark == 'POSTPONED')
                                         @if($result->grade) {{ $result->grade }} @else - @endif
-                                      @elseif($result->supp_processed_at != null && $result->final_exam_remark != 'POSTPONED')
+                                      @elseif($result->supp_processed_at != null && $result->final_remark != 'POSTPONED')
                                         *@if($result->supp_grade) {{ $result->supp_grade }} @else - @endif
                                       @else 
                                         -
