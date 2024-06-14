@@ -1735,9 +1735,9 @@ class ExaminationResultController extends Controller
             }
          }
 
-         if($remark->student_id == 5102){
-            return $remark;
-         }
+         // if($remark->student_id == 5102){
+         //    return $remark;
+         // }
          if(!empty($remark)){
             $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $case;
