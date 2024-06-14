@@ -651,7 +651,7 @@ class ExaminationResultController extends Controller
                      $remark->class = null;
                      Student::where('id',$student->id)->update(['academic_status_id'=>10]);
    
-                  }elseif($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
+                  }elseif($remark->gpa != null && $remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
                      $remark->remark = 'FAIL&DISCO';
                      $remark->gpa = null;
                      $remark->class = null;
