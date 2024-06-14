@@ -668,6 +668,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
+                  DB::commit();
                   if($remark->student_id == 972){
                      return $remark;
                                  }
