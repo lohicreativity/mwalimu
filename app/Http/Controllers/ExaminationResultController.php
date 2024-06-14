@@ -1690,7 +1690,9 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $result->save();
-   
+                  if($result->student_id == 706){
+                     return $result;
+                  }
                   $student_results[] =  $result;
                   
                   if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
