@@ -562,7 +562,7 @@
                               @if($student->gender == 'F') @php $s_female_carry_cases++; @endphp
                               @elseif($student->gender == 'M') @php $s_male_carry_cases++; @endphp
                               @endif
-                            @elseif($student->semesterRemarks[0]->remark == 'RETAKE')
+                            @elseif($student->semesterRemarks[0]->remark == 'RETAKE' || $student->semesterRemarks[0]->supp_remark == 'RETAKE')
                               @if($student->gender == 'F') @php $s_female_retake_cases++; @endphp
                               @elseif($student->gender == 'M') @php $s_male_retake_cases++; @endphp
                               @endif
