@@ -652,9 +652,6 @@ class ExaminationResultController extends Controller
                      Student::where('id',$student->id)->update(['academic_status_id'=>10]);
    
                   }elseif($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
-                     if($remark->student_id == 972){
-                        return $remark;
-                                    }
                      $remark->remark = 'FAIL&DISCO';
                      $remark->gpa = null;
                      $remark->class = null;
@@ -670,7 +667,9 @@ class ExaminationResultController extends Controller
                         $remark->serialized = serialize(['supp_exams'=>$supp_exams]);
                      }
                   }
-   
+                  if($remark->student_id == 972){
+                     return $remark;
+                                 }
                   $remark->save();
                }
             }
