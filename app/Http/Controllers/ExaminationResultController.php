@@ -1686,9 +1686,7 @@ class ExaminationResultController extends Controller
                         $result->supp_processed_at = now();
                      }
                   }
-                  if($result->student_id == 3619 && $result->module_assignment_id == 572){
-                     return $result;
-                     }
+
                   $result->save();
                   $student_results[] =  $result;
                   
@@ -1842,9 +1840,12 @@ class ExaminationResultController extends Controller
       $process->year_of_study = $year_of_study;
       $process->campus_program_id = $campus_program_id;
       $process->save();
-
+ 
       DB::commit();
 
+      if($resu = ExaminationResult::where('student_id',3619)->where('module_assignment_id',572)->first()){
+         return $resu;
+         }
       return redirect()->back()->with('message','Results processed successfully');
    }
     /**
