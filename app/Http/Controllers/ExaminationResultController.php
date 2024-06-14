@@ -1795,9 +1795,7 @@ class ExaminationResultController extends Controller
                $remark->class = null;
                Student::where('id',$case)->update(['academic_status_id'=>5]);
             }
-            if($rem = SemesterRemark::where('student_id',5102)->first()){
-               return $rem;
-            }
+   
             if(Student::where('id',$case)->where('studentship_status_id', 6)->count() > 0){
                $remark->remark = 'DECEASED';
                $remark->gpa = null;
@@ -1815,7 +1813,9 @@ class ExaminationResultController extends Controller
             }else{
                $remark->serialized = null;
             }
-   
+            if($rem = SemesterRemark::where('student_id',5102)->first()){
+               return $rem;
+            }
             $remark->save();
          }
       }
