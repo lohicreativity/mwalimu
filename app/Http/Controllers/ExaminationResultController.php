@@ -1542,9 +1542,7 @@ class ExaminationResultController extends Controller
                                              ->whereIn('module_assignment_id',$module_assignmentIDs)
                                              ->get();
                }
-               if($case == 706){
-                  return $results;
-               }
+
                foreach($results as $result){
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
@@ -1736,9 +1734,6 @@ class ExaminationResultController extends Controller
          }
 
          if(!empty($remark)){
-            if($remark->student_id == 706){
-               return $pass_status;
-            }
             $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $case;
             $remark->semester_id = $semester_id;
