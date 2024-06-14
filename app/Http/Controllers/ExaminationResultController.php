@@ -644,7 +644,9 @@ class ExaminationResultController extends Controller
                         break;
                      }
                   }
-      
+                  if($remark->student_id == 972){
+                     return $remark;
+                                 }
                   if($no_of_failed_modules > ($no_of_expected_modules/2) && $remark->remark != 'INCOMPLETE'){
                      $remark->remark = 'REPEAT';
                      $remark->gpa = null;
@@ -1788,9 +1790,6 @@ class ExaminationResultController extends Controller
             }
 
             if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
-               if($remark->student_id == 972){
-                  return $remark;
-                              }
                $remark->remark = 'FAIL&DISCO';
                $remark->gpa = null;
                $remark->class = null;
