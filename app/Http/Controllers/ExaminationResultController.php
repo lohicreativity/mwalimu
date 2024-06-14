@@ -644,9 +644,7 @@ class ExaminationResultController extends Controller
                         break;
                      }
                   }
-                  if($remark->student_id == 5102){
-                     return $remark;
-                  }
+
                   if($no_of_failed_modules > ($no_of_expected_modules/2) && $remark->remark != 'INCOMPLETE'){
                      $remark->remark = 'REPEAT';
                      $remark->gpa = null;
@@ -670,6 +668,9 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
+                  if($remark->student_id == 5102){
+                     return $remark;
+                  }
                }
             }
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
