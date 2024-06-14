@@ -800,7 +800,7 @@ class ExaminationResultController extends Controller
             $publication->save();
 
             DB::commit();
-            if($remark->student_id == 5143){
+            if($remark->student_id == 5102){
                return $remark;
             }
             if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
