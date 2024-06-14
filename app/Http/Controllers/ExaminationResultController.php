@@ -1735,7 +1735,8 @@ class ExaminationResultController extends Controller
             $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $case;
             $remark->semester_id = $semester_id;
-            $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+            $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+
 
             if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
                $remark->gpa = null;
