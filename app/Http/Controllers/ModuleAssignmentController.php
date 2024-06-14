@@ -1678,28 +1678,28 @@ class ModuleAssignmentController extends Controller
                     $result->module_assignment_id = $request->get('module_assignment_id');
                     $result->student_id = $student->id;
                     if($final_special_exam){
-                        $result->supp_grade = 'IF';
-                        $result->supp_point = null;
+                        $result->grade = 'IF';
+                        $result->point = null;
                         $result->final_score = null;
                         $result->final_exam_remark = 'INCOMPLETE';
                         $result->supp_remark = 'INCOMPLETE';
                     }elseif($sup_special_exam){
-                        $result->supp_grade = null;
-                        $result->supp_point = null;
+                        $result->grade = null;
+                        $result->point = null;
                         $result->supp_score = null;
                         $result->final_exam_remark = 'POSTPONED';
                         $result->supp_remark = 'POSTPONED';
                     }else{
-                        $result->supp_grade = 'I';
-                        $result->supp_point = null;
-                        $result->supp_score = null;
+                        $result->grade = 'I';
+                        $result->point = null;
+                        $result->final_score = null;
                         $result->final_exam_remark = 'INCOMPLETE';
                         $result->supp_remark = 'INCOMPLETE';
                     }
 
                     if($student->studentship_status_id == 6){
-                        $result->supp_grade = null;
-                        $result->supp_point = null;
+                        $result->grade = null;
+                        $result->point = null;
                         $result->final_exam_remark = 'DECEASED';
                         $result->supp_remark = 'DECEASED';
                     }
