@@ -668,11 +668,12 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
+                  if($remark->student_id == 972){
+                     return $remark;
+                                 }
                }
             }
-            if($remark->student_id == 972){
-               return $remark;
-                           }
+
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
             if(count($missing_cases) > 0){
                foreach($missing_cases as $student_id){
