@@ -1515,9 +1515,6 @@ class ExaminationResultController extends Controller
                                     ->first();
          }
          //return $remark->remark.' - '.$case;
-         if($remark->student_id == 972){
-            return $remark;
-                        }
          $special_exam_status = SpecialExam::where('student_id',$case)
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->where('semester_id',$semester_id)
@@ -1786,7 +1783,9 @@ class ExaminationResultController extends Controller
                Student::where('id',$case)->update(['academic_status_id'=>10]);
    
             }
-
+            if($remark->student_id == 972){
+               return $remark;
+                           }
             if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
                $remark->remark = 'FAIL&DISCO';
                $remark->gpa = null;
