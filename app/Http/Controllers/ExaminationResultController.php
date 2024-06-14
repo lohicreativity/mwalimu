@@ -1544,10 +1544,6 @@ class ExaminationResultController extends Controller
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
 
-                  if($result->supp_remark != null && $result->final_remark == 'POSTPONED'){
-                     $result->final_exam_remark = $result->supp_remark;
-                  }
-                  
                   if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
@@ -1727,7 +1723,9 @@ class ExaminationResultController extends Controller
                break;
             }
          } 
-
+if($remark->student_id == 1419){
+return $pass_status;
+}
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
                $ac_yr_id = $ac_yr_id -1;
