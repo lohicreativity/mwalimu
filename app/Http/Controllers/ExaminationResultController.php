@@ -798,7 +798,7 @@ class ExaminationResultController extends Controller
             $publication->nta_level_id = $campus_program->program->nta_level_id;
             $publication->published_by_user_id = Auth::user()->id;
             $publication->save();
-
+return $remark;
             DB::commit();
             if($remark->student_id == 5102){
                return $remark;
