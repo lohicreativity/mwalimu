@@ -1788,16 +1788,16 @@ class ExaminationResultController extends Controller
                Student::where('id',$case)->update(['academic_status_id'=>10]);
    
             }
-            if($rem = SemesterRemark::where('student_id',5102)->first()){
-               return $rem;
-            }
+
             if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
                $remark->remark = 'FAIL&DISCO';
                $remark->gpa = null;
                $remark->class = null;
                Student::where('id',$case)->update(['academic_status_id'=>5]);
             }
-   
+            if($rem = SemesterRemark::where('student_id',5102)->first()){
+               return $rem;
+            }
             if(Student::where('id',$case)->where('studentship_status_id', 6)->count() > 0){
                $remark->remark = 'DECEASED';
                $remark->gpa = null;
