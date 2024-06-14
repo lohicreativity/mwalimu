@@ -1769,9 +1769,7 @@ class ExaminationResultController extends Controller
                   Student::where('id',$case)->update(['academic_status_id'=>1]);
                }
             }
-            if($rem = SemesterRemark::where('student_id',5102)->first()){
-               return $rem;
-            }
+
             foreach($gpa_classes as $gpa_class){
                if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
                   if($remark->gpa && $gpa_class){
@@ -1790,7 +1788,9 @@ class ExaminationResultController extends Controller
                Student::where('id',$case)->update(['academic_status_id'=>10]);
    
             }
-
+            if($rem = SemesterRemark::where('student_id',5102)->first()){
+               return $rem;
+            }
             if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
                $remark->remark = 'FAIL&DISCO';
                $remark->gpa = null;
