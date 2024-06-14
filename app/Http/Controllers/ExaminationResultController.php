@@ -668,9 +668,6 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
-                  if($remark->student_id == 5102){
-                     return $remark;
-                  }
                }
             }
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
@@ -695,7 +692,9 @@ class ExaminationResultController extends Controller
                   $remark->save();
                }
             }
-   
+            if($remark->student_id == 5102){
+               return $remark;
+            }
             $known_missing_cases = Student::select('id','studentship_status_id')->whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','DECEASED');})
                                           ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                           ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
