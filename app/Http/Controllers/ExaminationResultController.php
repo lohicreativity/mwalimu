@@ -1553,12 +1553,12 @@ class ExaminationResultController extends Controller
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE'){
                                  $result->final_exam_remark = 'INCOMPLETE';
-                                 $result->supp_grade = 'IF';
+                                 $result->grade = 'IF';
                               }elseif($result->supp_remark == 'POSTPONED'){
                                  $result->final_exam_remark = 'POSTPONED';
-                                 $result->supp_grade = null;
+                                 $result->grade = null;
                               }
-                              $result->supp_point = null;
+                              $result->point = null;
                               $result->total_score = null;
 
                            }else{
@@ -1574,17 +1574,7 @@ class ExaminationResultController extends Controller
                               }
             
                               if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
-                                 $result->supp_grade = 'F';
-                                 $result->supp_point = 0;
                                  $no_of_failed_modules++;
-                              }elseif($result->course_work_remark == 'PASS' && $result->supp_remark == 'PASS'){
-                                 foreach($grading_policy as $policy){
-                                    if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
-                                       $result->supp_grade = $policy->grade;
-                                       $result->supp_point = $policy->point;
-                                       break;
-                                    }
-                                 }
                               }
 
                               if($result->course_work_remark == 'FAIL'){
@@ -1636,13 +1626,13 @@ class ExaminationResultController extends Controller
                                  }
                               }
                               if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
-                                 $result->supp_grade = 'F';
-                                 $result->supp_point = 0;
+                                 $result->grade = 'F';
+                                 $result->point = 0;
                               }else{
                                  foreach($grading_policy as $policy){
                                     if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
-                                       $result->supp_grade = $policy->grade;
-                                       $result->supp_point = $policy->point;
+                                       $result->grade = $policy->grade;
+                                       $result->point = $policy->point;
                                        break;
                                     }
                                  }
