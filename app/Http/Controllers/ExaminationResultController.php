@@ -644,7 +644,9 @@ class ExaminationResultController extends Controller
                         break;
                      }
                   }
-
+                  if($remark->student_id == 5102){
+                     return $remark;
+                  }
                   if($no_of_failed_modules > ($no_of_expected_modules/2) && $remark->remark != 'INCOMPLETE'){
                      $remark->remark = 'REPEAT';
                      $remark->gpa = null;
@@ -800,9 +802,7 @@ class ExaminationResultController extends Controller
             $publication->save();
 
             DB::commit();
-            if($remark->student_id == 5102){
-               return $remark;
-            }
+
             if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
                return redirect()->to('academic/results/process-supp-results?semester_id=1&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id); 
             }
