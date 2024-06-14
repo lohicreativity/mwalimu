@@ -798,9 +798,9 @@ class ExaminationResultController extends Controller
             $publication->nta_level_id = $campus_program->program->nta_level_id;
             $publication->published_by_user_id = Auth::user()->id;
             $publication->save();
-return $remark;
+
             DB::commit();
-            if($remark->student_id == 5102){
+            if($remark->student_id == 5143){
                return $remark;
             }
             if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
