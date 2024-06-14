@@ -1813,8 +1813,8 @@ class ExaminationResultController extends Controller
             }else{
                $remark->serialized = null;
             }
-            if($rem = SemesterRemark::where('student_id',5102)->first()){
-               return $rem;
+            if($remark->student_id == 5102){
+               return $remark;
             }
             $remark->save();
          }
