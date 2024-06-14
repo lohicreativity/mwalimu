@@ -1552,15 +1552,15 @@ class ExaminationResultController extends Controller
                         if($result->module_assignment_id == $special->module_assignment_id){
                            if($result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->supp_remark == 'INCOMPLETE'){
-                                 $result->grade = 'IF';
+                                 $result->supp_grade = 'IF';
                               }elseif($result->supp_remark == 'POSTPONED'){
-                                 $result->grade = null;
+                                 $result->supp_grade = null;
                               }
-                              $result->point = null;
+                              $result->supp_point = null;
                               $result->total_score = null;
 
                            }else{
-                              $result->grade = $result->point = null;
+                              $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
                                  if($result->supp_remark != 'POSTPONED' || $result->supp_remark != 'INCOMPLETE'){
                                     $result->total_score = round($result->course_work_score + $result->final_score);
