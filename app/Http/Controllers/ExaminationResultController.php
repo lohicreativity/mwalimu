@@ -1563,9 +1563,7 @@ class ExaminationResultController extends Controller
                               }
                               $result->point = null;
                               $result->total_score = null;
-if($result->student_id == 1920 && $result->module_assignment_id == 255){
-   return $result;
-}
+
                            }else{
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
