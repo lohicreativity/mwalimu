@@ -668,13 +668,8 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
-                  DB::commit();
-                  if($remark->student_id == 972){
-                     return $remark;
-                                 }
                }
             }
-
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
             if(count($missing_cases) > 0){
                foreach($missing_cases as $student_id){
@@ -1520,7 +1515,9 @@ class ExaminationResultController extends Controller
                                     ->first();
          }
          //return $remark->remark.' - '.$case;
-
+         if($remark->student_id == 972){
+            return $remark;
+                        }
          $special_exam_status = SpecialExam::where('student_id',$case)
                                           ->where('study_academic_year_id',$ac_yr_id)
                                           ->where('semester_id',$semester_id)
