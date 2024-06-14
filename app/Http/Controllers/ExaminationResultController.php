@@ -1550,7 +1550,7 @@ class ExaminationResultController extends Controller
                   if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                      foreach($special_exam_status as $special){
                         if($result->module_assignment_id == $special->module_assignment_id){
-                           if($result->course_work_remark == 'INCOMPLETE'){
+                           if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark != 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
                                  $result->final_exam_remark = 'INCOMPLETE';
                                  $result->grade = 'IC';
