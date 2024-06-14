@@ -670,6 +670,7 @@ class ExaminationResultController extends Controller
                   $remark->save();
                }
             }
+
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
             if(count($missing_cases) > 0){
                foreach($missing_cases as $student_id){
@@ -692,10 +693,7 @@ class ExaminationResultController extends Controller
                   $remark->save();
                }
             }
-            return $remark;
-            if($remark->student_id == 5102){
-               return $remark;
-            }
+
             $known_missing_cases = Student::select('id','studentship_status_id')->whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED')->orWhere('name','DECEASED');})
                                           ->whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                           ->whereHas('registrations',function($query) use($request,$year_of_study){$query->where('year_of_study',$year_of_study)
@@ -804,6 +802,9 @@ class ExaminationResultController extends Controller
 
             DB::commit();
 
+            if($rem = SemesterRemark::where('student_id',5102)->first()){
+               return $rem;
+            }
             if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
                return redirect()->to('academic/results/process-supp-results?semester_id=1&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id); 
             }
