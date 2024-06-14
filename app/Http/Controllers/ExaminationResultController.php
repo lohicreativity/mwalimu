@@ -667,10 +667,10 @@ class ExaminationResultController extends Controller
                         $remark->serialized = serialize(['supp_exams'=>$supp_exams]);
                      }
                   }
+                  $remark->save();
                   if($remark->student_id == 972){
                      return $remark;
                                  }
-                  $remark->save();
                }
             }
    
