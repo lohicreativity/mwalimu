@@ -3822,9 +3822,7 @@ class ExaminationResultController extends Controller
                         $result->supp_processed_at = now();
                      }
                   }
-                  if($result->module_assignment_id == 531){
-                     return $processed_result;
-                  }
+
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
@@ -3833,6 +3831,10 @@ class ExaminationResultController extends Controller
                      
                   if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
                      $student_results_for_gpa_computation[] =  $processed_result;
+                  }
+
+                  if($result->module_assignment_id == 531){
+                     return $processed_result;
                   }
                }
 
