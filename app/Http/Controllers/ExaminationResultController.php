@@ -3183,7 +3183,6 @@ class ExaminationResultController extends Controller
          // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
       //  $request->get('module_assignment_id').'/'.
          if($request->get('supp_score')){
-            return 'Under construction';
             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id.'&process_type=SUPP');
          }else{
             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
@@ -3308,7 +3307,7 @@ class ExaminationResultController extends Controller
      * Process student results
      */
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
-    { 
+    { return $request;
       try{
          DB::beginTransaction();
          $student = Student::findOrFail($student_id);
