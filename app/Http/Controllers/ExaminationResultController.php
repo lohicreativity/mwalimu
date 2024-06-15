@@ -3474,7 +3474,6 @@ class ExaminationResultController extends Controller
                               $processed_result->total_score = null;
 
                            }else{
-                              if($result->module_assignment_id == 531){return 2;}
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
                                  if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
@@ -3556,7 +3555,7 @@ class ExaminationResultController extends Controller
                            }
                            $processed_result->final_processed_by_user_id = Auth::user()->id;
                            $processed_result->final_processed_at = now();
-                        
+                           if($result->module_assignment_id == 531){return $result;}
                   }else{
                      if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                         if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
