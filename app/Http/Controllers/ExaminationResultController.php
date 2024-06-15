@@ -3684,7 +3684,7 @@ class ExaminationResultController extends Controller
 
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
 if($result->module_assignment_id == 531){
-   return 112;
+   return $result;
 }
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
