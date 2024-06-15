@@ -4001,6 +4001,7 @@ class ExaminationResultController extends Controller
       } 
 
       if($carry_case){
+         return 1;
          $ac_yr_id = $ac_yr_id -1;
          
       }
