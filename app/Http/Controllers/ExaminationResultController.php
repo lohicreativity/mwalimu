@@ -3931,6 +3931,7 @@ class ExaminationResultController extends Controller
             foreach($results as $result){
                $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
+               $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
 
                if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                   foreach($special_exam_status as $special){
@@ -3961,6 +3962,8 @@ class ExaminationResultController extends Controller
                               $result->total_score = $result->final_score;
                            }
          
+                           $result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';  
+
                            if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
                               $no_of_failed_modules++;
                            }
@@ -4009,9 +4012,9 @@ class ExaminationResultController extends Controller
                                  $result->retakable_type = 'carry_history';
                               }
                            }else{
-                              if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $result->supp_remark == 'PASS'){
+
                                  $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
-                              }
+
                            }
                            if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
                               $result->grade = 'F';
