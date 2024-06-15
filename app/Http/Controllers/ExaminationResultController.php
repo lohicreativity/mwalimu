@@ -3682,7 +3682,7 @@ class ExaminationResultController extends Controller
                   //    }
                   // }
                   if($result->module_assignment_id == 531){
-                     return $result;
+                     return $postponed_status;
                   }
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
 
