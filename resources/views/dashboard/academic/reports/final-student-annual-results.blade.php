@@ -212,7 +212,7 @@
                                 <td>
                                   @if(!empty($result->supp_uploaded_at))
                                     @if($result->supp_remark) 
-                                    @if($result->supp_remark != 'PASS') FAIL @else {{ $result->supp_remark }} @endif
+                                      {{ $result->supp_remark }}
                                     @else 
                                       @if($result->final_exam_remark && !$result->supp_remark) 
                                       {{ $result->final_exam_remark }} 
