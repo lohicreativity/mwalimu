@@ -3447,9 +3447,9 @@ class ExaminationResultController extends Controller
                      $processed_result = $result;
                   }
                   if($result->module_assignment_id == 531){
-return SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
-->where('semester_id',$semester->id)
-->where('module_assignment_id',$result->module_assignment_id)
+return SpecialExam::where('study_academic_year_id',1)
+->where('semester_id',1)
+->where('module_assignment_id',531)
 ->where('student_id',$result->student_id)
 ->where('type','FINAL')
 ->where('status','APPROVED')->first(); }
