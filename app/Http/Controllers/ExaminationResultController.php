@@ -2932,9 +2932,6 @@ class ExaminationResultController extends Controller
      */
     public function update(Request $request)
     { 
-      if( User::find(Auth::user()->id) == 2){
-      return 'Under maintainance';
-    }
       try{
          $validation = Validator::make($request->all(),[
                'final_score'=>'numeric|nullable|min:0|max:100',
@@ -2950,6 +2947,9 @@ class ExaminationResultController extends Controller
          }
 
          $staff = User::find(Auth::user()->id)->staff;
+         if( $staff->id == 2){
+            return 'Under maintainance';
+          }
          $module_assignment = ModuleAssignment::with(['studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.program.ntaLevel:id,name'])->find($request->get('module_assignment_id'));
 
          // if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
