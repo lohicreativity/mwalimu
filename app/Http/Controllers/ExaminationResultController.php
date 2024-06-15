@@ -3683,9 +3683,7 @@ class ExaminationResultController extends Controller
                   // }
 
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
-if($result->module_assignment_id == 531){
-   return $result;
-}
+
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
                                  $result->final_exam_remark = 'INCOMPLETE';
@@ -3824,7 +3822,9 @@ if($result->module_assignment_id == 531){
                         $result->supp_processed_at = now();
                      }
                   }
-
+                  if($result->module_assignment_id == 531){
+                     return $result;
+                  }
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
