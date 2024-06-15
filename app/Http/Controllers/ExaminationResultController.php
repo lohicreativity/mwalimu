@@ -4242,6 +4242,9 @@ class ExaminationResultController extends Controller
       $pass_status = 'PASS'; 
       $supp_exams = $retake_exams = $carry_exams = [];
       foreach($student_results as $result){
+         if($result->module_assignmnet_id == 145){
+            return $result;
+         }
          if($result->supp_remark == 'FAIL' || ($result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'FAIL' && $result->supp_uploaded_at != null)){
             $pass_status = 'SUPP'; 
             $supp_exams[] = $result->moduleAssignment->module->code;
