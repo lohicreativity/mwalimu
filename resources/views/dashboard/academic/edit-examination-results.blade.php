@@ -102,14 +102,14 @@
 
                       <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
                     </div>
-                    @if($result->final_remark == 'FAIL' || $result->final_remark == 'PASS' || $result->final_remark == 'INCOMPLETE')
+                    @if($result->moduleAssignment->fina_upload_status == 'UPLOADED')
                       <div class="form-group col-4">
                         {!! Form::label('','Final Score') !!}
                         {!! Form::text('final_score',$result->final_score,$final_score) !!}
                       </div>
                     @endif
                     <div class="form-group col-4">
-                      @if(($result->supp_processed_at && $result->final_exam_remark == 'FAIL') || ($result->retakable_id != null && $result->carryHistory))
+                      @if(($result->supp_processed_at && $result->final_remark == 'FAIL') || ($result->retakable_id != null && $result->carryHistory))
                       {!! Form::label('','Supp score') !!}
                       {!! Form::text('supp_score',$result->supp_score,$supp_score) !!}
                       @endif

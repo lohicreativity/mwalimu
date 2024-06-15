@@ -2932,6 +2932,9 @@ class ExaminationResultController extends Controller
      */
     public function update(Request $request)
     { 
+      if( User::find(Auth::user()->id) == 2){
+      return 'Under maintainance';
+    }
       try{
          $validation = Validator::make($request->all(),[
                'final_score'=>'numeric|nullable|min:0|max:100',
