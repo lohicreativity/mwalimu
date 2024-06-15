@@ -4288,9 +4288,9 @@ class ExaminationResultController extends Controller
                }
 
                $processed_result->save();
-               if($result->module_assignment_id == 452){
-                  return $processed_result;
-               }
+               // if($result->module_assignment_id == 452){
+               //    return $processed_result;
+               // }
                $student_results[] =  $processed_result;
                
                if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
