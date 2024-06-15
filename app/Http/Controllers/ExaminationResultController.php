@@ -4047,6 +4047,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }else{
+                  return $grading_policy;
                   if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                      $result->supp_grade = 'F';
                      $result->supp_point = 0;
