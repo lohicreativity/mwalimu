@@ -4355,6 +4355,7 @@ return $student_results;
          }else{
             if($remark->supp_remark == 'PASS'){
                if($remark->remark == 'SUPP'){
+                  return 11;
                   $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
                   $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
                }elseif($remark->remark == 'POSTPONED EXAM'){
@@ -4364,7 +4365,7 @@ return $student_results;
                Student::where('id',$student->id)->update(['academic_status_id'=>1]);
             }
          }
-
+return $remark;
          foreach($gpa_classes as $gpa_class){
             if($gpa_class->min_gpa <= bcdiv($remark->gpa,1,1) && $gpa_class->max_gpa >= bcdiv($remark->gpa,1,1)){
                if($remark->gpa && $gpa_class){
