@@ -3833,11 +3833,11 @@ class ExaminationResultController extends Controller
                      $student_results_for_gpa_computation[] =  $processed_result;
                   }
 
-                  if($result->module_assignment_id == 531){
-                     return $result;
-                  }
+                  // if($result->module_assignment_id == 531){
+                  //    return $result;
+                  // }
                }
-
+return $student_results;
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
                foreach($student_results as $result){
