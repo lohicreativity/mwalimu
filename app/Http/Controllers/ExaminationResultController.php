@@ -3723,6 +3723,7 @@ class ExaminationResultController extends Controller
 
 
     public function processStudentSuppResults(Request $request){
+      return $request;
       $student = Student::where('id',$request->get('student_id'))->first();
       $semester_id = $request->get('semester_id');
       $year_of_study = $request->get('year_of_study');
