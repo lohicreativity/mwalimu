@@ -4269,7 +4269,7 @@ class ExaminationResultController extends Controller
             break;
          }
       } 
-return $pass_status;
+
       if($carry_case){
          $ac_yr_id = $ac_yr_id -1;
          
