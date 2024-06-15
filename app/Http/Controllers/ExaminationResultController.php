@@ -3888,6 +3888,7 @@ class ExaminationResultController extends Controller
          $module_assignment_buffer[$assignment->id]['category'] = $assignment->programModuleAssignment->category;
          $module_assignment_buffer[$assignment->id]['module_pass_mark'] = $assignment->programModuleAssignment->module_pass_mark;
          $module_assignment_buffer[$assignment->id]['course_work_based'] = $assignment->module->course_work_based;
+         $module_assignment_buffer[$assignment->id]['final_pass_score'] = $assignment->module->final_pass_score;
       }
 
       $grading_policy = GradingPolicy::select('grade','point','min_score','max_score')
