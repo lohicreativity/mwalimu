@@ -4064,12 +4064,8 @@ class ExaminationResultController extends Controller
    
                            }else{
                               $result->supp_grade = 'C';
-                              foreach($grading_policy as $policy){
-                                 if($policy->min_score <= round($result->supp_score) && $policy->max_score >= round($result->supp_score)){
-                                    $result->supp_point = $policy->point? $policy->point : 2;
-                                    break;
-                                 }
-                              }
+                              $result->supp_point = 2;
+
                            }
                            $result->supp_remark = 'PASS';
                            //$result->grade = $grading_policy? $grading_policy->grade : 'C';
