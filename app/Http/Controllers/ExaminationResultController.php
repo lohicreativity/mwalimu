@@ -3710,7 +3710,7 @@ class ExaminationResultController extends Controller
                               }
 
                               $result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';  
-                              if($result->module_assignment_id == 531){return $result;}
+
                               if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
                                  $no_of_failed_modules++;
                               }
@@ -3763,6 +3763,7 @@ class ExaminationResultController extends Controller
                                     $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
                                  }
                               }
+                              if($result->module_assignment_id == 531){return $result;}
                               if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
                                  $result->grade = 'F';
                                  $result->point = 0;
