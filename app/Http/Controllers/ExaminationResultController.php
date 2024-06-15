@@ -3683,7 +3683,7 @@ class ExaminationResultController extends Controller
                   // }
 
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
-
+return 12;
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
                                  $result->final_exam_remark = 'INCOMPLETE';
