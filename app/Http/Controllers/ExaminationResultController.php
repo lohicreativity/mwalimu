@@ -3459,100 +3459,102 @@ class ExaminationResultController extends Controller
                   // if($result->module_assignment_id == 531){return $result;}
                   if($postponed_status != null && $result->supp_uploaded_at != null){
                                         if($result->module_assignment_id == 531){return $result;}
-                           if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
-                              if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
+                           if($result->course_work_remark == 'INCOMPLETE'){
+
                                  $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->supp_remark = 'INCOMPLETE';
                                  $processed_result->grade = 'IC';
-                              }elseif($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
-                                 $processed_result->final_exam_remark = 'INCOMPLETE';
-                                 $processed_result->grade = 'I';
-                              }elseif($result->course_work_remark != 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
-                                 $processed_result->final_exam_remark = 'INCOMPLETE';
-                                 $processed_result->grade = 'IF';
-                              }
+
                               $processed_result->point = null;
                               $processed_result->total_score = null;
 
                            }else{
-                              if($result->module_assignment_id == 531){return 2;}
-                              $result->supp_grade = $result->supp_point = null;
-                              if($course_work_based == 1){
-                                 if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
-                                    $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                              if($result->final_score == null){
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->supp_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'IF';
+
+                                 $processed_result->point = null;
+                                 $processed_result->total_score = null;
+                              }else{
+                                 $result->supp_grade = $result->supp_point = null;
+                                 if($course_work_based == 1){
+
+                                       $processed_result->total_score = round($result->course_work_score + $result->final_score);
+
                                  }else{
-                                    $processed_result->total_score = null;
+                                    $processed_result->total_score = $result->final_score;
                                  }
-                              }else{
-                                 $processed_result->total_score = $result->final_score;
-                              }
-
-                              $processed_result->supp_remark = $final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';  
-
-                              if($result->course_work_remark == 'FAIL' || $processed_result->supp_remark == 'FAIL'){
-                                 $no_of_failed_modules++;
-                              }
-
-                              if($result->course_work_remark == 'FAIL'){
-                                 if(Util::stripSpacesUpper($ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                                    if($year_of_study == 1){
-                                       $processed_result->final_exam_remark = 'CARRY';
+   
+                                 $processed_result->supp_remark = $final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';  
+   
+                                 if($result->course_work_remark == 'FAIL' || $processed_result->supp_remark == 'FAIL'){
+                                    $no_of_failed_modules++;
+                                 }
+   
+                                 if($result->course_work_remark == 'FAIL'){
+                                    if(Util::stripSpacesUpper($ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
+                                       if($year_of_study == 1){
+                                          $processed_result->final_exam_remark = 'CARRY';
+                                       }
+                                    }else{
+                                       $processed_result->final_exam_remark = 'RETAKE';
+                                    }
+               
+                                    if($result->final_exam_remark == 'RETAKE'){
+                                       if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
+                                          $history = $retake;
+                                       }else{
+                                          $history = new RetakeHistory;
+                                       }
+            
+                                       $history->student_id = $student->id;
+                                       $history->study_academic_year_id = $ac_yr_id;
+                                       $history->module_assignment_id = $result->module_assignment_id;
+                                       $history->examination_result_id = $result->id;
+                                       $history->save();
+                        
+                                       $result->retakable_id = $history->id;
+                                       $result->retakable_type = 'retake_history';
+               
+                                    }
+               
+                                    if($result->final_exam_remark == 'CARRY'){
+                                       if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
+                                          $history = $carry;
+                                       }else{
+                                          $history = new CarryHistory;
+                                       }
+               
+                                       $history->student_id = $$student->id;
+                                       $history->study_academic_year_id = $ac_yr_id;
+                                       $history->module_assignment_id = $result->module_assignment_id;
+                                       $history->examination_result_id = $result->id;
+                                       $history->save();
+               
+                                       $result->retakable_id = $history->id;
+                                       $result->retakable_type = 'carry_history';
                                     }
                                  }else{
-                                    $processed_result->final_exam_remark = 'RETAKE';
-                                 }
-            
-                                 if($result->final_exam_remark == 'RETAKE'){
-                                    if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
-                                       $history = $retake;
-                                    }else{
-                                       $history = new RetakeHistory;
+                                    if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $processed_result->supp_remark == 'PASS'){
+                                       $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                                     }
-         
-                                    $history->student_id = $student->id;
-                                    $history->study_academic_year_id = $ac_yr_id;
-                                    $history->module_assignment_id = $result->module_assignment_id;
-                                    $history->examination_result_id = $result->id;
-                                    $history->save();
-                     
-                                    $result->retakable_id = $history->id;
-                                    $result->retakable_type = 'retake_history';
-            
                                  }
-            
-                                 if($result->final_exam_remark == 'CARRY'){
-                                    if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
-                                       $history = $carry;
-                                    }else{
-                                       $history = new CarryHistory;
-                                    }
-            
-                                    $history->student_id = $$student->id;
-                                    $history->study_academic_year_id = $ac_yr_id;
-                                    $history->module_assignment_id = $result->module_assignment_id;
-                                    $history->examination_result_id = $result->id;
-                                    $history->save();
-            
-                                    $result->retakable_id = $history->id;
-                                    $result->retakable_type = 'carry_history';
-                                 }
-                              }else{
-                                 if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $processed_result->supp_remark == 'PASS'){
-                                    $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-                                 }
-                              }
-
-                              if($processed_result->final_exam_remark == 'RETAKE' || $processed_result->final_exam_remark == 'CARRY' || $processed_result->final_exam_remark == 'FAIL'){
-                                 $processed_result->grade = 'F';
-                                 $processed_result->point = 0;
-                              }else{
-                                 foreach($grading_policy as $policy){
-                                    if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
-                                       $processed_result->grade = $policy->grade;
-                                       $processed_result->point = $policy->point;
-                                       break;
+   
+                                 if($processed_result->final_exam_remark == 'RETAKE' || $processed_result->final_exam_remark == 'CARRY' || $processed_result->final_exam_remark == 'FAIL'){
+                                    $processed_result->grade = 'F';
+                                    $processed_result->point = 0;
+                                 }else{
+                                    foreach($grading_policy as $policy){
+                                       if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
+                                          $processed_result->grade = $policy->grade;
+                                          $processed_result->point = $policy->point;
+                                          break;
+                                       }
                                     }
                                  }
                               }
+                              if($result->module_assignment_id == 531){return $processed_result;}
                            }
                            $processed_result->final_processed_by_user_id = Auth::user()->id;
                            $processed_result->final_processed_at = now();
