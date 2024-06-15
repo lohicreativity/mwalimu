@@ -4047,27 +4047,28 @@ class ExaminationResultController extends Controller
                      }
                   }
                }else{
+                  return $result;
                   if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                     $result->grade = 'F';
-                     $result->point = 0;
+                     $result->supp_grade = 'F';
+                     $result->supp_point = 0;
                      if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
                          $result->supp_remark = 'CARRY';
                      }else{
                          $result->supp_remark = 'RETAKE';
                      }
 
-                 }else{
-                     if($module_assignment->module->ntaLevel->id > 4){
-                         $result->supp_grade = 'B';
-                         $result->supp_point = 3;
+                  }else{
+                        if($module_assignment->module->ntaLevel->id > 4){
+                           $result->supp_grade = 'B';
+                           $result->supp_point = 3;
 
-                     }else{
-                         $result->supp_grade = 'C';
-                         $result->supp_point = $grading_policy? $grading_policy->point : 2;
-                     }
-                     $result->supp_remark = 'PASS';
-                     //$result->grade = $grading_policy? $grading_policy->grade : 'C';
-                 }
+                        }else{
+                           $result->supp_grade = 'C';
+                           $result->supp_point = $grading_policy? $grading_policy->point : 2;
+                        }
+                        $result->supp_remark = 'PASS';
+                        //$result->grade = $grading_policy? $grading_policy->grade : 'C';
+                  }
                   if($result->supp_remark == 'RETAKE'){
                      $no_of_failed_modules++;
                      if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
