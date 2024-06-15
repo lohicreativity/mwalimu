@@ -4090,7 +4090,7 @@ class ExaminationResultController extends Controller
          // }
       }
       DB::commit();
-
+return $student->id.'/'.$ac_yr_id.'/'.$year_of_study;
       return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$year_of_study.'/show-student-results')->with('message','Results updated successfully');
    }
 
