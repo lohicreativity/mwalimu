@@ -4047,9 +4047,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }else{
-                  if($result->module_assignment_id == 452){
-                     return $result;
-                  }
+
                   if($result->supp_score != null){
                      if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                         $result->supp_grade = 'F';
@@ -4061,6 +4059,9 @@ class ExaminationResultController extends Controller
                         }
    
                      }else{
+                        if($result->module_assignment_id == 452){
+                           return $result;
+                        }
                            if($module_assignment->module->ntaLevel->id > 4){
                               $result->supp_grade = 'B';
                               $result->supp_point = 3;
