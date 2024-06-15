@@ -3763,7 +3763,7 @@ class ExaminationResultController extends Controller
                                     $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
                                  }
                               }
-                              if($result->module_assignment_id == 531){return $result;}
+
                               if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
                                  $result->grade = 'F';
                                  $result->point = 0;
@@ -3777,10 +3777,10 @@ class ExaminationResultController extends Controller
                                  }
                               }
                            }
-                           $result->supp_processed_by_user_id = Auth::user()->id;
-                           $result->supp_processed_at = now();
+                           $result->final_processed_by_user_id = Auth::user()->id;
+                           $result->final_processed_at = now();
                         
-                     
+                           if($result->module_assignment_id == 531){return $result;}
                   }else{
                      if($result->supp_remark == 'RETAKE'){
                         $no_of_failed_modules++;
