@@ -1413,6 +1413,7 @@ class ExaminationResultController extends Controller
          $module_assignment_buffer[$assignment->id]['category'] = $assignment->programModuleAssignment->category;
          $module_assignment_buffer[$assignment->id]['module_pass_mark'] = $assignment->programModuleAssignment->module_pass_mark;
          $module_assignment_buffer[$assignment->id]['course_work_based'] = $assignment->module->course_work_based;
+         $module_assignment_buffer[$assignment->id]['final_pass_score'] = $assignment->module->final_pass_score;
       }
 
       foreach($module_assignmentIDs as $assign_id){
@@ -1547,6 +1548,7 @@ class ExaminationResultController extends Controller
                foreach($results as $result){
                   $course_work_based = $module_assignment_buffer[$result->module_assignment_id]['course_work_based'];
                   $module_pass_mark = $module_assignment_buffer[$result->module_assignment_id]['module_pass_mark'];
+                  $final_pass_score = $module_assignment_buffer[$result->module_assignment_id]['final_pass_score'];
 
                   if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                      foreach($special_exam_status as $special){
@@ -1576,7 +1578,7 @@ class ExaminationResultController extends Controller
                               }else{
                                  $result->total_score = $result->final_score;
                               }
-            
+                              $result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';  
                               if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
                                  $no_of_failed_modules++;
                               }
@@ -1625,9 +1627,8 @@ class ExaminationResultController extends Controller
                                     $result->retakable_type = 'carry_history';
                                  }
                               }else{
-                                 if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $result->supp_remark == 'PASS'){
-                                    $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
-                                 }
+                                 $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
+                                 
                               }
                               if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
                                  $result->grade = 'F';
@@ -1739,12 +1740,15 @@ class ExaminationResultController extends Controller
             $remark->study_academic_year_id = $ac_yr_id;
             $remark->student_id = $case;
             $remark->semester_id = $semester_id;
-            $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-
+            if(count($special_exam_status) > 0){
+               $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+            }else{
+               $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
+            }
 
             if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
                $remark->gpa = null;
-               if($remark->supp_remark == 'INCOMPLETE'){
+               if($remark->supp_remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE'){
                   Student::where('id',$case)->update(['academic_status_id'=>7]);
                }else{
                   if($remark->supp_remark == 'SUPP' || $remark->remark == 'SUPP'){
@@ -1758,11 +1762,11 @@ class ExaminationResultController extends Controller
                   }
                }
             }else{
-               if($remark->supp_remark == 'PASS'){
+               if($remark->supp_remark == 'PASS' || $remark->remark == 'PASS'){
                   if($remark->remark == 'SUPP'){
                      $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
                      $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
-                  }elseif($remark->remark == 'POSTPONED EXAM'){
+                  }elseif($remark->remark == 'PASS'){
                      $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,$semester_id);
                      $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,$semester_id);
                   }
@@ -1781,7 +1785,7 @@ class ExaminationResultController extends Controller
                }
             }
    
-            if($no_of_failed_modules > (count($student_results)/2) && $remark->remark != 'INCOMPLETE'){
+            if($no_of_failed_modules > (count($student_results)/2) && (count($special_exam_status) > 0 && $remark->remark != 'INCOMPLETE' || $remark->supp_remark != null && $remark->supp_remark != 'INCOMPLETE')){
                $remark->remark = 'REPEAT';
                $remark->gpa = null;
                $remark->class = null;
@@ -1789,7 +1793,7 @@ class ExaminationResultController extends Controller
    
             }
 
-            if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
+            if($remark->gpa != null && $remark->gpa < 2 && (count($special_exam_status) > 0 && $remark->remark != 'INCOMPLETE' || $remark->supp_remark != null && $remark->supp_remark != 'INCOMPLETE')){
                $remark->remark = 'FAIL&DISCO';
                $remark->gpa = null;
                $remark->class = null;
@@ -1802,7 +1806,8 @@ class ExaminationResultController extends Controller
                $remark->class = null;
             }
    
-            if($remark->remark != 'PASS' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
+            if($remark->remark != 'PASS' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && 
+               $remark->supp_remark != 'PASS' && $remark->supp_remark != 'FAIL&DISCO' && $remark->supp_remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
                if(count($carry_exams) > 0){
                   $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
                }elseif(count($retake_exams) > 0){
