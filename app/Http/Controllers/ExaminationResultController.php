@@ -3446,7 +3446,8 @@ class ExaminationResultController extends Controller
                   }else{
                      $processed_result = $result;
                   }
-return $module_assignment->studyAcademicYear->id.'/'.$semester->id.'/'.$result->module_assignment_id.'/'.$result->student_id;
+                  if($result->module_assignment_id == 531){
+return $module_assignment->studyAcademicYear->id.'/'.$semester->id.'/'.$result->module_assignment_id.'/'.$result->student_id; }
                   $postponed_status = SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
                   ->where('semester_id',$semester->id)
                   ->where('module_assignment_id',$result->module_assignment_id)
