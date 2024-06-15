@@ -3777,9 +3777,7 @@ class ExaminationResultController extends Controller
                            }
                            $result->supp_processed_by_user_id = Auth::user()->id;
                            $result->supp_processed_at = now();
-                           if($result->module_assignment_id == 531){
-                              return $result;
-                           }
+                        
                      
                   }else{
                      if($result->supp_remark == 'RETAKE'){
@@ -3824,7 +3822,9 @@ class ExaminationResultController extends Controller
                         $result->supp_processed_at = now();
                      }
                   }
-
+                  if($result->module_assignment_id == 531){
+                     return $result;
+                  }
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
