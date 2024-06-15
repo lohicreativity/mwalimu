@@ -4047,70 +4047,133 @@ class ExaminationResultController extends Controller
                      }
                   }
                }else{
-
-                  if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                     $result->supp_grade = 'F';
-                     $result->supp_point = 0;
-                     if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
-                         $result->supp_remark = 'CARRY';
-                     }else{
-                         $result->supp_remark = 'RETAKE';
-                     }
-
-                  }else{
-                        if($module_assignment->module->ntaLevel->id > 4){
-                           $result->supp_grade = 'B';
-                           $result->supp_point = 3;
-
+                  if($result->supp_score != null){
+                     if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                        $result->supp_grade = 'F';
+                        $result->supp_point = 0;
+                        if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
+                            $result->supp_remark = 'CARRY';
                         }else{
-                           $result->supp_grade = 'C';
-                           foreach($grading_policy as $policy){
-                              if($policy->min_score <= round($result->supp_score) && $policy->max_score >= round($result->supp_score)){
-                                 $result->supp_point = $policy->point? $policy->point : 2;
-                                 break;
+                            $result->supp_remark = 'RETAKE';
+                        }
+   
+                     }else{
+                           if($module_assignment->module->ntaLevel->id > 4){
+                              $result->supp_grade = 'B';
+                              $result->supp_point = 3;
+   
+                           }else{
+                              $result->supp_grade = 'C';
+                              foreach($grading_policy as $policy){
+                                 if($policy->min_score <= round($result->supp_score) && $policy->max_score >= round($result->supp_score)){
+                                    $result->supp_point = $policy->point? $policy->point : 2;
+                                    break;
+                                 }
                               }
                            }
+                           $result->supp_remark = 'PASS';
+                           //$result->grade = $grading_policy? $grading_policy->grade : 'C';
+                     }
+                     if($result->supp_remark == 'RETAKE'){
+                        $no_of_failed_modules++;
+                        if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
+                           $history = $retake;
+                        }else{
+                           $history = new RetakeHistory;
                         }
-                        $result->supp_remark = 'PASS';
-                        //$result->grade = $grading_policy? $grading_policy->grade : 'C';
-                  }
-                  if($result->supp_remark == 'RETAKE'){
-                     $no_of_failed_modules++;
-                     if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
-                        $history = $retake;
-                     }else{
-                        $history = new RetakeHistory;
+   
+                        $history->student_id = $student->id;
+                        $history->study_academic_year_id = $ac_yr_id;
+                        $history->module_assignment_id = $result->module_assignment_id;
+                        $history->examination_result_id = $result->id;
+                        $history->save();
+         
+                        $result->retakable_id = $history->id;
+                        $result->retakable_type = 'retake_history';
+   
                      }
-
-                     $history->student_id = $student->id;
-                     $history->study_academic_year_id = $ac_yr_id;
-                     $history->module_assignment_id = $result->module_assignment_id;
-                     $history->examination_result_id = $result->id;
-                     $history->save();
-      
-                     $result->retakable_id = $history->id;
-                     $result->retakable_type = 'retake_history';
-
-                  }
-
-                  if($result->supp_remark == 'CARRY'){
-                     $no_of_failed_modules++;
-                     if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
-                        $history = $carry;
-                     }else{
-                        $history = new CarryHistory;
+   
+                     if($result->supp_remark == 'CARRY'){
+                        $no_of_failed_modules++;
+                        if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
+                           $history = $carry;
+                        }else{
+                           $history = new CarryHistory;
+                        }
+   
+                        $history->student_id = $student->id;
+                        $history->study_academic_year_id = $ac_yr_id;
+                        $history->module_assignment_id = $result->module_assignment_id;
+                        $history->examination_result_id = $result->id;
+                        $history->save();
+   
+                        $result->retakable_id = $history->id;
+                        $result->retakable_type = 'carry_history';
                      }
-
-                     $history->student_id = $student->id;
-                     $history->study_academic_year_id = $ac_yr_id;
-                     $history->module_assignment_id = $result->module_assignment_id;
-                     $history->examination_result_id = $result->id;
-                     $history->save();
-
-                     $result->retakable_id = $history->id;
-                     $result->retakable_type = 'carry_history';
+                  }else{
+                     if($result->total_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                        $result->grade = 'F';
+                        $result->point = 0;
+                        if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
+                            $result->remark = 'CARRY';
+                        }else{
+                            $result->remark = 'RETAKE';
+                        }
+   
+                     }else{
+                           if($module_assignment->module->ntaLevel->id > 4){
+                              $result->grade = 'B';
+                              $result->point = 3;
+   
+                           }else{
+                              $result->grade = 'C';
+                              foreach($grading_policy as $policy){
+                                 if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
+                                    $result->point = $policy->point? $policy->point : 2;
+                                    break;
+                                 }
+                              }
+                           }
+                           $result->supp_remark = 'PASS';
+                           //$result->grade = $grading_policy? $grading_policy->grade : 'C';
+                     }
+                     if($result->remark == 'RETAKE'){
+                        $no_of_failed_modules++;
+                        if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
+                           $history = $retake;
+                        }else{
+                           $history = new RetakeHistory;
+                        }
+   
+                        $history->student_id = $student->id;
+                        $history->study_academic_year_id = $ac_yr_id;
+                        $history->module_assignment_id = $result->module_assignment_id;
+                        $history->examination_result_id = $result->id;
+                        $history->save();
+         
+                        $result->retakable_id = $history->id;
+                        $result->retakable_type = 'retake_history';
+   
+                     }
+   
+                     if($result->remark == 'CARRY'){
+                        $no_of_failed_modules++;
+                        if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
+                           $history = $carry;
+                        }else{
+                           $history = new CarryHistory;
+                        }
+   
+                        $history->student_id = $student->id;
+                        $history->study_academic_year_id = $ac_yr_id;
+                        $history->module_assignment_id = $result->module_assignment_id;
+                        $history->examination_result_id = $result->id;
+                        $history->save();
+   
+                        $result->retakable_id = $history->id;
+                        $result->retakable_type = 'carry_history';
+                     }
                   }
-
                   if($result->supp_remark != null){
                      $result->supp_processed_by_user_id = Auth::user()->id;
                      $result->supp_processed_at = now();
@@ -4242,7 +4305,7 @@ class ExaminationResultController extends Controller
       $pass_status = 'PASS'; 
       $supp_exams = $retake_exams = $carry_exams = [];
       foreach($student_results as $result){
-         if($result->module_assignmnet_id == 145){
+         if($result->module_assignmnet_id == 452){
             return $result;
          }
          if($result->supp_remark == 'FAIL' || ($result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'FAIL' && $result->supp_uploaded_at != null)){
