@@ -3905,11 +3905,9 @@ class ExaminationResultController extends Controller
                      $student_results_for_gpa_computation[] =  $processed_result;
                   }
 
-                  // if($result->module_assignment_id == 531){
-                  //    return $result;
-                  // }
+
                }
-return $student_results;
+
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
                foreach($student_results as $result){
@@ -3965,6 +3963,10 @@ return $student_results;
                         $pass_status = 'SUPP'; 
                         $supp_exams[] = $result->moduleAssignment->module->code;
                   }   
+
+                                    if($result->module_assignment_id == 531){
+                     return $result;
+                  }
                }
 
                $remark->study_academic_year_id = $ac_yr_id;
@@ -4037,7 +4039,7 @@ return $student_results;
                $remark->save();
             }
          }
-
+         return $student_results;
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
       
          DB::commit();
