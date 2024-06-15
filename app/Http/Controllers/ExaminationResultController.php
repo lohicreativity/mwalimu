@@ -4059,9 +4059,7 @@ class ExaminationResultController extends Controller
                         }
    
                      }else{
-                        if($result->module_assignment_id == 452){
-                           return $result;
-                        }
+
                            if($module_assignment->module->ntaLevel->id > 4){
                               $result->supp_grade = 'B';
                               $result->supp_point = 3;
@@ -4072,6 +4070,9 @@ class ExaminationResultController extends Controller
 
                            }
                            $result->supp_remark = 'PASS';
+                           if($result->module_assignment_id == 452){
+                              return $result;
+                           }
                            //$result->grade = $grading_policy? $grading_policy->grade : 'C';
                      }
                      if($result->supp_remark == 'RETAKE'){
