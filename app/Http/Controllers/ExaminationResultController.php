@@ -3556,7 +3556,6 @@ class ExaminationResultController extends Controller
                                     }
                                  }
                               }
-                              if($result->module_assignment_id == 531){return $processed_result;}
                            }
                            $processed_result->final_processed_by_user_id = Auth::user()->id;
                            $processed_result->final_processed_at = now();
