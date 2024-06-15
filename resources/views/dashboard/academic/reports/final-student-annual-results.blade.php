@@ -145,7 +145,7 @@
                               @endphp
                                 <tr>
                                   <td>{{ $count }}</td>
-                                  <td>@if($result->final_exam_remark != 'POSTPONED' && $result->final_exam_remark != 'INCOMPLETE')
+                                  <td>@if($result->final_exam_remark != 'POSTPONED')
                                         <a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results?year_of_study='.$year_of_study.'&exam_type='.$result->exam_type) }}">
                                           {{ $result->moduleAssignment->module->code }}
                                         </a> 
