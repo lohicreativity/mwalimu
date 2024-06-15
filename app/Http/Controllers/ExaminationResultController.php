@@ -3474,6 +3474,7 @@ class ExaminationResultController extends Controller
                               $processed_result->total_score = null;
 
                            }else{
+                              if($result->module_assignment_id == 531){return 2;}
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
                                  if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
@@ -3555,7 +3556,7 @@ class ExaminationResultController extends Controller
                            }
                            $processed_result->final_processed_by_user_id = Auth::user()->id;
                            $processed_result->final_processed_at = now();
-                           if($result->module_assignment_id == 531){return $result;}
+                        
                   }else{
                      if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                         if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
@@ -3820,9 +3821,9 @@ class ExaminationResultController extends Controller
       
          DB::commit();
 
-         if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
-            return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
-         }
+         // if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
+         //    return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
+         // }
          return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
       }catch(\Exception $e){
          return $e->getMessage();
