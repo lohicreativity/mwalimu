@@ -3683,7 +3683,6 @@ class ExaminationResultController extends Controller
                   // }
 
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
-                     if($result->module_assignment_id == 531){return 15;}
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
                                  $result->final_exam_remark = 'INCOMPLETE';
@@ -3711,7 +3710,7 @@ class ExaminationResultController extends Controller
                               }
 
                               $result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';  
-
+                              if($result->module_assignment_id == 531){return $result;}
                               if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
                                  $no_of_failed_modules++;
                               }
