@@ -3907,17 +3907,17 @@ class ExaminationResultController extends Controller
 
 
                }
-return $student_results;
+
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
-               foreach($student_results as $result){
+               foreach($student_results as $res){
                   $module_assignmentIDs[] = $module_assignment->id;
-                  if($result->final_exam_remark == 'INCOMPLETE'){
+                  if($res->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
                         break;
                   }
    
-                  if($result->final_exam_remark == 'POSTPONED'){
+                  if($res->final_exam_remark == 'POSTPONED'){
                      if(SpecialExam::where('student_id',$student->id)
                                    ->where('study_academic_year_id',$ac_yr_id)
                                    ->where('semester_id',$semester->id)
@@ -3947,25 +3947,25 @@ return $student_results;
                      }
                   }
    
-                  if($result->final_exam_remark == 'RETAKE'){
+                  if($res->final_exam_remark == 'RETAKE'){
                         $pass_status = 'RETAKE'; 
-                        $retake_exams[] = $result->moduleAssignment->module->code;
+                        $retake_exams[] = $res->moduleAssignment->module->code;
                         break;
                   }  
    
-                  if($result->final_exam_remark == 'CARRY'){
+                  if($res->final_exam_remark == 'CARRY'){
                         $pass_status = 'CARRY'; 
-                        $carry_exams[] = $result->moduleAssignment->module->code;
+                        $carry_exams[] = $res->moduleAssignment->module->code;
                         break;
                   }
    
-                  if($result->final_exam_remark == 'FAIL'){
+                  if($res->final_exam_remark == 'FAIL'){
                         $pass_status = 'SUPP'; 
-                        $supp_exams[] = $result->moduleAssignment->module->code;
+                        $supp_exams[] = $res->moduleAssignment->module->code;
                   }   
 
-                                    if($result->module_assignment_id == 531){
-                     return $result;
+                                    if($res->module_assignment_id == 531){
+                     return $res;
                   }
                }
 
