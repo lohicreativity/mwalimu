@@ -3964,9 +3964,9 @@ class ExaminationResultController extends Controller
                         $supp_exams[] = $res->moduleAssignment->module->code;
                   }   
 
-                                    if($res->module_assignment_id == 531){
-                     return $res;
-                  }
+                  //                   if($res->module_assignment_id == 531){
+                  //    return $res;
+                  // }
                }
 
                $remark->study_academic_year_id = $ac_yr_id;
@@ -4039,7 +4039,7 @@ class ExaminationResultController extends Controller
                $remark->save();
             }
          }
-         return $student_results;
+
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
       
          DB::commit();
