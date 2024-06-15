@@ -3698,7 +3698,7 @@ class ExaminationResultController extends Controller
                               $result->point = null;
                               $result->total_score = null;
 
-                           }else{
+                           }else{return 20;
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
                                  if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
