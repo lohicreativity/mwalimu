@@ -4303,9 +4303,6 @@ class ExaminationResultController extends Controller
       $pass_status = 'PASS'; 
       $supp_exams = $retake_exams = $carry_exams = [];
       foreach($student_results as $stu_result){
-         if($stu_result->module_assignment_id == 452){
-            return $stu_result->module_assignment_id ;
-         }
          if($stu_result->supp_remark == 'FAIL' || ($stu_result->final_remark == 'POSTPONED' && $stu_result->final_exam_remark == 'FAIL' && $stu_result->supp_uploaded_at != null)){
             $pass_status = 'SUPP'; 
             $supp_exams[] = $stu_result->moduleAssignment->module->code;
@@ -4341,7 +4338,7 @@ class ExaminationResultController extends Controller
          $remark->student_id = $student->id;
          $remark->semester_id = $semester_id;
          $remark->supp_remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-
+return $remark;
 
          if(($remark->supp_remark != 'PASS' && $remark->supp_remark != null) || ($remark->remark != 'PASS' && $remark->supp_remark == null)){
             $remark->gpa = null;
