@@ -4302,30 +4302,30 @@ class ExaminationResultController extends Controller
 
       $pass_status = 'PASS'; 
       $supp_exams = $retake_exams = $carry_exams = [];
-      foreach($student_results as $result){
-         if($result->module_assignmnet_id == 452){
-            return $result;
+      foreach($student_results as $stu_result){
+         if($stu_result->module_assignmnet_id == 452){
+            return $stu_result;
          }
-         if($result->supp_remark == 'FAIL' || ($result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'FAIL' && $result->supp_uploaded_at != null)){
+         if($stu_result->supp_remark == 'FAIL' || ($stu_result->final_remark == 'POSTPONED' && $stu_result->final_exam_remark == 'FAIL' && $stu_result->supp_uploaded_at != null)){
             $pass_status = 'SUPP'; 
-            $supp_exams[] = $result->moduleAssignment->module->code;
+            $supp_exams[] = $stu_result->moduleAssignment->module->code;
          }
 
-         if($result->supp_remark == 'RETAKE' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'RETAKE' && $result->supp_uploaded_at != null){
+         if($stu_result->supp_remark == 'RETAKE' || $stu_result->final_remark == 'POSTPONED' && $stu_result->final_exam_remark == 'RETAKE' && $stu_result->supp_uploaded_at != null){
             $pass_status = 'RETAKE'; 
-            $retake_exams[] = $result->moduleAssignment->module->code;
+            $retake_exams[] = $stu_result->moduleAssignment->module->code;
          }  
 
-         if($result->supp_remark == 'CARRY' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'CARRY' && $result->supp_uploaded_at != null){
+         if($stu_result->supp_remark == 'CARRY' || $stu_result->final_remark == 'POSTPONED' && $stu_result->final_exam_remark == 'CARRY' && $stu_result->supp_uploaded_at != null){
             $pass_status = 'CARRY'; 
-            $carry_exams[] = $result->moduleAssignment->module->code;
+            $carry_exams[] = $stu_result->moduleAssignment->module->code;
          }
          
-         if($result->supp_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'POSTPONED' && $result->supp_uploaded_at != null){
+         if($stu_result->supp_remark == 'POSTPONED' || $stu_result->final_remark == 'POSTPONED' && $stu_result->final_exam_remark == 'POSTPONED' && $stu_result->supp_uploaded_at != null){
             $pass_status = 'POSTPONED EXAM';
          }
 
-         if($result->supp_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED' && $result->final_exam_remark == 'INCOMPLETE' && $result->supp_uploaded_at != null){
+         if($stu_result->supp_remark == 'INCOMPLETE' || $stu_result->final_remark == 'POSTPONED' && $stu_result->final_exam_remark == 'INCOMPLETE' && $stu_result->supp_uploaded_at != null){
             $pass_status = 'INCOMPLETE';
             break;
          }
