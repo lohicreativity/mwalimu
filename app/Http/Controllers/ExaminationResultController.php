@@ -3709,7 +3709,9 @@ class ExaminationResultController extends Controller
                               }else{
                                  $result->total_score = $result->final_score;
                               }
-            
+
+                              $result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';  
+
                               if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
                                  $no_of_failed_modules++;
                               }
