@@ -3834,7 +3834,7 @@ class ExaminationResultController extends Controller
                   }
 
                   if($result->module_assignment_id == 531){
-                     return $processed_result;
+                     return $result;
                   }
                }
 
