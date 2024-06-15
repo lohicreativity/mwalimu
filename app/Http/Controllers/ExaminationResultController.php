@@ -3684,7 +3684,7 @@ class ExaminationResultController extends Controller
 
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
 
-                           if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
+                           if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){if($result->module_assignment_id == 531){return 15;}
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
                                  $result->final_exam_remark = 'INCOMPLETE';
                                  $result->grade = 'IC';
@@ -3698,7 +3698,7 @@ class ExaminationResultController extends Controller
                               $result->point = null;
                               $result->total_score = null;
 
-                           }else{if($result->module_assignment_id == 531){return 15;}
+                           }else{
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
                                  if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
