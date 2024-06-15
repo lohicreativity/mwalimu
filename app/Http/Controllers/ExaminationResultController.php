@@ -3760,7 +3760,6 @@ class ExaminationResultController extends Controller
 
       $previous_module_assignment = $carry_module_assignmentIDs = [];                              
       if($carry_case){
-         return 1;
          $previous_module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$semester_id,$ac_yr_id){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                        ->where('year_of_study',1)
                                                                                                                                        ->where('semester_id',$semester_id)
@@ -4001,7 +4000,7 @@ class ExaminationResultController extends Controller
          }
       } 
 
-      if(!empty($carry_case)){
+      if($carry_case){
          $ac_yr_id = $ac_yr_id -1;
          
       }
@@ -4091,7 +4090,7 @@ class ExaminationResultController extends Controller
          // }
       }
       DB::commit();
-return $student->id.'/'.$ac_yr_id.'/'.$year_of_study;
+
       return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$year_of_study.'/show-student-results')->with('message','Results updated successfully');
    }
 
