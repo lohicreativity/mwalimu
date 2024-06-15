@@ -196,13 +196,13 @@
                                 </td>
                                 <td>
                                   @if(!empty($result->supp_uploaded_at))
-                                  @if($result->supp_grade) 
-                                    {{ $result->supp_grade }}*
-                                  @else 
-                                    @if($result->grade && !$result->supp_grade) 
-                                    {{ $result->grade }} 
-                                    @else - @endif
-                                  @endif
+                                    @if($result->supp_grade) 
+                                      {{ $result->supp_grade }}*
+                                    @else 
+                                      @if($result->grade && !$result->supp_grade) 
+                                      {{ $result->grade }}* 
+                                      @else - @endif
+                                    @endif
                                 @else
                                   @if($result->grade) 
                                   {{ $result->grade }} 
@@ -302,14 +302,14 @@
                                       {{ $result->supp_grade }}*
                                     @else 
                                       @if($result->grade && !$result->supp_grade) 
-                                      {{ $result->grade }} 
+                                      {{ $result->grade }}* 
                                       @else - @endif
                                     @endif
-                                  @else
-                                    @if($result->grade) 
-                                    {{ $result->grade }} 
-                                    @else - @endif
-                                  @endif
+                                @else
+                                  @if($result->grade) 
+                                  {{ $result->grade }} 
+                                  @else - @endif
+                                @endif
                                   <td>
                                     @if(!empty($result->supp_uploaded_at))
                                       @if($result->supp_remark)
