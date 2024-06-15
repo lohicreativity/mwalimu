@@ -365,7 +365,7 @@
                </div>
                  <br>
                  <div class="col-6">
-                 <p class="ss-bold">Summary: {{ $semester->name }}</p>
+                 <p class="ss-bold">Summarydd: {{ $semester->name }}</p>
                  <table class="table table-bordered">
                    <thead>
                       <tr>
