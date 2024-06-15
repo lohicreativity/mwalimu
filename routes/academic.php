@@ -255,6 +255,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('results', [ExaminationResultController::class,'showProcess']);
 	Route::post('results/process',[ExaminationResultController::class,'process']);
 	Route::get('results/process-supp-results',[ExaminationResultController::class,'processSuppResults']);
+	Route::get('results/process-student-supp-results',[ExaminationResultController::class,'processStudentSuppResults']);
 	Route::get('results/uploaded-modules',[ExaminationResultController::class,'showUploadedModules']);
 	Route::get('results/uploaded-modules/{id}/students',[ExaminationResultController::class,'showUploadedModuleStudents']);
 	Route::get('results/show-program-results',[ExaminationResultController::class,'showProgramResults']);
