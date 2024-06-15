@@ -3447,7 +3447,7 @@ class ExaminationResultController extends Controller
                      $processed_result = $result;
                   }
 
-                  $postponed_status = SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
+                  return SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
                   ->where('semester_id',$semester->id)
                   ->where('module_assignment_id',$result->module_assignment_id)
                   ->where('student_id',$result->student_id)
