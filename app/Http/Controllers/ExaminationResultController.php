@@ -4337,7 +4337,7 @@ class ExaminationResultController extends Controller
          $ac_yr_id = $ac_yr_id -1;
          
       }
-return $pass_status;
+
       if(!empty($remark)){
          $remark->study_academic_year_id = $ac_yr_id;
          $remark->student_id = $student->id;
