@@ -3447,13 +3447,16 @@ class ExaminationResultController extends Controller
                      $processed_result = $result;
                   }
 
-                  return SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
+                  $postponed_status = SpecialExam::where('study_academic_year_id',$module_assignment->studyAcademicYear->id)
                   ->where('semester_id',$semester->id)
-                  ->where('module_assignment_id',531)
+                  ->where('module_assignment_id',$result->module_assignment_id)
                   ->where('student_id',$result->student_id)
                   ->where('type','FINAL')
                   ->where('status','APPROVED')->first();
 
+                  if($result->module_assignment_id == 531){
+                     return $postponed_status;
+                  }
                   if($postponed_status != null && $result->supp_remark != null){
                      if($result->module_assignment_id == 531){ return 112;}
                      if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
