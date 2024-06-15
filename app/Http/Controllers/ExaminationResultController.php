@@ -3460,26 +3460,29 @@ class ExaminationResultController extends Controller
                   if($postponed_status != null && $result->supp_uploaded_at != null){
                            if($result->course_work_remark == 'INCOMPLETE'){
 
-                                 $processed_result->final_exam_remark = 'INCOMPLETE';
-                                 $processed_result->supp_remark = 'INCOMPLETE';
-                                 $processed_result->grade = 'IC';
+                              $processed_result->final_exam_remark = 'INCOMPLETE';
+                              $processed_result->supp_remark = 'INCOMPLETE';
+                              $processed_result->grade = 'IC';
 
                               $processed_result->point = null;
                               $processed_result->total_score = null;
 
                            }else{
+
                               if($result->final_score == null){
+
                                  $processed_result->final_exam_remark = 'INCOMPLETE';
                                  $processed_result->supp_remark = 'INCOMPLETE';
                                  $processed_result->grade = 'IF';
 
                                  $processed_result->point = null;
                                  $processed_result->total_score = null;
+
                               }else{
                                  $result->supp_grade = $result->supp_point = null;
                                  if($course_work_based == 1){
 
-                                       $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                                    $processed_result->total_score = round($result->course_work_score + $result->final_score);
 
                                  }else{
                                     $processed_result->total_score = $result->final_score;
@@ -3535,9 +3538,9 @@ class ExaminationResultController extends Controller
                                        $result->retakable_type = 'carry_history';
                                     }
                                  }else{
-                                    if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $processed_result->supp_remark == 'PASS'){
-                                       $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-                                    }
+
+                                    $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+
                                  }
    
                                  if($processed_result->final_exam_remark == 'RETAKE' || $processed_result->final_exam_remark == 'CARRY' || $processed_result->final_exam_remark == 'FAIL'){
