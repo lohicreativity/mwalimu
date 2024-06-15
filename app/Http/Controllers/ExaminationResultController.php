@@ -3646,7 +3646,7 @@ class ExaminationResultController extends Controller
                }else{
                   $remark->remark = $pass_status;
                }
-   
+               $remark->supp_remark = null;
                if($remark->remark != 'PASS'){
                   $remark->gpa = null;
                   if($remark->remark == 'SUPP'){
