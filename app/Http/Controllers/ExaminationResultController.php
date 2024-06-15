@@ -3581,8 +3581,9 @@ class ExaminationResultController extends Controller
                }
 
                $pass_status = 'PASS'; 
-               $supp_exams = $retake_exams = $carry_exams = [];
+               $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
                foreach($student_results as $result){
+                  $module_assignmentIDs[] = $module_assignment->id;
                   if($result->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
                         break;
@@ -3730,7 +3731,11 @@ class ExaminationResultController extends Controller
          }
 
          DB::commit();
-         
+
+         if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
+            return 1111;
+            return redirect()->to('academic/results/process-supp-results?semester_id=1&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id); 
+         }
          return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
       }catch(\Exception $e){
          return $e->getMessage();
