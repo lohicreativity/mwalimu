@@ -4047,7 +4047,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }else{
-                  return $grading_policy;
+
                   if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                      $result->supp_grade = 'F';
                      $result->supp_point = 0;
@@ -4064,7 +4064,12 @@ class ExaminationResultController extends Controller
 
                         }else{
                            $result->supp_grade = 'C';
-                           $result->supp_point = $grading_policy? $grading_policy->point : 2;
+                           foreach($grading_policy as $policy){
+                              if($policy->min_score <= round($result->supp_score) && $policy->max_score >= round($result->supp_score)){
+                                 $result->supp_point = $policy->point? $policy->point : 2;
+                                 break;
+                              }
+                           }
                         }
                         $result->supp_remark = 'PASS';
                         //$result->grade = $grading_policy? $grading_policy->grade : 'C';
