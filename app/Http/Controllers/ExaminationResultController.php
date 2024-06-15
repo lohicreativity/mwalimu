@@ -4058,12 +4058,12 @@ class ExaminationResultController extends Controller
 
                  }else{
                      if($module_assignment->module->ntaLevel->id > 4){
-                         $result->grade = 'B';
-                         $result->point = 3;
+                         $result->supp_grade = 'B';
+                         $result->supp_point = 3;
 
                      }else{
-                         $result->grade = 'C';
-                         $result->point = $grading_policy? $grading_policy->point : 2;
+                         $result->supp_grade = 'C';
+                         $result->supp_point = $grading_policy? $grading_policy->point : 2;
                      }
                      $result->supp_remark = 'PASS';
                      //$result->grade = $grading_policy? $grading_policy->grade : 'C';
