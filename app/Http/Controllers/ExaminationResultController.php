@@ -3967,7 +3967,7 @@ if($result->module_assignment_id == 531){
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
       
          DB::commit();
-return 1;
+return 11;
          if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
             return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
          }
