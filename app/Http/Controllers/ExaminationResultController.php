@@ -4355,7 +4355,6 @@ class ExaminationResultController extends Controller
          }else{
             if($remark->supp_remark == 'PASS'){
                if($remark->remark == 'SUPP'){
-                  return 11;
                   $remark->gpa = Util::computeGPA($remark->credit,$student_results_for_gpa_computation,0);
                   $remark->point = Util::computeGPAPoints($remark->credit, $student_results_for_gpa_computation,0);
                }elseif($remark->remark == 'POSTPONED EXAM'){
