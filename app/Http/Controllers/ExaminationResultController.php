@@ -4114,9 +4114,9 @@ class ExaminationResultController extends Controller
                         $processed_result->grade = 'F';
                         $processed_result->point = 0;
                         if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
-                            $processed_result->remark = 'CARRY';
+                            $processed_result->final_remark = 'CARRY';
                         }else{
-                            $processed_result->remark = 'RETAKE';
+                            $processed_result->final_remark = 'RETAKE';
                         }
    
                      }else{
@@ -4129,10 +4129,10 @@ class ExaminationResultController extends Controller
                            }
                         }
 
-                        $processed_result->remark = 'PASS';
+                        $processed_result->final_remark = 'PASS';
 
                      }
-                     if($processed_result->remark == 'RETAKE'){
+                     if($processed_result->final_remark == 'RETAKE'){
                         $no_of_failed_modules++;
                         if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
                            $history = $retake;
@@ -4151,7 +4151,7 @@ class ExaminationResultController extends Controller
    
                      }
    
-                     if($processed_result->remark == 'CARRY'){
+                     if($processed_result->final_remark == 'CARRY'){
                         $no_of_failed_modules++;
                         if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
                            $history = $carry;
