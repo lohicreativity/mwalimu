@@ -3747,7 +3747,7 @@ class ExaminationResultController extends Controller
          $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
       }
 
-      return ExaminationResult::select('student_id','module_assignment_id')->whereHas('moduleAssignment.programModuleAssignment',function($query) use($student,$semester_id,$ac_yr_id){$query->where('campus_program_id',$student->campus_program_id)
+      $carry_case = ExaminationResult::select('student_id','module_assignment_id')->whereHas('moduleAssignment.programModuleAssignment',function($query) use($student,$semester_id,$ac_yr_id){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                                          ->where('year_of_study',1)
                                                                                                                                                          ->where('semester_id',$semester_id)
                                                                                                                                                          ->where('study_academic_year_id',$ac_yr_id-1);})
@@ -3756,10 +3756,11 @@ class ExaminationResultController extends Controller
                                                                                                                         ->where('study_academic_year_id',$ac_yr_id);})
                                        ->whereNotNull('retakable_type')
                                        ->distinct()
-                                       ->get();
+                                       ->first();
 
       $previous_module_assignment = $carry_module_assignmentIDs = [];                              
       if($carry_case){
+         return 1;
          $previous_module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$semester_id,$ac_yr_id){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                        ->where('year_of_study',1)
                                                                                                                                        ->where('semester_id',$semester_id)
