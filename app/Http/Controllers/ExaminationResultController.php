@@ -3681,47 +3681,47 @@ class ExaminationResultController extends Controller
                   //       }
                   //    }
                   // }
-
+                  //if($result->module_assignment_id == 531){return $result;}
                   if($postponed_status != null && $result->final_remark == 'POSTPONED'){
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
-                                 $result->final_exam_remark = 'INCOMPLETE';
-                                 $result->grade = 'IC';
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'IC';
                               }elseif($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
-                                 $result->final_exam_remark = 'INCOMPLETE';
-                                 $result->grade = 'I';
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'I';
                               }elseif($result->course_work_remark != 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
-                                 $result->final_exam_remark = 'INCOMPLETE';
-                                 $result->grade = 'IF';
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'IF';
                               }
-                              $result->point = null;
-                              $result->total_score = null;
+                              $processed_result->point = null;
+                              $processed_result->total_score = null;
 
                            }else{
                               $result->supp_grade = $result->supp_point = null;
                               if($course_work_based == 1){
                                  if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
-                                    $result->total_score = round($result->course_work_score + $result->final_score);
+                                    $processed_result->total_score = round($result->course_work_score + $result->final_score);
                                  }else{
-                                    $result->total_score = null;
+                                    $processed_result->total_score = null;
                                  }
                               }else{
-                                 $result->total_score = $result->final_score;
+                                 $processed_result->total_score = $result->final_score;
                               }
 
-                              $result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';  
+                              $processed_result->supp_remark = $final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';  
 
-                              if($result->course_work_remark == 'FAIL' || $result->supp_remark == 'FAIL'){
+                              if($result->course_work_remark == 'FAIL' || $processed_result->supp_remark == 'FAIL'){
                                  $no_of_failed_modules++;
                               }
 
                               if($result->course_work_remark == 'FAIL'){
                                  if(Util::stripSpacesUpper($ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                     if($year_of_study == 1){
-                                       $result->final_exam_remark = 'CARRY';
+                                       $processed_result->final_exam_remark = 'CARRY';
                                     }
                                  }else{
-                                    $result->final_exam_remark = 'RETAKE';
+                                    $processed_result->final_exam_remark = 'RETAKE';
                                  }
             
                                  if($result->final_exam_remark == 'RETAKE'){
@@ -3759,28 +3759,27 @@ class ExaminationResultController extends Controller
                                     $result->retakable_type = 'carry_history';
                                  }
                               }else{
-                                 if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $result->supp_remark == 'PASS'){
-                                    $result->final_exam_remark = $module_pass_mark <= $result->total_score? 'PASS' : 'FAIL';
+                                 if(($result->course_work_remark == 'PASS' || $result->course_work_remark == 'N/A') && $processed_result->supp_remark == 'PASS'){
+                                    $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                                  }
                               }
 
-                              if($result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY' || $result->final_exam_remark == 'FAIL'){
-                                 $result->grade = 'F';
-                                 $result->point = 0;
+                              if($processed_result->final_exam_remark == 'RETAKE' || $processed_result->final_exam_remark == 'CARRY' || $processed_result->final_exam_remark == 'FAIL'){
+                                 $processed_result->grade = 'F';
+                                 $processed_result->point = 0;
                               }else{
                                  foreach($grading_policy as $policy){
-                                    if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
-                                       $result->grade = $policy->grade;
-                                       $result->point = $policy->point;
+                                    if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
+                                       $processed_result->grade = $policy->grade;
+                                       $processed_result->point = $policy->point;
                                        break;
                                     }
                                  }
                               }
                            }
-                           $result->final_processed_by_user_id = Auth::user()->id;
-                           $result->final_processed_at = now();
+                           $processed_result->final_processed_by_user_id = Auth::user()->id;
+                           $processed_result->final_processed_at = now();
                         
-                           if($result->module_assignment_id == 531){return $result;}
                   }else{
                      if($result->supp_remark == 'RETAKE'){
                         $no_of_failed_modules++;
