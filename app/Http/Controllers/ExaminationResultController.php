@@ -4070,10 +4070,6 @@ class ExaminationResultController extends Controller
 
                            }
                            $result->supp_remark = 'PASS';
-                           if($result->module_assignment_id == 452){
-                              return $result;
-                           }
-                           //$result->grade = $grading_policy? $grading_policy->grade : 'C';
                      }
                      if($result->supp_remark == 'RETAKE'){
                         $no_of_failed_modules++;
@@ -4112,6 +4108,9 @@ class ExaminationResultController extends Controller
                         $result->retakable_type = 'carry_history';
                      }
                   }else{
+                     if($result->module_assignment_id == 452){
+                        return $result;
+                     }
                      if($result->total_score < $module_assignment->programModuleAssignment->module_pass_mark){
                         $result->grade = 'F';
                         $result->point = 0;
