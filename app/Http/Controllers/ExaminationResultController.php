@@ -4108,9 +4108,7 @@ class ExaminationResultController extends Controller
                         $result->retakable_type = 'carry_history';
                      }
                   }else{
-                     if($result->module_assignment_id == 452){
-                        return $result;
-                     }
+
                      if($result->total_score < $module_assignment->programModuleAssignment->module_pass_mark){
                         $result->grade = 'F';
                         $result->point = 0;
@@ -4289,6 +4287,9 @@ class ExaminationResultController extends Controller
                }
 
                $result->save();
+               if($result->module_assignment_id == 452){
+                  return $result;
+               }
                $student_results[] =  $result;
                
                if($module_assignment_buffer[$result->module_assignment_id]['category'] != 'OTHER'){
