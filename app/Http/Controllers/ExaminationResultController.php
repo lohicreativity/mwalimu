@@ -3641,10 +3641,8 @@ class ExaminationResultController extends Controller
                $remark->semester_id = $semester->id;
 
                if(empty($pass_status) || $missing_case){
-                  return 1;
                   $remark->remark = 'INCOMPLETE';
                }else{
-                  return $pass_status;
                   $remark->remark = $pass_status;
                }
    
