@@ -3094,7 +3094,9 @@ class ExaminationResultController extends Controller
             if($request->has('final_score')){
                $result->course_work_score = $request->get('course_work_score');
                $result->final_score = $request->get('final_score');
-      
+               $result->supp_grade = null;
+               $result->final_exam_remark = null;
+               $result->supp_grade = null;
             }
 
             if($request->get('appeal_score')){
