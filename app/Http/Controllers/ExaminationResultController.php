@@ -3858,6 +3858,7 @@ class ExaminationResultController extends Controller
          $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
          $module_assignment_buffer[$module_assignment->id]['module_pass_mark'] = $module_assignment->programModuleAssignment->module_pass_mark;
          $module_assignment_buffer[$module_assignment->id]['course_work_based'] = $module_assignment->module->course_work_based;
+         $module_assignment_buffer[$module_assignment->id]['final_pass_score'] = $module_assignment->module->final_pass_score;
       }
 
       $carry_case = ExaminationResult::select('student_id','module_assignment_id')->whereHas('moduleAssignment.programModuleAssignment',function($query) use($student,$semester_id,$ac_yr_id){$query->where('campus_program_id',$student->campus_program_id)
