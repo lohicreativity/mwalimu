@@ -3029,7 +3029,9 @@ class ExaminationResultController extends Controller
             $result->course_work_score = $request->get('course_work_score');
             $score_before = $result->supp_processed_at != null && $result->final_exam_remark == 'FAIL'? $result->supp_score : $result->final_score;
             $result->final_score = $request->get('final_score');
-
+            if($result->supp_remark != null){
+               $result->supp_uploaded_at = now();
+            }
             if($request->get('appeal_score')){
                $result->appeal_score = $request->get('appeal_score');
             }
@@ -3682,7 +3684,7 @@ class ExaminationResultController extends Controller
                   //    }
                   // }
                   //if($result->module_assignment_id == 531){return $result;}
-                  if($postponed_status != null && $result->final_remark == 'POSTPONED'){
+                  if($postponed_status != null && $result->supp_uploaded_at != null){
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
                                  $processed_result->final_exam_remark = 'INCOMPLETE';
