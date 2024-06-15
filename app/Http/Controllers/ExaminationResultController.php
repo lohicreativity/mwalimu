@@ -4121,21 +4121,17 @@ class ExaminationResultController extends Controller
                         }
    
                      }else{
-                           if($module_assignment->module->ntaLevel->id > 4){
-                              $result->grade = 'B';
-                              $result->point = 3;
-   
-                           }else{
-                              $result->grade = 'C';
-                              foreach($grading_policy as $policy){
-                                 if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
-                                    $result->point = $policy->point? $policy->point : 2;
-                                    break;
-                                 }
-                              }
+
+                        foreach($grading_policy as $policy){
+                           if($policy->min_score <= round($result->total_score) && $policy->max_score >= round($result->total_score)){
+                              $result->point = $policy->point;
+                              $result->grade = $policy->grade;
+                              break;
                            }
-                           $result->supp_remark = 'PASS';
-                           //$result->grade = $grading_policy? $grading_policy->grade : 'C';
+                        }
+
+                        $result->supp_remark = 'PASS';
+
                      }
                      if($result->remark == 'RETAKE'){
                         $no_of_failed_modules++;
