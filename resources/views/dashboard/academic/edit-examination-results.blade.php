@@ -105,7 +105,7 @@
                     @if($result->moduleAssignment->final_upload_status == 'UPLOADED')
                       <div class="form-group col-4">
                         {!! Form::label('','Final Score') !!}
-                        {!! Form::text('final_score',$result->final_score,$final_score) !!}
+                        {!! Form::text('final_score',$result->final_score,$result->supp_processed_at) !!}
                       </div>
                     @endif
                     <div class="form-group col-4">
