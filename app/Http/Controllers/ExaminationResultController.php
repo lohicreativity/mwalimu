@@ -3456,7 +3456,7 @@ class ExaminationResultController extends Controller
                   ->where('type','FINAL')
                   ->where('status','APPROVED')->first();
 
-                  if($result->module_assignment_id == 531){return $postponed_status;}
+                  if($result->module_assignment_id == 531){return $result;}
                   if($postponed_status != null && $result->supp_uploaded_at != null){
                            if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
                               if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
