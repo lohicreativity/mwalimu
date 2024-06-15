@@ -3824,7 +3824,7 @@ class ExaminationResultController extends Controller
                $remark->save();
             }
          }elseif($request->get('process_type') == 'SUPP'){
-            return 'Have';
+            return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$yr_of_study.'&ac_yr_id='.$ac_yr_id); 
          }
 
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
