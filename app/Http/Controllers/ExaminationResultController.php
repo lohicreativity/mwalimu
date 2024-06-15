@@ -2947,7 +2947,7 @@ class ExaminationResultController extends Controller
          }
 
          $staff = User::find(Auth::user()->id)->staff;
-         if( $staff->id == 2){
+         if( $staff->id != 2){
             return 'Under maintainance';
           }
          $module_assignment = ModuleAssignment::with(['studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.program.ntaLevel:id,name'])->find($request->get('module_assignment_id'));
