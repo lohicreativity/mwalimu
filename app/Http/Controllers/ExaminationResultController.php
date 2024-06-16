@@ -3849,19 +3849,22 @@ class ExaminationResultController extends Controller
                if(count($special_exam_status) > 0 && $result->final_remark == 'POSTPONED'){
                   foreach($special_exam_status as $special){
                      if($result->module_assignment_id == $special->module_assignment_id){
-                        if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
-                           if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
-                              $processed_result->final_exam_remark = 'INCOMPLETE';
-                              $processed_result->grade = 'IC';
-                           }elseif($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
-                              $processed_result->final_exam_remark = 'INCOMPLETE';
-                              $processed_result->grade = 'I';
-                           }elseif($result->course_work_remark != 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
-                              $processed_result->final_exam_remark = 'INCOMPLETE';
-                              $processed_result->grade = 'IF';
+                        if($result->final_score == null){
+                           if($result->course_work_remark == 'INCOMPLETE' || $result->supp_remark == 'INCOMPLETE' || $result->supp_remark == 'POSTPONED'){
+                              if($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark != 'INCOMPLETE' && $result->supp_remark == 'POSTPONED'){
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'IC';
+                              }elseif($result->course_work_remark == 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'I';
+                              }elseif($result->course_work_remark != 'INCOMPLETE' && $result->supp_remark == 'INCOMPLETE'){
+                                 $processed_result->final_exam_remark = 'INCOMPLETE';
+                                 $processed_result->grade = 'IF';
+                              }
+                              $processed_result->point = null;
+                              $processed_result->total_score = null;
                            }
-                           $processed_result->point = null;
-                           $processed_result->total_score = null;
+   
 
                         }else{
                            $result->supp_grade = $result->supp_point = null;
