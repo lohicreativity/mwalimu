@@ -4191,9 +4191,6 @@ class ExaminationResultController extends Controller
                   //    }
                   // }
                }
-               if($result->module_assignment_id == 531){
-                  return $processed_result->total_score;
-               }
                $processed_result->save();
                // if($result->module_assignment_id == 452){
                //    return $processed_result;
