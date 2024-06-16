@@ -3061,9 +3061,15 @@ class ExaminationResultController extends Controller
             if($request->get('exam_type') != 'SUPP'){
                if($special_exam && is_null($request->get('final_score'))){
                   $result->final_remark = 'POSTPONED';
+                  $result->final_score = null;
                   if($result->supp_processed_at != null){
                      $result->final_exam_remark = 'INCOMPLETE';
                      $result->supp_remark = 'INCOMPLETE';
+                     $result->grade = 'IF';
+                  }else{
+                     $result->final_exam_remark = null;
+                     $result->supp_remark = null;
+                     $result->grade = null;
                   }
                }elseif(!$special_exam){
                   if(is_null($request->get('final_score'))){
