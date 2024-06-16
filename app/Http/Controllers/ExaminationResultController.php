@@ -2179,7 +2179,7 @@ class ExaminationResultController extends Controller
          }else{
             $processed_result = ExaminationResult::find($result->id);
          }
-return $processed_result;
+return 11;
          if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
             $processed_result->total_score = null;
          }else{
