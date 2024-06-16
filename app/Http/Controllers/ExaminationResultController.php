@@ -3742,12 +3742,10 @@ class ExaminationResultController extends Controller
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
       
          DB::commit();
-
-            return $student_results;
          
-         if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
-            return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
-         }
+         // if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
+         //    return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
+         // }
          return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
       }catch(\Exception $e){
          return $e->getMessage();
