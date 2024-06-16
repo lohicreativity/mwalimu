@@ -3496,7 +3496,8 @@ class ExaminationResultController extends Controller
                         }
 
                      }else{
-                        $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
+                        $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
+                        $processed_result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                         
                         $processed_result->grade = $processed_result->point = null;
                         if($course_work_based == 1){
@@ -3526,8 +3527,7 @@ class ExaminationResultController extends Controller
                         }
       
                         if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
-                           $processed_result->grade = 'F';
-                           $processed_result->point = 0;
+                           $processed_result->final_exam_remark = 'FAIL';
                            $no_of_failed_modules++;
                         }
       
