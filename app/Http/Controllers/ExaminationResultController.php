@@ -3472,7 +3472,7 @@ class ExaminationResultController extends Controller
 
                   // if($result->module_assignment_id == 531){return $result;}
 
-                     if($result->final_score == null){
+                     if($result->final_score == null && $result->supp_processed_at == null){
                         if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                            if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
                               $processed_result->grade = 'IC';
