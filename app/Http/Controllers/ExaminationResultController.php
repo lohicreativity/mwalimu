@@ -1960,7 +1960,7 @@ class ExaminationResultController extends Controller
 
 
     public function updateStudentResults(Request $request, $module_id, $student_id, $ac_yr_id, $yr_of_study, $process_type = null)
-    {return 12;
+    {
       try{
          $student = Student::findOrFail($student_id);
          $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
@@ -2179,7 +2179,7 @@ class ExaminationResultController extends Controller
          }else{
             $processed_result = ExaminationResult::find($result->id);
          }
-return $processed_result;
+
          if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
             $processed_result->total_score = null;
          }else{
@@ -3436,7 +3436,7 @@ return $processed_result;
                      }
                   }
                }
-
+return $results;
                $student_results = $student_results_for_gpa_computation = [];
 
                foreach($results as $result){
