@@ -3596,9 +3596,7 @@ class ExaminationResultController extends Controller
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
-                  if($result->module_assignment_id == 531){
-                     return $processed_result->supp_remark;
-                  }
+
                   $student_results[] =  $processed_result;
                      
                   if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
@@ -3737,6 +3735,7 @@ class ExaminationResultController extends Controller
                $remark->save();
             }
          }elseif($request->get('process_type') == 'SUPP'){
+            DB::commit();
             return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$yr_of_study.'&ac_yr_id='.$ac_yr_id); 
          }
 
@@ -3744,6 +3743,8 @@ class ExaminationResultController extends Controller
       
          DB::commit();
 
+            return $student_results;
+         
          if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
             return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
          }
