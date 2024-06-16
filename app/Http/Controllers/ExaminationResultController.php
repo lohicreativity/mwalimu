@@ -3578,17 +3578,17 @@ class ExaminationResultController extends Controller
                               $processed_result->retakable_type = 'carry_history';
                            }
                         }else{
-                           if(($processed_result->course_work_remark == 'PASS' || $processed_result->course_work_remark == 'N/A') && $processed_result->final_remark == 'PASS'){
+
                               $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-                           }else{
-                              if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE'){
-                                 $processed_result->final_exam_remark = 'INCOMPLETE';
-                              }elseif($processed_result->course_work_remark == 'POSTPONED' || $processed_result->final_remark == 'POSTPONED'){
-                                 $processed_result->final_exam_remark = 'POSTPONED';
-                              }else{
-                                 $processed_result->final_exam_remark = 'FAIL';
-                              }
-                           }
+
+                              // if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE'){
+                              //    $processed_result->final_exam_remark = 'INCOMPLETE';
+                              // }elseif($processed_result->course_work_remark == 'POSTPONED' || $processed_result->final_remark == 'POSTPONED'){
+                              //    $processed_result->final_exam_remark = 'POSTPONED';
+                              // }else{
+                              //    $processed_result->final_exam_remark = 'FAIL';
+                              // }
+                           
                         }
                      }
                   
@@ -3742,8 +3742,6 @@ class ExaminationResultController extends Controller
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
       
          DB::commit();
-
-            return $student_results;
          
          if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
             return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
