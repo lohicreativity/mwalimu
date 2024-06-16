@@ -4200,7 +4200,6 @@ class ExaminationResultController extends Controller
          }
       }
 
-      return $student_results;
 
       $pass_status = 'PASS'; 
       $supp_exams = $retake_exams = $carry_exams = [];
