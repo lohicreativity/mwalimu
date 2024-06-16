@@ -3501,6 +3501,7 @@ class ExaminationResultController extends Controller
                         }else{
                            $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                         }  
+
                         $processed_result->grade = $processed_result->point = null;
                         if($course_work_based == 1){
                            $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
@@ -3595,7 +3596,9 @@ class ExaminationResultController extends Controller
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
-
+                  if($result->module_assignment_id == 531){
+                     return $processed_result->supp_remark;
+                  }
                   $student_results[] =  $processed_result;
                      
                   if($module_assignment_buffer[$processed_result->module_assignment_id]['category'] != 'OTHER'){
