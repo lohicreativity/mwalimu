@@ -2957,7 +2957,7 @@ class ExaminationResultController extends Controller
          if( $staff->id != 2){
             return 'Under maintainance';
          }
-return 1;
+
          $module_assignment = ModuleAssignment::with(['studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.program.ntaLevel:id,name'])->find($request->get('module_assignment_id'));
 
          // if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
@@ -3026,7 +3026,7 @@ return 1;
                                     ->where('exam_type',$request->get('exam_type'))
                                     ->first()){
             $result = $res;
-            
+            return $result;
             if(empty($request->get('final_score')) && $result->course_work_score == null){
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
