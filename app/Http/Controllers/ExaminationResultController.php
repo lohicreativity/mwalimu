@@ -3867,6 +3867,9 @@ class ExaminationResultController extends Controller
    
 
                         }else{
+                           if($result->module_assignment_id == 531){
+                              return 12;
+                           }
                            $result->supp_grade = $result->supp_point = null;
                            if($course_work_based == 1){
                               if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
