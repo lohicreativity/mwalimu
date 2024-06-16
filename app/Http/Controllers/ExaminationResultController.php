@@ -3731,9 +3731,9 @@ class ExaminationResultController extends Controller
       
          DB::commit();
 
-         // if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
-         //    return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
-         // }
+         if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
+            return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$ac_yr_id); 
+         }
          return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
       }catch(\Exception $e){
          return $e->getMessage();
@@ -3947,10 +3947,10 @@ class ExaminationResultController extends Controller
                         break;
                      }
                   }
-               }else{
+               }elseif($result->supp_remark != null && $result->final_remark != 'POSTPONED'){
 
                   if($result->supp_score != null){
-                     if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                     if($result->supp_score < $module_pass_mark){
                         $processed_result->supp_grade = 'F';
                         $processed_result->supp_point = 0;
                         if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
@@ -4008,67 +4008,68 @@ class ExaminationResultController extends Controller
                         $result->retakable_id = $history->id;
                         $result->retakable_type = 'carry_history';
                      }
-                  }else{
-
-                     if($processed_result->total_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                        $processed_result->grade = 'F';
-                        $processed_result->point = 0;
-                        if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
-                            $processed_result->final_remark = 'CARRY';
-                        }else{
-                            $processed_result->final_remark = 'RETAKE';
-                        }
-   
-                     }else{
-
-                        foreach($grading_policy as $policy){
-                           if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
-                              $processed_result->point = $policy->point;
-                              $processed_result->grade = $policy->grade;
-                              break;
-                           }
-                        }
-
-                        $processed_result->final_remark = 'PASS';
-
-                     }
-                     if($processed_result->final_remark == 'RETAKE'){
-                        $no_of_failed_modules++;
-                        if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
-                           $history = $retake;
-                        }else{
-                           $history = new RetakeHistory;
-                        }
-   
-                        $history->student_id = $student->id;
-                        $history->study_academic_year_id = $ac_yr_id;
-                        $history->module_assignment_id = $result->module_assignment_id;
-                        $history->examination_result_id = $result->id;
-                        $history->save();
-         
-                        $result->retakable_id = $history->id;
-                        $result->retakable_type = 'retake_history';
-   
-                     }
-   
-                     if($processed_result->final_remark == 'CARRY'){
-                        $no_of_failed_modules++;
-                        if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
-                           $history = $carry;
-                        }else{
-                           $history = new CarryHistory;
-                        }
-   
-                        $history->student_id = $student->id;
-                        $history->study_academic_year_id = $ac_yr_id;
-                        $history->module_assignment_id = $result->module_assignment_id;
-                        $history->examination_result_id = $result->id;
-                        $history->save();
-   
-                        $result->retakable_id = $history->id;
-                        $result->retakable_type = 'carry_history';
-                     }
                   }
+                  // else{
+
+                  //    if($processed_result->total_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                  //       $processed_result->grade = 'F';
+                  //       $processed_result->point = 0;
+                  //       if($module_assignment->module->ntaLevel->id == 4 && $module_assignment->programModuleAssignment->year_of_study == 1){
+                  //           $processed_result->final_remark = 'CARRY';
+                  //       }else{
+                  //           $processed_result->final_remark = 'RETAKE';
+                  //       }
+   
+                  //    }else{
+
+                  //       foreach($grading_policy as $policy){
+                  //          if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
+                  //             $processed_result->point = $policy->point;
+                  //             $processed_result->grade = $policy->grade;
+                  //             break;
+                  //          }
+                  //       }
+
+                  //       $processed_result->final_remark = 'PASS';
+
+                  //    }
+                  //    if($processed_result->final_remark == 'RETAKE'){
+                  //       $no_of_failed_modules++;
+                  //       if($retake = RetakeHistory::where('id',$result->retakable_id)->first()){
+                  //          $history = $retake;
+                  //       }else{
+                  //          $history = new RetakeHistory;
+                  //       }
+   
+                  //       $history->student_id = $student->id;
+                  //       $history->study_academic_year_id = $ac_yr_id;
+                  //       $history->module_assignment_id = $result->module_assignment_id;
+                  //       $history->examination_result_id = $result->id;
+                  //       $history->save();
+         
+                  //       $result->retakable_id = $history->id;
+                  //       $result->retakable_type = 'retake_history';
+   
+                  //    }
+   
+                  //    if($processed_result->final_remark == 'CARRY'){
+                  //       $no_of_failed_modules++;
+                  //       if($carry = CarryHistory::where('id',$result->retakable_id)->first()){
+                  //          $history = $carry;
+                  //       }else{
+                  //          $history = new CarryHistory;
+                  //       }
+   
+                  //       $history->student_id = $student->id;
+                  //       $history->study_academic_year_id = $ac_yr_id;
+                  //       $history->module_assignment_id = $result->module_assignment_id;
+                  //       $history->examination_result_id = $result->id;
+                  //       $history->save();
+   
+                  //       $result->retakable_id = $history->id;
+                  //       $result->retakable_type = 'carry_history';
+                  //    }
+                  // }
                   if($processed_result->supp_remark != null){
                      $processed_result->supp_processed_by_user_id = Auth::user()->id;
                      $processed_result->supp_processed_at = now();
