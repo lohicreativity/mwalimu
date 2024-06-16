@@ -4234,7 +4234,7 @@ class ExaminationResultController extends Controller
          $ac_yr_id = $ac_yr_id -1;
          
       }
-return $student_results_for_gpa_computation;
+return $student_results_for_gpa_computation[0]->moduleAssignment;
       if(!empty($remark)){
          $remark->study_academic_year_id = $ac_yr_id;
          $remark->student_id = $student->id;
