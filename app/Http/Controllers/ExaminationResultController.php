@@ -3436,7 +3436,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }
-return $results;
+
                $student_results = $student_results_for_gpa_computation = [];
 
                foreach($results as $result){
