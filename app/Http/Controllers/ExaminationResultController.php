@@ -3867,13 +3867,14 @@ class ExaminationResultController extends Controller
    
 
                         }else{
-                           if($result->module_assignment_id == 531){
-                              return 12;
-                           }
+            
                            $result->supp_grade = $result->supp_point = null;
                            if($course_work_based == 1){
                               if($result->supp_remark != 'POSTPONED' && $result->supp_remark != 'INCOMPLETE'){
                                  $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                                 if($result->module_assignment_id == 531){
+                                    return $processed_result->total_score;
+                                 }
                               }else{
                                  $processed_result->total_score = null;
                               }
