@@ -3501,9 +3501,6 @@ class ExaminationResultController extends Controller
                         }else{
                            $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                         }  
-                        if($result->module_assignment_id == 531){
-                           return $processed_result->supp_remark;
-                        }
                         $processed_result->grade = $processed_result->point = null;
                         if($course_work_based == 1){
                            $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
