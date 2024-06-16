@@ -3496,8 +3496,7 @@ class ExaminationResultController extends Controller
                         }
 
                      }else{
-                        $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
-                        $processed_result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
+                        $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
                         
                         $processed_result->grade = $processed_result->point = null;
                         if($course_work_based == 1){
