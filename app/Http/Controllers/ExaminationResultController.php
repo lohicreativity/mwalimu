@@ -3472,25 +3472,29 @@ class ExaminationResultController extends Controller
 
                   // if($result->module_assignment_id == 531){return $result;}
 
-                     if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
-                        if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
-                           $processed_result->grade = 'IC';
-                        }elseif($result->course_work_remark != 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
-                           $processed_result->grade = 'IF';
-                        }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
-                           $processed_result->grade = 'I';
-                        }elseif($result->course_work_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED'){
-                           $processed_result->grade = null;
+                     if($result->final_score == null){
+                        if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+                           if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
+                              $processed_result->grade = 'IC';
+                           }elseif($result->course_work_remark != 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
+                              $processed_result->grade = 'IF';
+                           }elseif($result->course_work_remark == 'INCOMPLETE' && $result->final_remark == 'INCOMPLETE'){
+                              $processed_result->grade = 'I';
+                           }elseif($result->course_work_remark == 'POSTPONED' || $result->final_remark == 'POSTPONED'){
+                              $processed_result->grade = null;
+                           }
+                           $processed_result->point = null;
+                           $processed_result->total_score = null;
+            
+                           if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                              $processed_result->final_exam_remark = $processed_result->final_remark;
+                           }
+                           if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                              $processed_result->final_exam_remark = $processed_result->course_work_remark;
+                           }
+
                         }
-                        $processed_result->point = null;
-                        $processed_result->total_score = null;
-         
-                        if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
-                           $processed_result->final_exam_remark = $processed_result->final_remark;
-                        }
-                        if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
-                           $processed_result->final_exam_remark = $processed_result->course_work_remark;
-                        }
+
                      }else{
                         $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';     
                         
