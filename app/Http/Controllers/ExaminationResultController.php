@@ -3065,7 +3065,6 @@ class ExaminationResultController extends Controller
                   if(is_null($request->get('final_score'))){
                      $result->final_remark = 'INCOMPLETE';
                   }else{
-                     return $module_assignment->programModuleAssignment->final_pass_score;
                      $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                   }
                }
