@@ -3026,7 +3026,7 @@ class ExaminationResultController extends Controller
                                     ->where('exam_type',$request->get('exam_type'))
                                     ->first()){
             $result = $res;
-            return $result;
+
             if(empty($request->get('final_score')) && $result->course_work_score == null){
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
@@ -3065,6 +3065,7 @@ class ExaminationResultController extends Controller
                   if(is_null($request->get('final_score'))){
                      $result->final_remark = 'INCOMPLETE';
                   }else{
+                     return 12;
                      $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                   }
                }
