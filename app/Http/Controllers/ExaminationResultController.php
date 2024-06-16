@@ -2179,7 +2179,7 @@ class ExaminationResultController extends Controller
          }else{
             $processed_result = ExaminationResult::find($result->id);
          }
-
+return $processed_result;
          if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
             $processed_result->total_score = null;
          }else{
@@ -3035,7 +3035,7 @@ class ExaminationResultController extends Controller
             }
          
             $result->course_work_score = $request->get('course_work_score');
-            $score_before = $result->supp_processed_at != null && $result->final_exam_remark == 'FAIL'? $result->supp_score : $result->final_score;
+            $score_before = $request->get('exam_type') == 'SUPP'? $result->supp_score : $result->final_score;
             $result->final_score = $request->get('final_score');
             if($result->supp_remark != null){
                $result->supp_uploaded_at = now();
@@ -3058,13 +3058,15 @@ class ExaminationResultController extends Controller
             // if($retake_history){
             //    $result->exam_category = 'RETAKE';
             // }
-            if($special_exam && is_null($request->get('final_score'))){
-               $result->final_remark = 'POSTPONED';
-            }elseif(!$special_exam){
-               if(is_null($request->get('final_score'))){
-                  $result->final_remark = 'INCOMPLETE';
-               }else{
-                  $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+            if($request->get('exam_type') != 'SUPP'){
+               if($special_exam && is_null($request->get('final_score'))){
+                  $result->final_remark = 'POSTPONED';
+               }elseif(!$special_exam){
+                  if(is_null($request->get('final_score'))){
+                     $result->final_remark = 'INCOMPLETE';
+                  }else{
+                     $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                  }
                }
             }
             // if($result->supp_score && $result->retakable_type == 'carry_history'){
@@ -3075,7 +3077,7 @@ class ExaminationResultController extends Controller
             //    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
             // }
 
-            if($request->get('supp_score') || $request->get('appeal_supp_score')){
+            if($request->get('exam_type') == 'SUPP'){
                $result->supp_uploaded_at = now();
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
