@@ -3496,6 +3496,7 @@ class ExaminationResultController extends Controller
                         }
 
                      }else{
+                        return $final_pass_score.'<='.$result->final_score;
                         if($result->final_remark == 'POSTPONED'){
                            $processed_result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                         }else{
