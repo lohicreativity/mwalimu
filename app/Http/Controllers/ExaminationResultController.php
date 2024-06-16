@@ -3959,7 +3959,7 @@ class ExaminationResultController extends Controller
                      }
                   }
                }elseif($result->supp_remark != null && $result->final_remark != 'POSTPONED'){
-
+                  $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL'; 
                   if($result->supp_score != null){
                      if($result->supp_score < $module_pass_mark){
                         $processed_result->supp_grade = 'F';
