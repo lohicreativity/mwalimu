@@ -4355,10 +4355,10 @@ class ExaminationResultController extends Controller
             }elseif(count($retake_exams) > 0){
                $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'retake_exams'=>$retake_exams]) : serialize(['retake_exams'=>$retake_exams]);
             }elseif(count($supp_exams) > 0){
-               $remark->serialized = serialize(['supp_exams'=>$supp_exams]);
+               $remark->supp_serialized = serialize(['supp_exams'=>$supp_exams]);
             }
          }else{
-            $remark->serialized = null;
+            $remark->supp_serialized = null;
          }
 
          $remark->save();
