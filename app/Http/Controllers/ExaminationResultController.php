@@ -3026,7 +3026,7 @@ class ExaminationResultController extends Controller
                                     ->where('exam_type',$request->get('exam_type'))
                                     ->first()){
             $result = $res;
-
+return $result;
             if(empty($request->get('final_score')) && $result->course_work_score == null){
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
