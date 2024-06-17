@@ -3051,7 +3051,7 @@ class ExaminationResultController extends Controller
                $result->supp_score = $request->get('supp_score');
                //$result->supp_processed_by_user_id = Auth::user()->id;
             }
-            
+            return $result->supp_score;
             $result->exam_type = $request->get('exam_type');
             // if($carry_history){
             //    $result->exam_category = 'CARRY';
