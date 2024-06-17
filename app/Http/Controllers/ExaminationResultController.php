@@ -3623,6 +3623,11 @@ class ExaminationResultController extends Controller
                   }
                }
 
+               if($remark->supp_remark != null){
+                  DB::commit();
+                  return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$yr_of_study.'&ac_yr_id='.$ac_yr_id); 
+               }
+               
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
                foreach($student_results as $res){
