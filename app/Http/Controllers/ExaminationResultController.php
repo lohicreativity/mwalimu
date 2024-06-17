@@ -4350,7 +4350,7 @@ class ExaminationResultController extends Controller
             $remark->class = null;
          }
 
-         if($remark->remark != 'PASS' && $remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
+         if($remark->supp_remark != 'PASS' && $remark->supp_remark != 'FAIL&DISCO' && $remark->supp_remark != 'REPEAT' && $remark->supp_remark != 'POSTPONED SEMESTER' && $remark->supp_remark != 'POSTPONED YEAR'){
             if(count($carry_exams) > 0){
                $remark->supp_serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
             }elseif(count($retake_exams) > 0){
