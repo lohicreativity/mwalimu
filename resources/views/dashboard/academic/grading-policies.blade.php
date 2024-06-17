@@ -204,7 +204,7 @@
                 </div>
               </div>
                 {!! Form::close() !!}
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Min Score</th>
@@ -404,10 +404,6 @@
                   
                   </tbody>
                 </table>
-
-                <div class="ss-pagination-links">
-                   {!! $policies->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>
