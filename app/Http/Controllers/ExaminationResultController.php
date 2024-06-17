@@ -3510,7 +3510,7 @@ class ExaminationResultController extends Controller
                            }else{
                               $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                            }  
-                           if($result->module_assignment_id != 531){return $result;}
+   
                            $processed_result->grade = $processed_result->point = null;
                            if($course_work_based == 1){
                               $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
@@ -3613,7 +3613,7 @@ class ExaminationResultController extends Controller
                      $student_results_for_gpa_computation[] =  $processed_result;
                   }
                }
-
+return $student_results;
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
                foreach($student_results as $res){
