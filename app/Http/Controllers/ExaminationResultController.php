@@ -3026,7 +3026,7 @@ class ExaminationResultController extends Controller
                                     ->where('exam_type',$request->get('exam_type'))
                                     ->first()){
             $result = $res;
-return $result;
+
             if(empty($request->get('final_score')) && $result->course_work_score == null){
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
@@ -3189,9 +3189,12 @@ return $result;
             }
             $result->save();
          }
+         if($result->module_assignment_id == 531){
             return $result;
+         }
+
          DB::commit();
-         return $result;
+
          session(['module_code_id' => $request->get('module_assignment_id')]);
 
          // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
