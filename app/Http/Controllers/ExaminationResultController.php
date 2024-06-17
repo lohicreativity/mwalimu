@@ -3047,10 +3047,12 @@ class ExaminationResultController extends Controller
             if($request->get('appeal_supp_score')){
                $result->appeal_supp_score = $request->get('appeal_supp_score');
             }
-            return  $request->get('supp_score');
+
             if($request->get('supp_score')){
                $result->supp_score = $request->get('supp_score');
                //$result->supp_processed_by_user_id = Auth::user()->id;
+            }elseif($result->supp_score != null){
+               $result->supp_score = null;
             }
             return $result->supp_score;
             $result->exam_type = $request->get('exam_type');
