@@ -3098,7 +3098,9 @@ class ExaminationResultController extends Controller
             }
             $result->uploaded_by_user_id = Auth::user()->id;
             $result->save();
-
+            if($result->module_assignment_id != 531){
+               return $result;
+            }
             if(!Auth::user()->hasRole('hod')){
                $change = new ExaminationResultChange;
                $change->resultable_id = $result->id;
@@ -3189,9 +3191,9 @@ class ExaminationResultController extends Controller
             }
             $result->save();
          }
-         // if($result->module_assignment_id != 531){
-         //    return $result;
-         // }
+         if($result->module_assignment_id != 531){
+            return $result;
+         }
 
          DB::commit();
 
