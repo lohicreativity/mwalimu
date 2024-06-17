@@ -806,6 +806,7 @@ class ExaminationResultController extends Controller
             //    return $rem;
             // }
             if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
+               return ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->get();
                return redirect()->to('academic/results/process-supp-results?semester_id=1&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id); 
             }
             return redirect()->back()->with('message','Results processed successfully');
