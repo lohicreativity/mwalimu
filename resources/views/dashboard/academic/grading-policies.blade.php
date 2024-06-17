@@ -193,20 +193,12 @@
                  {!! Form::open(['url'=>'academic/grading-policies','method'=>'GET']) !!}
                 <div class="row ss-margin-bottom">
                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                <div class="input-group col-12">
-                <select name="nta_level" class="form-control" required>
-                    <option value="ASC">NTA Level ASC</option>
-                    <option value="DESC">NTA Level DESC</option>
-                  </select>
-                 <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                 </span>
                 </div>
-              </div>
                 {!! Form::close() !!}
                 <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Min Score</th>
                     <th>Max Score</th>
                     <th>Grade</th>
@@ -217,8 +209,9 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($policies as $policy)
-                  <tr>
+                  @foreach($policies as $key=>$policy)
+                  <tr>                    
+                    <td>{{ $key + 1 }}</td>
                     <td>{{ $policy->min_score }}</td>
                     <td>{{ $policy->max_score }}</td>
                     <td>{{ $policy->grade }}</td>
