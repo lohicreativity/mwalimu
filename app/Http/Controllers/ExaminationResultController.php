@@ -3478,8 +3478,6 @@ class ExaminationResultController extends Controller
                                                  ->where('type','FINAL')
                                                  ->where('status','APPROVED')->first();
 
-                  if($result->module_assignment_id != 531){return $result;}
-
                      if($result->final_score == null && $result->supp_processed_at == null){
                         if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                            if($result->course_work_remark == 'INCOMPLETE' && $result->final_remark != 'INCOMPLETE'){
@@ -3502,7 +3500,7 @@ class ExaminationResultController extends Controller
                            }
 
                         }
-
+return 1;
                      }else{
                         if($result->final_score != null){
                            if($result->final_remark == 'POSTPONED'){
@@ -3511,6 +3509,7 @@ class ExaminationResultController extends Controller
                               $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                            }  
    
+                           if($result->module_assignment_id != 531){return $result;}
                            $processed_result->grade = $processed_result->point = null;
                            if($course_work_based == 1){
                               $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
