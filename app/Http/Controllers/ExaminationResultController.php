@@ -3189,9 +3189,9 @@ class ExaminationResultController extends Controller
             }
             $result->save();
          }
-         if($result->module_assignment_id != 531){
-            return $result;
-         }
+         // if($result->module_assignment_id != 531){
+         //    return $result;
+         // }
 
          DB::commit();
 
