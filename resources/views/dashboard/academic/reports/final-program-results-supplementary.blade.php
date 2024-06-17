@@ -469,8 +469,8 @@
                         </tr>
                       </thead>
                       <tbody>
-                      @foreach($special_exam_students->sortBy(function ($special_exam_students) {
-                        return $special_exam_students->student->registration_number;
+                      @foreach($special_exam_students->sortBy(function ($student) {
+                        return $student->registration_number;
                     }); as $key=>$student)
                         @php $s_total_students++; @endphp
                       <tr>
