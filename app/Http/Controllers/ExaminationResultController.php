@@ -3189,9 +3189,9 @@ class ExaminationResultController extends Controller
             }
             $result->save();
          }
-            
+            return $result;
          DB::commit();
-
+         return $result;
          session(['module_code_id' => $request->get('module_assignment_id')]);
 
          // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
