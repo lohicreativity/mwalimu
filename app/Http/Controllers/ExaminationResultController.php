@@ -3191,10 +3191,6 @@ class ExaminationResultController extends Controller
             }
             $result->save();
          }
-
-            return $result;
-
-
          DB::commit();
 
          session(['module_code_id' => $request->get('module_assignment_id')]);
@@ -3482,7 +3478,7 @@ class ExaminationResultController extends Controller
                                                  ->where('type','FINAL')
                                                  ->where('status','APPROVED')->first();
 
-                  // if($result->module_assignment_id == 531){return $result;}
+                  if($result->module_assignment_id == 531){return $result;}
 
                      if($result->final_score == null && $result->supp_processed_at == null){
                         if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
