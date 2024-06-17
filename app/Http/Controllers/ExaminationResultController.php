@@ -3743,7 +3743,7 @@ class ExaminationResultController extends Controller
                      $remark->serialized = null;
                   }
                }
-return $student_results;
+
                $remark->save();
             }
          }elseif($request->get('process_type') == 'SUPP'){
