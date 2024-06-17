@@ -3613,7 +3613,7 @@ class ExaminationResultController extends Controller
                      $student_results_for_gpa_computation[] =  $processed_result;
                   }
                }
-return $student_results;
+
                $pass_status = 'PASS'; 
                $supp_exams = $retake_exams = $carry_exams = $module_assignmentIDs = [];
                foreach($student_results as $res){
@@ -3743,7 +3743,7 @@ return $student_results;
                      $remark->serialized = null;
                   }
                }
-
+return $student_results;
                $remark->save();
             }
          }elseif($request->get('process_type') == 'SUPP'){
