@@ -3776,7 +3776,7 @@ class ExaminationResultController extends Controller
       $semester_id = $request->get('semester_id');
       $year_of_study = $request->get('year_of_study');
       $ac_yr_id = $request->get('ac_yr_id');
-return $request;
+
       DB::beginTransaction();
       $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$year_of_study,$semester_id){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                     ->where('year_of_study',$year_of_study)
@@ -4275,7 +4275,7 @@ return $request;
          }
       } 
 
-      if($carry_case){
+      if(count($carry_case) > 0){
          $ac_yr_id = $ac_yr_id -1;
          
       }
