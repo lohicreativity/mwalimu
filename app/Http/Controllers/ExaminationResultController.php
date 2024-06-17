@@ -1692,9 +1692,7 @@ class ExaminationResultController extends Controller
                         $result->supp_processed_at = now();
                      }
                   }
-                  if($case == 3740){
-                     return $results;
-                  }
+
                   $result->save();
                   $student_results[] =  $result;
                   
