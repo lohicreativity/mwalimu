@@ -99,7 +99,7 @@ class GradingPolicyController extends Controller
                         ->where('min_score','<=',$request->get('min_score'))
                         ->where('max_score','>=',$request->get('min_score'))
                         ->where('point',$request->get('point'))
-                        ->count() != 0){return 1;
+                        ->count() != 0){
         	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
         }
 
@@ -108,7 +108,7 @@ class GradingPolicyController extends Controller
                         ->where('min_score','<=',$request->get('max_score'))
                         ->where('max_score','>=',$request->get('max_score'))
                         ->where('point',$request->get('point'))
-                        ->count() != 0){ return 2;
+                        ->count() != 0){
         	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
         }
 
@@ -139,11 +139,21 @@ class GradingPolicyController extends Controller
            }
         }
 
-        if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_score','<=',$request->get('min_score'))->where('max_score','>=',$request->get('min_score'))->count() != 0){
+        if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))
+                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                        ->where('min_score','<=',$request->get('min_score'))
+                        ->where('max_score','>=',$request->get('min_score'))
+                        ->where('point',$request->get('point'))
+                        ->count() != 0){
         	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
         }
 
-        if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_score','<=',$request->get('max_score'))->where('max_score','>=',$request->get('max_score'))->count() != 0){
+        if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))
+                        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                        ->where('min_score','<=',$request->get('max_score'))
+                        ->where('max_score','>=',$request->get('max_score'))
+                        ->where('point',$request->get('point'))
+                        ->count() != 0){
         	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
         }
 
