@@ -4334,23 +4334,23 @@ class ExaminationResultController extends Controller
             }
          }
 
-         if($no_of_failed_modules > (count($student_results)/2) && $remark->remark != 'INCOMPLETE'){
-            $remark->remark = 'REPEAT';
+         if($no_of_failed_modules > (count($student_results)/2) && $remark->supp_remark != 'INCOMPLETE'){
+            $remark->supp_remark = 'REPEAT';
             $remark->gpa = null;
             $remark->class = null;
             Student::where('id',$student->id)->update(['academic_status_id'=>10]);
 
          }
 
-         if($remark->gpa != null && $remark->gpa < 2 && $remark->remark != 'INCOMPLETE'){
-            $remark->remark = 'FAIL&DISCO';
+         if($remark->gpa != null && $remark->gpa < 2 && $remark->supp_remark != 'INCOMPLETE'){
+            $remark->supp_remark = 'FAIL&DISCO';
             $remark->gpa = null;
             $remark->class = null;
             Student::where('id',$student->id)->update(['academic_status_id'=>5]);
          }
 
          if(Student::where('id',$student->id)->where('studentship_status_id', 6)->count() > 0){
-            $remark->remark = 'DECEASED';
+            $remark->supp_remark = 'DECEASED';
             $remark->gpa = null;
             $remark->class = null;
          }
@@ -4367,6 +4367,10 @@ class ExaminationResultController extends Controller
             $remark->supp_serialized = null;
          }
 
+         if($remark->supp_remark == 'INCOMPLETE'){
+            $remark->supp_serialized = null;
+         }
+         
          $remark->save();
          // if($rem = SemesterRemark::where('student_id',5102)->first()){
          //    return $rem;
