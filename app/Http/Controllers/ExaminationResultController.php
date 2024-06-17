@@ -3088,7 +3088,7 @@ class ExaminationResultController extends Controller
             //    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
             // }
 
-            if($request->get('exam_type') == 'SUPP'){
+            if($request->get('exam_type') == 'SUPP' || ($result->final_remark == 'FAIL' && $result->supp_uploaded_at != null)){
                $result->supp_uploaded_at = now();
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
