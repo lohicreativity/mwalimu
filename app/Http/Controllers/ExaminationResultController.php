@@ -3054,7 +3054,7 @@ class ExaminationResultController extends Controller
             }elseif($result->supp_score != null){
                $result->supp_score = null;
             }
-            return $result->supp_score;
+
             $result->exam_type = $request->get('exam_type');
             // if($carry_history){
             //    $result->exam_category = 'CARRY';
