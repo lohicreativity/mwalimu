@@ -3500,7 +3500,7 @@ class ExaminationResultController extends Controller
                            }
 
                         }
-return 1;
+
                      }else{
                         if($result->final_score != null){
                            if($result->final_remark == 'POSTPONED'){
@@ -3509,7 +3509,6 @@ return 1;
                               $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                            }  
    
-                           if($result->module_assignment_id != 531){return $result;}
                            $processed_result->grade = $processed_result->point = null;
                            if($course_work_based == 1){
                               $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
@@ -3751,7 +3750,7 @@ return 1;
          }
 
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
-      
+      return $student_results;
          DB::commit();
          
          // if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
