@@ -3693,7 +3693,6 @@ class ExaminationResultController extends Controller
                }else{
                   $remark->remark = $pass_status;
                }
-               $remark->supp_remark = null;
 
                if($remark->remark != 'PASS'){
                   $remark->gpa = null;
@@ -4370,7 +4369,7 @@ class ExaminationResultController extends Controller
          if($remark->supp_remark == 'INCOMPLETE'){
             $remark->supp_serialized = null;
          }
-         
+
          $remark->save();
          // if($rem = SemesterRemark::where('student_id',5102)->first()){
          //    return $rem;
