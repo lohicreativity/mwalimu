@@ -3098,7 +3098,6 @@ class ExaminationResultController extends Controller
             }
             $result->uploaded_by_user_id = Auth::user()->id;
             
-            return $result;
             $result->save();
 
     
@@ -3192,9 +3191,9 @@ class ExaminationResultController extends Controller
             }
             $result->save();
          }
-         if($result->module_assignment_id != 531){
+
             return $result;
-         }
+
 
          DB::commit();
 
