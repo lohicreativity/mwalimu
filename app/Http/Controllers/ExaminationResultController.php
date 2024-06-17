@@ -3088,7 +3088,6 @@ class ExaminationResultController extends Controller
             // }
 
             if($request->get('exam_type') == 'SUPP'){
-               return $request->get('exam_type');
                $result->supp_uploaded_at = now();
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
