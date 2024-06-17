@@ -3750,7 +3750,7 @@ class ExaminationResultController extends Controller
          }
 
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
-      return $student_results;
+
          DB::commit();
          
          // if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
