@@ -469,7 +469,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                      @foreach($special_exam_students as $key=>$student)
+                      @foreach($special_exam_students->sortBy('student->registration_number') as $key=>$student)
                         @php $s_total_students++; @endphp
                       <tr>
                         <td class="ss-font-xs">{{ $count }}</td>
