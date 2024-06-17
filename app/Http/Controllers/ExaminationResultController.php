@@ -3478,7 +3478,7 @@ class ExaminationResultController extends Controller
                                                  ->where('type','FINAL')
                                                  ->where('status','APPROVED')->first();
 
-                  if($result->module_assignment_id != 531){return $result;}
+                  // if($result->module_assignment_id != 531){return $result;}
 
                      if($result->final_score == null && $result->supp_processed_at == null){
                         if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
@@ -3504,6 +3504,7 @@ class ExaminationResultController extends Controller
                         }
 
                      }else{
+                        if($result->module_assignment_id != 531){return $result;}
                         if($result->final_score != null){
                            if($result->final_remark == 'POSTPONED'){
                               $processed_result->supp_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
