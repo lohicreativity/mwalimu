@@ -3088,6 +3088,7 @@ class ExaminationResultController extends Controller
             // }
 
             if($request->get('exam_type') == 'SUPP'){
+               return $request->get('exam_type');
                $result->supp_uploaded_at = now();
                $result->supp_processed_by_user_id = Auth::user()->id;
                $result->supp_processed_at = now();
@@ -3097,9 +3098,10 @@ class ExaminationResultController extends Controller
                $result->final_processed_at = now();
             }
             $result->uploaded_by_user_id = Auth::user()->id;
+            
+            return $result;
             $result->save();
 
-               return $result;
     
             if(!Auth::user()->hasRole('hod')){
                $change = new ExaminationResultChange;
