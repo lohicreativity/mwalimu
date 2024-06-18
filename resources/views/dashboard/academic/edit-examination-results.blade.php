@@ -99,8 +99,9 @@
                     <div class="form-group col-4">
                       {!! Form::label('','Coursework score') !!}
                       {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
-
-                      <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
+                      @if($result->supp_processed_at != null && $result->final_remark != 'POSTPONED')
+                        <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
+                      @endif
                     </div>
                     @if($result->moduleAssignment->final_upload_status == 'UPLOADED' && $result->final_exam_remark != 'POSTPONED')
                       <div class="form-group col-4">
