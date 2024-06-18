@@ -56,7 +56,7 @@
 
 
 
-                  if($result->supp_processed_at != null && $result->final_exam_remark == 'FAIL' && !$result->final_remark == 'POSTPONED'){
+                  if($result->supp_processed_at != null && $result->final_remark != 'POSTPONED'){
                     $final_score = [
                      'placeholder'=>'Final score',
                      'class'=>'form-control',
