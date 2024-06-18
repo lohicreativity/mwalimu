@@ -29,7 +29,7 @@ class SpecialExamController extends Controller
     public function index(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $special_exams = null;
+        $special_exams = [];
         if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
             $special_exams = SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
                                                ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->get();        
