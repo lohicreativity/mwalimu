@@ -2955,6 +2955,9 @@ class ExaminationResultController extends Controller
 
          $staff = User::find(Auth::user()->id)->staff;
 
+         if($staff->id != 2){
+            return 1;
+         }
          $module_assignment = ModuleAssignment::with(['studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.program.ntaLevel:id,name'])->find($request->get('module_assignment_id'));
 
          // if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
@@ -3027,19 +3030,32 @@ class ExaminationResultController extends Controller
             if(empty($request->get('final_score')) && $result->course_work_score == null){
                $retake_history? $retake_history->delete() : null;
                $carry_history? $carry_history->delete() : null;
+               $result->final_score = null;
+               $result->point = null;
+               if($special_exam){
+                  $result->final_remark = 'POSTPONED';
+                  $result->grade = null;
+               }else{
+                  $result->final_remark = 'INCOMPLETE';
+                  $result->grade = 'I';
+               }
+
                $result->retable_id = null;
                $result->retable_type = null;
             }
          
             $result->course_work_score = $request->get('course_work_score');
-            $score_before = $request->get('exam_type') == 'SUPP'? $result->supp_score : $result->final_score;
+            $score_before = $request->get('exam_type') == 'SUPP' || $result->final_remark == 'FAIL' && $result->supp_uploaded_at != null? $result->supp_score : $result->final_score;
             $result->final_score = $request->get('final_score');
+
             if($result->supp_remark != null){
                $result->supp_uploaded_at = now();
             }
+
             if($request->get('appeal_score')){
                $result->appeal_score = $request->get('appeal_score');
             }
+            
             if($request->get('appeal_supp_score')){
                $result->appeal_supp_score = $request->get('appeal_supp_score');
             }
@@ -3079,6 +3095,7 @@ class ExaminationResultController extends Controller
                   }
                }
             }
+
             // if($result->supp_score && $result->retakable_type == 'carry_history'){
             //    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
             // } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
@@ -3089,26 +3106,28 @@ class ExaminationResultController extends Controller
 
             $supp_edit_status = false;
             if($request->get('exam_type') == 'SUPP' || ($result->final_remark == 'FAIL' && $result->supp_uploaded_at != null)){
-               $supp_edit_status = true;
-               $result->supp_uploaded_at = now();
-               $result->supp_processed_by_user_id = Auth::user()->id;
-               $result->supp_processed_at = now();
+
                if(is_null($result->supp_score)){
                   $result->supp_grade = 'I';
                   $result->supp_point = null;
                   $result->supp_remark = 'INCOMPLETE';
        
                }
+
+               if($result->supp_processed_at != null){
+                  $supp_edit_status = true;
+                  $result->supp_processed_by_user_id = Auth::user()->id;
+                  $result->supp_processed_at = now();
+
+               }
             }else{
                $result->final_uploaded_at = now();
-               $result->final_processed_by_user_id = Auth::user()->id;
-               $result->final_processed_at = now();
+
             }
             $result->uploaded_by_user_id = Auth::user()->id;
             
             $result->save();
 
-    
             if(!Auth::user()->hasRole('hod')){
                $change = new ExaminationResultChange;
                $change->resultable_id = $result->id;
@@ -3140,14 +3159,14 @@ class ExaminationResultController extends Controller
                }else{
                   $result->appeal_supp_score = $request->get('appeal_supp_score');
                }
-               
+              
                $result->supp_uploaded_at = now();
-               $result->supp_processed_by_user_id = Auth::user()->id;
-               $result->supp_processed_at = now();
+               // $result->supp_processed_by_user_id = Auth::user()->id;
+               // $result->supp_processed_at = now();
             }else{
                $result->final_uploaded_at = now();
-               $result->final_processed_by_user_id = Auth::user()->id;
-               $result->final_processed_at = now();
+               // $result->final_processed_by_user_id = Auth::user()->id;
+               // $result->final_processed_at = now();
             }
             $result->uploaded_by_user_id = Auth::user()->id;
             // if($carry_history){
@@ -3158,6 +3177,7 @@ class ExaminationResultController extends Controller
             // }
             if($special_exam && is_null($request->get('final_score'))){
                $result->final_remark = 'POSTPONED';
+
             }else{
                if(is_null($request->get('final_score'))){
                   $result->final_remark = 'INCOMPLETE';
@@ -3165,6 +3185,7 @@ class ExaminationResultController extends Controller
                   $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                }
             }
+
             if($result->supp_score != null){
                $result->supp_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
 
@@ -3187,16 +3208,20 @@ class ExaminationResultController extends Controller
                       $result->supp_remark = 'RETAKE';
                   }                 
                }
-            }elseif($result->supp_processed_at != null && $result->supp_score == null && $result->final_exam_remark == 'FAIL'){
+
+            }elseif($result->supp_uploaded_at != null && $result->supp_score == null && $result->final_exam_remark == 'FAIL'){
                $result->supp_remark = 'INCOMPLETE';
                $result->supp_grade = 'I';
             }
+
             $result->final_uploaded_at = now();
             $result->uploaded_by_user_id = Auth::user()->id;
+
             if($final_process_status){
                $result->final_processed_by_user_id = Auth::user()->id;
                $result->final_processed_at = now();
             }
+
             $result->save();
          }
          DB::commit();
