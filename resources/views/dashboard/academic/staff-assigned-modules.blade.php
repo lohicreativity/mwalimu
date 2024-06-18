@@ -72,7 +72,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Campus</th>
@@ -112,9 +112,6 @@
                   @endforeach
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $assignments->appends($request->except('page'))->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>

@@ -59,7 +59,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('semester/{id}/activate', [SemesterController::class,'activate']);
 	Route::get('semester/{id}/deactivate', [SemesterController::class,'deactivate']);
 
-
 	Route::get('departments', [DepartmentController::class,'index']);
 	Route::post('department/store', [DepartmentController::class,'store']);
 	Route::post('department/update', [DepartmentController::class,'update']);
@@ -70,13 +69,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('program/update', [ProgramController::class,'update']);
 	Route::get('program/{id}/destroy', [ProgramController::class,'destroy']);
 
-
 	Route::get('modules', [ModuleController::class,'index']);
 	Route::post('module/store', [ModuleController::class,'store']);
 	Route::post('module/update', [ModuleController::class,'update']);
 	Route::get('module/{id}/destroy', [ModuleController::class,'destroy']);
 	Route::get('module/{id}/download-syllabus', [ModuleController::class,'downloadSyllabus']);
-
 
 	Route::get('module-assignments', [ModuleAssignmentController::class,'index']);
 	Route::get('module-assignment/confirmation', [ModuleAssignmentController::class,'assignmentConfirmation']);
@@ -87,11 +84,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('module-assignment/{id}/examination-irregularities',[ExaminationIrregularityController::class, 'index']);
 	Route::get('module-assignment/{id}/special-exams',[SpecialExamController::class, 'index']);
 
-
 	Route::get('module-assignment-requests', [ModuleAssignmentRequestController::class,'index']);
 	Route::post('module-assignment-request/store', [ModuleAssignmentRequestController::class,'store']);
 	Route::get('module-assignment-request/{id}/destroy', [ModuleAssignmentRequestController::class,'destroy']);
-
 
 	Route::get('staff-module-assignments', [ModuleAssignmentController::class,'showStaffAssignedModules']);
 	Route::get('staff-module-assignment/{id}/assessment-plans', [ModuleAssignmentController::class,'showAssessmentPlans']);

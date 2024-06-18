@@ -153,7 +153,7 @@ class ModuleAssignmentController extends Controller
              ->where('staff_id',$staff->id)
              ->where('confirmed',1)
              ->latest()
-             ->paginate(20) : [],
+             ->get() : [],
         ];
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }
