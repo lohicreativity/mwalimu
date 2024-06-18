@@ -95,10 +95,10 @@
                         @endif
                         @if($module_assignment->course_work_process_status == 'PROCESSED')
                           @if(!$program_results_process_status)
-                          <option value="FINAL_EXAM">Final Exam</option>
+                            <option value="FINAL_EXAM">Final Exam</option>
                           @endif
                           @if(!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status))
-                          <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                            <option value="SUPPLEMENTARY">Supplementary Exam</option>
                           @endif
                         @endif
                       @endif
