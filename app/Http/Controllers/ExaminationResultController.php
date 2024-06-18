@@ -3578,10 +3578,6 @@ class ExaminationResultController extends Controller
                               $processed_result->grade = 'F';
                               $processed_result->point = 0;
                            }
-
-                           if($result->module_assignment_id == 455){
-                              return $result;
-                           }
          
                            if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL' || $result->final_remark == 'POSTPONED' && $result->supp_remark == 'FAIL'){
                               $processed_result->final_exam_remark = 'FAIL';
@@ -3631,6 +3627,10 @@ class ExaminationResultController extends Controller
                                  $processed_result->retakable_id = $history->id;
                                  $processed_result->retakable_type = 'carry_history';
                               }
+                              
+                           if($result->module_assignment_id == 455){
+                              return $result;
+                           }
                            }else{
    
                                  $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
