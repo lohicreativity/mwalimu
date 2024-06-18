@@ -84,7 +84,7 @@
                       
                       @if($module->course_work_based == 0)
                        <option value="FINAL_EXAM">Final Exam</option>
-                       @if($first_semester_publish_status || $second_semester_publish_status)
+                       @if(!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status))
                         <option value="SUPPLEMENTARY">Supplementary Exam</option>
                        @endif
                       @else
@@ -97,7 +97,7 @@
                           @if(!$program_results_process_status)
                           <option value="FINAL_EXAM">Final Exam</option>
                           @endif
-                          @if($first_semester_publish_status || $second_semester_publish_status)
+                          @if(!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status))
                           <option value="SUPPLEMENTARY">Supplementary Exam</option>
                           @endif
                         @endif

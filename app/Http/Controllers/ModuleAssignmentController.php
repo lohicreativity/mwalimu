@@ -425,6 +425,11 @@ class ModuleAssignmentController extends Controller
                 $program_results_process_status = true;
              }
 
+             $supp_process_status = false;
+             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_processed_at')->count() != 0){
+                $supp_process_status = true;
+             }            
+
              $data = [
                 'module_assignment'=>$module_assignment,
                 'final_upload_status'=>$final_upload_status,
@@ -438,6 +443,7 @@ class ModuleAssignmentController extends Controller
                 'carry_cases_count'=>$carry_cases_count,
                 'first_semester_publish_status'=>$first_semester_publish_status,
                 'second_semester_publish_status'=>$second_semester_publish_status,
+                'supp_process_status'=> $supp_process_status,
                 'module' => Module::find($module_assignment->module->id),
 
                 'staff'=>User::find(Auth::user()->id)->staff
