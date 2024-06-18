@@ -62,7 +62,7 @@ class SpecialExamController extends Controller
     public function showPostponement(Request $request)
     {
         $student = User::find(Auth::user()->id)->student()->with('applicant:id,intake_id')->first();
-        return $student;
+
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
         if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
@@ -76,7 +76,7 @@ class SpecialExamController extends Controller
         $second_semester_publish_status = false;
          if(ResultPublication::whereHas('semester',function($query){
              $query->where('name','LIKE','%2%');
-         })->where('study_academic_year_id',session('active_academic_year_id'))->where('status','PUBLISHED')->count() != 0){
+         })->where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->count() != 0){
             $second_semester_publish_status = true;
          }
 
@@ -85,7 +85,7 @@ class SpecialExamController extends Controller
         ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
         ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
         ->where('examination_results.student_id', $student->id)
-        ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
+        ->where('module_assignments.study_academic_year_id', $ac_yr_id)
         ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
         ->whereIn('examination_results.final_exam_remark', ['FAIL', 'POSTPONED'])
         ->select('module_assignments.id', 'modules.name', 'modules.code', 'examination_results.final_exam_remark')
@@ -98,7 +98,7 @@ class SpecialExamController extends Controller
          ->where('students.id', $student->id)
          ->where('campus_program.id', $student->campus_program_id)
          ->where('results_publications.semester_id', 2)
-         ->where('results_publications.study_academic_year_id', session('active_academic_year_id'))
+         ->where('results_publications.study_academic_year_id', $ac_yr_id)
          ->where('results_publications.status', 'PUBLISHED')
          ->get();
 
@@ -147,14 +147,14 @@ class SpecialExamController extends Controller
                ->where('campus_program_id',$student->campus_program_id)
                ->where('year_of_study', $student->year_of_study);
            })->with(['module','programModuleAssignment'])
-           ->where('study_academic_year_id',session('active_academic_year_id'))
+           ->where('study_academic_year_id',$ac_yr_id)
            ->get(),
            'module_without_special' => ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
             $query->where('semester_id',session('active_semester_id'))
             ->where('campus_program_id',$student->campus_program_id)
             ->where('year_of_study', $student->year_of_study);
         })->with(['module','programModuleAssignment'])
-        ->where('study_academic_year_id',session('active_academic_year_id'))
+        ->where('study_academic_year_id',$ac_yr_id)
         ->whereNotIn('module_assignments.id', $specialExams)
         ->get(),
            'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
@@ -163,7 +163,7 @@ class SpecialExamController extends Controller
             ->where('student_program_module_assignment.student_id', '=', $student->id)
             ->where('campus_program_id',$student->campus_program_id);
             })->with(['module','programModuleAssignment'])
-            ->where('study_academic_year_id',session('active_academic_year_id'))
+            ->where('study_academic_year_id',$ac_yr_id)
             ->get(), 
             'special_exam_requests'=> $Special_exams,
             'student'=>$student,
@@ -183,7 +183,7 @@ class SpecialExamController extends Controller
                     ->where('campus_program_id',$student->campus_program_id)
                     ->where('year_of_study', $student->year_of_study);
                 })->with(['module','programModuleAssignment'])
-                ->where('study_academic_year_id',session('active_academic_year_id'))
+                ->where('study_academic_year_id',$ac_yr_id)
                 ->get(),
                 'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                  $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
@@ -191,14 +191,14 @@ class SpecialExamController extends Controller
                  ->where('student_program_module_assignment.student_id', '=', $student->id)
                  ->where('campus_program_id',$student->campus_program_id);
                  })->with(['module','programModuleAssignment'])
-                 ->where('study_academic_year_id',session('active_academic_year_id'))
+                 ->where('study_academic_year_id',$ac_yr_id)
                  ->get(), 
                  'special_exam_requests'=> $Special_exams,
                  'student'=>$student,
                  'request'=>$request,
                  'suppExams'     => $suppExams,
                  'specialExams_count' => $specialExams_count,
-                 'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+                 'study_academic_year' => $ac_year,
                  'loan_status'=>$loan_status                 
              ];
      
