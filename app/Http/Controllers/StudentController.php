@@ -1102,12 +1102,6 @@ class StudentController extends Controller
 
 
         if($request->get('fee_type') == 'TUITION'){
-          return Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
-          ->where('applicable_type','academic_year')
-          ->where('applicable_id',$study_academic_year->id)
-          ->where('payable_id',$student->id)
-          ->where('payable_type','student')
-          ->first();
           $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
                                               ->where('applicable_type','academic_year')
                                               ->where('applicable_id',$study_academic_year->id)
