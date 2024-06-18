@@ -3231,7 +3231,7 @@ class ExaminationResultController extends Controller
             $result->save();
          }
          DB::commit();
-return $result;
+
          session(['module_code_id' => $request->get('module_assignment_id')]);
 
          // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
@@ -3450,7 +3450,7 @@ return $result;
                                           ->where('student_id',$student->id)
                                           ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
                                           ->get();
-
+return $results;
                if(count($results) != $no_of_expected_modules){
                   $missing_case = true;
                }
