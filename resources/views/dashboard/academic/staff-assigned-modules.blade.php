@@ -102,7 +102,12 @@
                     <td>{{ $assignment->programModuleAssignment->campusProgram->campus->name }}</td>
                     <td>{{ $program_name }}</td>
                     <td>{{ $assignment->programModuleAssignment->campusProgram->code }}</td>
-                    <td><a href="{{ url('academic/staff-module-assignment/'.$assignment->id.'/assessment-plans') }}">{{ $module_name }} - {{ $assignment->module->code }}</a></td>
+                    <td>@if(in_array($assignment->id,$modules_assessment_status)) 
+                          <a href="{{ url('academic/staff-module-assignment/'.$assignment->id.'/results') }}">{{ $module_name }} - {{ $assignment->module->code }}</a>
+                        @else 
+                          <a href="{{ url('academic/staff-module-assignment/'.$assignment->id.'/assessment-plans') }}">{{ $module_name }} - {{ $assignment->module->code }}</a> 
+                        @endif
+                    </td>
                     <td>{{ $assignment->programModuleAssignment->year_of_study }}</td>
                     <td>{{ $assignment->programModuleAssignment->semester->name }}</td>
                     <td>{{ $assignment->module->credit }}</td>

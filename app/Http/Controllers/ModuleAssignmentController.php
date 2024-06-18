@@ -138,6 +138,21 @@ class ModuleAssignmentController extends Controller
         $staff = Staff::with(['assignedModules.studyAcademicYear'=>function($query){
                    $query->where('status','ACTIVE');
             }])->where('user_id',Auth::user()->id)->first();
+        $assigned_modules = ModuleAssignment::whereHas('studyAcademicYear.moduleAssignments',function($query) use ($request){$query->where('study_academic_years.id',$request->get('study_academic_year_id'))
+                                                                                                                                  ->orderBy('year_of_study', 'desc')
+                                                                                                                                  ->orderBy('semester_id', 'asc');})
+                                            ->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])
+                                            ->where('staff_id',$staff->id)
+                                            ->where('confirmed',1)
+                                            ->latest()
+                                            ->get();
+        $modules_assessment_status = [];
+
+        foreach($assigned_modules as $module_assignment){
+            if(AssessmentPlan::where('module_assignment_id',$module_assignment->id)->first()){
+                $modules_assessment_status[] = $module_assignment->id;
+            }
+        }
 
         $data = [
            'study_academic_years'=>StudyAcademicYear::all(),
@@ -145,15 +160,8 @@ class ModuleAssignmentController extends Controller
            'staff'=>$staff,
            'request'=>$request,
            'semesters'=>Semester::all(),
-           'assignments'=>$staff ? ModuleAssignment::whereHas('studyAcademicYear.moduleAssignments',function($query) use ($request){
-                  $query->where('study_academic_years.id',$request->get('study_academic_year_id'))
-                  ->orderBy('year_of_study', 'desc')
-                  ->orderBy('semester_id', 'asc');
-             })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])
-             ->where('staff_id',$staff->id)
-             ->where('confirmed',1)
-             ->latest()
-             ->get() : [],
+           'assignments'=>$staff ? $assigned_modules : [],
+           'modules_assessment_status'=>$modules_assessment_status
         ];
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }
