@@ -3450,7 +3450,7 @@ class ExaminationResultController extends Controller
                                           ->where('student_id',$student->id)
                                           ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
                                           ->get();
-
+return $results;
                if(count($results) != $no_of_expected_modules){
                   $missing_case = true;
                }
