@@ -2953,11 +2953,11 @@ class ExaminationResultController extends Controller
             }
          }
 
-         $staff = User::find(Auth::user()->id)->staff;
+         // $staff = User::find(Auth::user()->id)->staff;
 
-         if($staff->id != 2){
-            return 1;
-         }
+         // if($staff->id != 2){
+         //    return 1;
+         // }
          $module_assignment = ModuleAssignment::with(['studyAcademicYear.academicYear','programModuleAssignment','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.program.ntaLevel:id,name'])->find($request->get('module_assignment_id'));
 
          // if(ResultPublication::where('nta_level_id',$module->ntaLevel->id)
