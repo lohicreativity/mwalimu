@@ -29,18 +29,19 @@ class SpecialExamController extends Controller
     public function index(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+        $special_exams = null;
         if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
             $special_exams = SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                               ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->paginate(20);        
+                                               ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->get();        
         }elseif(Auth::user()->hasRole('examination-officer')){
             $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                                ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->paginate(20); 
+                                                ->whereNotNull('recommendation')->whereNotNull('recommended_by_user_id')->latest()->get(); 
         }elseif(Auth::user()->hasRole('hod')){
             $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                                 ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
                                                 ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
-                                                ->latest()->paginate(20); 
+                                                ->latest()->get(); 
         }
         
         if(count($special_exams) == 0){
@@ -185,7 +186,7 @@ class SpecialExamController extends Controller
             if(count($module_assignment) == 0){
                 return redirect()->to('academic/special-exams?study_academic_year_id='.$ac_yr_id)->with('error','No modules to postpone');  
             }
-            
+
             $data =  [
                 'second_semester_publish_status'=>$second_semester_publish_status,
                 'module_assignments'=> $module_assignment,

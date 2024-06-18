@@ -173,7 +173,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                  
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Study Academic Year</th>
@@ -250,9 +250,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                    {!! $special_exam_requests->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>
