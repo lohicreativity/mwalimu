@@ -3566,11 +3566,13 @@ class ExaminationResultController extends Controller
                               $processed_result->total_score = $result->final_score;
                            }
 
-                           foreach($grading_policy as $policy){
-                              if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
-                                 $processed_result->grade = $policy->grade;
-                                 $processed_result->point = $policy->point;
-                                 break;
+                           if(($processed_result->course_work_remark == 'PASS' || $processed_result->course_work_remark == 'N/A') && ($processed_result->final_remark == 'POSTPONED' && $processed_result->supp_remark == 'PASS' || $processed_result->final_remark == 'PASS')){
+                              foreach($grading_policy as $policy){
+                                 if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
+                                    $processed_result->grade = $policy->grade;
+                                    $processed_result->point = $policy->point;
+                                    break;
+                                 }
                               }
                            }
 
