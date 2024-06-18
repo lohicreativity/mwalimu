@@ -3546,9 +3546,7 @@ class ExaminationResultController extends Controller
                            }else{
                               $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                            }  
-   if($result->module_assignment_id == 455){
-      return $result;
-   }
+
                            $processed_result->grade = $processed_result->point = null;
                            if($course_work_based == 1){
                               $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
@@ -3567,7 +3565,7 @@ class ExaminationResultController extends Controller
                               $processed_result->course_work_remark = 'N/A';
                               $processed_result->total_score = $result->final_score;
                            }
-                        
+
                            foreach($grading_policy as $policy){
                               if($policy->min_score <= round($processed_result->total_score) && $policy->max_score >= round($processed_result->total_score)){
                                  $processed_result->grade = $policy->grade;
@@ -3575,8 +3573,12 @@ class ExaminationResultController extends Controller
                                  break;
                               }
                            }
+
+                           if($result->module_assignment_id == 455){
+                              return $result;
+                           }
          
-                           if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
+                           if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL' || $result->final_remark == 'POSTPONED' && $result->supp_remark == 'FAIL'){
                               $processed_result->final_exam_remark = 'FAIL';
                               $no_of_failed_modules++;
                            }
