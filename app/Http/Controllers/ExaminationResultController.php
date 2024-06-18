@@ -3101,7 +3101,7 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-return $result;
+
             // if($result->supp_score && $result->retakable_type == 'carry_history'){
             //    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
             // } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
@@ -3231,7 +3231,7 @@ return $result;
             $result->save();
          }
          DB::commit();
-
+return $result;
          session(['module_code_id' => $request->get('module_assignment_id')]);
 
          // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
