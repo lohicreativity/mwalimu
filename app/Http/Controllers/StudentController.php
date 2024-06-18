@@ -1021,13 +1021,13 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with(['applicant:id,program_level_id,index_number,campus_id','applicant.programLevel:id,name','studentshipStatus:id,name','academicStatus:id,name','semesterRemarks'=>function($query){
+        $student = Student::with(['applicant:id,program_level_id,intake_id,index_number,campus_id','applicant.programLevel:id,name','studentshipStatus:id,name','academicStatus:id,name','semesterRemarks'=>function($query){
             $query->latest();},'semesterRemarks.semester'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
 
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
-return $student->applicant->intake_id.'/'.explode('/',$student->registration_number)[3].'/'.substr(explode('/',$study_academic_year->academicYear->year)[1],2);
+//return $student->applicant->intake_id.'/'.explode('/',$student->registration_number)[3].'/'.substr(explode('/',$study_academic_year->academicYear->year)[1],2);
         if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){return 1;
           $ac_yr_id = $study_academic_year->id + 1;
         }else{return 2;
