@@ -3636,7 +3636,10 @@ class ExaminationResultController extends Controller
                            }else{
                               $processed_result->final_exam_remark = 'PASS';
                            }
-                           return $processed_result;
+                           if($processed_result->module_assignment_id == 455){
+                              return $processed_result;
+                           }
+
                            // if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE'){
                            //    $processed_result->final_exam_remark = 'INCOMPLETE';
                            // }elseif($processed_result->course_work_remark == 'POSTPONED' || $processed_result->final_remark == 'POSTPONED'){
