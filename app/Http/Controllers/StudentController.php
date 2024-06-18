@@ -322,35 +322,7 @@ class StudentController extends Controller
      */
     public function showPayments(Request $request)
     {
-      // needs to improve to display registration status on the top bar
       $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=> function($query){$query->latest()->first();}])->first();
-
-      // DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')
-      //           ->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')
-      //           ->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')
-      //           ->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year, study_academic_years.id as ac_yr_id'))->where(function($query) use($student){
-      //             $query->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->where('invoices.applicable_type','academic_year');
-      //           })->orWhere(function($query) use($student){
-      //             $query->where('invoices.payable_id',$student->applicant_id)->where('invoices.payable_type','applicant')->where('invoices.applicable_type','academic_year');
-      //           })->latest()->get()
-
-      // return Invoice::where('payable_id', $student->id)->where('payable_type','student')
-      // ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant->id)
-      //     ->where('payable_type','applicant');})->with('feeType','gatewayPayment','applicable')->get();
-
-      // $invoice = Invoice::where('payable_id', $student_payer->id)->where('payable_type','student')
-      //           ->orWhere(function($query) use($student_payer){$query->where('payable_id',$student_payer->applicant->id)
-      //               ->where('payable_type','applicant');})->with('feeType','gatewayPayment')->whereNotNull('gateway_payment_id')->get();
-
-
-      // $staff = User::find(Auth::user()->id)->staff;
-
-      // $applicant = Applicant::select('id','campus_id')->where('index_number',$request->keyword)->where('campus_id',$staff->campus_id)->latest()->first();
-      // $applicant_id = $applicant? $applicant->id : 0;
-
-      // $student_payer = User::find(Auth::user()->id)->student()
-      //                       ->with(['applicant','campusProgram.program','studentShipStatus'])
-      //                       ->first();
 
       $payments = Invoice::where(function($query) use($student){$query->where(function($query) use($student){$query->where('payable_id',$student->id)->where('payable_type','student');})
                                                         ->orWhere(function($query) use($student){$query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');});})
@@ -441,7 +413,7 @@ class StudentController extends Controller
            	   }
            }
            $options = Student::find($student->id)->options()->where('semester_id',$assignment->semester_id)->get();
-//return $options;
+
            if($elective_policy->number_of_options <= count($options)){
               return redirect()->back()->with('error','Options cannot exceed '.$elective_policy->number_of_options);
            }else{
@@ -1027,7 +999,7 @@ class StudentController extends Controller
 
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
-//return $student->applicant->intake_id.'/'.explode('/',$student->registration_number)[3].'/'.substr(explode('/',$study_academic_year->academicYear->year)[1],2);
+
         if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
           $ac_yr_id = $study_academic_year->id + 1;
         }else{
@@ -2179,10 +2151,20 @@ class StudentController extends Controller
 			$programs = [];
 			$applicant = null;
 		} */
+
+    $study_academic_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+
+    if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+      $ac_yr_id = $study_academic_year->id + 1;
+    }else{
+      $ac_yr_id = $study_academic_year->id;
+    }
+
+    $ac_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();
 		if($applicant){
 
 		$data = [
-		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+		   'study_academic_year'=>$ac_year,
 //           'applicant'=>$applicant,
 		   'selected_campus'=>$applicant->campus_id,
 		   'programme'=>Award::where('id', $applicant->program_level_id)->first(),
@@ -2209,7 +2191,7 @@ class StudentController extends Controller
                                     ->count();
 
 		$data = [
-		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+		   'study_academic_year'=>$ac_year,
 		   'selected_campus'=>[],
 		   'programme'=>[],
            'campuses'=>Campus::all(),

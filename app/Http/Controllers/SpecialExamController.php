@@ -61,7 +61,17 @@ class SpecialExamController extends Controller
      */
     public function showPostponement(Request $request)
     {
-        $student = User::find(Auth::user()->id)->student;
+        $student = User::find(Auth::user()->id)->student()->with('applicant:id,intake_id')->first();
+        return $student;
+        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+
+        if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+            $ac_yr_id = $ac_year->id + 1;
+        }else{
+            $ac_yr_id = $ac_year->id;
+        }
+
+        $ac_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();
 
         $second_semester_publish_status = false;
          if(ResultPublication::whereHas('semester',function($query){
@@ -160,7 +170,7 @@ class SpecialExamController extends Controller
             'request'=>$request,
             'suppExams'     => $suppExams,
             'specialExams_count' => $specialExams_count,
-            'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+            'study_academic_year' => ,
             'loan_status'=>$loan_status
         ];
 
