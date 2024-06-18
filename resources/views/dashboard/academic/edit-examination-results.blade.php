@@ -99,7 +99,7 @@
                     <div class="form-group col-4">
                       {!! Form::label('','Coursework score') !!}
                       {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
-                      @if($result->supp_processed_at != null && $result->final_remark != 'POSTPONED')
+                      @if($result->supp_processed_at == null || $result->final_remark == 'POSTPONED')
                         <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results?ac_yr_id='.$result->moduleAssignment->study_academic_year_id.'&year_of_study='.$year_of_study) }}" class="ss-margin-top">Edit Coursework</a>
                       @endif
                     </div>
