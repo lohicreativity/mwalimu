@@ -3369,7 +3369,7 @@ class ExaminationResultController extends Controller
          $semester = Semester::find($request->get('semester_id'));
          $campus_program = CampusProgram::select('id','campus_id','program_id')->with('program')->find($student->campus_program_id);
          $missing_case = false;
-         if(is_null($request->get('process_type')) && Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
+         // if(is_null($request->get('process_type')) && Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student,$yr_of_study,$semester){$query->where('campus_program_id',$student->campus_program_id)
                                                                                                                                                    ->where('year_of_study',$yr_of_study)
                                                                                                                                                    ->where('semester_id',$semester->id);})
@@ -3793,15 +3793,15 @@ class ExaminationResultController extends Controller
 
                $remark->save();
                
-               if($remark->supp_remark != null){
+               if($remark->supp_remark != null || $request->get('process_type') == 'SUPP'){
                   DB::commit();
                   return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$yr_of_study.'&ac_yr_id='.$ac_yr_id); 
                }
             }
-         }elseif($request->get('process_type') == 'SUPP'){
-            DB::commit();
-            return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$yr_of_study.'&ac_yr_id='.$ac_yr_id); 
-         }
+         // }elseif($request->get('process_type') == 'SUPP'){
+         //    DB::commit();
+         //    return redirect()->to('academic/results/process-student-supp-results?semester_id=1&student_id='.$student->id.'&year_of_study='.$yr_of_study.'&ac_yr_id='.$ac_yr_id); 
+         // }
 
          $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
 
