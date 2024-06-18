@@ -3101,7 +3101,7 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-
+return $result;
             // if($result->supp_score && $result->retakable_type == 'carry_history'){
             //    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
             // } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
@@ -3450,7 +3450,7 @@ class ExaminationResultController extends Controller
                                           ->where('student_id',$student->id)
                                           ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
                                           ->get();
-return $results;
+
                if(count($results) != $no_of_expected_modules){
                   $missing_case = true;
                }
