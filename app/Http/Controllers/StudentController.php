@@ -1028,12 +1028,12 @@ class StudentController extends Controller
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
 
-        if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+        if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){return 1;
           $ac_yr_id = $study_academic_year->id + 1;
-        }else{
+        }else{return 2;
           $ac_yr_id = $study_academic_year->id;
         }
-  return $ac_yr_id;
+  //return $ac_yr_id;
         $semester = Semester::find(session('active_semester_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
