@@ -445,9 +445,17 @@ class StudentController extends Controller
      */
     public function showResultsReport(Request $request)
     {
-    	$student = User::find(Auth::user()->id)->student;
+    	$student = User::find(Auth::user()->id)->student()->with('applicant:id,intake_id')->first();
     	$results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
+      $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+      
+      if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+        $ac_yr_id = $ac_year->id + 1;
+      }else{
+        $ac_yr_id = $ac_year->id;
+      }
 
+      $ac_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();
     	$years = [];
     	$years_of_studies = [];
     	$academic_years = [];
@@ -471,7 +479,7 @@ class StudentController extends Controller
                                   ->where('campus_id',$student->applicant->campus_id)
                                   ->count();
     	$data = [
-    	  'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+    	  'study_academic_year'=>$ac_year,
 		    'years_of_studies'=>$years_of_studies,
         'results_present_status'=>count($results) != 0? true : false,
         'student'=>$student,
