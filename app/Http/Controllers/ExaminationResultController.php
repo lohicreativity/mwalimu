@@ -3580,11 +3580,6 @@ class ExaminationResultController extends Controller
                               $processed_result->point = 0;
                            }
          
-                           if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL' || $result->final_remark == 'POSTPONED' && $result->supp_remark == 'FAIL'){
-                              $processed_result->final_exam_remark = 'FAIL';
-                              $no_of_failed_modules++;
-                           }
-         
                            if($processed_result->course_work_remark == 'FAIL'){
                               if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7')){
                                  if($year_of_study == 1){
@@ -3631,17 +3626,24 @@ class ExaminationResultController extends Controller
                               
                            }else{
    
-                                 $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-   
-                                 // if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE'){
-                                 //    $processed_result->final_exam_remark = 'INCOMPLETE';
-                                 // }elseif($processed_result->course_work_remark == 'POSTPONED' || $processed_result->final_remark == 'POSTPONED'){
-                                 //    $processed_result->final_exam_remark = 'POSTPONED';
-                                 // }else{
-                                 //    $processed_result->final_exam_remark = 'FAIL';
-                                 // }
+                              $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                               
                            }
+
+                           if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL' || $result->final_remark == 'POSTPONED' && $result->supp_remark == 'FAIL'){
+                              $processed_result->final_exam_remark = 'FAIL';
+                              $no_of_failed_modules++;
+                           }else{
+                              $processed_result->final_exam_remark = 'PASS';
+                           }
+                           return $processed_result;
+                           // if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE'){
+                           //    $processed_result->final_exam_remark = 'INCOMPLETE';
+                           // }elseif($processed_result->course_work_remark == 'POSTPONED' || $processed_result->final_remark == 'POSTPONED'){
+                           //    $processed_result->final_exam_remark = 'POSTPONED';
+                           // }else{
+                           //    $processed_result->final_exam_remark = 'FAIL';
+                           // }
                         }
                      }
                   
