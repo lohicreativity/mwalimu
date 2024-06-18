@@ -259,12 +259,12 @@
                   <p>Loan Allocations</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="{{ url('student/loan-payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Loan Payments</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </li>
 		  @endif
