@@ -3574,6 +3574,9 @@ class ExaminationResultController extends Controller
                                     break;
                                  }
                               }
+                           }else{
+                              $processed_result->grade = 'F';
+                              $processed_result->point = 0;
                            }
 
                            if($result->module_assignment_id == 455){
