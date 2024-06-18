@@ -3101,7 +3101,7 @@ class ExaminationResultController extends Controller
                   }
                }
             }
-return $result;
+
             // if($result->supp_score && $result->retakable_type == 'carry_history'){
             //    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
             // } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
