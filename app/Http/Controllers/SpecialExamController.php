@@ -170,7 +170,7 @@ class SpecialExamController extends Controller
             'request'=>$request,
             'suppExams'     => $suppExams,
             'specialExams_count' => $specialExams_count,
-            'study_academic_year' => ,
+            'study_academic_year' =>$ac_year,
             'loan_status'=>$loan_status
         ];
 
