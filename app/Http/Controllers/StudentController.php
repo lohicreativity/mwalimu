@@ -1027,6 +1027,14 @@ class StudentController extends Controller
 
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
+
+        if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+          $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+          $ac_yr_id = $study_academic_year->id;
+        }
+  
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();
         $semester = Semester::find(session('active_semester_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
@@ -1556,8 +1564,16 @@ class StudentController extends Controller
         $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+          $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+          $ac_yr_id = $study_academic_year->id;
+        }
+  
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();
         $data = [
-          'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+          'study_academic_year'=>$study_academic_year,
           'student'=>$student,
           'loan_allocation'=>$loan_allocation,
           'loan_status'=>$loan_status
@@ -1602,8 +1618,17 @@ class StudentController extends Controller
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();
 
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+          $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+          $ac_yr_id = $study_academic_year->id;
+        }
+  
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();                  
+
         $data = [
-		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+		   'study_academic_year'=>$study_academic_year,
            'student'=>$student,
            'loan_allocations'=>LoanAllocation::with(['studyAcademicYear.academicYear'])->where('registration_number',$student->registration_number)->paginate(20),
            'loan_status'=>$loan_status
@@ -1618,11 +1643,20 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
 
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+          $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+          $ac_yr_id = $study_academic_year->id;
+        }
+  
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();  
+
         $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                     ->where('campus_id',$student->applicant->campus_id)
                                     ->count();        
         $data = [
-           'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+           'study_academic_year'=>$study_academic_year,
            'semester'=>Semester::where('status','ACTIVE')->first(),
            'student'=>$student,
            'postponements'=>Postponement::where('student_id',$student->id)->latest()->paginate(20),
