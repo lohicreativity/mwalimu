@@ -62,8 +62,14 @@ class StudentController extends Controller
     $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                 ->where('campus_id',$student->applicant->campus_id)
                                 ->count();
+
+    if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+      $ac_yr_id = $ac_year->id + 1;
+    }else{
+      $ac_yr_id = $ac_year->id;
+    }
 		$data = [
-			'study_academic_year'=>$ac_year,
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first(),
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
