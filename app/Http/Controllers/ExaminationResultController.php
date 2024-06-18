@@ -3450,7 +3450,7 @@ class ExaminationResultController extends Controller
                                           ->where('student_id',$student->id)
                                           ->with(['retakeHistory'=>function($query) use($ac_yr_id){$query->where('study_academic_year_id',$ac_yr_id - 1);},'retakeHistory.retakableResults'=>function($query) {$query->latest();}])
                                           ->get();
-return $results;
+
                if(count($results) != $no_of_expected_modules){
                   $missing_case = true;
                }
@@ -3546,7 +3546,7 @@ return $results;
                            }else{
                               $processed_result->final_remark = $final_pass_score <= $result->final_score? 'PASS' : 'FAIL';   
                            }  
-   
+   return $result;
                            $processed_result->grade = $processed_result->point = null;
                            if($course_work_based == 1){
                               $course_work = CourseWorkResult::where('module_assignment_id',$result->module_assignment_id)->where('student_id',$student->id)->sum('score');
