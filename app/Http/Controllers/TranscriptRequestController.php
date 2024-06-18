@@ -45,7 +45,16 @@ class TranscriptRequestController extends Controller
          $tranx = TranscriptRequest::where('student_id',$student->id)->whereDate('created_at','=',date('Y-m-d'))->orWhere('status', null)->first();
          if(!$tranx){
           
-         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+
+        if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+            $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+            $ac_yr_id = $study_academic_year->id;
+        }
+    
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first(); 
+
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Transcript%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();

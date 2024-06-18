@@ -495,7 +495,7 @@ class StudentController extends Controller
     {
     	 $student = User::find(Auth::user()->id)->student()->with(['registrations'=>function($query) use($ac_yr_id,$yr_of_study){
             $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('status','REGISTERED');
-         }])->with(['campusProgram.program'])->first();
+         }])->with(['applicant:id,intake_id','campusProgram.program'])->first();
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
 
          $retake_sem_remarks = SemesterRemark::where('student_id',$student->id)->where('remark','RETAKE')->where('year_of_study',$yr_of_study)->get();
@@ -504,7 +504,7 @@ class StudentController extends Controller
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
          }])->get();
 
-         if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+         if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
           $ac_yr_id = $study_academic_year->id + 1;
         }else{
           $ac_yr_id = $study_academic_year->id;

@@ -18,9 +18,19 @@ class ClearanceController extends Controller
      */
     public function index(Request $request)
     {
-    	$student = User::find(Auth::user()->id)->student;
+    	$student = User::find(Auth::user()->id)->student()->with('applicant:id,intake_id')->first();
+        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+
+        if($student->applicant->intake_id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+            $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+            $ac_yr_id = $study_academic_year->id;
+        }
+    
+        $study_academic_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first(); 
+
     	$data = [
-		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+		   'study_academic_year'=>$study_academic_year,
            'student'=>$student,
            'registration'=>Registration::where('student_id',$student->id)->latest()->first(),
            'clearance'=>Clearance::where('student_id',$student->id)->first()
