@@ -153,38 +153,42 @@ class SpecialExamController extends Controller
             $query->where('semester_id',session('active_semester_id'))
             ->where('campus_program_id',$student->campus_program_id)
             ->where('year_of_study', $student->year_of_study);
-        })->with(['module','programModuleAssignment'])
-        ->where('study_academic_year_id',$ac_yr_id)
-        ->whereNotIn('module_assignments.id', $specialExams)
-        ->get(),
-           'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-            $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
-            ->where('semester_id',session('active_semester_id'))
-            ->where('student_program_module_assignment.student_id', '=', $student->id)
-            ->where('campus_program_id',$student->campus_program_id);
             })->with(['module','programModuleAssignment'])
             ->where('study_academic_year_id',$ac_yr_id)
-            ->get(), 
-            'special_exam_requests'=> $Special_exams,
-            'student'=>$student,
-            'request'=>$request,
-            'suppExams'     => $suppExams,
-            'specialExams_count' => $specialExams_count,
-            'study_academic_year' =>$ac_year,
-            'loan_status'=>$loan_status
-        ];
-
-        } else {
-
-            $data =  [
-                'second_semester_publish_status'=>$second_semester_publish_status,
-                'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-                    $query->where('semester_id',session('active_semester_id'))
-                    ->where('campus_program_id',$student->campus_program_id)
-                    ->where('year_of_study', $student->year_of_study);
+            ->whereNotIn('module_assignments.id', $specialExams)
+            ->get(),
+            'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+                $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                ->where('semester_id',session('active_semester_id'))
+                ->where('student_program_module_assignment.student_id', '=', $student->id)
+                ->where('campus_program_id',$student->campus_program_id);
                 })->with(['module','programModuleAssignment'])
                 ->where('study_academic_year_id',$ac_yr_id)
-                ->get(),
+                ->get(), 
+                'special_exam_requests'=> $Special_exams,
+                'student'=>$student,
+                'request'=>$request,
+                'suppExams'     => $suppExams,
+                'specialExams_count' => $specialExams_count,
+                'study_academic_year' =>$ac_year,
+                'loan_status'=>$loan_status
+            ];
+
+        } else {
+            $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){$query->where('semester_id',session('active_semester_id'))
+                                                                                                                           ->where('campus_program_id',$student->campus_program_id)
+                                                                                                                           ->where('year_of_study', $student->year_of_study);})
+                                                 ->with(['module','programModuleAssignment'])
+                                                ->where('study_academic_year_id',$ac_yr_id)
+                                                ->get();
+
+            if(count($module_assignment) == 0){
+                return redirect()->to('academic/special-exams?study_academic_year_id='.$ac_yr_id)->with('error','No modules to postpone');  
+            }
+            
+            $data =  [
+                'second_semester_publish_status'=>$second_semester_publish_status,
+                'module_assignments'=> $module_assignment,
                 'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                  $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
                  ->where('semester_id',session('active_semester_id'))
