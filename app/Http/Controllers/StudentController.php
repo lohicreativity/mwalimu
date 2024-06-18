@@ -1034,6 +1034,8 @@ class StudentController extends Controller
           $ac_yr_id = $study_academic_year->id;
         }
 
+        $study_academic_year = StudyAcademicYear::where('id',$ac_yr_id)->first();
+
         $semester = Semester::find(session('active_semester_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
