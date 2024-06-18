@@ -102,8 +102,6 @@
                           @endif
                         @endif
                       @endif
-
-                      
                     </select>
 
                     {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
