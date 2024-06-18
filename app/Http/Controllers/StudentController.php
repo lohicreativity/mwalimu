@@ -343,6 +343,12 @@ class StudentController extends Controller
       
       $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
+      if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+        $ac_yr_id = $ac_year->id + 1;
+      }else{
+        $ac_yr_id = $ac_year->id;
+      }
+
       $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                         ->where('year_of_study',$student->year_of_study)
                                         ->where('study_academic_year_id',$ac_year->academicYear->id)
@@ -362,7 +368,7 @@ class StudentController extends Controller
                                   ->count();
 
       $data = [
-        'study_academic_year'=>$ac_year,
+        'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first(),
         'student'=>$student,
         'payments'=>$payments,
         'total_paid_fee'=>$total_fee_paid_amount,
@@ -996,6 +1002,7 @@ class StudentController extends Controller
           DB::rollback();
           return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
         }
+        
         $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
         $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
         $can_register = true;
