@@ -3628,9 +3628,6 @@ class ExaminationResultController extends Controller
                                  $processed_result->retakable_type = 'carry_history';
                               }
                               
-                           if($result->module_assignment_id == 455){
-                              return $result;
-                           }
                            }else{
    
                                  $processed_result->final_exam_remark = $module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
