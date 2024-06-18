@@ -286,7 +286,7 @@ class StudentController extends Controller
                                   ->where('campus_id',$student->applicant->campus_id)
                                   ->count();
 
-      if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+      if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
         $ac_yr_id = $study_academic_year->id + 1;
       }else{
         $ac_yr_id = $study_academic_year->id;
