@@ -47,6 +47,7 @@
                  {!! Form::open(['url'=>'student/special-exam/store','class'=>'ss-form-processing','files'=>true]) !!}
               <div class="card-body">
 
+                @if(count($module_assignments) > 0)
                  <div class="row">
                   <div class="form-group col-6">
                      {!! Form::label('','Type') !!}
@@ -160,6 +161,7 @@
                   <button type="submit" class="btn btn-primary">{{ __('Request Exam Postponement') }}</button>
                 </div>
               {!! Form::close() !!}
+              @endif
             </div>
             <!-- /.card -->
 
