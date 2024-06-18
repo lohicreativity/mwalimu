@@ -1033,7 +1033,7 @@ class StudentController extends Controller
         }else{
           $ac_yr_id = $study_academic_year->id;
         }
-  
+  return $ac_yr_id;
         $semester = Semester::find(session('active_semester_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
