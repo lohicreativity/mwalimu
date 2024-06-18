@@ -2953,7 +2953,7 @@ class ExaminationResultController extends Controller
             }
          }
 
-         // $staff = User::find(Auth::user()->id)->staff;
+         $staff = User::find(Auth::user()->id)->staff;
 
          // if($staff->id != 2){
          //    return 1;
