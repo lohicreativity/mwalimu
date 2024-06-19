@@ -580,9 +580,7 @@ class ExaminationResultController extends Controller
                   $pass_status = 'PASS'; 
                   $supp_exams = $retake_exams = $carry_exams = [];
                   $incomplete_status = $postpone_status = false;
-                  if($remark->student_id == 4126){
-                     return $student_results;
-                  }
+
                   foreach($student_results as $result){
                      if($result->final_exam_remark == 'INCOMPLETE'){
                            $pass_status = 'INCOMPLETE';
@@ -650,7 +648,9 @@ class ExaminationResultController extends Controller
                            $supp_exams[] = $result->moduleAssignment->module->code;
                      }   
                   }
-   
+                  if($remark->student_id == 4126){
+                     return $pass_status;
+                  }
                   $remark->study_academic_year_id = $request->get('study_academic_year_id');
                   $remark->student_id = $student->id;
                   $remark->semester_id = $request->get('semester_id');
