@@ -710,32 +710,35 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
-                  if($remark->student_id == 4126){
-                     return $remark->remark;
-                  }
+                  // if($remark->student_id == 4126){
+                  //    return $remark->remark;
+                  // }
                }
             }
 
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
             if(count($missing_cases) > 0){
                foreach($missing_cases as $student_id){
-                  if($rem = SemesterRemark::where('student_id',$student_id)
-                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                          ->where('semester_id',1)
-                                          ->where('year_of_study',$year_of_study)
-                                          ->first()){
-                     $remark = $rem;  
-                  }else{
-                     $remark = new SemesterRemark;
+                  if(!in_array($student_id,$postponed_studies_students)){
+
+                     if($rem = SemesterRemark::where('student_id',$student_id)
+                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                             ->where('semester_id',1)
+                                             ->where('year_of_study',$year_of_study)
+                                             ->first()){
+                        $remark = $rem;  
+                     }else{
+                        $remark = new SemesterRemark;
+                     }
+      
+                     $remark->study_academic_year_id = $request->get('study_academic_year_id');
+                     $remark->student_id = $student_id;
+                     $remark->semester_id = 1;
+                     $remark->remark = 'INCOMPLETE';
+                     $remark->gpa = null;
+                     $remark->class = null;
+                     $remark->save();
                   }
-   
-                  $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                  $remark->student_id = $student_id;
-                  $remark->semester_id = 1;
-                  $remark->remark = 'INCOMPLETE';
-                  $remark->gpa = null;
-                  $remark->class = null;
-                  $remark->save();
                }
             }
 
