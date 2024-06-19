@@ -719,7 +719,7 @@ class ExaminationResultController extends Controller
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
             if(count($missing_cases) > 0){
                foreach($missing_cases as $student_id){
-                  if(!in_array($student_id,$postponed_studies_student_ids)){
+                  //if(!in_array($student_id,$postponed_studies_student_ids)){
 
                      if($rem = SemesterRemark::where('student_id',$student_id)
                                              ->where('study_academic_year_id',$request->get('study_academic_year_id'))
@@ -738,7 +738,7 @@ class ExaminationResultController extends Controller
                      $remark->gpa = null;
                      $remark->class = null;
                      $remark->save();
-                  }
+                  //}
                }
             }
 
