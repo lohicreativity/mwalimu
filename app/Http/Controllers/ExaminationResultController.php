@@ -167,28 +167,7 @@ class ExaminationResultController extends Controller
    
             $total_modules = count($module_assignments);
             $no_of_compulsory_modules = $no_of_optional_modules = $no_of_expected_modules = $number_of_options = $total_credits = $assignment_id = 0;
-            $special_exam_student_ids = $postponed_studies_student_ids = [];
-
-            $postponed_studies_students = Postponement::whereHas('student', function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
-                                                      ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                                      ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
-                                                      ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                                      ->where('semester_id',$request->get('semester_id'))
-                                                      ->where('status','POSTPONED')
-                                                      ->get('student_id');
    
-            if(count($postponed_studies_students) > 0){
-               foreach($postponed_studies_students as $student){
-                  $postponed_studies_student_ids[] = $student->student_id;
-               }
-            }
-
-            ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)
-                             ->whereIn('student_id',$postponed_studies_student_ids)
-                             ->where('exam_type','FINAL')
-                             ->where('exam_category','FIRST')
-                             ->update(['course_work_score'=>null,'final_score'=>null,'total_score'=>null,'grade'=>null,'point'=>null,'course_work_remark'=>'POSTPONED','final_exam_remark'=>'POSTPONED','final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
-
             foreach($module_assignments as $module_assignment){
                $module_assignment_buffer[$module_assignment->id]['category'] = $module_assignment->programModuleAssignment->category;
                if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
@@ -220,24 +199,24 @@ class ExaminationResultController extends Controller
                                                 ->where('semester_id',$semester->id)
                                                 ->where('module_assignment_id',$module_assignment->id)
                                                 ->where('type','FINAL')
-                                                ->where('status','APPROVED')
-                                                ->get('student_id');
-                                
+                                                ->where('status','APPROVED')->get();
+   
                if(count($postponed_students) > 0){
                   foreach($postponed_students as $student){
-                     $special_exam_student_ids[] = $student->student_id;
+                     $student_ids[] = $student->student_id;
                   }
                }
-               
-               ExaminationResult::where('module_assignment_id',$module_assignment->id)
-                                ->whereIn('student_id',$special_exam_student_ids)
-                                ->where('exam_type','FINAL')
-                                ->where('exam_category','FIRST')
-                                ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
 
                if($module_assignment->final_upload_status == null){
-
-                  if(count($postponed_students) + count($postponed_studies_students) != count($enrolled_students)){
+                  if(count($postponed_students) == count($enrolled_students)){
+                     ExaminationResult::where('module_assignment_id',$module_assignment->id)
+                                       ->whereIn('student_id',$student_ids)
+                                       ->where('exam_type','FINAL')
+                                       ->where('exam_category','FIRST')
+                                       ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
+                  }
+   
+                  if(count($postponed_students) != count($enrolled_students)){
                      DB::rollback();
                      return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
                   }
@@ -580,7 +559,6 @@ class ExaminationResultController extends Controller
                   $pass_status = 'PASS'; 
                   $supp_exams = $retake_exams = $carry_exams = [];
                   $incomplete_status = $postpone_status = false;
-
                   foreach($student_results as $result){
                      if($result->final_exam_remark == 'INCOMPLETE'){
                            $pass_status = 'INCOMPLETE';
@@ -648,12 +626,12 @@ class ExaminationResultController extends Controller
                            $supp_exams[] = $result->moduleAssignment->module->code;
                      }   
                   }
-
+   
                   $remark->study_academic_year_id = $request->get('study_academic_year_id');
                   $remark->student_id = $student->id;
                   $remark->semester_id = $request->get('semester_id');
                   $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-
+      
                   if($remark->remark != 'PASS'){
                      $remark->gpa = null;
                      if($remark->remark == 'SUPP'){
@@ -710,35 +688,29 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
-                  // if($remark->student_id == 4126){
-                  //    return $remark->remark;
-                  // }
                }
             }
 
             $enrolled_students = $results = $processed_result = $grading_policy = $gpa_classes = $module_assignment_buffer = $optional_modules = null;
             if(count($missing_cases) > 0){
                foreach($missing_cases as $student_id){
-                  //if(!in_array($student_id,$postponed_studies_student_ids)){
-
-                     if($rem = SemesterRemark::where('student_id',$student_id)
-                                             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                                             ->where('semester_id',1)
-                                             ->where('year_of_study',$year_of_study)
-                                             ->first()){
-                        $remark = $rem;  
-                     }else{
-                        $remark = new SemesterRemark;
-                     }
-      
-                     $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                     $remark->student_id = $student_id;
-                     $remark->semester_id = 1;
-                     $remark->remark = 'INCOMPLETE';
-                     $remark->gpa = null;
-                     $remark->class = null;
-                     $remark->save();
-                  //}
+                  if($rem = SemesterRemark::where('student_id',$student_id)
+                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                          ->where('semester_id',1)
+                                          ->where('year_of_study',$year_of_study)
+                                          ->first()){
+                     $remark = $rem;  
+                  }else{
+                     $remark = new SemesterRemark;
+                  }
+   
+                  $remark->study_academic_year_id = $request->get('study_academic_year_id');
+                  $remark->student_id = $student_id;
+                  $remark->semester_id = 1;
+                  $remark->remark = 'INCOMPLETE';
+                  $remark->gpa = null;
+                  $remark->class = null;
+                  $remark->save();
                }
             }
 
