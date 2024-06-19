@@ -648,9 +648,7 @@ class ExaminationResultController extends Controller
                            $supp_exams[] = $result->moduleAssignment->module->code;
                      }   
                   }
-                  if($remark->student_id == 4126){
-                     return $pass_status;
-                  }
+
                   $remark->study_academic_year_id = $request->get('study_academic_year_id');
                   $remark->student_id = $student->id;
                   $remark->semester_id = $request->get('semester_id');
