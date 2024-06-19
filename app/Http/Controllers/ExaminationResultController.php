@@ -209,7 +209,8 @@ class ExaminationResultController extends Controller
                                                          ->where('semester_id',$request->get('semester_id'))
                                                          ->where('status','POSTPONED')
                                                          ->get('student_id');
-   return $postponed_studies_students;
+                                                         $postponed_students = array_push($postponed_students,$postponed_studies_students);           
+   return $postponed_students;
                if(count($postponed_students) > 0){
                   foreach($postponed_students as $student){
                      $student_ids[] = $student->student_id;
