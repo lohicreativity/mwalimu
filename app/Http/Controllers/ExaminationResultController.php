@@ -558,16 +558,21 @@ class ExaminationResultController extends Controller
       
                   $pass_status = 'PASS'; 
                   $supp_exams = $retake_exams = $carry_exams = [];
+                  $incomplete_status = $postpone_status = false;
                   foreach($student_results as $result){
                      if($result->final_exam_remark == 'INCOMPLETE'){
                            $pass_status = 'INCOMPLETE';
-                           break;
+                           $incomplete_status = true;
                      }
       
                      if($result->final_exam_remark == 'POSTPONED'){
                         if(in_array($student->id,$student_ids)){
-                           $pass_status = 'POSTPONED EXAM';
-                           break;
+
+                           if(!$incomplete_status){
+                              $pass_status = 'POSTPONED EXAM';
+                           }else{
+                              $pass_status = 'INCOMPLETE';
+                           }
                         }else{
                            if(Postponement::where('student_id',$student->id)
                                           ->where('category','YEAR')
@@ -590,19 +595,34 @@ class ExaminationResultController extends Controller
                      }
       
                      if($result->final_exam_remark == 'RETAKE'){
-                           $pass_status = 'RETAKE'; 
+                        if(!$incomplete_status){
+                           $pass_status = 'RETAKE';
+                        }else{
+                           $pass_status = 'INCOMPLETE';
+                        }
+                           //$pass_status = 'RETAKE'; 
                            $retake_exams[] = $result->moduleAssignment->module->code;
 
                      }  
       
                      if($result->final_exam_remark == 'CARRY'){
-                           $pass_status = 'CARRY'; 
+                        if(!$incomplete_status){
+                           $pass_status = 'CARRY';
+                        }else{
+                           $pass_status = 'INCOMPLETE';
+                        }
+                           //$pass_status = 'CARRY'; 
                            $carry_exams[] = $result->moduleAssignment->module->code;
 
                      }
       
                      if($result->final_exam_remark == 'FAIL'){
-                           $pass_status = 'SUPP'; 
+                        if(!$incomplete_status){
+                           $pass_status = 'SUPP';
+                        }else{
+                           $pass_status = 'INCOMPLETE';
+                        }
+                          // $pass_status = 'SUPP'; 
                            $supp_exams[] = $result->moduleAssignment->module->code;
                      }   
                   }
