@@ -209,24 +209,36 @@ class ExaminationResultController extends Controller
                                                          ->where('semester_id',$request->get('semester_id'))
                                                          ->where('status','POSTPONED')
                                                          ->get('student_id');
-                                                         $postponed_students = array_push($postponed_students,$postponed_studies_students);           
-   return $postponed_students;
+                                
                if(count($postponed_students) > 0){
                   foreach($postponed_students as $student){
-                     $student_ids[] = $student->student_id;
+                     $special_exam_student_ids[] = $student->student_id;
                   }
                }
 
-               if($module_assignment->final_upload_status == null){
-                  if(count($postponed_students) == count($enrolled_students)){
-                     ExaminationResult::where('module_assignment_id',$module_assignment->id)
-                                       ->whereIn('student_id',$student_ids)
-                                       ->where('exam_type','FINAL')
-                                       ->where('exam_category','FIRST')
-                                       ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
+               if(count($postponed_studies_students) > 0){
+                  foreach($postponed_studies_students as $student){
+                     $postponed_studies_student_ids[] = $student->student_id;
                   }
-   
-                  if(count($postponed_students) != count($enrolled_students)){
+               }
+
+               
+               ExaminationResult::where('module_assignment_id',$module_assignment->id)
+                                ->whereIn('student_id',$special_exam_student_ids)
+                                ->where('exam_type','FINAL')
+                                ->where('exam_category','FIRST')
+                                ->update(['final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
+
+               
+               ExaminationResult::where('module_assignment_id',$module_assignment->id)
+                                ->whereIn('student_id',$postponed_studies_student_ids)
+                                ->where('exam_type','FINAL')
+                                ->where('exam_category','FIRST')
+                                ->update(['course_work_score'=>null,'final_score'=>null,'total_score'=>null,'grade'=>null,'point'=>null,'course_work_remark'=>'POSTPONED','final_exam_remark'=>'POSTPONED','final_uploaded_at'=>now(),'final_remark'=>'POSTPONED']);
+
+               if($module_assignment->final_upload_status == null){
+
+                  if(count($postponed_students) + count($postponed_studies_students) != count($enrolled_students)){
                      DB::rollback();
                      return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
                   }
