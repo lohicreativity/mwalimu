@@ -199,7 +199,16 @@ class ExaminationResultController extends Controller
                                                 ->where('semester_id',$semester->id)
                                                 ->where('module_assignment_id',$module_assignment->id)
                                                 ->where('type','FINAL')
-                                                ->where('status','APPROVED')->get();
+                                                ->where('status','APPROVED')
+                                                ->get('student_id');
+return $postponed_students;
+               $postponed_studies_students = Postponement::whereHas('student', function($query) use($campus_program){$query->where('campus_program_id',$campus_program->id);})
+                                                         ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                                         ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
+                                                         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                         ->where('semester_id',$request->get('semester_id'))
+                                                         ->where('status','POSTPONED')
+                                                         ->get('student_id');
    
                if(count($postponed_students) > 0){
                   foreach($postponed_students as $student){
