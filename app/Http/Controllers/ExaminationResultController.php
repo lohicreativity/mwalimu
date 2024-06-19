@@ -653,9 +653,7 @@ class ExaminationResultController extends Controller
                   $remark->student_id = $student->id;
                   $remark->semester_id = $request->get('semester_id');
                   $remark->remark = !empty($pass_status)? $pass_status : 'INCOMPLETE';
-                  if($remark->student_id == 4126){
-                     return $remark->remark;
-                  }
+
                   if($remark->remark != 'PASS'){
                      $remark->gpa = null;
                      if($remark->remark == 'SUPP'){
@@ -712,6 +710,9 @@ class ExaminationResultController extends Controller
                      }
                   }
                   $remark->save();
+                  if($remark->student_id == 4126){
+                     return $remark->remark;
+                  }
                }
             }
 
