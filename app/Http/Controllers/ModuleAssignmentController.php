@@ -617,7 +617,7 @@ class ModuleAssignmentController extends Controller
                                             ->where('status','APPROVED')
                                             ->with('student:id,registration_number')
                                             ->get();
-return $special_cases;
+
             $carry_students = Student::select('id','registration_number','studentship_status_id')
                                     ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                     ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
@@ -625,6 +625,8 @@ return $special_cases;
                                     ->whereHas('examinationResults.moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
                                     ->whereHas('semesterRemarks', function($query){$query->where('remark','CARRY');})
                                     ->get();
+
+                                    return $carry_students;
             $students_supp_session = [];
             foreach($supp_students as $student){
                 $students_supp_session[] = $student->student;
