@@ -608,7 +608,7 @@ class ModuleAssignmentController extends Controller
                                             ->whereNull('retakable_type')
                                             ->with('student:id,registration_number,studentship_status_id')
                                             ->get();
-return $supp_students;
+
             $special_cases = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                             ->where('module_assignment_id',$module_assignment->id)
                                             ->where('type','FINAL')
