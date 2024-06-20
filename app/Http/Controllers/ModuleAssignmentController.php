@@ -626,7 +626,6 @@ class ModuleAssignmentController extends Controller
                                     ->whereHas('semesterRemarks', function($query){$query->where('remark','CARRY');})
                                     ->get();
 
-                                    return $carry_students;
             $students_supp_session = [];
             foreach($supp_students as $student){
                 $students_supp_session[] = $student->student;
@@ -638,6 +637,14 @@ class ModuleAssignmentController extends Controller
 
             foreach($carry_students as $student){
                 $students_supp_session[] = $student;
+            }
+
+            $result_publish_status = false;
+            if(ResultPublication::where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                ->where('status','PUBLISHED')
+                                ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                ->count() != 0){
+               $result_publish_status = true;
             }
 
             $data = [
@@ -657,8 +664,14 @@ class ModuleAssignmentController extends Controller
                     'Expires'             => '0',
                     'Pragma'              => 'public'
             ];
-            count($data['students_with_supp'])? $list = $data['students_with_supp'] : $list = $data['students'];;
-
+            
+            if(count($data['students_with_supp']) > 0){
+                $list = $data['students_with_supp'];
+            }elseif(count($data['students']) > 0 && !$result_publish_status){
+                $list = $data['students'];;
+            }else{
+                $list = [];
+            }
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
