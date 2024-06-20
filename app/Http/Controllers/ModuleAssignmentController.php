@@ -445,7 +445,7 @@ class ModuleAssignmentController extends Controller
 
              $supp_process_status = false;
              if(ExaminationResult::whereIn('module_assignment_id',$module_assignment_ids)->whereNotNull('supp_processed_at')->count() != 0){
-                $supp_process_status = true;
+                $supp_process_status = false;
              }            
 
              $data = [
