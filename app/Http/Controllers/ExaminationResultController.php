@@ -1752,7 +1752,7 @@ class ExaminationResultController extends Controller
                break;
             }
          } 
- if($result->student_id == 3559){ return $pass_status;}
+
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
                $ac_yr_id = $ac_yr_id -1;
@@ -1807,7 +1807,7 @@ class ExaminationResultController extends Controller
                   break;
                }
             }
-
+            if($result->student_id == 3559){ return $remark;}
             if($no_of_failed_modules > (count($student_results)/2) && (count($special_exam_status) > 0 && $remark->remark != 'INCOMPLETE' || $remark->supp_remark != null && $remark->supp_remark != 'INCOMPLETE')){
                $remark->remark = 'REPEAT';
                $remark->gpa = null;
