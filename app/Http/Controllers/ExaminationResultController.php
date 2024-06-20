@@ -821,7 +821,7 @@ class ExaminationResultController extends Controller
             $publication->save();
 
             DB::commit();
-
+return 1111;
             // if($rem = SemesterRemark::where('student_id',5102)->first()){
             //    return $rem;
             // }
