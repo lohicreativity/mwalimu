@@ -433,8 +433,18 @@ class ModuleAssignmentController extends Controller
                 $program_results_process_status = true;
              }
 
+             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($module_assignment){$query->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)
+                                                                                                                                       ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                                       ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                                  ->get('id');
+
+            $module_assignment_ids = [];
+            foreach($module_assignments as $mod_assignment){
+                $module_assignment_ids[] = $mod_assignment->id;
+            }
+
              $supp_process_status = false;
-             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_processed_at')->count() != 0){
+             if(ExaminationResult::whereIn('module_assignment_id',$module_assignment_ids)->whereNotNull('supp_processed_at')->count() != 0){
                 $supp_process_status = true;
              }            
 
