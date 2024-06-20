@@ -822,12 +822,10 @@ class ExaminationResultController extends Controller
 
             DB::commit();
 
-            if($remark->student_id == 465){ return $remark;}
             // if($rem = SemesterRemark::where('student_id',5102)->first()){
             //    return $rem;
             // }
             if(ExaminationResult::whereIn('module_assignment_id',$module_assignmentIDs)->whereNotNull('supp_processed_at')->count() > 0){
-               return 1;
                return redirect()->to('academic/results/process-supp-results?semester_id=1&campus_program_id='.$campus_program->id.'&year_of_study='.$year_of_study.'&ac_yr_id='.$request->get('study_academic_year_id').'&intake_id='.$request->get('intake_id').'&campus_id='.$staff->campus_id); 
             }
             return redirect()->back()->with('message','Results processed successfully');
@@ -1753,7 +1751,7 @@ class ExaminationResultController extends Controller
                break;
             }
          } 
-
+         if($remark->student_id == 465){ return $pass_status;}
          if(count($carry_cases) > 0){
             if(in_array($case,$carry_cases)){
                $ac_yr_id = $ac_yr_id -1;
