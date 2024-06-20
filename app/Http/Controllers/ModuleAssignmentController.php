@@ -617,7 +617,7 @@ class ModuleAssignmentController extends Controller
                                             ->where('status','APPROVED')
                                             ->with('student:id,registration_number')
                                             ->get();
-
+return $special_cases;
             $carry_students = Student::select('id','registration_number','studentship_status_id')
                                     ->whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                     ->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
