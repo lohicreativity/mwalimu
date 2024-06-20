@@ -677,7 +677,7 @@ class ExaminationResultController extends Controller
                      $remark->class = null;
                      Student::where('id',$student->id)->update(['academic_status_id'=>5]);
                   }
-                  if($remark->student_id == 465){ return $remark;}
+ 
                   if($remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
                      if(count($carry_exams) > 0){
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
@@ -821,7 +821,7 @@ class ExaminationResultController extends Controller
             $publication->save();
 
             DB::commit();
-
+            if($remark->student_id == 465){ return $remark;}
             // if($rem = SemesterRemark::where('student_id',5102)->first()){
             //    return $rem;
             // }
