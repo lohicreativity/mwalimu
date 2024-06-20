@@ -821,7 +821,7 @@ class ExaminationResultController extends Controller
             $publication->save();
 
             DB::commit();
-return 1111;
+
             // if($rem = SemesterRemark::where('student_id',5102)->first()){
             //    return $rem;
             // }
@@ -1551,7 +1551,8 @@ return 1111;
          $student_results = $student_results_for_gpa_computation = [];
          $no_of_failed_modules = 0; 
          if(!empty($remark)){
-            if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S')){
+            if(str_contains($remark->remark,'IRREGULARITY') || str_contains($remark->remark,'POSTPONED Y') || str_contains($remark->remark,'POSTPONED S') ||
+            $remark->remark == 'REPEAT' || $remark->remark == 'FAIL&DISCO' || $remark->remark == 'DECEASED'){
                continue;
             }else{
                if(count($carry_cases) > 0){
