@@ -626,7 +626,7 @@ class ExaminationResultController extends Controller
                            $supp_exams[] = $result->moduleAssignment->module->code;
                      }   
                   }
-   if($remark->student_id == 465){ return $pass_status;}
+
                   $remark->study_academic_year_id = $request->get('study_academic_year_id');
                   $remark->student_id = $student->id;
                   $remark->semester_id = $request->get('semester_id');
@@ -664,7 +664,7 @@ class ExaminationResultController extends Controller
                         break;
                      }
                   }
-
+                  if($remark->student_id == 465){ return $remark;}
                   if($no_of_failed_modules > ($no_of_expected_modules/2) && $remark->remark != 'INCOMPLETE'){
                      $remark->remark = 'REPEAT';
                      $remark->gpa = null;
@@ -677,7 +677,7 @@ class ExaminationResultController extends Controller
                      $remark->class = null;
                      Student::where('id',$student->id)->update(['academic_status_id'=>5]);
                   }
-   
+ 
                   if($remark->remark != 'FAIL&DISCO' && $remark->remark != 'REPEAT' && $remark->remark != 'POSTPONED SEMESTER' && $remark->remark != 'POSTPONED YEAR'){
                      if(count($carry_exams) > 0){
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams]) : serialize(['carry_exams'=>$carry_exams]);
