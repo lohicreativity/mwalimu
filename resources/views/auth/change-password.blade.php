@@ -59,7 +59,7 @@
                       );
 
                     $password = array(
-                        'placeholder'=>'New password must be 12 characters with atleast an uppercase letter and a symbol)',
+                        'placeholder'=>'New password',
                         'class'=>'form-control',
                         'required'=>TRUE
                       );
@@ -83,7 +83,7 @@
                  </div><!-- end of form-group -->
                  
                  <div class="form-group col-6">
-                 {!! Form::label('','New password') !!} <span style='color:red' class='ss-font-sm'> Atleast 12 characters with an uppercase letter and a symbol</span>
+                 {!! Form::label('','New password') !!} <span style='color:red' class='ss-font-sm'> (Atleast 12 Characters with an Uppercase Letter and a Symbol)</span>
                  {!! Form::password('password', $password) !!}
                  </div><!-- end of form-group -->
 
