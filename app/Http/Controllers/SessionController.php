@@ -26,7 +26,7 @@ class SessionController extends Controller
 										 ->where('campus_id',$student->applicant->campus_id)
 										 ->count();
 		}else{
-			$loan_status = LoanAllocation::where(function($query) {$query->where('applicant_id',$applicant->id);})
+			$loan_status = LoanAllocation::where(function($query) use($applicant){$query->where('applicant_id',$applicant->id);})
 										 ->where('campus_id',$applicant->campus_id)
 										 ->count();
 		}
