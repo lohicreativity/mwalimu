@@ -53,7 +53,15 @@ class SessionController extends Controller
     {
          $validation = Validator::make($request->all(), array(
                'old_password'=>'required',
-               'password'=>'required|min:12|regex:/^.*[a-z]*[0-9](?=.{1,})[A-Z](?=.*[\d\x])(?=.*[!$#%]).*$/',
+               'password'=>[
+							'required',
+							'string',
+							'min:12',             // must be at least 10 characters in length
+							'regex:/[a-z]/',      // must contain at least one lowercase letter
+							'regex:/[A-Z]/',      // must contain at least one uppercase letter
+							'regex:/[0-9]/',      // must contain at least one digit
+							'regex:/[@$!%*#?&]/', // must contain a special character
+						],
                'password_confirmation'=>'required|same:password|min:8'
 			   //['required', 'min:9','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/', new Password, 'confirmed'];
             ));
