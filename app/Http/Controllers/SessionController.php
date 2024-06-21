@@ -87,6 +87,7 @@ class SessionController extends Controller
 			$applicant = Applicant::where('id', $request->get('applicant_id'))->first();
 
 			$user = User::find(Auth::user()->id);
+			return $student;
 			if(!empty($student)){
 
 				$user->username = $student->registration_number;
