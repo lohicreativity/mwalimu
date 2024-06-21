@@ -86,10 +86,10 @@ class SessionController extends Controller
 			$student = Student::where('applicant_id', $request->get('applicant_id'))->first();
 			$applicant = Applicant::where('id', $request->get('appl_id'))->first();
 
-			$user = User::find(Auth::user()->id);
 
 			if(!empty($student)){
 
+				$user = User::find(Auth::user()->id);
 				$user->username = $student->registration_number;
 				$user->email = $student->email;
 				$user->password = Hash::make($request->get('password'));
@@ -109,16 +109,22 @@ class SessionController extends Controller
 
 			}elseif(empty($student) && !empty($applicant)){
 
+				$user = User::find(Auth::user()->id);
 				$user->password = Hash::make($request->get('password'));
 				$user->must_update_password = 0;
-				$user->save();
-				
-				Auth::guard('web')->login($user);
-				return redirect()->to('application/dashboard')->with('message','Congratulations, new password changed succeefully');
+				if ($user->save()) {
+
+					Auth::guard('web')->logout();
+					$request->session()->invalidate();
+					$request->session()->regenerateToken();
+					return redirect()->to('application/login')->with('message', 'Please use your new password to login');
+
+				}
 			}else{
 
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
-
+					
+					$user = User::find(Auth::user()->id);
 					$user->password = Hash::make($request->get('password'));
 					$user->must_update_password = 0;
 					$user->save();
