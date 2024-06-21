@@ -76,7 +76,7 @@
                  @if($student)
                   <input type="hidden" name="applicant_id" value="{{ $student->applicant_id }}">
                  @elseif($applicant)
-                  <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                  <input type="hidden" name="appl_id" value="{{ $applicant->id }}">
                  @endif
 
                  <div class="form-group col-6">
