@@ -39,6 +39,7 @@ class SessionController extends Controller
 
 		$data = [
            'staff'=> User::find(Auth::user()->id),
+		   'student' => [],
 		   
 		];
 		return view('auth.change-password',$data)->withTitle('Change Password');
