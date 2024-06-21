@@ -25,7 +25,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active"><a href="#">Change Password 1</a></li>
+              <li class="breadcrumb-item active"><a href="#">Change Password</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -73,9 +73,9 @@
 
                  {!! Form::open(['url'=>'update-password','class'=>'ss-form-processing']) !!}
 
-                 @if($student)
+                 @if(isset($student))
                   <input type="hidden" name="applicant_id" value="{{ $student->applicant_id }}">
-                 @elseif($applicant)
+                 @elseif(isset($applicant))
                   <input type="hidden" name="appl_id" value="{{ $applicant->id }}">
                  @endif
 
