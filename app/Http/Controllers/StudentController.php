@@ -2306,6 +2306,7 @@ class StudentController extends Controller
 		  $user->username = $applicant->index_number;
 		  $user->email = $applicant->email;
 		  $user->password = Hash::make($student->applicant->index_number);
+      $user->must_update_password = 1;
 		  $user->save();
 
 		  //$old_user = User::find($student->user_id);
@@ -2492,6 +2493,7 @@ class StudentController extends Controller
         $student = Student::find($request->get('student_id'));
         $user = User::find($student->user_id);
         $user->password = Hash::make('123456');
+        $user->must_update_password = 1;
         $user->save();
 
         return redirect()->back()->with('message','Password reset successfully');

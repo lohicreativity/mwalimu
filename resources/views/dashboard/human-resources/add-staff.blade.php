@@ -56,7 +56,6 @@
                   $middle_name = [
                      'placeholder'=>'Middle name',
                      'class'=>'form-control',
-					 'required'=>true
                   ];
 
                   $surname = [
@@ -156,7 +155,7 @@
                        {!! Form::text('first_name',null,$first_name) !!}
                     </div>
                     <div class="form-group col-3">
-                       {!! Form::label('','Middle name') !!}
+                       {!! Form::label('','Middle name (Optional)') !!}
                        {!! Form::text('middle_name',null,$middle_name) !!}
                     </div>
                     <div class="form-group col-4">
@@ -246,7 +245,7 @@
                        </select>
                     </div>
                      <div class="form-group col-6">
-                       {!! Form::label('','Street') !!}
+                       {!! Form::label('','Street (Optional)') !!}
                        {!! Form::text('street',null,$street) !!}
                     </div>
                   </div>
@@ -264,23 +263,23 @@
                        </select>
                     </div>
                     <div class="form-group col-6">
-                       {!! Form::label('','Block') !!}
+                       {!! Form::label('','Block (Optional)') !!}
                        {!! Form::text('block',null,$block) !!}
                     </div>
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
-                       {!! Form::label('','Floor') !!}
+                       {!! Form::label('','Floor (Optional)') !!}
                        {!! Form::text('floor',null,$floor) !!}
                     </div>
                     <div class="form-group col-6">
-                       {!! Form::label('','Room') !!}
+                       {!! Form::label('','Room (Optional)') !!}
                        {!! Form::text('room',null,$room) !!}
                     </div>
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
-                       {!! Form::label('','NIN') !!}
+                       {!! Form::label('','NIN (Optional)') !!}
                        {!! Form::text('nin',null,$nin) !!}
                     </div>
                      <div class="form-group col-6">
@@ -295,11 +294,11 @@
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
-                       {!! Form::label('','PF number') !!}
+                       {!! Form::label('','PF number (Optional)') !!}
                        {!! Form::text('pf_number',null,$pf_number) !!}
                     </div>
                     <div class="form-group col-6">
-                       {!! Form::label('','Work schedule') !!}
+                       {!! Form::label('','Employment Type') !!}
                        <select name="schedule" class="form-control" required>
                          <option value="">Select Schedule</option>
                          <option value="FULLTIME">FULL TIME</option>
@@ -317,7 +316,7 @@
                        </select>
                     </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Upload staff image') !!}
+                    {!! Form::label('','Upload Staff Image (Optional)') !!}
                     {!! Form::file('image',['class'=>'form-control']) !!}
                   </div>
                   </div>

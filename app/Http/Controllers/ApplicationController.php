@@ -3870,6 +3870,7 @@ class ApplicationController extends Controller
             $user = new User;
             $user->username = strtoupper($request->get('index_number'));
             $user->password = Hash::make($request->get('password'));
+            $user->must_update_password = 1;
             $user->save();
         }
 
@@ -6433,6 +6434,7 @@ class ApplicationController extends Controller
 
         $user = User::find($request->get('user_id'));
         $user->password = Hash::make($request->get('password'));
+        $user->must_update_password = 1;
         $user->save();
 
         return redirect()->back()->with('message','Password reset successfully');
@@ -6452,6 +6454,7 @@ class ApplicationController extends Controller
         $user_id = !empty($student_user_id)? $student_user_id->user_id : $applicant->user_id;
         $user = User::find($user_id);
         $user->password = Hash::make($applicant->index_number);
+        $user->must_update_password = 1;
         $user->save();
 
         return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
@@ -8193,6 +8196,7 @@ class ApplicationController extends Controller
 
             $user = User::where('username',$request->get('index_number'))->first();
             $user->password = Hash::make($request->get('index_number'));
+            $user->must_update_password = 1;
             $user->save();
 
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
@@ -8200,11 +8204,13 @@ class ApplicationController extends Controller
 			if($usr = User::where('username',$request->get('index_number'))->first()){
                 $user = $usr;
                 $user->password = Hash::make($request->get('index_number'));
+                $user->must_update_password = 1;
                 $user->save();
             }else{
                 $user = new User;
                 $user->username = $request->get('index_number');
                 $user->password = Hash::make($request->get('index_number'));
+                $user->must_update_password = 1;
                 $user->save();
             }
 
@@ -12127,6 +12133,7 @@ class ApplicationController extends Controller
                        $user->username = $form4index;
                        $user->email = $returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);;
                        $user->password = Hash::make($form4index);
+                       $user->must_update_password = 1;
                        $user->save();
 
                        $role = Role::select('id')->where('name','applicant')->first();
