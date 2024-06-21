@@ -560,6 +560,7 @@ class StaffController extends Controller
         $staff = Staff::where('user_id',$request->get('user_id'))->first();
         $user = User::find($request->get('user_id'));
         $user->password = Hash::make($staff->phone);
+        $user->must_update_password = 1;
         $user->save();
 
         return redirect()->back()->with('message','Password reset successfully');
