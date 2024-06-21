@@ -59,7 +59,7 @@
                       );
 
                     $password = array(
-                        'placeholder'=>'New assword',
+                        'placeholder'=>'New password must be 12 characters with atleast an uppercase letter and a symbol)',
                         'class'=>'form-control',
                         'required'=>TRUE
                       );
