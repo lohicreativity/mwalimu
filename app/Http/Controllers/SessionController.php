@@ -88,7 +88,7 @@ class SessionController extends Controller
 
 
 			if(!empty($student)){
-return 1;
+
 				$user = User::find(Auth::user()->id);
 				$user->username = $student->registration_number;
 				$user->email = $student->email;
@@ -108,20 +108,20 @@ return 1;
 				}
 
 			}elseif(empty($student) && !empty($applicant)){
-return 2;
+
 				$user = User::find(Auth::user()->id);
 				$user->password = Hash::make($request->get('password'));
 				$user->must_update_password = 0;
-				if ($user->save()) {
+				$user->save();
 
-					Auth::guard('web')->logout();
-					$request->session()->invalidate();
-					$request->session()->regenerateToken();
-					return redirect()->to('application/login')->with('message', 'Please use your new password to login');
+				$request->session()->forget('password_hash_web');
+	
+				Auth::guard('web')->login($user);
 
-				}
+				return redirect()->to('application/dashboard')->with('message', 'Congratulations, password changed succeefully');
+
 			}else{
-return 3;
+
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
 					
 					$user = User::find(Auth::user()->id);
@@ -133,11 +133,11 @@ return 3;
 				   // login the user back with his new updated credentials
 					Auth::guard('web')->login($user);
 					if(Auth::user()->hasRole('applicant')){
-					   return redirect()->to('application/dashboard')->with('message','Congratulations, new password changed succeefully');
+					   return redirect()->to('application/dashboard')->with('message','Congratulations, password changed succeefully');
 					}elseif(Auth::user()->hasRole('student')){
-					   return redirect()->to('student/dashboard')->with('message','Congratulations, new password changed succeefully');
+					   return redirect()->to('student/dashboard')->with('message','Congratulations, password changed succeefully');
 					}else{
-					   return redirect()->to('dashboard')->with('message','Congratulations, new password changed succeefully');
+					   return redirect()->to('dashboard')->with('message','Congratulations, password changed succeefully');
 					}
 				}else{
 					  return redirect()->back()->withInput()->with('error','Your old password is not identified, please provide a correct password!');
