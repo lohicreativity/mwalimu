@@ -83,7 +83,7 @@
                  </div><!-- end of form-group -->
                  
                  <div class="form-group col-6">
-                 {!! Form::label('','New password') !!} <span style='color:red' class='ss-font-sm'> (Atleast 12 Characters with an Uppercase Letter and a Symbol)</span>
+                 {!! Form::label('','New password') !!} <span style='color:red' class='ss-font-sm'> (Atleast 12 Characters with at least one Lowercase Letter, Uppercase Letter and a Special Symbol)</span>
                  {!! Form::password('password', $password) !!}
                  </div><!-- end of form-group -->
 
