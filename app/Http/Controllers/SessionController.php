@@ -59,7 +59,7 @@ class SessionController extends Controller
 	 * Update password 
 	 */
     public function update(Request $request)
-    {
+    {return $request;
          $validation = Validator::make($request->all(), array(
                'old_password'=>'required',
                'password'=>[
