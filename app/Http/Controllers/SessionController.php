@@ -12,6 +12,8 @@ use App\Domain\Finance\Models\LoanAllocation;
 
 class SessionController extends Controller
 {
+	//use PasswordValidationRules;
+
 	/**
 	 * Change password
 	 */
