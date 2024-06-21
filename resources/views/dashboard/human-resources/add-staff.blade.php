@@ -130,7 +130,8 @@
 
                   $staff_title = [
                      'placeholder'=>'Title',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+                     'required'=>true
                   ];
 
               @endphp
