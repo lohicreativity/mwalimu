@@ -38,13 +38,13 @@
           <a href="{{ url('staff/staff/'.$staff->id.'/show') }}" class="dropdown-item">
             <i class="fas fa-user mr-2"></i> Profile
           </a>
-          <a href="{{ url('change-password') }}" class="dropdown-item">
+          <a href="{{ url('staff-change-password') }}" class="dropdown-item">
             <i class="fas fa-lock mr-2"></i> Change Password
           </a>
           <div class="dropdown-divider"></div>
           @endif
-          @if(isset($staff))
-          <a href="{{ url('staff-change-password') }}" class="dropdown-item">
+          @if(!isset($staff))
+          <a href="{{ url('change-password') }}" class="dropdown-item">
             <i class="fas fa-lock mr-2"></i> Change Password
           </a>
           @endif
