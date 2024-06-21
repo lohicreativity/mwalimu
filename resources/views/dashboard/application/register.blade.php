@@ -91,6 +91,7 @@
             </div>
           </div>
         </div>
+        <span style='color:red' class='ss-font-sm'> Must be Atleast 12 Characters with an Uppercase Letter and a Symbol </span>
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control" value="{{ old('password') }}" placeholder="Password" required>
           <div class="input-group-append">

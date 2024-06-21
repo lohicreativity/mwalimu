@@ -3799,7 +3799,15 @@ class ApplicationController extends Controller
             'surname'=>'required',
             'index_number'=>'required',
             'entry_mode'=>'required',
-            'password'=>'required|min:8',
+            'password'=>[
+                'required',
+                'string',
+                'min:12',             // must be at least 10 characters in length
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/', // must contain a special character
+            ],
 			'password_confirmation'=>'same:password'
         ]);
 
