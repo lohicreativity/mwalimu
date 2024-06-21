@@ -59,7 +59,7 @@ class SessionController extends Controller
 	 * Update password 
 	 */
     public function update(Request $request)
-    {return $request;
+    {
          $validation = Validator::make($request->all(), array(
                'old_password'=>'required',
                'password'=>[
@@ -88,7 +88,7 @@ class SessionController extends Controller
 
 
 			if(!empty($student)){
-
+return 1;
 				$user = User::find(Auth::user()->id);
 				$user->username = $student->registration_number;
 				$user->email = $student->email;
@@ -108,7 +108,7 @@ class SessionController extends Controller
 				}
 
 			}elseif(empty($student) && !empty($applicant)){
-
+return 2;
 				$user = User::find(Auth::user()->id);
 				$user->password = Hash::make($request->get('password'));
 				$user->must_update_password = 0;
@@ -121,7 +121,7 @@ class SessionController extends Controller
 
 				}
 			}else{
-
+return 3;
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
 					
 					$user = User::find(Auth::user()->id);
