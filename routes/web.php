@@ -271,6 +271,6 @@ Route::post('/response/gepg/reconcile', [GePGResponseController::class,'getRecon
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
      Route::get('change-password',[SessionController::class, 'changePassword']);
-     Route::get('staff-change-password',[UpdateUserPassword::class, 'staffChangePassword']);
+     Route::get('staff-change-password',[UpdateUserPassword::class, 'update']);
      Route::post('update-password',[SessionController::class, 'update']);
 });
