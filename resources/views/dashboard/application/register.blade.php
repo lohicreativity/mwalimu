@@ -91,7 +91,7 @@
             </div>
           </div>
         </div>
-        <span style='color:red' class='ss-font-sm'> Must Contain Atleast 12 Characters with at least one Lowercase Letter, Uppercase Letter and a Special Symbol </span>
+        <span style='color:red' class='ss-font-sm'> Atleast 12 Characters with at least one Lowercase Letter, Uppercase Letter and a Special Symbol </span>
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control" value="{{ old('password') }}" placeholder="Password" required>
           <div class="input-group-append">
