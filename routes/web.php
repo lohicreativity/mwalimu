@@ -22,7 +22,7 @@ use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Jobs\RequestControlNumberJob;
-use App\Actions\Fortify\UpdateUserPassword;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -271,6 +271,6 @@ Route::post('/response/gepg/reconcile', [GePGResponseController::class,'getRecon
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
      Route::get('change-password',[SessionController::class, 'changePassword']);
-     Route::get('staff-change-password',[UpdateUserPassword::class, 'update']);
+     Route::get('staff-change-password',[SessionController::class, 'staffChangePassword']);
      Route::post('update-password',[SessionController::class, 'update']);
 });

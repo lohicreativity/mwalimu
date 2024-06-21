@@ -12,8 +12,6 @@ use App\Domain\Finance\Models\LoanAllocation;
 
 class SessionController extends Controller
 {
-	//use PasswordValidationRules;
-
 	/**
 	 * Change password
 	 */
@@ -55,8 +53,9 @@ class SessionController extends Controller
     {
          $validation = Validator::make($request->all(), array(
                'old_password'=>'required',
-               'password'=>'required|min:8',
+               'password'=>'required|min:9|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
                'password_confirmation'=>'required|same:password|min:8'
+			   //['required', 'min:9','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/', new Password, 'confirmed'];
             ));
 
 	        if($validation->fails()){
