@@ -84,7 +84,7 @@ class SessionController extends Controller
 	        }
 
 			$student = Student::where('applicant_id', $request->get('applicant_id'))->first();
-			$applicant = Applicant::where('applicant_id', $request->get('applicant_id'))->first();
+			$applicant = Applicant::where('id', $request->get('applicant_id'))->first();
 
 			$user = User::find(Auth::user()->id);
 			if($student){
