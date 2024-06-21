@@ -112,7 +112,8 @@ class SessionController extends Controller
 				$user->password = Hash::make($request->get('password'));
 				$user->must_update_password = 0;
 				$user->save();
-					   
+				
+				Auth::guard('web')->login($user);
 				return redirect()->to('application/dashboard')->with('message','Congratulations, new password changed succeefully');
 			}else{
 
