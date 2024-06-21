@@ -59,7 +59,7 @@ class SessionController extends Controller
 	 * Update password 
 	 */
     public function update(Request $request)
-    {return $request;
+    {
          $validation = Validator::make($request->all(), array(
                'old_password'=>'required',
                'password'=>[
@@ -87,7 +87,7 @@ class SessionController extends Controller
 			$applicant = Applicant::where('id', $request->get('appl_id'))->first();
 
 			$user = User::find(Auth::user()->id);
-			return $student;
+
 			if(!empty($student)){
 
 				$user->username = $student->registration_number;
