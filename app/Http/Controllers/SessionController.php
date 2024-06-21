@@ -21,11 +21,19 @@ class SessionController extends Controller
 		$student = User::find(Auth::user()->id)->student()->with('applicant:id')->first();
 		$applicant = User::find(Auth::user()->id);
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
-		$loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
-									 ->where('campus_id',$student->applicant->campus_id)
-									 ->count();
+		if($student){
+			$loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
+										 ->where('campus_id',$student->applicant->campus_id)
+										 ->count();
+		}else{
+			$loan_status = LoanAllocation::where(function($query) {$query->where('applicant_id',$applicant->id);})
+										 ->where('campus_id',$applicant->campus_id)
+										 ->count();
+		}
+
 		$data = [
            'student'=>$student,
+		   'applicant'=> empty($student)? $applicant : $student,
 		   'study_academic_year'=>$ac_year,
 		   'loan_status'=>$loan_status
 		];
@@ -42,8 +50,6 @@ class SessionController extends Controller
 		$data = [
            'staff'=> User::find(Auth::user()->id),
 		   'student' => null,
-		   'applicant'=> empty($student)? $applicant : $student
-		   
 		];
 		return view('auth.change-password',$data)->withTitle('Change Password');
 	}
