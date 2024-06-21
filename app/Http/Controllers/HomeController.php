@@ -34,9 +34,9 @@ class HomeController extends Controller
     public function dashboard(Request $request)
     {
 		if(Auth::user()->must_update_password == 1){
-			return redirect()->to('staff-change-password')->with('message','Change password');
+			return redirect()->to('staff-change-password')->with('error','You must change the default password');
 		}
-		
+
 		$staff = User::find(Auth::user()->id)->staff;
 		// if(!$staff){
         //     return redirect()->back()->with('error','You do not have an account');

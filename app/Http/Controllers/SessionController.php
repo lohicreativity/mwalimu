@@ -9,6 +9,7 @@ use App\Domain\Registration\Models\Student;
 use App\Models\Role;
 use Auth, Validator, Hash;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Application\Models\Applicant;
 
 class SessionController extends Controller
 {
@@ -17,7 +18,8 @@ class SessionController extends Controller
 	 */
 	public function changePassword(Request $request)
 	{
-		$student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+		$student = User::find(Auth::user()->id)->student()->with('applicant:id')->first();
+		$applicant = User::find(Auth::user()->id);
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
 		$loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
 									 ->where('campus_id',$student->applicant->campus_id)
@@ -40,6 +42,7 @@ class SessionController extends Controller
 		$data = [
            'staff'=> User::find(Auth::user()->id),
 		   'student' => null,
+		   'applicant'=> empty($student)? $applicant : $student
 		   
 		];
 		return view('auth.change-password',$data)->withTitle('Change Password');
@@ -75,13 +78,13 @@ class SessionController extends Controller
 	        }
 
 			$student = Student::where('applicant_id', $request->get('applicant_id'))->first();
+			$applicant = Applicant::where('applicant_id', $request->get('applicant_id'))->first();
 
-			if ($student) {
+			$user = User::find(Auth::user()->id);
+			if($student){
 
-				$user = User::find(Auth::user()->id);
 				$user->username = $student->registration_number;
 				$user->email = $student->email;
-				$user->must_update_password = 0;
 				$user->password = Hash::make($request->get('password'));
 
 				$role = Role::where('name','student')->first();
@@ -92,14 +95,20 @@ class SessionController extends Controller
 					Auth::guard('web')->logout();
 					$request->session()->invalidate();
 					$request->session()->regenerateToken();
-					return redirect()->to('student/login')->with('message', 'Please use your registration number with your new password to login');
+					return redirect()->to('student/login')->with('message', 'Please use your registration number with your new password to login to your student account');
 
 				}
 
-			} else {
+			}elseif(!$student && $applicant){
+
+				$user->password = Hash::make($request->get('password'));
+				$user->must_update_password = 0;
+				$user->save();
+
+			}else{
 
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
-					$user = User::find(Auth::user()->id);
+
 					$user->password = Hash::make($request->get('password'));
 					$user->must_update_password = 0;
 					$user->save();

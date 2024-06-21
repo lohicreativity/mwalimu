@@ -467,6 +467,9 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->latest()->first();
 
+      if(Auth::user()->must_update_password == 1){
+         return redirect()->to('change-password')->with('message','You must change the default password');
+      }
         if($applicant->basic_info_complete_status == 1 && $applicant->submission_complete_status == 0 && $applicant->status == null){
           if($applicant->next_of_kin_complete_status == 1){
               if($applicant->payment_complete_status == 1){

@@ -74,7 +74,9 @@
                  {!! Form::open(['url'=>'update-password','class'=>'ss-form-processing']) !!}
 
                  @if($student)
-                 <input type="hidden" name="applicant_id" value="{{ $student->applicant_id }}">
+                  <input type="hidden" name="applicant_id" value="{{ $student->applicant_id }}">
+                 @elseif($applicant)
+                  <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
                  @endif
 
                  <div class="form-group col-6">

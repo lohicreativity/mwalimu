@@ -255,7 +255,7 @@ class StudentController extends Controller
 
 
           if(Auth::user()->must_update_password == 1){
-              return redirect()->to('change-password')->with('message','Change password');
+              return redirect()->to('change-password')->with('message','You must change the default password');
           }else{
               return redirect()->to('student/dashboard')->with('message','Logged in successfully');
           }
