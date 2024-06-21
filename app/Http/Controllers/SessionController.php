@@ -87,11 +87,12 @@ class SessionController extends Controller
 			$applicant = Applicant::where('id', $request->get('applicant_id'))->first();
 
 			$user = User::find(Auth::user()->id);
-			if($student){
+			if(!empty($student)){
 
 				$user->username = $student->registration_number;
 				$user->email = $student->email;
 				$user->password = Hash::make($request->get('password'));
+				$user->must_update_password = 0;
 
 				$role = Role::where('name','student')->first();
         		$user->roles()->sync([$role->id]);
@@ -105,12 +106,13 @@ class SessionController extends Controller
 
 				}
 
-			}elseif(!$student && $applicant){
+			}elseif(empty($student) && !empty($applicant)){
 
 				$user->password = Hash::make($request->get('password'));
 				$user->must_update_password = 0;
 				$user->save();
-
+					   
+				return redirect()->to('application/dashboard')->with('message','Congratulations, new password changed succeefully');
 			}else{
 
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
@@ -123,11 +125,11 @@ class SessionController extends Controller
 				   // login the user back with his new updated credentials
 					Auth::guard('web')->login($user);
 					if(Auth::user()->hasRole('applicant')){
-					   return redirect()->to('application/dashboard')->with('message','Congratulations, new password saved succeefully');
+					   return redirect()->to('application/dashboard')->with('message','Congratulations, new password changed succeefully');
 					}elseif(Auth::user()->hasRole('student')){
-					   return redirect()->to('student/dashboard')->with('message','Congratulations, new password saved succeefully');
+					   return redirect()->to('student/dashboard')->with('message','Congratulations, new password changed succeefully');
 					}else{
-					   return redirect()->to('dashboard')->with('message','Congratulations, new password saved succeefully');
+					   return redirect()->to('dashboard')->with('message','Congratulations, new password changed succeefully');
 					}
 				}else{
 					  return redirect()->back()->withInput()->with('error','Your old password is not identified, please provide a correct password!');
