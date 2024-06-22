@@ -135,7 +135,7 @@ class SessionController extends Controller
 			}else{
 
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
-					return $request->get('password');
+
 					$user = User::find(Auth::user()->id);
 
 					$old_password = $user->password;
