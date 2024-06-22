@@ -33,6 +33,15 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request)
     {
+		$now = strtotime(date('Y-m-d'));
+		$last_update = strtotime(Auth::user()->updated_at);
+		//$validity = strtotime($fee_amount->duration
+		$datediff = $now - $last_update;
+		$datediff = round(($datediff/(60 * 60 * 24)));	
+		if(Auth::user()->id == 2){
+			return $datediff;
+		}
+
 		if(Auth::user()->must_update_password == 1){
 			return redirect()->to('staff-change-password')->with('error','You must change the default password');
 		}
