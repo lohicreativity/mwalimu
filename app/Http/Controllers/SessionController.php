@@ -140,7 +140,7 @@ class SessionController extends Controller
 
 					$old_password = $user->password;
 
-					if($old_password == Hash::make($request->get('password'))){
+					if(Hash::check($request->get('old_password'), $request->get('password'))){
 						return redirect()->back()->with('error','Your new password should differ the current password!');
 					}
 					
