@@ -38,11 +38,8 @@ class HomeController extends Controller
 		//$validity = strtotime($fee_amount->duration
 		$datediff = $now - $last_update;
 		$datediff = round(($datediff/(60 * 60 * 24)));	
-		if(Auth::user()->id == 2){
-			return $datediff;
-		}
 
-		if(Auth::user()->must_update_password == 1){
+		if(Auth::user()->must_update_password == 1 || $datediff > 90){
 			return redirect()->to('staff-change-password')->with('error','You must change the default password');
 		}
 
