@@ -90,6 +90,11 @@ class SessionController extends Controller
 			if(!empty($student)){
 
 				$user = User::find(Auth::user()->id);
+				$old_password = $user->password;
+
+				if($old_password == Hash::make($request->get('password'))){
+					return redirect()->back()->with('error','Your new password should differ the current password!');
+				}
 				$user->username = $student->registration_number;
 				$user->email = $student->email;
 				$user->password = Hash::make($request->get('password'));
@@ -110,6 +115,13 @@ class SessionController extends Controller
 			}elseif(empty($student) && !empty($applicant)){
 
 				$user = User::find(Auth::user()->id);
+
+				$old_password = $user->password;
+
+				if($old_password == Hash::make($request->get('password'))){
+					return redirect()->back()->with('error','Your new password should differ the current password!');
+				}
+
 				$user->password = Hash::make($request->get('password'));
 				$user->must_update_password = 0;
 				$user->save();
@@ -125,6 +137,13 @@ class SessionController extends Controller
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
 					
 					$user = User::find(Auth::user()->id);
+
+					$old_password = $user->password;
+
+					if($old_password == Hash::make($request->get('password'))){
+						return redirect()->back()->with('error','Your new password should differ the current password!');
+					}
+					
 					$user->password = Hash::make($request->get('password'));
 					$user->must_update_password = 0;
 					$user->save();
