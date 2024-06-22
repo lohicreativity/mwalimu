@@ -83,6 +83,10 @@ class SessionController extends Controller
 	           }
 	        }
 
+			if(Hash::check($request->get('old_password'), Hash::make($request->get('password')))){
+				return redirect()->back()->with('error','Your new password should differ the current password!');
+			}
+			
 			$student = Student::where('applicant_id', $request->get('applicant_id'))->first();
 			$applicant = Applicant::where('id', $request->get('appl_id'))->first();
 
@@ -137,13 +141,6 @@ class SessionController extends Controller
 				if(Hash::check($request->get('old_password'), Auth::user()->password)){
 
 					$user = User::find(Auth::user()->id);
-
-					$old_password = $user->password;
-
-					if(Hash::check($request->get('old_password'), Hash::make($request->get('password')))){
-						return redirect()->back()->with('error','Your new password should differ the current password!');
-					}
-					
 					$user->password = Hash::make($request->get('password'));
 					$user->must_update_password = 0;
 					$user->save();
