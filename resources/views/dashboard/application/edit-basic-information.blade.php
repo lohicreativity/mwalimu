@@ -40,7 +40,7 @@
         <div class="row">
           <div class="col-12">
             <!-- Need to add a filter to prevent applicants from viewing selection status after applicants have been retrieved from a regulator -->
-            @if($student)
+              @if($student)
                 @if($registrationStatus == 'UNREGISTERED')
                     <div class="alert alert-warning">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
@@ -53,7 +53,26 @@
                       Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
                     </div> 
                 @endif
-            @endif
+              @elseif($application->is_tamisemi == 0)
+                @php
+                  $tamisemi_program = null;
+                  foreach($applicant->selections as $selection){
+                    if($selection->order == 6){
+                      $tamisemi_program = $selection->campusProgram->program->name;
+                      $tamisemi_program = str_replace(' Of ',' of ',$tamisemi_program);
+                      $tamisemi_program = str_replace(' And ',' and ',$tamisemi_program);
+                      $tamisemi_program = str_replace(' In ',' in ',$tamisemi_program);
+                      break;
+                    }
+                  }
+                @endphp
+                <div class="alert alert-warning">
+                  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                    Congratulations for being selected by TAMISEMI to study {{ $tamisemi_program }}. Please <a href="{{ url('application/accept-tamisemi-selection?applicant_id='.$applicant->id) }}"> click here </a> to accept or <a href="{{ url('application/reject-tamisemi-selection?applicant_id='.$applicant->id) }}"> here </a> to reject the selection and continue with your selections.
+                  </h3>
+                </div> 
+              @endif
+
             @if($regulator_selection && $selection_released_status->selection_released == 1)
 
               @if($check_selected_applicant)
@@ -97,21 +116,21 @@
                     @endif
                   @else
                     @if($applicant->program_level_id == 4)
-                    <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-times-circle"></i> 
-                        You had been admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme BUT unfortunately you CANCELLED the admission.
-                    </h3>
-                    <div style="float:left; width:36%"> 
-                      <h3 class="text-white" style="font-size: 18px!important;">
-                        <i class="fa fa-check-circle"></i> 
-                        If you wish to restore your admission, please click 
-                      </h3> 
-                    </div>
-                    <div style="position:relative; bottom:5px">
-                      {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
-                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                        <button type="submit" class="btn btn-danger">{{ __('Restore Admission') }}</button>
-                      {!! Form::close() !!} 
-                    </div>
+                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-times-circle"></i> 
+                          You had been admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme BUT unfortunately you CANCELLED the admission.
+                      </h3>
+                      <div style="float:left; width:36%"> 
+                        <h3 class="text-white" style="font-size: 18px!important;">
+                          <i class="fa fa-check-circle"></i> 
+                          If you wish to restore your admission, please click 
+                        </h3> 
+                      </div>
+                      <div style="position:relative; bottom:5px">
+                        {!! Form::open(['url'=>'application/restore-cancelled-admission','class'=>'ss-form-processing']) !!}
+                        {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                          <button type="submit" class="btn btn-danger">{{ __('Restore Admission') }}</button>
+                        {!! Form::close() !!} 
+                      </div>
                     @endif
                   @endif
                   </div>
@@ -127,12 +146,12 @@
                 @endif 					   
               @endif
             @elseif($applicant->status == 'SUBMITTED')
-            <div class="alert alert-success">
-                    <h3 class="text-white" style="font-size: 18px!important;">
-                      <i class="fa fa-check-circle"></i> 
-                      Your application has been received and we are finalizing selection process. Please bear with us.
-                    </h3>
-            </div>
+              <div class="alert alert-success">
+                      <h3 class="text-white" style="font-size: 18px!important;">
+                        <i class="fa fa-check-circle"></i> 
+                        Your application has been received and we are finalizing selection process. Please bear with us.
+                      </h3>
+              </div>
             @endif
            
 

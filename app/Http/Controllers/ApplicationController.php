@@ -12031,19 +12031,17 @@ class ApplicationController extends Controller
             }elseif($application_window->campus_id == 3){
                 $token = config('constants.NACTE_API_KEY_PEMBA');
             }
-// dd($nactecode."-".$applyr."-".$intake."/".$token);
+
             $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
-            // dd($url);
+
             $returnedObject = null;
             try{
-            $arrContextOptions=array(
+                $arrContextOptions=array(
                 "ssl"=>array(
                   "verify_peer"=> false,
                   "verify_peer_name"=> false,
                 ),
               );
-            // dd(filesize(file_get_contents($url,false, stream_context_create($arrContextOptions))));
-            //   $jsondata = file_get_contents($url,false, stream_context_create($arrContextOptions));
 
               $curl = curl_init();
               curl_setopt($curl, CURLOPT_URL, $url);
@@ -12063,11 +12061,6 @@ class ApplicationController extends Controller
                  $returnedObject = json_decode($jsondata);
 
                  }catch(\Exception $e){}
-                //  dd($returnedObject);
-                //  if(!isset($returnedObject->params)){
-                //     return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
-                //  }
-
 
                  if(!$returnedObject){
                     DB::rollback();
@@ -12125,28 +12118,33 @@ class ApplicationController extends Controller
 
                     //    $surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
 
-                       if($us = User::where('username',$form4index)->first()){
-                           $user = $us;
-                       }else{
-                           $user = new User;
-                       }
-                       $user->username = $form4index;
-                       $user->email = $returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);;
-                       $user->password = Hash::make($form4index);
-                       $user->must_update_password = 1;
-                       $user->save();
+                        if(empty(User::where('username',$form4index)->first())){
 
-                       $role = Role::select('id')->where('name','applicant')->first();
-                       $user->roles()->sync([$role->id]);
+                            $user = new User;
 
-                       $program_level = Award::select('id')->where('name','LIKE','%Basic%')->first();
-                       $current_batch = ApplicationBatch::select('batch_no')->where('program_level_id', $program_level->id)->where('application_window_id', $application_window->id)->latest()->first();
-                       if($current_batch->batch_no > 1){
-                        $prev_batch = ApplicationBatch::select('id')->where('application_window_id',$application_window->id)->where('program_level_id',$program_level->id)
-                                        ->where('batch_no', $current_batch->batch_no - 1)->first();
-                       }else{
-                        $prev_batch = $current_batch;
-                       }
+                            $user->username = $form4index;
+                            $user->email = $returnedObject->params[$i]->email == '' ? '' : str_replace("'","\'",$returnedObject->params[$i]->email);;
+                            $user->password = Hash::make($form4index);
+                            $user->must_update_password = 1;
+                            $user->save();
+        
+                            $role = Role::select('id')->where('name','applicant')->first();
+                            $user->roles()->sync([$role->id]);
+                        }
+
+                        $program_level = Award::select('id')->where('name','LIKE','%Basic%')->first();
+                        $current_batch = ApplicationBatch::select('batch_no')->where('program_level_id', $program_level->id)
+                                                                                ->where('application_window_id', $application_window->id)
+                                                                                ->latest()
+                                                                                ->first();
+                        if($current_batch->batch_no > 1){
+                            $prev_batch = ApplicationBatch::select('id')->where('application_window_id',$application_window->id)
+                                                                        ->where('program_level_id',$program_level->id)
+                                                                        ->where('batch_no', $current_batch->batch_no - 1)
+                                                                        ->first();
+                        }else{
+                            $prev_batch = $current_batch;
+                        }
 
                        // $next_of_kin = new NextOfKin;
                        // $next_of_kin->first_name = explode(' ', $student->next_of_kin_fullname)[0];
@@ -12163,62 +12161,110 @@ class ApplicationController extends Controller
                        // $ward = Ward::where('district_id',$district->id)->first();
 
 
-                       if(Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)
-                           ->where('application_window_id',$application_window->id)->where('is_tamisemi',1)->first()){
-                          continue;
-                       }else{
-                          $applicant = new Applicant;
+                        if(Applicant::where('index_number',$form4index)
+                                    ->where('campus_id',$campus_program->campus_id)
+                                    ->where('application_window_id',$application_window->id)
+                                    ->where('is_tamisemi',1)
+                                    ->first()){
 
-                       $applicant->first_name = $student->fullname == '' ? '' : explode(' ', $student->fullname)[0];
-                       $applicant->middle_name = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null);
-                       $applicant->surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
-                       $applicant->phone = $student->phone_number == '' ? '' : '225'.substr($student->phone_number,1);
-                       $applicant->email = $student->email;
-                       $applicant->address = $student->address;
-                       $applicant->gender = substr($student->gender, 0,1);
-                       $applicant->campus_id = $campus_program->campus_id;
-                       $applicant->program_level_id = $program_level->id;
-                       // $applicant->next_of_kin_id = $next_of_kin->id;
-                       $applicant->application_window_id = $application_window->id;
-                       $applicant->batch_id = $prev_batch->id;
-                       $applicant->payment_complete_status = 1;
-                       $applicant->intake_id = $application_window->intake->id;
-                       $applicant->index_number = $form4index;
-                       $applicant->admission_year = $applyr;
-                       $applicant->entry_mode = 'DIRECT';
-                       $applicant->nationality = 'Tanzanian';
-                       $applicant->birth_date = $student->date_of_birth;
-                       $applicant->country_id = 1;
-                       $applicant->user_id = $user->id;
-                       $applicant->is_tamisemi = 1;
-                       $applicant->save();
+                            continue;
+                        }else{
+                            if($app = Applicant::where('index_number',$form4index)
+                                         ->where('campus_id',$campus_program->campus_id)
+                                         ->where('application_window_id',$application_window->id)
+                                         ->first()){
 
-                       if($has_must_subjects){
-                        $selection = new ApplicantProgramSelection;
-                        $selection->campus_program_id = $campus_program->id;
-                        $selection->applicant_id = $applicant->id;
-                        $selection->batch_id = $prev_batch->id;
-                        $selection->application_window_id = $application_window->id;
-                        $selection->order = 1;
-                        $selection->status = 'ELIGIBLE';
-                        $selection->save();
-                       }else{
+                                $app->first_name = $student->fullname == '' ? '' : explode(' ', $student->fullname)[0];
+                                $app->middle_name = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null);
+                                $app->surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
+                                $app->phone = $student->phone_number == '' ? '' : '225'.substr($student->phone_number,1);
+                                $app->email = $student->email;
+                                $app->address = $student->address;
+                                $app->gender = substr($student->gender, 0,1);
+                                $app->campus_id = $campus_program->campus_id;
+                                $app->application_window_id = $application_window->id;
+                                $app->intake_id = $application_window->intake->id;
+                                $app->nationality = 'Tanzanian';
+                                $app->birth_date = $student->date_of_birth;
+                                $app->country_id = 1;
+                                $app->is_tamisemi = 0;
+                                $app->batch_id = $prev_batch->id;
+                                $app->admission_year = $applyr;
+                                $app->save();
 
-                        $applicant->status = 'SELECTED';
-                        $applicant->save();
+                                if($has_must_subjects){
 
-                        $selection = new ApplicantProgramSelection;
-                        $selection->campus_program_id = $campus_program->id;
-                        $selection->applicant_id = $applicant->id;
-                        $selection->batch_id = $prev_batch->id;
-                        $selection->application_window_id = $application_window->id;
-                        $selection->order = 1;
-                        $selection->status = 'SELECTED';
-                        $selection->save();
-                       }
+                                    $selection = new ApplicantProgramSelection;
+                                    $selection->campus_program_id = $campus_program->id;
+                                    $selection->applicant_id = $app->id;
+                                    $selection->batch_id = $prev_batch->id;
+                                    $selection->application_window_id = $application_window->id;
+                                    $selection->order = 6;
+                                    $selection->status = 'ELIGIBLE';
+                                    $selection->save();
+                                }else{
+    
+                                    $selection = new ApplicantProgramSelection;
+                                    $selection->campus_program_id = $campus_program->id;
+                                    $selection->applicant_id = $app->id;
+                                    $selection->batch_id = $prev_batch->id;
+                                    $selection->application_window_id = $application_window->id;
+                                    $selection->order = 6;
+                                    $selection->status = 'SELECTED';
+                                    $selection->save();
+                                }
+                            }else{
 
+                                $applicant = new Applicant;
 
-                    }
+                                $applicant->first_name = $student->fullname == '' ? '' : explode(' ', $student->fullname)[0];
+                                $applicant->middle_name = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null);
+                                $applicant->surname = $student->fullname == '' ? '' : (count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1]);
+                                $applicant->phone = $student->phone_number == '' ? '' : '225'.substr($student->phone_number,1);
+                                $applicant->email = $student->email;
+                                $applicant->address = $student->address;
+                                $applicant->gender = substr($student->gender, 0,1);
+                                $applicant->campus_id = $campus_program->campus_id;
+                                $applicant->program_level_id = $program_level->id;
+                                $applicant->application_window_id = $application_window->id;
+                                $applicant->batch_id = $prev_batch->id;
+                                $applicant->payment_complete_status = 1;
+                                $applicant->intake_id = $application_window->intake->id;
+                                $applicant->index_number = $form4index;
+                                $applicant->admission_year = $applyr;
+                                $applicant->entry_mode = 'DIRECT';
+                                $applicant->nationality = 'Tanzanian';
+                                $applicant->birth_date = $student->date_of_birth;
+                                $applicant->country_id = 1;
+                                $applicant->user_id = $user->id;
+                                $applicant->is_tamisemi = 1;
+                                $applicant->save();
+    
+                                if($has_must_subjects){
+                                    $selection = new ApplicantProgramSelection;
+                                    $selection->campus_program_id = $campus_program->id;
+                                    $selection->applicant_id = $applicant->id;
+                                    $selection->batch_id = $prev_batch->id;
+                                    $selection->application_window_id = $application_window->id;
+                                    $selection->order = 1;
+                                    $selection->status = 'ELIGIBLE';
+                                    $selection->save();
+                                }else{
+    
+                                    $applicant->status = 'SELECTED';
+                                    $applicant->save();
+    
+                                    $selection = new ApplicantProgramSelection;
+                                    $selection->campus_program_id = $campus_program->id;
+                                    $selection->applicant_id = $applicant->id;
+                                    $selection->batch_id = $prev_batch->id;
+                                    $selection->application_window_id = $application_window->id;
+                                    $selection->order = 1;
+                                    $selection->status = 'SELECTED';
+                                    $selection->save();
+                                }
+                            }
+                        }
 
                     //    try{
                     //        Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
