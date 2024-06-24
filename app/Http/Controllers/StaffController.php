@@ -267,7 +267,7 @@ class StaffController extends Controller
                                         ->latest()->first();
 
                 $applicant_id = $applicant? $applicant->id : 0;
-
+return $request;
                 $student_payer = Student::where(function($query) use($request,$applicant_id){$query->where('registration_number', $request->keyword)
                                         ->orWhere('surname',$request->keyword)->orWhere('applicant_id',$applicant_id);})
                                         ->whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
