@@ -911,7 +911,7 @@ class ApplicantController extends Controller
    public function rejectTamisemiSelection(Request $request){
 
       $applicant = Applicant::where('id',$request->get('applicant_id'))->first();
-      $applicant->is_tamisemi = 1;
+      $applicant->is_tamisemi = null;
 
       $applicant->save();
       return redirect()->to('application/basic-information')->with('message','TAMISEMI selection rejected successfully');
