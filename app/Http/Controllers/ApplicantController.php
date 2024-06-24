@@ -516,7 +516,7 @@ class ApplicantController extends Controller
                        ->where('campus_id',session('applicant_campus_id'))
                        ->with([
                         'intake:id,name',
-                        'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id')->where('status','SELECTED')->orWhere('order',6);},
+                        'selections'=>function($query){$query->select('id','status','campus_program_id','applicant_id','order')->where('status','SELECTED')->orWhere('order',6);},
                         'selections.campusProgram:id,program_id,campus_id',
                         'selections.campusProgram.program:id,name,award_id,min_duration',
                         'selections.campusProgram.program.award:id,name',
@@ -526,9 +526,6 @@ class ApplicantController extends Controller
                         'programLevel'
                         ])->latest()->first();
 
-                        if($applicant->id == 50){
-return $applicant;
-                        }
       $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
 
       $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
