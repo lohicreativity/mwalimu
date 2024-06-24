@@ -53,7 +53,7 @@
                       Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
                     </div> 
                 @endif
-              @elseif($applicant->is_tamisemi == 0)
+              @elseif($applicant->is_tamisemi == 0 && !is_null($applicant->is_tamisemi))
                 @php
                   $tamisemi_program = null;
                   foreach($applicant->selections as $selection){
