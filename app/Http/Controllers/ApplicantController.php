@@ -886,6 +886,37 @@ class ApplicantController extends Controller
     }
 
 
+   public function acceptTamisemiSelection(Request $request){
+
+      $application_window = ApplicationWindow::where('status','ACTIVE')->first();
+      $applicant = Applicant::where('id',$request->get('applicant_id'))->first();
+      $applicant->is_tamisemi = 1;
+      $applicant->payment_complete_status = $applicant->basic_info_complete_status == 1? 1 : 0;
+      $applicant->programs_complete_status = 1;
+
+      if($tamisemi_selection = ApplicantProgramSelection::where('applicant_id',$applicant->id)
+                                                        ->where('application_window_id',$application_window->id)
+                                                        ->where('order',6)
+                                                        ->first()){
+
+         $applicant->status = $tamisemi_selection->status == 'SELECTED'? $tamisemi_selection : null;
+
+      }
+
+      $applicant->save();
+      return redirect()->to('application/basic-information')->with('message','TAMISEMI selection confirmed successfully');
+
+   }
+
+   public function rejectTamisemiSelection(Request $request){
+
+      $applicant = Applicant::where('id',$request->get('applicant_id'))->first();
+      $applicant->is_tamisemi = 1;
+
+      $applicant->save();
+      return redirect()->to('application/basic-information')->with('message','TAMISEMI selection rejected successfully');
+   }
+
     public function sendKarumeApplicants(Request $request){
 
       $applicants = Applicant::where('program_level_id',4)->where('campus_id', 2)

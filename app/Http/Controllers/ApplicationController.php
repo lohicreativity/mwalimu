@@ -12228,7 +12228,6 @@ class ApplicationController extends Controller
                                 $applicant->program_level_id = $program_level->id;
                                 $applicant->application_window_id = $application_window->id;
                                 $applicant->batch_id = $prev_batch->id;
-                                $applicant->payment_complete_status = 1;
                                 $applicant->intake_id = $application_window->intake->id;
                                 $applicant->index_number = $form4index;
                                 $applicant->admission_year = $applyr;

@@ -68,7 +68,7 @@
                 @endphp
                 <div class="alert alert-success">
                   <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                    Congratulations for being selected by TAMISEMI to study {{ $tamisemi_program }}. Please <a href="{{ url('application/accept-tamisemi-selection?applicant_id='.$applicant->id) }}"> click here </a> to accept or <a href="{{ url('application/reject-tamisemi-selection?applicant_id='.$applicant->id) }}"> here </a> to reject the selection and continue with your selections.
+                    Congratulations for being selected by TAMISEMI to study {{ $tamisemi_program }}. Please click <a href="{{ url('application/accept-tamisemi-selection?applicant_id='.$applicant->id) }}"> here </a> to accept or <a href="{{ url('application/reject-tamisemi-selection?applicant_id='.$applicant->id) }}"> here </a> to reject the selection and continue with your selections.
                   </h3>
                 </div> 
               @endif
