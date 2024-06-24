@@ -526,6 +526,9 @@ class ApplicantController extends Controller
                         'programLevel'
                         ])->latest()->first();
 
+                        if($applicant->id == 50){
+return $applicant;
+                        }
       $student = Student::select('id')->where('applicant_id',$applicant->id)->first();
 
       $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
