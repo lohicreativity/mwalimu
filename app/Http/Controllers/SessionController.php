@@ -159,8 +159,6 @@ class SessionController extends Controller
 					  return redirect()->back()->withInput()->with('error','Your old password is not identified, please provide a correct password!');
 				}
 
-			}
-
-	        
+			}   
        }
 }
