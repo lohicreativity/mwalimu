@@ -40,7 +40,7 @@ class HomeController extends Controller
 		$datediff = round(($datediff/(60 * 60 * 24)));	
 
 		if(Auth::user()->must_update_password == 1 || $datediff > 90){
-			return redirect()->to('staff-change-password')->with('error','You must change the default password');
+			return redirect()->to('staff-change-password')->with('error','You must change your password');
 		}
 
 		$staff = User::find(Auth::user()->id)->staff;
