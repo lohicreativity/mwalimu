@@ -408,9 +408,8 @@ class ModuleAssignmentController extends Controller
 
             $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                                             ->where('module_assignment_id',$module_assignment->id)
-                                                            ->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')
+                                                            ->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})
                                                             ->distinct()->count();
-                                                            return  $students_with_abscond_count;
 
              $final_upload_status = false;
              if($module_assignment->final_upload_status == 'UPLOADED'){
