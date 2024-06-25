@@ -232,7 +232,7 @@
                       <td>
                           @foreach($result->student->courseWorkResults as $res)
                             @if($res->assessment_plan_id == $plan->id)
-                              @php $plan_result = false; @endphp
+                              @php $plan_result = true; @endphp
                               @if(is_null($res->score)) - @else {{ $res->score }} @endif
                               @break
                             @endif
