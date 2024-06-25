@@ -1731,14 +1731,14 @@ class ModuleAssignmentController extends Controller
                         $result->grade = 'I';
                         $result->point = null;
                         $result->final_score = null;
-                        $result->final_exam_remark = 'INCOMPLETE';
+                        // $result->final_exam_remark = 'INCOMPLETE';
                         $result->supp_remark = 'INCOMPLETE';
                     }
 
                     if($student->studentship_status_id == 6){
                         $result->grade = null;
                         $result->point = null;
-                        $result->final_exam_remark = 'DECEASED';
+                        // $result->final_exam_remark = 'DECEASED';
                         $result->supp_remark = 'DECEASED';
                     }
 
