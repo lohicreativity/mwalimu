@@ -229,10 +229,10 @@
                         @endphp
                       @foreach($assessment_plans as $key=>$plan) 
                       <td>
-                        @if($key != count($result->student->courseWorkResults))
+                        @if($key == count($result->student->courseWorkResults))
                           @foreach($result->student->courseWorkResults as $res)
                             @if($res->assessment_plan_id == $plan->id)
-                              @if(is_null($res->score)) - @else {{ $key }} @endif
+                              @if(is_null($res->score)) - @else {{ $res->score }} @endif
                             @endif
                           @endforeach
                         @else
