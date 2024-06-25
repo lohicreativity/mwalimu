@@ -1036,7 +1036,7 @@ class ModuleAssignmentController extends Controller
                                             ->whereDoesntHave('carryHistory',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                             ->with('student')->where('module_assignment_id',$module_assignment->id)
                                             ->whereNotNull('final_uploaded_at')
-                                            ->where('final_exam_remark','POSTPONED')
+                                            ->where('final_remark','POSTPONED')
                                             ->whereIn('student_id',$special_cases_ids)
                                             ->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
