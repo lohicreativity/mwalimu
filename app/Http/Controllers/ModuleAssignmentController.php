@@ -406,9 +406,10 @@ class ModuleAssignmentController extends Controller
                                                           ->whereNotNull('final_uploaded_at')
                                                           ->count();
 
-            $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-            })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})->distinct()->count();
+            $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                                            ->where('module_assignment_id',$module_assignment->id)
+                                                            ->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})
+                                                            ->distinct()->count();
 
              $final_upload_status = false;
              if($module_assignment->final_upload_status == 'UPLOADED'){
@@ -443,37 +444,39 @@ class ModuleAssignmentController extends Controller
                 $module_assignment_ids[] = $mod_assignment->id;
             }
 
-             $supp_process_status = false;
-             if(ExaminationResult::whereIn('module_assignment_id',$module_assignment_ids)->whereNotNull('supp_processed_at')->count() != 0){
+            $supp_process_status = false;
+            if(ExaminationResult::whereIn('module_assignment_id',$module_assignment_ids)->whereNotNull('supp_processed_at')->count() != 0){
                 $supp_process_status = true;
-             }            
+            }            
 
-             $special_supp_status = false;
-             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_remark')->where('final_remark','POSTPONED')->where('final_exam_remark','FAIL')->count() != 0){
+            $special_supp_status = false;
+            if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_remark')->where('final_remark','POSTPONED')->where('final_exam_remark','FAIL')->count() != 0){
                 $special_supp_status = true;
-             } 
-             $data = [
-                'module_assignment'=>$module_assignment,
-                'final_upload_status'=>$final_upload_status,
-                'program_results_process_status'=>$program_results_process_status,
-                'total_students_count'=>$total_students_count,
-                'students_with_final_count'=>$students_with_final_marks_count,
-                'postponed_students_count'=>$postponed_students_count,
-                'students_with_incomplete_count'=>$students_with_abscond_count,
-                'supp_cases_count'=>$supp_cases_count,
-                'special_exam_cases_count'=>$special_exam_cases_count,
-                'carry_cases_count'=>$carry_cases_count,
-                'first_semester_publish_status'=>$first_semester_publish_status,
-                'second_semester_publish_status'=>$second_semester_publish_status,
-                'supp_process_status'=> $supp_process_status,
-                'module' => Module::find($module_assignment->module->id),
+            }
 
-                'staff'=>User::find(Auth::user()->id)->staff
-             ];
-             return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
-          }catch(\Exception $e){
-              return redirect()->back()->with('error','Unable to get the resource specified in this request');
-          }
+            $data = [
+            'module_assignment'=>$module_assignment,
+            'final_upload_status'=>$final_upload_status,
+            'program_results_process_status'=>$program_results_process_status,
+            'total_students_count'=>$total_students_count,
+            'students_with_final_count'=>$students_with_final_marks_count,
+            'postponed_students_count'=>$postponed_students_count,
+            'students_with_incomplete_count'=>$students_with_abscond_count,
+            'supp_cases_count'=>$supp_cases_count,
+            'special_exam_cases_count'=>$special_exam_cases_count,
+            'carry_cases_count'=>$carry_cases_count,
+            'first_semester_publish_status'=>$first_semester_publish_status,
+            'second_semester_publish_status'=>$second_semester_publish_status,
+            'supp_process_status'=> $supp_process_status,
+            'special_supp_status'=>$special_supp_status,
+            'module' => Module::find($module_assignment->module->id),
+
+            'staff'=>User::find(Auth::user()->id)->staff
+            ];
+            return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**
