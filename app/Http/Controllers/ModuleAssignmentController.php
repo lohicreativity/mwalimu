@@ -343,16 +343,23 @@ class ModuleAssignmentController extends Controller
              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
 
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                $total_students_count = $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->count();
+                $total_students_count = $module_assignment->programModuleAssignment->students()->count();
+
+                $postponed_students_count = $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED');})
+                                                                                                   ->count();
              }else{
-                $total_students_count = Student::whereHas('studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                               ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                $total_students_count = Student::whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
                                                                                                                          ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
                                                                                                                          ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
                                                ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
                                                ->count();
+
+                $postponed_students_count = Student::whereHas('studentshipStatus',function($query){$query->where('name','POSTPONED');})
+                                                   ->whereHas('registrations',function($query) use($module_assignment){$query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+                                                                                                                             ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                                                                                             ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);})
+                                                   ->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)
+                                                   ->count();
              }
 
              $students_with_coursework_count = CourseWorkResult::whereHas('student.studentshipStatus',function($query){
@@ -396,15 +403,15 @@ class ModuleAssignmentController extends Controller
                                                   ->where('retakable_type','carry_history')
                                                   ->count();
 
-            $postponed_students_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
-                                                          ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-                                                          ->whereHas('student.semesterRemarks',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
-                                                                                                                                              ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                                                                                                                              ->where('semester_id',$module_assignment->semester_id);})
-                                                          ->where('module_assignment_id',$module_assignment->id)
-                                                          ->where('final_remark','POSTPONED')
-                                                          ->whereNotNull('final_uploaded_at')
-                                                          ->count();
+            // $postponed_students_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','POSTPONED')->orWhere('name','RESUMED');})
+            //                                               ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+            //                                               ->whereHas('student.semesterRemarks',function($query) use($module_assignment){$query->where('remark','!=','POSTPONED EXAM')
+            //                                                                                                                                   ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+            //                                                                                                                                   ->where('semester_id',$module_assignment->semester_id);})
+            //                                               ->where('module_assignment_id',$module_assignment->id)
+            //                                               ->where('final_remark','POSTPONED')
+            //                                               ->whereNotNull('final_uploaded_at')
+            //                                               ->count();
 
             $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
                                                             ->where('module_assignment_id',$module_assignment->id)
