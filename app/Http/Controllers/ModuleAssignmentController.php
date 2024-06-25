@@ -445,9 +445,13 @@ class ModuleAssignmentController extends Controller
 
              $supp_process_status = false;
              if(ExaminationResult::whereIn('module_assignment_id',$module_assignment_ids)->whereNotNull('supp_processed_at')->count() != 0){
-                $supp_process_status = false;
+                $supp_process_status = true;
              }            
 
+             $special_supp_status = false;
+             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_remark')->where('final_remark','POSTPONED')->where('final_exam_remark','FAIL')->count() != 0){
+                $special_supp_status = true;
+             } 
              $data = [
                 'module_assignment'=>$module_assignment,
                 'final_upload_status'=>$final_upload_status,
