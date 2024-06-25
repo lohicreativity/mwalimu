@@ -410,6 +410,7 @@ class ModuleAssignmentController extends Controller
                                                             ->where('module_assignment_id',$module_assignment->id)
                                                             ->where(function($query){$query->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE');})
                                                             ->distinct()->count();
+                                                            return  $students_with_abscond_count;
 
              $final_upload_status = false;
              if($module_assignment->final_upload_status == 'UPLOADED'){
