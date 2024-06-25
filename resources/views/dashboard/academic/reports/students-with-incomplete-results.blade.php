@@ -232,7 +232,7 @@
                         @if($key != count($result->student->courseWorkResults))
                           @foreach($result->student->courseWorkResults as $res)
                             @if($res->assessment_plan_id == $plan->id)
-                              @if(is_null($res->score)) - @else {{ $res->score }} @endif
+                              @if(is_null($res->score)) - @else {{ $key }} @endif
                             @endif
                           @endforeach
                         @else
