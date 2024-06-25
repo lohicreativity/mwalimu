@@ -232,7 +232,7 @@
                           @if($res->assessment_plan_id == $plan->id)
                             <td> @if(is_null($res->score)) - @else {{ $res->score }} @endif</td>
                           @else
-                            -
+                            <td> - </td>
                           @endif
                         @endforeach
                       @endforeach
