@@ -217,7 +217,7 @@
                         @if($case->student_id == $result->student_id && $case->module_assignment_id == $result->module_assignment_id)
                           <td>{{ $result->student->registration_number }}</td>
                           <td>{{ $result->student->surname }}, {{ $result->student->first_name }} {{ $result->student->middle_name}}</td>
-                          <td>{{ $result->final_score }}</td>
+                          <td>@if(!is_null($result->final_score)){{ $result->final_score }} @else - @endif</td>
                         @endif
                       @endforeach
                     </tr>
