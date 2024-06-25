@@ -231,6 +231,8 @@
                         @foreach($result->student->courseWorkResults as $res)
                           @if($res->assessment_plan_id == $plan->id)
                             <td> @if(is_null($res->score)) - @else {{ $res->score }} @endif</td>
+                          @else
+                            -
                           @endif
                         @endforeach
                       @endforeach
