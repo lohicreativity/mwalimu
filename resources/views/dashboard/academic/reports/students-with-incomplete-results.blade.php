@@ -228,13 +228,15 @@
                             $cw_total = 0;
                         @endphp
                       @foreach($assessment_plans as $plan) 
+                      <td>
                         @foreach($result->student->courseWorkResults as $res)
                           @if($res->assessment_plan_id == $plan->id)
-                            <td> @if(is_null($res->score)) - @else {{ $res->score }} @endif</td>
+                            @if(is_null($res->score)) - @else {{ $res->score }} @endif
                           @else
-                            <td> - </td>
+                            - 
                           @endif
                         @endforeach
+                      </td>
                       @endforeach
                       <td>@if(is_null($result->final_score)) - @else {{ $result->final_score }} @endif</td>
                     </tr>
