@@ -227,9 +227,9 @@
                             $empty_columns = count($assessment_plans) - count($result->student->courseWorkResults);
                             $cw_total = 0;
                         @endphp
-                      @foreach($assessment_plans as $key=>$plan) 
+                      @foreach($assessment_plans as $plan_key=>$plan) 
                       <td>
-                        @if($key == count($result->student->courseWorkResults))
+                        @if($plan_key != count($result->student->courseWorkResults))
                           @foreach($result->student->courseWorkResults as $res)
                             @if($res->assessment_plan_id == $plan->id)
                               @if(is_null($res->score)) - @else {{ $res->score }} @endif
