@@ -227,17 +227,19 @@
                             $empty_columns = count($assessment_plans) - count($result->student->courseWorkResults);
                             $cw_total = 0;
                         @endphp
-                      @foreach($assessment_plans as $plan_key=>$plan) 
+                      @foreach($assessment_plans as $plan) 
+                        @php $plan_result = false; @endphp
                       <td>
-                        @if($plan_key != count($result->student->courseWorkResults))
                           @foreach($result->student->courseWorkResults as $res)
                             @if($res->assessment_plan_id == $plan->id)
+                              @php $plan_result = false; @endphp
                               @if(is_null($res->score)) - @else {{ $res->score }} @endif
+                              @break
                             @endif
                           @endforeach
-                        @else
-                          -
-                        @endif
+                          @if(!$plan_result)
+                            -
+                          @endif
                       </td>
                       @endforeach
                       <td>@if(is_null($result->final_score)) - @else {{ $result->final_score }} @endif</td>
