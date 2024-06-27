@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Gepg;
 
+use App\Domain\Academic\Models\PerformanceReportRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\Appeal;
-use App\Domain\Academic\Models\PerfomanceReportRequest;
 use App\Domain\Academic\Models\TranscriptRequest;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Finance\Models\Invoice;
@@ -161,7 +161,7 @@ class GePGResponseController extends Controller
 				}
 
 				if(str_contains(strtolower($invoice->feeType->name),'performance report') || str_contains(strtolower($invoice->feeType->name),'statement of results')){
-					PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID','status'=>'PENDING']);
+                    PerformanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID','status'=>'PENDING']);
 				}
 
 				if(str_contains(strtolower($invoice->feeType->name),'transcript')){
