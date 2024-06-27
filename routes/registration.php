@@ -17,7 +17,7 @@ use App\Http\Controllers\ApplicationController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified', 'checkPasswordChange'])->group(function(){
     
     Route::post('verify-nhif',[HealthInsuranceController::class,'verifyNHIF']);
     Route::post('store-other-card',[HealthInsuranceController::class,'storeOtherCard']);

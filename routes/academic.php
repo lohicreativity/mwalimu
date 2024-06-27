@@ -50,7 +50,7 @@ use App\Http\Controllers\PerformanceReportRequestController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified', 'checkPasswordChange'])->group(function(){
 
 	Route::get('semesters', [SemesterController::class,'index'])->name('semesters');
 	Route::post('semester/store', [SemesterController::class,'store']);

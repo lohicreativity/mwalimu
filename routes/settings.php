@@ -28,7 +28,7 @@ use App\Http\Controllers\FacultyController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified', 'checkPasswordChange'])->group(function(){
 
 	Route::get('nta-levels', [NTALevelController::class,'index'])->name('nta-levels');
 	Route::post('nta-level/store', [NTALevelController::class,'store']);
