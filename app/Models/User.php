@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'status'
     ];
 
     /**
@@ -62,6 +62,26 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function isEmployee(): bool
+    {
+        return $this->staff()->exists();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status == 'ACTIVE';
+    }
+
+    public function isNotActive(): bool
+    {
+        return !$this->isActive();
+    }
+
+    public function lockAccount()
+    {
+        $this->update(['status' => 'INACTIVE']);
+    }
 
     public function roles()
     {
@@ -100,12 +120,12 @@ class User extends Authenticatable
           return false;
     }
 
-    public function hasPermissionTo($permission) 
+    public function hasPermissionTo($permission)
     {
           return $this->hasPermissionThroughRole($permission);
     }
 
-    public function hasPermissionThroughRole($permission) 
+    public function hasPermissionThroughRole($permission)
     {
           foreach ($permission->roles as $role){
             if($this->roles->contains($role)) {
