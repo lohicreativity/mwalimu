@@ -14,7 +14,7 @@ use App\Http\Controllers\StaffController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified', 'checkPasswordChange'])->group(function(){
 
 	Route::get('staff-members', [StaffController::class,'index'])->name('staff-members');
 	Route::get('staff/create', [StaffController::class,'create']);

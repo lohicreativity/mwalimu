@@ -33,15 +33,15 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request)
     {
-		$now = strtotime(date('Y-m-d'));
+		/*$now = strtotime(date('Y-m-d'));
 		$last_update = strtotime(Auth::user()->updated_at);
 		//$validity = strtotime($fee_amount->duration
 		$datediff = $now - $last_update;
-		$datediff = round(($datediff/(60 * 60 * 24)));	
+		$datediff = round(($datediff/(60 * 60 * 24)));
 
 		if(Auth::user()->must_update_password == 1 || $datediff > 90){
 			return redirect()->to('staff-change-password')->with('error','You must change your password');
-		}
+		}*/
 
 		$staff = User::find(Auth::user()->id)->staff;
 		// if(!$staff){
@@ -55,11 +55,11 @@ class HomeController extends Controller
 												->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
 		$postponements = Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									   ->whereNotNull('postponed_by_user_id')->where('status', '!=', 'DECLINED')
-									   ->where('category','!=','EXAM')->where('study_academic_year_id',$ac_year->id)->get();				
+									   ->where('category','!=','EXAM')->where('study_academic_year_id',$ac_year->id)->get();
 		$loan_beneficiary = LoanAllocation::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 											->where('study_academic_year_id', $ac_year->id)->get();
 		$deceased = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-							 ->whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();	
+							 ->whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();
 
         $beneficiaries = array();
 		$loan_beneficiary_count = 0;
@@ -75,28 +75,28 @@ class HomeController extends Controller
 			if($postponements){
 				foreach($postponements as $post){
 					if($beneficiary->student_id == $post->student_id){
-						$loan_beneficiary_count = 1;	
+						$loan_beneficiary_count = 1;
 						break;
-					}				
-				}				
+					}
+				}
 			}
 			if($deceased){
 				foreach($deceased as $death){
 					if($beneficiary->student_id == $death->id){
 						$loan_beneficiary_count = 1;
-						break;						
+						break;
 					}
-				}				
+				}
 			}
 			if($internal_trasnfers){
 				foreach($internal_trasnfers as $transfers){
 					if($beneficiary->student_id == $transfers->student_id){
 						$loan_beneficiary_count = 1;
-						break;	
-					}				
-				}				
-			}			
-		}		
+						break;
+					}
+				}
+			}
+		}
 
         $data = [
            'staff'=>$staff,
@@ -107,7 +107,7 @@ class HomeController extends Controller
 									->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('department_id', $staff->department_id);})
 									->whereNull('recommended_by_user_id')->count(),
            'special_exams_hod_count'=>SpecialExamRequest::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-									->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('department_id', $staff->department_id);})						
+									->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('department_id', $staff->department_id);})
 									->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									->whereNull('recommended_by_user_id')->count(),
            'postponements_count'=>Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
@@ -131,7 +131,7 @@ class HomeController extends Controller
 		   'module_assignment_requests'=>ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
 										$query->where('id',$staff->department_id);})->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id','=',0)->count()
         ];
-		
+
     	return view('dashboard',$data)->withTitle('Home');
     }
 }

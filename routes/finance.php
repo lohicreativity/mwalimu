@@ -25,12 +25,12 @@ use App\Http\Controllers\StaffController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified', 'checkPasswordChange'])->group(function(){
 	Route::get('payer-details', [StaffController::class,'viewPayerDetails']);
-	Route::get('download-payments', [StaffController::class,'downloadPayments']);	
+	Route::get('download-payments', [StaffController::class,'downloadPayments']);
 	Route::post('request-control-number', [StaffController::class,'initiateControlNumberRequest']);
-	Route::get('show-control-number', [StaffController::class,'showControlNumber']);	
-	
+	Route::get('show-control-number', [StaffController::class,'showControlNumber']);
+
 	Route::get('fee-types', [FeeTypeController::class,'index'])->name('fee-types');
 	Route::post('fee-type/store', [FeeTypeController::class,'store']);
 	Route::post('fee-type/update', [FeeTypeController::class,'update']);
@@ -63,11 +63,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('nacte-payment/{id}/destroy', [NactePaymentController::class,'destroy']);
 
 	Route::get('loan-allocations',[LoanAllocationController::class,'index']);
-	Route::get('download-loan-allocation-template',[LoanAllocationController::class,'downloadAllocationTemplate']);	
+	Route::get('download-loan-allocation-template',[LoanAllocationController::class,'downloadAllocationTemplate']);
 	Route::post('upload-loan-allocation',[LoanAllocationController::class,'uploadAllocations']);
 	Route::get('loan-beneficiaries',[LoanAllocationController::class,'showLoanBeneficiaries']);
-	Route::get('download-loan-beneficiaries',[LoanAllocationController::class,'downloadLoanBeneficiaries']);		
-	Route::get('update-loan-beneficiaries',[LoanAllocationController::class,'updateLoanBeneficiaries']);	
+	Route::get('download-loan-beneficiaries',[LoanAllocationController::class,'downloadLoanBeneficiaries']);
+	Route::get('update-loan-beneficiaries',[LoanAllocationController::class,'updateLoanBeneficiaries']);
 	Route::get('loan-bank-details',[LoanAllocationController::class,'showLoanBankDetails']);
 	Route::post('loan-allocation-update-signatures',[LoanAllocationController::class,'updateSignatures']);
 	Route::get('notify-loan-students',[LoanAllocationController::class,'notifyLoanStudents']);
