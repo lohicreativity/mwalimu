@@ -253,12 +253,11 @@ class StudentController extends Controller
             }
           }
 
-
-          if(Auth::user()->must_update_password == 1){
-              return redirect()->to('change-password')->with('error','You must change the default password');
-          }else{
-              return redirect()->to('student/dashboard')->with('message','Logged in successfully');
-          }
+          // if(Auth::user()->must_update_password == 1){
+          //     return redirect()->to('change-password')->with('error','You must change the default password');
+          // }else{
+          return redirect()->to('student/dashboard')->with('message','Logged in successfully');
+          //}
         }else{
            return redirect()->back()->with('error','Incorrect registration number or password');
         }

@@ -27,7 +27,7 @@ Route::post('authenticate',[StudentController::class, 'authenticate']);
 Route::get('logout',[StudentController::class, 'logout']);
 
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified', 'checkPasswordChange'])->group(function(){
     
     Route::get('dashboard', [StudentController::class,'index']);
 
