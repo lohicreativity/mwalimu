@@ -145,6 +145,10 @@ class GePGResponseController extends Controller
 
 				}else{
 					if(str_contains($invoice->feeType->name,'Tuition Fee')){
+                        if (blank($applicant)){
+                            Log::error($invoice);
+                        }
+
 						$applicant->tuition_payment_check = $data['paid_amount'] > 0? 1 : 0;
 
 					}
