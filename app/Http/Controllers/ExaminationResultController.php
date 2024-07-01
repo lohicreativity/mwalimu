@@ -487,7 +487,7 @@ class ExaminationResultController extends Controller
                               $no_of_failed_modules++;
                            }
          
-                           if($processed_result->course_work_remark == 'FAIL'){
+                           if($processed_result->course_work_remark == 'FAIL' && $postponed_status == null){
                               if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7')){
                                  if($year_of_study == 1){
                                     $processed_result->final_exam_remark = 'CARRY';
@@ -3610,7 +3610,9 @@ class ExaminationResultController extends Controller
                            $processed_result->point = 0;
                         }
       
-                        if($processed_result->course_work_remark == 'FAIL'){
+                        if(!empty($postponed_status)){
+
+                        }elseif($processed_result->course_work_remark == 'FAIL'){
 
                            if(Util::stripSpacesUpper($ntaLevel) == Util::stripSpacesUpper('NTA Level 7')){
                               if($year_of_study == 1){
