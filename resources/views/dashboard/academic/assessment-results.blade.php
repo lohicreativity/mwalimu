@@ -27,7 +27,7 @@
               $module_name = str_replace(' In ',' in ',$module_name);
 
             @endphp
-            <h1>{{ __('Assessment Results') }} - {{ $module_name }} - {{ $module_assignment->module->code }}</h1>
+            <h2>{{ __('Assessment Results') }} - {{ $module_name }} - {{ $module_assignment->module->code }}</h2>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

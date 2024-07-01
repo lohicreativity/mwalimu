@@ -469,7 +469,7 @@ class ModuleAssignmentController extends Controller
 
             $semester = Semester::where('status','ACTIVE')->first();
 
-            $supp_published = false;
+            $supp_published = true;
             if(ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
                                 ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
                                 ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
