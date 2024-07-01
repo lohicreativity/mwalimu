@@ -478,7 +478,7 @@ class ModuleAssignmentController extends Controller
             ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
             ->where('type','SUPP')
             ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
-            ->first();
+            ->get();
             $data = [
             'module_assignment'=>$module_assignment,
             'final_upload_status'=>$final_upload_status,
