@@ -97,7 +97,7 @@
                           @if(!$program_results_process_status)
                             <option value="FINAL_EXAM">Final Exam</option>
                           @endif
-                          @if((!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status) || $supp_published) && ($special_exam_cases_count > 0 || $supp_cases_count > 0 || $carrt_cases_count > 0))
+                          @if((!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status) || $supp_published) && ($special_exam_cases_count > 0 || $supp_cases_count > 0 || $carry_cases_count > 0))
                             <option value="SUPPLEMENTARY">Supplementary Exam</option>
                           @endif
                         @endif
