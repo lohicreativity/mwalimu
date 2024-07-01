@@ -423,16 +423,22 @@ class ModuleAssignmentController extends Controller
                 $final_upload_status = true;
              }
              $second_semester_publish_status = false;
-             if(ResultPublication::whereHas('semester',function($query){
-                 $query->where('name','LIKE','%2%');
-             })->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('status','PUBLISHED')->count() != 0){
+             if(ResultPublication::whereHas('semester',function($query){ $query->where('name','LIKE','%2%');})
+                                 ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                 ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
+                                 ->where('type','FINAL')
+                                 ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
+                                 ->where('status','PUBLISHED')->count() != 0){
                 $second_semester_publish_status = true;
              }
 
              $first_semester_publish_status = false;
-             if(ResultPublication::whereHas('semester',function($query){
-                 $query->where('name','LIKE','%1%');
-             })->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('status','PUBLISHED')->count() != 0){
+             if(ResultPublication::whereHas('semester',function($query){$query->where('name','LIKE','%1%');})
+                                 ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                 ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
+                                 ->where('type','FINAL')
+                                 ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
+                                 ->where('status','PUBLISHED')->count() != 0){
                 $first_semester_publish_status = true;
              }
 
@@ -473,12 +479,6 @@ class ModuleAssignmentController extends Controller
                $supp_published = true;
             }
 
-            return ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
-            ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-            ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
-            ->where('type','SUPP')
-            ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
-            ->get();
             $data = [
             'module_assignment'=>$module_assignment,
             'final_upload_status'=>$final_upload_status,
