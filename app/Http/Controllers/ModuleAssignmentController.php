@@ -339,8 +339,8 @@ class ModuleAssignmentController extends Controller
     public function showResultsUpload(Request $request,$id)
     {
          try{
-            $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-             $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
+            $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(); 
+            $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
 
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $total_students_count = $module_assignment->programModuleAssignment->students()->count();
@@ -461,6 +461,24 @@ class ModuleAssignmentController extends Controller
                 $special_supp_status = true;
             }
 
+            $semester = Semester::where('status','ACTIVE')->first();
+
+            $supp_published = false;
+            if(ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
+                                ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
+                                ->where('type','SUPP')
+                                ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
+                                ->where('status','PUBLISHED')->count() != 0){
+               $supp_published = true;
+            }
+
+            return ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
+            ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+            ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
+            ->where('type','SUPP')
+            ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
+            ->first();
             $data = [
             'module_assignment'=>$module_assignment,
             'final_upload_status'=>$final_upload_status,
@@ -476,6 +494,7 @@ class ModuleAssignmentController extends Controller
             'second_semester_publish_status'=>$second_semester_publish_status,
             'supp_process_status'=> $supp_process_status,
             'special_supp_status'=>$special_supp_status,
+            'supp_published'=>$supp_published,
             'module' => Module::find($module_assignment->module->id),
 
             'staff'=>User::find(Auth::user()->id)->staff
