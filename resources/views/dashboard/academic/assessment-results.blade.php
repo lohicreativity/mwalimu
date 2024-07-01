@@ -20,7 +20,7 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-7">
             @php
               $module_name = str_replace(' Of ',' of ',$module_assignment->module->name);
               $module_name = str_replace(' And ',' and ',$module_name);
@@ -29,7 +29,7 @@
             @endphp
             <h3>{{ __('Assessment Results') }} - {{ $module_name }} - {{ $module_assignment->module->code }}</h3>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-5">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignments') }}">{{ __('Module Assignment') }}</a></li>
