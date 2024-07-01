@@ -370,30 +370,62 @@ class ModuleAssignmentController extends Controller
              $students_with_final_marks_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_score')->whereNotNull('final_uploaded_at')->count();
-             $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
+            //  $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
 
-             $students_with_supplemetary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
+            //  $students_with_supplemetary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
+            //         $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+            //     })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 
-             $students_passed_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
-             $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
-                                            ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
-                                            ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})->with('student')->where('module_assignment_id',$module_assignment->id)
-                                            ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
-                                            ->where('course_work_remark','!=','FAIL')
-                                            ->whereNull('retakable_type')
-                                            ->count();
+            //  $students_passed_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
+            //         $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+            //     })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
 
-            $special_exam_cases_count = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-                                                   ->where('module_assignment_id',$module_assignment->id)
-                                                   ->where('type','FINAL')
-                                                   ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                                   ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                                                   ->where('status','APPROVED')
-                                                   ->count();
+            $semester = Semester::where('status','ACTIVE')->first();
+            $supp_published = true;
+            if(ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
+                                ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
+                                ->where('type','SUPP')
+                                ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
+                                ->where('status','PUBLISHED')->count() != 0){
+                $supp_published = true;
+            }
+
+            if($supp_published){
+                $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                                    ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                                    ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                                    ->whereNotNull('supp_uploaded_at')
+                                                    ->where('final_exam_remark','FAIL')
+                                                    ->where('course_work_remark','!=','FAIL')
+                                                    ->whereNull('retakable_type')
+                                                    ->count();
+
+                $special_exam_cases_count = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                                    ->where('module_assignment_id',$module_assignment->id)
+                                                    ->where('type','SUPP')
+                                                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                    ->where('status','APPROVED')
+                                                    ->count();
+            }else{
+                $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+                                                    ->whereHas('student.registrations',function($query){$query->where('status','REGISTERED');})
+                                                    ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP')->orWhere('remark','INCOMPLETE')->orWhere('remark','CARRY')->orWhere('remark','RETAKE');})->with('student')->where('module_assignment_id',$module_assignment->id)
+                                                    ->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')
+                                                    ->where('course_work_remark','!=','FAIL')
+                                                    ->whereNull('retakable_type')
+                                                    ->count();
+
+                $special_exam_cases_count = SpecialExam::whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
+                                                    ->where('module_assignment_id',$module_assignment->id)
+                                                    ->where('type','FINAL')
+                                                    ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                                                    ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                                                    ->where('status','APPROVED')
+                                                    ->count();
+            }
+
             $carry_cases_count = ExaminationResult::whereHas('moduleAssignment.studyAcademicYear',function($query) use($ac_year){$query->where('id',$ac_year->id - 1);})
                                                   ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
                                                   ->whereHas('student.semesterRemarks', function($query){$query->where('remark','SUPP');})
@@ -465,18 +497,6 @@ class ModuleAssignmentController extends Controller
             $special_supp_status = false;
             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_remark')->where('final_remark','POSTPONED')->where('final_exam_remark','FAIL')->count() != 0){
                 $special_supp_status = true;
-            }
-
-            $semester = Semester::where('status','ACTIVE')->first();
-
-            $supp_published = false;
-            if(ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
-                                ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                                ->where('campus_id',$module_assignment->programModuleAssignment->campusProgram->campus_id)
-                                ->where('type','SUPP')
-                                ->where('nta_level_id',$module_assignment->programModuleAssignment->campusProgram->program->nta_level_id)
-                                ->where('status','PUBLISHED')->count() != 0){
-               $supp_published = true;
             }
 
             $data = [
