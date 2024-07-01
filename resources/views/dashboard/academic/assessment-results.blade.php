@@ -27,7 +27,7 @@
               $module_name = str_replace(' In ',' in ',$module_name);
 
             @endphp
-            <h2>{{ __('Assessment Results') }} - {{ $module_name }} - {{ $module_assignment->module->code }}</h2>
+            <h3>{{ __('Assessment Results') }} - {{ $module_name }} - {{ $module_assignment->module->code }}</h3>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -97,7 +97,7 @@
                           @if(!$program_results_process_status)
                             <option value="FINAL_EXAM">Final Exam</option>
                           @endif
-                          @if(!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status))
+                          @if(!$supp_process_status && ($first_semester_publish_status || $second_semester_publish_status) || $supp_published)
                             <option value="SUPPLEMENTARY">Supplementary Exam</option>
                           @endif
                         @endif
