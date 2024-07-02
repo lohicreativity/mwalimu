@@ -166,9 +166,9 @@
                        @endforeach
                        @if($active_semester) 
                         @if((App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 1') && $first_semester_publish_status) ||
-                            (App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2') && $second_semester_publish_status))
-                       <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
-                       @endif
+                           (App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2') && $second_semester_publish_status))
+                           <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
+                        @endif
                        @endif
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}

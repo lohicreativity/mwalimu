@@ -2200,7 +2200,7 @@ class ModuleAssignmentController extends Controller
 
                             $supp_upload_allowed = false;
                             if($semester_remark){
-                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM' || $sup_special_exam || $final_special_exam){
+                                if($semester_remark->remark == 'SUPP' || $semester_remark->remark == 'POSTPONED EXAM' || (!$supp_published && ($sup_special_exam || $final_special_exam))){
                                     $supp_upload_allowed = true;
                                 }else{
                                     if(($semester_remark->remark == 'CARRY' || $semester_remark->remark == 'RETAKE' || $semester_remark->remark == 'INCOMPLETE') &&
@@ -2234,7 +2234,7 @@ class ModuleAssignmentController extends Controller
 
                             $result->module_assignment_id = $student->year_of_study == 2? $previous_mod_assignment->id : $module_assignment->id;
                             $result->student_id = $student->id;
-                            if($final_special_exam || $sup_special_exam){
+                            if(($final_special_exam || $sup_special_exam) && !$supp_published){
                             // if($sup_special_exam){
                             // if($sup_special_exam || $postponement){ // SEE the previous comment
                                 // $result->final_score = !$sup_special_exam || !$postponement? trim($line[1]) : null;
@@ -2279,7 +2279,7 @@ class ModuleAssignmentController extends Controller
                             if($result->exam_type == 'SUPP' && $student->year_of_study == 2 && $module_assignment->module->ntaLevel->id == 4){
                                 $result->exam_type = 'CARRY';
                                 $result->exam_category = 'FIRST';
-                            }elseif($final_special_exam || $sup_special_exam){
+                            }elseif(($final_special_exam || $sup_special_exam) && !$supp_published){
                                 $result->exam_type = 'FINAL';
                                 $result->exam_category = 'FIRST';
                             }else{
@@ -2399,6 +2399,7 @@ class ModuleAssignmentController extends Controller
                             $result->uploaded_by_user_id = Auth::user()->id;
                             $result->save();
                         }
+                        
                     }elseif($student && !empty($line[1]) && isset($line[2])){
                         DB::rollback();
                         return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
