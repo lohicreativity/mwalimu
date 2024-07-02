@@ -2488,7 +2488,7 @@ class StudentController extends Controller
      * Reset password
      */
     public function resetPassword(Request $request)
-    {  return 1;
+    { 
         $student = Student::find($request->get('student_id'));
         $user = User::find($student->user_id);
         $user->password = Hash::make('123456');
