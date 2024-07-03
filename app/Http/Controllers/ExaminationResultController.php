@@ -4547,7 +4547,7 @@ class ExaminationResultController extends Controller
             $department = $dpt;
          }
       }
-    	if($request->get('semester_id') != 'SUPPLEMENTARY' && $request->get('semester_id') != 'ANNUAL'){
+    	if(!str_contains($request->get('semester_id'),'SUPPLEMENTARY') && $request->get('semester_id') != 'ANNUAL'){
 	    	
                 if(ModuleAssignment::whereHas('examinationResults',function($query){$query->whereNull('final_processed_at');})
                                    ->whereHas('programModuleAssignment',function($query) use($request){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
@@ -4574,7 +4574,7 @@ class ExaminationResultController extends Controller
                    return redirect()->back()->with('error','Results not processed');
                }
 
-               if($request->get('semester_id') == 'SUPPLEMENTARY'){
+               if(str_contains($request->get('semester_id'),'SUPPLEMENTARY')){
                   $sem = Semester::where('status','ACTIVE')->first();
                   $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$sem){$query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])
                      ->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$sem->id);})
@@ -4600,7 +4600,7 @@ class ExaminationResultController extends Controller
         	$assignmentIds[] = $assign->id;
         }
 
-        if($request->get('semester_id') != 'SUPPLEMENTARY' && $request->get('semester_id') != 'ANNUAL'){
+        if(!str_contains($request->get('semester_id'),'SUPPLEMENTARY') && $request->get('semester_id') != 'ANNUAL'){
          if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
               $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
