@@ -5134,51 +5134,71 @@ class ExaminationResultController extends Controller
             }
           }
 
+         $nta_level_id = $module_assignments[0]->programModuleAssignment->campusProgram->program->nta_level_id;
+         $supp_published = false;
+         if(ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
+                           ->where('study_academic_year_id',$study_academic_year->id)
+                           ->where('campus_id',$campus_program->id)
+                           ->where('type','SUPP')
+                           ->where('nta_level_id',$nta_level_id)
+                           ->where('status','PUBLISHED')->count() != 0){
+            $supp_published = true;
+         }
 
-        $data = [
-           'campus'=>$campus_program->campus,
-           'program'=>$campus_program->program,
-           'department'=>$department,
-           'study_academic_year'=>$study_academic_year,
-           'module_assignments'=>$module_assignments,
-           'students'=>$students,
-           'modules'=>$modules,
-           'semester'=>$semester,
-           'intake'=>Intake::find($request->get('intake_id')),
-           'semesters'=>$semesters,
-           'sem_modules'=>$sem_modules,
-           'first_semester'=>$first_semester,
-           'second_semester'=>$second_semester,
-           'special_exam_first_semester_students'=>$special_exam_first_semester_students,
-           'special_exam_second_semester_students'=>$special_exam_second_semester_students,
-           'year_of_study'=>explode('_',$request->get('campus_program_id'))[2],
-           'grading_policies'=>$grading_policies,
-           'staff'=>User::find(Auth::user()->id)->staff,
-           'request'=>$request,
-           'classifications'=>$classifications,
-           'supp_students'=> Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
-                                    ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                    ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds)->whereNotNull('supp_remark');})
-                                    ->whereDoesntHave('specialExams',function($query)use($request,$assignmentIds){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED')->whereIn('module_assignment_id',$assignmentIds);})
-                                    ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
-                                             'semesterRemarks.semester',
-                                             'examinationResults',
-                                             'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
-                                    ->where('campus_program_id',$campus_program->id)
-                                    ->get(),
-            'special_exam_students'=>Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+         $data = [
+            'campus'=>$campus_program->campus,
+            'program'=>$campus_program->program,
+            'department'=>$department,
+            'study_academic_year'=>$study_academic_year,
+            'module_assignments'=>$module_assignments,
+            'students'=>$students,
+            'modules'=>$modules,
+            'semester'=>$semester,
+            'intake'=>Intake::find($request->get('intake_id')),
+            'semesters'=>$semesters,
+            'sem_modules'=>$sem_modules,
+            'first_semester'=>$first_semester,
+            'second_semester'=>$second_semester,
+            'special_exam_first_semester_students'=>$special_exam_first_semester_students,
+            'special_exam_second_semester_students'=>$special_exam_second_semester_students,
+            'year_of_study'=>explode('_',$request->get('campus_program_id'))[2],
+            'grading_policies'=>$grading_policies,
+            'staff'=>User::find(Auth::user()->id)->staff,
+            'request'=>$request,
+            'classifications'=>$classifications,
+            'supp_students'=> Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                       ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                       ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds)->whereNotNull('supp_remark');})
+                                       ->whereDoesntHave('specialExams',function($query)use($request,$assignmentIds){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED')->whereIn('module_assignment_id',$assignmentIds);})
+                                       ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
+                                                'semesterRemarks.semester',
+                                                'examinationResults',
+                                                'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
+                                       ->where('campus_program_id',$campus_program->id)
+                                       ->get(),
+               'special_exam_students'=>Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
+                                                ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
+                                                ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds);})
+                                                ->whereHas('specialExams',function($query)use($request,$assignmentIds){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED')->whereIn('module_assignment_id',$assignmentIds);})
+                                                ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
+                                                         'semesterRemarks.semester',
+                                                         'examinationResults','specialExams',
+                                                         'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
+                                                ->where('campus_program_id',$campus_program->id)
+                                                ->get(),
+               'special_exam_supp_students'=>Student::whereHas('applicant',function($query) use($request){$query->where('intake_id',$request->get('intake_id'));})
                                              ->whereHas('registrations',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);})
-                                             ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds);})
-                                             ->whereHas('specialExams',function($query)use($request,$assignmentIds){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','APPROVED')->whereIn('module_assignment_id',$assignmentIds);})
+                                             ->whereHas('examinationResults',function($query) use($assignmentIds){$query->whereIn('module_assignment_id',$assignmentIds)->where('final_remark','POSTPONED')->where(function($query){$query->whereNotNull('supp_score')->orWhere('supp_remark','INCOMPLETE');});})
                                              ->with(['semesterRemarks'=>function($query) use ($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);},
                                                       'semesterRemarks.semester',
                                                       'examinationResults','specialExams',
                                                       'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
                                              ->where('campus_program_id',$campus_program->id)
-                                             ->get()
-        ];
+                                             ->get(),
+               'supp_published'=>$supp_published
+         ];
 
-        if($request->get('semester_id') != 'SUPPLEMENTARY'){
+        if(!str_contains($request->get('semester_id'),'SUPPLEMENTARY')){
 /*             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                return view('dashboard.academic.reports.final-program-results-second-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
             }else{ 
@@ -5190,7 +5210,12 @@ class ExaminationResultController extends Controller
                return view('dashboard.academic.reports.final-program-results-first-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);             
             }
         }else{
-            return view('dashboard.academic.reports.final-program-results-supplementary',$data)->withTitle('Supplementary Program Results - '.$campus_program->program->name);
+            if($request->get('semester_id') == 'SUPPLEMENTARY'){
+               return view('dashboard.academic.reports.final-program-results-supplementary',$data)->withTitle('Supplementary Program Results - '.$campus_program->program->name);
+            }else{
+               return view('dashboard.academic.reports.final-program-results-supplementary-special',$data)->withTitle('Supplementary Program Results - '.$campus_program->program->name);
+            }
+            
         }
     }
 
