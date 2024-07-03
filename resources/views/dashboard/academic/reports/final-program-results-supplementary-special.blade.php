@@ -640,7 +640,7 @@
                 </div><!-- end of table-responsive -->
             </div>
           @endif
-        <div class="row">
+        <div class="row" style="clear:left; padding-left:20px">
           <div class="col-md-8">
               <div class="ss-left">
                   <p>Head of Department: <span class="font-weight-normal"> {{ strtoupper($staff->surname) }}, {{ ucwords(strtolower($staff->first_name))}} {{ substr($staff->middle_name,0,1)}} </span></p>
