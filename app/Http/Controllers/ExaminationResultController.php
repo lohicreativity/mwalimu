@@ -5134,17 +5134,6 @@ class ExaminationResultController extends Controller
             }
           }
 
-         $nta_level_id = $module_assignments[0]->programModuleAssignment->campusProgram->program->nta_level_id;
-         $supp_published = false;
-         if(ResultPublication::whereHas('semester',function($query) use($semester){$query->where('id',$semester->id);})
-                           ->where('study_academic_year_id',$study_academic_year->id)
-                           ->where('campus_id',$campus_program->id)
-                           ->where('type','SUPP')
-                           ->where('nta_level_id',$nta_level_id)
-                           ->where('status','PUBLISHED')->count() != 0){
-            $supp_published = true;
-         }
-
          $data = [
             'campus'=>$campus_program->campus,
             'program'=>$campus_program->program,
@@ -5194,8 +5183,7 @@ class ExaminationResultController extends Controller
                                                       'examinationResults','specialExams',
                                                       'examinationResults.changes','examinationResults.moduleAssignment.specialExams','applicant:id,program_level_id'])
                                              ->where('campus_program_id',$campus_program->id)
-                                             ->get(),
-               'supp_published'=>$supp_published
+                                             ->get()
          ];
 
         if(!str_contains($request->get('semester_id'),'SUPPLEMENTARY')){
