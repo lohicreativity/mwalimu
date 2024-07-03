@@ -134,7 +134,7 @@
                        <option value="{{ $semester->id }}" @if($semester->status == 'ACTIVE') selected="selected" @endif>{{ $semester->name }}</option>
                        @endforeach
                        <option value="SUPPLEMENTARY">Supplementary</option>
-                       <option value="SUPP-SPECIAL">Supplementary (Special)</option>
+                       <option value="SUPPLEMENTARY-SPECIAL">Supplementary (Special)</option>
                        <option value="ANNUAL">Annual</option>                       
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
