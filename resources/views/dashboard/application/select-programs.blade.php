@@ -205,7 +205,7 @@
                  <table class="table table-bordered">
                     <thead>
                        <tr>
-                         <th>Choice {{ count($applicant->freshSelections) }}</th>
+                         <th>Choice</th>
                          <th>Programme</th>
                        </tr>
                     </thead>
@@ -635,7 +635,7 @@
               </div>
               <!-- /.modal -->
 
-            @if(count($applicant->freshSelections) != 0)
+            @if(count($applicant->freshSelections) > 0) 
 				<div class="card">
 				  <div class="card-header">
 					<h3 class="card-title">Selections</h3>
