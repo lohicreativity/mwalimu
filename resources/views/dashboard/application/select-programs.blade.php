@@ -247,7 +247,7 @@
           @endif
           @endif
         
-
+</div>
               <div class="modal fade" id="ss-first-choice">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
