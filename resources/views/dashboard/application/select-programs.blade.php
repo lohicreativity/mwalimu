@@ -180,8 +180,9 @@
                                         @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
                                   </tr>
                                 @endif
-                            </tbody>
-                          </table>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     @endif
@@ -195,7 +196,7 @@
             </div>
           </div>   
             @else   
-</div>
+
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
