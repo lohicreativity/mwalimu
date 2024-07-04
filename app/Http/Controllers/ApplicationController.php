@@ -6403,7 +6403,7 @@ class ApplicationController extends Controller
 
         if($applicant->programs_complete_status == 1){
             Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
-            return $applicant->id;
+            return ApplicantProgramSelection::where('applicant_id',$applicant->id)->get();
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
         }
 return 2;
