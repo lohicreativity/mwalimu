@@ -186,7 +186,7 @@
                         </div>
                       </div>
                     @endif
-                  </div>
+
             @else
             @if(count($campus_programs) === 0)
             <div class="col-12"> 
@@ -196,7 +196,7 @@
             </div>
           </div>   
             @else   
-
+</div>
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
