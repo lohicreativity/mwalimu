@@ -193,9 +193,9 @@
                         <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
                 </div>
             </div>
-          </div>   
+          </div> 
+        </div>  
             @else   
-</div>
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
@@ -247,7 +247,7 @@
           @endif
           @endif
         
-
+</div>
               <div class="modal fade" id="ss-first-choice">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
