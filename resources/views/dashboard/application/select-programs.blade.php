@@ -196,7 +196,7 @@
             </div>
           </div>   
             @else   
-
+</div>
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
