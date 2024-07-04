@@ -6402,10 +6402,11 @@ class ApplicationController extends Controller
         $applicant->save();
 
         if($applicant->programs_complete_status == 1){
+            return 1;
             Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
         }
-
+return 2;
         return redirect()->back()->with('message','Results reset successfully');
     }
 
