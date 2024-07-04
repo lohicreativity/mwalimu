@@ -63,6 +63,8 @@ class Util {
             }else{
                 $point = $res->point;    
             }
+          }elseif($exam_type == 'Other'){
+                $point = is_null($res->supp_point)? $res->point : $res->supp_point;
           }else{
             $point = $res->point;
           }
@@ -125,6 +127,7 @@ class Util {
          }
        }
        
+       $incomplete_status = false;
        foreach($remarks as $rem){
           if($rem->remark == 'FAIL&DISCO'){
              $remark = 'FAIL&DISCO';
@@ -133,27 +136,52 @@ class Util {
 
           if($rem->remark == 'INCOMPLETE'){
              $remark = 'INCOMPLETE';
-             break;
+             $incomplete_status = true;
           }
 
-          if($rem->remark == 'POSTPONED'){
-             $remark = 'POSTPONED';
-             break;
+          if(str_contains($rem->remark,'POSTPONED')){
+
+            if($incomplete_status){
+                $remark = 'INCOMPLETE';
+                break;
+            }else{
+                if($rem->remark == 'POSTPONED EXAM'){
+                    $remark == 'POSTPONED EXAM';
+                }elseif($rem->remark == 'POSTPONED YEAR'){
+                    $remark == 'POSTPONED YEAR';
+                    break;
+                }elseif($rem->remark == 'POSTPONED SEMESTER'){
+                    $remark == 'POSTPONED SEMESTER';
+                    break;
+                }
+            }
           }
 
           if($rem->remark == 'CARRY'){
-             $remark = 'CARRY';
-             break;
+            if($incomplete_status){
+                $remark = 'INCOMPLETE';
+                break;
+            }else{
+                $remark = 'CARRY';
+            }
           } 
 
           if($rem->remark == 'RETAKE'){
-             $remark = 'RETAKE';
-             break;
+            if($incomplete_status){
+                $remark = 'INCOMPLETE';
+                break;
+            }else{
+                $remark = 'RETAKE';
+            }
           }
           
           if($rem->remark == 'SUPP'){
-             $remark = 'SUPP';
-             break;
+            if($incomplete_status){
+                $remark = 'INCOMPLETE';
+                break;
+            }else{
+                $remark = 'SUPP';
+            }
           }
        }
        
