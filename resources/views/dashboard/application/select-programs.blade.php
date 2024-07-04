@@ -147,42 +147,41 @@
                           <!-- /.card-header -->
                           <div class="card-body">
                             <table class="table table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th>Choice</th>
-                                    <th>Programme</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
+                              <thead>
                                 <tr>
-                                  <td>1</td>
-                                  <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1)) 1st Choice Selected 
-                                      @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
+                                  <th>Choice</th>
+                                  <th>Programme</th>
                                 </tr>
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1))
+                              </thead>
+                              <tbody>
+                              <tr>
+                                <td>1</td>
+                                <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1)) 1st Choice Selected 
+                                    @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
+                              </tr>
+                              @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1))
                                 <tr>
                                   <td>2</td>
                                   <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2)) 2nd Choice Selected 
                                       @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
                                 </tr>
-                                @endif
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2))
+                              @endif
+                              @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2))
                                 <tr>
                                   <td>3</td>
                                   <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3)) 3rd Choice Selected 
                                       @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
                                 </tr>
-                                @endif
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3))
+                              @endif
+                              @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3))
                                 <tr>
                                   <td>4</td>
                                   <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,4)) 4th Choice Selected 
                                       @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
                                 </tr>
-                                @endif
-                              </tbody>
-                            </table>
-                          </div>
+                              @endif
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     @endif
