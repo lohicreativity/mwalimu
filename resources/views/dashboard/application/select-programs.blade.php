@@ -186,17 +186,17 @@
                         </div>
                       </div>
                     @endif
-
+                  </div>
             @else
             @if(count($campus_programs) === 0)
             <div class="col-12"> 
               <div class="alert alert-warning"  role="alert">
-                        <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
-                </div>
+                <h6>Unfortunately you do not qualify in any of our programmes offered in this campus. Please try from other MNMA campuses.</h6>
+              </div>
             </div>
           </div>   
             @else   
-</div>
+
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
