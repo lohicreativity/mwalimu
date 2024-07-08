@@ -1443,7 +1443,7 @@
                                           
                                              <a class="btn btn-info btn-sm" href="#"
                                              data-toggle="modal"
-                                             wire:click="fetchEntryRequirements({{$requirement->id}})"
+                                             wire:click="fetchEntryRequirements({{$requirement}})"
                                              data-target="#ss-edit-requirement">
                                              <i class="fas fa-pencil-alt"></i> Edit
                                           </a>

@@ -119,7 +119,6 @@ class Departments extends Component
             $this->faculties = Faculty::where('campus_id',$staff->campus_id)->get();
         }
 
-
         return view('livewire.general-settings.departments', [
             'unit_categories'  =>UnitCategory::all(),
             'all_departments'  => Department::where('parent_id','>',0)->get(),
@@ -127,6 +126,6 @@ class Departments extends Component
             'faculties'        =>Faculty::all(),
             'staff'            => $staff,
             'campusDepartments'      => CampusDepartment::query()->with(['campus', 'department.unitCategory', 'department.parent'])->get(),
-            ]);
+        ]);
     }
 }
