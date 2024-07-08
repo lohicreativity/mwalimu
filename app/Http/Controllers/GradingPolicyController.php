@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\CourseWorkResult;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth, DB;
+use App\Domain\Academic\Models\ExaminationResult;
 
 class GradingPolicyController extends Controller
 {
@@ -158,7 +159,7 @@ class GradingPolicyController extends Controller
         	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
         }
 
-        if(CourseWorkResult::whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})->first()){
+        if(ExaminationResult::whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})->first()){
             return redirect()->back()->with('error','Cannot be changed because the grading policy has already been used');
         }
 
