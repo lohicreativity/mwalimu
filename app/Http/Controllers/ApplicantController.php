@@ -2288,7 +2288,9 @@ class ApplicantController extends Controller
                     $query->where('award_id',$applicant->program_level_id);
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
       }
-
+if($applicant->id == 25112){
+   return $programs;
+}
          $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
