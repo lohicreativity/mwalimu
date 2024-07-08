@@ -1380,15 +1380,15 @@
                                              </select>
                                         </div>
                                        
-                                         <div class="form-group col-3">
+                                         <div class="form-group col-4">
                                           {!! Form::label('','No. of Principle Pass Subjects') !!}
                                           {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}
                                          </div>
-                                         <div class="form-group col-3">
+                                         <div class="form-group col-4">
                                           {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
                                           {!! Form::text('subsidiary_pass_subjects',$requirement->subsidiary_pass_subjects,$subsidiary_pass_subjects) !!}
                                          </div>
-                                         <div class="form-group col-3">
+                                         <div class="form-group col-4">
                                           {!! Form::label('','No. of Pass Subjects') !!}
                                           {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                         </div>
