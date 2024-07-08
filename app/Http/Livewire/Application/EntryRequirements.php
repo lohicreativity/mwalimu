@@ -7,7 +7,8 @@ use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Models\NectaResult;
-use Validator, Auth;
+use App\Models\User;
+use Auth;
 use Livewire\Component;
 
 class EntryRequirements extends Component
