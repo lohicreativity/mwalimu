@@ -2028,6 +2028,9 @@
                                           </select>
                                         </div>
 
+                                      {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                                      {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
+                                     
                                        <div class="form-group col-4">
                                         {!! Form::label('','Number of Pass Subjects') !!}
                                         {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
