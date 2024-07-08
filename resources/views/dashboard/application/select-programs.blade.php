@@ -186,7 +186,7 @@
                         </div>
                       </div>
                     @endif
-                  </div>
+</div>
             @else
             @if(count($campus_programs) === 0)
             <div class="col-12"> 
