@@ -175,7 +175,7 @@ class GradingPolicyController extends Controller
     {
         try{
             $policy = GradingPolicy::findOrFail($id);
-            if(ExaminationResult::whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})->first()){
+            if(ExaminationResult::whereHas('moduleAssignment',function($query) use($policy){$query->where('study_academic_year_id',$policy->study_academic_year_id);})->first()){
                 return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
             }
             return 1;
