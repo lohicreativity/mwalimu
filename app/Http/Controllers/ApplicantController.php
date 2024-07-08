@@ -1468,7 +1468,7 @@ class ApplicantController extends Controller
                }
             }
          }
-         dd( $campus_programs);
+         // dd( $campus_programs);
 
          $campus_programs = $available_progs;
          $award = $applicant->programLevel;
