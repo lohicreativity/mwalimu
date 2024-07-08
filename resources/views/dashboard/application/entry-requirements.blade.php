@@ -2664,9 +2664,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                   {!! $entry_requirements->appends($request->except('page'))->render() !!}
-                </div>
                </div>
             </div>
             @endif 
