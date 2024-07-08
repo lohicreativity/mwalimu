@@ -1148,7 +1148,7 @@
                                    <div class="card-body">
                                      
                                      <div class="row">
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                           {!! Form::label('','Programme') !!}
                                           <select name="campus_program_id" class="form-control" required>
                                             <option value="">Select Programme</option>
@@ -1157,59 +1157,15 @@
                                             @endforeach
                                           </select>
                                         </div>
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Equivalent GPA') !!}
-                                        {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
-                                      </div>
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Equivalent Majors') !!}
-                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required disabled="disabled">
-                                           @foreach($diploma_programs as $prog)
-                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
-                                               @endforeach
-                                        </select>
-                                      </div>
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Equivalent Average Grade') !!}
-                                        <select name="equivalent_average_grade" class="form-control" disabled="disabled">
-                                           <option value="">Select Pass Grade</option>
-                                           <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
-                                             <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>
-                                             <option value="C" @if($requirement->equivalent_average_grade == 'C') selected="selected" @endif>C</option>
-                                             <option value="D" @if($requirement->equivalent_average_grade == 'D') selected="selected" @endif>D</option>
-                                             <option value="E" @if($requirement->equivalent_average_grade == 'E') selected="selected" @endif>E</option>
-                                             <option value="F" @if($requirement->equivalent_average_grade == 'F') selected="selected" @endif>F</option>
-                                        </select>
-                                      </div>
+
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                     
-                                       <div class="form-group col-3">
-                                        {!! Form::label('','Open Equivalent GPA') !!}
-                                        {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
-                                       </div>
-                                       <div class="form-group col-3">
-                                        {!! Form::label('','Open Equivalent Majors') !!}
-                                        {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
-                                      </div>
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Open Equivalent Average Grade') !!}
-                                        {!! Form::text('open_equivalent_average_grade',$requirement->open_equivalent_average_grade,$equivalent_average_grade) !!}
-                                      </div>
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Principle Pass Points') !!}
-                                        {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
-                                      </div>
-                                     
-                                       <div class="form-group col-3">
-                                        {!! Form::label('','Principle Pass Subjects') !!}
-                                        {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}
-                                       </div>
-                                       <div class="form-group col-3">
+
+                                       <div class="form-group col-4">
                                         {!! Form::label('','Number of Pass Subjects') !!}
                                         {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Pass Grade') !!}
                                         <select name="pass_grade" class="form-control">
                                            <option value="A" @if($requirement->pass_grade == 'A') selected="selected" @endif>A</option>
@@ -1222,7 +1178,7 @@
                                       </div>
                                       
                                     
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Form IV Exclude Subjects') !!}
                                         <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
@@ -1230,7 +1186,7 @@
                                            @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Form IV Must Subjects') !!}
                                         <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
@@ -1238,7 +1194,7 @@
                                            @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Form IV Other Must Subjects') !!}
                                         <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
