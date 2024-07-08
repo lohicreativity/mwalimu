@@ -27,6 +27,12 @@ $('document').ready(function(){
         }
     );
 
+    $('#entry-requirements').DataTable(
+      {
+        "lengthMenu": [ 50, 100, 150, 200, 250 ]
+        }
+    );
+
     $('#ss-transfers').DataTable();
 
     $('.ss-paginated-table').DataTable();
