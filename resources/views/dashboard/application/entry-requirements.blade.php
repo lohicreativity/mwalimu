@@ -2027,7 +2027,7 @@
                                             @endforeach
                                           </select>
                                         </div>
-                                      <div class="form-group col-3">
+ <!--                                     <div class="form-group col-3">
                                         {!! Form::label('','Equivalent GPA') !!}
                                         {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
                                       </div>
@@ -2051,10 +2051,11 @@
                                              <option value="F" @if($requirement->equivalent_average_grade == 'F') selected="selected" @endif>F</option>
                                         </select>
                                       </div>
+                                    -->
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
                                      
-                                       <div class="form-group col-3">
+<!--                                       <div class="form-group col-3">
                                         {!! Form::label('','Open Equivalent GPA') !!}
                                         {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
                                        </div>
@@ -2075,6 +2076,7 @@
                                         {!! Form::label('','Principle Pass Subjects') !!}
                                         {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}
                                        </div>
+                                        -->
                                        <div class="form-group col-3">
                                         {!! Form::label('','Number of Pass Subjects') !!}
                                         {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
