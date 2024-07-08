@@ -59,8 +59,9 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $req = EntryRequirement::find($request->get('entry_requirement_id'));
 
             $reqs = EntryRequirement::where('group_id',$req->group_id)->where('application_window_id',$request->get('application_window_id'))->get();
-            foreach($reqs as $rq){
-		$requirement = EntryRequirement::find($rq->id);
+            //foreach($reqs as $rq){
+		//$requirement = EntryRequirement::find($rq->id);
+            $requirement = EntryRequirement::find($request->get('entry_requirement_id'));
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
             $requirement->equivalent_majors = serialize($request->get('equivalent_majors'));
@@ -88,6 +89,6 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
             $requirement->principle_subjects = serialize($request->get('principle_subjects'));
             $requirement->save();
-            }
+            //}
 	}
 }
