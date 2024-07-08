@@ -14,12 +14,10 @@ use Livewire\Component;
 class EntryRequirements extends Component
 {
     public $selectedEntryRequirement;
-    public $application_window_id;
 
     public function fetchEntryRequirement($Requirement): void
     {
         $this->selectedEntryRequirement = EntryRequirement::where('id',$Requirement->id)->with(['campusProgram.program.award'])->first();
-        $this->application_window_id = $Requirement->application_window_id;
     }
 
 
@@ -88,7 +86,7 @@ class EntryRequirements extends Component
 
         $staff = User::find(Auth::user()->id)->staff;
         //$approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
-        $requirements = EntryRequirement::where('application_window_id',$this->application_window_id)->get();
+        $requirements = EntryRequirement::where('application_window_id',session('session_entry_requirement_application_window_id'))->get();
         
         $campusProgramIds = [];
         foreach ($requirements as $req) {
@@ -96,12 +94,12 @@ class EntryRequirements extends Component
         }
 
         return view('livewire.application.entry-requirements', [
-            'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$this->application_window_id)->latest()->get(),
+            'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',session('session_entry_requirement_application_window_id'))->latest()->get(),
             'campus_programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
-            'application_window'=>ApplicationWindow::find($this->application_window_id),
+            'application_window'=>ApplicationWindow::find(session('session_entry_requirement_application_window_id')),
             'subjects'=>NectaResult::whereHas('detail',function($query){$query->where('exam_id',1);})->distinct()->get(['subject_name']),
             'high_subjects'=>NectaResult::whereHas('detail',function($query){$query->where('exam_id',2);})->distinct()->get(['subject_name']),
-            'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',$this->application_window_id)->count() == 0? false : true,
+            'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',session('session_entry_requirement_application_window_id'))->count() == 0? false : true,
             ]);
 
             // $data = [

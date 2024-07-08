@@ -30,7 +30,7 @@ class EntryRequirementController extends Controller
       foreach ($requirements as $req) {
         $campusProgramIds[] = $req->campus_program_id;
       }
-
+      session(['session_entry_requirement_application_window_id'=>$request->get('application_window_id')]);
     	$data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->with(['intake','campus'])->latest()->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),

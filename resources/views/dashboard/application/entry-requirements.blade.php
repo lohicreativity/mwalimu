@@ -754,7 +754,6 @@
                   @endif
 
                   @if(count($entry_requirements) != 0)
-                  hello
                      @livewire('application.entry-requirements')
                   @endif 
                @endif
