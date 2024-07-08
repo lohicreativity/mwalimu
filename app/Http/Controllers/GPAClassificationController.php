@@ -11,7 +11,7 @@ use App\Domain\Settings\Actions\NTALevelAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
-use App\Domain\Academic\Models\ExaminationResult;
+use App\Domain\Academic\Models\SemesterRemark;
 
 class GPAClassificationController extends Controller
 {
@@ -83,7 +83,7 @@ class GPAClassificationController extends Controller
            }
         }
 
-        if(ExaminationResult::whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})->first()){
+        if(SemesterRemark::where('study_academic_year_id',$request->get('study_academic_year_id'))->first()){
             return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
         }
 
@@ -105,7 +105,7 @@ class GPAClassificationController extends Controller
     {
         try{
             $class = GPAClassification::findOrFail($id);
-            if(ExaminationResult::whereHas('moduleAssignment',function($query) use($class){$query->where('study_academic_year_id',$class->study_academic_year_id);})->first()){
+            if(SemesterRemark::where('study_academic_year_id',$class->study_academic_year_id)->first()){
                 return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
             }
             return 1;
