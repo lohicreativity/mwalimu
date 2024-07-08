@@ -197,10 +197,57 @@
                       @endforeach
                     </select>
                   </div>
+ <!--                 <div class="form-group col-3">
+                    {!! Form::label('','Diploma GPA') !!}
+                    {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Majors') !!}
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required disabled="disabled">
+                       @foreach($diploma_programs as $prog)
+                       <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Average Grade') !!}
+                    <select name="equivalent_average_grade" class="form-control" disabled="disabled">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
+                  </div>
+-->
 
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                   {!! Form::input('hidden','level','certificate') !!}
-                  
+<!--                   
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent GPA') !!}
+                    {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
+                   </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent Majors') !!}
+                    {!! Form::text('open_equivalent_majors',null,$open_equivalent_majors) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent Average Grade') !!}
+                    {!! Form::text('open_equivalent_average_grade',null,$equivalent_average_grade) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Principle Pass Points') !!}
+                    {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
+                  </div>
+                 
+                   <div class="form-group col-3">
+                    {!! Form::label('','Principle Pass Subjects') !!}
+                    {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
+                   </div>
+-->
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
@@ -1979,10 +2026,55 @@
                                             <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @else disabled="disabled" @endif>{{ $program->program->name }}</option>
                                             @endforeach
                                           </select>
-                                       </div>
+                                        </div>
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Equivalent GPA') !!}
+                                        {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
+                                      </div>
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Equivalent Majors') !!}
+                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                           @foreach($diploma_programs as $prog)
+                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               @endforeach
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Equivalent Average Grade') !!}
+                                        <select name="equivalent_average_grade" class="form-control">
+                                           <option value="">Select Pass Grade</option>
+                                           <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
+                                             <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>
+                                             <option value="C" @if($requirement->equivalent_average_grade == 'C') selected="selected" @endif>C</option>
+                                             <option value="D" @if($requirement->equivalent_average_grade == 'D') selected="selected" @endif>D</option>
+                                             <option value="E" @if($requirement->equivalent_average_grade == 'E') selected="selected" @endif>E</option>
+                                             <option value="F" @if($requirement->equivalent_average_grade == 'F') selected="selected" @endif>F</option>
+                                        </select>
+                                      </div>
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
                                      
+                                       <div class="form-group col-3">
+                                        {!! Form::label('','Open Equivalent GPA') !!}
+                                        {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
+                                       </div>
+                                       <div class="form-group col-3">
+                                        {!! Form::label('','Open Equivalent Majors') !!}
+                                        {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
+                                      </div>
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Open Equivalent Average Grade') !!}
+                                        {!! Form::text('open_equivalent_average_grade',$requirement->open_equivalent_average_grade,$equivalent_average_grade) !!}
+                                      </div>
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Principle Pass Points') !!}
+                                        {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
+                                      </div>
+                                     
+                                       <div class="form-group col-3">
+                                        {!! Form::label('','Principle Pass Subjects') !!}
+                                        {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}
+                                       </div>
                                        <div class="form-group col-3">
                                         {!! Form::label('','Number of Pass Subjects') !!}
                                         {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
