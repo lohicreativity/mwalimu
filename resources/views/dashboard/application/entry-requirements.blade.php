@@ -2018,7 +2018,7 @@
                                    <div class="card-body">
                                      
                                      <div class="row">
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                           {!! Form::label('','Programme') !!}
                                           <select name="campus_program_id" class="form-control" required>
                                             <option value="">Select Programme</option>
@@ -2027,12 +2027,12 @@
                                             @endforeach
                                           </select>
                                         </div>
-                                        
-                                       <div class="form-group col-3">
+
+                                       <div class="form-group col-4">
                                         {!! Form::label('','Number of Pass Subjects') !!}
                                         {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Pass Grade') !!}
                                         <select name="pass_grade" class="form-control">
                                            <option value="A" @if($requirement->pass_grade == 'A') selected="selected" @endif>A</option>
@@ -2045,7 +2045,7 @@
                                       </div>
                                       
                                     
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Form IV Exclude Subjects') !!}
                                         <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
@@ -2053,7 +2053,7 @@
                                            @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Form IV Must Subjects') !!}
                                         <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
@@ -2061,7 +2061,7 @@
                                            @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Form IV Other Must Subjects') !!}
                                         <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
