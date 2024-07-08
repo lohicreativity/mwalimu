@@ -486,6 +486,12 @@
                                     'class'=>'form-control'
                                  ];
 
+                                 $min_equivalent_gpa = [
+                                    'placeholder'=>'Min Diploma GPA',
+                                    'class'=>'form-control',
+                                    'required'=>true
+                                 ];
+                                 
                                  $pass_subjects = [
                                     'placeholder'=>'No. of Form IV Pass Subjects',
                                     'class'=>'form-control',
