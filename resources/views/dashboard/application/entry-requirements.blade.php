@@ -1253,17 +1253,20 @@
 
                                       $principle_pass_subjects = [
                                          'placeholder'=>'Principle Pass Subjects',
-                                         'class'=>'form-control'
+                                         'class'=>'form-control',
+                                         'readonly'=>true
                                       ];
 
                                       $subsidiary_pass_subjects = [
                                          'placeholder'=>'Subsidiary Pass Subjects',
-                                         'class'=>'form-control'
+                                         'class'=>'form-control',
+                                         'readonly'=>true
                                       ];
 
                                       $pass_subjects = [
                                          'placeholder'=>'Pass Subjects',
-                                         'class'=>'form-control'
+                                         'class'=>'form-control',
+                                         'readonly'=>true
                                       ];
 
                                       $pass_grade = [
