@@ -11,6 +11,7 @@ use App\Domain\Settings\Actions\NTALevelAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
+use App\Domain\Academic\Models\ExaminationResult;
 
 class GPAClassificationController extends Controller
 {
@@ -82,6 +83,9 @@ class GPAClassificationController extends Controller
            }
         }
 
+        if(ExaminationResult::whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})->first()){
+            return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
+        }
 
         $class = GPAClassification::find($request->get('gpa_classfication_id'));
 		$class->nta_level_id = $request->get('nta_level_id');
@@ -101,6 +105,10 @@ class GPAClassificationController extends Controller
     {
         try{
             $class = GPAClassification::findOrFail($id);
+            if(ExaminationResult::whereHas('moduleAssignment',function($query) use($class){$query->where('study_academic_year_id',$class->study_academic_year_id);})->first()){
+                return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
+            }
+            return 1;
             $class->delete();
             return redirect()->back()->with('message','GPA classification deleted successfully');
         }catch(Exception $e){

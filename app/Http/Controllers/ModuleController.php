@@ -99,6 +99,10 @@ class ModuleController extends Controller
            }
         }
 
+        // if(ExaminationResult::whereHas('moduleAssignment',function($query) use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})->first()){
+        //     return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
+        // }
+
         (new ModuleAction)->update($request);
 
         return Util::requestResponse($request,'Module updated successfully');

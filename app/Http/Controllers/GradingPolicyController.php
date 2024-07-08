@@ -178,7 +178,7 @@ class GradingPolicyController extends Controller
             if(ExaminationResult::whereHas('moduleAssignment',function($query) use($policy){$query->where('study_academic_year_id',$policy->study_academic_year_id);})->first()){
                 return redirect()->back()->with('error','Cannot be deleted, the policy has already been used');
             }
-            return 1;
+
             $policy->delete();
             return redirect()->back()->with('message','Grading policy deleted successfully');
         }catch(Exception $e){
