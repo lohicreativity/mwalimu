@@ -1362,6 +1362,7 @@ class ApplicantController extends Controller
          return redirect()->to('application/submission');
 
       }
+
       $batch = ApplicationBatch::where('application_window_id',$applicant->application_window_id)->where('program_level_id',$applicant->program_level_id)->latest()->first();
 		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_id','!=',$batch->id)->first() : null;
 
@@ -1467,7 +1468,7 @@ class ApplicantController extends Controller
                }
             }
          }
-         // dd( $campus_progs);
+         dd( $campus_programs);
 
          $campus_programs = $available_progs;
          $award = $applicant->programLevel;
@@ -2287,7 +2288,7 @@ class ApplicantController extends Controller
                     $query->where('award_id',$applicant->program_level_id);
             })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
       }
-
+return $programs;
          $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
