@@ -1320,12 +1320,9 @@
                                             @endforeach
                                           </select>
                                         </div>
+
                                         <div class="form-group col-3">
-                                          {!! Form::label('','Equivalent GPA') !!}
-                                          {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
-                                        </div>
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','Equivalent Majors') !!}
+                                          {!! Form::label('','Certificate Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                                              {{--
                                              @foreach($diploma_programs as $prog)
@@ -1382,33 +1379,7 @@
                                                <option value="Hospitality" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Hospitality',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Hospitality</option>
                                              </select>
                                         </div>
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','Equivalent Average Grade') !!}
-                                          <select name="equivalent_average_grade" class="form-control" disabled="disabled">
-                                             <option value="">Select Pass Grade</option>
-                                             <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
-                                             <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>
-                                             <option value="C" @if($requirement->equivalent_average_grade == 'C') selected="selected" @endif>C</option>
-                                             <option value="D" @if($requirement->equivalent_average_grade == 'D') selected="selected" @endif>D</option>
-                                             <option value="E" @if($requirement->equivalent_average_grade == 'E') selected="selected" @endif>E</option>
-                                             <option value="F" @if($requirement->equivalent_average_grade == 'F') selected="selected" @endif>F</option>
-                                          </select>
-                                        </div>
-                                        {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                                        {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                       
-                                         <div class="form-group col-3">
-                                          {!! Form::label('','Open Equivalent GPA') !!}
-                                          {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
-                                         </div>
-                                         <div class="form-group col-3">
-                                          {!! Form::label('','Open Equivalent Majors') !!}
-                                          {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
-                                        </div>
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','Open Equivalent Average Grade') !!}
-                                          {!! Form::text('open_equivalent_average_grade',$requirement->open_equivalent_average_grade,$equivalent_average_grade) !!}
-                                        </div>
+
                                         <div class="form-group col-3">
                                           {!! Form::label('','Principle Pass Points') !!}
                                           {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
