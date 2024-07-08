@@ -106,7 +106,7 @@ class GPAClassificationController extends Controller
         try{
             $class = GPAClassification::findOrFail($id);
             if(SemesterRemark::where('study_academic_year_id',$class->study_academic_year_id)->first()){
-                return redirect()->back()->with('error','Cannot be changed, the policy has already been used');
+                return redirect()->back()->with('error','Cannot be deleted, the policy has already been used');
             }
             return 1;
             $class->delete();
