@@ -1,16 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\GeneralSettings;
+namespace App\Http\Livewire\Application;
 
-use App\Domain\Academic\Models\Department;
 use App\Domain\Application\Models\EntryRequirement;
-use App\Domain\Settings\Models\Campus;
-use App\Domain\Settings\Models\CampusDepartment;
-use App\Domain\Settings\Models\Faculty;
-use App\Domain\Settings\Models\UnitCategory;
-use App\Models\User;
-use Auth;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class EntryRequirements extends Component
