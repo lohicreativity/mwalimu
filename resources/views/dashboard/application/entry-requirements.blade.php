@@ -137,7 +137,7 @@
                               <div class="card-body">
                               
                                  <div class="row">
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-3">
                                        {!! Form::label('','Programme') !!}
                                        <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
                                           <!-- <option value="">Select Programme</option> -->
@@ -150,12 +150,12 @@
                                     {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                     {!! Form::input('hidden','level','certificate') !!}
 
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-3">
                                        {!! Form::label('','No. of Pass Subjects') !!}
                                        {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                                     </div>
 
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-3">
                                        {!! Form::label('','Pass Grade') !!}
                                        <select name="pass_grade" class="form-control">
                                           <option value="">Select Pass Grade</option>
@@ -168,7 +168,7 @@
                                        </select>
                                     </div>
 
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-3">
                                        {!! Form::label('','Must Subjects') !!}
                                        <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                           @foreach($subjects as $sub)
@@ -177,7 +177,7 @@
                                        </select>
                                     </div>
 
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-3">
                                        {!! Form::label('','Other Must Subjects') !!}
                                        <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                           @foreach($subjects as $sub)
@@ -186,7 +186,7 @@
                                        </select>
                                     </div>
 
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-3">
                                        {!! Form::label('','Exclude Subjects') !!}
                                        <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                           @foreach($subjects as $sub)
@@ -485,7 +485,7 @@
                                     'placeholder'=>'Min Principle Pass Points',
                                     'class'=>'form-control'
                                  ];
-                                 
+
                                  $pass_subjects = [
                                     'placeholder'=>'No. of Form IV Pass Subjects',
                                     'class'=>'form-control',
