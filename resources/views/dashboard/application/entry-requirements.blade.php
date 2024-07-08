@@ -481,6 +481,11 @@
                                     'required'=>true
                                  ];
 
+                                 $min_principle_pass_points = [
+                                    'placeholder'=>'Min Principle Pass Points',
+                                    'class'=>'form-control'
+                                 ];
+                                 
                                  $pass_subjects = [
                                     'placeholder'=>'No. of Form IV Pass Subjects',
                                     'class'=>'form-control',
