@@ -363,9 +363,7 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
 
-                </div>
               </div>
               <!-- /.card-body -->
             </div>
