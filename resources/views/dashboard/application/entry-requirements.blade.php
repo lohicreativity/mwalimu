@@ -1379,11 +1379,6 @@
                                                <option value="Hospitality" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Hospitality',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Hospitality</option>
                                              </select>
                                         </div>
-
-                                        <div class="form-group col-4">
-                                          {!! Form::label('','Principle Pass Points') !!}
-                                          {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
-                                        </div>
                                        
                                          <div class="form-group col-3">
                                           {!! Form::label('','No. of Principle Pass Subjects') !!}
