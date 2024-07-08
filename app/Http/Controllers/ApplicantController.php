@@ -1470,9 +1470,9 @@ class ApplicantController extends Controller
          }
          // dd( $campus_progs);
          if($applicant->id == 25112){
-            return $campus_programs;
+            dd($campus_programs);
          }
-         
+
          $campus_programs = $available_progs;
          $award = $applicant->programLevel;
          $programs = [];
