@@ -763,19 +763,19 @@
                            <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                               <thead>
                                  <tr>
-                                 <th>SN</th>
-                                 <th>Programme</th>
-                                 <th>NTA Level</th>
-                                 <th>Pass Subjects</th>
-                                 <th>Pass Grade</th>
-                                 <th>Actions</th>
+                                    <th>SN</th>
+                                    <th>Programme</th>
+                                    <th>NTA Level</th>
+                                    <th>Pass Subjects</th>
+                                    <th>Pass Grade</th>
+                                    <th>Actions</th>
                                  </tr>
                               </thead>
                               <tbody>
                                  @foreach($entry_requirements as $key=>$requirement)
                                     <tr>
                                        <td>{{ ($key+1)}}</td>
-                                       <td>{{ $requirement->campusProgram->program->name }}</td>
+                                       <td>{{ $requirement->campusProgram->code }}</td>
                                        <td>@if($requirement->nta_level =='') N/A @else {{ $requirement->nta_level }} @endif</td>					
                                        <td>{{ $requirement->pass_subjects }}</td>
                                        <td>{{ $requirement->pass_grade }}</td>
