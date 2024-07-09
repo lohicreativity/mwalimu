@@ -1052,33 +1052,45 @@ class StudentController extends Controller
         }
         
         $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
-        $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
-        $can_register = true;
         if(count($annual_remarks) != 0){
-            $last_annual_remark = $annual_remarks[0];
-            $year_of_study = $last_annual_remark->year_of_study;
-            if($last_annual_remark->remark == 'RETAKE'){
+          $last_annual_remark = $annual_remarks[0];
+          $year_of_study = $last_annual_remark->year_of_study;
+          if($last_annual_remark->remark == 'REPEAT'){
                 $year_of_study = $last_annual_remark->year_of_study;
-            }elseif($last_annual_remark->remark == 'CARRY'){
-                $year_of_study = $last_annual_remark->year_of_study;
-            }elseif($last_annual_remark->remark == 'PASS'){
-                if(str_contains($semester_remarks[0]->semester->name,'2')){
-                   $year_of_study = $last_annual_remark->year_of_study + 1;
-                }else{
-                   $year_of_study = $last_annual_remark->year_of_study;
-                }
-            }elseif($last_annual_remark->remark == 'FAIL&DISCO'){
-            $can_register = false;
-            DB::rollback();
-            return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
-          }elseif($last_annual_remark->remark == 'INCOMPLETE'){
-            $can_register = false;
-            DB::rollback();
-            return redirect()->back()->with('error','You cannot continue with registration because you have incomplete results');
+          }elseif($last_annual_remark->remark == 'PASS' || $last_annual_remark->remark == 'RETAKE' || $last_annual_remark->remark == 'CARRY'){
+            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+                    $year_of_study = $last_annual_remark->year_of_study + 1;
+            }else{
+                    $year_of_study = $last_annual_remark->year_of_study;
+            }
           }
+        }else{
+          $year_of_study = 1;
         }
 
-
+        // if(count($annual_remarks) != 0){
+        //     $last_annual_remark = $annual_remarks[0];
+        //     $year_of_study = $last_annual_remark->year_of_study;
+        //     if($last_annual_remark->remark == 'RETAKE'){
+        //         $year_of_study = $last_annual_remark->year_of_study;
+        //     }elseif($last_annual_remark->remark == 'CARRY'){
+        //         $year_of_study = $last_annual_remark->year_of_study;
+        //     }elseif($last_annual_remark->remark == 'PASS'){
+        //         if(str_contains($semester_remarks[0]->semester->name,'2')){
+        //            $year_of_study = $last_annual_remark->year_of_study + 1;
+        //         }else{
+        //            $year_of_study = $last_annual_remark->year_of_study;
+        //         }
+        //     }elseif($last_annual_remark->remark == 'FAIL&DISCO'){
+        //     $can_register = false;
+        //     DB::rollback();
+        //     return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
+        //   }elseif($last_annual_remark->remark == 'INCOMPLETE'){
+        //     $can_register = false;
+        //     DB::rollback();
+        //     return redirect()->back()->with('error','You cannot continue with registration because you have incomplete results');
+        //   }
+        // }
 
         if($request->get('fee_type') == 'TUITION'){
           $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
@@ -1095,7 +1107,7 @@ class StudentController extends Controller
 
           $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)
                                    ->where('campus_program_id',$student->campus_program_id)
-                                   ->where('year_of_study',$student->year_of_study)
+                                   ->where('year_of_study',$year_of_study)
                                    ->with('feeItem.feeType')
                                    ->first();
 
@@ -1105,7 +1117,7 @@ class StudentController extends Controller
           }
 
           $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)
-                                           ->where('year_of_study',$student->year_of_study)
+                                           ->where('year_of_study',$year_of_study)
                                            ->where('study_academic_year_id',$study_academic_year->id)
                                            ->where('tuition_fee','>',0)
                                            ->first();
@@ -1184,7 +1196,7 @@ class StudentController extends Controller
                                             $invoice->currency);
           }
 
-          if($student->year_of_study == 1 && $student->academic_status_id == 8){
+          if($year_of_study == 1 && $student->academic_status_id == 8){
             $other_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','Miscellaneous Income');})
                                         ->where('payable_type','student')
                                         ->where('payable_id',$student->id)
@@ -1421,7 +1433,7 @@ class StudentController extends Controller
           }
 
           $annual_remark = AnnualRemark::where('student_id',$student->id)->count();
-          if($student->year_of_study == 1 && $annual_remark == 0){
+          if($year_of_study == 1 && $annual_remark == 0){
             $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){$query->where('name','NOT LIKE','%Master%')->where('name','LIKE','%New%')->where('name','LIKE','%ID Card%');})
                                           ->where('study_academic_year_id',$study_academic_year->id)
                                           ->where('campus_id',$student->applicant->campus_id)

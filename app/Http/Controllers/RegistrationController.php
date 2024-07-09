@@ -37,7 +37,7 @@ class RegistrationController extends Controller
     public function create(Request $request)
     {
 
-        $student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
+        $student = User::find(Auth::user()->id)->student()->with(['applicant:id,nationality,intake_id,campus_id,is_transfered','applicant.intake','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
         foreach($student->semesterRemarks as $rem){
             if($student->academicStatus->name == 'RETAKE'){
                 if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
@@ -89,15 +89,33 @@ class RegistrationController extends Controller
 			$year_of_study = 1;
 		}
 
+        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->with('academicYear')->first();
+
+        if($student->applicant->intake->name == 'March' && explode('/',$student->registration_number)[3] == substr(explode('/',$study_academic_year->academicYear->year)[1],2)){
+
+            if($semester->id == 2){
+              $semester_id = 1;
+            }else{
+              $semester_id = $semester->id;
+            }
+            $ac_yr_id = $study_academic_year->id + 1;
+        }else{
+
+            $semester_id = $semester->id;
+            $ac_yr_id = $study_academic_year->id;
+        }
+
+        $study_academic_year = StudyAcademicYear::where('id',$ac_yr_id)->first();
+
         $tuition_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
-                                      ->where(function($query) use($student){$query->where('payable_type','student')
-                                                                                   ->where('applicable_type','academic_year')
-                                                                                   ->where('applicable_id',session('active_academic_year_id'))
-                                                                                   ->where('payable_id',$student->id);})
-                                      ->orWhere(function($query) use($student){$query->where('payable_type','applicant')
-                                                                                     ->where('applicable_type','academic_year')
-                                                                                     ->where('applicable_id',session('active_academic_year_id'))
-                                                                                     ->where('payable_id',$student->applicant_id);})
+                                      ->where(function($query) use($student,$study_academic_year){$query->where('payable_type','student')
+                                                                                                        ->where('applicable_type','academic_year')
+                                                                                                        ->where('applicable_id',$study_academic_year->id)
+                                                                                                        ->where('payable_id',$student->id);})
+                                      ->orWhere(function($query) use($student,$study_academic_year){$query->where('payable_type','applicant')
+                                                                                                          ->where('applicable_type','academic_year')
+                                                                                                          ->where('applicable_id',$study_academic_year->id)
+                                                                                                          ->where('payable_id',$student->applicant_id);})
                                       ->first();
 
 
@@ -106,13 +124,13 @@ class RegistrationController extends Controller
         }
 
         $misc_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Miscellaneous%');})
-                                   ->where(function($query) use($student){$query->where('payable_type','student')
+                                   ->where(function($query) use($student,$study_academic_year){$query->where('payable_type','student')
                                                                                 ->where('applicable_type','academic_year')
-                                                                                ->where('applicable_id',session('active_academic_year_id'))
+                                                                                ->where('applicable_id',$study_academic_year->id)
                                                                                 ->where('payable_id',$student->id);})
-                                   ->orWhere(function($query) use($student){$query->where('payable_type','applicant')
+                                   ->orWhere(function($query) use($student,$study_academic_year){$query->where('payable_type','applicant')
                                                                                   ->where('applicable_type','academic_year')
-                                                                                  ->where('applicable_id',session('active_academic_year_id'))
+                                                                                  ->where('applicable_id',$study_academic_year->id)
                                                                                   ->where('payable_id',$student->applicant_id);})
                                    ->first();
 
@@ -123,7 +141,7 @@ class RegistrationController extends Controller
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
         $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
         $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id);})
-                                          ->where('study_academic_year_id',session('active_academic_year_id'))
+                                          ->where('study_academic_year_id',$study_academic_year->id)
                                           ->where('campus_id',$student->applicant->campus_id)
                                           ->sum('tuition_fee');
 
@@ -135,17 +153,17 @@ class RegistrationController extends Controller
 
 		if($student->applicant->is_transfered == 1 && $year_of_study == 1){
 			if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-                $new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$student->campus_program_id)->first();
+                $new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$student->campus_program_id)->first();
 
                 $transfer = InternalTransfer::where('student_id',$student->id)->first();
     
-                $old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$transfer->previous_campus_program_id)->first();
+                $old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$transfer->previous_campus_program_id)->first();
     
                 $extra_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
                                             ->where('payable_id',$student->id)
                                             ->where('payable_type','student')
                                             ->where('applicable_type','academic_year')
-                                            ->where('applicable_id',session('active_academic_year_id'))
+                                            ->where('applicable_id',$study_academic_year->id)
                                             ->where('id','!=',$tuition_fee_invoice->id)
                                             ->first();
     
@@ -225,8 +243,8 @@ class RegistrationController extends Controller
         $registration = new Registration;
         $registration->year_of_study = $year_of_study;
         $registration->student_id = $student->id;
-        $registration->study_academic_year_id = session('active_academic_year_id');
-        $registration->semester_id = session('active_semester_id');
+        $registration->study_academic_year_id = $study_academic_year->id;
+        $registration->semester_id = $semester_id;
         $registration->registration_date = date('Y-m-d');
         $registration->status = 'REGISTERED';
         $registration->save();
