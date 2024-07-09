@@ -37,36 +37,42 @@ class RegistrationController extends Controller
     {
 
     $student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
-      foreach($student->semesterRemarks as $rem){
-          if($student->academicStatus->name == 'RETAKE'){
-              if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
-                      return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
-              }
+        foreach($student->semesterRemarks as $rem){
+            if($student->academicStatus->name == 'RETAKE'){
+                if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
+                    return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
+                }
+            }
+        }
+    //   if($student->overallRemark){
+          if($student->studentshipStatus->name == 'SUPP'){
+              return redirect()->back()->with('error','You are not allowed to register for this semester because you have a pending supplementary case');
           }
-       }
-      if($student->overallRemark){
-          if($student->overallRemark->remark == 'SUPP'){
-              return redirect()->back()->with('error','You are not allowed to register for this semester');
-          }
-      }
-      if($student->studentshipStatus->name == 'POSTPONED'){
-          return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
-      }
-      if($student->studentshipStatus->name == 'GRADUANT'){
-          return redirect()->back()->with('error','You cannot continue with registration because you have already graduated');
-      }
-      if($student->academicStatus->name == 'FAIL&DISCO'){
-          return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
-      }
-      if($student->academicStatus->name == 'ABSCOND'){
-        return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
-      }
-      if($student->academicStatus->name == 'INCOMPLETE'){
-        return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
-      }
+      //}
+        if($student->studentshipStatus->name == 'POSTPONED'){
+            return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
+        }
+        
+        if($student->studentshipStatus->name == 'GRADUANT'){
+            return redirect()->back()->with('error','You cannot continue with registration because you are a graduant');
+        }
+
+        if($student->academicStatus->name == 'FAIL&DISCO'){
+            return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
+        }
+
+        if($student->academicStatus->name == 'ABSCOND'){
+            return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
+        }
+
+        if($student->academicStatus->name == 'INCOMPLETE'){
+            return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
+        }
+
     	$annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
         $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
         $can_register = true;
+        
         if(count($annual_remarks) != 0){
         	$last_annual_remark = $annual_remarks[0];
         	$year_of_study = $last_annual_remark->year_of_study;
