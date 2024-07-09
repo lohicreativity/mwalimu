@@ -684,14 +684,12 @@
                      </div>
                      <!-- /.modal -->
                      @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))  
-                        @can('edit-department')
                            <a class="btn btn-info btn-sm" href="#"
                               data-toggle="modal"
                               wire:click="fetchEntryRequirement({{$requirement}})"
                               data-target="#ss-edit-requirement">
                               <i class="fas fa-pencil-alt"></i> Edit
-                           </a>
-                        @endcan                                 
+                           </a>                               
 
                      <div wire:ignore.self class="modal fade" id="ss-edit-requirement">
                         <div class="modal-dialog modal-lg">
