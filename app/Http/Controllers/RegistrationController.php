@@ -71,35 +71,20 @@ class RegistrationController extends Controller
         }
 
     	$annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
-        $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
-        $can_register = true;
+		$semester = Semester::find(session('active_semester_id'));
         
         if(count($annual_remarks) != 0){
         	$last_annual_remark = $annual_remarks[0];
         	$year_of_study = $last_annual_remark->year_of_study;
-        	if($last_annual_remark->remark == 'RETAKE'){
+        	if($last_annual_remark->remark == 'REPEAT'){
                 $year_of_study = $last_annual_remark->year_of_study;
-        	}elseif($last_annual_remark->remark == 'CARRY'){
-                $year_of_study = $last_annual_remark->year_of_study;
-        	}elseif($last_annual_remark->remark == 'REPEAT'){
-                $year_of_study = $last_annual_remark->year_of_study;
-        	}elseif($last_annual_remark->remark == 'SUPP'){
-                $year_of_study = $last_annual_remark->year_of_study;
-        	}elseif($last_annual_remark->remark == 'PASS'){
-        		if(str_contains($semester_remarks[0]->semester->name,'2')){
+        	}elseif($last_annual_remark->remark == 'PASS' || $last_annual_remark->remark == 'RETAKE' || $last_annual_remark->remark == 'CARRY'){
+        		if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                    $year_of_study = $last_annual_remark->year_of_study + 1;
         		}else{
                    $year_of_study = $last_annual_remark->year_of_study;
         		}
-        	}elseif($last_annual_remark->remark == 'FAIL&DISCO'){
-            $can_register = false;
-            return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
-          }elseif($last_annual_remark->remark == 'INCOMPLETE'){
-            $can_register = false;
-            return redirect()->back()->with('error','You cannot continue with registration because you have incomplete results');
-          }
-        }elseif(count($semester_remarks) == 1){
-        	$year_of_study = 1;
+            }
         }else{
 			$year_of_study = 1;
 		}
@@ -136,9 +121,6 @@ class RegistrationController extends Controller
         }
 
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
-
-		$semester = Semester::find(session('active_semester_id'));
-        
         $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
         $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id);})
                                           ->where('study_academic_year_id',session('active_academic_year_id'))
