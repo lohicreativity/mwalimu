@@ -100,7 +100,7 @@ class EntryRequirements extends Component
             'subjects'=>NectaResult::whereHas('detail',function($query){$query->where('exam_id',1);})->distinct()->get(['subject_name']),
             'high_subjects'=>NectaResult::whereHas('detail',function($query){$query->where('exam_id',2);})->distinct()->get(['subject_name']),
             'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',session('session_entry_requirement_application_window_id'))->count() == 0? false : true,
-            'ss'=>$this->selectedEntryRequirement
+            'ss'=>123
             ]);
 
             // $data = [
