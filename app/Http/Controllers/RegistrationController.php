@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use App\Utils\DateMaker;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Application\Models\TCUApiErrorLog;
+use App\Utils\Util;
 
 class RegistrationController extends Controller
 {
@@ -36,7 +37,7 @@ class RegistrationController extends Controller
     public function create(Request $request)
     {
 
-    $student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
+        $student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
         foreach($student->semesterRemarks as $rem){
             if($student->academicStatus->name == 'RETAKE'){
                 if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
@@ -103,26 +104,32 @@ class RegistrationController extends Controller
 			$year_of_study = 1;
 		}
 
-        $tuition_fee_invoice = Invoice::whereHas('feeType',function($query){
-                   $query->where('name','LIKE','%Tuition%');
-        })->where(function($query) use($student){
-			$query->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->id);
-		})->orWhere(function($query) use($student){
-			$query->where('payable_type','applicant')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->applicant_id);
-		})->first();
+        $tuition_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
+                                      ->where(function($query) use($student){$query->where('payable_type','student')
+                                                                                   ->where('applicable_type','academic_year')
+                                                                                   ->where('applicable_id',session('active_academic_year_id'))
+                                                                                   ->where('payable_id',$student->id);})
+                                      ->orWhere(function($query) use($student){$query->where('payable_type','applicant')
+                                                                                     ->where('applicable_type','academic_year')
+                                                                                     ->where('applicable_id',session('active_academic_year_id'))
+                                                                                     ->where('payable_id',$student->applicant_id);})
+                                      ->first();
 
 
         if(!$tuition_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for tuition fee control number');
         }
 
-        $misc_fee_invoice = Invoice::whereHas('feeType',function($query){
-                   $query->where('name','LIKE','%Miscellaneous%');
-        })->where(function($query) use($student){
-			$query->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->id);
-		})->orWhere(function($query) use($student){
-			$query->where('payable_type','applicant')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->applicant_id);
-		})->first();
+        $misc_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Miscellaneous%');})
+                                   ->where(function($query) use($student){$query->where('payable_type','student')
+                                                                                ->where('applicable_type','academic_year')
+                                                                                ->where('applicable_id',session('active_academic_year_id'))
+                                                                                ->where('payable_id',$student->id);})
+                                   ->orWhere(function($query) use($student){$query->where('payable_type','applicant')
+                                                                                  ->where('applicable_type','academic_year')
+                                                                                  ->where('applicable_id',session('active_academic_year_id'))
+                                                                                  ->where('payable_id',$student->applicant_id);})
+                                   ->first();
 
         if(!$misc_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for other fees control number');
@@ -137,98 +144,68 @@ class RegistrationController extends Controller
 
 		$usd_currency = Currency::where('code','USD')->first();
 
-		if($student->applicant->is_transfered == 1){
-			if($year_of_study == 1 && str_contains($semester->name,'2')){
-				$new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$student->campus_program_id)->first();
+		if($student->applicant->is_transfered == 1 && $year_of_study == 1){
+			if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+                $new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$student->campus_program_id)->first();
 
-				$transfer = InternalTransfer::where('student_id',$student->id)->first();
-
-				$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$transfer->previous_campus_program_id)->first();
-
-				$extra_fee_invoice = Invoice::whereHas('feeType',function($query){
-                   $query->where('name','LIKE','%Tuition%');
-                })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('id','!=',$tuition_fee_invoice->id)->first();
-
-				if($extra_fee_invoice){
-					$extra_fee_paid = GatewayPayment::where('control_no',$extra_fee_invoice->control_no)->sum('paid_amount');
-					if($extra_fee_paid){
-					   $tuition_fee_paid += $extra_fee_paid;
-					}
-				}
-
-				if(str_contains($student->applicant->nationality,'Tanzania')){
-				     $fee_diff = $new_program_fee->amount_in_tzs - $old_program_fee->amount_in_tzs;
-					 $fee_amount = $new_program_fee->amount_in_tzs;
-				}else{
-					 $fee_diff = ($new_program_fee->amount_in_usd - $old_program_fee->amount_in_usd)*$usd_currency->factor;
-					 $fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
-				}
-
-				if(str_contains($student->applicant->nationality,'Tanzania')){
-					$new_fee_amount = $new_program_fee->amount_in_tzs;
-				}else{
-					$new_fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
-				}
+                $transfer = InternalTransfer::where('student_id',$student->id)->first();
+    
+                $old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$transfer->previous_campus_program_id)->first();
+    
+                $extra_fee_invoice = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Tuition%');})
+                                            ->where('payable_id',$student->id)
+                                            ->where('payable_type','student')
+                                            ->where('applicable_type','academic_year')
+                                            ->where('applicable_id',session('active_academic_year_id'))
+                                            ->where('id','!=',$tuition_fee_invoice->id)
+                                            ->first();
+    
+                if($extra_fee_invoice){
+                    $extra_fee_paid = GatewayPayment::where('control_no',$extra_fee_invoice->control_no)->sum('paid_amount');
+                    if($extra_fee_paid){
+                       $tuition_fee_paid += $extra_fee_paid;
+                    }
+                }
+    
+                if(str_contains($student->applicant->nationality,'Tanzania')){
+                     $fee_diff = $new_program_fee->amount_in_tzs - $old_program_fee->amount_in_tzs;
+    
+                }else{
+                     $fee_diff = ($new_program_fee->amount_in_usd - $old_program_fee->amount_in_usd)*$usd_currency->factor;
+    
+                }
 
 				if($fee_diff > 0){
-					if(str_contains($semester->name,1)){
-						if($student->academicStatus->name == 'RETAKE'){
-                             if($tuition_fee_paid < (1*($tuition_fee_invoice->amount + $fee_diff))){
-	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	                        }
-						}else{
-                            if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount + $fee_diff))){
-	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	                        }
-						}
-
-					}else{
-						if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
-                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-                        }
-					}
-				}elseif($fee_diff < 0){
-					if(str_contains($semester->name,1)){
-					   if($student->academicStatus->name == 'RETAKE'){
-						   if($tuition_fee_paid < (1*($tuition_fee_invoice->amount+$fee_diff))){
-	                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	                       }
-                       }else{
-                       	   if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
-	                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	                       }
-                       }
-					}else{
-					   if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
-                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-                       }
-					}
-				}
-
-			}else{
-				if($student->academicStatus->name == 'RETAKE'){
-					if($tuition_fee_paid < (1*$tuition_fee_invoice->amount)){
-	                   return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	                }
-                }else{
-                	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
-	                   return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	                }
+                    if($tuition_fee_paid < $tuition_fee_invoice->amount+$fee_diff){
+                        return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }	
+				}else{
+                    if($tuition_fee_paid < $tuition_fee_invoice->amount){
+                        return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }	
                 }
 			}
 		}else{
-			if($student->academicStatus->name == 'RETAKE'){
-	           if($tuition_fee_paid < (1*$tuition_fee_invoice->amount)){
-	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	           }
+            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+
+                if($tuition_fee_paid < $tuition_fee_invoice->amount){
+                    return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                }
+
             }else{
-            	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
-	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-	           }
+                if($student->academicStatus->name == 'RETAKE'){
+                    if($tuition_fee_paid < $tuition_fee_invoice->amount){
+                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }
+                }else{
+                     if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
+                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }
+                }
             }
 		}
 
-        if($misc_fee_paid < $misc_fee_invoice->amount && str_contains($semester->name,'1')){
+        if($misc_fee_paid < $misc_fee_invoice->amount && Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
             return redirect()->back()->with('error','You cannot continue with registration because you have not paid other fees');
         }
 
