@@ -17,7 +17,7 @@ class EntryRequirements extends Component
 
     public function fetchEntryRequirement($Requirement): void
     {
-        $this->selectedEntryRequirement = '123'; //EntryRequirement::query()->where('id',$Requirement['id'])->with(['campusProgram.program.award'])->first();
+        $this->selectedEntryRequirement = EntryRequirement::query()->where('id',$Requirement['id'])->with(['campusProgram.program.award'])->first();
     }
 
 
@@ -100,7 +100,7 @@ class EntryRequirements extends Component
             'subjects'=>NectaResult::whereHas('detail',function($query){$query->where('exam_id',1);})->distinct()->get(['subject_name']),
             'high_subjects'=>NectaResult::whereHas('detail',function($query){$query->where('exam_id',2);})->distinct()->get(['subject_name']),
             'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',session('session_entry_requirement_application_window_id'))->count() == 0? false : true,
-            'ss'=>123
+            'selectedEntryRequirement'=>$this->selectedEntryRequirement
             ]);
 
             // $data = [

@@ -22,7 +22,7 @@
                   <td>{{ $requirement->campusProgram->program->name }}</td>
                   <td>@if($requirement->nta_level =='') N/A @else {{ $requirement->nta_level }} @endif</td>					
                   <td>{{ $requirement->pass_subjects }}</td>
-                  <td>{{ $ss }}</td>
+                  <td>{{ $requirement->pass_grade }}</td>
                   <td>
                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-requirement-{{ $requirement->id }}">
                               <i class="fas fa-pencil-alt">
@@ -689,7 +689,7 @@
                               wire:click="fetchEntryRequirement({{$requirement}})"
                               data-target="#ss-edit-requirement">
                               <i class="fas fa-pencil-alt"></i> Edit
-                           </a>                               
+                           </a>                                
 
                      <div wire:ignore.self class="modal fade" id="ss-edit-requirement">
                         <div class="modal-dialog modal-lg">
@@ -701,7 +701,7 @@
                               </button>
                            </div>
                            <div class="modal-body">
-                              @if(filled($selectedEntryRequirement))
+                              @if(count($selectedEntryRequirement)->0)
                                  @if(str_contains($selectedEntryRequirement->campusProgram->program->award->name,'Certificate'))
                                     @php
                                        $equivalent_gpa = [
