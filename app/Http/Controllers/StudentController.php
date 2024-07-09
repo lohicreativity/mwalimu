@@ -399,7 +399,8 @@ class StudentController extends Controller
                                   ->count();
     	$data = [
             'student'=>$student,
-            'loan_status'=>$loan_status
+            'loan_status'=>$loan_status,
+            'study_academic_year'=>$ac_year
     	];
     	return view('dashboard.student.profile',$data)->withTitle('Profile');
     }
