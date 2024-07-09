@@ -22,7 +22,7 @@
                   <td>{{ $requirement->campusProgram->program->name }}</td>
                   <td>@if($requirement->nta_level =='') N/A @else {{ $requirement->nta_level }} @endif</td>					
                   <td>{{ $requirement->pass_subjects }}</td>
-                  <td>{{ $requirement->pass_grade }}</td>
+                  <td>{{ $ss }}</td>
                   <td>
                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-requirement-{{ $requirement->id }}">
                               <i class="fas fa-pencil-alt">
