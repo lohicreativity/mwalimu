@@ -701,7 +701,7 @@
                               </button>
                            </div>
                            <div class="modal-body">
-                              @if(count($selectedEntryRequirement)->0)
+                              @if(!empty($selectedEntryRequirement))
                                  @if(str_contains($selectedEntryRequirement->campusProgram->program->award->name,'Certificate'))
                                     @php
                                        $equivalent_gpa = [
