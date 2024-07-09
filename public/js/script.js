@@ -27,9 +27,9 @@ $('document').ready(function(){
         }
     );
 
-    $('#ss-entry-requirements').DataTable(
+    $('#entry-requirements').DataTable(
       {
-        "lengthMenu": [ 20, 100, 150, 200, 250 ]
+        "lengthMenu": [ 50, 100, 150, 200, 250 ]
         }
     );
 
