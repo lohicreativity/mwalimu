@@ -17,7 +17,7 @@ class EntryRequirements extends Component
 
     public function fetchEntryRequirement($Requirement): void
     {
-        $this->selectedEntryRequirement = EntryRequirement::where('id',$Requirement->id)->with(['campusProgram.program.award'])->first();
+        $this->selectedEntryRequirement = EntryRequirement::where('id',$Requirement['id'])->with(['campusProgram.program.award'])->first();
     }
 
 
