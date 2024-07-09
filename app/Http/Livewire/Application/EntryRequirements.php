@@ -86,12 +86,6 @@ class EntryRequirements extends Component
 
         $staff = User::find(Auth::user()->id)->staff;
         //$approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
-        $requirements = EntryRequirement::where('application_window_id',session('session_entry_requirement_application_window_id'))->get();
-        
-        $campusProgramIds = [];
-        foreach ($requirements as $req) {
-          $campusProgramIds[] = $req->campus_program_id;
-        }
 
         return view('livewire.application.entry-requirements', [
             'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',session('session_entry_requirement_application_window_id'))->latest()->get(),
