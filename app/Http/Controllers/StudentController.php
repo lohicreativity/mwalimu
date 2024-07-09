@@ -391,7 +391,7 @@ class StudentController extends Controller
       }else{
         $ac_yr_id = $ac_year->id;
       }
-
+return $ac_yr_id;
       $ac_year = StudyAcademicYear::with('academicYear')->where('id',$ac_yr_id)->first();
       $loan_status = LoanAllocation::where(function($query) use($student){$query->where('student_id',$student->id)->orWhere('applicant_id',$student->applicant_id);})
                                   ->where('campus_id',$student->applicant->campus_id)
