@@ -760,7 +760,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                           <table id="entry-requirements" class="table table-bordered table-hover ss-margin-top">
+                           <table id="entry-requirements" class="table table-bordered table-hover ss-margin-top ss-entry-requirements">
                               <thead>
                                  <tr>
                                     <th>SN</th>
