@@ -386,7 +386,7 @@ class StudentController extends Controller
       $student = User::find(Auth::user()->id)->student()->with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->first();
       $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 
-      if($student->applicant->intake->id == 2 && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
+      if($student->applicant->intake->name == 'March' && explode('/',$student->registration_number)[3] == substr(explode('/',$ac_year->academicYear->year)[1],2)){
         $ac_yr_id = $ac_year->id + 1;
       }else{
         $ac_yr_id = $ac_year->id;
