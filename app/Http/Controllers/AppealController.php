@@ -590,7 +590,7 @@ class AppealController extends Controller
     
 
          if($unpublished > 0) {
-          return redirect()->back()->with('error','Results have not yet published');
+          return redirect()->back()->with('error','Results have not yet been published');
          }
 
           $appeals = Appeal::where('student_id',$student->id)->get();
