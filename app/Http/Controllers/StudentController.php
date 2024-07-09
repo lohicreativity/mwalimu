@@ -1090,7 +1090,7 @@ class StudentController extends Controller
 
           if($existing_tuition_invoice){
             DB::rollback();
-              return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
+              return redirect()->back()->with('error','You have already requested for tuition fee control number in this academic year');
           }
 
           $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)

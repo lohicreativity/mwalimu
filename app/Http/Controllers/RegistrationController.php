@@ -135,12 +135,19 @@ class RegistrationController extends Controller
             return redirect()->back()->with('error','You have not requested for other fees control number');
         }
 
-        $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
-
-
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
 
 		$semester = Semester::find(session('active_semester_id'));
+        
+        $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
+        $tuition_fee_loan = LoanAllocation::where(function($query) use($student){$query->where('applicant_id',$student->applicant_id);})
+                                          ->where('study_academic_year_id',session('active_academic_year_id'))
+                                          ->where('campus_id',$student->applicant->campus_id)
+                                          ->sum('tuition_fee');
+
+        if($misc_fee_paid < $misc_fee_invoice->amount && Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
+            return redirect()->back()->with('error','You cannot continue with registration because you have not paid other fees');
+        }
 
 		$usd_currency = Currency::where('code','USD')->first();
 
@@ -176,38 +183,62 @@ class RegistrationController extends Controller
                 }
 
 				if($fee_diff > 0){
-                    if($tuition_fee_paid < $tuition_fee_invoice->amount+$fee_diff){
-                        return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    if($tuition_fee_loan > 0){
+                        if($tuition_fee_paid + $tuition_fee_loan < $tuition_fee_invoice->amount+$fee_diff){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+                    }else{
+                        if($tuition_fee_paid < $tuition_fee_invoice->amount+$fee_diff){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
                     }	
 				}else{
-                    if($tuition_fee_paid < $tuition_fee_invoice->amount){
-                        return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    if($tuition_fee_loan > 0){
+                        if($tuition_fee_paid + $tuition_fee_loan < $tuition_fee_invoice->amount){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+                    }else{
+                        if($tuition_fee_paid < $tuition_fee_invoice->amount){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
                     }	
                 }
 			}
 		}else{
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-
-                if($tuition_fee_paid < $tuition_fee_invoice->amount){
-                    return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-                }
-
-            }else{
-                if($student->academicStatus->name == 'RETAKE'){
-                    if($tuition_fee_paid < $tuition_fee_invoice->amount){
-                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                if($tuition_fee_loan > 0){
+                    if($tuition_fee_paid + $tuition_fee_loan < $tuition_fee_invoice->amount){
+                        return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
                     }
                 }else{
-                     if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
-                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    if($tuition_fee_paid < $tuition_fee_invoice->amount){
+                        return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }       
+                }
+            }else{
+                if($student->academicStatus->name == 'RETAKE'){
+                    if($tuition_fee_loan > 0){
+                        if($tuition_fee_paid + $tuition_fee_loan < $tuition_fee_invoice->amount){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+                    }else{
+                        if($tuition_fee_paid < $tuition_fee_invoice->amount){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+                    }
+                }else{
+                    if($tuition_fee_loan > 0){
+                        if($tuition_fee_paid + $tuition_fee_loan < (0.6*$tuition_fee_invoice->amount)){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+                    }else{
+                        if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
+                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
                     }
                 }
             }
 		}
-
-        if($misc_fee_paid < $misc_fee_invoice->amount && Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
-            return redirect()->back()->with('error','You cannot continue with registration because you have not paid other fees');
-        }
 
         $registration = new Registration;
         $registration->year_of_study = $year_of_study;
