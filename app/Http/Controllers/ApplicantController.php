@@ -1530,13 +1530,13 @@ class ApplicantController extends Controller
 
                // Certificate
                if(str_contains($award->name,'Certificate')){
-                  $o_level_pass_count = $o_level_points = 0;
-                  $o_level_other_pass_count = 0;
-                  $o_level_must_pass_count = 0;
-                  foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+
+                  $o_level_must_pass_count = $o_level_pass_count = $o_level_other_pass_count = $o_level_points = 0;
+
+                  foreach ($applicant->nectaResultDetails as $detail) {
                      if($detail->exam_id == 1 && $detail->verified == 1){
                         $other_must_subject_ready = false;
-                        foreach ($detail->results as $key => $result) {
+                        foreach ($detail->results as $result) {
 
                            if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
@@ -1549,10 +1549,6 @@ class ApplicantController extends Controller
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
 
                                        if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && !$other_must_subject_ready){
-                                          // if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                          //    $o_level_pass_count += 1;
-                                          //    $o_level_points += $o_level_grades[$result->grade];
-                                          // }
 
                                           if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) ){
                                              $o_level_other_pass_count += 1;
@@ -1568,15 +1564,6 @@ class ApplicantController extends Controller
                                           $o_level_pass_count += 1;
                                           $o_level_points += $o_level_grades[$result->grade];
                                        }
-                                       // }else{
-
-                                       //    if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && (count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
-                                       //       $o_level_other_pass_count += 1;
-                                       //    }elseif(count(unserialize($program->entryRequirements[0]->must_subjects)) < $program->entryRequirements[0]->pass_subjects && ($o_level_other_pass_count < ($program->entryRequirements[0]->pass_subjects - count(unserialize($program->entryRequirements[0]->must_subjects))))){
-                                       //       $o_level_other_pass_count += 1;
-                                       //       $o_level_points += $o_level_grades[$result->grade];
-                                       //    }
-                                       // }
                                     }
                                  }else{
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
@@ -1639,16 +1626,15 @@ class ApplicantController extends Controller
 
                // Diploma
                if(str_contains($award->name,'Diploma')){
-                  $o_level_pass_count = $o_level_points = $a_level_points = $diploma_gpa = 0;
-                  $o_level_other_pass_count = 0;
-                  $o_level_must_pass_count = 0;
-                  $a_level_principle_pass_count = $a_level_other_principle_pass_count = 0;
-                  $a_level_subsidiary_pass_count = 0;
-                  $diploma_major_pass_count = 0;
-                  foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+
+                  $o_level_must_pass_count = $o_level_pass_count = $o_level_other_pass_count = $o_level_points = 0;
+                  $a_level_principle_must_pass_count = $a_level_principle_pass_count = $a_level_other_principle_pass_count =  $a_level_subsidiary_pass_count = $a_level_points = 0;
+                  $diploma_major_pass_count = $diploma_gpa = 0;
+
+                  foreach ($applicant->nectaResultDetails as $detail) {
                      if($detail->exam_id == 1 && $detail->verified == 1){
                         $other_must_subject_ready = false;
-                        foreach ($detail->results as $key => $result) {
+                        foreach ($detail->results as $result) {
 
                            if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
@@ -1667,11 +1653,10 @@ class ApplicantController extends Controller
                                              $other_must_subject_ready = true;
                                              $o_level_points += $o_level_grades[$result->grade];
                                           }
-
                                        }
                                        
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                          $o_level_pass_count += 1;
+                                          $o_level_must_pass_count += 1;
                                           $o_level_points += $o_level_grades[$result->grade];
                                        }else{
                                           $o_level_pass_count += 1;
@@ -1679,9 +1664,9 @@ class ApplicantController extends Controller
                                        }
                                     }
                                  }else{
-                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && !$other_must_subject_ready){
+                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
 
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
                                           $o_level_other_pass_count += 1;
                                           $other_must_subject_ready = true;
                                           $o_level_points += $o_level_grades[$result->grade];
@@ -1690,7 +1675,7 @@ class ApplicantController extends Controller
                                     }
                                     
                                     if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                       $o_level_pass_count += 1;
+                                       $o_level_must_pass_count += 1;
                                        $o_level_points += $o_level_grades[$result->grade];
                                     }else{
                                        $o_level_pass_count += 1;
@@ -1714,8 +1699,7 @@ class ApplicantController extends Controller
                         }
                      }elseif($detail->exam_id === 2 && $detail->verified == 1){
                         $other_advance_must_subject_ready = false;
-                        $other_advance_subsidiary_ready = false;
-                        foreach ($detail->results as $key => $result) {
+                        foreach ($detail->results as $result) {
 
                            if($a_level_grades[$result->grade] >= $a_level_grades[$diploma_principle_pass_grade]){
                               $applicant->rank_points += $a_level_grades[$result->grade];
@@ -1736,7 +1720,7 @@ class ApplicantController extends Controller
                                        }
                                     
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
-                                          $a_level_principle_pass_count += 1;
+                                          $a_level_principle_must_pass_count += 1;
                                           $a_level_points += $a_level_grades[$result->grade];
                                        }else{
                                           $a_level_principle_pass_count += 1;
@@ -1754,7 +1738,7 @@ class ApplicantController extends Controller
                                     }
                                  
                                     if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
-                                       $a_level_principle_pass_count += 1;
+                                       $a_level_principle_must_pass_count += 1;
                                        $a_level_points += $a_level_grades[$result->grade];
                                     }else{
                                        $a_level_principle_pass_count += 1;
@@ -1779,45 +1763,92 @@ class ApplicantController extends Controller
                            if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){
 
                               if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
-                                 if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
-                                    if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
-                                       $a_level_subsidiary_pass_count += 1;
-                                       $a_level_points += $a_level_grades[$result->grade];
-                                    }
+                                 if(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
+                                       if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != '' && !$other_advance_must_subject_ready){
+                                          $a_level_subsidiary_pass_count += 1;
+                                          $a_level_points += $a_level_grades[$result->grade];
+                                          $other_advance_must_subject_ready = true;
+                                       }
 
-                                    if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects)) && !$other_advance_must_subject_ready){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                          $a_level_subsidiary_pass_count += 1;
+                                          $a_level_points += $a_level_grades[$result->grade];
+                                       }else{
+                                          $a_level_subsidiary_pass_count += 1;
+                                          $a_level_points += $a_level_grades[$result->grade];
+                                       }
+
+                                    }
+                                 }else{
+                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != '' && !$other_advance_must_subject_ready){
                                        $a_level_subsidiary_pass_count += 1;
                                        $a_level_points += $a_level_grades[$result->grade];
                                        $other_advance_must_subject_ready = true;
                                     }
 
-                                 }else{
                                     if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                       $a_level_subsidiary_pass_count += 1;
+                                       $a_level_points += $a_level_grades[$result->grade];
+                                    }else{
                                        $a_level_subsidiary_pass_count += 1;
                                        $a_level_points += $a_level_grades[$result->grade];
                                     }
                                  }
-                              }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+                              }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != '' && unserialize($program->entryRequirements[0]->advance_must_subjects) == '' && unserialize($program->entryRequirements[0]->other_advance_must_subjects) == ''){
                                  if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
-                                       $a_level_subsidiary_pass_count += 1;
-                                       $a_level_points += $a_level_grades[$result->grade];
-
+                                    $a_level_subsidiary_pass_count += 1;
+                                    $a_level_points += $a_level_grades[$result->grade];
                                  }
                               }else{
-                                 $a_level_subsidiary_pass_count += 1;
-                                 $a_level_points += $a_level_grades[$result->grade];
+                                 if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) == ''){
+                                    $a_level_subsidiary_pass_count += 1;
+                                    $a_level_points += $a_level_grades[$result->grade];
+                                 }
                               }
                            }
                         }
                      }
                   }
 
-					   if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && (($a_level_principle_pass_count > 0
-						&& ($a_level_subsidiary_pass_count + $a_level_principle_pass_count >= 2)) || $a_level_principle_pass_count >= 2)){
-							$programs[] = $program;
-                     $o_level_selection_points[$program->id] = $o_level_points;
-                     $a_level_selection_points[$program->id] =  $a_level_points;
-						}
+                  if(unserialize($program->entryRequirements[0]->must_subjects) != '' && unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
+                     if($o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects)) && ($o_level_must_pass_count+$o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects &&
+                        $a_level_principle_must_pass_count >= count(unserialize($program->entryRequirements[0]->advance_must_subjects)) && 
+                        ($a_level_principle_must_pass_count+$a_level_other_principle_pass_count >= 2 || $a_level_principle_must_pass_count+$a_level_subsidiary_pass_count >= 2 || $a_level_principle_must_pass_count+$a_level_principle_pass_count >= 2)){
+   
+                        $programs[] = $program;
+                        $o_level_selection_points[$program->id] = $o_level_points;
+                        $a_level_selection_points[$program->id] =  $a_level_points;
+
+                     }
+                  }elseif(unserialize($program->entryRequirements[0]->must_subjects) != '' && unserialize($program->entryRequirements[0]->advance_must_subjects) == ''){
+                     if($o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects)) && ($o_level_must_pass_count+$o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects &&
+                        $a_level_principle_pass_count > 0 && ($a_level_principle_pass_count+$a_level_subsidiary_pass_count) >= 2){
+   
+                        $programs[] = $program;
+                        $o_level_selection_points[$program->id] = $o_level_points;
+                        $a_level_selection_points[$program->id] =  $a_level_points;
+
+                     }
+                  }elseif(unserialize($program->entryRequirements[0]->must_subjects) == '' && unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
+                     if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects &&
+                        $a_level_principle_must_pass_count >= count(unserialize($program->entryRequirements[0]->advance_must_subjects)) && 
+                        ($a_level_principle_must_pass_count+$a_level_other_principle_pass_count >= 2 || $a_level_principle_must_pass_count+$a_level_subsidiary_pass_count >= 2 || $a_level_principle_must_pass_count+$a_level_principle_pass_count >= 2)){
+   
+                        $programs[] = $program;
+                        $o_level_selection_points[$program->id] = $o_level_points;
+                        $a_level_selection_points[$program->id] =  $a_level_points;
+
+                     }
+                  }else{
+                     if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count > 0 && ($a_level_principle_pass_count+$a_level_subsidiary_pass_count) >= 2){
+   
+                        $programs[] = $program;
+                        $o_level_selection_points[$program->id] = $o_level_points;
+                        $a_level_selection_points[$program->id] =  $a_level_points;
+   
+                     }
+                  }
 
                   $has_btc = $has_diploma = $pass_diploma = false;
 
