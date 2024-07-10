@@ -263,14 +263,16 @@
                      <table class="table table-bordered">
                        <thead>
                          <tr>
+                           <th>SN</th>
                            <th>Programme</th>
                            <th>Campus</th>
                            <th>Action</th>
                          </tr>
                        </thead>
                        <tbody>
-                          @foreach($campus_programs as $prog)
+                          @foreach($campus_programs as $key=>$prog)
                           <tr>
+                              <td>{{ $key+1 }} </td>
                               <td>{{ $prog->program->name }}</td>
                               <td>{{ $prog->campus->name }}</td>
                               <td>
