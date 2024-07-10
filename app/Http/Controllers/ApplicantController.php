@@ -1609,6 +1609,9 @@ class ApplicantController extends Controller
                         }
                      }
 
+                     if($program->entryRequirements[0]->id == 477 && $applicant->id == 24809){
+                        return $o_level_pass_count.'-'.$o_level_other_pass_count;
+                     }
                      if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects){
                      //    if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
 
