@@ -1599,7 +1599,7 @@ class ApplicantController extends Controller
                                     }
                                  }
 
-                              }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != '' && unserialize($program->entryRequirements[0]->must_subjects) == ''){
+                              }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != '' && unserialize($program->entryRequirements[0]->must_subjects) == '' && unserialize($program->entryRequirements[0]->other_must_subjects) == ''){
                                  if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                        $o_level_pass_count += 1;
                                        $o_level_points += $o_level_grades[$result->grade];
