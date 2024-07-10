@@ -1548,13 +1548,13 @@ class ApplicantController extends Controller
                                  if(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
 
-                                       if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                                       if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && !$other_must_subject_ready){
                                           // if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                           //    $o_level_pass_count += 1;
                                           //    $o_level_points += $o_level_grades[$result->grade];
                                           // }
 
-                                          if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
+                                          if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) ){
                                              $o_level_other_pass_count += 1;
                                              $other_must_subject_ready = true;
                                              $o_level_points += $o_level_grades[$result->grade];
