@@ -211,7 +211,7 @@
            </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-12">
              <br><span style="font-size: 16pt; font-weight:bold">Personal Information</span><hr>
 
              <table class="table table-hover">
