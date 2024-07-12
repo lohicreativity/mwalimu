@@ -277,7 +277,7 @@
                </tr>
                <tr>
                  <td style="font-weight:bold">Email Address:</td>
-                 <td>@if(empty($applicant->nextOfKin->email))N/A @else $applicant->nextOfKin->email @endif</td>
+                 <td>@if(empty($applicant->nextOfKin->email))N/A @else {{ $applicant->nextOfKin->email }} @endif</td>
                </tr>
                <tr>
                  <td style="font-weight:bold">Phone Number:</td>
