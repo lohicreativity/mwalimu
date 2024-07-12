@@ -192,9 +192,13 @@
                       </div>
                     </div>
                   @else   
+
+                          <div class="card">
+                            <!-- /.card-header -->
+                            <div class="card-body">      
                     <div class="card">
                       <div class="card-header">
-                        <h3 class="card-title">Selectionss</h3>
+                        <h3 class="card-title">Selections</h3>
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body">
@@ -235,7 +239,7 @@
                             </tbody>
                         </table>
                       </div>
-                    </div>
+                    </div></div></div>
                   @endif
                 @endif
               @endif
